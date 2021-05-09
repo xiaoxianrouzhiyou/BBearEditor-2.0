@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>BBUITitleBar</class>
- <widget class="QWidget" name="TitleBar">
+ <widget class="QWidget" name="BBUITitleBar">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -505,7 +505,7 @@ QPushButton:default {
   <connection>
    <sender>buttonClose</sender>
    <signal>clicked()</signal>
-   <receiver>TitleBar</receiver>
+   <receiver>BBUITitleBar</receiver>
    <slot>closeWindow()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -521,7 +521,7 @@ QPushButton:default {
   <connection>
    <sender>buttonMinimize</sender>
    <signal>clicked()</signal>
-   <receiver>TitleBar</receiver>
+   <receiver>BBUITitleBar</receiver>
    <slot>minimizeWindow()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -537,7 +537,7 @@ QPushButton:default {
   <connection>
    <sender>buttonMaximize</sender>
    <signal>clicked()</signal>
-   <receiver>TitleBar</receiver>
+   <receiver>BBUITitleBar</receiver>
    <slot>maximizeWindow()</slot>
   </connection>
  </connections>
