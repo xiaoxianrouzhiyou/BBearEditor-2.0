@@ -2,8 +2,8 @@
 #include "NcFramelessHelper.h"
 #include <QVBoxLayout>
 #include "BBUITitleBar.h"
+#include "BBUIMainWindow.h"
 
-//#include "BBMainwindow.h"
 
 //#include "boundingbox.h"
 //#include "beginningdialog.h"
@@ -34,13 +34,17 @@ int main(int argc, char *argv[])
     BBUITitleBar titleBar(&mainWidget);
     mainVlayout.addWidget(&titleBar);
 
+    BBUIMainWindow mainWindow;
+    mainVlayout.addWidget(&mainWindow);
 
-
-
-    //MainWindow mainWindow;
-    //mainVlayout->addWidget(&mainWindow);
     //mainWidget.hide();
     mainWidget.show();
+
+
+
+
+
+
     //开始对话框
     //BeginningDialog beginningDialog(&mainWidget);
     //beginningDialog.resize(QSize(800, 480));

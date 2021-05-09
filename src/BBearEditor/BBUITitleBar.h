@@ -16,7 +16,7 @@ public:
     ~BBUITitleBar();
 
 private:
-    Ui::BBUITitleBar *ui;
+    Ui::BBUITitleBar *m_pUi;
 };
 
 #endif // BBUITITLEBAR_H

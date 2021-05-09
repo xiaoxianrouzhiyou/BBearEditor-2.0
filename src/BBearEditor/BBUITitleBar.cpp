@@ -3,12 +3,12 @@
 
 BBUITitleBar::BBUITitleBar(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::BBUITitleBar)
+    m_pUi(new Ui::BBUITitleBar)
 {
-    ui->setupUi(this);
+    m_pUi->setupUi(this);
 }
 
 BBUITitleBar::~BBUITitleBar()
 {
-    delete ui;
+    delete m_pUi;
 }

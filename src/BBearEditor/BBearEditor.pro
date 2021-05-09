@@ -26,14 +26,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     NcFramelessHelper.cpp \
-    BBUITitleBar.cpp
+    BBUITitleBar.cpp \
+    BBUIMainWindow.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
-    BBUITitleBar.h
+    BBUITitleBar.h \
+    BBUIMainWindow.h
 
 FORMS += \
-    BBUITitleBar.ui
+    BBUITitleBar.ui \
+    BBUIMainWindow.ui
 
 RESOURCES += \
     BBBasicResource.qrc
