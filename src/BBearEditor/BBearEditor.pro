@@ -27,12 +27,14 @@ SOURCES += \
     main.cpp \
     NcFramelessHelper.cpp \
     BBUITitleBar.cpp \
-    BBUIMainWindow.cpp
+    BBUIMainWindow.cpp \
+    BBObjectListWidget.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
     BBUITitleBar.h \
-    BBUIMainWindow.h
+    BBUIMainWindow.h \
+    BBObjectListWidget.h
 
 FORMS += \
     BBUITitleBar.ui \

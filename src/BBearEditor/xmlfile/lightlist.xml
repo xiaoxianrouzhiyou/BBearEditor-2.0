@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+
+    <model icon=":/icon/resources/icons/directional light2.png" file="directional light.png" name="Directional Light"> </model>
+    <model icon=":/icon/resources/icons/point light2.png" file="point light.png" name="Point Light"> </model>
+    <model icon=":/icon/resources/icons/spot light2.png" file="spot light.png" name="Spot Light"> </model>
+
+</root>
