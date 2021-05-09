@@ -50,7 +50,7 @@
 
 #introduction {
     color: #d6dfeb;
-    font: 12pt &quot;Arial&quot;;
+    font: 10pt &quot;Arial&quot;;
 }
 
 QPushButton {

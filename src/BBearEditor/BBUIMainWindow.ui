@@ -10,11 +10,405 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="focusPolicy">
+   <enum>Qt::ClickFocus</enum>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">border: 1px solid rgb(14, 19, 25);</string>
+   <string notr="true">QMainWindow {
+    background: rgb(14, 19, 25);
+}
+
+QWidget:focus {
+    outline: none;
+}
+
+QMenu {
+    background-color: rgb(14, 19, 25);
+    padding: 2px 10px;
+}
+
+QMenu::separator {
+    height: 1px;
+    background-color: #d6dfeb;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+QMenu::item {
+    color: #d6dfeb;
+    font: 11pt &quot;Arial&quot;;
+    background-color: transparent;
+    padding-left: 6px;
+}
+
+QMenu::item:selected {
+    color: #d6dfeb;
+    background-color: #0ebf9c;
+}
+
+QMenu::right-arrow {
+    margin: 1px;
+    border-image: url(://resources/icons/arrow_right.png);
+}
+
+QMenuBar {
+	background-color: rgb(14, 19, 25);
+	color: #d6dfeb;
+}
+
+QMenuBar::item:selected {
+	background-color: #8193bc;
+}
+
+QStatusBar {
+    background: rgb(14, 19, 25);
+}
+
+QDockWidget {
+    titlebar-close-icon: url(://resources/icons/close.png);
+    titlebar-normal-icon: url(://resources/icons/float.png);
+    color: #d6dfeb;
+    font: 75 13pt &quot;Heiti SC&quot;;
+
+    background: rgb(14, 19, 25);
+}
+
+QDockWidget::close-button {
+    background: none;
+    border: none;
+}
+
+QDockWidget::float-button {
+    background: none;
+    border: none;
+}
+
+QDockWidget::title {
+    text-align: left;
+    /*padding-left: 10px;*/
+    background-color: #191f28;
+}
+
+#scrollAreaWidgetContents { /*The background color of the scroll area*/
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #191f28, stop: 1 rgb(36, 43, 58));
+}
+
+QScrollArea { /*When both the horizontal and vertical scroll bars appear, the background color of the small square in the lower right corner*/
+    background: transparent;
+    border: none;
+}
+
+QSlider::groove:horizontal {
+    border: 1px solid #0ebf9c;
+    border-radius: 2px;
+    background-color: #0ebf9c;
+    height: 3px
+}
+
+QSlider::handle:horizontal {
+    border: 1px solid #d6dfeb;
+    border-radius: 2px;
+    background-color: #d6dfeb;
+    width: 11px;
+    margin: -5px -1px -5px -1px;
+}
+
+/*QSlider::sub-page:horizontal {
+    border: 1px solid #0e9c9c;
+    border-radius: 2px;
+    background: #0ebf9c;
+}*/
+
+#fileSizeSlider {
+    margin-left: 16px;
+    margin-right: 16px;
+}
+
+QScrollBar:vertical {
+    width: 8px;
+    background: rgb(14, 19, 25);
+}
+
+QScrollBar:horizontal {
+    height: 8px;
+    background: transparent;
+}
+
+QScrollBar::handle:vertical, QScrollBar::handle:horizontal {
+    background: #0ebf9c;
+    border: none;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:vertical:hover, QScrollBar::handle:horizontal:hover {
+    background: #0ebf9c;
+    border: none;
+    border-radius: 4px;
+}
+
+QScrollBar::sub-line:vertical, QScrollBar::add-line:vertical,
+QScrollBar::sub-line:horizontal, QScrollBar::add-line:horizontal {
+    width: 0;
+    height: 0;
+}
+
+QTabWidget {
+    border: none;
+}
+
+QTabBar::tab {
+    color: #d6dfeb;
+    background: #0ebf9c;
+    border: none;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    padding: 3px;
+    min-width: 8ex;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+    background: rgb(36, 43, 58);
+}
+
+QTabBar::tab:!selected {
+    margin-bottom: 2px; /* make non-selected tabs look smaller */
+}
+
+/* make use of negative margins for overlapping tabs */
+QTabBar::tab:selected {
+    /* expand/overlap to the left and right by 4px */
+    margin-left: -2px;
+    margin-right: -2px;
+}
+
+QTabBar::tab:first:selected {
+    margin-left: 0; /* the first selected tab has nothing to overlap with on the left */
+}
+
+QTabBar::tab:last:selected {
+    margin-right: 0; /* the last selected tab has nothing to overlap with on the right */
+}
+
+QTabBar::tab:only-one {
+    margin: 0; /* if there is only one tab, we don't want overlapping margins */
+}
+
+#buttonBase, #buttonLight, #buttonCustom, #buttonParticle, #buttonOther {
+    color: #d6dfeb;
+    text-align: right;
+    font: 11pt &quot;Arial&quot;;
+    background: rgb(36, 43, 58);
+    border: none;
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+    padding: 6px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+#buttonBase:hover, #buttonLight:hover, #buttonCustom:hover, #buttonParticle:hover,  #buttonOther:hover {
+    color: #d6dfeb;
+    text-align: right;
+    font: 11pt &quot;Arial&quot;;
+    background: #0ebf9c;
+    border: none;
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+    padding: 6px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+#buttonBase:checked, #buttonLight:checked, #buttonCustom:checked, #buttonParticle:checked,  #buttonOther:checked {
+    color: #d6dfeb;
+    text-align: right;
+    font: 11pt &quot;Arial&quot;;
+    background: #0ebf9c;
+    border: none;
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+    padding: 6px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+#tabWidgetList {
+    background: rgb(14, 19, 25);
+}
+
+GameObjectList {
+    color: #d6dfeb;
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #191f28, stop: 1 rgb(36, 43, 58));
+    alternate-background-color: rgb(60, 64, 75);
+    border: none;
+}
+
+GameObjectList::item:selected:!active {
+    background: #8193bc;
+    color: #d6dfeb;
+}
+
+GameObjectList::item:selected:active {
+    background: #8193bc;
+    color: #d6dfeb;
+}
+
+GameObjectList::item:hover {
+    /*background: #508193bc;*/
+    background: none;
+}
+
+GameObjectList::item:focus {
+    background: transparent;
+}
+
+#searchWidgetGameObject, #searchWidgetHierarchy, #searchWidgetFolder, #searchWidgetFile, #searchWidgetInspector {
+    border: none;
+    background: rgb(14, 19, 25);
+}
+
+#lineEditSearchGameObject, #lineEditSearchHierarchy, #lineEditSearchFolder, #lineEditSearchFile, #lineEditSearchInspector {
+    font: 11pt &quot;Arial&quot;;
+    margin: 2px;
+    border: none;
+    color: rgb(56, 70, 87);
+    background: rgb(14, 19, 25);
+}
+
+#searchIconGameObject, #searchIconHierarchy, #searchIconFolder, #searchIconFile, #searchIconInspector {
+    image: url(://resources/icons/search2.png);
+}
+
+#closeIconGameObject, #closeIconHierarchy, #closeIconFolder, #closeIconFile, #closeIconInspector {
+    image: url(://resources/icons/search_close2.png);
+}
+
+#buttonRootHierarchy, #buttonRootProject, #buttonRootInspector {
+    color: #d6dfeb;
+    background: #0ebf9c;
+    border: none;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    padding: 3px;
+}
+
+#buttonRootHierarchy:hover, #buttonRootProject:hover, #buttonRootInspector:hover {
+    background: #8c0ebf9c;
+}
+
+#buttonMoreProject {
+    image: url(://resources/icons/setting.png);
+}
+
+#buttonSettingFile, #buttonSettingInspector, #buttonSettingFile {
+    image: url(://resources/icons/setting.png);
+}
+
+QTreeWidget {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #191f28, stop: 1 rgb(36, 43, 58));
+    alternate-background-color: rgb(60, 64, 75);
+    font: 10pt &quot;Arial&quot;;
+    border: none;
+}
+
+QTreeWidget::item {
+    color: #d6dfeb;
+    border: none;
+    height: 16px;
+}
+
+QTreeWidget::item:hover {
+    background: none;
+    border: none;
+}
+
+QTreeWidget::item:selected:active, QTreeWidget::item:selected:!active {
+    border: none;
+    background: #8193bc;
+}
+
+QTreeWidget::branch:selected {
+    background: #8193bc;
+}
+
+QTreeWidget::branch:closed:has-children:!has-siblings,
+QTreeWidget::branch:closed:has-children:has-siblings {
+    border-image: none;
+    image: url(://resources/icons/branch-closed.png);
+}
+
+QTreeWidget::branch:open:has-children:!has-siblings,
+QTreeWidget::branch:open:has-children:has-siblings {
+    border-image: none;
+    image: url(://resources/icons/branch-open.png);
+}
+
+/*item checkbox*/
+QTreeWidget::indicator:checked {
+    image: url(://resources/icons/visible2.png);
+}
+
+QTreeWidget::indicator:unchecked {
+    image: url(://resources/icons/invisible3.png);
+}
+
+QHeaderView {
+    background: rgb(36, 43, 58);
+    color: #d6dfeb;
+}
+
+/*Each item in the header*/
+QHeaderView::section {
+    background: rgb(36, 43, 58);
+    color: #d6dfeb;
+    border: 0;
+    padding: 3px 0 3px 6px;
+}
+
+QPushButton {
+    border: none;
+    background-color: transparent;
+}
+
+#buttonMovePathLeft, #buttonMovePathRight {
+    color: #d6dfeb;
+    background: transparent;
+}
+
+#buttonMovePathLeft:hover, #buttonMovePathRight:hover {
+    color: #8193bc;
+}
+
+#filePathScrollAreaWidgetContents {
+    background: transparent;
+}
+
+#buttonFilter {
+    padding: 5px;
+    image: url(://resources/icons/more.png);
+}
+
+FileList {
+    color: #d6dfeb;
+    font: 10pt &quot;Arial&quot;;
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #191f28, stop: 1 rgb(36, 43, 58));
+    border: none;
+}
+
+/*After selected, the blue box will not appear*/
+FileList::item:focus {
+    background: transparent;
+}
+
+FileList::item:selected {
+    background: #8193bc;
+    color: #d6dfeb;
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
@@ -23,9 +417,36 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menuWindows">
+    <property name="title">
+     <string>Windows</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuWindows"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
