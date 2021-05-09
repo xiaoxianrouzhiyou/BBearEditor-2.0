@@ -39,7 +39,7 @@ QMenu::separator {
 
 QMenu::item {
     color: #d6dfeb;
-    font: 11pt &quot;Arial&quot;;
+    font: 9pt &quot;Arial&quot;;
     background-color: transparent;
     padding-left: 6px;
 }
@@ -55,12 +55,12 @@ QMenu::right-arrow {
 }
 
 QMenuBar {
-	background-color: rgb(14, 19, 25);
-	color: #d6dfeb;
+    background-color: rgb(14, 19, 25);
+    color: #d6dfeb;
 }
 
 QMenuBar::item:selected {
-	background-color: #8193bc;
+    background-color: #8193bc;
 }
 
 QStatusBar {
@@ -71,8 +71,7 @@ QDockWidget {
     titlebar-close-icon: url(://resources/icons/close.png);
     titlebar-normal-icon: url(://resources/icons/float.png);
     color: #d6dfeb;
-    font: 75 13pt &quot;Heiti SC&quot;;
-
+    font: 75 9pt &quot;Arial&quot;;
     background: rgb(14, 19, 25);
 }
 
@@ -90,6 +89,9 @@ QDockWidget::title {
     text-align: left;
     /*padding-left: 10px;*/
     background-color: #191f28;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 3px;
 }
 
 #scrollAreaWidgetContents { /*The background color of the scroll area*/
@@ -201,7 +203,7 @@ QTabBar::tab:only-one {
 #buttonBase, #buttonLight, #buttonCustom, #buttonParticle, #buttonOther {
     color: #d6dfeb;
     text-align: right;
-    font: 11pt &quot;Arial&quot;;
+    font: 9pt &quot;Arial&quot;;
     background: rgb(36, 43, 58);
     border: none;
     border-bottom-left-radius: 4px;
@@ -214,7 +216,7 @@ QTabBar::tab:only-one {
 #buttonBase:hover, #buttonLight:hover, #buttonCustom:hover, #buttonParticle:hover,  #buttonOther:hover {
     color: #d6dfeb;
     text-align: right;
-    font: 11pt &quot;Arial&quot;;
+    font: 9pt &quot;Arial&quot;;
     background: #0ebf9c;
     border: none;
     border-bottom-left-radius: 4px;
@@ -227,7 +229,7 @@ QTabBar::tab:only-one {
 #buttonBase:checked, #buttonLight:checked, #buttonCustom:checked, #buttonParticle:checked,  #buttonOther:checked {
     color: #d6dfeb;
     text-align: right;
-    font: 11pt &quot;Arial&quot;;
+    font: 9pt &quot;Arial&quot;;
     background: #0ebf9c;
     border: none;
     border-bottom-left-radius: 4px;
@@ -273,7 +275,7 @@ GameObjectList::item:focus {
 }
 
 #lineEditSearchGameObject, #lineEditSearchHierarchy, #lineEditSearchFolder, #lineEditSearchFile, #lineEditSearchInspector {
-    font: 11pt &quot;Arial&quot;;
+    font: 9pt &quot;Arial&quot;;
     margin: 2px;
     border: none;
     color: rgb(56, 70, 87);
@@ -312,7 +314,7 @@ GameObjectList::item:focus {
 QTreeWidget {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #191f28, stop: 1 rgb(36, 43, 58));
     alternate-background-color: rgb(60, 64, 75);
-    font: 10pt &quot;Arial&quot;;
+    font: 9pt &quot;Arial&quot;;
     border: none;
 }
 
@@ -395,7 +397,7 @@ QPushButton {
 
 FileList {
     color: #d6dfeb;
-    font: 10pt &quot;Arial&quot;;
+    font: 9pt &quot;Arial&quot;;
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #191f28, stop: 1 rgb(36, 43, 58));
     border: none;
 }
@@ -449,6 +451,215 @@ FileList::item:selected {
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QDockWidget" name="dockGameObject">
+   <property name="floating">
+    <bool>false</bool>
+   </property>
+   <property name="windowTitle">
+    <string>GameObject</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockGameObjectContents">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <property name="spacing">
+      <number>-1</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QWidget" name="dockGameObjectBackground" native="true">
+       <layout class="QVBoxLayout" name="vLayoutDockGameObjectBackground">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QWidget" name="searchWidgetGameObject" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="searchIconGameObject"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEditSearchGameObject">
+             <property name="focusPolicy">
+              <enum>Qt::ClickFocus</enum>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item alignment="Qt::AlignRight">
+            <widget class="QLabel" name="closeIconGameObject"/>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="tabWidgetList" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item alignment="Qt::AlignTop">
+            <widget class="QWidget" name="buttonTabBar" native="true">
+             <layout class="QVBoxLayout" name="verticalLayout">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QPushButton" name="buttonBase">
+                <property name="text">
+                 <string> Base</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="buttonLight">
+                <property name="text">
+                 <string> Light</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="buttonParticle">
+                <property name="text">
+                 <string> Particle</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="buttonCustom">
+                <property name="text">
+                 <string> Custom</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="buttonOther">
+                <property name="text">
+                 <string> Other</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QStackedWidget" name="stackedWidget">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="currentIndex">
+              <number>0</number>
+             </property>
+             <widget class="QWidget" name="pageBase">
+              <layout class="QGridLayout" name="gridLayout_6">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+
+
+
+              </layout>
+             </widget>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
  </widget>
  <resources/>
  <connections/>
