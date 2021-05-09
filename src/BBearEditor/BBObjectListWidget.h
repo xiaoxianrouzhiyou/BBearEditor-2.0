@@ -10,6 +10,7 @@ class BBObjectListWidget : public QListWidget
 public:
     explicit BBObjectListWidget(QWidget *parent = 0, int pieceSize = 35);
     ~BBObjectListWidget();
+    void loadListItems(const char *xmlFilePath);
 
 private:
     int m_iPieceSize;

@@ -15,3 +15,9 @@ BBObjectListWidget::~BBObjectListWidget()
 {
 
 }
+
+void BBObjectListWidget::loadListItems(const char *xmlFilePath)
+{
+    // Load external resources through .xml
+
+}
