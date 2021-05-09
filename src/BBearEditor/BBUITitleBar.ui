@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>BBUITitleBar</class>
+ <widget class="QWidget" name="TitleBar">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>60</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>60</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>60</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::ClickFocus</enum>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#background {
+    background-color: rgb(14, 19, 25);
+}
+
+#iconBox {
+    border: 2px solid #0ebf9c;
+    border-radius: 6px;
+}
+
+#icon {
+    border-image: url(://resources/icons/face.png);
+    border-radius: 3px;
+    margin: 3px;
+}
+
+#name {
+    color: #d6dfeb;
+}
+
+#introduction {
+    color: #d6dfeb;
+    font: 12pt &quot;Arial&quot;;
+}
+
+QPushButton {
+    border: none;
+    border-radius: 6px;
+    color: rgb(56, 70, 87);
+    background-color: #d6dfeb;
+}
+
+QPushButton:pressed, QPushButton:hover, QPushButton:checked {
+    background-color: #8193bc;
+}
+
+QPushButton:flat {
+    border: none; /* no border for a flat push button */
+}
+
+QPushButton:default {
+    border-color: navy; /* make the default button prominent */
+}
+
+#buttonHand {
+    image: url(://resources/icons/hand.png);
+}
+
+#buttonMove {
+    image: url(://resources/icons/move.png);
+}
+
+#buttonRotate {
+    image: url(://resources/icons/rotate.png);
+}
+
+#buttonScale {
+    image: url(://resources/icons/scale.png);
+}
+
+#buttonRun {
+    image: url(://resources/icons/play.png);
+}
+
+#buttonDebug {
+    image: url(://resources/icons/debug.png);
+}
+
+#buttonBuild {
+    image: url(://resources/icons/build.png);
+}
+
+#buttonClose {
+    background-color: rgb(252, 98, 93);
+}
+
+#buttonClose:pressed {
+    background-color: rgb(239, 78, 73);
+}
+
+#buttonMinimize {
+    background-color: rgb(253, 191, 65);
+}
+
+#buttonMinimize:pressed {
+    background-color: rgb(162, 114, 29);
+}
+
+#buttonMaximize {
+    background-color: rgb(52, 200, 74);
+}
+
+#buttonMaximize:pressed {
+    background-color: rgb(20, 128, 34);
+}</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QWidget" name="background" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="leftMargin">
+       <number>10</number>
+      </property>
+      <property name="topMargin">
+       <number>10</number>
+      </property>
+      <property name="rightMargin">
+       <number>10</number>
+      </property>
+      <property name="bottomMargin">
+       <number>10</number>
+      </property>
+      <item alignment="Qt::AlignLeft">
+       <widget class="QWidget" name="toolbar1" native="true">
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item alignment="Qt::AlignLeft">
+          <widget class="QWidget" name="horizontalWidget" native="true">
+           <layout class="QHBoxLayout" name="buttonGroupWindow">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item alignment="Qt::AlignLeft">
+             <widget class="QPushButton" name="buttonClose">
+              <property name="minimumSize">
+               <size>
+                <width>14</width>
+                <height>14</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>14</width>
+                <height>14</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item alignment="Qt::AlignLeft">
+             <widget class="QPushButton" name="buttonMinimize">
+              <property name="minimumSize">
+               <size>
+                <width>14</width>
+                <height>14</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>14</width>
+                <height>14</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonMaximize">
+              <property name="minimumSize">
+               <size>
+                <width>14</width>
+                <height>14</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>14</width>
+                <height>14</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="introduction">
+           <property name="text">
+            <string>我是聪明可爱的大熊！！</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item alignment="Qt::AlignHCenter">
+       <widget class="QWidget" name="toolbar2" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item alignment="Qt::AlignBottom">
+          <widget class="QPushButton" name="buttonRun">
+           <property name="minimumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignBottom">
+          <widget class="QPushButton" name="buttonDebug">
+           <property name="minimumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignBottom">
+          <widget class="QPushButton" name="buttonBuild">
+           <property name="minimumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item alignment="Qt::AlignRight">
+       <widget class="QWidget" name="toolbar3" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item alignment="Qt::AlignBottom">
+          <widget class="QPushButton" name="buttonHand">
+           <property name="minimumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignBottom">
+          <widget class="QPushButton" name="buttonMove">
+           <property name="minimumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignBottom">
+          <widget class="QPushButton" name="buttonRotate">
+           <property name="minimumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignBottom">
+          <widget class="QPushButton" name="buttonScale">
+           <property name="minimumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item alignment="Qt::AlignRight">
+       <widget class="QWidget" name="user" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="name">
+           <property name="text">
+            <string>BigBear</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="iconBox" native="true">
+           <layout class="QGridLayout" name="gridLayout">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="icon">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>40</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonClose</sender>
+   <signal>clicked()</signal>
+   <receiver>TitleBar</receiver>
+   <slot>closeWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>19</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>19</x>
+     <y>-9</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonMinimize</sender>
+   <signal>clicked()</signal>
+   <receiver>TitleBar</receiver>
+   <slot>minimizeWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>40</x>
+     <y>18</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>41</x>
+     <y>-16</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonMaximize</sender>
+   <signal>clicked()</signal>
+   <receiver>TitleBar</receiver>
+   <slot>maximizeWindow()</slot>
+  </connection>
+ </connections>
+ <slots>
+  <slot>closeWindow()</slot>
+  <slot>minimizeWindow()</slot>
+  <slot>maximizeWindow()</slot>
+ </slots>
+</ui>
