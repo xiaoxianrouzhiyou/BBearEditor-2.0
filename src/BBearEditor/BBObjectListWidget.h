@@ -11,12 +11,12 @@ public:
     explicit BBObjectListWidget(QWidget *parent = 0, const int pieceSize = 35);
     ~BBObjectListWidget();
     bool loadListItems(const char *xmlFilePath);
-    void setObjectType(QString strObjectType) { m_strObjectType = strObjectType; }
+    void setMimeType(QString strMimeType) { m_strMimeType = strMimeType; }
 
 private:
     int m_iPieceSize;
     // {Base, Light, ...}
-    QString m_strObjectType;
+    QString m_strMimeType;
 };
 
 #endif // BBOBJECTLISTWIDGET_H
