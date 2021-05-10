@@ -10,6 +10,12 @@
 
 
 
+#define BB_MIMETYPE_BASEOBJECT "BaseObject"
+#define BB_MIMETYPE_LIGHTOBJECT "LightObject"
+#define BB_MIMETYPE_TREEWIDGET "TreeWidget"
+#define BB_MIMETYPE_FILETREEWIDGET "FileTreeWidget"
+
+
 class BBUtils
 {
 public:

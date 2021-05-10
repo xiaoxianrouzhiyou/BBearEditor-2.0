@@ -15,7 +15,7 @@ public:
 
 private:
     int m_iPieceSize;
-    // {Base, Light, ...}
+    // {base, light, ...}
     QString m_strMimeType;
 };
 

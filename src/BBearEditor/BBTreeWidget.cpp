@@ -1,6 +1,6 @@
 #include "BBTreeWidget.h"
 #include <QKeyEvent>
-
+#include <QMimeData>
 
 //#include <QPainter>
 //#include <QPen>
@@ -54,55 +54,112 @@ void BBLineEdit::keyPressEvent(QKeyEvent *event)
 //--------------BBTreeWidget
 
 
-//BaseTree::BaseTree(QWidget *parent)
-//    : QTreeWidget(parent), editingItem(NULL), indicatorItem(NULL), mLastItem(NULL)
-//{
-//    //启用拖放
-//    setDragEnabled(true);
-//    //设置拖放
-//    setAcceptDrops(true);
-//    //移动 不是复制
-//    setDefaultDropAction(Qt::MoveAction);
-//    //内部拖拽 不能拖到别的树 也不能从别的树拖过来
-//    //setDragDropMode(QAbstractItemView::InternalMove);
-//    //可按shift cmd多选
-//    setSelectionMode(QAbstractItemView::ExtendedSelection);
-//    //不需要拖拽落下指示器
-//    setDropIndicatorShown(false);
-//}
+BBTreeWidget::BBTreeWidget(QWidget *parent)
+    : QTreeWidget(parent)
+{
+//    editingItem = NULL;
+    m_pIndicatorItem = NULL;
+    m_pLastItem = NULL;
 
-//QString BaseTree::getMimeType()
-//{
-//    return "tree";
-//}
+    setDragEnabled(true);
+    setAcceptDrops(true);
+    // move, not copy
+    setDefaultDropAction(Qt::MoveAction);
+    // Internal drag, you cannot move to other trees, and you cannot move from other trees.
+    //setDragDropMode(QAbstractItemView::InternalMove);
+    // You can press shift and cmd to select multiple
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
+    setDropIndicatorShown(false);
+}
 
-//void BaseTree::dragEnterEvent(QDragEnterEvent *event)
-//{
-//    if (event->mimeData()->hasFormat(getMimeType()))
-//    {
-//        //接收内部拖拽
-//        event->accept();
-//    }
-//    else if (event->mimeData()->hasFormat(FileList::getMimeType()))
-//    {
-//        //接收文件列表中拖来的文件
-//        event->accept();
-//    }
-//    else if (event->mimeData()->hasFormat("base"))
-//    {
-//        //接收预制体
-//        event->accept();
-//    }
-//    else if (event->mimeData()->hasFormat("light"))
-//    {
-//        //接收灯光
-//        event->accept();
-//    }
-//    else
-//    {
-//        event->ignore();
-//    }
-//}
+bool BBTreeWidget::moveItem()
+{
+    return false;
+    // to do
+}
+
+bool BBTreeWidget::moveItemFromFileList(const QMimeData *mimeData)
+{
+    return true;
+}
+
+bool BBTreeWidget::moveItemFromOthers(const QMimeData *mimeData)
+{
+    return false;
+}
+
+void BBTreeWidget::dropEvent(QDropEvent *event)
+{
+    if (event->mimeData()->hasFormat(getMimeType()))
+    {
+        // Internal move item
+        if (moveItem())
+        {
+            event->accept();
+        }
+        else
+        {
+            event->ignore();
+        }
+    }
+    else if (event->mimeData()->hasFormat(BB_MIMETYPE_FILETREEWIDGET))
+    {
+        // Receive items dropped from the file list
+        if (moveItemFromFileList(event->mimeData()))
+        {
+            event->accept();
+        }
+        else
+        {
+            event->ignore();
+        }
+    }
+    else
+    {
+        // Receive items dropped from others
+        if (moveItemFromOthers(event->mimeData()))
+        {
+            event->accept();
+        }
+        else
+        {
+            event->ignore();
+        }
+    }
+    // The indicator item is no longer needed after dragging
+    m_pIndicatorItem = NULL;
+    // Reset the currently suspended item after processing
+    m_pLastItem = NULL;
+    repaint();
+}
+
+void BBTreeWidget::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasFormat(getMimeType()))
+    {
+        // Receive internal drag
+        event->accept();
+    }
+    else if (event->mimeData()->hasFormat(BB_MIMETYPE_FILETREEWIDGET))
+    {
+        // Receive items dragged from the file list
+        event->accept();
+    }
+    else if (event->mimeData()->hasFormat(BB_MIMETYPE_BASEOBJECT))
+    {
+        // Receive prefab
+        event->accept();
+    }
+    else if (event->mimeData()->hasFormat(BB_MIMETYPE_LIGHTOBJECT))
+    {
+        // Receive light
+        event->accept();
+    }
+    else
+    {
+        event->ignore();
+    }
+}
 
 //void BaseTree::dragMoveEvent(QDragMoveEvent *event)
 //{
@@ -156,50 +213,7 @@ void BBLineEdit::keyPressEvent(QKeyEvent *event)
 //    event->accept();
 //}
 
-//void BaseTree::dropEvent(QDropEvent *event)
-//{
-//    if (event->mimeData()->hasFormat(getMimeType()))
-//    {
-//        //内部拖拽树节点
-//        if (dragDropItem())
-//        {
-//            event->accept();
-//        }
-//        else
-//        {
-//            event->ignore();
-//        }
-//    }
-//    else if (event->mimeData()->hasFormat(FileList::getMimeType()))
-//    {
-//        //接收文件列表中拖来的文件
-//        if (moveItemFromFileList(event->mimeData()))
-//        {
-//            event->accept();
-//        }
-//        else
-//        {
-//            event->ignore();
-//        }
-//    }
-//    else
-//    {
-//        //处理其他控件移来的
-//        if (moveItemFromOther(event->mimeData()))
-//        {
-//            event->accept();
-//        }
-//        else
-//        {
-//            event->ignore();
-//        }
-//    }
-//    //拖拽完毕后不再需要指示框
-//    indicatorItem = NULL;
-//    //处理完毕后重置当前悬浮的item
-//    mLastItem = NULL;
-//    repaint();
-//}
+
 
 //bool BaseTree::dragDropItem()
 //{
@@ -296,15 +310,6 @@ void BBLineEdit::keyPressEvent(QKeyEvent *event)
 //    return false;
 //}
 
-//bool BaseTree::moveItemFromFileList(const QMimeData *mimeData)
-//{
-//    return true;
-//}
-
-//bool BaseTree::moveItemFromOther(const QMimeData *mimeData)
-//{
-//    return false;
-//}
 
 //void BaseTree::paintEvent(QPaintEvent *event)
 //{

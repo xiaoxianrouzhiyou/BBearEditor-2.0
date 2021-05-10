@@ -3,6 +3,7 @@
 
 #include <QLineEdit>
 #include <QTreeWidget>
+#include "BBUtils.h"
 
 class BBLineEdit : public QLineEdit
 {
@@ -28,26 +29,31 @@ private:
 //    BOTTOM = 0x04
 //};
 
-//class BaseTree : public QTreeWidget
-//{
-//    Q_OBJECT
+class BBTreeWidget : public QTreeWidget
+{
+    Q_OBJECT
 
-//public:
-//    virtual QString getMimeType();
+public:
+    virtual QString getMimeType() { return BB_MIMETYPE_TREEWIDGET; }
 
 //protected:
-//    BaseTree(QWidget *parent = 0);
-//    void dropEvent(QDropEvent *event) override;
+    explicit BBTreeWidget(QWidget *parent = 0);
+    virtual bool moveItem();
+    virtual bool moveItemFromFileList(const QMimeData *mimeData);
+    virtual bool moveItemFromOthers(const QMimeData *mimeData);
+    void dropEvent(QDropEvent *event) override;
+
+    QTreeWidgetItem *m_pIndicatorItem;
+
 //    virtual void deleteOne(QTreeWidgetItem *item);
 //    void keyPressEvent(QKeyEvent *event) override;
 //    QString getLevelPath(QTreeWidgetItem *item);
 //    void startDrag(Qt::DropActions supportedActions) override;
 //    void dragMoveEvent(QDragMoveEvent *event) override;
-//    virtual bool dragDropItem();
+
 //    //drag取第几列的图标
 //    virtual int getDragIconColumn();
-//    virtual bool moveItemFromFileList(const QMimeData *mimeData);
-//    virtual bool moveItemFromOther(const QMimeData *mimeData);
+
 //    virtual void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript);
 //    virtual void pasteEnd();
 //    void filterSelectedItems();
@@ -55,19 +61,20 @@ private:
 //    QTreeWidgetItem *editingItem;
 //    QLineEdit *edit;
 //    QMenu *menu;
-//    QTreeWidgetItem *indicatorItem;
 //    IndicatorPos indicatorPos;
 //    QList<QTreeWidgetItem*> clipBoardItems;
 
-//private:
-//    void dragEnterEvent(QDragEnterEvent *event) override;
+private:
+    void dragEnterEvent(QDragEnterEvent *event) override;
+
+    QTreeWidgetItem *m_pLastItem;
 //    void paintEvent(QPaintEvent *event) override;
 //    void dragLeaveEvent(QDragLeaveEvent *event) override;
 //    void mousePressEvent(QMouseEvent *event) override;
 //    void contextMenuEvent(QContextMenuEvent *event) override;
 //    void focusInEvent(QFocusEvent *event) override;
 //    QTime mLastTime;
-//    QTreeWidgetItem *mLastItem;
+
 
 //public slots:
 //    virtual void copyAction();
@@ -78,6 +85,6 @@ private:
 //    void openEditor();
 //    virtual void finishRename();
 
-//};
+};
 
 #endif // BBTREEWIDGET_H

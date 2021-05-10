@@ -21,5 +21,5 @@ void BBUIMainWindow::setGameObjectDockWidget()
     m_pUi->dockGameObjectContents->updateSizeHint(QSize(350, 500));
     // Load contents for list
     m_pUi->listBaseGameObject->loadListItems("../BBearEditor/xmlfiles/baselist.xml");
-    m_pUi->listBaseGameObject->setObjectType("Base");
+    m_pUi->listBaseGameObject->setMimeType(BB_MIMETYPE_BASEOBJECT);
 }

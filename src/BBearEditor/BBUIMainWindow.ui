@@ -757,7 +757,7 @@ FileList::item:selected {
       </widget>
      </item>
      <item>
-      <widget class="QTreeWidget" name="treeHierarchy">
+      <widget class="BBTreeWidget" name="treeHierarchy">
        <property name="focusPolicy">
         <enum>Qt::ClickFocus</enum>
        </property>
