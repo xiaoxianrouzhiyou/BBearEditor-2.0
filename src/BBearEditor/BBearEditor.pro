@@ -29,14 +29,16 @@ SOURCES += \
     BBUITitleBar.cpp \
     BBUIMainWindow.cpp \
     BBObjectListWidget.cpp \
-    BBUtils.cpp
+    BBUtils.cpp \
+    BBResizableWidget.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
     BBUITitleBar.h \
     BBUIMainWindow.h \
     BBObjectListWidget.h \
-    BBUtils.h
+    BBUtils.h \
+    BBResizableWidget.h
 
 FORMS += \
     BBUITitleBar.ui \

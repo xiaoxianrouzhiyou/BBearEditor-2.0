@@ -461,7 +461,7 @@ FileList::item:selected {
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockGameObjectContents">
+   <widget class="BBResizableWidget" name="dockGameObjectContents">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <property name="spacing">
       <number>-1</number>
