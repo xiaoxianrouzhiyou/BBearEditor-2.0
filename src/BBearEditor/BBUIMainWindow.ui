@@ -243,29 +243,29 @@ QTabBar::tab:only-one {
     background: rgb(14, 19, 25);
 }
 
-GameObjectList {
+BBObjectListWidget {
     color: #d6dfeb;
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #191f28, stop: 1 rgb(36, 43, 58));
     alternate-background-color: rgb(60, 64, 75);
     border: none;
 }
 
-GameObjectList::item:selected:!active {
+BBObjectListWidget::item:selected:!active {
     background: #8193bc;
     color: #d6dfeb;
 }
 
-GameObjectList::item:selected:active {
+BBObjectListWidget::item:selected:active {
     background: #8193bc;
     color: #d6dfeb;
 }
 
-GameObjectList::item:hover {
+BBObjectListWidget::item:hover {
     /*background: #508193bc;*/
     background: none;
 }
 
-GameObjectList::item:focus {
+BBObjectListWidget::item:focus {
     background: transparent;
 }
 
