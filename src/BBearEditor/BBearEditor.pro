@@ -45,3 +45,9 @@ FORMS += \
 RESOURCES += \
     BBBasicResource.qrc
 
+INCLUDEPATH += \
+    ../../includes \
+    ../../includes/Eigen \
+    ../../includes/rapidxml \
+    ../../includes/fbxsdk \
+    ../../includes/lua \

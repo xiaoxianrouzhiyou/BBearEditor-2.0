@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <root>
 
-    <model icon=":/icon/resources/icons/empty2.png" file="xxx" name="Empty"> </model>
-    <model icon=":/icon/resources/icons/controller2.png" file="tauren.obj" name="Controller"> </model>
-    <model icon=":/icon/resources/icons/cube2.png" file="cube.obj" name="Cube"> </model>
-    <model icon=":/icon/resources/icons/plane2.png" file="plane.obj" name="Plane"> </model>
-    <model icon=":/icon/resources/icons/sphere2.png" file="sphere.obj" name="Sphere"> </model>
-    <model icon=":/icon/resources/icons/cylinder2.png" file="cylinder.obj" name="Cylinder"> </model>
-    <model icon=":/icon/resources/icons/cone2.png" file="cone.obj" name="Cone"> </model>
-    <model icon=":/icon/resources/icons/scene white.png" file="terrain" name="Terrain"> </model>
-    <model icon=":/icon/resources/icons/camera2.png" file="xxx" name="Camera"> </model>
-    <model icon=":/icon/resources/icons/trigger2.png" file="xxx" name="Trigger"> </model>
+    <model icon="://resources/icons/empty2.png" file="xxx" name="Empty"> </model>
+    <model icon="://resources/icons/controller2.png" file="tauren.obj" name="Controller"> </model>
+    <model icon="://resources/icons/cube2.png" file="cube.obj" name="Cube"> </model>
+    <model icon="://resources/icons/plane2.png" file="plane.obj" name="Plane"> </model>
+    <model icon="://resources/icons/sphere2.png" file="sphere.obj" name="Sphere"> </model>
+    <model icon="://resources/icons/cylinder2.png" file="cylinder.obj" name="Cylinder"> </model>
+    <model icon="://resources/icons/cone2.png" file="cone.obj" name="Cone"> </model>
+    <model icon="://resources/icons/scene white.png" file="terrain" name="Terrain"> </model>
+    <model icon="://resources/icons/camera2.png" file="xxx" name="Camera"> </model>
+    <model icon="://resources/icons/trigger2.png" file="xxx" name="Trigger"> </model>
 
 </root>

@@ -7,6 +7,7 @@ BBUIMainWindow::BBUIMainWindow(QWidget *parent) :
     m_pUi(new Ui::BBUIMainWindow)
 {
     m_pUi->setupUi(this);
+    setGameObjectDockWidget();
 }
 
 BBUIMainWindow::~BBUIMainWindow()
@@ -17,5 +18,5 @@ BBUIMainWindow::~BBUIMainWindow()
 void BBUIMainWindow::setGameObjectDockWidget()
 {
     // Load contents for list
-    m_pUi->listBaseGameObject->loadListItems("../../../../BBearEditor/xmlfiles/baselist.xml");
+    m_pUi->listBaseGameObject->loadListItems("../BBearEditor/xmlfiles/baselist.xml");
 }

@@ -8,9 +8,9 @@ class BBObjectListWidget : public QListWidget
     Q_OBJECT
 
 public:
-    explicit BBObjectListWidget(QWidget *parent = 0, int pieceSize = 35);
+    explicit BBObjectListWidget(QWidget *parent = 0, const int pieceSize = 35);
     ~BBObjectListWidget();
-    void loadListItems(const char *xmlFilePath);
+    bool loadListItems(const char *xmlFilePath);
 
 private:
     int m_iPieceSize;
