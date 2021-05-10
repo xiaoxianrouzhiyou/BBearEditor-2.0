@@ -1,5 +1,6 @@
 #include "BBUITitleBar.h"
 #include "ui_BBUITitleBar.h"
+#include "BBUtils.h"
 
 BBUITitleBar::BBUITitleBar(QWidget *parent) :
     QWidget(parent),
@@ -16,8 +17,8 @@ BBUITitleBar::BBUITitleBar(QWidget *parent) :
 
 BBUITitleBar::~BBUITitleBar()
 {
-    delete m_pUi;
-    delete m_pParent;
+    BB_SAFE_DELETE(m_pUi);
+    BB_SAFE_DELETE(m_pParent);
 }
 
 void BBUITitleBar::closeWindow()

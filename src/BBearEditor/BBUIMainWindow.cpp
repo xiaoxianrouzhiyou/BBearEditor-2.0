@@ -1,5 +1,6 @@
 #include "BBUIMainWindow.h"
 #include "ui_BBUIMainWindow.h"
+#include "BBUtils.h"
 
 BBUIMainWindow::BBUIMainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -10,5 +11,11 @@ BBUIMainWindow::BBUIMainWindow(QWidget *parent) :
 
 BBUIMainWindow::~BBUIMainWindow()
 {
-    delete m_pUi;
+    BB_SAFE_DELETE(m_pUi);
+}
+
+void BBUIMainWindow::setGameObjectDockWidget()
+{
+    // Load contents for list
+    m_pUi->listBaseGameObject->loadListItems("../../../../BBearEditor/xmlfiles/baselist.xml");
 }
