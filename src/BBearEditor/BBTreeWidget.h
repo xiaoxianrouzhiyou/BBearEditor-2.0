@@ -40,6 +40,7 @@ public:
 
 //protected:
     explicit BBTreeWidget(QWidget *parent = 0);
+
     void startDrag(Qt::DropActions supportedActions) override;
     virtual bool moveItem();
     virtual bool moveItemFromFileList(const QMimeData *mimeData);
@@ -53,13 +54,10 @@ public:
 //    void keyPressEvent(QKeyEvent *event) override;
 //    QString getLevelPath(QTreeWidgetItem *item);
 //    void dragMoveEvent(QDragMoveEvent *event) override;
-
 //    //drag取第几列的图标
 //    virtual int getDragIconColumn();
-
 //    virtual void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript);
 //    virtual void pasteEnd();
-//    void filterSelectedItems();
 //    void deleteAction(QTreeWidgetItem *item);
 //    QTreeWidgetItem *editingItem;
 //    QLineEdit *edit;
@@ -70,6 +68,13 @@ private:
     void dragEnterEvent(QDragEnterEvent *event) override;
 
     QTreeWidgetItem *m_pLastItem;
+
+
+protected:
+    void filterSelectedItems();
+
+
+
 //    void paintEvent(QPaintEvent *event) override;
 //    void dragLeaveEvent(QDragLeaveEvent *event) override;
 //    void mousePressEvent(QMouseEvent *event) override;

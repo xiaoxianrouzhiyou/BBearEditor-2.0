@@ -75,10 +75,10 @@ BBTreeWidget::BBTreeWidget(QWidget *parent)
 
 void BBTreeWidget::startDrag(Qt::DropActions supportedActions)
 {
-//    Q_UNUSED(supportedActions);
-//    //祖先和子孙同时选中 过滤掉子孙
-//    filterSelectedItems();
-//    QList<QTreeWidgetItem*> items = selectedItems();
+    Q_UNUSED(supportedActions);
+    // When selecting ancestors and descendants at the same time, filter out descendants
+    filterSelectedItems();
+    QList<QTreeWidgetItem*> items = selectedItems();
 //    //打包每项的路径为mimeData
 //    QByteArray itemData;
 //    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
@@ -168,7 +168,9 @@ bool BBTreeWidget::moveItem()
         {
             // become the child of m_pIndicatorItem
             pParent = m_pIndicatorItem;
-            //添加到最后 如果用parent->childCount() 如果结点拖到他的父亲中 删去自己parent->childCount()减少了 再在父节点最后添加自己 不对
+            // If add to the end, use parent->childCount()
+            // But when item is dragged to its parent, deleting itself makes parent->childCount() decrease
+            // add itself at the end is wrong
             // Add to the first
             index = 0;
         }
@@ -193,7 +195,7 @@ bool BBTreeWidget::moveItem()
         // The movable item has been filtered in startDrag
         QList<QTreeWidgetItem*> items = selectedItems();
         // Cannot move to an item that are moving and its descendants
-        // parent不能包含于items中 parent的祖先不能包含于items
+        // parent and its ancestors cannot be included in items
         for (QTreeWidgetItem *pForeParent = pParent; pForeParent; pForeParent = pForeParent->parent())
         {
             if (items.contains(pForeParent))
@@ -219,9 +221,8 @@ bool BBTreeWidget::moveItem()
                 removeIndex = indexOfTopLevelItem(pItem);
                 takeTopLevelItem(removeIndex);
             }
-            //如果两者同级 移除的结点在indicatorItem的前面 index减1
             // If the two are at the same level and the removed item is in front of the m_pIndicatorItem, index minus 1
-            // item已被移除 item->parent()为空 只能用pRemoveItemParent
+            // pItem has been removed, so pItem->parent() cannot be used, so just use pRemoveItemParent
             if ((pRemoveItemParent == pIndicatorItemParent) && (removeIndex < index))
             {
                 index--;
@@ -239,7 +240,7 @@ bool BBTreeWidget::moveItem()
             // select a new item
             setItemSelected(pItem, true);
             // Insert the next item below
-            // 否则1 2 3 插入后变成3 2 1
+            // Otherwise 1 2 3 becomes 3 2 1 after inserting
             index++;
         }
         // expand parent to make new item visible
@@ -254,11 +255,13 @@ bool BBTreeWidget::moveItem()
 
 bool BBTreeWidget::moveItemFromFileList(const QMimeData *mimeData)
 {
+    Q_UNUSED(mimeData);
     return true;
 }
 
 bool BBTreeWidget::moveItemFromOthers(const QMimeData *mimeData)
 {
+    Q_UNUSED(mimeData);
     return false;
 }
 
@@ -332,6 +335,28 @@ void BBTreeWidget::dragEnterEvent(QDragEnterEvent *event)
     else
     {
         event->ignore();
+    }
+}
+
+void BBTreeWidget::filterSelectedItems()
+{
+    QList<QTreeWidgetItem*> items = selectedItems();
+    if (items.count() > 1)
+    {
+        // Select multiple
+        for (int i = 0; i < items.count(); i++)
+        {
+            for (QTreeWidgetItem *parent = items.at(i)->parent(); parent; parent = parent->parent())
+            {
+                // Traverse ancestors to see if they are also selected
+                if (items.contains(parent))
+                {
+                    // Ancestors and descendants are selected at the same time, only ancestors are processed
+                    setItemSelected(items.at(i), false);
+                    break;
+                }
+            }
+        }
     }
 }
 
@@ -438,27 +463,6 @@ void BBTreeWidget::dragEnterEvent(QDragEnterEvent *event)
 //    }
 //}
 
-//void BaseTree::filterSelectedItems()
-//{
-//    QList<QTreeWidgetItem*> items = selectedItems();
-//    if (items.count() > 1)
-//    {
-//        //选中多项
-//        for (int i = 0; i < items.count(); i++)
-//        {
-//            for (QTreeWidgetItem *parent = items.at(i)->parent(); parent; parent = parent->parent())
-//            {
-//                //遍历祖先 看是否也被选中
-//                if (items.contains(parent))
-//                {
-//                    //祖先和子孙同时被选中 只处理祖先
-//                    setItemSelected(items.at(i), false);
-//                    break;
-//                }
-//            }
-//        }
-//    }
-//}
 
 //QString BaseTree::getLevelPath(QTreeWidgetItem *item)
 //{
