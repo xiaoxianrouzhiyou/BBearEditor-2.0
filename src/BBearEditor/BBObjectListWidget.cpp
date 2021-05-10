@@ -65,13 +65,13 @@ bool BBObjectListWidget::loadListItems(const char *xmlFilePath)
             QPixmap pic;
             pic.load(pAttrIcon->value());
 
-            QListWidgetItem item(this);
-            item.setSizeHint(QSize(m_iPieceSize, m_iPieceSize));
-            item.setIcon(QIcon(pic));
-            item.setData(Qt::UserRole, QVariant(pic));
-            item.setData(Qt::UserRole + 1, pAttrFile->value());
-            item.setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
-            item.setText(pAttrName->value());
+            QListWidgetItem *pItem = new QListWidgetItem(this);
+            pItem->setSizeHint(QSize(m_iPieceSize, m_iPieceSize));
+            pItem->setIcon(QIcon(pic));
+            pItem->setData(Qt::UserRole, QVariant(pic));
+            pItem->setData(Qt::UserRole + 1, pAttrFile->value());
+            pItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
+            pItem->setText(pAttrName->value());
         }
         bResult = true;
     }while(0);
