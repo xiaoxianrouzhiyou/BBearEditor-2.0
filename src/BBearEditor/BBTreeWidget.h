@@ -21,13 +21,15 @@ private:
 };
 
 
-////拖拽目标位置指示器的位置
-//enum IndicatorPos
-//{
-//    RECT = 0x01,
-//    TOP = 0x02,
-//    BOTTOM = 0x04
-//};
+// drop target
+enum BBIndicatorPos
+{
+    // drop in the item rect
+    RECT = 0x01,
+    // drop between two items
+    TOP = 0x02,
+    BOTTOM = 0x04
+};
 
 class BBTreeWidget : public QTreeWidget
 {
@@ -38,17 +40,18 @@ public:
 
 //protected:
     explicit BBTreeWidget(QWidget *parent = 0);
+    void startDrag(Qt::DropActions supportedActions) override;
     virtual bool moveItem();
     virtual bool moveItemFromFileList(const QMimeData *mimeData);
     virtual bool moveItemFromOthers(const QMimeData *mimeData);
     void dropEvent(QDropEvent *event) override;
 
     QTreeWidgetItem *m_pIndicatorItem;
+    BBIndicatorPos m_eIndicatorPos;
 
 //    virtual void deleteOne(QTreeWidgetItem *item);
 //    void keyPressEvent(QKeyEvent *event) override;
 //    QString getLevelPath(QTreeWidgetItem *item);
-//    void startDrag(Qt::DropActions supportedActions) override;
 //    void dragMoveEvent(QDragMoveEvent *event) override;
 
 //    //drag取第几列的图标
@@ -61,7 +64,6 @@ public:
 //    QTreeWidgetItem *editingItem;
 //    QLineEdit *edit;
 //    QMenu *menu;
-//    IndicatorPos indicatorPos;
 //    QList<QTreeWidgetItem*> clipBoardItems;
 
 private:

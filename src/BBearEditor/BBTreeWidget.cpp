@@ -60,6 +60,7 @@ BBTreeWidget::BBTreeWidget(QWidget *parent)
 //    editingItem = NULL;
     m_pIndicatorItem = NULL;
     m_pLastItem = NULL;
+    m_eIndicatorPos = BBIndicatorPos::RECT;
 
     setDragEnabled(true);
     setAcceptDrops(true);
@@ -72,10 +73,183 @@ BBTreeWidget::BBTreeWidget(QWidget *parent)
     setDropIndicatorShown(false);
 }
 
+void BBTreeWidget::startDrag(Qt::DropActions supportedActions)
+{
+//    Q_UNUSED(supportedActions);
+//    //祖先和子孙同时选中 过滤掉子孙
+//    filterSelectedItems();
+//    QList<QTreeWidgetItem*> items = selectedItems();
+//    //打包每项的路径为mimeData
+//    QByteArray itemData;
+//    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
+//    //每项 图标 文本
+//    struct Info
+//    {
+//        int y;
+//        QPixmap icon;
+//        QString text;
+//    };
+//    QList<Info> infos;
+//    //用于计算最终拖拽图标的大小
+//    QFontMetrics fm = fontMetrics();
+//    int pixmapWidth = 0;
+//    int pixmapHeight = 0;
+//    for (int i = 0; i < items.count(); i++)
+//    {
+//        //每项的相对路径
+//        QString levelPath = getLevelPath(items.at(i));
+//        dataStream << levelPath;
+//        Info info;
+//        QRect rect = visualItemRect(items.at(i));
+//        info.y = rect.top();
+//        //最终图标高度 叠加
+//        pixmapHeight += rect.height();
+//        info.text = items.at(i)->text(0);
+//        int textWidth = fm.width(info.text);
+//        if (textWidth > pixmapWidth)
+//            pixmapWidth = textWidth;
+//        //该项的图标
+//        info.icon = items.at(i)->icon(getDragIconColumn()).pixmap(rect.height() * devicePixelRatio());
+//        info.icon.setDevicePixelRatio(devicePixelRatio());
+//        info.icon = info.icon.scaled(rect.height() * devicePixelRatio(), rect.height() * devicePixelRatio(),
+//                                     Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+//        //infos根据上下位置关系插入排序
+//        int j;
+//        for (j = 0; j < infos.count(); j++)
+//        {
+//            if (infos.at(j).y > info.y)
+//            {
+//                break;
+//            }
+//        }
+//        infos.insert(j, info);
+//    }
+//    QMimeData *mimeData = new QMimeData;
+//    //给这个数据取一个唯一的标识名称
+//    mimeData->setData(getMimeType(), itemData);
+//    //拖拽的图标
+//    int itemHeight = pixmapHeight / infos.count();
+//    //宽度要加上小图标和留白的像素
+//    QPixmap pixmap((pixmapWidth + itemHeight + 6) * devicePixelRatio(), pixmapHeight * devicePixelRatio());
+//    pixmap.setDevicePixelRatio(devicePixelRatio());
+//    pixmap.fill(Qt::transparent);
+//    QPainter painter(&pixmap);
+//    painter.setPen(QColor("#d6dfeb"));
+//    painter.setFont(QFont("Arial", 10));
+//    //绘制每项的图标和文本到最终图标上
+//    for (int i = 0; i < infos.count(); i++)
+//    {
+//        int y = itemHeight * i;
+//        painter.drawPixmap(0, y, infos.at(i).icon);
+//        painter.drawText(QRect(itemHeight + 6, y, pixmapWidth, itemHeight), Qt::AlignLeft | Qt::AlignVCenter, infos.at(i).text);
+//    }
+//    //结束绘制
+//    painter.end();
+
+//    //生成拖拽
+//    QDrag *drag = new QDrag(this);
+//    drag->setMimeData(mimeData);
+//    drag->setPixmap(pixmap);
+//    drag->setHotSpot(QPoint(0, 0));
+//    //执行移动操作
+//    drag->exec(Qt::MoveAction);
+}
+
 bool BBTreeWidget::moveItem()
 {
+    // drop target
+    if (m_pIndicatorItem)
+    {
+        // drop position of moving item
+        QTreeWidgetItem *pParent = NULL;
+        // drop index of moving item
+        int index = -1;
+        if (m_eIndicatorPos == BBIndicatorPos::RECT)
+        {
+            // become the child of m_pIndicatorItem
+            pParent = m_pIndicatorItem;
+            //添加到最后 如果用parent->childCount() 如果结点拖到他的父亲中 删去自己parent->childCount()减少了 再在父节点最后添加自己 不对
+            // Add to the first
+            index = 0;
+        }
+        else if (m_eIndicatorPos == BBIndicatorPos::TOP)
+        {
+            // become the front sibling of m_pIndicatorItem
+            pParent = m_pIndicatorItem->parent();
+            if (pParent)
+                index = pParent->indexOfChild(m_pIndicatorItem);
+            else
+                index = indexOfTopLevelItem(m_pIndicatorItem);
+        }
+        else//m_eIndicatorPos == BBIndicatorPos::BOTTOM
+        {
+            // become the back sibling of m_pIndicatorItem
+            pParent = m_pIndicatorItem->parent();
+            if (pParent)
+                index = pParent->indexOfChild(m_pIndicatorItem) + 1;
+            else
+                index = indexOfTopLevelItem(m_pIndicatorItem) + 1;
+        }
+        // The movable item has been filtered in startDrag
+        QList<QTreeWidgetItem*> items = selectedItems();
+        // Cannot move to an item that are moving and its descendants
+        // parent不能包含于items中 parent的祖先不能包含于items
+        for (QTreeWidgetItem *pForeParent = pParent; pForeParent; pForeParent = pForeParent->parent())
+        {
+            if (items.contains(pForeParent))
+            {
+                return false;
+            }
+        }
+        for (int i = 0; i < items.count(); i++)
+        {
+            QTreeWidgetItem *pItem = items.at(i);
+            // remove item from tree
+            int removeIndex = -1;
+            QTreeWidgetItem *pRemoveItemParent = pItem->parent();
+            QTreeWidgetItem *pIndicatorItemParent = m_pIndicatorItem->parent();
+            if (pRemoveItemParent)
+            {
+                // the item is not in the top level
+                removeIndex = pRemoveItemParent->indexOfChild(pItem);
+                pRemoveItemParent->removeChild(pItem);
+            }
+            else
+            {
+                removeIndex = indexOfTopLevelItem(pItem);
+                takeTopLevelItem(removeIndex);
+            }
+            //如果两者同级 移除的结点在indicatorItem的前面 index减1
+            // If the two are at the same level and the removed item is in front of the m_pIndicatorItem, index minus 1
+            // item已被移除 item->parent()为空 只能用pRemoveItemParent
+            if ((pRemoveItemParent == pIndicatorItemParent) && (removeIndex < index))
+            {
+                index--;
+            }
+            // add item in the drop position
+            if (pParent)
+            {
+                pParent->insertChild(index, pItem);
+            }
+            else
+            {
+                // at the top level
+                insertTopLevelItem(index, pItem);
+            }
+            // select a new item
+            setItemSelected(pItem, true);
+            // Insert the next item below
+            // 否则1 2 3 插入后变成3 2 1
+            index++;
+        }
+        // expand parent to make new item visible
+        if (pParent)
+        {
+            setItemExpanded(pParent, true);
+        }
+        return true;
+    }
     return false;
-    // to do
 }
 
 bool BBTreeWidget::moveItemFromFileList(const QMimeData *mimeData)
@@ -215,102 +389,6 @@ void BBTreeWidget::dragEnterEvent(QDragEnterEvent *event)
 
 
 
-//bool BaseTree::dragDropItem()
-//{
-//    //树节点移动位置
-//    if (indicatorItem)
-//    {
-//        //落下的位置
-//        QTreeWidgetItem *parent = NULL;
-//        //落下的索引值
-//        int index;
-//        if (indicatorPos == IndicatorPos::RECT)
-//        {
-//            //成为indicatorItem的孩子
-//            parent = indicatorItem;
-//            //添加到最后 如果用parent->childCount() 如果结点拖到他的父亲中 删去自己parent->childCount()减少了 再在父节点最后添加自己 不对
-//            //添加到首
-//            index = 0;
-//        }
-//        else if (indicatorPos == IndicatorPos::TOP)
-//        {
-//            //成为indicatorItem的兄弟
-//            parent = indicatorItem->parent();
-//            if (parent)
-//                index = parent->indexOfChild(indicatorItem);
-//            else
-//                index = indexOfTopLevelItem(indicatorItem);
-//        }
-//        else//indicatorPos == IndicatorPos::BOTTOM
-//        {
-//            //成为indicatorItem的兄弟
-//            parent = indicatorItem->parent();
-//            if (parent)
-//                index = parent->indexOfChild(indicatorItem) + 1;
-//            else
-//                index = indexOfTopLevelItem(indicatorItem) + 1;
-//        }
-//        //拖拽的结点 已经在startDrag中进行过过滤了
-//        QList<QTreeWidgetItem*> items = selectedItems();
-//        //不能移动到正在移动的某个结点及其子孙中
-//        //parent不能包含于items中 parent的祖先不能包含于items
-//        for (QTreeWidgetItem *foreParent = parent; foreParent; foreParent = foreParent->parent())
-//        {
-//            if (items.contains(foreParent))
-//            {
-//                return false;
-//            }
-//        }
-//        for (int i = 0; i < items.count(); i++)
-//        {
-//            QTreeWidgetItem *item = items.at(i);
-//            //结点从树中移除
-//            int removeIndex;
-//            QTreeWidgetItem *removeItemParent = item->parent();
-//            QTreeWidgetItem *indicatorItemParent = indicatorItem->parent();
-//            if (removeItemParent)
-//            {
-//                //item不是top结点
-//                removeIndex = removeItemParent->indexOfChild(item);
-//                removeItemParent->removeChild(item);
-//            }
-//            else
-//            {
-//                removeIndex = indexOfTopLevelItem(item);
-//                takeTopLevelItem(removeIndex);
-//            }
-//            //如果两者同级 移除的结点在indicatorItem的前面 index减1
-//            //item已被移除 item->parent()为空 只能用removeItemParent
-//            if ((removeItemParent == indicatorItemParent) && (removeIndex < index))
-//            {
-//                index--;
-//            }
-//            //结点添加在新的位置
-//            if (parent)
-//            {
-//                parent->insertChild(index, item);
-//            }
-//            else
-//            {
-//                //成为top结点
-//                insertTopLevelItem(index, item);
-//            }
-//            //选中新结点
-//            setItemSelected(item, true);
-//            //下个结点在下方插入 否则1 2 3 插入后变成3 2 1
-//            index++;
-//        }
-//        //展开parent 新的结点可见
-//        if (parent)
-//        {
-//            setItemExpanded(parent, true);
-//        }
-//        return true;
-//    }
-//    return false;
-//}
-
-
 //void BaseTree::paintEvent(QPaintEvent *event)
 //{
 //    QTreeWidget::paintEvent(event);
@@ -393,87 +471,7 @@ void BBTreeWidget::dragEnterEvent(QDragEnterEvent *event)
 //    return location;
 //}
 
-//void BaseTree::startDrag(Qt::DropActions supportedActions)
-//{
-//    Q_UNUSED(supportedActions);
-//    //祖先和子孙同时选中 过滤掉子孙
-//    filterSelectedItems();
-//    QList<QTreeWidgetItem*> items = selectedItems();
-//    //打包每项的路径为mimeData
-//    QByteArray itemData;
-//    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-//    //每项 图标 文本
-//    struct Info
-//    {
-//        int y;
-//        QPixmap icon;
-//        QString text;
-//    };
-//    QList<Info> infos;
-//    //用于计算最终拖拽图标的大小
-//    QFontMetrics fm = fontMetrics();
-//    int pixmapWidth = 0;
-//    int pixmapHeight = 0;
-//    for (int i = 0; i < items.count(); i++)
-//    {
-//        //每项的相对路径
-//        QString levelPath = getLevelPath(items.at(i));
-//        dataStream << levelPath;
-//        Info info;
-//        QRect rect = visualItemRect(items.at(i));
-//        info.y = rect.top();
-//        //最终图标高度 叠加
-//        pixmapHeight += rect.height();
-//        info.text = items.at(i)->text(0);
-//        int textWidth = fm.width(info.text);
-//        if (textWidth > pixmapWidth)
-//            pixmapWidth = textWidth;
-//        //该项的图标
-//        info.icon = items.at(i)->icon(getDragIconColumn()).pixmap(rect.height() * devicePixelRatio());
-//        info.icon.setDevicePixelRatio(devicePixelRatio());
-//        info.icon = info.icon.scaled(rect.height() * devicePixelRatio(), rect.height() * devicePixelRatio(),
-//                                     Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-//        //infos根据上下位置关系插入排序
-//        int j;
-//        for (j = 0; j < infos.count(); j++)
-//        {
-//            if (infos.at(j).y > info.y)
-//            {
-//                break;
-//            }
-//        }
-//        infos.insert(j, info);
-//    }
-//    QMimeData *mimeData = new QMimeData;
-//    //给这个数据取一个唯一的标识名称
-//    mimeData->setData(getMimeType(), itemData);
-//    //拖拽的图标
-//    int itemHeight = pixmapHeight / infos.count();
-//    //宽度要加上小图标和留白的像素
-//    QPixmap pixmap((pixmapWidth + itemHeight + 6) * devicePixelRatio(), pixmapHeight * devicePixelRatio());
-//    pixmap.setDevicePixelRatio(devicePixelRatio());
-//    pixmap.fill(Qt::transparent);
-//    QPainter painter(&pixmap);
-//    painter.setPen(QColor("#d6dfeb"));
-//    painter.setFont(QFont("Arial", 10));
-//    //绘制每项的图标和文本到最终图标上
-//    for (int i = 0; i < infos.count(); i++)
-//    {
-//        int y = itemHeight * i;
-//        painter.drawPixmap(0, y, infos.at(i).icon);
-//        painter.drawText(QRect(itemHeight + 6, y, pixmapWidth, itemHeight), Qt::AlignLeft | Qt::AlignVCenter, infos.at(i).text);
-//    }
-//    //结束绘制
-//    painter.end();
 
-//    //生成拖拽
-//    QDrag *drag = new QDrag(this);
-//    drag->setMimeData(mimeData);
-//    drag->setPixmap(pixmap);
-//    drag->setHotSpot(QPoint(0, 0));
-//    //执行移动操作
-//    drag->exec(Qt::MoveAction);
-//}
 
 //int BaseTree::getDragIconColumn()
 //{
