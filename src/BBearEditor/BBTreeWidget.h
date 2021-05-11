@@ -4,6 +4,7 @@
 #include <QLineEdit>
 #include <QTreeWidget>
 #include "BBUtils.h"
+#include <QTime>
 
 class BBLineEdit : public QLineEdit
 {
@@ -66,6 +67,7 @@ protected:
 
 private:
     QTreeWidgetItem *m_pLastItem;
+    QTime m_LastTime;
 
 
 protected:
@@ -75,12 +77,13 @@ protected:
     QString getLevelPath(QTreeWidgetItem *pItem);
 
 
+
+
 //    void paintEvent(QPaintEvent *event) override;
 //    void dragLeaveEvent(QDragLeaveEvent *event) override;
 //    void mousePressEvent(QMouseEvent *event) override;
 //    void contextMenuEvent(QContextMenuEvent *event) override;
 //    void focusInEvent(QFocusEvent *event) override;
-//    QTime mLastTime;
 
 
 //public slots:

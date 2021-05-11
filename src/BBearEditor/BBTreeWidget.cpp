@@ -301,53 +301,57 @@ void BBTreeWidget::dragEnterEvent(QDragEnterEvent *event)
 
 void BBTreeWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-//    //当鼠标位于顶部或底部时向上或下滚动
-//    QTreeWidget::dragMoveEvent(event);
-//    QTreeWidgetItem *item = itemAt(event->pos());
-//    //绘制将要被放置的位置
-//    indicatorItem = item;
-//    if (item)
-//    {
-//        if (item != mLastItem)
-//        {
-//            //移动的位置对应的item改变了
-//            //重新记录新的item
-//            mLastItem = item;
-//            //重新记录当前的时间
-//            mLastTime = QTime::currentTime();
-//        }
-//        else
-//        {
-//            //移动时所指的item没变
-//            if (mLastTime.elapsed() > 1000)
-//            {
-//                //没变的时间超过一定量 展开该项
-//                setItemExpanded(item, true);
-//            }
-//        }
-//        int mouseY = event->pos().y();
-//        int itemTop = visualItemRect(indicatorItem).top();
-//        int itemBottom = visualItemRect(indicatorItem).bottom();
-//        if (mouseY < itemTop + 2)
-//        {
-//            indicatorPos = IndicatorPos::TOP;
-//        }
-//        else if (mouseY <= itemBottom - 2)
-//        {
-//            //拖拽的鼠标落在该项的非边缘处 成为该项的孩子
-//            indicatorPos = IndicatorPos::RECT;
-//        }
-//        else
-//        {
-//            indicatorPos = IndicatorPos::BOTTOM;
-//        }
-//    }
-//    else
-//    {
-//        //没有所指的项 重置
-//        mLastItem = NULL;
-//    }
-//    repaint();
+    // Scroll up or down when the mouse is at the top or bottom
+    QTreeWidget::dragMoveEvent(event);
+
+    QTreeWidgetItem *pItem = itemAt(event->pos());
+    m_pIndicatorItem = pItem;
+    if (pItem)
+    {
+        if (pItem != m_pLastItem)
+        {
+            // The item corresponding to the position pointed has changed
+            // Re-record the new item
+            m_pLastItem = pItem;
+            // Re-record the current time
+            m_LastTime = QTime::currentTime();
+        }
+        else
+        {
+            // When moving, the pointed item is not changed
+            if (m_LastTime.elapsed() > 1000)
+            {
+                // Time exceeds a certain amount, expand the item
+                setItemExpanded(pItem, true);
+            }
+        }
+
+        int mouseY = event->pos().y();
+        int itemTop = visualItemRect(m_pIndicatorItem).top();
+        int itemBottom = visualItemRect(m_pIndicatorItem).bottom();
+        if (mouseY < itemTop + 2)
+        {
+            m_eIndicatorPos = BBIndicatorPos::TOP;
+        }
+        else if (mouseY <= itemBottom - 2)
+        {
+            // The mouse drops on the non-edge of the item
+            // become the child of the item
+            m_eIndicatorPos = BBIndicatorPos::RECT;
+        }
+        else
+        {
+            m_eIndicatorPos = BBIndicatorPos::BOTTOM;
+        }
+    }
+    else
+    {
+        // No item pointed, reset
+        m_pLastItem = NULL;
+    }
+
+     // Draw the place where it will be placed
+    repaint();
 
     // do this in order to execute dropEvent
     event->accept();
