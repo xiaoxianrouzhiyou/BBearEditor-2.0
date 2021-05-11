@@ -1,6 +1,8 @@
 #include "BBObjectListWidget.h"
 #include "BBUtils.h"
 #include "rapidxml/rapidxml.hpp"
+#include <QMimeData>
+#include <QDrag>
 
 BBObjectListWidget::BBObjectListWidget(QWidget *parent, const int pieceSize)
     : QListWidget(parent), m_iPieceSize(pieceSize)
@@ -91,4 +93,33 @@ bool BBObjectListWidget::loadListItems(const char *xmlFilePath)
     if(pAttrName)
         BB_SAFE_DELETE(pAttrName);
     return bResult;
+}
+
+void BBObjectListWidget::startDrag(Qt::DropActions supportedActions)
+{
+    Q_UNUSED(supportedActions);
+
+    QListWidgetItem *pItem = currentItem();
+
+    QByteArray itemData;
+    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
+    QString fileName = qvariant_cast<QString>(pItem->data(Qt::UserRole + 1));
+    dataStream << fileName;
+
+    QMimeData *pMimeData = new QMimeData;
+    // Give this data a unique identifying tag
+    pMimeData->setData(m_strMimeType, itemData);
+
+    QPixmap pixmap = qvariant_cast<QPixmap>(pItem->data(Qt::UserRole));
+    pixmap.setDevicePixelRatio(devicePixelRatio());
+    pixmap = pixmap.scaled(QSize(m_iPieceSize * devicePixelRatio(), m_iPieceSize * devicePixelRatio()),
+                           Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+    QDrag drag(this);
+    drag.setMimeData(pMimeData);
+    drag.setHotSpot(QPoint(pixmap.width() / 2 / devicePixelRatio(), pixmap.height() / 2 / devicePixelRatio()));
+    drag.setPixmap(pixmap);
+    drag.exec(Qt::MoveAction);
+
+    BB_SAFE_DELETE(pMimeData);
 }

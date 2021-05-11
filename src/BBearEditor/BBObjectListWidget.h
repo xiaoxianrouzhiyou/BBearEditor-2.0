@@ -14,6 +14,8 @@ public:
     void setMimeType(QString strMimeType) { m_strMimeType = strMimeType; }
 
 private:
+    void startDrag(Qt::DropActions supportedActions) override;
+
     int m_iPieceSize;
     // {base, light, ...}
     QString m_strMimeType;
