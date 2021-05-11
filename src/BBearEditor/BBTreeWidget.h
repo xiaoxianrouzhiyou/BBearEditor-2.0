@@ -31,6 +31,7 @@ enum BBIndicatorPos
     BOTTOM = 0x04
 };
 
+
 class BBTreeWidget : public QTreeWidget
 {
     Q_OBJECT

@@ -14,6 +14,7 @@
 
 #define BB_PATH_BASEOBJECTLIST "../BBearEditor/xmlfiles/baselist.xml"
 #define BB_PATH_RESOURCE_MESH "../BBearEditor/resources/meshes/"
+#define BB_PATH_RESOURCE_ICON "://resources/icons/"
 #define BB_PATH_TERRAIN "terrain"
 
 class BBUtils

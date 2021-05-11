@@ -3,6 +3,7 @@
 
 #include "BBTreeWidget.h"
 
+class BBGameObject;
 class BBHierarchyTreeWidget : public BBTreeWidget
 {
     Q_OBJECT
@@ -15,17 +16,19 @@ private:
     void setMenu();
     bool moveItemFromOthers(const QMimeData *pMimeData) override;
     void moveItemToIndicator();
+    QIcon getClassIcon(QString className);
 
 signals:
     void createModel(QString filePath);
 
+public slots:
+    void addGameObjectItem(BBGameObject *pGameObject);
 
 
 //    //保存每个item与其对应的GameObject的地址的映射
 //    static QMap<QTreeWidgetItem*, GameObject*> mMap;
 
 //public slots:
-//    void addGameObjectSlot(GameObject *gameObject);
 //    void itemDoubleClickedSlot(QTreeWidgetItem *item, int column);
 //    void selectPickedObject(GameObject *gameObject);
 //    void finishRename() override;
@@ -55,7 +58,6 @@ signals:
 //    void cancelFileListSelectedItems();
 
 //private:
-//    QIcon getClassIcon(QString className);
 //    void deleteOne(QTreeWidgetItem *item) override;
 //    void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript) override;
 //    int getDragIconColumn() override;

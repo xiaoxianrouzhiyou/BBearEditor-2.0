@@ -1,6 +1,7 @@
 #include "BBHierarchyTreeWidget.h"
 #include <QMimeData>
 #include <QMenu>
+#include "BBGameObject.h"
 
 //QMap<QTreeWidgetItem*, GameObject*> HierarchyTree::mMap;
 
@@ -76,6 +77,9 @@ bool BBHierarchyTreeWidget::moveItemFromOthers(const QMimeData *pMimeData)
         {
             filePath = BB_PATH_RESOURCE_MESH + filePath;
             createModel(filePath);
+
+            // 零时 本来应该在场景中创建 然后从场景那边发信号过来
+            addGameObjectItem(new BBGameObject());
         }
     }
 //    else if ((data = mimeData->data("light")) != nullptr)
@@ -157,31 +161,38 @@ void BBHierarchyTreeWidget::moveItemToIndicator()
     // if m_pIndicatorItem is NULL, means adding to the end. No need to move
 }
 
+QIcon BBHierarchyTreeWidget::getClassIcon(QString className)
+{
+    return QIcon(BB_PATH_RESOURCE_ICON + className + ".png");
+}
 
-//QIcon HierarchyTree::getClassIcon(QString className)
-//{
-//    return QIcon(":/icon/resources/icons/" + className + ".png");
-//}
+void BBHierarchyTreeWidget::addGameObjectItem(BBGameObject *pGameObject)
+{
+    QTreeWidgetItem* pItem = new QTreeWidgetItem({pGameObject->getName(), pGameObject->getClassName()});
+    pItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable
+                    | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
 
-//void HierarchyTree::addGameObjectSlot(GameObject *gameObject)
-//{
-//    QTreeWidgetItem* item = new QTreeWidgetItem({gameObject->getName(), gameObject->getClassName()});
-//    item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable
-//                   | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
-//    //被选中 表示active
-//    if (gameObject->getActive())
-//        item->setCheckState(0, Qt::Checked);
-//    else
-//        item->setCheckState(0, Qt::Unchecked);
-//    item->setIcon(1, getClassIcon(gameObject->getIconName()));
-//    addTopLevelItem(item);
+    // Checked means active
+    if (pGameObject->getActive())
+        pItem->setCheckState(0, Qt::Checked);
+    else
+        pItem->setCheckState(0, Qt::Unchecked);
+
+    pItem->setIcon(1, getClassIcon(pGameObject->getIconName()));
+
+    addTopLevelItem(pItem);
+
 //    mMap.insert(item, gameObject);
 //    //设置相对坐标
 //    gameObject->setLocalTransform();
+
 //    //选中新增item 这句一定要在插入map之后
 //    //否则current变化触发的槽函数itemSelectionChangedSlot将在map中找不到对应的gameObject
-//    setCurrentItem(item);
-//}
+    setCurrentItem(pItem);
+}
+
+
+
 
 //void HierarchyTree::itemDoubleClickedSlot(QTreeWidgetItem *item, int column)
 //{
