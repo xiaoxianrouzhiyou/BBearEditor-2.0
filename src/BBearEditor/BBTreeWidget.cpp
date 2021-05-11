@@ -43,10 +43,11 @@ void BBLineEdit::keyPressEvent(QKeyEvent *event)
 BBTreeWidget::BBTreeWidget(QWidget *parent)
     : QTreeWidget(parent)
 {
-//    editingItem = NULL;
     m_pIndicatorItem = NULL;
     m_pLastItem = NULL;
     m_eIndicatorPos = BBIndicatorPos::RECT;
+    m_pEditingItem = NULL;
+    m_pRenameEditor = NULL;
 
     setDragEnabled(true);
     setAcceptDrops(true);
@@ -458,6 +459,21 @@ void BBTreeWidget::contextMenuEvent(QContextMenuEvent *event)
     m_pMenu->move(pos);
 }
 
+void BBTreeWidget::keyPressEvent(QKeyEvent *event)
+{
+    // Handling menu shortcut events
+    int key;
+#if defined(Q_OS_WIN32)
+    key = Qt::Key_F2;
+#elif defined(Q_OS_MAC)
+    key = Qt::Key_Return;
+#endif
+    if (event->key() == key)
+    {
+        openRenameEditor();
+    }
+}
+
 void BBTreeWidget::filterSelectedItems()
 {
     QList<QTreeWidgetItem*> items = selectedItems();
@@ -491,44 +507,38 @@ QString BBTreeWidget::getLevelPath(QTreeWidgetItem *pItem)
     return location;
 }
 
+void BBTreeWidget::openRenameEditor()
+{
+    QList<QTreeWidgetItem*> selected = selectedItems();
+    if (selected.count() == 1)
+    {
+        // Multi-select or unselect will not perform the rename operation
+        m_pEditingItem = selected.first();
 
+        m_pRenameEditor = new BBLineEdit(this);
+        m_pRenameEditor->setStyleSheet("height: 16px; border: none; background: #d6dfeb; color: #191f28;"
+                                       "selection-color: #d6dfeb; selection-background-color: #8193bc;"
+                                       "font: 9pt \"Arial\"; padding: 0px 5px;");
+        // margin-left: 22px;
+        m_pRenameEditor->setText(m_pEditingItem->text(0));
+        m_pRenameEditor->selectAll();
 
+        QObject::connect(m_pRenameEditor, SIGNAL(finishEdit()), this, SLOT(finishRename()));
 
+        setItemWidget(m_pEditingItem, 0, m_pRenameEditor);
+        // make effective
+        m_pRenameEditor->setFocus();
+    }
+}
 
-
-
-
-
-
-//void BaseTree::openEditor()
-//{
-//    QList<QTreeWidgetItem*> selected = selectedItems();
-//    if (selected.count() == 1)
-//    {
-//        //多选或不选都不会进行重命名操作
-//        editingItem = selected.first();
-//        edit = new LineEdit;
-//        edit->setStyleSheet("height: 16px; border: none; background: #d6dfeb; color: #191f28;"
-//                            "selection-color: #d6dfeb; selection-background-color: #8193bc;"
-//                            "font: 10pt \"Arial\"; padding: 0px 5px;");
-//        //margin-left: 22px;
-//        edit->setText(editingItem->text(0));
-//        edit->selectAll();
-//        QObject::connect(edit, SIGNAL(editingFinished()), this, SLOT(finishRename()));
-//        setItemWidget(editingItem, 0, edit);
-//        //set widget 使之显示之后 设置焦点才有作用
-//        edit->setFocus();
-//    }
-//}
-
-//void BaseTree::finishRename()
-//{
-//    removeItemWidget(editingItem, 0);
-//    //delete edit;会出错
-//    editingItem = NULL;
-//    //否则列表没有焦点 不再相应按键事件
-//    setFocus();
-//}
+void BBTreeWidget::finishRename()
+{
+    removeItemWidget(m_pEditingItem, 0);
+    BB_SAFE_DELETE(m_pRenameEditor);
+    m_pEditingItem = NULL;
+    // Otherwise, the list has no focus and no longer responds to key events
+    setFocus();
+}
 
 //void BaseTree::deleteAction()
 //{
@@ -717,20 +727,7 @@ QString BBTreeWidget::getLevelPath(QTreeWidgetItem *pItem)
 //    //当粘贴操作不合法时 不会调用
 //}
 
-//void BaseTree::keyPressEvent(QKeyEvent *event)
-//{
-//    //处理菜单快捷键事件
-//    int key;
-//#if defined(Q_OS_WIN32)
-//    key = Qt::Key_F2;
-//#elif defined(Q_OS_MAC)
-//    key = Qt::Key_Return;
-//#endif
-//    if (event->key() == key)
-//    {
-//        openEditor();
-//    }
-//}
+
 
 //void BaseTree::focusInEvent(QFocusEvent *event)
 //{

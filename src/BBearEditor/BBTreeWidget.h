@@ -55,23 +55,23 @@ protected:
     void paintEvent(QPaintEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void contextMenuEvent(QContextMenuEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
 
     QTreeWidgetItem *m_pIndicatorItem;
     BBIndicatorPos m_eIndicatorPos;
     QMenu *m_pMenu;
 
 //    virtual void deleteOne(QTreeWidgetItem *item);
-//    void keyPressEvent(QKeyEvent *event) override;
 //    virtual void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript);
 //    virtual void pasteEnd();
 //    void deleteAction(QTreeWidgetItem *item);
-//    QTreeWidgetItem *editingItem;
-//    QLineEdit *edit;
 //    QList<QTreeWidgetItem*> clipBoardItems;
 
 private:
     QTreeWidgetItem *m_pLastItem;
     QTime m_LastTime;
+    QTreeWidgetItem *m_pEditingItem;
+    BBLineEdit *m_pRenameEditor;
 
 
 protected:
@@ -80,9 +80,9 @@ protected:
     virtual int getDragIconColumnIndex() { return 0; }
     QString getLevelPath(QTreeWidgetItem *pItem);
 
-
-
-
+protected slots:
+    void openRenameEditor();
+    virtual void finishRename();
 
 
 //    void focusInEvent(QFocusEvent *event) override;
@@ -93,9 +93,6 @@ protected:
 //    virtual void pasteAction();
 //    virtual void deleteAction();
 
-//protected slots:
-//    void openEditor();
-//    virtual void finishRename();
 
 };
 
