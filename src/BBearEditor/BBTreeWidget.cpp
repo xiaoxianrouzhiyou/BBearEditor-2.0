@@ -3,21 +3,9 @@
 #include <QMimeData>
 #include <QPainter>
 #include <QDrag>
-
-//#include <QPen>
-//#include <QLine>
-//#include <QDebug>
-//#include <QApplication>
-//#include <QDesktopWidget>
-
-//#include <QScrollBar>
-//#include <limits.h>
-//#include <QTextItem>
-//#include <QDropEvent>
-//#include <QDragMoveEvent>
-//#include <QPaintEvent>
-//#include <QMenu>
-//#include <QTime>
+#include <QMenu>
+#include <QApplication>
+#include <QDesktopWidget>
 
 
 //--------------BBLineEdit
@@ -437,6 +425,39 @@ void BBTreeWidget::paintEvent(QPaintEvent *event)
     }
 }
 
+void BBTreeWidget::mousePressEvent(QMouseEvent *event)
+{
+    QTreeWidget::mousePressEvent(event);
+    if (event->buttons() & Qt::LeftButton)
+    {
+        // There is no item at the mouse click position, remove the selection
+        QTreeWidgetItem *pItem = itemAt(event->pos());
+        if (!pItem)
+        {
+            setCurrentItem(NULL);
+        }
+    }
+}
+
+void BBTreeWidget::contextMenuEvent(QContextMenuEvent *event)
+{
+    Q_UNUSED(event);
+    m_pMenu->show();
+    QPoint pos = cursor().pos();
+    // default: showed in bottom-right of cursor
+    // when exceed screen in horizon, the right side of the menu and the right side of the screen are aligned
+    if (pos.x() + m_pMenu->width() > QApplication::desktop()->width())
+    {
+        pos.setX(QApplication::desktop()->width() - m_pMenu->width());
+    }
+    // when exceed screen in vertical, showed in top-right, 4 is margin
+    if (pos.y() + m_pMenu->height() > QApplication::desktop()->height() - 4)
+    {
+        pos.setY(pos.y() - m_pMenu->height());
+    }
+    m_pMenu->move(pos);
+}
+
 void BBTreeWidget::filterSelectedItems()
 {
     QList<QTreeWidgetItem*> items = selectedItems();
@@ -476,37 +497,8 @@ QString BBTreeWidget::getLevelPath(QTreeWidgetItem *pItem)
 
 
 
-//void BaseTree::mousePressEvent(QMouseEvent *event)
-//{
-//    QTreeWidget::mousePressEvent(event);
-//    if (event->buttons() & Qt::LeftButton)
-//    {
-//        //鼠标点击的位置没有item 去除选中项
-//        QTreeWidgetItem *item = itemAt(event->pos());
-//        if (!item)
-//        {
-//            setCurrentItem(NULL);
-//        }
-//    }
-//}
 
-//void BaseTree::contextMenuEvent(QContextMenuEvent *event)
-//{
-//    Q_UNUSED(event);
-//    menu->show();
-//    QPoint pos = cursor().pos();
-//    //默认菜单显示在鼠标的右下方 如果水平超出了屏幕 菜单右侧和屏幕右侧对齐
-//    if (pos.x() + menu->width() > QApplication::desktop()->width())
-//    {
-//        pos.setX(QApplication::desktop()->width() - menu->width());
-//    }
-//    //当垂直超出屏幕时 显示在右上 4为底边留白
-//    if (pos.y() + menu->height() > QApplication::desktop()->height() - 4)
-//    {
-//        pos.setY(pos.y() - menu->height());
-//    }
-//    menu->move(pos);
-//}
+
 
 //void BaseTree::openEditor()
 //{

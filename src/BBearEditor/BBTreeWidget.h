@@ -53,6 +53,8 @@ protected:
     void dragLeaveEvent(QDragLeaveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void contextMenuEvent(QContextMenuEvent *event) override;
 
     QTreeWidgetItem *m_pIndicatorItem;
     BBIndicatorPos m_eIndicatorPos;
@@ -83,8 +85,6 @@ protected:
 
 
 
-//    void mousePressEvent(QMouseEvent *event) override;
-//    void contextMenuEvent(QContextMenuEvent *event) override;
 //    void focusInEvent(QFocusEvent *event) override;
 
 
