@@ -261,11 +261,6 @@ void BBHierarchyTreeWidget::addGameObjectItem(BBGameObject *pGameObject)
 //    setItemSelected(item, true);
 //}
 
-//int HierarchyTree::getDragIconColumn()
-//{
-//    return 1;
-//}
-
 //bool HierarchyTree::moveItemFromFileList(const QMimeData *mimeData)
 //{
 //    //只接受网格文件

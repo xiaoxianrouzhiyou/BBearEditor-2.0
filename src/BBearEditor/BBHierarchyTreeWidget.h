@@ -17,6 +17,7 @@ private:
     bool moveItemFromOthers(const QMimeData *pMimeData) override;
     void moveItemToIndicator();
     QIcon getClassIcon(QString className);
+    int getDragIconColumnIndex() override { return 1; }
 
 signals:
     void createModel(QString filePath);
@@ -60,7 +61,6 @@ public slots:
 //private:
 //    void deleteOne(QTreeWidgetItem *item) override;
 //    void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript) override;
-//    int getDragIconColumn() override;
 //    bool moveItemFromFileList(const QMimeData *mimeData) override;
 //    bool dragDropItem() override;
 //    void focusInEvent(QFocusEvent *event) override;

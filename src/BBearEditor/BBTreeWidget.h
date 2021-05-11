@@ -57,9 +57,6 @@ protected:
 
 //    virtual void deleteOne(QTreeWidgetItem *item);
 //    void keyPressEvent(QKeyEvent *event) override;
-//    QString getLevelPath(QTreeWidgetItem *item);
-//    //drag取第几列的图标
-//    virtual int getDragIconColumn();
 //    virtual void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript);
 //    virtual void pasteEnd();
 //    void deleteAction(QTreeWidgetItem *item);
@@ -73,7 +70,9 @@ private:
 
 protected:
     void filterSelectedItems();
-
+    // drag, Which column of icons to use
+    virtual int getDragIconColumnIndex() { return 0; }
+    QString getLevelPath(QTreeWidgetItem *pItem);
 
 
 //    void paintEvent(QPaintEvent *event) override;

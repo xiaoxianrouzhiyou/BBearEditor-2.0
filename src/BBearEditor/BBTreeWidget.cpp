@@ -1,15 +1,15 @@
 #include "BBTreeWidget.h"
 #include <QKeyEvent>
 #include <QMimeData>
+#include <QPainter>
+#include <QDrag>
 
-//#include <QPainter>
 //#include <QPen>
 //#include <QLine>
 //#include <QDebug>
 //#include <QApplication>
 //#include <QDesktopWidget>
-//#include <QMimeData>
-//#include <QDrag>
+
 //#include <QScrollBar>
 //#include <limits.h>
 //#include <QTextItem>
@@ -79,83 +79,86 @@ BBTreeWidget::~BBTreeWidget()
 void BBTreeWidget::startDrag(Qt::DropActions supportedActions)
 {
     Q_UNUSED(supportedActions);
+
     // When selecting ancestors and descendants at the same time, filter out descendants
     filterSelectedItems();
-    QList<QTreeWidgetItem*> items = selectedItems();
-//    //打包每项的路径为mimeData
-//    QByteArray itemData;
-//    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-//    //每项 图标 文本
-//    struct Info
-//    {
-//        int y;
-//        QPixmap icon;
-//        QString text;
-//    };
-//    QList<Info> infos;
-//    //用于计算最终拖拽图标的大小
-//    QFontMetrics fm = fontMetrics();
-//    int pixmapWidth = 0;
-//    int pixmapHeight = 0;
-//    for (int i = 0; i < items.count(); i++)
-//    {
-//        //每项的相对路径
-//        QString levelPath = getLevelPath(items.at(i));
-//        dataStream << levelPath;
-//        Info info;
-//        QRect rect = visualItemRect(items.at(i));
-//        info.y = rect.top();
-//        //最终图标高度 叠加
-//        pixmapHeight += rect.height();
-//        info.text = items.at(i)->text(0);
-//        int textWidth = fm.width(info.text);
-//        if (textWidth > pixmapWidth)
-//            pixmapWidth = textWidth;
-//        //该项的图标
-//        info.icon = items.at(i)->icon(getDragIconColumn()).pixmap(rect.height() * devicePixelRatio());
-//        info.icon.setDevicePixelRatio(devicePixelRatio());
-//        info.icon = info.icon.scaled(rect.height() * devicePixelRatio(), rect.height() * devicePixelRatio(),
-//                                     Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-//        //infos根据上下位置关系插入排序
-//        int j;
-//        for (j = 0; j < infos.count(); j++)
-//        {
-//            if (infos.at(j).y > info.y)
-//            {
-//                break;
-//            }
-//        }
-//        infos.insert(j, info);
-//    }
-//    QMimeData *mimeData = new QMimeData;
-//    //给这个数据取一个唯一的标识名称
-//    mimeData->setData(getMimeType(), itemData);
-//    //拖拽的图标
-//    int itemHeight = pixmapHeight / infos.count();
-//    //宽度要加上小图标和留白的像素
-//    QPixmap pixmap((pixmapWidth + itemHeight + 6) * devicePixelRatio(), pixmapHeight * devicePixelRatio());
-//    pixmap.setDevicePixelRatio(devicePixelRatio());
-//    pixmap.fill(Qt::transparent);
-//    QPainter painter(&pixmap);
-//    painter.setPen(QColor("#d6dfeb"));
-//    painter.setFont(QFont("Arial", 10));
-//    //绘制每项的图标和文本到最终图标上
-//    for (int i = 0; i < infos.count(); i++)
-//    {
-//        int y = itemHeight * i;
-//        painter.drawPixmap(0, y, infos.at(i).icon);
-//        painter.drawText(QRect(itemHeight + 6, y, pixmapWidth, itemHeight), Qt::AlignLeft | Qt::AlignVCenter, infos.at(i).text);
-//    }
-//    //结束绘制
-//    painter.end();
 
-//    //生成拖拽
-//    QDrag *drag = new QDrag(this);
-//    drag->setMimeData(mimeData);
-//    drag->setPixmap(pixmap);
-//    drag->setHotSpot(QPoint(0, 0));
-//    //执行移动操作
-//    drag->exec(Qt::MoveAction);
+    // The path of each item is stored in mimeData
+    QByteArray itemData;
+    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
+
+    struct Info
+    {
+        int y;
+        QPixmap icon;
+        QString text;
+    };
+    QList<Info> infos;
+
+    //用于计算最终拖拽图标的大小
+    QFontMetrics fm = fontMetrics();
+    int pixmapWidth = 0;
+    int pixmapHeight = 0;
+
+    QList<QTreeWidgetItem*> items = selectedItems();
+    for (int i = 0; i < items.count(); i++)
+    {
+        // Relative path of each item
+        QString levelPath = getLevelPath(items.at(i));
+        dataStream << levelPath;
+        Info info;
+        QRect rect = visualItemRect(items.at(i));
+        info.y = rect.top();
+        // Final icon height, Accumulate
+        pixmapHeight += rect.height();
+        info.text = items.at(i)->text(0);
+        int textWidth = fm.width(info.text);
+        if (textWidth > pixmapWidth)
+            pixmapWidth = textWidth;
+        // The icon of the item
+        info.icon = items.at(i)->icon(getDragIconColumnIndex()).pixmap(rect.height() * devicePixelRatio());
+        info.icon.setDevicePixelRatio(devicePixelRatio());
+        info.icon = info.icon.scaled(rect.height() * devicePixelRatio(), rect.height() * devicePixelRatio(),
+                                     Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        // infos, inserting sort according to the upper and lower position relationship
+        int j;
+        for (j = 0; j < infos.count(); j++)
+        {
+            if (infos.at(j).y > info.y)
+            {
+                break;
+            }
+        }
+        infos.insert(j, info);
+    }
+
+    QMimeData *pMimeData = new QMimeData;
+    // Give this data a unique identifying tag
+    pMimeData->setData(getMimeType(), itemData);
+
+    int itemHeight = pixmapHeight / infos.count();
+    // width, add icon and margin pixels
+    QPixmap pixmap((pixmapWidth + itemHeight + 6) * devicePixelRatio(), pixmapHeight * devicePixelRatio());
+    pixmap.setDevicePixelRatio(devicePixelRatio());
+    pixmap.fill(Qt::transparent);
+
+    QPainter painter(&pixmap);
+    painter.setPen(QColor("#d6dfeb"));
+    painter.setFont(QFont("Arial", 9));
+    // Draw the icon and text of each item onto the final icon
+    for (int i = 0; i < infos.count(); i++)
+    {
+        int y = itemHeight * i;
+        painter.drawPixmap(0, y, infos.at(i).icon);
+        painter.drawText(QRect(itemHeight + 6, y, pixmapWidth, itemHeight), Qt::AlignLeft | Qt::AlignVCenter, infos.at(i).text);
+    }
+    painter.end();
+
+    QDrag drag(this);
+    drag.setMimeData(pMimeData);
+    drag.setPixmap(pixmap);
+    drag.setHotSpot(QPoint(0, 0));
+    drag.exec(Qt::MoveAction);
 }
 
 bool BBTreeWidget::moveItem()
@@ -417,7 +420,16 @@ void BBTreeWidget::filterSelectedItems()
     }
 }
 
-
+QString BBTreeWidget::getLevelPath(QTreeWidgetItem *pItem)
+{
+    // Hierarchical path of item
+    QString location;
+    for (QTreeWidgetItem *pParent = pItem; pParent; pParent = pParent->parent())
+    {
+        location = pParent->text(0) + "/" + location;
+    }
+    return location;
+}
 
 
 
@@ -468,25 +480,6 @@ void BBTreeWidget::filterSelectedItems()
 //            setCurrentItem(NULL);
 //        }
 //    }
-//}
-
-
-//QString BaseTree::getLevelPath(QTreeWidgetItem *item)
-//{
-//    //求树item的层级路径
-//    QString location;
-//    for (QTreeWidgetItem *parent = item; parent; parent = parent->parent())
-//    {
-//        location = parent->text(0) + "/" + location;
-//    }
-//    return location;
-//}
-
-
-
-//int BaseTree::getDragIconColumn()
-//{
-//    return 0;
 //}
 
 //void BaseTree::contextMenuEvent(QContextMenuEvent *event)
