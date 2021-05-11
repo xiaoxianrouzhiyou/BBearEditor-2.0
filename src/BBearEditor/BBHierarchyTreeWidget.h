@@ -12,8 +12,8 @@ public:
     QString getMimeType() { return BB_MIMETYPE_HIERARCHYTREEWIDGET; }
 
 private:
+    void setMenu();
     bool moveItemFromOthers(const QMimeData *pMimeData) override;
-
     void moveItemToIndicator();
 
 signals:

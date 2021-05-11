@@ -40,6 +40,7 @@ public:
 
 protected:
     explicit BBTreeWidget(QWidget *parent = 0);
+    ~BBTreeWidget();
 
     void startDrag(Qt::DropActions supportedActions) override;
     virtual bool moveItem();
@@ -51,6 +52,7 @@ protected:
 
     QTreeWidgetItem *m_pIndicatorItem;
     BBIndicatorPos m_eIndicatorPos;
+    QMenu *m_pMenu;
 
 //    virtual void deleteOne(QTreeWidgetItem *item);
 //    void keyPressEvent(QKeyEvent *event) override;
@@ -62,7 +64,6 @@ protected:
 //    void deleteAction(QTreeWidgetItem *item);
 //    QTreeWidgetItem *editingItem;
 //    QLineEdit *edit;
-//    QMenu *menu;
 //    QList<QTreeWidgetItem*> clipBoardItems;
 
 private:

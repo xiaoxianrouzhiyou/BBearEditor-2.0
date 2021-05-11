@@ -1,51 +1,62 @@
 #include "BBHierarchyTreeWidget.h"
 #include <QMimeData>
+#include <QMenu>
 
 //QMap<QTreeWidgetItem*, GameObject*> HierarchyTree::mMap;
 
 BBHierarchyTreeWidget::BBHierarchyTreeWidget(QWidget *parent)
     : BBTreeWidget(parent)
 {
-//    //第一列列宽
-//    setColumnWidth(0, 170);
-//    //绑定信号槽
+    QStringList list;
+    list.push_back("Label");
+    list.push_back("Type");
+    setHeaderLabels(list);
+    // Column width of the first column
+    setColumnWidth(0, 170);
+
 //    QObject::connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
 //                     this, SLOT(itemDoubleClickedSlot(QTreeWidgetItem*, int)));
 //    QObject::connect(this, SIGNAL(itemChanged(QTreeWidgetItem*, int)),
 //                     this, SLOT(itemChangedSlot(QTreeWidgetItem*, int)));
 //    QObject::connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(itemSelectionChangedSlot()));
-//    //弹出菜单
-//    menu = new QMenu(this);
-//    QAction *actionUndo = new QAction(tr("Undo"));
-//    actionUndo->setShortcut(QKeySequence(tr("Ctrl+Z")));
-//    QAction *actionRedo = new QAction(tr("Redo"));
-//    actionRedo->setShortcut(QKeySequence(tr("Shift+Ctrl+Z")));
-//    QAction *actionCopy = new QAction(tr("Copy"));
-//    actionCopy->setShortcut(QKeySequence(tr("Ctrl+C")));
-//    QAction *actionPaste = new QAction(tr("Paste"));
-//    actionPaste->setShortcut(QKeySequence(tr("Ctrl+V")));
-//    QAction *actionRename = new QAction(tr("Rename"));
-//#if defined(Q_OS_WIN32)
-//    actionRename->setShortcut(Qt::F2);
-//#elif defined(Q_OS_MAC)
-//    actionRename->setShortcut(Qt::Key_Return);
-//#endif
-//    QAction *actionDelete = new QAction(tr("Delete"));
-//    actionDelete->setShortcut(QKeySequence(tr("Ctrl+D")));
 
-//    menu->addAction(actionUndo);
-//    menu->addAction(actionRedo);
-//    menu->addSeparator();
-//    menu->addAction(actionCopy);
-//    menu->addAction(actionPaste);
-//    menu->addSeparator();
-//    menu->addAction(actionRename);
-//    menu->addAction(actionDelete);
-//    //绑定点击事件
-//    QObject::connect(actionCopy, SIGNAL(triggered()), this, SLOT(copyAction()));
-//    QObject::connect(actionPaste, SIGNAL(triggered()), this, SLOT(pasteAction()));
-//    QObject::connect(actionRename, SIGNAL(triggered()), this, SLOT(openEditor()));
-//    QObject::connect(actionDelete, SIGNAL(triggered()), this, SLOT(deleteAction()));
+    // Popup menu
+    setMenu();
+}
+
+void BBHierarchyTreeWidget::setMenu()
+{
+    m_pMenu = new QMenu(this);
+    QAction *pActionUndo = new QAction(tr("Undo"));
+    pActionUndo->setShortcut(QKeySequence(tr("Ctrl+Z")));
+    QAction *pActionRedo = new QAction(tr("Redo"));
+    pActionRedo->setShortcut(QKeySequence(tr("Shift+Ctrl+Z")));
+    QAction *pActionCopy = new QAction(tr("Copy"));
+    pActionCopy->setShortcut(QKeySequence(tr("Ctrl+C")));
+    QAction *pActionPaste = new QAction(tr("Paste"));
+    pActionPaste->setShortcut(QKeySequence(tr("Ctrl+V")));
+    QAction *pActionRename = new QAction(tr("Rename"));
+#if defined(Q_OS_WIN32)
+    pActionRename->setShortcut(Qt::Key_F2);
+#elif defined(Q_OS_MAC)
+    pActionRename->setShortcut(Qt::Key_Return);
+#endif
+    QAction *pActionDelete = new QAction(tr("Delete"));
+    pActionDelete->setShortcut(QKeySequence(tr("Ctrl+D")));
+
+    m_pMenu->addAction(pActionUndo);
+    m_pMenu->addAction(pActionRedo);
+    m_pMenu->addSeparator();
+    m_pMenu->addAction(pActionCopy);
+    m_pMenu->addAction(pActionPaste);
+    m_pMenu->addSeparator();
+    m_pMenu->addAction(pActionRename);
+    m_pMenu->addAction(pActionDelete);
+    // connect the trigger event
+//    QObject::connect(pActionCopy, SIGNAL(triggered()), this, SLOT(copyAction()));
+//    QObject::connect(pActionPaste, SIGNAL(triggered()), this, SLOT(pasteAction()));
+//    QObject::connect(pActionRename, SIGNAL(triggered()), this, SLOT(openEditor()));
+//    QObject::connect(pActionDelete, SIGNAL(triggered()), this, SLOT(deleteAction()));
 }
 
 bool BBHierarchyTreeWidget::moveItemFromOthers(const QMimeData *pMimeData)

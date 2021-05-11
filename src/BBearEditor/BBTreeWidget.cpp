@@ -71,6 +71,11 @@ BBTreeWidget::BBTreeWidget(QWidget *parent)
     setDropIndicatorShown(false);
 }
 
+BBTreeWidget::~BBTreeWidget()
+{
+    BB_SAFE_DELETE(m_pMenu);
+}
+
 void BBTreeWidget::startDrag(Qt::DropActions supportedActions)
 {
     Q_UNUSED(supportedActions);
