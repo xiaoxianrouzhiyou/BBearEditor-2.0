@@ -265,6 +265,34 @@ bool BBTreeWidget::moveItemFromOthers(const QMimeData *mimeData)
     return false;
 }
 
+void BBTreeWidget::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasFormat(getMimeType()))
+    {
+        // Receive internal drag
+        event->accept();
+    }
+    else if (event->mimeData()->hasFormat(BB_MIMETYPE_FILETREEWIDGET))
+    {
+        // Receive items dragged from the file list
+        event->accept();
+    }
+    else if (event->mimeData()->hasFormat(BB_MIMETYPE_BASEOBJECT))
+    {
+        // Receive prefab
+        event->accept();
+    }
+    else if (event->mimeData()->hasFormat(BB_MIMETYPE_LIGHTOBJECT))
+    {
+        // Receive light
+        event->accept();
+    }
+    else
+    {
+        event->ignore();
+    }
+}
+
 void BBTreeWidget::dropEvent(QDropEvent *event)
 {
     if (event->mimeData()->hasFormat(getMimeType()))
@@ -308,34 +336,6 @@ void BBTreeWidget::dropEvent(QDropEvent *event)
     // Reset the currently suspended item after processing
     m_pLastItem = NULL;
     repaint();
-}
-
-void BBTreeWidget::dragEnterEvent(QDragEnterEvent *event)
-{
-    if (event->mimeData()->hasFormat(getMimeType()))
-    {
-        // Receive internal drag
-        event->accept();
-    }
-    else if (event->mimeData()->hasFormat(BB_MIMETYPE_FILETREEWIDGET))
-    {
-        // Receive items dragged from the file list
-        event->accept();
-    }
-    else if (event->mimeData()->hasFormat(BB_MIMETYPE_BASEOBJECT))
-    {
-        // Receive prefab
-        event->accept();
-    }
-    else if (event->mimeData()->hasFormat(BB_MIMETYPE_LIGHTOBJECT))
-    {
-        // Receive light
-        event->accept();
-    }
-    else
-    {
-        event->ignore();
-    }
 }
 
 void BBTreeWidget::filterSelectedItems()

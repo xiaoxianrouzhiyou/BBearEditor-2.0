@@ -453,6 +453,12 @@ FileList::item:selected {
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="dockGameObject">
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <property name="tabletTracking">
+    <bool>false</bool>
+   </property>
    <property name="floating">
     <bool>false</bool>
    </property>
@@ -465,7 +471,7 @@ FileList::item:selected {
    <widget class="BBResizableWidget" name="dockGameObjectContents">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <property name="spacing">
-      <number>-1</number>
+      <number>6</number>
      </property>
      <property name="leftMargin">
       <number>0</number>
@@ -646,11 +652,14 @@ FileList::item:selected {
                 <number>0</number>
                </property>
                <item row="0" column="0">
-                <widget class="BBObjectListWidget" name="listBaseGameObject">
+                <widget class="BBObjectListWidget" name="listBaseGameObject" native="true">
+                 <property name="mouseTracking">
+                  <bool>true</bool>
+                 </property>
                  <property name="focusPolicy">
                   <enum>Qt::ClickFocus</enum>
                  </property>
-                 <property name="alternatingRowColors">
+                 <property name="alternatingRowColors" stdset="0">
                   <bool>true</bool>
                  </property>
                 </widget>
@@ -669,13 +678,16 @@ FileList::item:selected {
    </widget>
   </widget>
   <widget class="QDockWidget" name="dockHierarchy">
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
    <property name="windowTitle">
     <string>Hierarchy</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="BBObjectListWidget" name="dockHierarchyContents">
+   <widget class="QWidget" name="dockHierarchyContents">
     <layout class="QVBoxLayout" name="verticalLayout_3">
      <property name="spacing">
       <number>0</number>
@@ -757,56 +769,51 @@ FileList::item:selected {
       </widget>
      </item>
      <item>
-      <widget class="BBTreeWidget" name="treeHierarchy">
+      <widget class="BBTreeWidget" name="treeHierarchy" native="true">
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
        <property name="focusPolicy">
         <enum>Qt::ClickFocus</enum>
        </property>
        <property name="layoutDirection">
         <enum>Qt::LeftToRight</enum>
        </property>
-       <property name="alternatingRowColors">
+       <property name="alternatingRowColors" stdset="0">
         <bool>true</bool>
        </property>
-       <property name="textElideMode">
-        <enum>Qt::ElideRight</enum>
-       </property>
-       <property name="animated">
+       <property name="animated" stdset="0">
         <bool>false</bool>
        </property>
-       <property name="headerHidden">
+       <property name="headerHidden" stdset="0">
         <bool>true</bool>
        </property>
-       <property name="columnCount">
+       <property name="columnCount" stdset="0">
         <number>2</number>
        </property>
-       <property name="selectionMode">
-        <enum>QAbstractItemView::ExtendedSelection</enum>
-       </property>
-       <attribute name="headerVisible">
-        <bool>true</bool>
-       </attribute>
-       <attribute name="headerCascadingSectionResizes">
-        <bool>false</bool>
-       </attribute>
-       <attribute name="headerStretchLastSection">
-        <bool>true</bool>
-       </attribute>
-       <column>
-        <property name="text">
-         <string>Label</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Type</string>
-        </property>
-       </column>
       </widget>
      </item>
     </layout>
    </widget>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>BBResizableWidget</class>
+   <extends>QWidget</extends>
+   <header>bbresizablewidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BBObjectListWidget</class>
+   <extends>QWidget</extends>
+   <header>bbobjectlistwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BBTreeWidget</class>
+   <extends>QWidget</extends>
+   <header>bbtreewidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

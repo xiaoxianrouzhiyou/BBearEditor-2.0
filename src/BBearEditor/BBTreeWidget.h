@@ -45,6 +45,7 @@ public:
     virtual bool moveItem();
     virtual bool moveItemFromFileList(const QMimeData *mimeData);
     virtual bool moveItemFromOthers(const QMimeData *mimeData);
+    void dragEnterEvent(QDragEnterEvent *event) override;
     void dropEvent(QDropEvent *event) override;
 
     QTreeWidgetItem *m_pIndicatorItem;
@@ -65,8 +66,6 @@ public:
 //    QList<QTreeWidgetItem*> clipBoardItems;
 
 private:
-    void dragEnterEvent(QDragEnterEvent *event) override;
-
     QTreeWidgetItem *m_pLastItem;
 
 
