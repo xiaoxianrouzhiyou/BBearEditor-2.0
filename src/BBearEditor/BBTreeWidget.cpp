@@ -357,6 +357,14 @@ void BBTreeWidget::dragMoveEvent(QDragMoveEvent *event)
     event->accept();
 }
 
+void BBTreeWidget::dragLeaveEvent(QDragLeaveEvent *event)
+{
+    Q_UNUSED(event);
+    // No need for indicator box when dragLeave
+    m_pIndicatorItem = NULL;
+    repaint();
+}
+
 void BBTreeWidget::dropEvent(QDropEvent *event)
 {
     if (event->mimeData()->hasFormat(getMimeType()))
@@ -402,6 +410,33 @@ void BBTreeWidget::dropEvent(QDropEvent *event)
     repaint();
 }
 
+void BBTreeWidget::paintEvent(QPaintEvent *event)
+{
+    QTreeWidget::paintEvent(event);
+    // The pointed item is not itself
+    if (m_pIndicatorItem /*&& m_pIndicatorItem != currentItem()*/)
+    {
+        //using "this" is wrong
+        QPainter painter(viewport());
+        QPen pen(QColor("#d6dfeb"));
+        painter.setPen(pen);
+        QRect rect = visualItemRect(m_pIndicatorItem);
+        if (m_eIndicatorPos == BBIndicatorPos::RECT)
+        {
+            painter.drawRect(QRect(rect.topLeft(), rect.bottomRight() - QPoint(1, 1)));
+        }
+        else if (m_eIndicatorPos == BBIndicatorPos::TOP)
+        {
+            painter.drawLine(rect.topLeft(), rect.topRight());
+        }
+        else
+        {
+            painter.drawLine(rect.bottomLeft(), rect.bottomRight());
+        }
+        painter.end();
+    }
+}
+
 void BBTreeWidget::filterSelectedItems()
 {
     QList<QTreeWidgetItem*> items = selectedItems();
@@ -437,40 +472,9 @@ QString BBTreeWidget::getLevelPath(QTreeWidgetItem *pItem)
 
 
 
-//void BaseTree::paintEvent(QPaintEvent *event)
-//{
-//    QTreeWidget::paintEvent(event);
-//    //指着的item不是自己
-//    if (indicatorItem /*&& indicatorItem != currentItem()*/)
-//    {
-//        //this参数 会报错
-//        QPainter painter(viewport());
-//        QPen pen(QColor("#d6dfeb"));
-//        painter.setPen(pen);
-//        QRect rect = visualItemRect(indicatorItem);
-//        if (indicatorPos == IndicatorPos::RECT)
-//        {
-//            painter.drawRect(QRect(rect.topLeft() + QPoint(0, 1), rect.bottomRight() - QPoint(0, 1)));
-//        }
-//        else if (indicatorPos == IndicatorPos::TOP)
-//        {
-//            painter.drawLine(rect.topLeft() + QPoint(0, 1), rect.topRight() + QPoint(0, 1));
-//        }
-//        else
-//        {
-//            painter.drawLine(rect.bottomLeft(), rect.bottomRight());
-//        }
-//        painter.end();
-//    }
-//}
 
-//void BaseTree::dragLeaveEvent(QDragLeaveEvent *event)
-//{
-//    Q_UNUSED(event);
-//    //拖拽出去不再需要指示框
-//    indicatorItem = NULL;
-//    repaint();
-//}
+
+
 
 //void BaseTree::mousePressEvent(QMouseEvent *event)
 //{

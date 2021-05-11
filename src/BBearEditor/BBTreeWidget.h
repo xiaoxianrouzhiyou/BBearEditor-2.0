@@ -50,7 +50,9 @@ protected:
     virtual bool moveItemFromOthers(const QMimeData *pMimeData);
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;
+    void dragLeaveEvent(QDragLeaveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
 
     QTreeWidgetItem *m_pIndicatorItem;
     BBIndicatorPos m_eIndicatorPos;
@@ -79,8 +81,8 @@ protected:
 
 
 
-//    void paintEvent(QPaintEvent *event) override;
-//    void dragLeaveEvent(QDragLeaveEvent *event) override;
+
+
 //    void mousePressEvent(QMouseEvent *event) override;
 //    void contextMenuEvent(QContextMenuEvent *event) override;
 //    void focusInEvent(QFocusEvent *event) override;
