@@ -120,6 +120,4 @@ void BBObjectListWidget::startDrag(Qt::DropActions supportedActions)
     drag.setHotSpot(QPoint(pixmap.width() / 2 / devicePixelRatio(), pixmap.height() / 2 / devicePixelRatio()));
     drag.setPixmap(pixmap);
     drag.exec(Qt::MoveAction);
-
-    BB_SAFE_DELETE(pMimeData);
 }
