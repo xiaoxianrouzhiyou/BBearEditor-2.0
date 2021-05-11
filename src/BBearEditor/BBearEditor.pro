@@ -31,7 +31,8 @@ SOURCES += \
     BBObjectListWidget.cpp \
     BBUtils.cpp \
     BBResizableWidget.cpp \
-    BBTreeWidget.cpp
+    BBTreeWidget.cpp \
+    BBHierarchyTreeWidget.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
@@ -40,7 +41,8 @@ HEADERS += \
     BBObjectListWidget.h \
     BBUtils.h \
     BBResizableWidget.h \
-    BBTreeWidget.h
+    BBTreeWidget.h \
+    BBHierarchyTreeWidget.h
 
 FORMS += \
     BBUITitleBar.ui \

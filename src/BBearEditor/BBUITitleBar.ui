@@ -46,6 +46,7 @@
 
 #name {
     color: #d6dfeb;
+    font: 9pt &quot;Arial&quot;;
 }
 
 #introduction {

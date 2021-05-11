@@ -18,8 +18,6 @@
 //#include <QPaintEvent>
 //#include <QMenu>
 //#include <QTime>
-//#include "filelist.h"
-//#include "confirmationdialog.h"
 
 
 //--------------BBLineEdit
@@ -67,7 +65,7 @@ BBTreeWidget::BBTreeWidget(QWidget *parent)
     // move, not copy
     setDefaultDropAction(Qt::MoveAction);
     // Internal drag, you cannot move to other trees, and you cannot move from other trees.
-    //setDragDropMode(QAbstractItemView::InternalMove);
+//    setDragDropMode(QAbstractItemView::InternalMove);
     // You can press shift and cmd to select multiple
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     setDropIndicatorShown(false);
@@ -253,15 +251,15 @@ bool BBTreeWidget::moveItem()
     return false;
 }
 
-bool BBTreeWidget::moveItemFromFileList(const QMimeData *mimeData)
+bool BBTreeWidget::moveItemFromFileList(const QMimeData *pMimeData)
 {
-    Q_UNUSED(mimeData);
+    Q_UNUSED(pMimeData);
     return true;
 }
 
-bool BBTreeWidget::moveItemFromOthers(const QMimeData *mimeData)
+bool BBTreeWidget::moveItemFromOthers(const QMimeData *pMimeData)
 {
-    Q_UNUSED(mimeData);
+    Q_UNUSED(pMimeData);
     return false;
 }
 
@@ -291,6 +289,60 @@ void BBTreeWidget::dragEnterEvent(QDragEnterEvent *event)
     {
         event->ignore();
     }
+}
+
+void BBTreeWidget::dragMoveEvent(QDragMoveEvent *event)
+{
+//    //当鼠标位于顶部或底部时向上或下滚动
+//    QTreeWidget::dragMoveEvent(event);
+//    QTreeWidgetItem *item = itemAt(event->pos());
+//    //绘制将要被放置的位置
+//    indicatorItem = item;
+//    if (item)
+//    {
+//        if (item != mLastItem)
+//        {
+//            //移动的位置对应的item改变了
+//            //重新记录新的item
+//            mLastItem = item;
+//            //重新记录当前的时间
+//            mLastTime = QTime::currentTime();
+//        }
+//        else
+//        {
+//            //移动时所指的item没变
+//            if (mLastTime.elapsed() > 1000)
+//            {
+//                //没变的时间超过一定量 展开该项
+//                setItemExpanded(item, true);
+//            }
+//        }
+//        int mouseY = event->pos().y();
+//        int itemTop = visualItemRect(indicatorItem).top();
+//        int itemBottom = visualItemRect(indicatorItem).bottom();
+//        if (mouseY < itemTop + 2)
+//        {
+//            indicatorPos = IndicatorPos::TOP;
+//        }
+//        else if (mouseY <= itemBottom - 2)
+//        {
+//            //拖拽的鼠标落在该项的非边缘处 成为该项的孩子
+//            indicatorPos = IndicatorPos::RECT;
+//        }
+//        else
+//        {
+//            indicatorPos = IndicatorPos::BOTTOM;
+//        }
+//    }
+//    else
+//    {
+//        //没有所指的项 重置
+//        mLastItem = NULL;
+//    }
+//    repaint();
+
+    // do this in order to execute dropEvent
+    event->accept();
 }
 
 void BBTreeWidget::dropEvent(QDropEvent *event)
@@ -360,57 +412,7 @@ void BBTreeWidget::filterSelectedItems()
     }
 }
 
-//void BaseTree::dragMoveEvent(QDragMoveEvent *event)
-//{
-//    //当鼠标位于顶部或底部时向上或下滚动
-//    QTreeWidget::dragMoveEvent(event);
-//    QTreeWidgetItem *item = itemAt(event->pos());
-//    //绘制将要被放置的位置
-//    indicatorItem = item;
-//    if (item)
-//    {
-//        if (item != mLastItem)
-//        {
-//            //移动的位置对应的item改变了
-//            //重新记录新的item
-//            mLastItem = item;
-//            //重新记录当前的时间
-//            mLastTime = QTime::currentTime();
-//        }
-//        else
-//        {
-//            //移动时所指的item没变
-//            if (mLastTime.elapsed() > 1000)
-//            {
-//                //没变的时间超过一定量 展开该项
-//                setItemExpanded(item, true);
-//            }
-//        }
-//        int mouseY = event->pos().y();
-//        int itemTop = visualItemRect(indicatorItem).top();
-//        int itemBottom = visualItemRect(indicatorItem).bottom();
-//        if (mouseY < itemTop + 2)
-//        {
-//            indicatorPos = IndicatorPos::TOP;
-//        }
-//        else if (mouseY <= itemBottom - 2)
-//        {
-//            //拖拽的鼠标落在该项的非边缘处 成为该项的孩子
-//            indicatorPos = IndicatorPos::RECT;
-//        }
-//        else
-//        {
-//            indicatorPos = IndicatorPos::BOTTOM;
-//        }
-//    }
-//    else
-//    {
-//        //没有所指的项 重置
-//        mLastItem = NULL;
-//    }
-//    repaint();
-//    event->accept();
-//}
+
 
 
 

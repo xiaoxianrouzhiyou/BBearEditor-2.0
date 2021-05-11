@@ -38,14 +38,15 @@ class BBTreeWidget : public QTreeWidget
 public:
     virtual QString getMimeType() { return BB_MIMETYPE_TREEWIDGET; }
 
-//protected:
+protected:
     explicit BBTreeWidget(QWidget *parent = 0);
 
     void startDrag(Qt::DropActions supportedActions) override;
     virtual bool moveItem();
-    virtual bool moveItemFromFileList(const QMimeData *mimeData);
-    virtual bool moveItemFromOthers(const QMimeData *mimeData);
+    virtual bool moveItemFromFileList(const QMimeData *pMimeData);
+    virtual bool moveItemFromOthers(const QMimeData *pMimeData);
     void dragEnterEvent(QDragEnterEvent *event) override;
+    void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
 
     QTreeWidgetItem *m_pIndicatorItem;
@@ -54,7 +55,6 @@ public:
 //    virtual void deleteOne(QTreeWidgetItem *item);
 //    void keyPressEvent(QKeyEvent *event) override;
 //    QString getLevelPath(QTreeWidgetItem *item);
-//    void dragMoveEvent(QDragMoveEvent *event) override;
 //    //drag取第几列的图标
 //    virtual int getDragIconColumn();
 //    virtual void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript);

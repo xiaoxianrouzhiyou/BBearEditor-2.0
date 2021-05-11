@@ -297,7 +297,10 @@ BBObjectListWidget::item:focus {
     border: none;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
-    padding: 3px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 6px;
+    padding-right: 6px;
 }
 
 #buttonRootHierarchy:hover, #buttonRootProject:hover, #buttonRootInspector:hover {
@@ -769,7 +772,7 @@ FileList::item:selected {
       </widget>
      </item>
      <item>
-      <widget class="BBTreeWidget" name="treeHierarchy" native="true">
+      <widget class="BBHierarchyTreeWidget" name="treeHierarchy" native="true">
        <property name="mouseTracking">
         <bool>true</bool>
        </property>
@@ -786,7 +789,7 @@ FileList::item:selected {
         <bool>false</bool>
        </property>
        <property name="headerHidden" stdset="0">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="columnCount" stdset="0">
         <number>2</number>
@@ -809,9 +812,9 @@ FileList::item:selected {
    <header>bbobjectlistwidget.h</header>
   </customwidget>
   <customwidget>
-   <class>BBTreeWidget</class>
+   <class>BBHierarchyTreeWidget</class>
    <extends>QWidget</extends>
-   <header>bbtreewidget.h</header>
+   <header>bbhierarchytreewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
