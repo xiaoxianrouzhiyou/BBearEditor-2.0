@@ -475,6 +475,12 @@ void BBTreeWidget::keyPressEvent(QKeyEvent *event)
     }
 }
 
+void BBTreeWidget::focusInEvent(QFocusEvent *event)
+{
+    // parent class, when the focus is obtained, the first item will show a blue box, which is ugly
+    Q_UNUSED(event);
+}
+
 void BBTreeWidget::filterSelectedItems()
 {
     QList<QTreeWidgetItem*> items = selectedItems();
@@ -508,6 +514,20 @@ QString BBTreeWidget::getLevelPath(QTreeWidgetItem *pItem)
     return location;
 }
 
+void BBTreeWidget::pasteOne(QTreeWidgetItem *pSource, QTreeWidgetItem* pTranscript)
+{
+    Q_UNUSED(pSource);
+    Q_UNUSED(pTranscript);
+    // Invoked only when the paste is legal
+    // copy source, paste transcript
+}
+
+void BBTreeWidget::pasteEnd()
+{
+    // After the paste operation is over, invoke, the subclass to perform different operations
+    // Invoked only when the paste is legal
+}
+
 void BBTreeWidget::deleteAction(QTreeWidgetItem *pItem)
 {
     // After the child is deleted, childCount() will decrease. Error with for loop
@@ -532,12 +552,121 @@ void BBTreeWidget::deleteOne(QTreeWidgetItem *pItem)
 
 void BBTreeWidget::copyAction()
 {
-
+    // copy items
+    // Clear the last copied content saved in the clipboard
+    m_ClipBoardItems.clear();
+    // Save the filtered selection to the clipboard
+    filterSelectedItems();
+    m_ClipBoardItems = selectedItems();
 }
 
 void BBTreeWidget::pasteAction()
 {
+    int count = m_ClipBoardItems.count();
+    if (count == 0)
+    {
+        // Clipboard has no content
+        QApplication::beep();
+        return;
+    }
 
+    // Copy into the pointed item, when there is no pointed item, add into the top level
+    QTreeWidgetItem *pDestItem = currentItem();
+    QString destLevelPath = getLevelPath(pDestItem);
+    for (int i = 0; i < count; i++)
+    {
+        QString itemLevelPath = getLevelPath(m_ClipBoardItems.at(i));
+        // Can’t be copied into oneself and one's descendants
+        if (destLevelPath.mid(0, itemLevelPath.length()) == itemLevelPath)
+        {
+            QApplication::beep();
+            return;
+        }
+    }
+
+    // legal paste
+    // Remove the highlight of the selected item
+    QList<QTreeWidgetItem*> selected = selectedItems();
+    for (int i = 0; i < selected.count(); i++)
+    {
+        setItemSelected(selected.at(i), false);
+    }
+
+    for (int i = 0; i < m_ClipBoardItems.count(); i++)
+    {
+        QTreeWidgetItem *pTranscript = m_ClipBoardItems.at(i)->clone();
+        QString name = pTranscript->text(0);
+        if (pDestItem)
+        {
+            int childCount = pDestItem->childCount();
+            // Rename, the same level cannot include the same name
+            int index = 2;
+            while (1)
+            {
+                int j;
+                for (j = 0; j < childCount; j++)
+                {
+                    if (pDestItem->child(j)->text(0) == name)
+                    {
+                        break;
+                    }
+                }
+                if (j < childCount)
+                {
+                    // If the same name, add (2) (3), continue to check whether there is the same name
+                    name = pTranscript->text(0) + "(" + QString::number(index) + ")";
+                    index++;
+                }
+                else
+                {
+                    // No the same name
+                    pTranscript->setText(0, name);
+                    break;
+                }
+            }
+            // add into pDestItem
+            pDestItem->addChild(pTranscript);
+        }
+        else
+        {
+            int childCount = topLevelItemCount();
+            int index = 2;
+            while (1)
+            {
+                int j;
+                for (j = 0; j < childCount; j++)
+                {
+                    if (topLevelItem(j)->text(0) == name)
+                    {
+                        break;
+                    }
+                }
+                if (j < childCount)
+                {
+                    // If the same name, add (2) (3), continue to check whether there is the same name
+                    name = pTranscript->text(0) + "(" + QString::number(index) + ")";
+                    index++;
+                }
+                else
+                {
+                    // No the same name
+                    pTranscript->setText(0, name);
+                    break;
+                }
+            }
+            addTopLevelItem(pTranscript);
+        }
+        // highlight pasted items
+        setItemSelected(pTranscript, true);
+        // Subclass to perform specific operations of paste
+        pasteOne(m_ClipBoardItems.at(i), pTranscript);
+    }
+
+    if (pDestItem)
+        setItemExpanded(pDestItem, true);
+
+    // Invoked at the end of the paste operation
+    pasteEnd();
 }
 
 void BBTreeWidget::openRenameEditor()
@@ -605,144 +734,3 @@ void BBTreeWidget::deleteAction()
         setCurrentItem(NULL);
     }
 }
-
-
-
-//void BaseTree::copyAction()
-//{
-//    //复制树节点
-//    //清空上一次剪贴板存下的复制内容
-//    clipBoardItems.clear();
-//    //将过滤后的选中项存入剪贴板
-//    filterSelectedItems();
-//    clipBoardItems = selectedItems();
-//}
-
-//void BaseTree::pasteAction()
-//{
-//    int count = clipBoardItems.count();
-//    if (count == 0)
-//    {
-//        //剪贴板没有内容
-//        QApplication::beep();
-//        return;
-//    }
-//    //复制到当前所指项下面 没有所指项 成为top节点
-//    QTreeWidgetItem *destItem = currentItem();
-//    QString destLevelPath = getLevelPath(destItem);
-//    for (int i = 0; i < count; i++)
-//    {
-//        QString itemLevelPath = getLevelPath(clipBoardItems.at(i));
-//        //不能复制到自己和自己的子孙下面
-//        if (destLevelPath.mid(0, itemLevelPath.length()) == itemLevelPath)
-//        {
-//            //错误报警声
-//            QApplication::beep();
-//            return;
-//        }
-//    }
-//    //粘贴合法
-//    //去掉选中项的高亮
-//    QList<QTreeWidgetItem*> selected = selectedItems();
-//    count = selected.count();
-//    for (int i = 0; i < count; i++)
-//    {
-//        setItemSelected(selected.at(i), false);
-//    }
-//    count = clipBoardItems.count();
-//    for (int i = 0; i < count; i++)
-//    {
-//        QTreeWidgetItem *transcript = clipBoardItems.at(i)->clone();
-//        QString name = transcript->text(0);
-//        if (destItem)
-//        {
-//            int childCount = destItem->childCount();
-//            //重命名 同一级不能有重名
-//            int index = 2;
-//            while (1)
-//            {
-//                int j;
-//                for (j = 0; j < childCount; j++)
-//                {
-//                    if (destItem->child(j)->text(0) == name)
-//                    {
-//                        break;
-//                    }
-//                }
-//                if (j < childCount)
-//                {
-//                    //有重名 加(2) (3) 继续检查是否有重名
-//                    name = transcript->text(0) + "(" + QString::number(index) + ")";
-//                    index++;
-//                }
-//                else
-//                {
-//                    //没有重名
-//                    transcript->setText(0, name);
-//                    break;
-//                }
-//            }
-//            //接到目标结点下
-//            destItem->addChild(transcript);
-//        }
-//        else
-//        {
-//            int childCount = topLevelItemCount();
-//            int index = 2;
-//            while (1)
-//            {
-//                int j;
-//                for (j = 0; j < childCount; j++)
-//                {
-//                    if (topLevelItem(j)->text(0) == name)
-//                    {
-//                        break;
-//                    }
-//                }
-//                if (j < childCount)
-//                {
-//                    //有重名 加(2) (3) 继续检查是否有重名
-//                    name = transcript->text(0) + "(" + QString::number(index) + ")";
-//                    index++;
-//                }
-//                else
-//                {
-//                    //没有重名
-//                    transcript->setText(0, name);
-//                    break;
-//                }
-//            }
-//            addTopLevelItem(transcript);
-//        }
-//        //粘贴项高亮
-//        setItemSelected(transcript, true);
-//        //子类执行粘贴一项的具体操作
-//        pasteOne(clipBoardItems.at(i), transcript);
-//    }
-//    //展开目的结点
-//    if (destItem)
-//        setItemExpanded(destItem, true);
-
-//    //粘贴操作结束时候调用
-//    pasteEnd();
-//}
-
-//void BaseTree::pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript)
-//{
-//    Q_UNUSED(source);
-//    Q_UNUSED(transcript);
-//    //粘贴合法时才会调用
-//    //复制source 粘贴为transcript
-//}
-
-//void BaseTree::pasteEnd()
-//{
-//    //粘贴操作结束之后调用 子类执行不同的操作
-//    //当粘贴操作不合法时 不会调用
-//}
-
-//void BaseTree::focusInEvent(QFocusEvent *event)
-//{
-//    //父类 当获得焦点时 第一项会有蓝框 很丑
-//    Q_UNUSED(event);
-//}
