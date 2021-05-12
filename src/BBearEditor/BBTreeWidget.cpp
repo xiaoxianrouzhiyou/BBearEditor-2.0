@@ -46,7 +46,7 @@ BBTreeWidget::BBTreeWidget(QWidget *parent)
 {
     m_pIndicatorItem = NULL;
     m_pLastItem = NULL;
-    m_eIndicatorPos = BBIndicatorPos::RECT;
+    m_eIndicatorPos = BBIndicatorPos::CENTER;
     m_pEditingItem = NULL;
     m_pRenameEditor = NULL;
 
@@ -160,7 +160,7 @@ bool BBTreeWidget::moveItem()
         QTreeWidgetItem *pParent = NULL;
         // drop index of moving item
         int index = -1;
-        if (m_eIndicatorPos == BBIndicatorPos::RECT)
+        if (m_eIndicatorPos == BBIndicatorPos::CENTER)
         {
             // become the child of m_pIndicatorItem
             pParent = m_pIndicatorItem;
@@ -327,7 +327,7 @@ void BBTreeWidget::dragMoveEvent(QDragMoveEvent *event)
         {
             // The mouse drops on the non-edge of the item
             // become the child of the item
-            m_eIndicatorPos = BBIndicatorPos::RECT;
+            m_eIndicatorPos = BBIndicatorPos::CENTER;
         }
         else
         {
@@ -411,7 +411,7 @@ void BBTreeWidget::paintEvent(QPaintEvent *event)
         QPen pen(QColor("#d6dfeb"));
         painter.setPen(pen);
         QRect rect = visualItemRect(m_pIndicatorItem);
-        if (m_eIndicatorPos == BBIndicatorPos::RECT)
+        if (m_eIndicatorPos == BBIndicatorPos::CENTER)
         {
             painter.drawRect(QRect(rect.topLeft(), rect.bottomRight() - QPoint(1, 1)));
         }

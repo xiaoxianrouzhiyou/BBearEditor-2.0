@@ -26,7 +26,7 @@ private:
 enum BBIndicatorPos
 {
     // drop in the item rect
-    RECT = 0x01,
+    CENTER = 0x01,
     // drop between two items
     TOP = 0x02,
     BOTTOM = 0x04

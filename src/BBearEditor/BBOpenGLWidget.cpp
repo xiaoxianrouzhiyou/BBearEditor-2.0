@@ -39,7 +39,7 @@ void BBOpenGLWidget::initializeGL()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     // Clear the color, the background becomes black, don't care the alpha
-    glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 //    scene.init();
 }
