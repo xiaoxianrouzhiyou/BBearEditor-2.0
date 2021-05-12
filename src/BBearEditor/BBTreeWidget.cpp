@@ -508,6 +508,28 @@ QString BBTreeWidget::getLevelPath(QTreeWidgetItem *pItem)
     return location;
 }
 
+void BBTreeWidget::deleteAction(QTreeWidgetItem *pItem)
+{
+    // After the child is deleted, childCount() will decrease. Error with for loop
+    while (pItem->childCount() > 0)
+    {
+        QTreeWidgetItem* pChild = pItem->child(0);
+        deleteAction(pChild);
+    }
+    deleteOne(pItem);
+}
+
+void BBTreeWidget::deleteOne(QTreeWidgetItem *pItem)
+{
+    // If the item is in the clipboard, delete it
+    if (m_ClipBoardItems.contains(pItem))
+    {
+        m_ClipBoardItems.removeOne(pItem);
+    }
+
+    BB_SAFE_DELETE(pItem);
+}
+
 void BBTreeWidget::copyAction()
 {
 
@@ -578,33 +600,13 @@ void BBTreeWidget::deleteAction()
         // start delete operation
         for (int i = 0; i < items.count(); i++)
         {
-            //deleteAction(items.at(i));
+            deleteAction(items.at(i));
         }
         setCurrentItem(NULL);
     }
 }
 
-//void BaseTree::deleteAction(QTreeWidgetItem *item)
-//{
-//    //孩子删去childCount()会减少 用for循环出错
-//    while (item->childCount() > 0)
-//    {
-//        QTreeWidgetItem* child = item->child(0);
-//        deleteAction(child);
-//    }
-//    deleteOne(item);
-//}
 
-//void BaseTree::deleteOne(QTreeWidgetItem *item)
-//{
-//    //如果该项在剪贴板中 删去
-//    if (clipBoardItems.contains(item))
-//    {
-//        clipBoardItems.removeOne(item);
-//    }
-//    //删去树节点
-//    delete item;
-//}
 
 //void BaseTree::copyAction()
 //{
@@ -738,8 +740,6 @@ void BBTreeWidget::deleteAction()
 //    //粘贴操作结束之后调用 子类执行不同的操作
 //    //当粘贴操作不合法时 不会调用
 //}
-
-
 
 //void BaseTree::focusInEvent(QFocusEvent *event)
 //{

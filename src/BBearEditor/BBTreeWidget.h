@@ -60,13 +60,12 @@ protected:
     QTreeWidgetItem *m_pIndicatorItem;
     BBIndicatorPos m_eIndicatorPos;
     QMenu *m_pMenu;
+    QList<QTreeWidgetItem*> m_ClipBoardItems;
 
 //    void focusInEvent(QFocusEvent *event) override;
-//    virtual void deleteOne(QTreeWidgetItem *item);
 //    virtual void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript);
 //    virtual void pasteEnd();
-//    void deleteAction(QTreeWidgetItem *item);
-//    QList<QTreeWidgetItem*> clipBoardItems;
+
 
 private:
     QTreeWidgetItem *m_pLastItem;
@@ -80,6 +79,8 @@ protected:
     // drag, Which column of icons to use
     virtual int getDragIconColumnIndex() { return 0; }
     QString getLevelPath(QTreeWidgetItem *pItem);
+    void deleteAction(QTreeWidgetItem *pItem);
+    virtual void deleteOne(QTreeWidgetItem *pItem);
 
 protected slots:
     virtual void copyAction();
