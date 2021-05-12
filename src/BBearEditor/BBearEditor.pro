@@ -34,7 +34,8 @@ SOURCES += \
     BBTreeWidget.cpp \
     BBHierarchyTreeWidget.cpp \
     BBGameObject.cpp \
-    BBConfirmationDialog.cpp
+    BBConfirmationDialog.cpp \
+    BBOpenGLWidget.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
@@ -46,7 +47,8 @@ HEADERS += \
     BBTreeWidget.h \
     BBHierarchyTreeWidget.h \
     BBGameObject.h \
-    BBConfirmationDialog.h
+    BBConfirmationDialog.h \
+    BBOpenGLWidget.h
 
 FORMS += \
     BBUITitleBar.ui \
@@ -62,3 +64,5 @@ INCLUDEPATH += \
     ../../includes/rapidxml \
     ../../includes/fbxsdk \
     ../../includes/lua \
+
+LIBS += -lopengl32 -lglu32

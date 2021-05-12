@@ -918,8 +918,8 @@ FileList::item:selected {
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>255</width>
-          <height>235</height>
+          <width>399</width>
+          <height>184</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="gridLayout_3">
@@ -1229,7 +1229,7 @@ FileList::item:selected {
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>254</width>
+                 <width>162</width>
                  <height>22</height>
                 </rect>
                </property>
@@ -1270,7 +1270,7 @@ FileList::item:selected {
           </widget>
          </item>
          <item>
-          <widget class="BBTreeWidget" name="listFile">
+          <widget class="BBTreeWidget" name="listFile" native="true">
            <property name="focusPolicy">
             <enum>Qt::ClickFocus</enum>
            </property>
@@ -1299,6 +1299,11 @@ FileList::item:selected {
    <class>BBHierarchyTreeWidget</class>
    <extends>QWidget</extends>
    <header>bbhierarchytreewidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BBTreeWidget</class>
+   <extends>QWidget</extends>
+   <header>bbtreewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

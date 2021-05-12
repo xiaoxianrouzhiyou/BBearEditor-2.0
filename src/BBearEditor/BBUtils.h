@@ -17,6 +17,8 @@
 #define BB_PATH_RESOURCE_ICON "://resources/icons/"
 #define BB_PATH_TERRAIN "terrain"
 
+#define BB_CONSTANT_UPDATE_RATE 16
+
 class BBUtils
 {
 public:
