@@ -40,10 +40,10 @@ class BBTreeWidget : public QTreeWidget
 public:
     virtual QString getMimeType() { return BB_MIMETYPE_TREEWIDGET; }
 
-protected:
     explicit BBTreeWidget(QWidget *parent = 0);
     ~BBTreeWidget();
 
+protected:
     void startDrag(Qt::DropActions supportedActions) override;
     virtual bool moveItem();
     virtual bool moveItemFromFileList(const QMimeData *pMimeData);

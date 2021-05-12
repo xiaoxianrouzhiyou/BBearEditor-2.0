@@ -13,7 +13,7 @@ BBHierarchyTreeWidget::BBHierarchyTreeWidget(QWidget *parent)
     list.push_back("Type");
     setHeaderLabels(list);
     // Column width of the first column
-    setColumnWidth(0, 170);
+    setColumnWidth(0, 280);
 
 //    QObject::connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
 //                     this, SLOT(itemDoubleClickedSlot(QTreeWidgetItem*, int)));

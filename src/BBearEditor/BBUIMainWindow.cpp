@@ -26,7 +26,7 @@ void BBUIMainWindow::setWindowLayout()
     splitDockWidget(m_pUi->dockGameObject, m_pUi->dockEditview, Qt::Horizontal);
     splitDockWidget(m_pUi->dockEditview, m_pUi->dockInspector, Qt::Horizontal);
     splitDockWidget(m_pUi->dockGameObject, m_pUi->dockHierarchy, Qt::Vertical);
-//    splitDockWidget(m_pUi->dockEditview, m_pUi->dockConsole, Qt::Vertical);
+    splitDockWidget(m_pUi->dockEditview, m_pUi->dockProject, Qt::Vertical);
 //    tabifyDockWidget(m_pUi->dockPreview, m_pUi->dockEditview);
 //    tabifyDockWidget(m_pUi->dockConsole, m_pUi->dockProject);
 //    splitDockWidget(m_pUi->dockProject, m_pUi->dockConsole, Qt::Horizontal);
@@ -34,11 +34,12 @@ void BBUIMainWindow::setWindowLayout()
 //    m_pUi->dockConsole->setVisible(false);
 
     // resize
-    m_pUi->dockGameObjectContents->updateSizeHint(QSize(350, 500));
-    m_pUi->dockInspectorContents->updateSizeHint(QSize(400, 500));
+    m_pUi->dockGameObjectContents->updateSizeHint(QSize(350, 150));
+    m_pUi->dockInspectorContents->updateSizeHint(QSize(300, 500));
+    m_pUi->dockProjectContents->updateSizeHint(QSize(300, 250));
 
     // Stretch the width of the file list in the project view
-//    m_pUi->splitterProject->setStretchFactor(1, 1);
+    m_pUi->splitterProject->setStretchFactor(1, 1);
 }
 
 void BBUIMainWindow::setGameObjectDockWidget()
