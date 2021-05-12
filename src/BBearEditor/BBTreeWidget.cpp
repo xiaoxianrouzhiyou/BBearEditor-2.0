@@ -6,6 +6,7 @@
 #include <QMenu>
 #include <QApplication>
 #include <QDesktopWidget>
+#include "BBConfirmationDialog.h"
 
 
 //--------------BBLineEdit
@@ -84,7 +85,7 @@ void BBTreeWidget::startDrag(Qt::DropActions supportedActions)
     };
     QList<Info> infos;
 
-    //用于计算最终拖拽图标的大小
+    // Used to calculate the size of the final drag icon
     QFontMetrics fm = fontMetrics();
     int pixmapWidth = 0;
     int pixmapHeight = 0;
@@ -507,6 +508,16 @@ QString BBTreeWidget::getLevelPath(QTreeWidgetItem *pItem)
     return location;
 }
 
+void BBTreeWidget::copyAction()
+{
+
+}
+
+void BBTreeWidget::pasteAction()
+{
+
+}
+
 void BBTreeWidget::openRenameEditor()
 {
     QList<QTreeWidgetItem*> selected = selectedItems();
@@ -540,37 +551,38 @@ void BBTreeWidget::finishRename()
     setFocus();
 }
 
-//void BaseTree::deleteAction()
-//{
-//    //过滤选中项 父亲孩子同时选中 只处理父亲
-//    filterSelectedItems();
-//    //遍历所选项
-//    QList<QTreeWidgetItem*> items = selectedItems();
-//    if (items.count() == 0)
-//        return;
-//    //弹出对话框
-//    ConfirmationDialog *dialog = new ConfirmationDialog;
-//    dialog->setTitle("Delete selected?");
-//    if (items.count() == 1)
-//    {
-//        dialog->setMessage("You cannot undo this action.\n\nAre you sure to delete this?");
-//    }
-//    else
-//    {
-//        dialog->setMessage("You cannot undo this action.\n\nAre you sure to delete these "
-//                           + QString::number(items.count()) + " items?");
-//    }
-//    if (dialog->exec())
-//    {
-//        //真正开始删除
-//        for (int i = 0; i < items.count(); i++)
-//        {
-//            QTreeWidgetItem* item = items.at(i);
-//            deleteAction(item);
-//        }
-//        setCurrentItem(NULL);
-//    }
-//}
+void BBTreeWidget::deleteAction()
+{
+    // When selecting ancestors and descendants at the same time, filter out descendants
+    filterSelectedItems();
+
+    QList<QTreeWidgetItem*> items = selectedItems();
+    if (items.count() == 0)
+        return;
+
+    // pop dialog
+    BBConfirmationDialog dialog;
+    dialog.setTitle("Delete selected?");
+    if (items.count() == 1)
+    {
+        dialog.setMessage("You cannot undo this action.\n\nAre you sure to delete this?");
+    }
+    else
+    {
+        dialog.setMessage("You cannot undo this action.\n\nAre you sure to delete these "
+                           + QString::number(items.count()) + " items?");
+    }
+
+    if (dialog.exec())
+    {
+        // start delete operation
+        for (int i = 0; i < items.count(); i++)
+        {
+            //deleteAction(items.at(i));
+        }
+        setCurrentItem(NULL);
+    }
+}
 
 //void BaseTree::deleteAction(QTreeWidgetItem *item)
 //{

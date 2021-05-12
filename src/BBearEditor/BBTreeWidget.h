@@ -61,6 +61,7 @@ protected:
     BBIndicatorPos m_eIndicatorPos;
     QMenu *m_pMenu;
 
+//    void focusInEvent(QFocusEvent *event) override;
 //    virtual void deleteOne(QTreeWidgetItem *item);
 //    virtual void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript);
 //    virtual void pasteEnd();
@@ -81,19 +82,11 @@ protected:
     QString getLevelPath(QTreeWidgetItem *pItem);
 
 protected slots:
+    virtual void copyAction();
+    virtual void pasteAction();
     void openRenameEditor();
     virtual void finishRename();
-
-
-//    void focusInEvent(QFocusEvent *event) override;
-
-
-//public slots:
-//    virtual void copyAction();
-//    virtual void pasteAction();
-//    virtual void deleteAction();
-
-
+    virtual void deleteAction();
 };
 
 #endif // BBTREEWIDGET_H

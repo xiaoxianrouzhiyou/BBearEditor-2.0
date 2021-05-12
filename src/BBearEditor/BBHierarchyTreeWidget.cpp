@@ -53,11 +53,12 @@ void BBHierarchyTreeWidget::setMenu()
     m_pMenu->addSeparator();
     m_pMenu->addAction(pActionRename);
     m_pMenu->addAction(pActionDelete);
+
     // connect the trigger event
-//    QObject::connect(pActionCopy, SIGNAL(triggered()), this, SLOT(copyAction()));
-//    QObject::connect(pActionPaste, SIGNAL(triggered()), this, SLOT(pasteAction()));
-//    QObject::connect(pActionRename, SIGNAL(triggered()), this, SLOT(openEditor()));
-//    QObject::connect(pActionDelete, SIGNAL(triggered()), this, SLOT(deleteAction()));
+    QObject::connect(pActionCopy, SIGNAL(triggered()), this, SLOT(copyAction()));
+    QObject::connect(pActionPaste, SIGNAL(triggered()), this, SLOT(pasteAction()));
+    QObject::connect(pActionRename, SIGNAL(triggered()), this, SLOT(openRenameEditor()));
+    QObject::connect(pActionDelete, SIGNAL(triggered()), this, SLOT(deleteAction()));
 }
 
 bool BBHierarchyTreeWidget::moveItemFromOthers(const QMimeData *pMimeData)

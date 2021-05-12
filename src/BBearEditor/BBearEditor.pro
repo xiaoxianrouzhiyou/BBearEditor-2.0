@@ -33,7 +33,8 @@ SOURCES += \
     BBResizableWidget.cpp \
     BBTreeWidget.cpp \
     BBHierarchyTreeWidget.cpp \
-    BBGameObject.cpp
+    BBGameObject.cpp \
+    BBConfirmationDialog.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
@@ -44,11 +45,13 @@ HEADERS += \
     BBResizableWidget.h \
     BBTreeWidget.h \
     BBHierarchyTreeWidget.h \
-    BBGameObject.h
+    BBGameObject.h \
+    BBConfirmationDialog.h
 
 FORMS += \
     BBUITitleBar.ui \
-    BBUIMainWindow.ui
+    BBUIMainWindow.ui \
+    BBConfirmationDialog.ui
 
 RESOURCES += \
     BBBasicResource.qrc
