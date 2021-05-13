@@ -127,42 +127,43 @@ void BBCamera::move(char dir, bool bMove)
     }
 }
 
+void BBCamera::pitch(float fAngle)
+{
+    // up down
+    QVector3D forwardDirection = m_ViewCenter - m_Position;
+    forwardDirection.normalize();
+    QVector3D rightDirection = QVector3D::crossProduct(forwardDirection, m_Up);
+    rightDirection.normalize();
+    rotateView(fAngle, rightDirection.x(), rightDirection.y(), rightDirection.z());
+}
+
+void BBCamera::yaw(float fAngle)
+{
+    // left-right  Rotate around the Y axis
+    rotateView(fAngle, m_Up.x(), m_Up.y(), m_Up.z());
+}
+
+void BBCamera::rotateView(float fAngle, float x, float y, float z)
+{
+    // Rotate an angle around an axis, the change of view
+    QVector3D viewDirection = m_ViewCenter - m_Position;
+    QVector3D newDirection;
+    float c = cosf(fAngle);
+    float s = sinf(fAngle);
+    QVector3D tempX(c + x * x * (1 - c), x * y * (1 - c) - z * s, x * z * (1 - c) + y * s);
+    newDirection.setX(QVector3D::dotProduct(tempX, viewDirection));
+    QVector3D tempY(x * y * (1 - c) + z * s, c + y * y * (1 - c), y * z * (1 - c) - x * s);
+    newDirection.setY(QVector3D::dotProduct(tempY, viewDirection));
+    QVector3D tempZ(x * z * (1 - c) - y * s, y * z * (1 - c) + x * s, c + z * z * (1 - c));
+    newDirection.setZ(QVector3D::dotProduct(tempZ, viewDirection));
+    m_ViewCenter = m_Position + newDirection;
+}
+
+
+
 //void Camera::lookAt(GameObject *object)
 //{
 //    object->lookAtSelf(pos, viewCenter);
-//}
-
-
-////上下
-//void Camera::pitch(float angle)
-//{
-//    QVector3D forwardDirection = viewCenter - pos;
-//    forwardDirection.normalize();
-//    QVector3D rightDirection = QVector3D::crossProduct(forwardDirection, up);
-//    rightDirection.normalize();
-//    rotateView(angle, rightDirection.x(), rightDirection.y(), rightDirection.z());
-//}
-
-////左右  绕世界坐标y轴
-//void Camera::yaw(float angle)
-//{
-//    rotateView(angle, up.x(), up.y(), up.z());
-//}
-
-////绕哪个轴旋转多少角度 视点的变化
-//void Camera::rotateView(float angle, float x, float y, float z)
-//{
-//    QVector3D viewDirection = viewCenter - pos;
-//    QVector3D newDirection;
-//    float c = cosf(angle);
-//    float s = sinf(angle);
-//    QVector3D tempX(c + x * x * (1 - c), x * y * (1 - c) - z * s, x * z * (1 - c) + y * s);
-//    newDirection.setX(QVector3D::dotProduct(tempX, viewDirection));
-//    QVector3D tempY(x * y * (1 - c) + z * s, c + y * y * (1 - c), y * z * (1 - c) - x * s);
-//    newDirection.setY(QVector3D::dotProduct(tempY, viewDirection));
-//    QVector3D tempZ(x * z * (1 - c) - y * s, y * z * (1 - c) + x * s, c + z * z * (1 - c));
-//    newDirection.setZ(QVector3D::dotProduct(tempZ, viewDirection));
-//    viewCenter = pos + newDirection;
 //}
 
 

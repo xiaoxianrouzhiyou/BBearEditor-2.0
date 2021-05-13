@@ -43,21 +43,22 @@ private slots:
 
 private:
     void mousePressEvent(QMouseEvent *e) override;
+    void mouseMoveEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
 
     // Whether the right mouse button is pressed
     bool m_bRightPressed;
+    QPoint m_OriginalMousePos;
 
 
 //    void paintGL() override;
-//    void mouseMoveEvent(QMouseEvent *e) override;
+
 //    void dragEnterEvent(QDragEnterEvent *event) override;
 //    void dragMoveEvent(QDragMoveEvent *event) override;
 //    void dragLeaveEvent(QDragLeaveEvent *event) override;
 //    void dropEvent(QDropEvent *event) override;
 //    void wheelEvent(QWheelEvent *event) override;
 //    GLuint texture;
-//    QPoint originalPos;
 //    int deltaX;
 //    int deltaY;
 //    GameObject *prepareObject;

@@ -64,13 +64,62 @@ void BBEditViewOpenGLWidget::mousePressEvent(QMouseEvent *e)
     if (e->button() == Qt::RightButton)
     {
         m_bRightPressed = true;
-//        originalPos = e->globalPos();
-//        setCursor(Qt::BlankCursor);
+        m_OriginalMousePos = e->globalPos();
+        setCursor(Qt::BlankCursor);
     }
     else if (e->button() == Qt::LeftButton)
     {
 //        //开始拖动框选区 记录开始的点
 //        selectionRegionStart = e->pos();
+    }
+}
+
+void BBEditViewOpenGLWidget::mouseMoveEvent(QMouseEvent *e)
+{
+    if (e->buttons() & Qt::RightButton)
+    {
+        QPoint currentPos = e->globalPos();
+        float deltaX = currentPos.x() - m_OriginalMousePos.x();
+        float deltaY = currentPos.y() - m_OriginalMousePos.y();
+        // rotate camera
+        // Otherwise, the farther the current moves, the larger the delta
+        QCursor::setPos(m_OriginalMousePos);
+        //qDebug() << "rotate camera";
+        float angleRotatedByUp = deltaX / 1000;
+        float angleRotatedByRight = deltaY / 1000;
+        m_pScene->getCamera()->yaw(-angleRotatedByUp);
+        m_pScene->getCamera()->pitch(-angleRotatedByRight);
+    }
+    else if (e->buttons() & Qt::LeftButton)
+    {
+//        Ray ray = scene.camera.createRayFromScreen(e->pos().x(), e->pos().y());
+//        scene.transformCoordinate->transform(ray);
+//        if (!scene.transformCoordinate->getIsTransform())
+//        {
+//            //拖动鼠标 并且不是进行transform变换 进行框选操作
+//            if (isRegionSelecting)
+//            {
+//                //正在进行框选操作 显示框选区域 并选中选项的对象
+//                scene.setSelectionRegionVisible(true);
+//                regionSelectObjects(scene.setSelectionRegion(selectionRegionStart, e->pos()));
+//            }
+//            else
+//            {
+//                //还没有进入框选操作时
+//                //如果鼠标只移动很小一段 认为不是进行框选
+//                QPoint delta = e->pos() - selectionRegionStart;
+//                static int threshold = 49;
+//                if ((delta.x() * delta.x() + delta.y() * delta.y()) > threshold)
+//                {
+//                    isRegionSelecting = true;
+//                }
+//            }
+//        }
+    }
+    else
+    {
+//        Ray ray = scene.camera.createRayFromScreen(e->pos().x(), e->pos().y());
+//        scene.transformCoordinate->setRay(ray);
     }
 }
 
@@ -80,9 +129,8 @@ void BBEditViewOpenGLWidget::mouseReleaseEvent(QMouseEvent *e)
     {
         // end camera movement
         m_bRightPressed = false;
-//        QCursor::setPos(originalPos);
-//        setCursor(Qt::ArrowCursor);
-//        //qDebug() << "qweasd" << false;
+        QCursor::setPos(m_OriginalMousePos);
+        setCursor(Qt::ArrowCursor);
         m_pScene->getCamera()->resetMove();
     }
     else if (e->button() == Qt::LeftButton)
@@ -141,56 +189,7 @@ void BBEditViewOpenGLWidget::mouseReleaseEvent(QMouseEvent *e)
 
 
 
-//void OpenGLWidget::mouseMoveEvent(QMouseEvent *e)
-//{
-//    if (e->buttons() & Qt::RightButton)
-//    {
-//        QPoint currentPos = e->globalPos();
-//        deltaX = currentPos.x() - originalPos.x();
-//        deltaY = currentPos.y() - originalPos.y();
-//        //qDebug() << deltaX << deltaY;
-//        //处理摄像机的旋转
-//        //否则current移动得越远 delta越大
-//        QCursor::setPos(originalPos);
 
-//        //qDebug() << "摄像机旋转";
-//        float angleRotatedByUp = (float) deltaX / 1000;
-//        float angleRotatedByRight = (float) deltaY / 1000;
-//        scene.camera.yaw(-angleRotatedByUp);
-//        scene.camera.pitch(-angleRotatedByRight);
-//    }
-//    else if (e->buttons() & Qt::LeftButton)
-//    {
-//        Ray ray = scene.camera.createRayFromScreen(e->pos().x(), e->pos().y());
-//        scene.transformCoordinate->transform(ray);
-//        if (!scene.transformCoordinate->getIsTransform())
-//        {
-//            //拖动鼠标 并且不是进行transform变换 进行框选操作
-//            if (isRegionSelecting)
-//            {
-//                //正在进行框选操作 显示框选区域 并选中选项的对象
-//                scene.setSelectionRegionVisible(true);
-//                regionSelectObjects(scene.setSelectionRegion(selectionRegionStart, e->pos()));
-//            }
-//            else
-//            {
-//                //还没有进入框选操作时
-//                //如果鼠标只移动很小一段 认为不是进行框选
-//                QPoint delta = e->pos() - selectionRegionStart;
-//                static int threshold = 49;
-//                if ((delta.x() * delta.x() + delta.y() * delta.y()) > threshold)
-//                {
-//                    isRegionSelecting = true;
-//                }
-//            }
-//        }
-//    }
-//    else
-//    {
-//        Ray ray = scene.camera.createRayFromScreen(e->pos().x(), e->pos().y());
-//        scene.transformCoordinate->setRay(ray);
-//    }
-//}
 
 
 

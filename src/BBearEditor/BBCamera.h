@@ -15,18 +15,18 @@ public:
     void switchTo3D();
     void switchTo2D();
     void move(char dir, bool bMove);
-//    void pitch(float angle);
-//    void yaw(float angle);
-//    void rotateView(float angle, float x, float y, float z);
+    void pitch(float fAngle);
+    void yaw(float fAngle);
+
 
 
 //    void lookAt(GameObject *object);
 //    Ray createRayFromScreen(int x, int y);
-
 //    void setMoveSpeed(int dir);
 
-
 private:
+    void rotateView(float fAngle, float x, float y, float z);
+
     QVector3D m_Position;
     // Which point are you looking at
     QVector3D m_ViewCenter;
