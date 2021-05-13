@@ -3,10 +3,13 @@
 #include "BBUtils.h"
 #include <QTimer>
 #include <QMatrix4x4>
+#include "BBScene.h"
 
 BBOpenGLWidget::BBOpenGLWidget(QWidget *parent)
     : QOpenGLWidget(parent)
 {
+    m_pScene = new BBScene;
+
     QSurfaceFormat format;
     format.setSamples(16);
     setFormat(format);
@@ -21,6 +24,7 @@ BBOpenGLWidget::BBOpenGLWidget(QWidget *parent)
 
 BBOpenGLWidget::~BBOpenGLWidget()
 {
+    BB_SAFE_DELETE(m_pScene);
     BB_SAFE_DELETE(m_pRenderTimer);
 }
 
@@ -41,7 +45,7 @@ void BBOpenGLWidget::initializeGL()
     // Clear the color, the background becomes black, don't care the alpha
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-    m_Scene.init();
+    m_pScene->init();
 }
 
 void BBOpenGLWidget::resizeGL(int width, int height)
@@ -55,7 +59,7 @@ void BBOpenGLWidget::resizeGL(int width, int height)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    m_Scene.resize(width, height);
+    m_pScene->resize(width, height);
 }
 
 void BBOpenGLWidget::paintGL()
@@ -63,5 +67,5 @@ void BBOpenGLWidget::paintGL()
     // Erase the current background color, color buffer and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_MULTISAMPLE);
-    m_Scene.render();
+    m_pScene->render();
 }

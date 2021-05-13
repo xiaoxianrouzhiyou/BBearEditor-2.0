@@ -6,6 +6,12 @@ BBCamera::BBCamera()
 {
     m_fMoveSpeed = 10.0f;
     resetMove();
+
+    for (int i = 0; i < 16; i++)
+    {
+        m_ModelView[i] = 0;
+        m_Projection[i] = 0;
+    }
 }
 
 void BBCamera::resetMove()
@@ -25,49 +31,45 @@ void BBCamera::update(float fDeltaTime)
     QVector3D rightDirection = QVector3D::crossProduct(forwardDirection, m_Up);
     rightDirection.normalize();
 
-//    if (m_bMoveLeft)
-//    {
-//        m_Position = m_Position - m_fMoveSpeed * fDeltaTime * rightDirection;
-//        m_ViewCenter = m_ViewCenter - m_fMoveSpeed * fDeltaTime * rightDirection;
-//    }
-//    else if (m_bMoveRight)
-//    {
-//        m_Position = m_Position + m_fMoveSpeed * fDeltaTime * rightDirection;
-//        m_ViewCenter = m_ViewCenter + m_fMoveSpeed * fDeltaTime * rightDirection;
-//    }
-//    if (m_bMoveForward)
-//    {
-//        m_Position = m_Position + m_fMoveSpeed * fDeltaTime * forwardDirection;
-//        m_ViewCenter = m_ViewCenter + m_fMoveSpeed * fDeltaTime * forwardDirection;
-//    }
-//    else if (m_bMoveBack)
-//    {
-//        m_Position = m_Position - m_fMoveSpeed * fDeltaTime * forwardDirection;
-//        m_ViewCenter = m_ViewCenter - m_fMoveSpeed * fDeltaTime * forwardDirection;
-//    }
-//    if (m_bMoveUp)
-//    {
-//        m_Position = m_Position + m_fMoveSpeed * fDeltaTime * m_Up;
-//        m_ViewCenter = m_ViewCenter + m_fMoveSpeed * fDeltaTime * m_Up;
-//    }
-//    else if (m_bMoveDown)
-//    {
-//        m_Position = m_Position - m_fMoveSpeed * fDeltaTime * m_Up;
-//        m_ViewCenter = m_ViewCenter - m_fMoveSpeed * fDeltaTime * m_Up;
-//    }
+    float d = m_fMoveSpeed * fDeltaTime;
+    if (m_bMoveLeft)
+    {
+        m_Position = m_Position - d * rightDirection;
+        m_ViewCenter = m_ViewCenter - d * rightDirection;
+    }
+    else if (m_bMoveRight)
+    {
+        m_Position = m_Position + d * rightDirection;
+        m_ViewCenter = m_ViewCenter + d * rightDirection;
+    }
+    if (m_bMoveForward)
+    {
+        m_Position = m_Position + d * forwardDirection;
+        m_ViewCenter = m_ViewCenter + d * forwardDirection;
+    }
+    else if (m_bMoveBack)
+    {
+        m_Position = m_Position - d * forwardDirection;
+        m_ViewCenter = m_ViewCenter - d * forwardDirection;
+    }
+    if (m_bMoveUp)
+    {
+        m_Position = m_Position + d * m_Up;
+        m_ViewCenter = m_ViewCenter + d * m_Up;
+    }
+    else if (m_bMoveDown)
+    {
+        m_Position = m_Position - d * m_Up;
+        m_ViewCenter = m_ViewCenter - d * m_Up;
+    }
 
     // Reset, eliminate the influence of the previous frame on the current matrix
-//    glLoadIdentity();
-//    gluLookAt(m_Position.x(), m_Position.y(), m_Position.z(),
-//              m_ViewCenter.x(), m_ViewCenter.y(), m_ViewCenter.z(),
-//              m_Up.x(), m_Up.y(), m_Up.z());
-//    glGetDoublev(GL_MODELVIEW_MATRIX, m_ModelView);
-//    glGetDoublev(GL_PROJECTION_MATRIX, m_Projection);
-
-//    m_ViewMatrix = QMatrix4x4(m_ModelView[0], m_ModelView[4], m_ModelView[8], m_ModelView[12],
-//                              m_ModelView[1], m_ModelView[5], m_ModelView[9], m_ModelView[13],
-//                              m_ModelView[2], m_ModelView[6], m_ModelView[10], m_ModelView[14],
-//                              m_ModelView[3], m_ModelView[7], m_ModelView[11], m_ModelView[15]);
+    glLoadIdentity();
+    gluLookAt(m_Position.x(), m_Position.y(), m_Position.z(),
+              m_ViewCenter.x(), m_ViewCenter.y(), m_ViewCenter.z(),
+              m_Up.x(), m_Up.y(), m_Up.z());
+    glGetDoublev(GL_MODELVIEW_MATRIX, m_ModelView);
+    glGetDoublev(GL_PROJECTION_MATRIX, m_Projection);
 }
 
 //void Camera::lookAt(GameObject *object)

@@ -42,7 +42,6 @@ private:
     bool m_bMoveDown;
     GLdouble m_ModelView[16];
     GLdouble m_Projection[16];
-    QMatrix4x4 m_ViewMatrix;
 };
 
 #endif // BBCAMERA_H
