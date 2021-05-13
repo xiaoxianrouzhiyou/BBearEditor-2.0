@@ -169,6 +169,11 @@ void BBEditViewOpenGLWidget::mouseReleaseEvent(QMouseEvent *e)
     }
 }
 
+void BBEditViewOpenGLWidget::wheelEvent(QWheelEvent *event)
+{
+    m_pScene->getCamera()->setMoveSpeed(event->delta() > 0 ? 1 : -1);
+}
+
 
 //void OpenGLWidget::paintGL()
 //{
@@ -451,7 +456,4 @@ void BBEditViewOpenGLWidget::mouseReleaseEvent(QMouseEvent *e)
 
 //}
 
-//void OpenGLWidget::wheelEvent(QWheelEvent *event)
-//{
-//    scene.camera.setMoveSpeed(event->delta() > 0 ? 1 : -1);
-//}
+

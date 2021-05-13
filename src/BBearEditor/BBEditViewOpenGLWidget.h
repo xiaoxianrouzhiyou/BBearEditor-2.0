@@ -45,6 +45,7 @@ private:
     void mousePressEvent(QMouseEvent *e) override;
     void mouseMoveEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
+    void wheelEvent(QWheelEvent *event) override;
 
     // Whether the right mouse button is pressed
     bool m_bRightPressed;
@@ -57,7 +58,6 @@ private:
 //    void dragMoveEvent(QDragMoveEvent *event) override;
 //    void dragLeaveEvent(QDragLeaveEvent *event) override;
 //    void dropEvent(QDropEvent *event) override;
-//    void wheelEvent(QWheelEvent *event) override;
 //    GLuint texture;
 //    int deltaX;
 //    int deltaY;

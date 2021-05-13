@@ -143,6 +143,15 @@ void BBCamera::yaw(float fAngle)
     rotateView(fAngle, m_Up.x(), m_Up.y(), m_Up.z());
 }
 
+void BBCamera::setMoveSpeed(int dir)
+{
+    m_fMoveSpeed += 2 * dir;
+    if (m_fMoveSpeed < 1)
+        m_fMoveSpeed = 1;
+    else if (m_fMoveSpeed > 100)
+        m_fMoveSpeed = 100;
+}
+
 void BBCamera::rotateView(float fAngle, float x, float y, float z)
 {
     // Rotate an angle around an axis, the change of view
@@ -182,11 +191,4 @@ void BBCamera::rotateView(float fAngle, float x, float y, float z)
 //    return ray;
 //}
 
-//void Camera::setMoveSpeed(int dir)
-//{
-//    moveSpeed += 2 * dir;
-//    if (moveSpeed < 1)
-//        moveSpeed = 1;
-//    else if (moveSpeed > 100)
-//        moveSpeed = 100;
-//}
+

@@ -17,12 +17,12 @@ public:
     void move(char dir, bool bMove);
     void pitch(float fAngle);
     void yaw(float fAngle);
-
+    void setMoveSpeed(int dir);
 
 
 //    void lookAt(GameObject *object);
 //    Ray createRayFromScreen(int x, int y);
-//    void setMoveSpeed(int dir);
+
 
 private:
     void rotateView(float fAngle, float x, float y, float z);
