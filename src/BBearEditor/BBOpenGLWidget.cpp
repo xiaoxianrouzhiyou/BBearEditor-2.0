@@ -41,7 +41,7 @@ void BBOpenGLWidget::initializeGL()
     // Clear the color, the background becomes black, don't care the alpha
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-//    scene.init();
+    m_Scene.init();
 }
 
 void BBOpenGLWidget::resizeGL(int width, int height)
@@ -55,7 +55,7 @@ void BBOpenGLWidget::resizeGL(int width, int height)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-//    scene.resize(width, height);
+    m_Scene.resize(width, height);
 }
 
 void BBOpenGLWidget::paintGL()
@@ -63,5 +63,5 @@ void BBOpenGLWidget::paintGL()
     // Erase the current background color, color buffer and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_MULTISAMPLE);
-//    scene.render();
+    m_Scene.render();
 }

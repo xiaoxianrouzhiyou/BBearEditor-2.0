@@ -35,7 +35,9 @@ SOURCES += \
     BBHierarchyTreeWidget.cpp \
     BBGameObject.cpp \
     BBConfirmationDialog.cpp \
-    BBOpenGLWidget.cpp
+    BBOpenGLWidget.cpp \
+    BBScene.cpp \
+    BBCamera.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
@@ -48,7 +50,9 @@ HEADERS += \
     BBHierarchyTreeWidget.h \
     BBGameObject.h \
     BBConfirmationDialog.h \
-    BBOpenGLWidget.h
+    BBOpenGLWidget.h \
+    BBScene.h \
+    BBCamera.h
 
 FORMS += \
     BBUITitleBar.ui \

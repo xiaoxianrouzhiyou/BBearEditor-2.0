@@ -3,6 +3,7 @@
 
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
+#include "BBScene.h"
 
 class QTimer;
 class BBOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
@@ -12,7 +13,7 @@ class BBOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 public:
     BBOpenGLWidget(QWidget *parent = 0);
     ~BBOpenGLWidget();
-//    Scene scene;
+    BBScene m_Scene;
 
 protected:
     void initializeGL() override;
