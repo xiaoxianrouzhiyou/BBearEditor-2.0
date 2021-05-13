@@ -14,7 +14,7 @@ public:
     void setViewportSize(int width, int height);
     void switchTo3D();
     void switchTo2D();
-//    void move(char dir, bool isMove);
+    void move(char dir, bool bMove);
 //    void pitch(float angle);
 //    void yaw(float angle);
 //    void rotateView(float angle, float x, float y, float z);

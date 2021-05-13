@@ -101,38 +101,37 @@ void BBCamera::switchTo2D()
     glLoadIdentity();
 }
 
+void BBCamera::move(char dir, bool bMove)
+{
+    switch (dir) {
+    case 'A':
+        m_bMoveLeft = bMove;
+        break;
+    case 'D':
+        m_bMoveRight = bMove;
+        break;
+    case 'W':
+        m_bMoveForward = bMove;
+        break;
+    case 'S':
+        m_bMoveBack = bMove;
+        break;
+    case 'Q':
+        m_bMoveDown = bMove;
+        break;
+    case 'E':
+        m_bMoveUp = bMove;
+        break;
+    default:
+        break;
+    }
+}
+
 //void Camera::lookAt(GameObject *object)
 //{
 //    object->lookAtSelf(pos, viewCenter);
 //}
 
-
-
-//void Camera::move(char dir, bool isMove)
-//{
-//    switch (dir) {
-//    case 'A':
-//        isMoveLeft = isMove;
-//        break;
-//    case 'D':
-//        isMoveRight = isMove;
-//        break;
-//    case 'W':
-//        isMoveForward = isMove;
-//        break;
-//    case 'S':
-//        isMoveBack = isMove;
-//        break;
-//    case 'Q':
-//        isMoveDown = isMove;
-//        break;
-//    case 'E':
-//        isMoveUp = isMove;
-//        break;
-//    default:
-//        break;
-//    }
-//}
 
 ////上下
 //void Camera::pitch(float angle)

@@ -58,6 +58,18 @@ void BBScene::render()
     // refresh camera position and direction, update pos and ..., Convenient for subsequent use
     m_pCamera->update(m_fUpdateRate);
 
+    // test
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(-5, -5, -10);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(5, -5, -10);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(5, 5, -10);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(-5, 5, -10);
+    glEnd();
+
 //    //执行脚本的update接口
 //    for (QList<GameObject*>::Iterator itr = models.begin(); itr != models.end(); itr++)
 //    {
@@ -100,17 +112,16 @@ void BBScene::render()
 //    glEnable(GL_TEXTURE_2D);
 //    glBindTexture(GL_TEXTURE_2D, mFBO->getBuffer("depth"));
 
-    // test
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(-50, -50, 0);
-    glTexCoord2f(1.0f, 0.0f);
-    glVertex3f(50, -50, 0);
-    glTexCoord2f(1.0f, 1.0f);
-    glVertex3f(50, 50, 0);
-    glTexCoord2f(0.0f, 1.0f);
-    glVertex3f(-50, 50, 0);
-    glEnd();
+//    glBegin(GL_QUADS);
+//    glTexCoord2f(0.0f, 0.0f);
+//    glVertex3f(-50, -50, 0);
+//    glTexCoord2f(1.0f, 0.0f);
+//    glVertex3f(50, -50, 0);
+//    glTexCoord2f(1.0f, 1.0f);
+//    glVertex3f(50, 50, 0);
+//    glTexCoord2f(0.0f, 1.0f);
+//    glVertex3f(-50, 50, 0);
+//    glEnd();
 }
 
 void BBScene::resize(float width, float height)

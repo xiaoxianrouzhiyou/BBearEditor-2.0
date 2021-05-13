@@ -18,6 +18,7 @@ public:
 private:
     void setWindowLayout();
     void setGameObjectDockWidget();
+    void setConnect();
 
     Ui::BBUIMainWindow *m_pUi;
 };

@@ -948,7 +948,7 @@ FileList::item:selected {
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="dockEditview">
+  <widget class="BBEditViewDockWidget" name="dockEditview">
    <property name="focusPolicy">
     <enum>Qt::StrongFocus</enum>
    </property>
@@ -979,7 +979,7 @@ FileList::item:selected {
       <number>0</number>
      </property>
      <item row="0" column="0">
-      <widget class="BBOpenGLWidget" name="openGLWidget" native="true"/>
+      <widget class="BBEditViewOpenGLWidget" name="openGLWidget" native="true"/>
      </item>
     </layout>
    </widget>
@@ -1292,18 +1292,28 @@ FileList::item:selected {
   </customwidget>
   <customwidget>
    <class>BBObjectListWidget</class>
-   <extends>QWidget</extends>
+   <extends>QListWidget</extends>
    <header>bbobjectlistwidget.h</header>
   </customwidget>
   <customwidget>
    <class>BBHierarchyTreeWidget</class>
-   <extends>QWidget</extends>
+   <extends>QTreeWidget</extends>
    <header>bbhierarchytreewidget.h</header>
   </customwidget>
   <customwidget>
    <class>BBTreeWidget</class>
-   <extends>QWidget</extends>
+   <extends>QTreeWidget</extends>
    <header>bbtreewidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BBEditViewDockWidget</class>
+   <extends>QDockWidget</extends>
+   <header>bbeditviewdockwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BBEditViewOpenGLWidget</class>
+   <extends>QOpenGLWidget</extends>
+   <header>bbeditviewopenglwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -9,6 +9,7 @@ BBUIMainWindow::BBUIMainWindow(QWidget *parent) :
     m_pUi->setupUi(this);
     setWindowLayout();
     setGameObjectDockWidget();
+    setConnect();
 }
 
 BBUIMainWindow::~BBUIMainWindow()
@@ -49,3 +50,16 @@ void BBUIMainWindow::setGameObjectDockWidget()
     m_pUi->listBaseGameObject->setMimeType(BB_MIMETYPE_BASEOBJECT);
 }
 
+void BBUIMainWindow::setConnect()
+{
+    // The handling of key events in the EditView in OpenGL
+    QObject::connect(m_pUi->dockEditview, SIGNAL(pressMoveKeySignal(char)),
+                     m_pUi->openGLWidget, SLOT(pressMoveKeySlot(char)));
+    QObject::connect(m_pUi->dockEditview, SIGNAL(releaseMoveKeySignal(char)),
+                     m_pUi->openGLWidget, SLOT(releaseMoveKeySlot(char)));
+    QObject::connect(m_pUi->dockEditview, SIGNAL(pressTransformSignal(char)),
+                     m_pUi->openGLWidget, SLOT(pressTransformSlot(char)));
+    QObject::connect(m_pUi->dockEditview, SIGNAL(pressESCSignal()), m_pUi->openGLWidget, SLOT(pressESCSlot()));
+    QObject::connect(m_pUi->dockEditview, SIGNAL(keyPress(QKeyEvent*)), m_pUi->openGLWidget, SLOT(onKeyPress(QKeyEvent*)));
+//    QObject::connect(this, SIGNAL(sceneMultipleSelectKey(bool)), ui->openGLWidget, SLOT(multipleSelectKey(bool)));
+}

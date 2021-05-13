@@ -13,6 +13,8 @@ public:
     void render();
     void resize(float width, float height);
 
+    inline BBCamera* getCamera() { return m_pCamera; }
+
 private:
     float m_fUpdateRate;
     BBCamera *m_pCamera;
