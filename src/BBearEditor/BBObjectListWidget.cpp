@@ -90,8 +90,8 @@ bool BBObjectListWidget::loadListItems(const char *xmlFilePath)
         BB_SAFE_DELETE(pAttrIcon);
     if(pAttrFile)
         BB_SAFE_DELETE(pAttrFile);
-    if(pAttrName)
-        BB_SAFE_DELETE(pAttrName);
+//    if(pAttrName)
+//        BB_SAFE_DELETE(pAttrName);
     return bResult;
 }
 

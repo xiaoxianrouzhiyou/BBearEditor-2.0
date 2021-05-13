@@ -37,7 +37,8 @@ SOURCES += \
     BBConfirmationDialog.cpp \
     BBOpenGLWidget.cpp \
     BBScene.cpp \
-    BBCamera.cpp
+    BBCamera.cpp \
+    BBEditViewDockWidget.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
@@ -52,7 +53,8 @@ HEADERS += \
     BBConfirmationDialog.h \
     BBOpenGLWidget.h \
     BBScene.h \
-    BBCamera.h
+    BBCamera.h \
+    BBEditViewDockWidget.h
 
 FORMS += \
     BBUITitleBar.ui \

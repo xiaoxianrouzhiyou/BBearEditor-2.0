@@ -11,7 +11,7 @@ class BBOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
     Q_OBJECT
 
 public:
-    BBOpenGLWidget(QWidget *parent = 0);
+    explicit BBOpenGLWidget(QWidget *parent = 0);
     ~BBOpenGLWidget();
 
 protected:
