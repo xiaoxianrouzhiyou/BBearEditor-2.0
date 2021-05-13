@@ -9,8 +9,8 @@ BBCamera::BBCamera()
 
     for (int i = 0; i < 16; i++)
     {
-        m_ModelView[i] = 0;
-        m_Projection[i] = 0;
+        m_pModelView[i] = 0;
+        m_pProjection[i] = 0;
     }
 }
 
@@ -68,8 +68,37 @@ void BBCamera::update(float fDeltaTime)
     gluLookAt(m_Position.x(), m_Position.y(), m_Position.z(),
               m_ViewCenter.x(), m_ViewCenter.y(), m_ViewCenter.z(),
               m_Up.x(), m_Up.y(), m_Up.z());
-    glGetDoublev(GL_MODELVIEW_MATRIX, m_ModelView);
-    glGetDoublev(GL_PROJECTION_MATRIX, m_Projection);
+    glGetDoublev(GL_MODELVIEW_MATRIX, m_pModelView);
+    glGetDoublev(GL_PROJECTION_MATRIX, m_pProjection);
+}
+
+void BBCamera::setViewportSize(int width, int height)
+{
+    m_iViewportWidth = width;
+    m_iViewportHeight = height;
+    m_pViewport[0] = 0;
+    m_pViewport[1] = 0;
+    m_pViewport[2] = m_iViewportWidth;
+    m_pViewport[3] = m_iViewportHeight;
+}
+
+void BBCamera::switchTo3D()
+{
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(50.0f, (GLdouble) m_iViewportWidth / m_iViewportHeight, 0.1f, 1000.0f);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+}
+
+void BBCamera::switchTo2D()
+{
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    // left, right, bottom, top edge of 2D window
+    gluOrtho2D(-m_iViewportWidth / 2, m_iViewportWidth / 2, -m_iViewportHeight / 2, m_iViewportHeight / 2);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
 //void Camera::lookAt(GameObject *object)
@@ -137,34 +166,8 @@ void BBCamera::update(float fDeltaTime)
 //    viewCenter = pos + newDirection;
 //}
 
-//void Camera::switchTo3D()
-//{
-//    glMatrixMode(GL_PROJECTION);
-//    glLoadIdentity();
-//    gluPerspective(50.0f, (GLdouble)viewportWidth / viewportHeight, 0.1f, 1000.0f);
-//    glMatrixMode(GL_MODELVIEW);
-//    glLoadIdentity();
-//}
 
-//void Camera::switchTo2D()
-//{
-//    glMatrixMode(GL_PROJECTION);
-//    glLoadIdentity();
-//    //2D窗口的左右下上边界
-//    gluOrtho2D(-viewportWidth / 2, viewportWidth / 2, -viewportHeight / 2, viewportHeight / 2);
-//    glMatrixMode(GL_MODELVIEW);
-//    glLoadIdentity();
-//}
 
-//void Camera::setViewportSize(int width, int height)
-//{
-//    viewportWidth = width;
-//    viewportHeight = height;
-//    viewport[0] = 0;
-//    viewport[1] = 0;
-//    viewport[2] = viewportWidth;
-//    viewport[3] = viewportHeight;
-//}
 
 //Ray Camera::createRayFromScreen(int x, int y)
 //{

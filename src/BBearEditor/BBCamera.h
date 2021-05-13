@@ -2,29 +2,27 @@
 #define BBCAMERA_H
 
 #include <QVector3D>
-#include <QMatrix4x4>
-#include <QOpenGLFunctions>
 #include <GL/glu.h>
 
-class BBGameObject;
+//class BBGameObject;
 class BBCamera
 {
 public:
     BBCamera();
     void resetMove();
     void update(float fDeltaTime);
+    void setViewportSize(int width, int height);
+    void switchTo3D();
+    void switchTo2D();
 //    void move(char dir, bool isMove);
 //    void pitch(float angle);
 //    void yaw(float angle);
 //    void rotateView(float angle, float x, float y, float z);
-//    void switchTo3D();
-//    void switchTo2D();
-//    void setViewportSize(int width, int height);
+
+
 //    void lookAt(GameObject *object);
 //    Ray createRayFromScreen(int x, int y);
-//    GLint viewport[4];
-//    int viewportWidth;
-//    int viewportHeight;
+
 //    void setMoveSpeed(int dir);
 
 
@@ -40,8 +38,11 @@ private:
     bool m_bMoveBack;
     bool m_bMoveUp;
     bool m_bMoveDown;
-    GLdouble m_ModelView[16];
-    GLdouble m_Projection[16];
+    GLdouble m_pModelView[16];
+    GLdouble m_pProjection[16];
+    int m_iViewportWidth;
+    int m_iViewportHeight;
+    GLint m_pViewport[4];
 };
 
 #endif // BBCAMERA_H

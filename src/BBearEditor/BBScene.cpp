@@ -1,9 +1,11 @@
 #include "BBScene.h"
 #include "BBUtils.h"
+#include "BBCamera.h"
 
 BBScene::BBScene()
 {
     m_fUpdateRate = (float) BB_CONSTANT_UPDATE_RATE / 1000;
+    m_pCamera = new BBCamera;
 //    skybox = new Skybox();
 //    horizontalPlane = new HorizontalPlane();
 //    selectionRegion = new SelectionRegion();
@@ -21,6 +23,7 @@ BBScene::BBScene()
 
 BBScene::~BBScene()
 {
+    BB_SAFE_DELETE(m_pCamera);
 //    QList<GameObject*> objects = models + directionLights + pointLights + spotLights + audios;
 //    QList<GameObject*>::Iterator itr;
 //    for (itr = objects.begin(); itr != objects.end(); itr++)
@@ -32,8 +35,7 @@ BBScene::~BBScene()
 
 void BBScene::init()
 {
-//    //摄像机
-//    camera.setViewportSize(800.0f, 600.0f);
+    m_pCamera->setViewportSize(800.0f, 600.0f);
 //    //天空盒
 //    skybox->init(engineResourcesPath + "skyboxs/1/");
 //    //水平面
@@ -51,10 +53,10 @@ void BBScene::init()
 
 void BBScene::render()
 {
-//    //3D摄像机模式
-//    camera.switchTo3D();
-//    //摄像机位置方向刷新 pos viewMatrix等数据更新 方便后续使用
-//    camera.update(updateRate);
+    // 3D camera mode
+    m_pCamera->switchTo3D();
+    // refresh camera position and direction, update pos and ..., Convenient for subsequent use
+    m_pCamera->update(m_fUpdateRate);
 
 //    //执行脚本的update接口
 //    for (QList<GameObject*>::Iterator itr = models.begin(); itr != models.end(); itr++)
@@ -88,8 +90,8 @@ void BBScene::render()
 //    //particle->update();
 //    //particle->render(camera);
 
-//    //2D摄像机模式
-//    camera.switchTo2D();
+    // 2D camera mode
+    m_pCamera->switchTo2D();
 //    //渲染框选区域
 //    selectionRegion->render();
 //    //sprite.draw();
@@ -97,22 +99,24 @@ void BBScene::render()
 //    //实心？   会导致选框绘制不出
 //    glEnable(GL_TEXTURE_2D);
 //    glBindTexture(GL_TEXTURE_2D, mFBO->getBuffer("depth"));
-//    glBegin(GL_QUADS);
-//    /*glTexCoord2f(0.0f, 0.0f);
-//    glVertex3f(-50, -50, 0);
-//    glTexCoord2f(1.0f, 0.0f);
-//    glVertex3f(50, -50, 0);
-//    glTexCoord2f(1.0f, 1.0f);
-//    glVertex3f(50, 50, 0);
-//    glTexCoord2f(0.0f, 1.0f);
-//    glVertex3f(-50, 50, 0);*/
-//    glEnd();
+
+    // test
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(-50, -50, 0);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(50, -50, 0);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(50, 50, 0);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(-50, 50, 0);
+    glEnd();
 }
 
 void BBScene::resize(float width, float height)
 {
-//    //3D摄像机 size又发生变化时
-//    camera.setViewportSize(width, height);
+    // 3D camera, resize
+    m_pCamera->setViewportSize(width, height);
 //    //shader投影矩阵改变
 //    QList<GameObject*> objects = models + directionLights + pointLights + spotLights + audios;
 //    QList<GameObject*>::Iterator itr;

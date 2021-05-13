@@ -2,6 +2,7 @@
 #define BBSCENE_H
 
 
+class BBCamera;
 class BBScene
 {
 public:
@@ -14,6 +15,7 @@ public:
 
 private:
     float m_fUpdateRate;
+    BBCamera *m_pCamera;
 //    Skybox *skybox;
 //    QList<GameObject*> models;
 //    QList<GameObject*> directionLights;
