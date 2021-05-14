@@ -40,7 +40,9 @@ SOURCES += \
     BBCamera.cpp \
     BBEditViewDockWidget.cpp \
     BBEditViewOpenGLWidget.cpp \
-    BBRenderableObject.cpp
+    BBRenderableObject.cpp \
+    BBGLShader.cpp \
+    BBGLBuffers.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
@@ -58,7 +60,9 @@ HEADERS += \
     BBCamera.h \
     BBEditViewDockWidget.h \
     BBEditViewOpenGLWidget.h \
-    BBRenderableObject.h
+    BBRenderableObject.h \
+    BBGLShader.h \
+    BBGLBuffers.h
 
 FORMS += \
     BBUITitleBar.ui \
@@ -75,4 +79,4 @@ INCLUDEPATH += \
     ../../includes/fbxsdk \
     ../../includes/lua \
 
-LIBS += -lopengl32 -lglu32
+LIBS += -lopengl32 -lglu32 -lglut

@@ -3,6 +3,9 @@
 
 #include "BBGameObject.h"
 
+class BBGLShader;
+class BBCamera;
+class BBGLVertexBuffer;
 class BBRenderableObject : public BBGameObject
 {
 public:
@@ -29,10 +32,8 @@ public:
 protected:
     virtual void draw();
     bool m_bVisible;
-
-
-//    GLShader mShader;
-//    VertexBuffer *mVertexBuffer;
+    BBGLShader *m_pShader;
+    BBGLVertexBuffer *m_pVertexBuffer;
 
 };
 

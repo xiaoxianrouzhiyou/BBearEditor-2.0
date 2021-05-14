@@ -19,6 +19,8 @@ public:
     void pitch(float fAngle);
     void yaw(float fAngle);
     void setMoveSpeed(int dir);
+    inline QVector3D getPosition() { return m_Position; }
+    inline QMatrix4x4 getViewMatrix() { return m_ViewMatrix; }
 
 
 //    void lookAt(GameObject *object);

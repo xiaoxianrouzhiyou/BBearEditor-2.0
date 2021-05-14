@@ -24,7 +24,7 @@ bool BBObjectListWidget::loadListItems(const char *xmlFilePath)
 {
     // Load external resources through .xml
     bool bResult = false;
-    FILE *pFile = NULL;
+    int nFileSize = 0;
     char *pData = NULL;
     rapidxml::xml_node<> *pRoot = NULL;
     rapidxml::xml_node<> *pModel = NULL;
@@ -33,22 +33,8 @@ bool BBObjectListWidget::loadListItems(const char *xmlFilePath)
     rapidxml::xml_attribute<> *pAttrName = NULL;
 
     do{
-        pFile = fopen(xmlFilePath, "rb");
-        BB_PROCESS_ERROR(pFile);
-        // Seek the pointer to the end of the file
-        BB_PROCESS_ERROR(BB_SUCCEEDED(fseek(pFile, 0, SEEK_END)));
-        // Get the size of the file
-        size_t length = ftell(pFile);
-        BB_PROCESS_ERROR(length);
-        // Seek to the beginning of the file
-        BB_PROCESS_ERROR(BB_SUCCEEDED(fseek(pFile, 0, SEEK_SET)));
-        // +1 Terminator
-        pData = new char[length + 1];
+        pData = BBUtils::loadFileContent(xmlFilePath, nFileSize);
         BB_PROCESS_ERROR(pData);
-        // 1*length is the size of the file to be read
-        BB_PROCESS_ERROR(fread(pData, 1, length, pFile));
-        // Terminator
-        pData[length] = 0;
         // Parsing xml
         rapidxml::xml_document<> doc;
         doc.parse<0>(pData);
@@ -78,18 +64,16 @@ bool BBObjectListWidget::loadListItems(const char *xmlFilePath)
         bResult = true;
     }while(0);
 
-    if(pFile)
-        fclose(pFile);
     if(pData)
         BB_SAFE_DELETE_ARRAY(pData);
-    if(pRoot)
-        BB_SAFE_DELETE(pRoot);
-    if(pModel)
-        BB_SAFE_DELETE(pModel);
-    if(pAttrIcon)
-        BB_SAFE_DELETE(pAttrIcon);
-    if(pAttrFile)
-        BB_SAFE_DELETE(pAttrFile);
+//    if(pRoot)
+//        BB_SAFE_DELETE(pRoot);
+//    if(pModel)
+//        BB_SAFE_DELETE(pModel);
+//    if(pAttrIcon)
+//        BB_SAFE_DELETE(pAttrIcon);
+//    if(pAttrFile)
+//        BB_SAFE_DELETE(pAttrFile);
 //    if(pAttrName)
 //        BB_SAFE_DELETE(pAttrName);
     return bResult;

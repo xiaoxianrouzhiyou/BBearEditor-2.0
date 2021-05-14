@@ -1,4 +1,8 @@
 #include "BBRenderableObject.h"
+#include "BBGLShader.h"
+#include "BBUtils.h"
+#include "BBCamera.h"
+#include "BBGLBuffers.h"
 
 BBRenderableObject::BBRenderableObject()
     : BBRenderableObject(0, 0, 0, 0, 0, 0, 1, 1, 1)
@@ -10,11 +14,13 @@ BBRenderableObject::BBRenderableObject(float px, float py, float pz, float rx, f
     : BBGameObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
     m_bVisible = true;
+    m_pVertexBuffer = NULL;
 }
 
 BBRenderableObject::~BBRenderableObject()
 {
-
+    BB_SAFE_DELETE(m_pShader);
+    BB_SAFE_DELETE(m_pVertexBuffer);
 }
 
 void BBRenderableObject::init(QString path)
@@ -24,19 +30,27 @@ void BBRenderableObject::init(QString path)
 
 void BBRenderableObject::render(BBCamera *pCamera)
 {
-//    if (m_bVisible)
-//        mShader.render([this]()->void { draw();}, mModelMatrix, camera.viewMatrix, camera.pos, mVertexBuffer);
+    if (m_bVisible)
+        m_pShader->render([this]()->void { draw(); },
+                          m_ModelMatrix,
+                          pCamera->getViewMatrix(),
+                          pCamera->getPosition(),
+                          m_pVertexBuffer);
 }
 
 void BBRenderableObject::render(QMatrix4x4 modelMatrix, BBCamera *pCamera)
 {
-//    if (m_bVisible)
-//        mShader.render([this]()->void { draw();}, modelMatrix, camera.viewMatrix, camera.pos, mVertexBuffer);
+    if (m_bVisible)
+        m_pShader->render([this]()->void { draw(); },
+                          modelMatrix,
+                          pCamera->getViewMatrix(),
+                          pCamera->getPosition(),
+                          m_pVertexBuffer);
 }
 
 void BBRenderableObject::resize(float fWidth, float fHeight)
 {
-//    mShader.resize(width, height);
+    m_pShader->resize(fWidth, fHeight);
 }
 
 void BBRenderableObject::draw()

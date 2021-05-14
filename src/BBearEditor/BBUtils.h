@@ -4,7 +4,7 @@
 #define BB_SAFE_DELETE(p) do{ delete p; p = NULL;} while(0)
 #define BB_SAFE_DELETE_ARRAY(p) do{ delete []p; p = NULL;} while(0)
 #define BB_PROCESS_ERROR(p) if(!p) break
-#define BB_SUCCEEDED(hr) ((HRESULT)(hr)>=0)
+#define BB_SUCCEEDED(hr) (hr>=0)
 
 #define BB_MIMETYPE_BASEOBJECT "BaseObject"
 #define BB_MIMETYPE_LIGHTOBJECT "LightObject"
@@ -19,11 +19,15 @@
 
 #define BB_CONSTANT_UPDATE_RATE 16
 
+#include <QString>
+
 class BBUtils
 {
 public:
     BBUtils();
     ~BBUtils();
+
+    static char *loadFileContent(const char *filePath, int &nFileSize);
 };
 
 #endif // BBUTILS_H
