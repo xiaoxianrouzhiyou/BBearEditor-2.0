@@ -17,38 +17,31 @@ private:
 };
 
 
-class BBSkyBox
+class BBSkyBox : public BBGameObject
 {
 public:
     BBSkyBox();
-};
+    ~BBSkyBox();
 
-
-
-//class Skybox : public GameObject
-//{
-//public:
-//    Skybox();
-//    void init(QString path);
-//    void render(Camera camera) override;
-//    void resize(float width, float height) override;
+    void init(const QString path) override;
+    void render(BBCamera *pCamera) override;
+    void resize(float fWidth, float fHeight) override;
 //    void change(QString path);
 
-//private:
-//    SkyElement *front;
-//    SkyElement *back;
-//    SkyElement *left;
-//    SkyElement *right;
-//    SkyElement *top;
-//    SkyElement *bottom;
-//    void initFront();
-//    void initBack();
-//    void initLeft();
-//    void initRight();
-//    void initTop();
-//    void initBottom();
-
-//};
+private:
+    BBSkyBoxSide *m_pFront;
+    BBSkyBoxSide *m_pBack;
+    BBSkyBoxSide *m_pLeft;
+    BBSkyBoxSide *m_pRight;
+    BBSkyBoxSide *m_pTop;
+    BBSkyBoxSide *m_pBottom;
+    void initFront();
+    void initBack();
+    void initLeft();
+    void initRight();
+    void initTop();
+    void initBottom();
+};
 
 
 #endif // BBSKYBOX_H

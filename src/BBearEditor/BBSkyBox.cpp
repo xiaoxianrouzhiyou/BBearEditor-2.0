@@ -2,13 +2,13 @@
 #include "BBGLBuffers.h"
 #include "BBCamera.h"
 #include "BBGLShader.h"
+#include "BBUtils.h"
 
 //--------------------
 // BBSkyBoxSide
 //--------------------
 
 BBSkyBoxSide::BBSkyBoxSide(BBGLVertexBuffer *pVertexBuffer)
-    : BBRenderableObject()
 {
     m_pVertexBuffer = pVertexBuffer;
 }
@@ -40,53 +40,141 @@ void BBSkyBoxSide::draw()
 
 BBSkyBox::BBSkyBox()
 {
-
+    initFront();
+    initBack();
+    initLeft();
+    initRight();
+    initTop();
+    initBottom();
 }
 
+BBSkyBox::~BBSkyBox()
+{
+    BB_SAFE_DELETE(m_pFront);
+    BB_SAFE_DELETE(m_pBack);
+    BB_SAFE_DELETE(m_pLeft);
+    BB_SAFE_DELETE(m_pRight);
+    BB_SAFE_DELETE(m_pTop);
+    BB_SAFE_DELETE(m_pBottom);
+}
+
+void BBSkyBox::init(const QString path)
+{
+    m_pFront->init(path + "front");
+    m_pBack->init(path + "back");
+    m_pLeft->init(path + "left");
+    m_pRight->init(path + "right");
+    m_pTop->init(path + "top");
+    m_pBottom->init(path + "bottom");
+}
+
+void BBSkyBox::render(BBCamera *pCamera)
+{
+    m_pFront->render(pCamera);
+    m_pBack->render(pCamera);
+    m_pLeft->render(pCamera);
+    m_pRight->render(pCamera);
+    m_pTop->render(pCamera);
+    m_pBottom->render(pCamera);
+}
+
+void BBSkyBox::resize(float fWidth, float fHeight)
+{
+    m_pFront->resize(fWidth, fHeight);
+    m_pBack->resize(fWidth, fHeight);
+    m_pLeft->resize(fWidth, fHeight);
+    m_pRight->resize(fWidth, fHeight);
+    m_pTop->resize(fWidth, fHeight);
+    m_pBottom->resize(fWidth, fHeight);
+}
+
+void BBSkyBox::initFront()
+{
+    BBGLVertexBuffer *pVertexBuffer = new BBGLVertexBuffer(4);
+    pVertexBuffer->setPosition(0, -0.5f, -0.5f, -0.5f);
+    pVertexBuffer->setPosition(1, 0.5f, -0.5f, -0.5f);
+    pVertexBuffer->setPosition(2, -0.5f, 0.5f, -0.5f);
+    pVertexBuffer->setPosition(3, 0.5f, 0.5f, -0.5f);
+    pVertexBuffer->setTexcoord(0, 0.0f, 0.0f);
+    pVertexBuffer->setTexcoord(1, 1.0f, 0.0f);
+    pVertexBuffer->setTexcoord(2, 0.0f, 1.0f);
+    pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
+    m_pFront = new BBSkyBoxSide(pVertexBuffer);
+}
+
+void BBSkyBox::initBack()
+{
+    BBGLVertexBuffer *pVertexBuffer = new BBGLVertexBuffer(4);
+    pVertexBuffer->setPosition(0, 0.5f, -0.5f, 0.5f);
+    pVertexBuffer->setPosition(1, -0.5f, -0.5f, 0.5f);
+    pVertexBuffer->setPosition(2, 0.5f, 0.5f, 0.5f);
+    pVertexBuffer->setPosition(3, -0.5f, 0.5f, 0.5f);
+    pVertexBuffer->setTexcoord(0, 0.0f, 0.0f);
+    pVertexBuffer->setTexcoord(1, 1.0f, 0.0f);
+    pVertexBuffer->setTexcoord(2, 0.0f, 1.0f);
+    pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
+    m_pBack = new BBSkyBoxSide(pVertexBuffer);
+}
+
+void BBSkyBox::initLeft()
+{
+    BBGLVertexBuffer *pVertexBuffer = new BBGLVertexBuffer(4);
+    pVertexBuffer->setPosition(0, -0.5f, -0.5f, 0.5f);
+    pVertexBuffer->setPosition(1, -0.5f, -0.5f, -0.5f);
+    pVertexBuffer->setPosition(2, -0.5f, 0.5f, 0.5f);
+    pVertexBuffer->setPosition(3, -0.5f, 0.5f, -0.5f);
+    pVertexBuffer->setTexcoord(0, 0.0f, 0.0f);
+    pVertexBuffer->setTexcoord(1, 1.0f, 0.0f);
+    pVertexBuffer->setTexcoord(2, 0.0f, 1.0f);
+    pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
+    m_pLeft = new BBSkyBoxSide(pVertexBuffer);
+}
+
+void BBSkyBox::initRight()
+{
+    BBGLVertexBuffer *pVertexBuffer = new BBGLVertexBuffer(4);
+    pVertexBuffer->setPosition(0, 0.5f, -0.5f, -0.5f);
+    pVertexBuffer->setPosition(1, 0.5f, -0.5f, 0.5f);
+    pVertexBuffer->setPosition(2, 0.5f, 0.5f, -0.5f);
+    pVertexBuffer->setPosition(3, 0.5f, 0.5f, 0.5f);
+    pVertexBuffer->setTexcoord(0, 0.0f, 0.0f);
+    pVertexBuffer->setTexcoord(1, 1.0f, 0.0f);
+    pVertexBuffer->setTexcoord(2, 0.0f, 1.0f);
+    pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
+    m_pRight = new BBSkyBoxSide(pVertexBuffer);
+}
+
+void BBSkyBox::initTop()
+{
+    BBGLVertexBuffer *pVertexBuffer = new BBGLVertexBuffer(4);
+    pVertexBuffer->setPosition(0, -0.5f, 0.5f, -0.5f);
+    pVertexBuffer->setPosition(1, 0.5f, 0.5f, -0.5f);
+    pVertexBuffer->setPosition(2, -0.5f, 0.5f, 0.5f);
+    pVertexBuffer->setPosition(3, 0.5f, 0.5f, 0.5f);
+    pVertexBuffer->setTexcoord(0, 0.0f, 0.0f);
+    pVertexBuffer->setTexcoord(1, 1.0f, 0.0f);
+    pVertexBuffer->setTexcoord(2, 0.0f, 1.0f);
+    pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
+    m_pTop = new BBSkyBoxSide(pVertexBuffer);
+}
+
+void BBSkyBox::initBottom()
+{
+    BBGLVertexBuffer *pVertexBuffer = new BBGLVertexBuffer(4);
+    pVertexBuffer->setPosition(0, -0.5f, -0.5f, 0.5f);
+    pVertexBuffer->setPosition(1, 0.5f, -0.5f, 0.5f);
+    pVertexBuffer->setPosition(2, -0.5f, -0.5f, -0.5f);
+    pVertexBuffer->setPosition(3, 0.5f, -0.5f, -0.5f);
+    pVertexBuffer->setTexcoord(0, 0.0f, 0.0f);
+    pVertexBuffer->setTexcoord(1, 1.0f, 0.0f);
+    pVertexBuffer->setTexcoord(2, 0.0f, 1.0f);
+    pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
+    m_pBottom = new BBSkyBoxSide(pVertexBuffer);
+}
 
 //void SkyElement::change(QString path)
 //{
 //    setTexture(path);
-//}
-
-//Skybox::Skybox()
-//{
-//    initFront();
-//    initBack();
-//    initLeft();
-//    initRight();
-//    initTop();
-//    initBottom();
-//}
-
-//void Skybox::init(QString path)
-//{
-//    front->init(path + "front");
-//    back->init(path + "back");
-//    left->init(path + "left");
-//    right->init(path + "right");
-//    top->init(path + "top");
-//    bottom->init(path + "bottom");
-//}
-
-//void Skybox::render(Camera camera)
-//{
-//    front->render(camera);
-//    back->render(camera);
-//    left->render(camera);
-//    right->render(camera);
-//    top->render(camera);
-//    bottom->render(camera);
-//}
-
-//void Skybox::resize(float width, float height)
-//{
-//    front->resize(width, height);
-//    back->resize(width, height);
-//    left->resize(width, height);
-//    right->resize(width, height);
-//    top->resize(width, height);
-//    bottom->resize(width, height);
 //}
 
 //void Skybox::change(QString path)
@@ -98,94 +186,3 @@ BBSkyBox::BBSkyBox()
 //    top->change(path + "top");
 //    bottom->change(path + "bottom");
 //}
-
-//void Skybox::initFront()
-//{
-//    VertexBuffer *vertexBuffer = new VertexBuffer();
-//    vertexBuffer->setSize(4);
-//    vertexBuffer->setPosition(0, -0.5f, -0.5f, -0.5f);
-//    vertexBuffer->setPosition(1, 0.5f, -0.5f, -0.5f);
-//    vertexBuffer->setPosition(2, -0.5f, 0.5f, -0.5f);
-//    vertexBuffer->setPosition(3, 0.5f, 0.5f, -0.5f);
-//    vertexBuffer->setTexcoord(0, 0.0f, 0.0f);
-//    vertexBuffer->setTexcoord(1, 1.0f, 0.0f);
-//    vertexBuffer->setTexcoord(2, 0.0f, 1.0f);
-//    vertexBuffer->setTexcoord(3, 1.0f, 1.0f);
-//    front = new SkyElement(vertexBuffer);
-//}
-
-//void Skybox::initBack()
-//{
-//    VertexBuffer *vertexBuffer = new VertexBuffer();
-//    vertexBuffer->setSize(4);
-//    vertexBuffer->setPosition(0, 0.5f, -0.5f, 0.5f);
-//    vertexBuffer->setPosition(1, -0.5f, -0.5f, 0.5f);
-//    vertexBuffer->setPosition(2, 0.5f, 0.5f, 0.5f);
-//    vertexBuffer->setPosition(3, -0.5f, 0.5f, 0.5f);
-//    vertexBuffer->setTexcoord(0, 0.0f, 0.0f);
-//    vertexBuffer->setTexcoord(1, 1.0f, 0.0f);
-//    vertexBuffer->setTexcoord(2, 0.0f, 1.0f);
-//    vertexBuffer->setTexcoord(3, 1.0f, 1.0f);
-//    back = new SkyElement(vertexBuffer);
-//}
-
-//void Skybox::initLeft()
-//{
-//    VertexBuffer *vertexBuffer = new VertexBuffer();
-//    vertexBuffer->setSize(4);
-//    vertexBuffer->setPosition(0, -0.5f, -0.5f, 0.5f);
-//    vertexBuffer->setPosition(1, -0.5f, -0.5f, -0.5f);
-//    vertexBuffer->setPosition(2, -0.5f, 0.5f, 0.5f);
-//    vertexBuffer->setPosition(3, -0.5f, 0.5f, -0.5f);
-//    vertexBuffer->setTexcoord(0, 0.0f, 0.0f);
-//    vertexBuffer->setTexcoord(1, 1.0f, 0.0f);
-//    vertexBuffer->setTexcoord(2, 0.0f, 1.0f);
-//    vertexBuffer->setTexcoord(3, 1.0f, 1.0f);
-//    left = new SkyElement(vertexBuffer);
-//}
-
-//void Skybox::initRight()
-//{
-//    VertexBuffer *vertexBuffer = new VertexBuffer();
-//    vertexBuffer->setSize(4);
-//    vertexBuffer->setPosition(0, 0.5f, -0.5f, -0.5f);
-//    vertexBuffer->setPosition(1, 0.5f, -0.5f, 0.5f);
-//    vertexBuffer->setPosition(2, 0.5f, 0.5f, -0.5f);
-//    vertexBuffer->setPosition(3, 0.5f, 0.5f, 0.5f);
-//    vertexBuffer->setTexcoord(0, 0.0f, 0.0f);
-//    vertexBuffer->setTexcoord(1, 1.0f, 0.0f);
-//    vertexBuffer->setTexcoord(2, 0.0f, 1.0f);
-//    vertexBuffer->setTexcoord(3, 1.0f, 1.0f);
-//    right = new SkyElement(vertexBuffer);
-//}
-
-//void Skybox::initTop()
-//{
-//    VertexBuffer *vertexBuffer = new VertexBuffer();
-//    vertexBuffer->setSize(4);
-//    vertexBuffer->setPosition(0, -0.5f, 0.5f, -0.5f);
-//    vertexBuffer->setPosition(1, 0.5f, 0.5f, -0.5f);
-//    vertexBuffer->setPosition(2, -0.5f, 0.5f, 0.5f);
-//    vertexBuffer->setPosition(3, 0.5f, 0.5f, 0.5f);
-//    vertexBuffer->setTexcoord(0, 0.0f, 0.0f);
-//    vertexBuffer->setTexcoord(1, 1.0f, 0.0f);
-//    vertexBuffer->setTexcoord(2, 0.0f, 1.0f);
-//    vertexBuffer->setTexcoord(3, 1.0f, 1.0f);
-//    top = new SkyElement(vertexBuffer);
-//}
-
-//void Skybox::initBottom()
-//{
-//    VertexBuffer *vertexBuffer = new VertexBuffer();
-//    vertexBuffer->setSize(4);
-//    vertexBuffer->setPosition(0, -0.5f, -0.5f, 0.5f);
-//    vertexBuffer->setPosition(1, 0.5f, -0.5f, 0.5f);
-//    vertexBuffer->setPosition(2, -0.5f, -0.5f, -0.5f);
-//    vertexBuffer->setPosition(3, 0.5f, -0.5f, -0.5f);
-//    vertexBuffer->setTexcoord(0, 0.0f, 0.0f);
-//    vertexBuffer->setTexcoord(1, 1.0f, 0.0f);
-//    vertexBuffer->setTexcoord(2, 0.0f, 1.0f);
-//    vertexBuffer->setTexcoord(3, 1.0f, 1.0f);
-//    bottom = new SkyElement(vertexBuffer);
-//}
-

@@ -23,11 +23,6 @@ BBRenderableObject::~BBRenderableObject()
     BB_SAFE_DELETE(m_pVertexBuffer);
 }
 
-void BBRenderableObject::init(const QString path)
-{
-    Q_UNUSED(path);
-}
-
 void BBRenderableObject::render(BBCamera *pCamera)
 {
     if (m_bVisible)

@@ -252,6 +252,11 @@ void BBGameObject::init()
 
 }
 
+void BBGameObject::init(const QString path)
+{
+    Q_UNUSED(path);
+}
+
 void BBGameObject::render(BBCamera *pCamera)
 {
     Q_UNUSED(pCamera);

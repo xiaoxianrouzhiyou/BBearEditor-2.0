@@ -51,6 +51,7 @@ public:
     void setBaseAttributes(QString name, QString className, QString iconName, bool bActive = true);
 
     virtual void init();
+    virtual void init(const QString path);
     virtual void render(BBCamera *pCamera);
     virtual void render(QMatrix4x4 modelMatrix, BBCamera *pCamera);
     virtual void resize(float fWidth, float fHeight);
