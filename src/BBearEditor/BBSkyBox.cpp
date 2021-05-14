@@ -25,7 +25,7 @@ void BBSkyBoxSide::render(BBCamera *pCamera)
 {
     QMatrix4x4 modelMatrix;
     modelMatrix.translate(pCamera->getPosition());
-    BBRenderableObject::render(pCamera);
+    BBRenderableObject::render(modelMatrix, pCamera);
 }
 
 void BBSkyBoxSide::draw()

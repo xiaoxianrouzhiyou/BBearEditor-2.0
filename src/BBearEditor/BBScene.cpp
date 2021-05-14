@@ -80,16 +80,16 @@ void BBScene::render()
     m_pSkyBox->render(m_pCamera);
 
     // test
-//    glBegin(GL_QUADS);
-//    glTexCoord2f(0.0f, 0.0f);
-//    glVertex3f(-5, -5, -10);
-//    glTexCoord2f(1.0f, 0.0f);
-//    glVertex3f(5, -5, -10);
-//    glTexCoord2f(1.0f, 1.0f);
-//    glVertex3f(5, 5, -10);
-//    glTexCoord2f(0.0f, 1.0f);
-//    glVertex3f(-5, 5, -10);
-//    glEnd();
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(-5, -5, -10);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(5, -5, -10);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(5, 5, -10);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(-5, 5, -10);
+    glEnd();
 
 //    //渲染水平面网格
 //    horizontalPlane->render(camera);
