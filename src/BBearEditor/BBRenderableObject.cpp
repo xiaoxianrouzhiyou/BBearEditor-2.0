@@ -23,7 +23,7 @@ BBRenderableObject::~BBRenderableObject()
     BB_SAFE_DELETE(m_pVertexBuffer);
 }
 
-void BBRenderableObject::init(QString path)
+void BBRenderableObject::init(const QString path)
 {
     Q_UNUSED(path);
 }

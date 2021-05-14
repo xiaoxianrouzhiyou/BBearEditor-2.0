@@ -15,7 +15,7 @@ public:
 
     void setVisible(bool bVisible) { m_bVisible = bVisible; }
 
-    virtual void init(QString path);
+    virtual void init(const QString path);
     void render(BBCamera *pCamera) override;
     void render(QMatrix4x4 modelMatrix, BBCamera *pCamera) override;
     void resize(float fWidth, float fHeight) override;

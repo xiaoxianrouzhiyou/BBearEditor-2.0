@@ -42,7 +42,8 @@ SOURCES += \
     BBEditViewOpenGLWidget.cpp \
     BBRenderableObject.cpp \
     BBGLShader.cpp \
-    BBGLBuffers.cpp
+    BBGLBuffers.cpp \
+    BBSkyBox.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
@@ -62,7 +63,8 @@ HEADERS += \
     BBEditViewOpenGLWidget.h \
     BBRenderableObject.h \
     BBGLShader.h \
-    BBGLBuffers.h
+    BBGLBuffers.h \
+    BBSkyBox.h
 
 FORMS += \
     BBUITitleBar.ui \
