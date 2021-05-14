@@ -14,6 +14,7 @@ BBRenderableObject::BBRenderableObject(float px, float py, float pz, float rx, f
     : BBGameObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
     m_bVisible = true;
+    m_pShader = new BBGLShader;
     m_pVertexBuffer = NULL;
 }
 

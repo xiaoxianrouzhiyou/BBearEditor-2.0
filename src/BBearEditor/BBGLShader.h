@@ -89,9 +89,9 @@ public:
     void init(const char *vertexShaderPath, const char *fragmentShaderPath,
               const unsigned short *pIndexes = 0, const int nIndexCount = 0);
     void render(const std::function<void()> draw, const QMatrix4x4 modelMatrix, const QMatrix4x4 viewMatrix,
-                const QVector3D cameraPos, const BBGLVertexBuffer *pVertexbuffer);
+                const QVector3D cameraPos, BBGLVertexBuffer *pVertexbuffer);
     void render(const std::function<void()> draw, const QMatrix4x4 modelMatrix, const QMatrix4x4 viewMatrix, const QMatrix4x4 projectionMatrix,
-                const QVector3D cameraPos, const BBGLVertexBuffer *pVertexbuffer);
+                const QVector3D cameraPos, BBGLVertexBuffer *pVertexbuffer);
     void resize(const float fWidth, const float fHeight);
 
 private:

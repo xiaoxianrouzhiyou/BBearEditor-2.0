@@ -41,13 +41,13 @@ void BBGLShader::init(const char *vertexShaderPath, const char *fragmentShaderPa
 }
 
 void BBGLShader::render(const std::function<void()> draw, const QMatrix4x4 modelMatrix, const QMatrix4x4 viewMatrix,
-                        const QVector3D cameraPos, const BBGLVertexBuffer *pVertexbuffer)
+                        const QVector3D cameraPos, BBGLVertexBuffer *pVertexbuffer)
 {
     render(draw, modelMatrix, viewMatrix, m_ProjectionMatrix, cameraPos, pVertexbuffer);
 }
 
 void BBGLShader::render(const std::function<void()> draw, const QMatrix4x4 modelMatrix, const QMatrix4x4 viewMatrix, const QMatrix4x4 projectionMatrix,
-                        const QVector3D cameraPos, const BBGLVertexBuffer *pVertexbuffer)
+                        const QVector3D cameraPos, BBGLVertexBuffer *pVertexbuffer)
 {
     // camera movement
     m_ViewMatrix = viewMatrix;
@@ -103,25 +103,30 @@ void BBGLShader::render(const std::function<void()> draw, const QMatrix4x4 model
 //        m_program->setUniformValue((*matrixItr)->m_location, (*matrixItr)->m_matrix);
 //    }
 
+
+    m_pProgram->setAttributeArray(m_nPositionAttr, pVertexbuffer->getPosition(), 4, sizeof(float) * 4);
+
+//    m_pProgram->setAttributeArray(m_nColorAttr, pVertexbuffer->m_fColor, 4, GL_FLOAT);
+
 //    glVertexAttribPointer(m_nPositionAttr, 4, GL_FLOAT, GL_FALSE, 0, pVertexbuffer->getPosition());
 //    glVertexAttribPointer(m_nColorAttr, 4, GL_FLOAT, GL_FALSE, 0, pVertexbuffer->getColor());
 //    glVertexAttribPointer(m_nTexcoordAttr, 2, GL_FLOAT, GL_FALSE, 0, pVertexbuffer->getTexcoord());
 //    glVertexAttribPointer(m_nNormalAttr, 4, GL_FLOAT, GL_FALSE, 0, pVertexbuffer->getNormal());
 
-//    glEnableVertexAttribArray(m_nPositionAttr);
-//    glEnableVertexAttribArray(m_nColorAttr);
-//    glEnableVertexAttribArray(m_nTexcoordAttr);
-//    glEnableVertexAttribArray(m_nNormalAttr);
+    m_pProgram->enableAttributeArray(m_nPositionAttr);
+//    m_pProgram->enableAttributeArray(m_nColorAttr);
+//    m_pProgram->enableAttributeArray(m_nTexcoordAttr);
+//    m_pProgram->enableAttributeArray(m_nNormalAttr);
 
 //    glDrawArrays(GL_TRIANGLES, 0, 3);
     // How many indexes to draw, data type, data starting position
 //    glDrawElements(GL_QUADS, 6, GL_UNSIGNED_INT, 0);
     draw();
 
-//    glDisableVertexAttribArray(m_nNormalAttr);
-//    glDisableVertexAttribArray(m_nTexcoordAttr);
-//    glDisableVertexAttribArray(m_nColorAttr);
-//    glDisableVertexAttribArray(m_nPositionAttr);
+//    m_pProgram->disableAttributeArray(m_nNormalAttr);
+//    m_pProgram->disableAttributeArray(m_nTexcoordAttr);
+//    m_pProgram->disableAttributeArray(m_nColorAttr);
+    m_pProgram->disableAttributeArray(m_nPositionAttr);
 
     m_pElementBufferObject->release();
     m_pProgram->release();

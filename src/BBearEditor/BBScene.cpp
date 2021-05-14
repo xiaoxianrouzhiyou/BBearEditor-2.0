@@ -1,12 +1,14 @@
 #include "BBScene.h"
 #include "BBUtils.h"
 #include "BBCamera.h"
+#include "BBSkyBox.h"
 
 BBScene::BBScene()
 {
     m_fUpdateRate = (float) BB_CONSTANT_UPDATE_RATE / 1000;
     m_pCamera = new BBCamera;
-//    skybox = new Skybox();
+    m_pSkyBox = new BBSkyBox;
+
 //    horizontalPlane = new HorizontalPlane();
 //    selectionRegion = new SelectionRegion();
 //    transformCoordinate = new TransformCoordinate();
@@ -24,6 +26,7 @@ BBScene::BBScene()
 BBScene::~BBScene()
 {
     BB_SAFE_DELETE(m_pCamera);
+    BB_SAFE_DELETE(m_pSkyBox);
 //    QList<GameObject*> objects = models + directionLights + pointLights + spotLights + audios;
 //    QList<GameObject*>::Iterator itr;
 //    for (itr = objects.begin(); itr != objects.end(); itr++)
@@ -36,8 +39,8 @@ BBScene::~BBScene()
 void BBScene::init()
 {
     m_pCamera->setViewportSize(800.0f, 600.0f);
-//    //天空盒
-//    skybox->init(engineResourcesPath + "skyboxs/1/");
+
+    m_pSkyBox->init(QString(BB_PATH_RESOURCE) + "skyboxs/1/");
 //    //水平面
 //    horizontalPlane->init();
 //    //模型坐标系
@@ -58,18 +61,6 @@ void BBScene::render()
     // refresh camera position and direction, update pos and ..., Convenient for subsequent use
     m_pCamera->update(m_fUpdateRate);
 
-    // test
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(-5, -5, -10);
-    glTexCoord2f(1.0f, 0.0f);
-    glVertex3f(5, -5, -10);
-    glTexCoord2f(1.0f, 1.0f);
-    glVertex3f(5, 5, -10);
-    glTexCoord2f(0.0f, 1.0f);
-    glVertex3f(-5, 5, -10);
-    glEnd();
-
 //    //执行脚本的update接口
 //    for (QList<GameObject*>::Iterator itr = models.begin(); itr != models.end(); itr++)
 //    {
@@ -84,8 +75,22 @@ void BBScene::render()
 //        Model *model = (Model*)(*itr);
 //        model->setShadowMap(mFBO->getBuffer("depth"));
 //    }
-//    //最先渲染天空盒
-//    skybox->render(camera);
+
+    // Render the skybox at first
+    m_pSkyBox->render(m_pCamera);
+
+    // test
+//    glBegin(GL_QUADS);
+//    glTexCoord2f(0.0f, 0.0f);
+//    glVertex3f(-5, -5, -10);
+//    glTexCoord2f(1.0f, 0.0f);
+//    glVertex3f(5, -5, -10);
+//    glTexCoord2f(1.0f, 1.0f);
+//    glVertex3f(5, 5, -10);
+//    glTexCoord2f(0.0f, 1.0f);
+//    glVertex3f(-5, 5, -10);
+//    glEnd();
+
 //    //渲染水平面网格
 //    horizontalPlane->render(camera);
 //    //渲染拖出来的模型
@@ -136,7 +141,8 @@ void BBScene::resize(float width, float height)
 //        GameObject *object = *itr;
 //        object->resize(width, height);
 //    }
-//    skybox->resize(width, height);
+
+    m_pSkyBox->resize(width, height);
 //    horizontalPlane->resize(width, height);
 //    transformCoordinate->resize(width, height);
 //    //particle->resize(width, height);

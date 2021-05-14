@@ -9,6 +9,7 @@
 //--------------------
 
 BBSkyBoxSide::BBSkyBoxSide(BBGLVertexBuffer *pVertexBuffer)
+    : BBRenderableObject()
 {
     m_pVertexBuffer = pVertexBuffer;
 }
@@ -39,6 +40,7 @@ void BBSkyBoxSide::draw()
 //--------------------
 
 BBSkyBox::BBSkyBox()
+    : BBGameObject()
 {
     initFront();
     initBack();

@@ -3,6 +3,7 @@
 
 
 class BBCamera;
+class BBSkyBox;
 class BBScene
 {
 public:
@@ -18,7 +19,7 @@ public:
 private:
     float m_fUpdateRate;
     BBCamera *m_pCamera;
-//    Skybox *skybox;
+    BBSkyBox *m_pSkyBox;
 //    QList<GameObject*> models;
 //    QList<GameObject*> directionLights;
 //    QList<GameObject*> pointLights;
