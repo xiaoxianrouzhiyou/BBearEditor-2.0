@@ -105,8 +105,9 @@ void BBGLShader::render(const std::function<void()> draw, const QMatrix4x4 model
 
 
     m_pProgram->setAttributeArray(m_nPositionAttr, pVertexbuffer->getPosition(), 4, sizeof(float) * 4);
-
-//    m_pProgram->setAttributeArray(m_nColorAttr, pVertexbuffer->m_fColor, 4, GL_FLOAT);
+    m_pProgram->setAttributeArray(m_nColorAttr, pVertexbuffer->getColor(), 4, sizeof(float) * 4);
+    m_pProgram->setAttributeArray(m_nTexcoordAttr, pVertexbuffer->getTexcoord(), 2, sizeof(float) * 2);
+    m_pProgram->setAttributeArray(m_nNormalAttr, pVertexbuffer->getNormal(), 4, sizeof(float) * 4);
 
 //    glVertexAttribPointer(m_nPositionAttr, 4, GL_FLOAT, GL_FALSE, 0, pVertexbuffer->getPosition());
 //    glVertexAttribPointer(m_nColorAttr, 4, GL_FLOAT, GL_FALSE, 0, pVertexbuffer->getColor());
@@ -114,18 +115,18 @@ void BBGLShader::render(const std::function<void()> draw, const QMatrix4x4 model
 //    glVertexAttribPointer(m_nNormalAttr, 4, GL_FLOAT, GL_FALSE, 0, pVertexbuffer->getNormal());
 
     m_pProgram->enableAttributeArray(m_nPositionAttr);
-//    m_pProgram->enableAttributeArray(m_nColorAttr);
-//    m_pProgram->enableAttributeArray(m_nTexcoordAttr);
-//    m_pProgram->enableAttributeArray(m_nNormalAttr);
+    m_pProgram->enableAttributeArray(m_nColorAttr);
+    m_pProgram->enableAttributeArray(m_nTexcoordAttr);
+    m_pProgram->enableAttributeArray(m_nNormalAttr);
 
 //    glDrawArrays(GL_TRIANGLES, 0, 3);
     // How many indexes to draw, data type, data starting position
 //    glDrawElements(GL_QUADS, 6, GL_UNSIGNED_INT, 0);
     draw();
 
-//    m_pProgram->disableAttributeArray(m_nNormalAttr);
-//    m_pProgram->disableAttributeArray(m_nTexcoordAttr);
-//    m_pProgram->disableAttributeArray(m_nColorAttr);
+    m_pProgram->disableAttributeArray(m_nNormalAttr);
+    m_pProgram->disableAttributeArray(m_nTexcoordAttr);
+    m_pProgram->disableAttributeArray(m_nColorAttr);
     m_pProgram->disableAttributeArray(m_nPositionAttr);
 
     m_pElementBufferObject->release();
