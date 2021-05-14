@@ -3,6 +3,7 @@
 
 #include <QVector3D>
 #include <GL/glu.h>
+#include <QMatrix4x4>
 
 //class BBGameObject;
 class BBCamera
@@ -43,6 +44,7 @@ private:
     int m_iViewportWidth;
     int m_iViewportHeight;
     GLint m_pViewport[4];
+    QMatrix4x4 m_ViewMatrix;
 };
 
 #endif // BBCAMERA_H

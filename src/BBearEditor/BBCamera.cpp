@@ -70,6 +70,10 @@ void BBCamera::update(float fDeltaTime)
               m_Up.x(), m_Up.y(), m_Up.z());
     glGetDoublev(GL_MODELVIEW_MATRIX, m_pModelView);
     glGetDoublev(GL_PROJECTION_MATRIX, m_pProjection);
+    m_ViewMatrix = QMatrix4x4(m_pModelView[0], m_pModelView[4], m_pModelView[8], m_pModelView[12],
+                              m_pModelView[1], m_pModelView[5], m_pModelView[9], m_pModelView[13],
+                              m_pModelView[2], m_pModelView[6], m_pModelView[10], m_pModelView[14],
+                              m_pModelView[3], m_pModelView[7], m_pModelView[11], m_pModelView[15]);
 }
 
 void BBCamera::setViewportSize(int width, int height)

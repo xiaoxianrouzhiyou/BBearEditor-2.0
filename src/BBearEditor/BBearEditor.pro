@@ -39,7 +39,8 @@ SOURCES += \
     BBScene.cpp \
     BBCamera.cpp \
     BBEditViewDockWidget.cpp \
-    BBEditViewOpenGLWidget.cpp
+    BBEditViewOpenGLWidget.cpp \
+    BBRenderableObject.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
@@ -56,7 +57,8 @@ HEADERS += \
     BBScene.h \
     BBCamera.h \
     BBEditViewDockWidget.h \
-    BBEditViewOpenGLWidget.h
+    BBEditViewOpenGLWidget.h \
+    BBRenderableObject.h
 
 FORMS += \
     BBUITitleBar.ui \
