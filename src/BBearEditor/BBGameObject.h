@@ -3,46 +3,65 @@
 
 
 #include <QString>
+#include <QVector3D>
+#include <QQuaternion>
+#include <QMatrix4x4>
 
 
+class BBCamera;
 class BBGameObject
 {
 public:
     BBGameObject();
-    inline QString getName() { return m_strName; }
-    void setName(const QString name) { m_strName = name; }
-    inline QString getClassName()  { return m_strClassName; }
-    void setClassName(const QString className) { m_strClassName = className; }
-    inline QString getIconName()  { return m_strIconName; }
-    void setIconName(const QString iconName) { m_strIconName = iconName; }
+    BBGameObject(const QVector3D position, const QVector3D rotation, const QVector3D scale);
+    BBGameObject(const float px, const float py, const float pz,
+                 const float rx, const float ry, const float rz,
+                 const float sx, const float sy, const float sz);
+
+    void setModelMatrix(const float px, const float py, const float pz,
+                        const QQuaternion r,
+                        const float sx, const float sy, const float sz);
+    void setModelMatrix(const QMatrix4x4 modelMatrix) { m_ModelMatrix = modelMatrix; }
+    inline QMatrix4x4 getModelMatrix() { return m_ModelMatrix; }
+
+    virtual void setPosition(const QVector3D position, const bool bUpdateLocalTransform = true);
+    inline QVector3D getPosition() { return m_Position; }
+    inline QVector3D getLocalPosition() { return m_LocalPosition; }
+
+    virtual void setRotation(const int nAngle, const QVector3D axis, const bool bUpdateLocalTransform = true);
+    virtual void setRotation(const QVector3D rotation, const bool bUpdateLocalTransform = true);
+    QVector3D getRotation() { return m_Rotation; }
+    QVector3D getLocalRotation() { return m_LocalRotation; }
+    QQuaternion getQuaternion() { return m_Quaternion; }
+    QQuaternion getLocalQuaternion() { return m_LocalQuaternion; }
+
+    virtual void setScale(const QVector3D scale, const bool bUpdateLocalTransform = true);
+    QVector3D getScale() { return m_Scale; }
+    QVector3D getLocalScale() { return m_LocalScale; }
+
+    virtual void setActive(const bool bActive) { m_bActive = bActive; }
     inline bool getActive() { return m_bActive; }
 
-//    GameObject(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz);
-//    GameObject(QVector3D position, QVector3D rotation, QVector3D scale);
-//    void setModelMatrix(float px, float py, float pz, QQuaternion r, float sx, float sy, float sz);
-//    void setModelMatrix(QMatrix4x4 modelMatrix);
-//    QMatrix4x4 getModelMatrix();
-//    virtual void setPosition(QVector3D position, bool isUpdateLocalTransform = true);
-//    QVector3D getPosition();
-//    QVector3D getLocalPosition();
-//    virtual void setRotation(int angle, QVector3D axis, bool isUpdateLocalTransform = true);
-//    virtual void setRotation(QVector3D rotation, bool isUpdateLocalTransform = true);
-//    QVector3D getRotation();
-//    QVector3D getLocalRotation();
-//    QQuaternion getQuaternion();
-//    QQuaternion getLocalQuaternion();
-//    virtual void setScale(QVector3D scale, bool isUpdateLocalTransform = true);
-//    QVector3D getScale();
-//    QVector3D getLocalScale();
+    void setName(const QString name) { m_strName = name; }
+    inline QString getName() { return m_strName; }
+    void setClassName(const QString className) { m_strClassName = className; }
+    inline QString getClassName()  { return m_strClassName; }
+    void setIconName(const QString iconName) { m_strIconName = iconName; }
+    inline QString getIconName()  { return m_strIconName; }
+    void setBaseAttributes(QString name, QString className, QString iconName, bool bActive = true);
+
+    virtual void init();
+    virtual void render(BBCamera *pCamera);
+    virtual void render(QMatrix4x4 modelMatrix, BBCamera *pCamera);
+    virtual void resize(float fWidth, float fHeight);
+
+
 //    void setLocalTransform();
-//    virtual void setActive(bool isActive);
+
 //    virtual void setVisible(bool isVisible);
-//    void setBaseAttributes(QString name, QString className, QString iconName, bool isActive = true);
+
 //    virtual void lookAtSelf(QVector3D &pos, QVector3D &viewCenter, float distFactor = 2.4);
-//    virtual void init();
-//    virtual void render(Camera camera);
-//    virtual void render(QMatrix4x4 modelMatrix, Camera camera);
-//    virtual void resize(float width, float height);
+
 //    virtual bool hit(Ray ray, float &distance);
 //    virtual bool belongToSelectionRegion(QVector3D left1, QVector3D left2, QVector3D left3,
 //                                         QVector3D top1, QVector3D top2, QVector3D top3,
@@ -52,20 +71,25 @@ public:
 
 
 protected:
+    QVector3D m_Position;
+    QVector3D m_LocalPosition;
+    QVector3D m_Rotation;
+    QVector3D m_LocalRotation;
+    QQuaternion m_Quaternion;
+    QQuaternion m_LocalQuaternion;
+    QVector3D m_Scale;
+    QVector3D m_LocalScale;
+    QMatrix4x4 m_ModelMatrix;
+
+    bool m_bActive;
+
     QString m_strName;
     QString m_strClassName;
     QString m_strIconName;
-    bool m_bActive;
+
+
 //    QString mFilePath;
-//    QVector3D mPosition;
-//    QVector3D mLocalPosition;
-//    QVector3D mRotation;
-//    QVector3D mLocalRotation;
-//    QQuaternion mQuaternion;
-//    QQuaternion mLocalQuaternion;
-//    QVector3D mScale;
-//    QVector3D mLocalScale;
-//    QMatrix4x4 mModelMatrix;
+
 };
 
 #endif // BBGAMEOBJECT_H
