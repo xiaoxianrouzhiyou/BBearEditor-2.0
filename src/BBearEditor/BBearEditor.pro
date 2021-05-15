@@ -46,7 +46,8 @@ SOURCES += \
     BBSkyBox.cpp \
     BBHorizontalPlane.cpp \
     BBMesh.cpp \
-    BBOBJMesh.cpp
+    BBOBJMesh.cpp \
+    BBModel.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
@@ -70,7 +71,8 @@ HEADERS += \
     BBSkyBox.h \
     BBHorizontalPlane.h \
     BBMesh.h \
-    BBOBJMesh.h
+    BBOBJMesh.h \
+    BBModel.h
 
 FORMS += \
     BBUITitleBar.ui \

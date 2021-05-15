@@ -5,6 +5,14 @@
 #include "BBRenderableObject.h"
 
 
+enum BBMeshType
+{
+    OBJ = 0x01,
+    FBX = 0x02,
+    TERRAIN = 0x04
+};
+
+
 class BBMesh : public BBRenderableObject
 {
 public:

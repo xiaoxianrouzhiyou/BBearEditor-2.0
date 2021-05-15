@@ -19,12 +19,8 @@ BBOBJMesh::BBOBJMesh(const float px, const float py, const float pz,
 
 void BBOBJMesh::init(const QString path)
 {
-    QString suffix = path.mid(path.lastIndexOf('.') + 1);
-    if (suffix == "obj")
-    {
-        load(path);
-        BBMesh::init(path);
-    }
+    load(path);
+    BBMesh::init(path);
 }
 
 void BBOBJMesh::load(const QString path)
