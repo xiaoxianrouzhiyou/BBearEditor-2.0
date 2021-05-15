@@ -12,34 +12,35 @@ BBHorizontalPlane::BBHorizontalPlane()
 
 void BBHorizontalPlane::init()
 {
+    float fCoefficient = 2.0f;
     m_pVertexBuffer = new BBGLVertexBuffer(246);
     for (int i = 0; i <= 40; i++)
     {
         // The most transparent point on the periphery
         m_pVertexBuffer->setPosition(i, -20 + i, 0.0f, -20);
         m_pVertexBuffer->setNormal(i, 0.0f, 1.0f, 0.0f);
-        m_pVertexBuffer->setColor(i, 0.847059f, 0.603922f, 0.309804f, 0.01f);
+        m_pVertexBuffer->setColor(i, 0.847059f, 0.603922f, 0.309804f, 0.01f * fCoefficient);
 
         m_pVertexBuffer->setPosition(i + 41, -20, 0.0f, -20 + i);
         m_pVertexBuffer->setNormal(i + 41, 0.0f, 1.0f, 0.0f);
-        m_pVertexBuffer->setColor(i + 41, 0.847059f, 0.603922f, 0.309804f, 0.01f);
+        m_pVertexBuffer->setColor(i + 41, 0.847059f, 0.603922f, 0.309804f, 0.01f * fCoefficient);
 
         m_pVertexBuffer->setPosition(i + 82, -20 + i, 0.0f, 20);
         m_pVertexBuffer->setNormal(i + 82, 0.0f, 1.0f, 0.0f);
-        m_pVertexBuffer->setColor(i + 82, 0.847059f, 0.603922f, 0.309804f, 0.01f);
+        m_pVertexBuffer->setColor(i + 82, 0.847059f, 0.603922f, 0.309804f, 0.01f * fCoefficient);
 
         m_pVertexBuffer->setPosition(i + 123, 20, 0.0f, -20 + i);
         m_pVertexBuffer->setNormal(i + 123, 0.0f, 1.0f, 0.0f);
-        m_pVertexBuffer->setColor(i + 123, 0.847059f, 0.603922f, 0.309804f, 0.01f);
+        m_pVertexBuffer->setColor(i + 123, 0.847059f, 0.603922f, 0.309804f, 0.01f * fCoefficient);
 
         // Two midlines
         float alpha = 0.09f - abs(-20 + i) * 0.004f;
         m_pVertexBuffer->setPosition(i + 164, -20 + i, 0.0f, 0);
         m_pVertexBuffer->setNormal(i + 164, 0.0f, 1.0f, 0.0f);
-        m_pVertexBuffer->setColor(i + 164, 0.847059f, 0.603922f, 0.309804f, alpha);
+        m_pVertexBuffer->setColor(i + 164, 0.847059f, 0.603922f, 0.309804f, alpha * fCoefficient);
         m_pVertexBuffer->setPosition(i + 205, 0, 0.0f, -20 + i);
         m_pVertexBuffer->setNormal(i + 205, 0.0f, 1.0f, 0.0f);
-        m_pVertexBuffer->setColor(i + 205, 0.847059f, 0.603922f, 0.309804f, alpha);
+        m_pVertexBuffer->setColor(i + 205, 0.847059f, 0.603922f, 0.309804f, alpha * fCoefficient);
     }
 
     m_nIndexCount = 328;
@@ -63,18 +64,22 @@ void BBHorizontalPlane::render(BBCamera *pCamera)
 {
     QMatrix4x4 modelMatrix;
     modelMatrix.translate(pCamera->getPosition().x(), 0, pCamera->getPosition().z());
-//    //越高 网格分辨率越低 需要放大 放大倍数为1 10 100 由高度的位数决定
-//    int height = abs((int)camera.pos.y());
-//    //求高度的位数
-//    int num = 1;
-//    int ratio;
-//    do
-//    {
-//        ratio = pow(10, num);
-//        num++;
-//    }
-//    while (height / ratio != 0);
-//    modelMatrix.scale(ratio / 10);
+
+    //越高 网格分辨率越低 需要放大 放大倍数为1 10 100 由高度的位数决定
+    // The higher, the lower the grid resolution
+    // need to be enlarged, 1 10 100, determined by the digit number of height.
+    int height = abs((int)pCamera->getPosition().y());
+    //求高度的位数
+    int num = 1;
+    int ratio;
+    do
+    {
+        ratio = pow(10, num);
+        num++;
+    }
+    while (height / ratio != 0);
+    modelMatrix.scale(ratio / 10);
+
     BBRenderableObject::render(modelMatrix, pCamera);
 }
 
