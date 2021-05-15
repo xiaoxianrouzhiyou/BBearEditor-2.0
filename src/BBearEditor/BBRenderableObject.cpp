@@ -16,12 +16,15 @@ BBRenderableObject::BBRenderableObject(float px, float py, float pz, float rx, f
     m_bVisible = true;
     m_pShader = new BBGLShader;
     m_pVertexBuffer = NULL;
+    m_pIndexes = NULL;
+    m_nIndexCount = 0;
 }
 
 BBRenderableObject::~BBRenderableObject()
 {
     BB_SAFE_DELETE(m_pShader);
     BB_SAFE_DELETE(m_pVertexBuffer);
+    BB_SAFE_DELETE(m_pIndexes);
 }
 
 void BBRenderableObject::render(BBCamera *pCamera)

@@ -43,7 +43,8 @@ SOURCES += \
     BBRenderableObject.cpp \
     BBGLShader.cpp \
     BBGLBuffers.cpp \
-    BBSkyBox.cpp
+    BBSkyBox.cpp \
+    BBHorizontalPlane.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
@@ -64,7 +65,8 @@ HEADERS += \
     BBRenderableObject.h \
     BBGLShader.h \
     BBGLBuffers.h \
-    BBSkyBox.h
+    BBSkyBox.h \
+    BBHorizontalPlane.h
 
 FORMS += \
     BBUITitleBar.ui \

@@ -36,7 +36,8 @@ protected:
     bool m_bVisible;
     BBGLShader *m_pShader;
     BBGLVertexBuffer *m_pVertexBuffer;
-
+    unsigned short *m_pIndexes;
+    int m_nIndexCount;
 };
 
 #endif // BBRENDERABLEOBJECT_H
