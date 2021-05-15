@@ -1,5 +1,6 @@
 #include "BBCamera.h"
 #include "math.h"
+#include "BBRay.h"
 
 BBCamera::BBCamera()
     : m_Position(0, 1, 10), m_ViewCenter(0, 1, 0), m_Up(0, 1, 0)
@@ -156,6 +157,19 @@ void BBCamera::setMoveSpeed(int dir)
         m_fMoveSpeed = 100;
 }
 
+BBRay BBCamera::createRayFromScreen(int x, int y)
+{
+    int winX = x;
+    int winY = m_iViewportHeight - y;
+    // Get the 3D point coordinates corresponding to the 2D point in the front clipping plane
+    GLdouble nearPosX, nearPosY, nearPosZ;
+    gluUnProject(winX, winY, 0.0f, m_pModelView, m_pProjection, m_pViewport, &nearPosX, &nearPosY, &nearPosZ);
+    GLdouble farPosX, farPosY, farPosZ;
+    gluUnProject(winX, winY, 1.0f, m_pModelView, m_pProjection, m_pViewport, &farPosX, &farPosY, &farPosZ);
+    BBRay ray(nearPosX, nearPosY, nearPosZ, farPosX, farPosY, farPosZ);
+    return ray;
+}
+
 void BBCamera::rotateView(float fAngle, float x, float y, float z)
 {
     // Rotate an angle around an axis, the change of view
@@ -179,20 +193,5 @@ void BBCamera::rotateView(float fAngle, float x, float y, float z)
 //    object->lookAtSelf(pos, viewCenter);
 //}
 
-
-
-
-//Ray Camera::createRayFromScreen(int x, int y)
-//{
-//    int winX = x;
-//    int winY = viewportHeight - y;
-//    //获取该点对应的前裁剪面的点坐标
-//    GLdouble nearPosX, nearPosY, nearPosZ;
-//    gluUnProject(winX, winY, 0.0f, modelView, projection, viewport, &nearPosX, &nearPosY, &nearPosZ);
-//    GLdouble farPosX, farPosY, farPosZ;
-//    gluUnProject(winX, winY, 1.0f, modelView, projection, viewport, &farPosX, &farPosY, &farPosZ);
-//    Ray ray(nearPosX, nearPosY, nearPosZ, farPosX, farPosY, farPosZ);
-//    return ray;
-//}
 
 

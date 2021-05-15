@@ -4,6 +4,8 @@
 #include "BBSkyBox.h"
 #include "BBHorizontalPlane.h"
 #include "BBGameObject.h"
+#include "BBModel.h"
+#include "BBRay.h"
 
 BBScene::BBScene()
 {
@@ -159,6 +161,55 @@ void BBScene::resize(float width, float height)
 //    mFBO->finish();
 }
 
+BBModel* BBScene::createModel(const QString filePath, int x, int y, bool bSelect)
+{
+    BBRay ray = m_pCamera->createRayFromScreen(x, y);
+    // ground y=0
+    QVector3D hit = ray.computeIntersectWithXOZPlane(0);
+    return createModel(filePath, hit, bSelect);
+}
+
+BBModel* BBScene::createModel(const QString filePath, QVector3D position, bool bSelect)
+{
+    BBModel *pModel = NULL;
+    if (filePath == "terrain")
+    {
+//        model->setBaseAttributes(QFileInfo(filePath).baseName(), TerrainClassName, "terrain");
+    }
+    else
+    {
+        pModel = new BBModel(position.x(), position.y(), position.z(), 0, 0, 0, 1, 1, 1, BBMeshType::OBJ);
+        pModel->setBaseAttributes(QFileInfo(filePath).baseName(), BB_CLASSNAME_MODEL, "model");
+    }
+    pModel->init(filePath);
+    pModel->resize(m_pCamera->getViewportWidth(), m_pCamera->getViewportHeight());
+    m_Models.append(pModel);
+
+//    //创建后坐标系操作当前对象
+//    if (isSelect)
+//    {
+//        transformCoordinate->setSelectedObject(model);
+//    }
+//    //给该模型添加灯光效果
+//    QVector3D count = QVector3D(directionLights.count(), pointLights.count(), spotLights.count());
+//    model->updateDirectionLightPosition(directionLightPosition, count);
+//    model->updateDirectionLightColor(directionLightColor, directionLights.count());
+//    model->updatePointLightPosition(pointLightPosition, count);
+//    model->updatePointLightColor(pointLightColor, pointLights.count());
+//    model->updatePointLightOption(pointLightOption, pointLights.count());
+//    model->updateSpotLightPosition(spotLightPosition, count);
+//    model->updateSpotLightDirection(spotLightDirection, spotLights.count());
+//    model->updateSpotLightColor(spotLightColor, spotLights.count());
+//    model->updateSpotLightOption(spotLightOption, spotLights.count());
+//    model->updateSpotLightOption2(spotLightOption2, spotLights.count());
+//    model->switchFog(fogSwitch);
+//    model->setFogColor(fogColor.redF(), fogColor.greenF(), fogColor.blueF());
+//    model->setFogOption(fogStart, fogEnd, fogDensity, fogPower);
+//    model->setFogMode(fogMode);
+
+    return pModel;
+}
+
 void BBScene::deleteGameObject(BBGameObject *pObject)
 {
     if (pObject->getClassName() == BB_CLASSNAME_MODEL)
@@ -239,52 +290,6 @@ void BBScene::deleteGameObject(BBGameObject *pObject)
 //    }
 //    glDisable(GL_CULL_FACE);
 //    mFBO->unbind();
-//}
-
-//Model *Scene::createModel(QString filePath, int x, int y, bool isSelect)
-//{
-//    Ray ray = camera.createRayFromScreen(x, y);
-//    //地面y=0
-//    QVector3D hit = ray.computeIntersectWithXOZPlane(0);
-//    return createModel(filePath, hit, isSelect);
-//}
-
-//Model *Scene::createModel(QString filePath, QVector3D position, bool isSelect)
-//{
-//    Model *model = new Model(position.x(), position.y(), position.z(), 0, 0, 0, 1, 1, 1);
-//    if (filePath == "terrain")
-//    {
-//        model->setBaseAttributes(QFileInfo(filePath).baseName(), TerrainClassName, "terrain");
-//    }
-//    else
-//    {
-//        model->setBaseAttributes(QFileInfo(filePath).baseName(), ModelClassName, "model");
-//    }
-//    model->init(filePath);
-//    model->resize(camera.viewportWidth, camera.viewportHeight);
-//    models.append(model);
-//    //创建后坐标系操作当前对象
-//    if (isSelect)
-//    {
-//        transformCoordinate->setSelectedObject(model);
-//    }
-//    //给该模型添加灯光效果
-//    QVector3D count = QVector3D(directionLights.count(), pointLights.count(), spotLights.count());
-//    model->updateDirectionLightPosition(directionLightPosition, count);
-//    model->updateDirectionLightColor(directionLightColor, directionLights.count());
-//    model->updatePointLightPosition(pointLightPosition, count);
-//    model->updatePointLightColor(pointLightColor, pointLights.count());
-//    model->updatePointLightOption(pointLightOption, pointLights.count());
-//    model->updateSpotLightPosition(spotLightPosition, count);
-//    model->updateSpotLightDirection(spotLightDirection, spotLights.count());
-//    model->updateSpotLightColor(spotLightColor, spotLights.count());
-//    model->updateSpotLightOption(spotLightOption, spotLights.count());
-//    model->updateSpotLightOption2(spotLightOption2, spotLights.count());
-//    model->switchFog(fogSwitch);
-//    model->setFogColor(fogColor.redF(), fogColor.greenF(), fogColor.blueF());
-//    model->setFogOption(fogStart, fogEnd, fogDensity, fogPower);
-//    model->setFogMode(fogMode);
-//    return model;
 //}
 
 //Model *Scene::createModelForPreview(QString filePath, float distFactor)

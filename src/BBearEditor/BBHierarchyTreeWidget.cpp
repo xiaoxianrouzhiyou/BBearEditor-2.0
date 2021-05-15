@@ -78,9 +78,6 @@ bool BBHierarchyTreeWidget::moveItemFromOthers(const QMimeData *pMimeData)
         {
             filePath = BB_PATH_RESOURCE_MESH + filePath;
             createModel(filePath);
-
-            // 零时 本来应该在场景中创建 然后从场景那边发信号过来
-            addGameObjectItem(new BBGameObject());
         }
     }
 //    else if ((data = mimeData->data("light")) != nullptr)
@@ -167,7 +164,7 @@ QIcon BBHierarchyTreeWidget::getClassIcon(QString className)
     return QIcon(BB_PATH_RESOURCE_ICON + className + ".png");
 }
 
-void BBHierarchyTreeWidget::addGameObjectItem(BBGameObject *pGameObject)
+void BBHierarchyTreeWidget::addGameObjectSlot(BBGameObject *pGameObject)
 {
     QTreeWidgetItem* pItem = new QTreeWidgetItem({pGameObject->getName(), pGameObject->getClassName()});
     pItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable

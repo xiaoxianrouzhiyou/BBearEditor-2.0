@@ -2,12 +2,19 @@
 #include "BBScene.h"
 #include "BBCamera.h"
 #include <QMouseEvent>
+#include "BBUtils.h"
+#include "BBGameObject.h"
+#include <QMimeData>
+#include "BBModel.h"
+#include <QDrag>
+#include "BBRay.h"
 
 BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
     : BBOpenGLWidget(pParent)
 {
     m_bRightPressed = false;
-//    prepareObject(NULL), isRegionSelecting(false)
+    m_pPreviewObject = NULL;
+//    isRegionSelecting(false)
 //    //支持拖放
 //    setAcceptDrops(true);
 //    //不按下就可以捕获鼠标事件
@@ -26,7 +33,7 @@ BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
 
 BBEditViewOpenGLWidget::~BBEditViewOpenGLWidget()
 {
-
+    BB_SAFE_DELETE(m_pPreviewObject);
 }
 
 void BBEditViewOpenGLWidget::pressESCSlot()
@@ -174,6 +181,183 @@ void BBEditViewOpenGLWidget::wheelEvent(QWheelEvent *event)
     m_pScene->getCamera()->setMoveSpeed(event->delta() > 0 ? 1 : -1);
 }
 
+void BBEditViewOpenGLWidget::dragEnterEvent(QDragEnterEvent *event)
+{
+    QByteArray data;
+    if ((data = event->mimeData()->data(BB_MIMETYPE_BASEOBJECT)) != nullptr)
+    {
+        QDataStream dataStream(&data, QIODevice::ReadOnly);
+        QString fileName;
+        dataStream >> fileName;
+        if (fileName == "terrain")
+        {
+//            //创建地形
+//            prepareObject = scene.createModel(fileName, event->pos().x(), event->pos().y());
+        }
+        else
+        {
+            // Create a temporary object to show drag effect
+            // no need to create the corresponding item in the hierarchical tree
+            m_pPreviewObject = m_pScene->createModel(BB_PATH_RESOURCE_MESH + fileName, event->pos().x(), event->pos().y());
+        }
+//        //移除坐标轴选中状态
+//        scene.transformCoordinate->setSelectedObject(nullptr);
+        event->accept();
+    }
+//    else if ((data = event->mimeData()->data("light")) != nullptr)
+//    {
+//        event->accept();
+//    }
+//    else if ((data = event->mimeData()->data(FileList::getMimeType())) != nullptr)
+//    {
+//        //拖入资源文件
+//        QDataStream dataStream(&data, QIODevice::ReadOnly);
+//        QString filePath;
+//        dataStream >> filePath;
+//        QString suffix = filePath.mid(filePath.lastIndexOf('.') + 1);
+//        if (FileList::meshSuffixs.contains(suffix))
+//        {
+//            //拖入obj模型文件 创建预览模型 无需在层级视图内创建对应的对象
+//            prepareObject = scene.createModel(filePath, event->pos().x(), event->pos().y());
+//            //移除坐标轴选中状态
+//            scene.transformCoordinate->setSelectedObject(nullptr);
+//            event->accept();
+//        }
+//        else if (suffix == "mtl")
+//        {
+//            //拖入材质
+//            event->accept();
+//        }
+//        else if (FileList::textureSuffixs.contains(suffix))
+//        {
+//            event->accept();
+//        }
+//        else if (FileList::audioSuffixs.contains(suffix))
+//        {
+//            event->accept();
+//        }
+//        else if (FileList::scriptSuffixs.contains(suffix))
+//        {
+//            event->accept();
+//        }
+//        else
+//        {
+//            event->ignore();
+//        }
+//    }
+    else
+    {
+        event->ignore();
+    }
+}
+
+void BBEditViewOpenGLWidget::dragMoveEvent(QDragMoveEvent *event)
+{
+    if (m_pPreviewObject)
+    {
+        BBRay ray = m_pScene->getCamera()->createRayFromScreen(event->pos().x(), event->pos().y());
+        m_pPreviewObject->setPosition(ray.computeIntersectWithXOZPlane(0));
+    }
+    event->accept();
+}
+
+void BBEditViewOpenGLWidget::dragLeaveEvent(QDragLeaveEvent *event)
+{
+    if (m_pPreviewObject)
+    {
+        // no longer show pre-created object
+        m_pScene->deleteGameObject(m_pPreviewObject);
+        //设为空 用于下次计算
+        m_pPreviewObject = NULL;
+    }
+    event->accept();
+}
+
+void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
+{
+    QByteArray data;
+    if ((data = event->mimeData()->data(BB_MIMETYPE_BASEOBJECT)) != nullptr)
+    {
+//        //落下后 预创建对象成为正式创建的对象 坐标轴选中它
+//        scene.transformCoordinate->setSelectedObject(prepareObject);
+        // Set the position of the drop point
+        BBRay ray = m_pScene->getCamera()->createRayFromScreen(event->pos().x(), event->pos().y());
+        m_pPreviewObject->setPosition(ray.computeIntersectWithXOZPlane(0));
+        // Show item in hierarchical tree
+        // need the item so that set local coordinate
+        addGameObjectSignal(m_pPreviewObject);
+        // Set to empty for the next calculation
+        m_pPreviewObject = NULL;
+        event->accept();
+    }
+//    else if ((data = event->mimeData()->data("light")) != nullptr)
+//    {
+//        QDataStream dataStream(&data, QIODevice::ReadOnly);
+//        QString fileName;
+//        dataStream >> fileName;
+//        //创建灯光
+//        GameObject *object = scene.createLight(fileName, event->pos().x(), event->pos().y());
+//        //在层级视图中显示结点
+//        addGameObjectSignal(object);
+//        event->accept();
+//    }
+//    else if ((data = event->mimeData()->data(FileList::getMimeType())) != nullptr)
+//    {
+//        QDataStream dataStream(&data, QIODevice::ReadOnly);
+//        QString filePath;
+//        dataStream >> filePath;
+//        QString suffix = filePath.mid(filePath.lastIndexOf('.') + 1);
+//        if (FileList::meshSuffixs.contains(suffix))
+//        {
+//            if (prepareObject)
+//            {
+//                //落下后 预创建对象成为正式创建的对象 坐标轴选中它
+//                scene.transformCoordinate->setSelectedObject(prepareObject);
+//                //在层级视图中显示结点
+//                addGameObjectSignal(prepareObject);
+//                //设为空 用于下次计算
+//                prepareObject = NULL;
+//                event->accept();
+//            }
+//            else
+//            {
+//                event->ignore();
+//            }
+//        }
+//        else if (suffix == "mtl")
+//        {
+//            //材质文件
+//            //拾取落下位置的对象 赋予材质
+//            Model *model = scene.pickModel(event->pos().x(), event->pos().y());
+//            if (scene.setModelMaterial(model, filePath))
+//            {
+//                //修改对象属性栏的材质属性
+//                updateMaterialProperty(model);
+//                event->accept();
+//            }
+//            else
+//            {
+//                event->ignore();
+//            }
+//        }
+//        else if (FileList::audioSuffixs.contains(suffix))
+//        {
+//            Audio *audio = scene.createAudio(filePath, event->pos().x(), event->pos().y());
+//            addGameObjectSignal(audio);
+//            event->accept();
+//        }
+//        else
+//        {
+//            //拖入是其他文件
+//            qDebug() << "test";
+//            event->accept();
+//        }
+//    }
+    else
+    {
+        event->ignore();
+    }
+}
 
 //void OpenGLWidget::paintGL()
 //{
@@ -278,182 +462,6 @@ void BBEditViewOpenGLWidget::wheelEvent(QWheelEvent *event)
 //    scene.onKeyPress(e);
 //}
 
-//void OpenGLWidget::dragEnterEvent(QDragEnterEvent *event)
-//{
-//    QByteArray data;
-//    if ((data = event->mimeData()->data("base")) != nullptr)
-//    {
-//        QDataStream dataStream(&data, QIODevice::ReadOnly);
-//        QString fileName;
-//        dataStream >> fileName;
-//        if (fileName == "terrain")
-//        {
-//            //创建地形
-//            prepareObject = scene.createModel(fileName, event->pos().x(), event->pos().y());
-//        }
-//        else
-//        {
-//            //创建一个临时对象供显示 无需在层级视图内创建对应的对象
-//            prepareObject = scene.createModel(engineResourcesModelsPath + fileName,
-//                                              event->pos().x(), event->pos().y());
-//        }
-//        //移除坐标轴选中状态
-//        scene.transformCoordinate->setSelectedObject(nullptr);
-//        event->accept();
-//    }
-//    else if ((data = event->mimeData()->data("light")) != nullptr)
-//    {
-//        event->accept();
-//    }
-//    else if ((data = event->mimeData()->data(FileList::getMimeType())) != nullptr)
-//    {
-//        //拖入资源文件
-//        QDataStream dataStream(&data, QIODevice::ReadOnly);
-//        QString filePath;
-//        dataStream >> filePath;
-//        QString suffix = filePath.mid(filePath.lastIndexOf('.') + 1);
-//        if (FileList::meshSuffixs.contains(suffix))
-//        {
-//            //拖入obj模型文件 创建预览模型 无需在层级视图内创建对应的对象
-//            prepareObject = scene.createModel(filePath, event->pos().x(), event->pos().y());
-//            //移除坐标轴选中状态
-//            scene.transformCoordinate->setSelectedObject(nullptr);
-//            event->accept();
-//        }
-//        else if (suffix == "mtl")
-//        {
-//            //拖入材质
-//            event->accept();
-//        }
-//        else if (FileList::textureSuffixs.contains(suffix))
-//        {
-//            event->accept();
-//        }
-//        else if (FileList::audioSuffixs.contains(suffix))
-//        {
-//            event->accept();
-//        }
-//        else if (FileList::scriptSuffixs.contains(suffix))
-//        {
-//            event->accept();
-//        }
-//        else
-//        {
-//            event->ignore();
-//        }
-//    }
-//    else
-//    {
-//        event->ignore();
-//    }
-//}
 
-//void OpenGLWidget::dragMoveEvent(QDragMoveEvent *event)
-//{
-//    if (prepareObject)
-//    {
-//        Ray ray = scene.camera.createRayFromScreen(event->pos().x(), event->pos().y());
-//        prepareObject->setPosition(ray.computeIntersectWithXOZPlane(0));
-//    }
-//    event->accept();
-//}
-
-//void OpenGLWidget::dragLeaveEvent(QDragLeaveEvent *event)
-//{
-//    if (prepareObject)
-//    {
-//        //移出 不再显示预创建对象
-//        scene.deleteGameObject(prepareObject);
-//        //设为空 用于下次计算
-//        prepareObject = NULL;
-//    }
-//    event->accept();
-//}
-
-//void OpenGLWidget::dropEvent(QDropEvent *event)
-//{
-//    QByteArray data;
-//    if ((data = event->mimeData()->data("base")) != nullptr)
-//    {
-//        //落下后 预创建对象成为正式创建的对象 坐标轴选中它
-//        scene.transformCoordinate->setSelectedObject(prepareObject);
-//        //在层级视图中显示结点
-//        addGameObjectSignal(prepareObject);
-//        //设置落下点的位置 在层级视图中有对应的树节点 才能设置相对坐标
-//        Ray ray = scene.camera.createRayFromScreen(event->pos().x(), event->pos().y());
-//        prepareObject->setPosition(ray.computeIntersectWithXOZPlane(0));
-//        //设为空 用于下次计算
-//        prepareObject = NULL;
-//        event->accept();
-//    }
-//    else if ((data = event->mimeData()->data("light")) != nullptr)
-//    {
-//        QDataStream dataStream(&data, QIODevice::ReadOnly);
-//        QString fileName;
-//        dataStream >> fileName;
-//        //创建灯光
-//        GameObject *object = scene.createLight(fileName, event->pos().x(), event->pos().y());
-//        //在层级视图中显示结点
-//        addGameObjectSignal(object);
-//        event->accept();
-//    }
-//    else if ((data = event->mimeData()->data(FileList::getMimeType())) != nullptr)
-//    {
-//        QDataStream dataStream(&data, QIODevice::ReadOnly);
-//        QString filePath;
-//        dataStream >> filePath;
-//        QString suffix = filePath.mid(filePath.lastIndexOf('.') + 1);
-//        if (FileList::meshSuffixs.contains(suffix))
-//        {
-//            if (prepareObject)
-//            {
-//                //落下后 预创建对象成为正式创建的对象 坐标轴选中它
-//                scene.transformCoordinate->setSelectedObject(prepareObject);
-//                //在层级视图中显示结点
-//                addGameObjectSignal(prepareObject);
-//                //设为空 用于下次计算
-//                prepareObject = NULL;
-//                event->accept();
-//            }
-//            else
-//            {
-//                event->ignore();
-//            }
-//        }
-//        else if (suffix == "mtl")
-//        {
-//            //材质文件
-//            //拾取落下位置的对象 赋予材质
-//            Model *model = scene.pickModel(event->pos().x(), event->pos().y());
-//            if (scene.setModelMaterial(model, filePath))
-//            {
-//                //修改对象属性栏的材质属性
-//                updateMaterialProperty(model);
-//                event->accept();
-//            }
-//            else
-//            {
-//                event->ignore();
-//            }
-//        }
-//        else if (FileList::audioSuffixs.contains(suffix))
-//        {
-//            Audio *audio = scene.createAudio(filePath, event->pos().x(), event->pos().y());
-//            addGameObjectSignal(audio);
-//            event->accept();
-//        }
-//        else
-//        {
-//            //拖入是其他文件
-//            qDebug() << "test";
-//            event->accept();
-//        }
-//    }
-//    else
-//    {
-//        event->ignore();
-//    }
-
-//}
 
 

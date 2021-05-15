@@ -3,12 +3,14 @@
 
 
 #include <QList>
+#include <QVector3D>
 
 
 class BBCamera;
 class BBSkyBox;
 class BBHorizontalPlane;
 class BBGameObject;
+class BBModel;
 class BBScene
 {
 public:
@@ -21,9 +23,12 @@ public:
 
     inline BBCamera* getCamera() { return m_pCamera; }
 
-private:
+    BBModel* createModel(const QString filePath, int x, int y, bool bSelect = true);
+    BBModel* createModel(const QString filePath, QVector3D position = QVector3D(0, 0, 0), bool bSelect = true);
+
     void deleteGameObject(BBGameObject *pObject);
 
+private:
     float m_fUpdateRate;
     BBCamera *m_pCamera;
     BBSkyBox *m_pSkyBox;
@@ -61,8 +66,6 @@ private:
 
 //    void renderShadowMap();
 //    void changeSkybox(QString path);
-//    Model *createModel(QString filePath, int x, int y, bool isSelect = true);
-//    Model *createModel(QString filePath, QVector3D position = QVector3D(0, 0, 0), bool isSelect = true);
 //    Model *createModelForPreview(QString filePath, float distFactor = 2);
 //    GameObject *pickObject(Ray ray, bool isSelect = true);
 //    GameObject *createLight(QString fileName, int x, int y, bool isSelect = true);

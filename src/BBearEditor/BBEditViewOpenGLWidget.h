@@ -4,6 +4,7 @@
 #include "BBOpenGLWidget.h"
 
 class QMouseEvent;
+class BBGameObject;
 class BBEditViewOpenGLWidget : public BBOpenGLWidget
 {
     Q_OBJECT
@@ -32,8 +33,8 @@ private slots:
 //    void copyGameObject(GameObject *sourceObject, QTreeWidgetItem* transcript, QVector3D position);
 //    void onKeyPress(QKeyEvent *e);
 
-//signals:
-//    void addGameObjectSignal(GameObject *gameObject);
+signals:
+    void addGameObjectSignal(BBGameObject *pGameObject);
 //    void updateTransform(GameObject *gameObject, char transformModeKey);
 //    void pickObject(GameObject *gameObject);
 //    void updateMultipleSelectObjects(GameObject *gameObject);
@@ -47,21 +48,21 @@ private:
     void mouseReleaseEvent(QMouseEvent *e) override;
     void wheelEvent(QWheelEvent *event) override;
 
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dragMoveEvent(QDragMoveEvent *event) override;
+    void dragLeaveEvent(QDragLeaveEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
+
     // Whether the right mouse button is pressed
     bool m_bRightPressed;
     QPoint m_OriginalMousePos;
-
+    BBGameObject *m_pPreviewObject;
 
 //    void paintGL() override;
-
-//    void dragEnterEvent(QDragEnterEvent *event) override;
-//    void dragMoveEvent(QDragMoveEvent *event) override;
-//    void dragLeaveEvent(QDragLeaveEvent *event) override;
-//    void dropEvent(QDropEvent *event) override;
 //    GLuint texture;
 //    int deltaX;
 //    int deltaY;
-//    GameObject *prepareObject;
+
 //    bool isMultipleSelect;
 //    QPoint selectionRegionStart;
 //    bool isRegionSelecting;

@@ -23,7 +23,7 @@ signals:
     void createModel(QString filePath);
 
 public slots:
-    void addGameObjectItem(BBGameObject *pGameObject);
+    void addGameObjectSlot(BBGameObject *pGameObject);
 
 
 //    //保存每个item与其对应的GameObject的地址的映射
