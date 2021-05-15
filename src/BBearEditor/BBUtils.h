@@ -21,6 +21,8 @@
 
 #define BB_CONSTANT_UPDATE_RATE 16
 
+#define BB_CLASSNAME_MODEL "Model"
+
 #include <QString>
 
 class BBUtils

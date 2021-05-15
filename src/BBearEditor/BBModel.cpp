@@ -1,5 +1,6 @@
 #include "BBModel.h"
 #include "BBOBJMesh.h"
+#include "BBUtils.h"
 
 BBModel::BBModel(BBMeshType eType)
     : BBModel(0, 0, 0, 0, 0, 0, 1, 1, 1, eType)
@@ -12,6 +13,7 @@ BBModel::BBModel(const float px, const float py, const float pz,
                  const float sx, const float sy, const float sz, BBMeshType eType)
     : BBGameObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
+    setClassName(BB_CLASSNAME_MODEL);
     if (eType == BBMeshType::OBJ)
         m_pMesh = new BBOBJMesh(px, py, pz, rx, ry, rz, sx, sy, sz);
 //    boundingBox = new AABBBoundingBox3D(px, py, pz, rx, ry, rz, sx, sy, sz);
