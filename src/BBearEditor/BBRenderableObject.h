@@ -2,6 +2,7 @@
 #define BBRENDERABLEOBJECT_H
 
 #include "BBGameObject.h"
+#include <QtOpenGL>
 
 class BBGLShader;
 class BBCamera;
@@ -18,15 +19,17 @@ public:
     void render(BBCamera *pCamera) override;
     void render(QMatrix4x4 modelMatrix, BBCamera *pCamera) override;
     void resize(float fWidth, float fHeight) override;
+
+    void setTexture(const QString filePath, const bool bInvertY = true);
+    void setTexture(const int nSize);
+    void setTexture(const GLuint nTexture);
+
 //    void setAmbientMaterial(float r, float g, float b, float a);
 //    void setAmbientMaterial(QColor color);
 //    void setDiffuseMaterial(float r, float g, float b, float a);
 //    void setDiffuseMaterial(QColor color);
 //    void setSpecularMaterial(float r, float g, float b, float a);
 //    void setSpecularMaterial(QColor color);
-//    void setTexture(QString imagePath, bool invertY = true);
-//    void setTexture(int size);
-//    void setTexture(GLuint texture);
 
 protected:
     virtual void draw();

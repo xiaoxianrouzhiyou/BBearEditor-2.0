@@ -49,6 +49,21 @@ void BBRenderableObject::resize(float fWidth, float fHeight)
     m_pShader->resize(fWidth, fHeight);
 }
 
+void BBRenderableObject::setTexture(const QString filePath, const bool bInvertY)
+{
+    m_pShader->setTexture(NAME_TEXTURE, filePath, bInvertY);
+}
+
+void BBRenderableObject::setTexture(const int nSize)
+{
+    m_pShader->setTexture(NAME_TEXTURE, nSize);
+}
+
+void BBRenderableObject::setTexture(const GLuint nTexture)
+{
+    m_pShader->setTexture(NAME_TEXTURE, nTexture);
+}
+
 void BBRenderableObject::draw()
 {
 
@@ -83,19 +98,3 @@ void BBRenderableObject::draw()
 //{
 //    setSpecularMaterial(color.redF(), color.greenF(), color.blueF(), color.alphaF());
 //}
-
-//void RenderableObject::setTexture(QString imagePath, bool invertY)
-//{
-//    mShader.setTexture("textureUniform", imagePath, invertY);
-//}
-
-//void RenderableObject::setTexture(int size)
-//{
-//    mShader.setTexture("textureUniform", size);
-//}
-
-//void RenderableObject::setTexture(GLuint texture)
-//{
-//    mShader.setTexture("textureUniform", texture);
-//}
-

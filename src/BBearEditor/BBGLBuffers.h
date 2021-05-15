@@ -5,6 +5,9 @@
 #include <QVector2D>
 #include <QVector3D>
 #include <QVector4D>
+#include <QtOpenGL>
+#include <QRgb>
+
 
 class BBGLVertexBuffer
 {
@@ -43,27 +46,28 @@ private:
 };
 
 
-//class GLTexture
-//{
-//public:
-//    GLTexture();
-//    virtual ~GLTexture();
-//    virtual void bind() = 0;
-//    virtual void unbind() = 0;
-//    virtual bool failed() const {return m_failed;}
-//    GLuint m_texture;
-//    bool m_failed;
-//};
+class BBGLTexture
+{
+public:
+    BBGLTexture();
+    virtual ~BBGLTexture();
+    virtual void bind() = 0;
+    virtual void unbind() = 0;
+    virtual bool failed() const { return m_bFailed; }
+    GLuint m_nTexture;
+    bool m_bFailed;
+};
 
-//class GLTexture2D : public GLTexture
-//{
-//public:
-//    GLTexture2D(int width, int height);
-//    explicit GLTexture2D(const QString &fileName, bool invertY = true);
-//    void load(int width, int height, QRgb *data);
-//    void bind() override;
-//    void unbind() override;
-//};
+class BBGLTexture2D : public BBGLTexture
+{
+public:
+    BBGLTexture2D(const int nWidth, const int nHeight);
+    BBGLTexture2D(const QString &fileName, const bool bInvertY = true);
+    void load(const int nWidth, const int nHeight, QRgb *pData);
+    void bind() override;
+    void unbind() override;
+};
+
 
 ////程序纹理是程序生成的 不是读文件
 //class GLProcedureTexture : public GLTexture

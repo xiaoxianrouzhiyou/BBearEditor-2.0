@@ -16,9 +16,9 @@ BBSkyBoxSide::BBSkyBoxSide(BBGLVertexBuffer *pVertexBuffer)
 
 void BBSkyBoxSide::init(const QString path)
 {
-    m_pShader->init("../BBearEditor/resources/shaders/base.vert",
-                    "../BBearEditor/resources/shaders/base.frag");
-//    setTexture(path);
+    m_pShader->init("../BBearEditor/resources/shaders/texture.vert",
+                    "../BBearEditor/resources/shaders/texture.frag");
+    setTexture(path);
 }
 
 void BBSkyBoxSide::render(BBCamera *pCamera)

@@ -1,9 +1,10 @@
 #ifndef BBGLSHADER_H
 #define BBGLSHADER_H
 
-#include <gl/glu.h>
+#include <QtOpenGL>
 #include <QVector4D>
 #include <QMatrix4x4>
+#include <QOpenGLFunctions>
 
 #define NAME_POSITION "positionAttr"
 #define NAME_COLOR "colorAttr"
@@ -14,6 +15,7 @@
 #define NAME_MODELMATRIX "modelMatrix"
 #define NAME_ITMODELMATRIX "IT_modelMatrix"
 #define NAME_CAMERAPOSITION "cameraPositionUniform"
+#define NAME_TEXTURE "textureUniform"
 
 //enum Type {
 //    COLOR = 0x01,
@@ -80,7 +82,7 @@ struct UniformMatrix
 class BBGLVertexBuffer;
 class QOpenGLShaderProgram;
 class QOpenGLBuffer;
-class BBGLShader
+class BBGLShader : protected QOpenGLFunctions
 {
 public:
     BBGLShader();
@@ -94,10 +96,13 @@ public:
                 const QVector3D cameraPos, BBGLVertexBuffer *pVertexbuffer);
     void resize(const float fWidth, const float fHeight);
 
+    void setVector4f(const QString name, const float x, const float y, const float z, const float w);
+    void setTexture(const QString name, const QString filePath, const bool bInvertY = true);
+    void setTexture(const QString name, const int nSize);
+    void setTexture(const QString name, const GLuint nTexture);
+
 private:
     void bindElementBufferObject(const unsigned short *pIndexes, const int nIndexCount);
-
-    void setVector4f(const QString name, const float x, const float y, const float z, const float w);
 
     QOpenGLShaderProgram *m_pProgram;
 
@@ -131,9 +136,6 @@ private:
 //class GLShader
 //{
 //public:
-//    void setTexture(QString name, QString filePath, bool invertY = true);
-//    void setTexture(QString name, int size);
-//    void setTexture(QString name, GLuint texture);
 //    void setVector4fArray(QString name, QVector4D *vector4Array, int count);
 //    void setBool(QString name, bool b);
 //    void setMatrix(QString name, QMatrix4x4 matrix);

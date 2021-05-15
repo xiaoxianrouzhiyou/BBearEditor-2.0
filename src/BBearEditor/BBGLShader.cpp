@@ -14,11 +14,45 @@ BBGLShader::~BBGLShader()
 {
     BB_SAFE_DELETE(m_pProgram);
     BB_SAFE_DELETE(m_pElementBufferObject);
+
+    QMap<QString, UniformTexture*>::Iterator texItr;
+    for (texItr = m_mapUniformTextures.begin(); texItr != m_mapUniformTextures.end(); texItr++)
+    {
+        BB_SAFE_DELETE(*texItr);
+    }
+
+    QMap<QString, UniformVector4f*>::Iterator vectorItr;
+    for (vectorItr = m_mapUniformVector4f.begin(); vectorItr != m_mapUniformVector4f.end(); vectorItr++)
+    {
+        BB_SAFE_DELETE(*vectorItr);
+    }
+
+    QMap<QString, UniformVector4fArray*>::Iterator vectorArrayItr;
+    for (vectorArrayItr = m_mapUniformVector4fArray.begin(); vectorArrayItr != m_mapUniformVector4fArray.end(); vectorArrayItr++)
+    {
+        BB_SAFE_DELETE(*vectorArrayItr);
+    }
+
+    QMap<QString, UniformBool*>::Iterator boolItr;
+    for (boolItr = m_mapUniformBool.begin(); boolItr != m_mapUniformBool.end(); boolItr++)
+    {
+        BB_SAFE_DELETE(*boolItr);
+    }
+
+    QMap<QString, UniformMatrix*>::Iterator matrixItr;
+    for (matrixItr = m_mapUniformMatrix.begin(); matrixItr != m_mapUniformMatrix.end(); matrixItr++)
+    {
+        BB_SAFE_DELETE(*matrixItr);
+    }
 }
 
 void BBGLShader::init(const char *vertexShaderPath, const char *fragmentShaderPath,
                       const unsigned short *pIndexes, const int nIndexCount)
 {
+    // protected QOpenGLFunctions + initializeOpenGLFunctions in order to use OpenGL's extension mechanism
+    // so that invoke glActiveTexture
+    initializeOpenGLFunctions();
+
     int nFileSize;
     char *vertexShaderSource = BBUtils::loadFileContent(vertexShaderPath, nFileSize);
     char *fragmentShaderSource = BBUtils::loadFileContent(fragmentShaderPath, nFileSize);
@@ -64,15 +98,15 @@ void BBGLShader::render(const std::function<void()> draw, const QMatrix4x4 model
     m_pProgram->setUniformValue(m_nModelMatrixLocation, m_ModelMatrix);
     m_pProgram->setUniformValue(m_nITModelMatrixLocation, m_ITModelMatrix);
 
-//    int index = 0;
-//    QMap<QString, UniformTexture*>::Iterator texItr;
-//    for (texItr = m_uniformTextures.begin(); texItr != m_uniformTextures.end(); texItr++)
-//    {
-//        glActiveTexture(GL_TEXTURE0 + index);
-//        glBindTexture(GL_TEXTURE_2D, (*texItr)->m_texture);
-//        m_program->setUniformValue((*texItr)->m_location, index);
-//        index++;
-//    }
+    int index = 0;
+    QMap<QString, UniformTexture*>::Iterator texItr;
+    for (texItr = m_mapUniformTextures.begin(); texItr != m_mapUniformTextures.end(); texItr++)
+    {
+        glActiveTexture(GL_TEXTURE0 + index);
+        glBindTexture(GL_TEXTURE_2D, (*texItr)->m_nTexture);
+        m_pProgram->setUniformValue((*texItr)->m_nLocation, index);
+        index++;
+    }
 
 //    //各种四维向量
 //    QMap<QString, UniformVector4f*>::Iterator vectorItr;
@@ -109,11 +143,6 @@ void BBGLShader::render(const std::function<void()> draw, const QMatrix4x4 model
     m_pProgram->setAttributeArray(m_nTexcoordAttr, pVertexbuffer->getTexcoord(), 2, sizeof(float) * 2);
     m_pProgram->setAttributeArray(m_nNormalAttr, pVertexbuffer->getNormal(), 4, sizeof(float) * 4);
 
-//    glVertexAttribPointer(m_nPositionAttr, 4, GL_FLOAT, GL_FALSE, 0, pVertexbuffer->getPosition());
-//    glVertexAttribPointer(m_nColorAttr, 4, GL_FLOAT, GL_FALSE, 0, pVertexbuffer->getColor());
-//    glVertexAttribPointer(m_nTexcoordAttr, 2, GL_FLOAT, GL_FALSE, 0, pVertexbuffer->getTexcoord());
-//    glVertexAttribPointer(m_nNormalAttr, 4, GL_FLOAT, GL_FALSE, 0, pVertexbuffer->getNormal());
-
     m_pProgram->enableAttributeArray(m_nPositionAttr);
     m_pProgram->enableAttributeArray(m_nColorAttr);
     m_pProgram->enableAttributeArray(m_nTexcoordAttr);
@@ -139,16 +168,6 @@ void BBGLShader::resize(const float fWidth, const float fHeight)
     m_ProjectionMatrix.perspective(50.0f, fWidth / fHeight, 0.1f, 1000.0f);
 }
 
-void BBGLShader::bindElementBufferObject(const unsigned short *pIndexes, const int nIndexCount)
-{
-    m_pElementBufferObject = new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
-    m_pElementBufferObject->create();
-    m_pElementBufferObject->bind();
-    m_pElementBufferObject->setUsagePattern(QOpenGLBuffer::StaticDraw);
-    m_pElementBufferObject->allocate(pIndexes, sizeof(unsigned short) * nIndexCount);
-    m_pElementBufferObject->release();
-}
-
 void BBGLShader::setVector4f(const QString name, const float x, const float y, const float z, const float w)
 {
     GLint location = m_pProgram->uniformLocation(name);
@@ -164,18 +183,41 @@ void BBGLShader::setVector4f(const QString name, const float x, const float y, c
     }
 }
 
-//void GLShader::setTexture(QString name, QString filePath, bool invertY)
-//{
-//    GLint location = m_program->uniformLocation(name);
-//    if (location != -1)
-//    {
-//        UniformTexture *t = new UniformTexture();
-//        GLTexture2D *glTexture2D = new GLTexture2D(filePath, invertY);
-//        t->m_texture = glTexture2D->m_texture;
-//        t->m_location = location;
-//        m_uniformTextures.insert(name, t);
-//    }
-//}
+void BBGLShader::setTexture(const QString name, const QString filePath, const bool bInvertY)
+{
+    GLint location = m_pProgram->uniformLocation(name);
+    if (location != -1)
+    {
+        UniformTexture *t = new UniformTexture();
+        BBGLTexture2D *glTexture2D = new BBGLTexture2D(filePath, bInvertY);
+        t->m_nTexture = glTexture2D->m_nTexture;
+        t->m_nLocation = location;
+        m_mapUniformTextures.insert(name, t);
+    }
+}
+
+void BBGLShader::setTexture(const QString name, const int nSize)
+{
+
+}
+
+void BBGLShader::setTexture(const QString name, const GLuint nTexture)
+{
+
+}
+
+void BBGLShader::bindElementBufferObject(const unsigned short *pIndexes, const int nIndexCount)
+{
+    m_pElementBufferObject = new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+    m_pElementBufferObject->create();
+    m_pElementBufferObject->bind();
+    m_pElementBufferObject->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    m_pElementBufferObject->allocate(pIndexes, sizeof(unsigned short) * nIndexCount);
+    m_pElementBufferObject->release();
+}
+
+
+
 
 //void GLShader::setTexture(QString name, int size)
 //{

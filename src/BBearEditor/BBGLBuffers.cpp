@@ -1,5 +1,6 @@
 #include "BBGLBuffers.h"
 #include "BBUtils.h"
+#include <QImage>
 
 BBGLVertexBuffer::BBGLVertexBuffer(const int nVertexCount)
 {
@@ -97,91 +98,101 @@ void BBGLVertexBuffer::setSize(const int nVertexCount)
     memset(m_fNormal, 0, sizeof(float) * m_nVertexCount * 4);
 }
 
-//GLTexture::GLTexture() : m_texture(0), m_failed(false)
-//{
-//    glGenTextures(1, &m_texture);
-//}
 
-//GLTexture::~GLTexture()
-//{
-//    glDeleteTextures(1, &m_texture);
-//}
+//--------------------
+// BBGLTexture
+//--------------------
 
-//GLTexture2D::GLTexture2D(int width, int height)
-//{
-//    glBindTexture(GL_TEXTURE_2D, m_texture);
-//    glTexImage2D(GL_TEXTURE_2D, 0, 4, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+BBGLTexture::BBGLTexture()
+{
+    m_nTexture = 0;
+    m_bFailed = false;
+    glGenTextures(1, &m_nTexture);
+}
 
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-//    //glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
-//    glBindTexture(GL_TEXTURE_2D, 0);
-//}
+BBGLTexture::~BBGLTexture()
+{
+    glDeleteTextures(1, &m_nTexture);
+}
 
 
-//GLTexture2D::GLTexture2D(const QString &fileName, bool invertY)
-//    : GLTexture()
-//{
-//    // TODO: Add error handling.
-//    QImage image(fileName);
-//    if (image.isNull()) {
-//        m_failed = true;
-//        return;
-//    }
+//--------------------
+// BBGLTexture2D
+//--------------------
 
-//    image = image.convertToFormat(QImage::Format_ARGB32);
-//    if (invertY)
-//    {
-//        image = image.mirrored();
-//    }
-//    //qDebug() << "Image size:" << image.width() << "x" << image.height();
-//    /*if (width <= 0)
-//        width = image.width();
-//    if (height <= 0)
-//        height = image.height();
-//    if (width != image.width() || height != image.height())
-//        image = image.scaled(width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);*/
+BBGLTexture2D::BBGLTexture2D(const int nWidth, const int nHeight)
+{
+    glBindTexture(GL_TEXTURE_2D, m_nTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, 4, nWidth, nHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 
-//    glBindTexture(GL_TEXTURE_2D, m_texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+//    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
 
-//    // Works on x86, so probably works on all little-endian systems.
-//    // Does it work on big-endian systems?
-//    glTexImage2D(GL_TEXTURE_2D, 0, 4, image.width(), image.height(), 0,
-//        GL_BGRA, GL_UNSIGNED_BYTE, image.bits());
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
 
-//    //GL_CLAMP_TO_EDGE解决天空盒裂缝
-//    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-//    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-//    //glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
-//    glBindTexture(GL_TEXTURE_2D, 0);
-//}
+BBGLTexture2D::BBGLTexture2D(const QString &fileName, const bool bInvertY)
+    : BBGLTexture()
+{
+    // Add error handling.
+    QImage image(fileName);
+    if (image.isNull()) {
+        m_bFailed = true;
+        return;
+    }
 
-//void GLTexture2D::load(int width, int height, QRgb *data)
-//{
-//    glBindTexture(GL_TEXTURE_2D, m_texture);
-//    glTexImage2D(GL_TEXTURE_2D, 0, 4, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
-//    glBindTexture(GL_TEXTURE_2D, 0);
-//}
+    image = image.convertToFormat(QImage::Format_ARGB32);
+    if (bInvertY)
+    {
+        image = image.mirrored();
+    }
+    //qDebug() << "Image size:" << image.width() << "x" << image.height();
+    /*if (width <= 0)
+        width = image.width();
+    if (height <= 0)
+        height = image.height();
+    if (width != image.width() || height != image.height())
+        image = image.scaled(width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);*/
 
-//void GLTexture2D::bind()
-//{
-//    glBindTexture(GL_TEXTURE_2D, m_texture);
-//    glEnable(GL_TEXTURE_2D);
-//}
+    glBindTexture(GL_TEXTURE_2D, m_nTexture);
 
-//void GLTexture2D::unbind()
-//{
-//    glBindTexture(GL_TEXTURE_2D, 0);
-//    glDisable(GL_TEXTURE_2D);
-//}
+    glTexImage2D(GL_TEXTURE_2D, 0, 4, image.width(), image.height(), 0, GL_BGRA, GL_UNSIGNED_BYTE, image.bits());
+
+    // GL_CLAMP_TO_EDGE Solve the skybox crack
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+//    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void BBGLTexture2D::load(const int nWidth, const int nHeight, QRgb *pData)
+{
+    glBindTexture(GL_TEXTURE_2D, m_nTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, 4, nWidth, nHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, pData);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void BBGLTexture2D::bind()
+{
+    glBindTexture(GL_TEXTURE_2D, m_nTexture);
+    glEnable(GL_TEXTURE_2D);
+}
+
+void BBGLTexture2D::unbind()
+{
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_TEXTURE_2D);
+}
 
 //GLProcedureTexture::GLProcedureTexture(int size)
 //    : GLTexture()
