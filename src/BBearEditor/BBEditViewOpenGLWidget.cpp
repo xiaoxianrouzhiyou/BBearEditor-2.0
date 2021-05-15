@@ -14,11 +14,12 @@ BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
 {
     m_bRightPressed = false;
     m_pPreviewObject = NULL;
+    setAcceptDrops(true);
+    // Mouse events can be captured without pressing
+    setMouseTracking(true);
+
 //    isRegionSelecting(false)
-//    //支持拖放
-//    setAcceptDrops(true);
-//    //不按下就可以捕获鼠标事件
-//    setMouseTracking(true);
+
 //    //单选模式
 //    isMultipleSelect = false;
 

@@ -15,8 +15,16 @@ public:
     BBModel(const float px, const float py, const float pz,
             const float rx, const float ry, const float rz,
             const float sx, const float sy, const float sz, BBMeshType eType);
+    ~BBModel();
 
     void init(const QString path) override;
+    void render(BBCamera *pCamera) override;
+    void resize(float fWidth, float fHeight) override;
+
+    void setPosition(const QVector3D position, const bool bUpdateLocalTransform = true) override;
+    void setRotation(const int nAngle, const QVector3D axis, const bool bUpdateLocalTransform = true) override;
+    void setRotation(const QVector3D rotation, const bool bUpdateLocalTransform = true) override;
+    void setScale(const QVector3D scale, const bool bUpdateLocalTransform = true) override;
 
 private:
     BBMesh *m_pMesh;
@@ -25,17 +33,10 @@ private:
 #endif // BBMODEL_H
 
 
-//    Model();
-//    Model(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz);
-//    void init(QString path);
-//    void render(Camera camera) override;
+
+
 //    void renderBuffer(QMatrix4x4 viewMatrix, QMatrix4x4 projectionMatrix, QVector3D cameraPos);
-//    void resize(float width, float height) override;
 //    void setDiffuseMaterial(float r, float g, float b, float a);
-//    void setPosition(QVector3D position, bool isUpdateLocalTransform = true) override;
-//    void setRotation(int angle, QVector3D axis, bool isUpdateLocalTransform = true) override;
-//    void setRotation(QVector3D rotation, bool isUpdateLocalTransform = true) override;
-//    void setScale(QVector3D scale, bool isUpdateLocalTransform = true) override;
 //    bool hit(Ray ray, float &distance) override;
 //    void setActive(bool isActive) override;
 //    void setVisible(bool isVisible) override;

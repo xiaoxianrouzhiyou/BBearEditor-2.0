@@ -22,6 +22,11 @@ BBModel::BBModel(const float px, const float py, const float pz,
 //    mScriptManagers.append(new ScriptManager(this));
 }
 
+BBModel::~BBModel()
+{
+    BB_SAFE_DELETE(m_pMesh);
+}
+
 void BBModel::init(const QString path)
 {
     m_pMesh->init(path);
@@ -31,58 +36,61 @@ void BBModel::init(const QString path)
 //    mMesh->mVertexPositions.clear();
 }
 
-//void Model::render(Camera camera)
-//{
-//    if (mIsActive)
-//    {
-//        mMesh->render(camera);
+void BBModel::render(BBCamera *pCamera)
+{
+    if (m_bActive)
+    {
+        m_pMesh->render(pCamera);
 //        boundingBox->render(camera);
-//    }
-//}
+    }
+}
+
+void BBModel::resize(float fWidth, float fHeight)
+{
+    m_pMesh->resize(fWidth, fHeight);
+//    boundingBox->resize(width, height);
+}
+
+void BBModel::setPosition(const QVector3D position, const bool bUpdateLocalTransform)
+{
+    BBGameObject::setPosition(position, bUpdateLocalTransform);
+    m_pMesh->setPosition(position, bUpdateLocalTransform);
+//    boundingBox->setPosition(position, bUpdateLocalTransform);
+}
+
+void BBModel::setRotation(const int nAngle, const QVector3D axis, const bool bUpdateLocalTransform)
+{
+    BBGameObject::setRotation(nAngle, axis, bUpdateLocalTransform);
+    m_pMesh->setRotation(nAngle, axis, bUpdateLocalTransform);
+//    boundingBox->setRotation(angle, axis, isUpdateLocalTransform);
+}
+
+void BBModel::setRotation(const QVector3D rotation, const bool bUpdateLocalTransform)
+{
+    BBGameObject::setRotation(rotation, bUpdateLocalTransform);
+    m_pMesh->setRotation(rotation, bUpdateLocalTransform);
+//    boundingBox->setRotation(rotation, isUpdateLocalTransform);
+}
+
+void BBModel::setScale(const QVector3D scale, const bool bUpdateLocalTransform)
+{
+    BBGameObject::setScale(scale, bUpdateLocalTransform);
+    m_pMesh->setScale(scale, bUpdateLocalTransform);
+//    boundingBox->setScale(scale, isUpdateLocalTransform);
+}
 
 //void Model::renderBuffer(QMatrix4x4 viewMatrix, QMatrix4x4 projectionMatrix, QVector3D cameraPos)
 //{
 //    mMesh->renderBuffer(viewMatrix, projectionMatrix, cameraPos);
 //}
 
-//void Model::resize(float width, float height)
-//{
-//    mMesh->resize(width, height);
-//    boundingBox->resize(width, height);
-//}
+
 
 //void Model::setDiffuseMaterial(float r, float g, float b, float a)
 //{
 //    mMesh->setDiffuseMaterial(r, g, b, a);
 //}
 
-//void Model::setPosition(QVector3D position, bool isUpdateLocalTransform)
-//{
-//    GameObject::setPosition(position, isUpdateLocalTransform);
-//    mMesh->setPosition(position, isUpdateLocalTransform);
-//    boundingBox->setPosition(position, isUpdateLocalTransform);
-//}
-
-//void Model::setRotation(int angle, QVector3D axis, bool isUpdateLocalTransform)
-//{
-//    GameObject::setRotation(angle, axis, isUpdateLocalTransform);
-//    mMesh->setRotation(angle, axis, isUpdateLocalTransform);
-//    boundingBox->setRotation(angle, axis, isUpdateLocalTransform);
-//}
-
-//void Model::setRotation(QVector3D rotation, bool isUpdateLocalTransform)
-//{
-//    GameObject::setRotation(rotation, isUpdateLocalTransform);
-//    mMesh->setRotation(rotation, isUpdateLocalTransform);
-//    boundingBox->setRotation(rotation, isUpdateLocalTransform);
-//}
-
-//void Model::setScale(QVector3D scale, bool isUpdateLocalTransform)
-//{
-//    GameObject::setScale(scale, isUpdateLocalTransform);
-//    mMesh->setScale(scale, isUpdateLocalTransform);
-//    boundingBox->setScale(scale, isUpdateLocalTransform);
-//}
 
 //bool Model::hit(Ray ray, float &distance)
 //{
