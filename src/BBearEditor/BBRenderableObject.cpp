@@ -18,6 +18,7 @@ BBRenderableObject::BBRenderableObject(float px, float py, float pz, float rx, f
     m_pVertexBuffer = NULL;
     m_pIndexes = NULL;
     m_nIndexCount = 0;
+    m_nVertexCount = 0;
 }
 
 BBRenderableObject::~BBRenderableObject()

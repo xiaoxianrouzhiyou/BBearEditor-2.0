@@ -38,6 +38,7 @@ protected:
     BBGLVertexBuffer *m_pVertexBuffer;
     unsigned short *m_pIndexes;
     int m_nIndexCount;
+    int m_nVertexCount;
 };
 
 #endif // BBRENDERABLEOBJECT_H
