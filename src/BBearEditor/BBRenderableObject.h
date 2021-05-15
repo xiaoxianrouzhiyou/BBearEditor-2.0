@@ -12,7 +12,7 @@ class BBRenderableObject : public BBGameObject
 public:
     BBRenderableObject();
     BBRenderableObject(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz);
-    ~BBRenderableObject();
+    virtual ~BBRenderableObject();
 
     void setVisible(bool bVisible) { m_bVisible = bVisible; }
 
@@ -39,6 +39,7 @@ protected:
     unsigned short *m_pIndexes;
     int m_nIndexCount;
     int m_nVertexCount;
+    QVector3D m_DefaultColor;
 };
 
 #endif // BBRENDERABLEOBJECT_H

@@ -10,7 +10,7 @@ class BBEditViewOpenGLWidget : public BBOpenGLWidget
 
 public:
     explicit BBEditViewOpenGLWidget(QWidget *pParent = 0);
-    ~BBEditViewOpenGLWidget();
+    virtual ~BBEditViewOpenGLWidget();
 
 //    BaseOpenGLWidget *getPreview();
 

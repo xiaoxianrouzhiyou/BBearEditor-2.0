@@ -41,7 +41,7 @@ public:
     virtual QString getMimeType() { return BB_MIMETYPE_TREEWIDGET; }
 
     explicit BBTreeWidget(QWidget *parent = 0);
-    ~BBTreeWidget();
+    virtual ~BBTreeWidget();
 
 protected:
     void startDrag(Qt::DropActions supportedActions) override;

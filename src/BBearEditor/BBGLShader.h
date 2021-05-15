@@ -86,7 +86,7 @@ class BBGLShader : protected QOpenGLFunctions
 {
 public:
     BBGLShader();
-    ~BBGLShader();
+    virtual ~BBGLShader();
 
     void init(const QString vertexShaderPath, const QString fragmentShaderPath,
               const unsigned short *pIndexes = 0, const int nIndexCount = 0);

@@ -13,7 +13,7 @@ class BBUIMainWindow : public QMainWindow
 
 public:
     explicit BBUIMainWindow(QWidget *parent = 0);
-    ~BBUIMainWindow();
+    virtual ~BBUIMainWindow();
 
 private:
     void setWindowLayout();

@@ -14,7 +14,7 @@ class BBUITitleBar : public QWidget
 
 public:
     explicit BBUITitleBar(QWidget *parent = 0);
-    ~BBUITitleBar();
+    virtual ~BBUITitleBar();
 
 signals:
     void run(bool trigger);

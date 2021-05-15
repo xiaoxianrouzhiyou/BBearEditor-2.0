@@ -12,7 +12,7 @@ class BBOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 
 public:
     explicit BBOpenGLWidget(QWidget *parent = 0);
-    ~BBOpenGLWidget();
+    virtual ~BBOpenGLWidget();
 
 protected:
     void initializeGL() override;

@@ -9,7 +9,7 @@ class BBScene
 {
 public:
     BBScene();
-    ~BBScene();
+    virtual ~BBScene();
 
     void init();
     void render();

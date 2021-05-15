@@ -13,7 +13,7 @@ class BBConfirmationDialog : public QDialog
 
 public:
     explicit BBConfirmationDialog(QWidget *parent = 0);
-    ~BBConfirmationDialog();
+    virtual ~BBConfirmationDialog();
 
     void setTitle(QString title);
     void setMessage(QString message);

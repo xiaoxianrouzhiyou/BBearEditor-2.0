@@ -159,7 +159,7 @@ void BBOBJMesh::load(const QString path)
         temp = positions.at(vertexes[i].posIndex - 1);
         m_pVertexBuffer->setPosition(i, temp);
 
-        m_pVertexBuffer->setColor(i, m_Color);
+        m_pVertexBuffer->setColor(i, m_DefaultColor);
 
         temp = texcoords.at(vertexes[i].texcoordIndex - 1);
         m_pVertexBuffer->setTexcoord(i, temp.x(), temp.y());

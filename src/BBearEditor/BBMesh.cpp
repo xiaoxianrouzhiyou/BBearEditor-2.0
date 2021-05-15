@@ -13,7 +13,7 @@ BBMesh::BBMesh(const float px, const float py, const float pz,
                const float sx, const float sy, const float sz)
     : BBRenderableObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
-    m_Color = QVector3D(1.0f, 1.0f, 1.0f);
+
 }
 
 void BBMesh::init(const QString path)

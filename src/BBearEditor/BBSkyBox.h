@@ -8,6 +8,7 @@ class BBSkyBoxSide : public BBRenderableObject
 {
 public:
     BBSkyBoxSide(BBGLVertexBuffer *pVertexBuffer);
+
     void init(const QString path) override;
     void render(BBCamera *pCamera) override;
 //    void change(QString path);
@@ -21,7 +22,7 @@ class BBSkyBox : public BBGameObject
 {
 public:
     BBSkyBox();
-    ~BBSkyBox();
+    virtual ~BBSkyBox();
 
     void init(const QString path) override;
     void render(BBCamera *pCamera) override;

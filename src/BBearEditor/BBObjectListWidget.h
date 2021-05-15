@@ -9,7 +9,8 @@ class BBObjectListWidget : public QListWidget
 
 public:
     explicit BBObjectListWidget(QWidget *parent = 0, const int pieceSize = 35);
-    ~BBObjectListWidget();
+    virtual ~BBObjectListWidget();
+
     bool loadListItems(const char *xmlFilePath);
     void setMimeType(QString strMimeType) { m_strMimeType = strMimeType; }
 

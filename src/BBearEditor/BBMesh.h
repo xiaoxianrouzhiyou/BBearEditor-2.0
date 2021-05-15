@@ -18,8 +18,6 @@ public:
 protected:
     virtual void load(const QString path) = 0;
     void draw() override;
-
-    QVector3D m_Color;
 };
 
 #endif // BBMESH_H

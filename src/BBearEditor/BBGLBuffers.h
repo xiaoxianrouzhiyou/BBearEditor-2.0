@@ -13,7 +13,7 @@ class BBGLVertexBuffer
 {
 public:
     BBGLVertexBuffer(const int nVertexCount);
-    ~BBGLVertexBuffer();
+    virtual ~BBGLVertexBuffer();
 
     void setPosition(const int index, const float x, const float y, const float z, const float w = 1.0f);
     void setPosition(const int index, const QVector3D position);

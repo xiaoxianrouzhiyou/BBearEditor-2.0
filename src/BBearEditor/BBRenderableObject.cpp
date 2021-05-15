@@ -19,6 +19,7 @@ BBRenderableObject::BBRenderableObject(float px, float py, float pz, float rx, f
     m_pIndexes = NULL;
     m_nIndexCount = 0;
     m_nVertexCount = 0;
+    m_DefaultColor = QVector3D(1.0f, 1.0f, 1.0f);
 }
 
 BBRenderableObject::~BBRenderableObject()
