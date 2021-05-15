@@ -88,7 +88,7 @@ public:
     BBGLShader();
     ~BBGLShader();
 
-    void init(const char *vertexShaderPath, const char *fragmentShaderPath,
+    void init(const QString vertexShaderPath, const QString fragmentShaderPath,
               const unsigned short *pIndexes = 0, const int nIndexCount = 0);
     void render(const std::function<void()> draw, const QMatrix4x4 modelMatrix, const QMatrix4x4 viewMatrix,
                 const QVector3D cameraPos, BBGLVertexBuffer *pVertexbuffer);

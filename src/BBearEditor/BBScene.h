@@ -4,6 +4,7 @@
 
 class BBCamera;
 class BBSkyBox;
+class BBHorizontalPlane;
 class BBScene
 {
 public:
@@ -20,12 +21,14 @@ private:
     float m_fUpdateRate;
     BBCamera *m_pCamera;
     BBSkyBox *m_pSkyBox;
+    BBHorizontalPlane *m_pHorizontalPlane;
+
 //    QList<GameObject*> models;
 //    QList<GameObject*> directionLights;
 //    QList<GameObject*> pointLights;
 //    QList<GameObject*> spotLights;
 //    QList<GameObject*> audios;
-//    HorizontalPlane *horizontalPlane;
+
 //    SelectionRegion *selectionRegion;
 //    Particle *particle;
 //    QVector4D *directionLightPosition;

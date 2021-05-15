@@ -2,14 +2,15 @@
 #include "BBUtils.h"
 #include "BBCamera.h"
 #include "BBSkyBox.h"
+#include "BBHorizontalPlane.h"
 
 BBScene::BBScene()
 {
     m_fUpdateRate = (float) BB_CONSTANT_UPDATE_RATE / 1000;
     m_pCamera = new BBCamera;
     m_pSkyBox = new BBSkyBox;
+    m_pHorizontalPlane = new BBHorizontalPlane();
 
-//    horizontalPlane = new HorizontalPlane();
 //    selectionRegion = new SelectionRegion();
 //    transformCoordinate = new TransformCoordinate();
 //    particle = new Particle();
@@ -27,6 +28,7 @@ BBScene::~BBScene()
 {
     BB_SAFE_DELETE(m_pCamera);
     BB_SAFE_DELETE(m_pSkyBox);
+    BB_SAFE_DELETE(m_pHorizontalPlane);
 //    QList<GameObject*> objects = models + directionLights + pointLights + spotLights + audios;
 //    QList<GameObject*>::Iterator itr;
 //    for (itr = objects.begin(); itr != objects.end(); itr++)
@@ -41,8 +43,8 @@ void BBScene::init()
     m_pCamera->setViewportSize(800.0f, 600.0f);
 
     m_pSkyBox->init(QString(BB_PATH_RESOURCE) + "skyboxs/1/");
-//    //水平面
-//    horizontalPlane->init();
+    // Horizontal reference grid
+    m_pHorizontalPlane->init();
 //    //模型坐标系
 //    transformCoordinate->init();
 //    //粒子
@@ -91,8 +93,8 @@ void BBScene::render()
     glVertex3f(-5, 5, -10);
     glEnd();
 
-//    //渲染水平面网格
-//    horizontalPlane->render(camera);
+    m_pHorizontalPlane->render(m_pCamera);
+
 //    //渲染拖出来的模型
 //    //渲染灯光的图标 关闭深度测试 最后渲染 出现在最前面
 //    QList<GameObject*> objects = models + directionLights + pointLights + spotLights + audios;
@@ -143,7 +145,7 @@ void BBScene::resize(float width, float height)
 //    }
 
     m_pSkyBox->resize(width, height);
-//    horizontalPlane->resize(width, height);
+    m_pHorizontalPlane->resize(width, height);
 //    transformCoordinate->resize(width, height);
 //    //particle->resize(width, height);
 

@@ -46,7 +46,7 @@ BBGLShader::~BBGLShader()
     }
 }
 
-void BBGLShader::init(const char *vertexShaderPath, const char *fragmentShaderPath,
+void BBGLShader::init(const QString vertexShaderPath, const QString fragmentShaderPath,
                       const unsigned short *pIndexes, const int nIndexCount)
 {
     // protected QOpenGLFunctions + initializeOpenGLFunctions in order to use OpenGL's extension mechanism
@@ -54,8 +54,9 @@ void BBGLShader::init(const char *vertexShaderPath, const char *fragmentShaderPa
     initializeOpenGLFunctions();
 
     int nFileSize;
-    char *vertexShaderSource = BBUtils::loadFileContent(vertexShaderPath, nFileSize);
-    char *fragmentShaderSource = BBUtils::loadFileContent(fragmentShaderPath, nFileSize);
+    // path.toLatin1().data(); will cause Chinese garbled
+    char *vertexShaderSource = BBUtils::loadFileContent(vertexShaderPath.toStdString().c_str(), nFileSize);
+    char *fragmentShaderSource = BBUtils::loadFileContent(fragmentShaderPath.toStdString().c_str(), nFileSize);
 
     m_pProgram = new QOpenGLShaderProgram();
     m_pProgram->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource);
