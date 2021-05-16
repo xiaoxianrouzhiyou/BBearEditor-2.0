@@ -18,10 +18,6 @@ public:
                  const float rx, const float ry, const float rz,
                  const float sx, const float sy, const float sz);
 
-    void setModelMatrix(const float px, const float py, const float pz,
-                        const QQuaternion r,
-                        const float sx, const float sy, const float sz);
-    void setModelMatrix(const QMatrix4x4 modelMatrix) { m_ModelMatrix = modelMatrix; }
     inline QMatrix4x4 getModelMatrix() { return m_ModelMatrix; }
 
     virtual void setPosition(const QVector3D position, const bool bUpdateLocalTransform = true);
@@ -72,6 +68,10 @@ public:
 
 
 protected:
+    virtual void setModelMatrix(const float px, const float py, const float pz,
+                                const QQuaternion r,
+                                const float sx, const float sy, const float sz);
+
     QVector3D m_Position;
     QVector3D m_LocalPosition;
     QVector3D m_Rotation;

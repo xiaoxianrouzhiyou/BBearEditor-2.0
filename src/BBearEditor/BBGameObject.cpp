@@ -34,14 +34,6 @@ BBGameObject::BBGameObject(float px, float py, float pz, float rx, float ry, flo
     m_strIconName = "model";
 }
 
-void BBGameObject::setModelMatrix(float px, float py, float pz, QQuaternion r, float sx, float sy, float sz)
-{
-    m_ModelMatrix.setToIdentity();
-    m_ModelMatrix.translate(px, py, pz);
-    m_ModelMatrix.rotate(r);
-    m_ModelMatrix.scale(sx, sy, sz);
-}
-
 void BBGameObject::setPosition(QVector3D position, bool bUpdateLocalTransform)
 {
     QVector3D displacement = position - m_Position;
@@ -274,6 +266,13 @@ void BBGameObject::resize(float fWidth, float fHeight)
     Q_UNUSED(fHeight);
 }
 
+void BBGameObject::setModelMatrix(float px, float py, float pz, QQuaternion r, float sx, float sy, float sz)
+{
+    m_ModelMatrix.setToIdentity();
+    m_ModelMatrix.translate(px, py, pz);
+    m_ModelMatrix.rotate(r);
+    m_ModelMatrix.scale(sx, sy, sz);
+}
 
 
 //void GameObject::setLocalTransform()
@@ -364,10 +363,6 @@ void BBGameObject::resize(float fWidth, float fHeight)
 //    return true;
 //}
 
-//QString GameObject::getFilePath()
-//{
-//    return mFilePath;
-//}
 
 
 ////---------------------------------CenterPoint
