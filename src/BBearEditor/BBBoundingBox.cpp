@@ -55,6 +55,7 @@ BBBoundingBox3D::BBBoundingBox3D(const float &px, const float &py, const float &
                                  const float &rx, const float &ry, const float &rz,
                                  const float &sx, const float &sy, const float &sz,
                                  QList<QVector4D> vertexes)
+    : BBBoundingBox(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
     m_DefaultColor = QVector3D(0.909804f, 0.337255f, 0.333333f);
     m_Center[0] = 0;
@@ -72,11 +73,12 @@ BBBoundingBox3D::BBBoundingBox3D(const float &px, const float &py, const float &
     m_Axis[2][0] = 0;
     m_Axis[2][1] = 0;
     m_Axis[2][2] = 1;
-    // The constructor needs to be placed at the end
-    // need to compute m_OriginalBoxVertexes at first
+
     computeOriginalBoxVertexes(vertexes);
-    // otherwise, setModelMatrix() gets wrong m_TransformedBoxVertexes
-    BBBoundingBox(px, py, pz, rx, ry, rz, sx, sy, sz);
+    for (int i = 0; i < 8; i++)
+    {
+        m_TransformedBoxVertexes[i] = m_ModelMatrix * m_OriginalBoxVertexes[i];
+    }
 }
 
 BBBoundingBox3D::~BBBoundingBox3D()
@@ -153,7 +155,9 @@ void BBBoundingBox3D::setModelMatrix(const float px, const float py, const float
 
 void BBBoundingBox3D::draw()
 {
-
+    glEnable(GL_DEPTH_TEST);
+    glLineWidth(2);
+    glDrawElements(GL_LINES, m_nIndexCount, GL_UNSIGNED_SHORT, 0);
 }
 
 void BBBoundingBox3D::computeOriginalBoxVertexes(QList<QVector4D> vertexes)
@@ -344,27 +348,6 @@ void BBBoundingBox3D::computeOriginalBoxVertexes(QList<QVector4D> vertexes)
 // *
 // *****************/
 
-
-
-
-
-//void BoundingBox3D::init(QList<QVector4D> vertexes)
-//{
-//    mVertexes = vertexes;
-//    init();
-//}
-
-//void BoundingBox3D::draw()
-//{
-//    glEnable(GL_DEPTH_TEST);
-//    glLineWidth(2);
-//    glDrawElements(GL_LINES, mIndexCount, GL_UNSIGNED_SHORT, 0);
-//}
-
-//void BoundingBox3D::computeBoundingBox()
-//{
-//    getBoundingBoxVertexes();
-//}
 
 //QVector3D BoundingBox3D::getRadius()
 //{
