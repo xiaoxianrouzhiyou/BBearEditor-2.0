@@ -21,7 +21,8 @@ public:
                   const float &sx, const float &sy, const float &sz);
     virtual ~BBBoundingBox();
 
-    virtual bool hitBoundingBox(BBRay ray, float &fDistance);
+    bool hit(BBRay ray, float &fDistance) override;
+
     QVector3D getCenter();
 
 protected:
@@ -40,7 +41,7 @@ public:
     virtual ~BBBoundingBox3D();
 
     void init() override;
-    bool hitBoundingBox(BBRay ray, float &fDistance) override;
+    bool hit(BBRay ray, float &fDistance) override;
 //    QVector3D getHalfLength();
 //    bool belongToSelectionRegion(QVector3D left1, QVector3D left2, QVector3D left3,
 //                                 QVector3D top1, QVector3D top2, QVector3D top3,

@@ -171,7 +171,7 @@ void BBHierarchyTreeWidget::addGameObjectSlot(BBGameObject *pGameObject)
                     | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
 
     // Checked means active
-    if (pGameObject->getActive())
+    if (pGameObject->getActivity())
         pItem->setCheckState(0, Qt::Checked);
     else
         pItem->setCheckState(0, Qt::Unchecked);

@@ -18,9 +18,8 @@ BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
     // Mouse events can be captured without pressing
     setMouseTracking(true);
     m_bRegionSelecting = false;
-
-//    //单选模式
-//    isMultipleSelect = false;
+    // Single selection mode
+    m_bMultipleSelected = false;
 
 //    //右下角的浏览视图
 //    QHBoxLayout *l = new QHBoxLayout(this);
@@ -145,28 +144,28 @@ void BBEditViewOpenGLWidget::mouseReleaseEvent(QMouseEvent *e)
     else if (e->button() == Qt::LeftButton)
     {
         BBRay ray = m_pScene->getCamera()->createRayFromScreen(e->pos().x(), e->pos().y());
-        //鼠标释放时 如果是变换操作结束的释放 不需要拾取对象
-        //如果是框选操作结束的释放 也不需要拾取对象
-//        if (!scene.transformCoordinate->getIsTransform() && !m_bRegionSelecting)
-//        {
-//            //3D拾取 选择场景中的对象
-//            GameObject *object = scene.pickObject(ray);
-//            //发送信号 在层级视图 属性栏等 改变为拾取对象相关的
-//            if (isMultipleSelect)
-//            {
-//                //多选
-//                //如果对象非空 增加到多选对象中(或者减去 当已经被选中)
-//                if (object)
-//                {
-//                    updateMultipleSelectObjects(object);
-//                }
-//            }
-//            else
-//            {
-//                //单选
-//                pickObject(object);
-//            }
-//        }
+        // if it is the release at the end of the transform and selection operation
+        // there is no need to pick object
+        if (/*!scene.transformCoordinate->getIsTransform() && */!m_bRegionSelecting)
+        {
+            // 3D pick objects
+            BBGameObject *pObject = m_pScene->pickObject(ray);
+            // send signals, show related imformation in Hierarchy tree and inspector
+            if (m_bMultipleSelected)
+            {
+                // If the object is not NULL
+                // add it to the multi-selection object (or subtract it when it is already selected)
+                if (pObject)
+                {
+                    updateMultipleSelectedObjects(pObject);
+                }
+            }
+            else
+            {
+                // Single selection
+                pickObject(pObject);
+            }
+        }
 //        //不再移动坐标轴的时候 上次鼠标位置清空
 //        //关闭正在进行变换的开关 下次鼠标释放操作可以进行对象拾取
 //        scene.transformCoordinate->stopTransform();

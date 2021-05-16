@@ -6,6 +6,7 @@
 #include <QVector3D>
 #include <QQuaternion>
 #include <QMatrix4x4>
+#include "BBRay.h"
 
 
 class BBCamera;
@@ -35,8 +36,9 @@ public:
     QVector3D getScale() { return m_Scale; }
     QVector3D getLocalScale() { return m_LocalScale; }
 
-    virtual void setActive(const bool bActive) { m_bActive = bActive; }
-    inline bool getActive() { return m_bActive; }
+    virtual void setActivity(const bool bActive) { m_bActive = bActive; }
+    inline bool getActivity() { return m_bActive; }
+    virtual void setVisibility(const bool bVisible) { m_bVisible = bVisible; }
 
     void setName(const QString name) { m_strName = name; }
     inline QString getName() { return m_strName; }
@@ -52,14 +54,14 @@ public:
     virtual void render(QMatrix4x4 modelMatrix, BBCamera *pCamera);
     virtual void resize(float fWidth, float fHeight);
 
+    virtual bool hit(BBRay ray, float &fDistance);
+
 
 //    void setLocalTransform();
 
-//    virtual void setVisible(bool isVisible);
-
 //    virtual void lookAtSelf(QVector3D &pos, QVector3D &viewCenter, float distFactor = 2.4);
 
-//    virtual bool hit(Ray ray, float &distance);
+
 //    virtual bool belongToSelectionRegion(QVector3D left1, QVector3D left2, QVector3D left3,
 //                                         QVector3D top1, QVector3D top2, QVector3D top3,
 //                                         QVector3D right1, QVector3D right2, QVector3D right3,
@@ -83,6 +85,7 @@ protected:
     QMatrix4x4 m_ModelMatrix;
 
     bool m_bActive;
+    bool m_bVisible;
 
     QString m_strName;
     QString m_strClassName;

@@ -27,6 +27,11 @@ public:
     void setRotation(const QVector3D rotation, const bool bUpdateLocalTransform = true) override;
     void setScale(const QVector3D scale, const bool bUpdateLocalTransform = true) override;
 
+    void setActivity(const bool bActive) override;
+    void setVisibility(const bool bVisible) override;
+
+    bool hit(BBRay ray, float &fDistance) override;
+
 private:
     BBMesh *m_pMesh;
     BBBoundingBox3D *m_pBoundingBox;
@@ -40,8 +45,7 @@ private:
 //    void renderBuffer(QMatrix4x4 viewMatrix, QMatrix4x4 projectionMatrix, QVector3D cameraPos);
 //    void setDiffuseMaterial(float r, float g, float b, float a);
 //    bool hit(Ray ray, float &distance) override;
-//    void setActive(bool isActive) override;
-//    void setVisible(bool isVisible) override;
+
 //    void lookAtSelf(QVector3D &pos, QVector3D &viewCenter, float distFactor = 2.4) override;
 //    bool belongToSelectionRegion(QVector3D left1, QVector3D left2, QVector3D left3,
 //                                 QVector3D top1, QVector3D top2, QVector3D top3,

@@ -35,9 +35,9 @@ private slots:
 
 signals:
     void addGameObjectSignal(BBGameObject *pGameObject);
+    void updateMultipleSelectedObjects(BBGameObject *pGameObject);
+    void pickObject(BBGameObject *pGameObject);
 //    void updateTransform(GameObject *gameObject, char transformModeKey);
-//    void pickObject(GameObject *gameObject);
-//    void updateMultipleSelectObjects(GameObject *gameObject);
 //    void regionSelectObjects(QList<GameObject*> gameObjects);
 //    void copyGameObjectInsertMap(QTreeWidgetItem *item, GameObject *gameObject);
 //    void updateMaterialProperty(Model *model);
@@ -60,12 +60,12 @@ private:
 
     QPoint m_SelectionRegionStartingPoint;
     bool m_bRegionSelecting;
+    bool m_bMultipleSelected;
 
 //    void paintGL() override;
 //    GLuint texture;
 //    int deltaX;
 //    int deltaY;
-//    bool isMultipleSelect;
 //    BaseOpenGLWidget *mPreview;
 };
 

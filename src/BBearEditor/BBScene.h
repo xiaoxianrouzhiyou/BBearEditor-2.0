@@ -12,6 +12,7 @@ class BBHorizontalPlane;
 class BBGameObject;
 class BBModel;
 class BBSelectionRegion;
+class BBRay;
 class BBScene
 {
 public:
@@ -26,6 +27,8 @@ public:
 
     BBModel* createModel(const QString filePath, int x, int y, bool bSelect = true);
     BBModel* createModel(const QString filePath, QVector3D position = QVector3D(0, 0, 0), bool bSelect = true);
+    BBModel* pickModel(const int x, const int y);
+    BBGameObject* pickObject(BBRay ray, bool bSelect = true);
 
     void deleteGameObject(BBGameObject *pObject);
 
@@ -73,13 +76,11 @@ private:
 //    void renderShadowMap();
 //    void changeSkybox(QString path);
 //    Model *createModelForPreview(QString filePath, float distFactor = 2);
-//    GameObject *pickObject(Ray ray, bool isSelect = true);
 //    GameObject *createLight(QString fileName, int x, int y, bool isSelect = true);
 //    GameObject *createLight(QString fileName, QVector3D position = QVector3D(0, 0, 0), bool isSelect = true);
 //    Audio *createAudio(QString filePath, int x, int y, bool isSelect = true);
 //    Audio *createAudio(QString filePath, QVector3D position = QVector3D(0, 0, 0), bool isSelect = true);
 //    void lookAtGameObject(GameObject *object);
-//    Model *pickModel(int x, int y);
 //    bool setModelMaterial(Model *model, QString mtlPath);
 //    void updateDirectionLightPosition();
 //    void updateDirectionLightColor();

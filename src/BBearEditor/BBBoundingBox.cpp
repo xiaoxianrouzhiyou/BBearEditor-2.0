@@ -31,7 +31,7 @@ BBBoundingBox::~BBBoundingBox()
     BB_SAFE_DELETE_ARRAY(m_Center);
 }
 
-bool BBBoundingBox::hitBoundingBox(BBRay ray, float &fDistance)
+bool BBBoundingBox::hit(BBRay ray, float &fDistance)
 {
     Q_UNUSED(ray);
     Q_UNUSED(fDistance);
@@ -111,10 +111,10 @@ void BBBoundingBox3D::init()
                     m_nIndexCount);
 }
 
-bool BBBoundingBox3D::hitBoundingBox(BBRay ray, float &fDistance)
+bool BBBoundingBox3D::hit(BBRay ray, float &fDistance)
 {
     // If it is not activated, no collision occurs
-    if (!BBBoundingBox::hitBoundingBox(ray, fDistance))
+    if (!BBBoundingBox::hit(ray, fDistance))
         return false;
 
     QVector3D intersection;

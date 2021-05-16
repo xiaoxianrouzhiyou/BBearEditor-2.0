@@ -7,6 +7,7 @@
 #include "BBModel.h"
 #include "BBRay.h"
 #include "BBSelectionRegion.h"
+#include <cfloat>
 
 BBScene::BBScene()
 {
@@ -199,6 +200,59 @@ BBModel* BBScene::createModel(const QString filePath, QVector3D position, bool b
     return pModel;
 }
 
+BBModel* BBScene::pickModel(const int x, const int y)
+{
+    BBRay ray = m_pCamera->createRayFromScreen(x, y);
+
+    float fDistance = FLT_MAX;
+    BBModel *pModel = nullptr;
+    QList<BBGameObject*>::Iterator itr;
+    for (itr = m_Models.begin(); itr != m_Models.end(); itr++)
+    {
+        BBGameObject *pObject = *itr;
+        float d;
+        if (pObject->hit(ray, d))
+        {
+            if (d < fDistance)
+            {
+                fDistance = d;
+                pModel = (BBModel*)pObject;
+            }
+        }
+    }
+    return pModel;
+}
+
+BBGameObject* BBScene::pickObject(BBRay ray, bool bSelect)
+{
+    float fDistance = FLT_MAX;
+    BBGameObject *pSelectedObject = nullptr;
+    // traverse models and lights
+    QList<BBGameObject*> objects = m_Models;
+            //+ directionLights + pointLights + spotLights + audios;
+    QList<BBGameObject*>::Iterator itr;
+    for (itr = objects.begin(); itr != objects.end(); itr++)
+    {
+        BBGameObject *pObject = *itr;
+        float d;
+        if (pObject->hit(ray, d))
+        {
+            if (d < fDistance)
+            {
+                fDistance = d;
+                pSelectedObject = pObject;
+            }
+        }
+    }
+//    // if (pSelectedObject != nullptr)
+//    if (bSelect)
+//    {
+//        //拾取并用坐标系将其选中 有时候只需要拾取 不需要选中
+//        transformCoordinate->setSelectedObject(selectedObject);
+//    }
+    return pSelectedObject;
+}
+
 void BBScene::deleteGameObject(BBGameObject *pObject)
 {
     if (pObject->getClassName() == BB_CLASSNAME_MODEL)
@@ -347,34 +401,6 @@ QList<BBGameObject*> BBScene::setSelectionRegion(QPoint start, QPoint end)
 //    return model;
 //}
 
-//GameObject *Scene::pickObject(Ray ray, bool isSelect)
-//{
-//    float distance = FLT_MAX;
-//    GameObject *selectedObject = nullptr;
-//    //遍历模型 灯光
-//    QList<GameObject*> objects = models + directionLights + pointLights + spotLights + audios;
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = objects.begin(); itr != objects.end(); itr++)
-//    {
-//        GameObject *object = *itr;
-//        float d;
-//        if (object->hit(ray, d))
-//        {
-//            if (d < distance)
-//            {
-//                distance = d;
-//                selectedObject = object;
-//            }
-//        }
-//    }
-//    //if (selectedObject != nullptr)
-//    if (isSelect)
-//    {
-//        //拾取并用坐标系将其选中 有时候只需要拾取 不需要选中
-//        transformCoordinate->setSelectedObject(selectedObject);
-//    }
-//    return selectedObject;
-//}
 
 //GameObject *Scene::createLight(QString fileName, int x, int y, bool isSelect)
 //{
@@ -458,30 +484,6 @@ QList<BBGameObject*> BBScene::setSelectionRegion(QPoint start, QPoint end)
 //    }
 //}
 
-
-//Model *Scene::pickModel(int x, int y)
-//{
-//    //产生射线
-//    Ray ray = camera.createRayFromScreen(x, y);
-//    //拾取Model 灯光不拾取
-//    float distance = FLT_MAX;
-//    Model *model = nullptr;
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        GameObject *object = *itr;
-//        float d;
-//        if (object->hit(ray, d))
-//        {
-//            if (d < distance)
-//            {
-//                distance = d;
-//                model = (Model*)object;
-//            }
-//        }
-//    }
-//    return model;
-//}
 
 //bool Scene::setModelMaterial(Model *model, QString mtlPath)
 //{

@@ -24,6 +24,8 @@ public:
 
     virtual void init(const QString path, BBBoundingBox3D *&pOutBoundingBox);
 
+    bool hit(BBRay ray, float &fDistance) override;
+
 protected:
     virtual void load(const QString path, QList<QVector4D> &outPositions) = 0;
     void draw() override;
@@ -37,7 +39,6 @@ protected:
 //public:
 //    void setColor(QVector3D color);
 //    void setIsDepthTest(bool isDepthTest);
-//    bool hit(Ray ray, float &distance) override;
 //    void setMaterial(Material *material);
 //    void setDefaultMaterial();
 //    void updateDirectionLightPosition(QVector4D *lightPosition, QVector3D count);

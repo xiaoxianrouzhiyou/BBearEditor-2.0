@@ -2,6 +2,8 @@
 #include "BBGLShader.h"
 #include "BBUtils.h"
 #include "BBBoundingBox.h"
+#include <cfloat>
+#include "BBGLBuffers.h"
 
 BBMesh::BBMesh()
     : BBMesh(0, 0, 0, 0, 0, 0, 1, 1, 1)
@@ -42,6 +44,27 @@ void BBMesh::init(const QString path, BBBoundingBox3D *&pOutBoundingBox)
 //    mShader.setVector4f(Light::lightSpecularUniformLocationName, 1.0f, 1.0f, 1.0f, 1.0f);
 //    mShader.setVector4f(Light::lightOptionUniformLocationName, 32.0f, 0.0f, 0.0f, 0.0f);
 //    setDefaultMaterial();
+}
+
+bool BBMesh::hit(BBRay ray, float &fDistance)
+{
+    QVector3D intersection;
+    bool bResult = false;
+    fDistance = FLT_MAX;
+    for (int i = 0; i < m_nIndexCount; i += 3)
+    {
+        if (ray.computeIntersectWithTriangle(m_ModelMatrix * m_pVertexBuffer->getPosition(m_pIndexes[i]),
+                                             m_ModelMatrix * m_pVertexBuffer->getPosition(m_pIndexes[i + 1]),
+                                             m_ModelMatrix * m_pVertexBuffer->getPosition(m_pIndexes[i + 2]),
+                                             intersection))
+        {
+            float temp = ray.computeIntersectDistance(intersection);
+            if (temp < fDistance)
+                fDistance = temp;
+            bResult = true;
+        }
+    }
+    return bResult;
 }
 
 void BBMesh::draw()
@@ -125,25 +148,7 @@ void BBMesh::draw()
 //    mIsDepthTest = isDepthTest;
 //}
 
-//bool Mesh::hit(Ray ray, float &distance)
-//{
-//    QVector3D intersection;
-//    bool result = false;
-//    distance = FLT_MAX;
-//    for (int i = 0; i < mIndexCount; i+=3)
-//    {
-//        if (ray.computeIntersectWithTriangle(mModelMatrix * mVertexBuffer->getPosition(mIndexes[i]),
-//                                             mModelMatrix * mVertexBuffer->getPosition(mIndexes[i + 1]),
-//                                             mModelMatrix * mVertexBuffer->getPosition(mIndexes[i + 2]), intersection))
-//        {
-//            float temp = ray.computeIntersectDistance(intersection);
-//            if (temp < distance)
-//                distance = temp;
-//            result = true;
-//        }
-//    }
-//    return result;
-//}
+
 
 //void Mesh::setMaterial(Material *material)
 //{

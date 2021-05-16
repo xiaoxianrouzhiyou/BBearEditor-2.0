@@ -266,6 +266,13 @@ void BBGameObject::resize(float fWidth, float fHeight)
     Q_UNUSED(fHeight);
 }
 
+bool BBGameObject::hit(BBRay ray, float &fDistance)
+{
+    Q_UNUSED(ray);
+    Q_UNUSED(fDistance);
+    return false;
+}
+
 void BBGameObject::setModelMatrix(float px, float py, float pz, QQuaternion r, float sx, float sy, float sz)
 {
     m_ModelMatrix.setToIdentity();
@@ -343,13 +350,6 @@ void BBGameObject::setModelMatrix(float px, float py, float pz, QQuaternion r, f
 //    Q_UNUSED(distFactor);
 //    viewCenter = mPosition + QVector3D(0, 0.5, 0);
 //    pos = viewCenter + QVector3D(0, 0.5, 4);
-//}
-
-//bool GameObject::hit(Ray ray, float &distance)
-//{
-//    Q_UNUSED(ray);
-//    Q_UNUSED(distance);
-//    return false;
 //}
 
 //bool GameObject::belongToSelectionRegion(QVector3D left1, QVector3D left2, QVector3D left3,

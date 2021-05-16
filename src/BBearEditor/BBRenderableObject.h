@@ -14,8 +14,6 @@ public:
     BBRenderableObject(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz);
     virtual ~BBRenderableObject();
 
-    void setVisible(bool bVisible) { m_bVisible = bVisible; }
-
     void render(BBCamera *pCamera) override;
     void render(QMatrix4x4 modelMatrix, BBCamera *pCamera) override;
     void resize(float fWidth, float fHeight) override;
@@ -33,7 +31,6 @@ public:
 
 protected:
     virtual void draw();
-    bool m_bVisible;
     BBGLShader *m_pShader;
     BBGLVertexBuffer *m_pVertexBuffer;
     unsigned short *m_pIndexes;

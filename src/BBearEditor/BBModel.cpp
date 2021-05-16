@@ -77,6 +77,36 @@ void BBModel::setScale(const QVector3D scale, const bool bUpdateLocalTransform)
     m_pBoundingBox->setScale(scale, bUpdateLocalTransform);
 }
 
+void BBModel::setActivity(const bool bActive)
+{
+    // Visibility and does not exist
+    BBGameObject::setActivity(bActive);
+    m_pMesh->setActivity(bActive);
+    m_pBoundingBox->setActivity(bActive);
+    setVisibility(bActive);
+}
+
+void BBModel::setVisibility(const bool bVisible)
+{
+    // Visibility and exist
+    BBGameObject::setVisibility(bVisible);
+    m_pBoundingBox->setVisibility(bVisible);
+}
+
+bool BBModel::hit(BBRay ray, float &fDistance)
+{
+    // use bounding box for rough collision detection at first
+    if (m_pBoundingBox->hit(ray, fDistance))
+    {
+        // After hitting the bounding box, judge whether it hits the mesh
+        if (m_pMesh->hit(ray, fDistance))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 //void Model::renderBuffer(QMatrix4x4 viewMatrix, QMatrix4x4 projectionMatrix, QVector3D cameraPos)
 //{
 //    mMesh->renderBuffer(viewMatrix, projectionMatrix, cameraPos);
@@ -89,36 +119,6 @@ void BBModel::setScale(const QVector3D scale, const bool bUpdateLocalTransform)
 //    mMesh->setDiffuseMaterial(r, g, b, a);
 //}
 
-
-//bool Model::hit(Ray ray, float &distance)
-//{
-//    //先用包围盒进行粗略的碰撞检测
-//    if (boundingBox->hitBoundingBox(ray, distance, boundingBox->getModelMatrix()))
-//    {
-//        //击中包围盒后 判断是否击中网格
-//        if (mMesh->hit(ray, distance))
-//        {
-//            return true;
-//        }
-//    }
-//    return false;
-//}
-
-//void Model::setActive(bool isActive)
-//{
-//    //可见性 不存在
-//    GameObject::setActive(isActive);
-//    mMesh->setActive(isActive);
-//    boundingBox->setActive(isActive);
-//    setVisible(isActive);
-//}
-
-//void Model::setVisible(bool isVisible)
-//{
-//    //可见性 还存在
-//    GameObject::setVisible(isVisible);
-//    boundingBox->setVisible(isVisible);
-//}
 
 //void Model::lookAtSelf(QVector3D &pos, QVector3D &viewCenter, float distFactor)
 //{
