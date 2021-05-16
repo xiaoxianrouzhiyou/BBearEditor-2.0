@@ -3,7 +3,10 @@
 #include <cfloat>
 #include "BBGLBuffers.h"
 #include "BBGLShader.h"
+#include <Eigen/Eigen>
 
+
+using namespace Eigen;
 
 //--------------------
 // BBBoundingBox
@@ -184,6 +187,59 @@ void BBBoundingBox3D::computeOriginalBoxVertexes(QList<QVector4D> vertexes)
         m_OriginalBoxVertexes[index] = QVector3D(temp[index].v[0], temp[index].v[1], temp[index].v[2]);
     }
 }
+
+
+//--------------------
+// BBAABBBoundingBox3D
+//--------------------
+
+BBAABBBoundingBox3D::BBAABBBoundingBox3D(QList<QVector4D> vertexes)
+    : BBAABBBoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, vertexes)
+{
+
+}
+
+BBAABBBoundingBox3D::BBAABBBoundingBox3D(const float &px, const float &py, const float &pz,
+                                         const float &rx, const float &ry, const float &rz,
+                                         const float &sx, const float &sy, const float &sz,
+                                         QList<QVector4D> vertexes)
+    : BBBoundingBox3D(px, py, pz, rx, ry, rz, sx, sy, sz, vertexes)
+{
+
+}
+
+void BBAABBBoundingBox3D::computeOriginalBoxVertexes(QList<QVector4D> vertexes)
+{
+    int nVertexCount = vertexes.count();
+
+    // init matrix
+    MatrixXf m(3, nVertexCount);
+    for (int i = 0; i < nVertexCount; i++)
+    {
+        m(0, i) = vertexes.at(i).x();
+        m(1, i) = vertexes.at(i).y();
+        m(2, i) = vertexes.at(i).z();
+    }
+    // Find the mean value of x y z, center
+    VectorXf avg = m.rowwise().mean();
+    // compute the distance from each point to the center
+    m.colwise() -= avg;
+    for (int i = 0; i < 3; i++)
+    {
+        m_Center[i] = avg[i];
+        for (int j = 0; j < nVertexCount; j++)
+        {
+            m_HalfLength[i] = std::max(m_HalfLength[i], std::fabs(m(i, j)));
+        }
+    }
+
+    BBBoundingBox3D::computeOriginalBoxVertexes(vertexes);
+}
+
+
+
+
+
 
 
 //#include <iostream>
@@ -453,62 +509,5 @@ void BBBoundingBox3D::computeOriginalBoxVertexes(QList<QVector4D> vertexes)
 //    qDebug() << axis[1][0] << axis[1][1] << axis[1][2];
 //    qDebug() << axis[2][0] << axis[2][1] << axis[2][2];
 //    qDebug() << endl;*/
-//    getBoundingBoxVertexes();
-//}
-
-///****************
-// * AABBBoundingBox3D
-// *
-// *****************/
-
-//AABBBoundingBox3D::AABBBoundingBox3D()
-//    : AABBBoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1)
-//{
-
-//}
-
-//AABBBoundingBox3D::AABBBoundingBox3D(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz)
-//    : BoundingBox3D(px, py, pz, rx, ry, rz, sx, sy, sz)
-//{
-//    for (int i = 0; i < 3; i++)
-//    {
-//        radius[i] = 0;
-//    }
-//    axis[0][0] = 1;
-//    axis[0][1] = 0;
-//    axis[0][2] = 0;
-//    axis[1][0] = 0;
-//    axis[1][1] = 1;
-//    axis[1][2] = 0;
-//    axis[2][0] = 0;
-//    axis[2][1] = 0;
-//    axis[2][2] = 1;
-//}
-
-//void AABBBoundingBox3D::computeBoundingBox()
-//{
-//    int vertexCount = mVertexes.count();
-
-//    //初始化矩阵
-//    MatrixXf m(3, vertexCount);
-//    for (int i = 0; i < vertexCount; i++)
-//    {
-//        m(0, i) = mVertexes.at(i).x();
-//        m(1, i) = mVertexes.at(i).y();
-//        m(2, i) = mVertexes.at(i).z();
-//    }
-//    //cout << input << endl << endl;
-//    //求取x y z均值 中心
-//    VectorXf avg = m.rowwise().mean();
-//    //计算各点各分量到中心的距离
-//    m.colwise() -= avg;
-//    for (int i = 0; i < 3; i++)
-//    {
-//        center[i] = avg[i];
-//        for (int j = 0; j < vertexCount; j++)
-//        {
-//            radius[i] = max(radius[i], fabs(m(i, j)));
-//        }
-//    }
 //    getBoundingBoxVertexes();
 //}

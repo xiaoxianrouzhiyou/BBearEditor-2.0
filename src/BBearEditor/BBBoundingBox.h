@@ -53,17 +53,26 @@ protected:
                         const QQuaternion r,
                         const float sx, const float sy, const float sz) override;
     void draw() override;
+    virtual void computeOriginalBoxVertexes(QList<QVector4D> vertexes);
 
     QVector3D m_OriginalBoxVertexes[8];
     QVector3D m_TransformedBoxVertexes[8];
     float m_Axis[3][3];
     float m_HalfLength[3];
+};
+
+
+class BBAABBBoundingBox3D : public BBBoundingBox3D
+{
+public:
+    BBAABBBoundingBox3D(QList<QVector4D> vertexes = QList<QVector4D>());
+    BBAABBBoundingBox3D(const float &px, const float &py, const float &pz,
+                        const float &rx, const float &ry, const float &rz,
+                        const float &sx, const float &sy, const float &sz,
+                        QList<QVector4D> vertexes = QList<QVector4D>());
 
 private:
-    void computeOriginalBoxVertexes(QList<QVector4D> vertexes);
-
-
-//    QList<QVector4D> mVertexes;
+    void computeOriginalBoxVertexes(QList<QVector4D> vertexes) override;
 };
 
 
@@ -71,13 +80,10 @@ private:
 
 
 //#include <QVector3D>
-//#include <Eigen/Eigen>
 //#include "renderableobject.h"
 //#include "ray.h"
 //#include <QMatrix3x3>
 
-//using namespace Eigen;
-//using namespace std;
 
 
 
@@ -141,12 +147,4 @@ private:
 //    void computeBoundingBox() override;
 //};
 
-//class AABBBoundingBox3D : public BoundingBox3D
-//{
-//public:
-//    AABBBoundingBox3D();
-//    AABBBoundingBox3D(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz);
 
-//private:
-//    void computeBoundingBox() override;
-//};
