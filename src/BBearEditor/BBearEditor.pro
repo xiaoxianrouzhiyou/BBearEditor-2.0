@@ -48,7 +48,8 @@ SOURCES += \
     BBMesh.cpp \
     BBOBJMesh.cpp \
     BBModel.cpp \
-    BBRay.cpp
+    BBRay.cpp \
+    BBBoundingBox.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
@@ -74,7 +75,8 @@ HEADERS += \
     BBMesh.h \
     BBOBJMesh.h \
     BBModel.h \
-    BBRay.h
+    BBRay.h \
+    BBBoundingBox.h
 
 FORMS += \
     BBUITitleBar.ui \

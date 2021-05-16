@@ -35,100 +35,105 @@ QVector3D BBRay::computeIntersectWithYOZPlane(float x)
     return QVector3D(x, y, z);
 }
 
-//bool Ray::computeIntersectWithPlane(QVector3D point1, QVector3D point2,
-//                                    QVector3D point3, QVector3D &intersection)
-//{
-//    //平面两直线的叉集 求平面法向量
-//    QVector3D normal = QVector3D::crossProduct(point1 - point2, point1 - point3);
-//    return computeIntersectWithPlane(point1, normal, intersection);
-//}
+bool BBRay::computeIntersectWithPlane(QVector3D point1, QVector3D point2,
+                                      QVector3D point3, QVector3D &intersection)
+{
+    // The cross product of two straight lines in a plane, the plane normal
+    QVector3D normal = QVector3D::crossProduct(point1 - point2, point1 - point3);
+    return computeIntersectWithPlane(point1, normal, intersection);
+}
 
-//bool Ray::computeIntersectWithPlane(QVector3D point, QVector3D normal, QVector3D &intersection)
-//{
-//    //直线的方向向量
-//    QVector3D direction = farPoint - nearPoint;
-//    //鼠标没有移动到场景中
-//    if (direction.isNull())
-//    {
-//        //qDebug() << "鼠标没有移动到场景中";
-//        return false;
-//    }
-//    //直线的参数方程与平面的点法式联立 求出参数方程的参数t
-//    float temp = QVector3D::dotProduct(normal, direction);
-//    if (temp == 0)
-//    {
-//        //直线与平面平行
-//        //qDebug() << "直线与平面平行";
-//        return false;
-//    }
-//    float t = QVector3D::dotProduct(point - nearPoint, normal) / temp;
-//    //将t代回直线的参数方程 求出交点
-//    intersection = direction * t + nearPoint;
-//    return true;
-//}
+bool BBRay::computeIntersectWithPlane(QVector3D point, QVector3D normal, QVector3D &intersection)
+{
+    QVector3D direction = m_FarPoint - m_NearPoint;
+    // The mouse does not move into the scene
+    if (direction.isNull())
+    {
+        // qDebug() << "The mouse does not move into the scene";
+        return false;
+    }
+    // The parametric equation of the line and point-normal equation of the plane
+    // to find the parameter t of the parametric equation
+    float temp = QVector3D::dotProduct(normal, direction);
+    if (temp == 0)
+    {
+        // line is parallel to the plane
+        return false;
+    }
+    float t = QVector3D::dotProduct(point - m_NearPoint, normal) / temp;
+    // Use t in the parametric equation to calculate the point of intersection
+    intersection = direction * t + m_NearPoint;
+    return true;
+}
 
-//bool Ray::computeIntersectWithTriangle(QVector3D point1, QVector3D point2,
-//                                       QVector3D point3, QVector3D &intersection)
-//{
-//    if (!computeIntersectWithPlane(point1, point2, point3, intersection))
-//    {
-//        return false;
-//    }
-//    //判断交点是否在三角型内
-//    //平面任意一点可表示为P = A +  u * (C – A) + v * (B - A)
-//    //当u >= 0 v >= 0 u + v <= 1时 点在三角形内部
-//    QVector3D v0 = point3 - point1;
-//    QVector3D v1 = point2 - point1;
-//    QVector3D v2 = intersection - point1;
-//    float dot00 = QVector3D::dotProduct(v0, v0);
-//    float dot01 = QVector3D::dotProduct(v0, v1);
-//    float dot02 = QVector3D::dotProduct(v0, v2);
-//    float dot11 = QVector3D::dotProduct(v1, v1);
-//    float dot12 = QVector3D::dotProduct(v1, v2);
-//    float temp = 1.0f / (dot00 * dot11 - dot01 * dot01);
-//    float u = (dot11 * dot02 - dot01 * dot12) * temp;
-//    if (u < 0 || u > 1)
-//    {
-//        //qDebug() << "点不在三角形内u" << u;
-//        return false;
-//    }
-//    float v = (dot00 * dot12 - dot01 * dot02) * temp;
-//    if (v < 0 || v > 1)
-//    {
-//        //qDebug() << "点不在三角形内v" << v;
-//        return false;
-//    }
-//    if (u + v <= 1)
-//    {
-//        return true;
-//    }
-//    else
-//    {
-//        //qDebug() << "点不在三角形内uv";
-//        return false;
-//    }
-//}
+bool BBRay::computeIntersectWithTriangle(QVector3D point1, QVector3D point2,
+                                         QVector3D point3, QVector3D &intersection)
+{
+    if (!computeIntersectWithPlane(point1, point2, point3, intersection))
+    {
+        return false;
+    }
+    // whether the intersection is within the triangle
+    // Any point on the plane can be expressed as P = A +  u * (C – A) + v * (B - A)
+    // u >= 0 v >= 0 u + v <= 1, point is within the triangle
+    QVector3D v0 = point3 - point1;
+    QVector3D v1 = point2 - point1;
+    QVector3D v2 = intersection - point1;
+    float dot00 = QVector3D::dotProduct(v0, v0);
+    float dot01 = QVector3D::dotProduct(v0, v1);
+    float dot02 = QVector3D::dotProduct(v0, v2);
+    float dot11 = QVector3D::dotProduct(v1, v1);
+    float dot12 = QVector3D::dotProduct(v1, v2);
+    float temp = 1.0f / (dot00 * dot11 - dot01 * dot01);
+    float u = (dot11 * dot02 - dot01 * dot12) * temp;
+    if (u < 0 || u > 1)
+    {
+        // qDebug() << "point is not within the triangle, u" << u;
+        return false;
+    }
+    float v = (dot00 * dot12 - dot01 * dot02) * temp;
+    if (v < 0 || v > 1)
+    {
+        // qDebug() << "point is not within the triangle, v" << v;
+        return false;
+    }
+    if (u + v <= 1)
+    {
+        return true;
+    }
+    else
+    {
+        // qDebug() << "point is not within the triangle, uv";
+        return false;
+    }
+}
 
-//bool Ray::computeIntersectWithRectangle(QVector3D point1, QVector3D point2,
-//                                        QVector3D point3, QVector3D point4, QVector3D &intersection)
-//{
-//    //1234象限的顺序
-//    if (computeIntersectWithTriangle(point1, point2, point3, intersection))
-//    {
-//        return true;
-//    }
-//    else
-//    {
-//        if (computeIntersectWithTriangle(point1, point3, point4, intersection))
-//        {
-//            return true;
-//        }
-//        else
-//        {
-//            return false;
-//        }
-//    }
-//}
+bool BBRay::computeIntersectWithRectangle(QVector3D point1, QVector3D point2,
+                                          QVector3D point3, QVector3D point4, QVector3D &intersection)
+{
+    // Order of the 1234 quadrant
+    if (computeIntersectWithTriangle(point1, point2, point3, intersection))
+    {
+        return true;
+    }
+    else
+    {
+        if (computeIntersectWithTriangle(point1, point3, point4, intersection))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+float BBRay::computeIntersectDistance(QVector3D intersection)
+{
+    return m_NearPoint.distanceToPoint(intersection);
+}
+
 
 //bool Ray::computeIntersectWithRound(QVector3D center, float radius, PlaneName plane, QVector3D &intersection)
 //{
@@ -206,19 +211,4 @@ QVector3D BBRay::computeIntersectWithYOZPlane(float x)
 //    {
 //        return false;
 //    }
-//}
-
-//float Ray::computeIntersectDistance(QVector3D intersection)
-//{
-//    return nearPoint.distanceToPoint(intersection);
-//}
-
-//QVector3D Ray::getNearPoint()
-//{
-//    return nearPoint;
-//}
-
-//QVector3D Ray::getFarPoint()
-//{
-//    return farPoint;
 //}
