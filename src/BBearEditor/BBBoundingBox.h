@@ -53,7 +53,7 @@ protected:
                         const QQuaternion r,
                         const float sx, const float sy, const float sz) override;
     void draw() override;
-    virtual void computeOriginalBoxVertexes(QList<QVector4D> vertexes);
+    virtual void computeBoxVertexes(QList<QVector4D> vertexes);
 
     QVector3D m_OriginalBoxVertexes[8];
     QVector3D m_TransformedBoxVertexes[8];
@@ -72,7 +72,7 @@ public:
                         QList<QVector4D> vertexes = QList<QVector4D>());
 
 private:
-    void computeOriginalBoxVertexes(QList<QVector4D> vertexes) override;
+    void computeBoxVertexes(QList<QVector4D> vertexes) override;
 };
 
 

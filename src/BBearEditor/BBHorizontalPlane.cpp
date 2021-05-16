@@ -86,6 +86,7 @@ void BBHorizontalPlane::render(BBCamera *pCamera)
 void BBHorizontalPlane::draw()
 {
     glEnable(GL_BLEND);
+    glLineWidth(1);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
     glDrawElements(GL_LINES, m_nIndexCount, GL_UNSIGNED_SHORT, 0);
