@@ -8,6 +8,7 @@
 
 class BBMesh;
 class BBOBJMesh;
+class BBBoundingBox3D;
 class BBModel : public BBGameObject
 {
 public:
@@ -15,7 +16,7 @@ public:
     BBModel(const float px, const float py, const float pz,
             const float rx, const float ry, const float rz,
             const float sx, const float sy, const float sz, BBMeshType eType);
-    ~BBModel();
+    virtual ~BBModel();
 
     void init(const QString path) override;
     void render(BBCamera *pCamera) override;
@@ -28,6 +29,7 @@ public:
 
 private:
     BBMesh *m_pMesh;
+    BBBoundingBox3D *m_pBoundingBox;
 };
 
 #endif // BBMODEL_H
@@ -77,7 +79,4 @@ private:
 //    void offLua();
 //    void onUpdateLua();
 //    void onKeyDownLua(QKeyEvent *e);
-
-//    Mesh *mMesh;
-//    AABBBoundingBox3D *boundingBox;
 //    QList<ScriptManager*> mScriptManagers;

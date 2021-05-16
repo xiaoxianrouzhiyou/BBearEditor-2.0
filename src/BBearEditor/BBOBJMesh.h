@@ -13,10 +13,8 @@ public:
               const float rx, const float ry, const float rz,
               const float sx, const float sy, const float sz);
 
-    void init(const QString path) override;
-
 private:
-    virtual void load(const QString path) override;
+    void load(const QString path, QList<QVector4D> &outPositions) override;
 };
 
 #endif // BBOBJMESH_H

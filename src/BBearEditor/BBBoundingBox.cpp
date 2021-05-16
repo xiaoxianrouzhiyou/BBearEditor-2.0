@@ -77,11 +77,7 @@ BBBoundingBox3D::BBBoundingBox3D(const float &px, const float &py, const float &
     m_Axis[2][1] = 0;
     m_Axis[2][2] = 1;
 
-    computeOriginalBoxVertexes(vertexes);
-    for (int i = 0; i < 8; i++)
-    {
-        m_TransformedBoxVertexes[i] = m_ModelMatrix * m_OriginalBoxVertexes[i];
-    }
+    computeBoxVertexes(vertexes);
 }
 
 BBBoundingBox3D::~BBBoundingBox3D()
@@ -97,7 +93,7 @@ void BBBoundingBox3D::init()
     m_pVertexBuffer = new BBGLVertexBuffer(8);
     for (int i = 0; i < 8; i++)
     {
-        m_pVertexBuffer->setPosition(i, m_TransformedBoxVertexes[i].x(), m_TransformedBoxVertexes[i].y(), m_TransformedBoxVertexes[i].z());
+        m_pVertexBuffer->setPosition(i, m_OriginalBoxVertexes[i].x(), m_OriginalBoxVertexes[i].y(), m_OriginalBoxVertexes[i].z());
         m_pVertexBuffer->setColor(i, m_DefaultColor);
     }
 
@@ -163,7 +159,7 @@ void BBBoundingBox3D::draw()
     glDrawElements(GL_LINES, m_nIndexCount, GL_UNSIGNED_SHORT, 0);
 }
 
-void BBBoundingBox3D::computeOriginalBoxVertexes(QList<QVector4D> vertexes)
+void BBBoundingBox3D::computeBoxVertexes(QList<QVector4D> vertexes)
 {
     FloatData temp[8];
     int sign[8][3] = {{1, 1, 1},
@@ -185,6 +181,7 @@ void BBBoundingBox3D::computeOriginalBoxVertexes(QList<QVector4D> vertexes)
             }
         }
         m_OriginalBoxVertexes[index] = QVector3D(temp[index].v[0], temp[index].v[1], temp[index].v[2]);
+        m_TransformedBoxVertexes[index] = m_ModelMatrix * m_OriginalBoxVertexes[index];
     }
 }
 
@@ -205,10 +202,13 @@ BBAABBBoundingBox3D::BBAABBBoundingBox3D(const float &px, const float &py, const
                                          QList<QVector4D> vertexes)
     : BBBoundingBox3D(px, py, pz, rx, ry, rz, sx, sy, sz, vertexes)
 {
-
+    m_HalfLength[0] = 0;
+    m_HalfLength[1] = 0;
+    m_HalfLength[2] = 0;
+    computeBoxVertexes(vertexes);
 }
 
-void BBAABBBoundingBox3D::computeOriginalBoxVertexes(QList<QVector4D> vertexes)
+void BBAABBBoundingBox3D::computeBoxVertexes(QList<QVector4D> vertexes)
 {
     int nVertexCount = vertexes.count();
 
@@ -233,7 +233,7 @@ void BBAABBBoundingBox3D::computeOriginalBoxVertexes(QList<QVector4D> vertexes)
         }
     }
 
-    BBBoundingBox3D::computeOriginalBoxVertexes(vertexes);
+    BBBoundingBox3D::computeBoxVertexes(vertexes);
 }
 
 

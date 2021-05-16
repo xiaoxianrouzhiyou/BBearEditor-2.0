@@ -1,6 +1,7 @@
 #include "BBMesh.h"
 #include "BBGLShader.h"
 #include "BBUtils.h"
+#include "BBBoundingBox.h"
 
 BBMesh::BBMesh()
     : BBMesh(0, 0, 0, 0, 0, 0, 1, 1, 1)
@@ -16,8 +17,17 @@ BBMesh::BBMesh(const float px, const float py, const float pz,
 
 }
 
-void BBMesh::init(const QString path)
+void BBMesh::init(const QString path, BBBoundingBox3D *&pOutBoundingBox)
 {
+    QList<QVector4D> positions;
+    load(path, positions);
+    // create bounding box
+    pOutBoundingBox = new BBAABBBoundingBox3D(m_Position.x(), m_Position.y(), m_Position.z(),
+                                              m_Rotation.x(), m_Rotation.y(), m_Rotation.z(),
+                                              m_Scale.x(), m_Scale.y(), m_Scale.z(),
+                                              positions);
+    pOutBoundingBox->init();
+
     // test
     m_pShader->init(QString(BB_PATH_RESOURCE_SHADER) + "base.vert",
                     QString(BB_PATH_RESOURCE_SHADER) + "base.frag", m_pIndexes, m_nIndexCount);

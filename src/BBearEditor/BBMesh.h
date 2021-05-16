@@ -13,6 +13,7 @@ enum BBMeshType
 };
 
 
+class BBBoundingBox3D;
 class BBMesh : public BBRenderableObject
 {
 public:
@@ -21,10 +22,10 @@ public:
            const float rx, const float ry, const float rz,
            const float sx, const float sy, const float sz);
 
-    void init(const QString path) override;
+    virtual void init(const QString path, BBBoundingBox3D *&pOutBoundingBox);
 
 protected:
-    virtual void load(const QString path) = 0;
+    virtual void load(const QString path, QList<QVector4D> &outPositions) = 0;
     void draw() override;
 };
 

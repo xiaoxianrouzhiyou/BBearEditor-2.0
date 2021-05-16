@@ -1,6 +1,7 @@
 #include "BBModel.h"
 #include "BBOBJMesh.h"
 #include "BBUtils.h"
+#include "BBBoundingBox.h"
 
 BBModel::BBModel(BBMeshType eType)
     : BBModel(0, 0, 0, 0, 0, 0, 1, 1, 1, eType)
@@ -16,7 +17,7 @@ BBModel::BBModel(const float px, const float py, const float pz,
     setClassName(BB_CLASSNAME_MODEL);
     if (eType == BBMeshType::OBJ)
         m_pMesh = new BBOBJMesh(px, py, pz, rx, ry, rz, sx, sy, sz);
-//    boundingBox = new AABBBoundingBox3D(px, py, pz, rx, ry, rz, sx, sy, sz);
+    m_pBoundingBox = NULL;
 //    mMaterial = NULL;
 //    //暂时每个model有一个脚本
 //    mScriptManagers.append(new ScriptManager(this));
@@ -25,15 +26,12 @@ BBModel::BBModel(const float px, const float py, const float pz,
 BBModel::~BBModel()
 {
     BB_SAFE_DELETE(m_pMesh);
+    BB_SAFE_DELETE(m_pBoundingBox);
 }
 
 void BBModel::init(const QString path)
 {
-    m_pMesh->init(path);
-//    //必须在mesh init之后 position才有值
-//    boundingBox->init(mMesh->mVertexPositions);
-//    //释放
-//    mMesh->mVertexPositions.clear();
+    m_pMesh->init(path, m_pBoundingBox);
 }
 
 void BBModel::render(BBCamera *pCamera)
@@ -41,42 +39,42 @@ void BBModel::render(BBCamera *pCamera)
     if (m_bActive)
     {
         m_pMesh->render(pCamera);
-//        boundingBox->render(camera);
+        m_pBoundingBox->render(pCamera);
     }
 }
 
 void BBModel::resize(float fWidth, float fHeight)
 {
     m_pMesh->resize(fWidth, fHeight);
-//    boundingBox->resize(width, height);
+    m_pBoundingBox->resize(fWidth, fHeight);
 }
 
 void BBModel::setPosition(const QVector3D position, const bool bUpdateLocalTransform)
 {
     BBGameObject::setPosition(position, bUpdateLocalTransform);
     m_pMesh->setPosition(position, bUpdateLocalTransform);
-//    boundingBox->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBox->setPosition(position, bUpdateLocalTransform);
 }
 
 void BBModel::setRotation(const int nAngle, const QVector3D axis, const bool bUpdateLocalTransform)
 {
     BBGameObject::setRotation(nAngle, axis, bUpdateLocalTransform);
     m_pMesh->setRotation(nAngle, axis, bUpdateLocalTransform);
-//    boundingBox->setRotation(angle, axis, isUpdateLocalTransform);
+    m_pBoundingBox->setRotation(nAngle, axis, bUpdateLocalTransform);
 }
 
 void BBModel::setRotation(const QVector3D rotation, const bool bUpdateLocalTransform)
 {
     BBGameObject::setRotation(rotation, bUpdateLocalTransform);
     m_pMesh->setRotation(rotation, bUpdateLocalTransform);
-//    boundingBox->setRotation(rotation, isUpdateLocalTransform);
+    m_pBoundingBox->setRotation(rotation, bUpdateLocalTransform);
 }
 
 void BBModel::setScale(const QVector3D scale, const bool bUpdateLocalTransform)
 {
     BBGameObject::setScale(scale, bUpdateLocalTransform);
     m_pMesh->setScale(scale, bUpdateLocalTransform);
-//    boundingBox->setScale(scale, isUpdateLocalTransform);
+    m_pBoundingBox->setScale(scale, bUpdateLocalTransform);
 }
 
 //void Model::renderBuffer(QMatrix4x4 viewMatrix, QMatrix4x4 projectionMatrix, QVector3D cameraPos)

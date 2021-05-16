@@ -2,6 +2,7 @@
 #include "BBUtils.h"
 #include "BBGLBuffers.h"
 #include <sstream>
+#include "BBBoundingBox.h"
 
 BBOBJMesh::BBOBJMesh()
     : BBOBJMesh(0, 0, 0, 0, 0, 0, 1, 1, 1)
@@ -17,13 +18,7 @@ BBOBJMesh::BBOBJMesh(const float px, const float py, const float pz,
 
 }
 
-void BBOBJMesh::init(const QString path)
-{
-    load(path);
-    BBMesh::init(path);
-}
-
-void BBOBJMesh::load(const QString path)
+void BBOBJMesh::load(const QString path, QList<QVector4D> &outPositions)
 {
     struct VertexDefine
     {
@@ -164,8 +159,8 @@ void BBOBJMesh::load(const QString path)
         m_pVertexBuffer->setNormal(i, temp);
     }
 
-//    //计算包围盒的数据
-//    mVertexPositions = positions;
+    // for creating bounding box
+    outPositions = positions;
 
     BB_SAFE_DELETE(pFileContent);
 }
