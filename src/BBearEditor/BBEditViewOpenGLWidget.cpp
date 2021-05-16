@@ -17,8 +17,7 @@ BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
     setAcceptDrops(true);
     // Mouse events can be captured without pressing
     setMouseTracking(true);
-
-//    isRegionSelecting(false)
+    m_bRegionSelecting = false;
 
 //    //单选模式
 //    isMultipleSelect = false;
@@ -77,8 +76,8 @@ void BBEditViewOpenGLWidget::mousePressEvent(QMouseEvent *e)
     }
     else if (e->button() == Qt::LeftButton)
     {
-//        //开始拖动框选区 记录开始的点
-//        selectionRegionStart = e->pos();
+        // Start dragging for selection area, and record the starting point
+        m_SelectionRegionStartingPoint = e->pos();
     }
 }
 
@@ -100,29 +99,31 @@ void BBEditViewOpenGLWidget::mouseMoveEvent(QMouseEvent *e)
     }
     else if (e->buttons() & Qt::LeftButton)
     {
-//        Ray ray = scene.camera.createRayFromScreen(e->pos().x(), e->pos().y());
-//        scene.transformCoordinate->transform(ray);
-//        if (!scene.transformCoordinate->getIsTransform())
-//        {
-//            //拖动鼠标 并且不是进行transform变换 进行框选操作
-//            if (isRegionSelecting)
-//            {
-//                //正在进行框选操作 显示框选区域 并选中选项的对象
-//                scene.setSelectionRegionVisible(true);
+        BBRay ray = m_pScene->getCamera()->createRayFromScreen(e->pos().x(), e->pos().y());
+//        m_pScene->transformCoordinate->transform(ray);
+        if (true/*!scene.transformCoordinate->getIsTransform()*/)
+        {
+            // move mouse and do not perform transform of gameobject
+            // perform selection operation
+            if (m_bRegionSelecting)
+            {
+                // show selection region, and select gameobjects
+                m_pScene->setSelectionRegionVisibility(true);
+                m_pScene->setSelectionRegion(m_SelectionRegionStartingPoint, e->pos());
 //                regionSelectObjects(scene.setSelectionRegion(selectionRegionStart, e->pos()));
-//            }
-//            else
-//            {
-//                //还没有进入框选操作时
-//                //如果鼠标只移动很小一段 认为不是进行框选
-//                QPoint delta = e->pos() - selectionRegionStart;
-//                static int threshold = 49;
-//                if ((delta.x() * delta.x() + delta.y() * delta.y()) > threshold)
-//                {
-//                    isRegionSelecting = true;
-//                }
-//            }
-//        }
+            }
+            else
+            {
+                // do not perform selection operation
+                // If the mouse moves only a small distance, it is not considered as selection operation
+                QPoint delta = e->pos() - m_SelectionRegionStartingPoint;
+                static int nThreshold = 49;
+                if ((delta.x() * delta.x() + delta.y() * delta.y()) > nThreshold)
+                {
+                    m_bRegionSelecting = true;
+                }
+            }
+        }
     }
     else
     {
@@ -143,10 +144,10 @@ void BBEditViewOpenGLWidget::mouseReleaseEvent(QMouseEvent *e)
     }
     else if (e->button() == Qt::LeftButton)
     {
-//        Ray ray = scene.camera.createRayFromScreen(e->pos().x(), e->pos().y());
-//        //鼠标释放时 如果是变换操作结束的释放 不需要拾取对象
-//        //如果是框选操作结束的释放 也不需要拾取对象
-//        if (!scene.transformCoordinate->getIsTransform() && !isRegionSelecting)
+        BBRay ray = m_pScene->getCamera()->createRayFromScreen(e->pos().x(), e->pos().y());
+        //鼠标释放时 如果是变换操作结束的释放 不需要拾取对象
+        //如果是框选操作结束的释放 也不需要拾取对象
+//        if (!scene.transformCoordinate->getIsTransform() && !m_bRegionSelecting)
 //        {
 //            //3D拾取 选择场景中的对象
 //            GameObject *object = scene.pickObject(ray);
@@ -171,9 +172,10 @@ void BBEditViewOpenGLWidget::mouseReleaseEvent(QMouseEvent *e)
 //        scene.transformCoordinate->stopTransform();
 //        //移动坐标轴时 鼠标离开了坐标轴 释放的时候不更新射线 被选中的坐标轴不能恢复原来的颜色
 //        scene.transformCoordinate->setRay(ray);
-//        //退出框选模式
-//        scene.setSelectionRegionVisible(false);
-//        isRegionSelecting = false;
+
+        // Exit selection mode
+        m_pScene->setSelectionRegionVisibility(false);
+        m_bRegionSelecting = false;
     }
 }
 

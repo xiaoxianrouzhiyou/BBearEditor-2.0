@@ -6,6 +6,7 @@
 #include "BBGameObject.h"
 #include "BBModel.h"
 #include "BBRay.h"
+#include "BBSelectionRegion.h"
 
 BBScene::BBScene()
 {
@@ -13,8 +14,8 @@ BBScene::BBScene()
     m_pCamera = new BBCamera;
     m_pSkyBox = new BBSkyBox;
     m_pHorizontalPlane = new BBHorizontalPlane();
+    m_pSelectionRegion = new BBSelectionRegion();
 
-//    selectionRegion = new SelectionRegion();
 //    transformCoordinate = new TransformCoordinate();
 //    particle = new Particle();
 //    fogSwitch = false;
@@ -104,8 +105,8 @@ void BBScene::render()
 
     // 2D camera mode
     m_pCamera->switchTo2D();
-//    //渲染框选区域
-//    selectionRegion->render();
+
+    m_pSelectionRegion->render();
 //    //sprite.draw();
 
 //    //实心？   会导致选框绘制不出
@@ -239,7 +240,60 @@ void BBScene::deleteGameObject(BBGameObject *pObject)
     BB_SAFE_DELETE(pObject);
 }
 
+void BBScene::setSelectionRegionVisibility(bool bVisible)
+{
+    m_pSelectionRegion->setVisibility(bVisible);
+}
 
+QList<BBGameObject*> BBScene::setSelectionRegion(QPoint start, QPoint end)
+{
+    QList<BBGameObject*> result;
+    // end cannot exceed the viewport
+    if (end.x() < 0)
+        end.setX(0);
+    else if (end.x() > m_pCamera->getViewportWidth())
+        end.setX(m_pCamera->getViewportWidth());
+    if (end.y() < 0)
+        end.setY(0);
+    else if (end.y() > m_pCamera->getViewportHeight())
+        end.setY(m_pCamera->getViewportHeight());
+    // Find the coordinates of the bottom-left corner, get the smaller x and the larger y
+    int x = start.x() < end.x() ? start.x() : end.x();
+    int y = start.y() > end.y() ? start.y() : end.y();
+    int w = abs(start.x() - end.x());
+    int h = abs(start.y() - end.y());
+
+    // The top-left corner is origin, transform origin into the center
+    y = -y;
+    x = x - m_pCamera->getViewportWidth() / 2;
+    y = y + m_pCamera->getViewportHeight() / 2;
+    m_pSelectionRegion->setRect(x, y, w, h);
+
+//    //选区四个顶点对应的3D射线
+//    Ray topLeft = camera.createRayFromScreen(x, y - h);
+//    Ray topRight = camera.createRayFromScreen(x + w, y - h);
+//    Ray bottomRight = camera.createRayFromScreen(x + w, y);
+//    Ray bottomLeft = camera.createRayFromScreen(x, y);
+//    //计算2D框选区对应的3D包围盒
+//    //两条射线组成一个平面 包围盒在上下左右平面之中的被选中
+//    QList<GameObject*> objects = models + directionLights + pointLights + spotLights + audios;
+//    int count = objects.count();
+//    for (int i = 0; i < count; i++)
+//    {
+//        //计算对象的包围盒是否位于选区的上下左右四个平面之中
+//        if (objects.at(i)->belongToSelectionRegion(
+//                    topLeft.getNearPoint(), bottomLeft.getNearPoint(), topLeft.getFarPoint(),
+//                    topLeft.getNearPoint(), topLeft.getFarPoint(), topRight.getNearPoint(),
+//                    topRight.getNearPoint(), topRight.getFarPoint(), bottomRight.getNearPoint(),
+//                    bottomLeft.getNearPoint(), bottomRight.getNearPoint(), bottomLeft.getFarPoint()))
+//        {
+//            result.append(objects.at(i));
+//        }
+//    }
+
+    // return all objects in the selection region
+    return result;
+}
 
 
 //void Scene::changeSkybox(QString path)
@@ -404,59 +458,6 @@ void BBScene::deleteGameObject(BBGameObject *pObject)
 //    }
 //}
 
-
-//QList<GameObject*> Scene::setSelectionRegion(QPoint start, QPoint end)
-//{
-//    QList<GameObject*> result;
-//    //end不能超出视口
-//    if (end.x() < 0)
-//        end.setX(0);
-//    else if (end.x() > camera.viewportWidth)
-//        end.setX(camera.viewportWidth);
-//    if (end.y() < 0)
-//        end.setY(0);
-//    else if (end.y() > camera.viewportHeight)
-//        end.setY(camera.viewportHeight);
-//    //求左下角坐标 取较小的x 较大的y
-//    int x = start.x() < end.x() ? start.x() : end.x();
-//    int y = start.y() > end.y() ? start.y() : end.y();
-//    int w = abs(start.x() - end.x());
-//    int h = abs(start.y() - end.y());
-//    //选区四个顶点对应的3D射线
-//    Ray topLeft = camera.createRayFromScreen(x, y - h);
-//    Ray topRight = camera.createRayFromScreen(x + w, y - h);
-//    Ray bottomRight = camera.createRayFromScreen(x + w, y);
-//    Ray bottomLeft = camera.createRayFromScreen(x, y);
-//    //左上角为原点的坐标 变换为中心为原点的坐标
-//    y = -y;
-//    x = x - camera.viewportWidth / 2;
-//    y = y + camera.viewportHeight / 2;
-//    //设定选区位置
-//    selectionRegion->setRect(x, y, w, h);
-//    //计算2D框选区对应的3D包围盒
-//    //两条射线组成一个平面 包围盒在上下左右平面之中的被选中
-//    QList<GameObject*> objects = models + directionLights + pointLights + spotLights + audios;
-//    int count = objects.count();
-//    for (int i = 0; i < count; i++)
-//    {
-//        //计算对象的包围盒是否位于选区的上下左右四个平面之中
-//        if (objects.at(i)->belongToSelectionRegion(
-//                    topLeft.getNearPoint(), bottomLeft.getNearPoint(), topLeft.getFarPoint(),
-//                    topLeft.getNearPoint(), topLeft.getFarPoint(), topRight.getNearPoint(),
-//                    topRight.getNearPoint(), topRight.getFarPoint(), bottomRight.getNearPoint(),
-//                    bottomLeft.getNearPoint(), bottomRight.getNearPoint(), bottomLeft.getFarPoint()))
-//        {
-//            result.append(objects.at(i));
-//        }
-//    }
-//    //返回选区中的所有对象
-//    return result;
-//}
-
-//void Scene::setSelectionRegionVisible(bool isVisible)
-//{
-//    selectionRegion->setVisible(isVisible);
-//}
 
 //Model *Scene::pickModel(int x, int y)
 //{

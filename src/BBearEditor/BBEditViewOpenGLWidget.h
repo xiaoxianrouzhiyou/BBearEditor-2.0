@@ -58,14 +58,14 @@ private:
     QPoint m_OriginalMousePos;
     BBGameObject *m_pPreviewObject;
 
+    QPoint m_SelectionRegionStartingPoint;
+    bool m_bRegionSelecting;
+
 //    void paintGL() override;
 //    GLuint texture;
 //    int deltaX;
 //    int deltaY;
-
 //    bool isMultipleSelect;
-//    QPoint selectionRegionStart;
-//    bool isRegionSelecting;
 //    BaseOpenGLWidget *mPreview;
 };
 

@@ -11,6 +11,7 @@ class BBSkyBox;
 class BBHorizontalPlane;
 class BBGameObject;
 class BBModel;
+class BBSelectionRegion;
 class BBScene
 {
 public:
@@ -28,6 +29,9 @@ public:
 
     void deleteGameObject(BBGameObject *pObject);
 
+    void setSelectionRegionVisibility(bool bVisible);
+    QList<BBGameObject*> setSelectionRegion(QPoint start, QPoint end);
+
 private:
     float m_fUpdateRate;
     BBCamera *m_pCamera;
@@ -36,12 +40,14 @@ private:
 
     QList<BBGameObject*> m_Models;
 
+    BBSelectionRegion *m_pSelectionRegion;
+
 //    QList<GameObject*> directionLights;
 //    QList<GameObject*> pointLights;
 //    QList<GameObject*> spotLights;
 //    QList<GameObject*> audios;
 
-//    SelectionRegion *selectionRegion;
+
 //    Particle *particle;
 //    QVector4D *directionLightPosition;
 //    QVector4D *directionLightColor;
@@ -73,8 +79,6 @@ private:
 //    Audio *createAudio(QString filePath, int x, int y, bool isSelect = true);
 //    Audio *createAudio(QString filePath, QVector3D position = QVector3D(0, 0, 0), bool isSelect = true);
 //    void lookAtGameObject(GameObject *object);
-//    QList<GameObject*> setSelectionRegion(QPoint start, QPoint end);
-//    void setSelectionRegionVisible(bool isVisible);
 //    Model *pickModel(int x, int y);
 //    bool setModelMaterial(Model *model, QString mtlPath);
 //    void updateDirectionLightPosition();

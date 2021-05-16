@@ -155,7 +155,7 @@ void BBBoundingBox3D::setModelMatrix(const float px, const float py, const float
 void BBBoundingBox3D::draw()
 {
     glEnable(GL_DEPTH_TEST);
-    glLineWidth(2);
+    glLineWidth(1.5f);
     glDrawElements(GL_LINES, m_nIndexCount, GL_UNSIGNED_SHORT, 0);
 }
 
