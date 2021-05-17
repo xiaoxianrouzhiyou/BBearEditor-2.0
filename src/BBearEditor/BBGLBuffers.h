@@ -35,6 +35,8 @@ public:
     void setNormal(const int index, const QVector4D normal);
     inline float *getNormal() { return m_fNormal; }
 
+    inline int getVertexCount() { return m_nVertexCount; }
+
 private:
     void setSize(const int nVertexCount);
 
