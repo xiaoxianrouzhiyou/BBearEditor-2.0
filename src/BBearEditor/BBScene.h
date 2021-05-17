@@ -13,6 +13,7 @@ class BBGameObject;
 class BBModel;
 class BBSelectionRegion;
 class BBRay;
+class BBTransformCoordinateSystem;
 class BBScene
 {
 public:
@@ -24,6 +25,7 @@ public:
     void resize(float width, float height);
 
     inline BBCamera* getCamera() { return m_pCamera; }
+    inline BBTransformCoordinateSystem* getTransformCoordinateSystem() { return m_pTransformCoordinateSystem; }
 
     BBModel* createModel(const QString filePath, int x, int y, bool bSelect = true);
     BBModel* createModel(const QString filePath, QVector3D position = QVector3D(0, 0, 0), bool bSelect = true);
@@ -40,6 +42,7 @@ private:
     BBCamera *m_pCamera;
     BBSkyBox *m_pSkyBox;
     BBHorizontalPlane *m_pHorizontalPlane;
+    BBTransformCoordinateSystem *m_pTransformCoordinateSystem;
 
     QList<BBGameObject*> m_Models;
 
@@ -108,7 +111,6 @@ private:
 //    void onKeyPress(QKeyEvent *e);
 //    Sprite2D sprite;
 //    GLuint particleTexture;
-//    TransformCoordinate *transformCoordinate;
 };
 
 #endif // BBSCENE_H

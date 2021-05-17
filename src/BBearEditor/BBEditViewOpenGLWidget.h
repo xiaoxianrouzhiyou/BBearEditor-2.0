@@ -22,9 +22,9 @@ private slots:
     void pressMoveKeySlot(char key);
     void releaseMoveKeySlot(char key);
     void pressTransformSlot(char key);
+    void setCoordinateSystemSelectedObject(BBGameObject *pGameObject);
 //    void multipleSelectKey(bool isPress);
 //    void lookAtGameObjectSlot(GameObject *gameObject);
-//    void setCoordinateSelectedObject(GameObject *gameObject);
 //    void setCoordinateSelectedObjects(QList<GameObject*> gameObjects, CenterPoint *center);
 //    void deleteSceneGameObject(GameObject *gameObject);
 //    void updateCoordinate();

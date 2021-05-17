@@ -8,6 +8,8 @@
 #include "BBModel.h"
 #include <QDrag>
 #include "BBRay.h"
+#include "BBCoordinateSystem.h"
+
 
 BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
     : BBOpenGLWidget(pParent)
@@ -37,7 +39,7 @@ BBEditViewOpenGLWidget::~BBEditViewOpenGLWidget()
 
 void BBEditViewOpenGLWidget::pressESCSlot()
 {
-//    scene.transformCoordinate->setSelectedObject(nullptr);
+    setCoordinateSystemSelectedObject(nullptr);
 }
 
 void BBEditViewOpenGLWidget::pressMoveKeySlot(char key)
@@ -63,6 +65,11 @@ void BBEditViewOpenGLWidget::pressTransformSlot(char key)
 //    if (isRightPress)
 //        return;
 //    scene.transformCoordinate->setCoordinateMode(key);
+}
+
+void BBEditViewOpenGLWidget::setCoordinateSystemSelectedObject(BBGameObject *pGameObject)
+{
+    m_pScene->getTransformCoordinateSystem()->setSelectedObject(pGameObject);
 }
 
 void BBEditViewOpenGLWidget::mousePressEvent(QMouseEvent *e)
@@ -99,8 +106,7 @@ void BBEditViewOpenGLWidget::mouseMoveEvent(QMouseEvent *e)
     else if (e->buttons() & Qt::LeftButton)
     {
         BBRay ray = m_pScene->getCamera()->createRayFromScreen(e->pos().x(), e->pos().y());
-//        m_pScene->transformCoordinate->transform(ray);
-        if (true/*!scene.transformCoordinate->getIsTransform()*/)
+        if (!m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(ray))
         {
             // move mouse and do not perform transform of gameobject
             // perform selection operation
@@ -126,8 +132,9 @@ void BBEditViewOpenGLWidget::mouseMoveEvent(QMouseEvent *e)
     }
     else
     {
-//        Ray ray = scene.camera.createRayFromScreen(e->pos().x(), e->pos().y());
-//        scene.transformCoordinate->setRay(ray);
+        // move mouse without press mouse
+        BBRay ray = m_pScene->getCamera()->createRayFromScreen(e->pos().x(), e->pos().y());
+        m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(ray);
     }
 }
 
@@ -146,7 +153,7 @@ void BBEditViewOpenGLWidget::mouseReleaseEvent(QMouseEvent *e)
         BBRay ray = m_pScene->getCamera()->createRayFromScreen(e->pos().x(), e->pos().y());
         // if it is the release at the end of the transform and selection operation
         // there is no need to pick object
-        if (/*!scene.transformCoordinate->getIsTransform() && */!m_bRegionSelecting)
+        if (!m_pScene->getTransformCoordinateSystem()->isTransforming() && !m_bRegionSelecting)
         {
             // 3D pick objects
             BBGameObject *pObject = m_pScene->pickObject(ray);
@@ -166,11 +173,13 @@ void BBEditViewOpenGLWidget::mouseReleaseEvent(QMouseEvent *e)
                 pickObject(pObject);
             }
         }
-//        //不再移动坐标轴的时候 上次鼠标位置清空
-//        //关闭正在进行变换的开关 下次鼠标释放操作可以进行对象拾取
-//        scene.transformCoordinate->stopTransform();
-//        //移动坐标轴时 鼠标离开了坐标轴 释放的时候不更新射线 被选中的坐标轴不能恢复原来的颜色
-//        scene.transformCoordinate->setRay(ray);
+        // When the coordinate system is no longer moved, reset m_LastMousePos
+        // stop m_bTransforming, can pick object in the next mouse release
+        m_pScene->getTransformCoordinateSystem()->stopTransform();
+
+        // When the coordinate system is moved, the mouse leaves the coordinate system
+        // If the ray is not updated when released, the selected coordinate axis cannot be restored to its original color
+        m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(ray);
 
         // Exit selection mode
         m_pScene->setSelectionRegionVisibility(false);
@@ -202,8 +211,8 @@ void BBEditViewOpenGLWidget::dragEnterEvent(QDragEnterEvent *event)
             // no need to create the corresponding item in the hierarchical tree
             m_pPreviewObject = m_pScene->createModel(BB_PATH_RESOURCE_MESH + fileName, event->pos().x(), event->pos().y());
         }
-//        //移除坐标轴选中状态
-//        scene.transformCoordinate->setSelectedObject(nullptr);
+        // Remove the selected state of the coordinate system
+        setCoordinateSystemSelectedObject(NULL);
         event->accept();
     }
 //    else if ((data = event->mimeData()->data("light")) != nullptr)
@@ -280,8 +289,8 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
     QByteArray data;
     if ((data = event->mimeData()->data(BB_MIMETYPE_BASEOBJECT)) != nullptr)
     {
-//        //落下后 预创建对象成为正式创建的对象 坐标轴选中它
-//        scene.transformCoordinate->setSelectedObject(prepareObject);
+        // After dropping, the pre-created object becomes a formal object, and use coordinate system to select it
+        setCoordinateSystemSelectedObject(m_pPreviewObject);
         // Set the position of the drop point
         BBRay ray = m_pScene->getCamera()->createRayFromScreen(event->pos().x(), event->pos().y());
         m_pPreviewObject->setPosition(ray.computeIntersectWithXOZPlane(0));
@@ -398,11 +407,6 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
 //void OpenGLWidget::lookAtGameObjectSlot(GameObject *gameObject)
 //{
 //    scene.lookAtGameObject(gameObject);
-//}
-
-//void OpenGLWidget::setCoordinateSelectedObject(GameObject *gameObject)
-//{
-//    scene.transformCoordinate->setSelectedObject(gameObject);
 //}
 
 //void OpenGLWidget::setCoordinateSelectedObjects(QList<GameObject*> gameObjects, CenterPoint *center)

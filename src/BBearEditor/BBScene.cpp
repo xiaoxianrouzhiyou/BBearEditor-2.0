@@ -8,6 +8,7 @@
 #include "BBRay.h"
 #include "BBSelectionRegion.h"
 #include <cfloat>
+#include "BBCoordinateSystem.h"
 
 BBScene::BBScene()
 {
@@ -16,8 +17,8 @@ BBScene::BBScene()
     m_pSkyBox = new BBSkyBox;
     m_pHorizontalPlane = new BBHorizontalPlane();
     m_pSelectionRegion = new BBSelectionRegion();
+    m_pTransformCoordinateSystem = new BBTransformCoordinateSystem();
 
-//    transformCoordinate = new TransformCoordinate();
 //    particle = new Particle();
 //    fogSwitch = false;
 //    fogColor = QColor(128, 128, 128);
@@ -51,8 +52,7 @@ void BBScene::init()
     m_pSkyBox->init(QString(BB_PATH_RESOURCE) + "skyboxs/1/");
     // Horizontal reference grid
     m_pHorizontalPlane->init();
-//    //模型坐标系
-//    transformCoordinate->init();
+    m_pTransformCoordinateSystem->init();
 //    //粒子
 //    particle->init();
 
@@ -98,8 +98,8 @@ void BBScene::render()
         BBGameObject *pObject = *itr;
         pObject->render(m_pCamera);
     }
-//    //模型坐标系
-//    transformCoordinate->render(camera);
+
+    m_pTransformCoordinateSystem->render(m_pCamera);
 //    //粒子
 //    //particle->update();
 //    //particle->render(camera);
@@ -141,8 +141,7 @@ void BBScene::resize(float width, float height)
 
     m_pSkyBox->resize(width, height);
     m_pHorizontalPlane->resize(width, height);
-
-//    transformCoordinate->resize(width, height);
+    m_pTransformCoordinateSystem->resize(width, height);
 //    //particle->resize(width, height);
 
 //    mFBO = new FrameBufferObject;

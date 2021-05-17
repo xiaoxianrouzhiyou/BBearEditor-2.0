@@ -337,12 +337,11 @@ public:
     void render(BBCamera *pCamera) override;
     void resize(float fWidth, float fHeight) override;
 
-    void mouseMoveEvent(const BBRay ray);
-    inline bool isTransforming() { return m_bTransforming; }
+    bool mouseMoveEvent(const BBRay ray);
     void setCoordinateSystemMode(const char key);
     void setSelectedObject(BBGameObject *pObject);
-
-//    void stopTransform();
+    bool isTransforming() { return m_bTransforming; }
+    void stopTransform();
 //    void setSelectedObjects(QList<GameObject*> objects, CenterPoint *center);
 
 
@@ -361,7 +360,6 @@ private:
     char m_ModeKey;
 
     BBGameObject *m_pSelectedObject;
-    // if not, other mouse events will be processed
     bool m_bTransforming;
 
 //    QList<GameObject*> mSelectedObjects;

@@ -1189,8 +1189,9 @@ void BBTransformCoordinateSystem::resize(float fWidth, float fHeight)
     m_pScaleCoordinateSystem->resize(fWidth, fHeight);
 }
 
-void BBTransformCoordinateSystem::mouseMoveEvent(const BBRay ray)
+bool BBTransformCoordinateSystem::mouseMoveEvent(const BBRay ray)
 {
+    m_bTransforming = false;
     if (m_ModeKey == m_PositionCoordinateSystemModeKey)
     {
         m_bTransforming = m_pPositionCoordinateSystem->mouseMoveEvent(ray);
@@ -1203,10 +1204,8 @@ void BBTransformCoordinateSystem::mouseMoveEvent(const BBRay ray)
     {
         m_bTransforming = m_pScaleCoordinateSystem->mouseMoveEvent(ray);
     }
-    else
-    {
-        m_bTransforming = false;
-    }
+    // if false, other mouse events will be processed
+    return m_bTransforming;
 }
 
 void BBTransformCoordinateSystem::setCoordinateSystemMode(const char key)
@@ -1264,6 +1263,18 @@ void BBTransformCoordinateSystem::setSelectedObject(BBGameObject *pObject)
     m_pSelectedObject = pObject;
     setCoordinateSystemMode(m_ModeKey);
 }
+
+void BBTransformCoordinateSystem::stopTransform()
+{
+    m_pPositionCoordinateSystem->resetLastMousePos();
+//    mRotationCoordinate->resetLastMousePos();
+//    mRotationCoordinate->stopRotate();
+//    mScaleCoordinate->resetLastMousePos();
+//    mScaleCoordinate->stopScale();
+
+    m_bTransforming = false;
+}
+
 
 
 ///******************************************************************
@@ -1742,18 +1753,6 @@ void BBTransformCoordinateSystem::setSelectedObject(BBGameObject *pObject)
 ///******************************************************************
 //        TransformCoordinate
 //  *********************************************************************/
-
-
-//void TransformCoordinate::stopTransform()
-//{
-//    mPositionCoordinate->resetLastMousePos();
-//    mRotationCoordinate->resetLastMousePos();
-//    mRotationCoordinate->stopRotate();
-//    mScaleCoordinate->resetLastMousePos();
-//    mScaleCoordinate->stopScale();
-//    //鼠标释放时 如果是变换操作结束的释放 不需要拾取对象 需要在判断是否拾取对象的代码之后 将他制为false
-//    mIsTransform = false;
-//}
 
 //void TransformCoordinate::setSelectedObjects(QList<GameObject*> objects, CenterPoint *center)
 //{
