@@ -30,6 +30,26 @@ protected:
 };
 
 
+// Parallel to the coordinate plane
+class BBRectBoundingBox2D : public BBBoundingBox
+{
+public:
+    BBRectBoundingBox2D(const float fCenterX, const float fCenterY, const float fCenterZ,
+                        const float fHalfLengthX, const float fHalfLengthY, const float fHalfLengthZ);
+    virtual ~BBRectBoundingBox2D();
+
+    bool hit(BBRay ray, float &fDistance) override;
+
+private:
+    void setModelMatrix(const float px, const float py, const float pz,
+                        const QQuaternion r,
+                        const float sx, const float sy, const float sz) override;
+
+    QVector3D m_OriginalBoxVertexes[4];
+    QVector3D m_TransformedBoxVertexes[4];
+};
+
+
 class BBBoundingBox3D : public BBBoundingBox
 {
 public:
@@ -38,6 +58,11 @@ public:
                     const float &rx, const float &ry, const float &rz,
                     const float &sx, const float &sy, const float &sz,
                     QList<QVector4D> vertexes = QList<QVector4D>());
+    BBBoundingBox3D(const float &px, const float &py, const float &pz,
+                    const float &rx, const float &ry, const float &rz,
+                    const float &sx, const float &sy, const float &sz,
+                    const float fCenterX, const float fCenterY, const float fCenterZ,
+                    const float fHalfLengthX, const float fHalfLengthY, const float fHalfLengthZ);
     virtual ~BBBoundingBox3D();
 
     void init() override;
@@ -80,27 +105,10 @@ private:
 #endif // BBBOUNDINGBOX_H
 
 
-//#include <QVector3D>
-//#include "renderableobject.h"
-//#include "ray.h"
-//#include <QMatrix3x3>
 
 
 
 
-////平行于坐标面
-//class RectBoundingBox2D : public BoundingBox
-//{
-//private:
-//    QVector3D originBoxVertexes[4];
-//    QVector3D transferedBoxVertexes[4];
-//    void transformBoundingBoxVertexes(QMatrix4x4 matrix) override;
-
-//public:
-//    RectBoundingBox2D(float centerX, float centerY, float centerZ,
-//                      float radiusX, float radiusY, float radiusZ);
-//    bool hitBoundingBox(Ray ray, float &distance, QMatrix4x4 matrix) override;
-//};
 
 ////平行于坐标面
 //class QuarterRoundBoundingBox2D : public BoundingBox

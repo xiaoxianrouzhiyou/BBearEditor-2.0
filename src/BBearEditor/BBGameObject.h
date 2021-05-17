@@ -18,6 +18,7 @@ public:
     BBGameObject(const float px, const float py, const float pz,
                  const float rx, const float ry, const float rz,
                  const float sx, const float sy, const float sz);
+    virtual ~BBGameObject() {}
 
     inline QMatrix4x4 getModelMatrix() { return m_ModelMatrix; }
 

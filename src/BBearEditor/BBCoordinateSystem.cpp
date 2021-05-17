@@ -2,6 +2,8 @@
 #include "BBGLBuffers.h"
 #include "BBGLShader.h"
 #include "BBUtils.h"
+#include "BBCamera.h"
+#include "BBBoundingBox.h"
 
 
 //------------------------------
@@ -813,6 +815,77 @@ BBCoordinateSystem::~BBCoordinateSystem()
     BB_SAFE_DELETE(m_pSelectedObject);
 }
 
+QMatrix4x4 BBCoordinateSystem::getRenderModelMatrix(const QVector3D cameraPos)
+{
+    // The coordinate system cannot be rendered according to its own scale
+    // otherwise, the coordinate system will be very small when the camera is far away from it
+    QMatrix4x4 modelMatrix;
+    modelMatrix.translate(m_Position);
+    float fDistance = (cameraPos - m_Position).length();
+    modelMatrix.scale(fDistance / 6.5f);
+    return modelMatrix;
+}
+
+bool BBCoordinateSystem::hit(BBRay ray,
+                             BBBoundingBox *pBoundingBox1, BBAxisFlags axis1,
+                             BBBoundingBox *pBoundingBox2, BBAxisFlags axis2,
+                             BBBoundingBox *pBoundingBox3, BBAxisFlags axis3,
+                             float &fDistance)
+{
+    // axis1 is the coordinate axis name corresponding to pBoundingBox1
+    // size of m_pCoordinateRectFace is 0.3
+    float d1, d2, d3;
+    bool bResult1 = pBoundingBox1->hit(ray, d1);
+    bool bResult2 = pBoundingBox2->hit(ray, d2);
+    bool bResult3 = pBoundingBox3->hit(ray, d3);
+    if (!bResult1 && !bResult2 && !bResult3)
+    {
+        return false;
+    }
+
+    if (d1 < d2)
+    {
+        if (d1 < d3)
+        {
+            // yoz is nearest
+            setSelectedAxis(axis1);
+            fDistance = d1;
+        }
+        else
+        {
+            // xoy is nearest
+            setSelectedAxis(axis3);
+            fDistance = d3;
+        }
+    }
+    else
+    {
+        if (d1 < d3)
+        {
+            // xoz is nearest
+            setSelectedAxis(axis2);
+            fDistance = d2;
+        }
+        else
+        {
+            if (d2 < d3)
+            {
+                // xoz is nearest
+                setSelectedAxis(axis2);
+                fDistance = d2;
+            }
+            else
+            {
+                // xoy is nearest
+                setSelectedAxis(axis3);
+                fDistance = d3;
+            }
+        }
+    }
+
+    return true;
+}
+
 void BBCoordinateSystem::setSelectedObject(BBGameObject *pObject)
 {
     m_pSelectedObject = pObject;
@@ -843,48 +916,354 @@ void BBCoordinateSystem::resetLastMousePos()
 BBPositionCoordinateSystem::BBPositionCoordinateSystem()
     : BBCoordinateSystem()
 {
+    m_pCoordinateArrow = new BBCoordinateArrow();
+    m_pCoordinateAxis = new BBCoordinateAxis();
+    m_pCoordinateRectFace = new BBCoordinateRectFace();
+    m_pBoundingBoxX = new BBBoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, 0.75f, 0.0f, 0.0f, 0.45f, 0.1f, 0.1f);
+    m_pBoundingBoxY = new BBBoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, 0.0f, 0.75f, 0.0f, 0.1f, 0.45f, 0.1f);
+    m_pBoundingBoxZ = new BBBoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, 0.0f, 0.0f, 0.75f, 0.1f, 0.1f, 0.45f);
+    m_pBoundingBoxYOZ = new BBRectBoundingBox2D(0.0f, 0.15f, 0.15f, 0.0f, 0.15f, 0.15f);
+    m_pBoundingBoxXOZ = new BBRectBoundingBox2D(0.15f, 0.0f, 0.15f, 0.15f, 0.0f, 0.15f);
+    m_pBoundingBoxXOY = new BBRectBoundingBox2D(0.15f, 0.15f, 0.0f, 0.15f, 0.15f, 0.0f);
+}
 
+BBPositionCoordinateSystem::~BBPositionCoordinateSystem()
+{
+    BB_SAFE_DELETE(m_pCoordinateArrow);
+    BB_SAFE_DELETE(m_pCoordinateAxis);
+    BB_SAFE_DELETE(m_pCoordinateRectFace);
+    BB_SAFE_DELETE(m_pBoundingBoxX);
+    BB_SAFE_DELETE(m_pBoundingBoxY);
+    BB_SAFE_DELETE(m_pBoundingBoxZ);
+    BB_SAFE_DELETE(m_pBoundingBoxYOZ);
+    BB_SAFE_DELETE(m_pBoundingBoxXOZ);
+    BB_SAFE_DELETE(m_pBoundingBoxXOY);
 }
 
 void BBPositionCoordinateSystem::init()
 {
-
+    m_pCoordinateArrow->init();
+    m_pCoordinateAxis->init();
+    m_pCoordinateRectFace->init();
 }
 
 void BBPositionCoordinateSystem::render(BBCamera *pCamera)
 {
+    if (m_pSelectedObject == nullptr)
+        return;
 
+    QMatrix4x4 modelMatrix = getRenderModelMatrix(pCamera->getPosition());
+
+    m_pCoordinateArrow->render(modelMatrix, pCamera);
+    m_pCoordinateAxis->render(modelMatrix, pCamera);
+    m_pCoordinateRectFace->render(modelMatrix, pCamera);
 }
 
 void BBPositionCoordinateSystem::resize(float fWidth, float fHeight)
 {
-
+    m_pCoordinateArrow->resize(fWidth, fHeight);
+    m_pCoordinateAxis->resize(fWidth, fHeight);
+    m_pCoordinateRectFace->resize(fWidth, fHeight);
 }
 
 void BBPositionCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
 {
+    // change color of indicator
+    m_pCoordinateArrow->setSelectedAxis(axis);
+    m_pCoordinateAxis->setSelectedAxis(axis);
+
+    m_SelectedAxis = axis;
+}
+
+bool BBPositionCoordinateSystem::mouseMoveEvent(BBRay ray)
+{    
+    if (m_pSelectedObject == nullptr)
+        return false;
+
+    // handle collision detection, change color of related axis and get m_SelectedAxis
+    // if hitting m_pCoordinateRectFace, no need to handle axis
+    float fDistance;
+    if (!hit(ray,
+             m_pBoundingBoxYOZ, BBAxisName::AxisY | BBAxisName::AxisZ,
+             m_pBoundingBoxXOZ, BBAxisName::AxisX | BBAxisName::AxisZ,
+             m_pBoundingBoxXOY, BBAxisName::AxisX | BBAxisName::AxisY,
+             fDistance))
+    {
+        // handle axis
+        if (!hit(ray,
+                 m_pBoundingBoxX, BBAxisName::AxisX,
+                 m_pBoundingBoxY, BBAxisName::AxisY,
+                 m_pBoundingBoxZ, BBAxisName::AxisZ,
+                 fDistance))
+        {
+            return false;
+        }
+    }
+
+    QVector3D mousePos;
+    if (m_SelectedAxis == BBAxisName::AxisNULL)
+    {
+        return false;
+    }
+    else if ((m_SelectedAxis == BBAxisName::AxisY)
+          || (m_SelectedAxis == (BBAxisName::AxisX | BBAxisName::AxisY)))
+    {
+        mousePos = ray.computeIntersectWithXOYPlane(m_Position.z());
+    }
+    else if ((m_SelectedAxis == BBAxisName::AxisX
+           || m_SelectedAxis == BBAxisName::AxisZ)
+          || (m_SelectedAxis == (BBAxisName::AxisX | BBAxisName::AxisZ)))
+    {
+        mousePos = ray.computeIntersectWithXOZPlane(m_Position.y());
+    }
+    else if (m_SelectedAxis == (BBAxisName::AxisY | BBAxisName::AxisZ))
+    {
+        mousePos = ray.computeIntersectWithYOZPlane(m_Position.x());
+    }
+    else
+    {
+        return false;
+    }
+
+    // Just start to move, no need to deal with, and no displacement can be calculated
+    if (m_LastMousePos.isNull())
+    {
+        m_LastMousePos = mousePos;
+        return false;
+    }
+
+    QVector3D mouseDisplacement = mousePos - m_LastMousePos;
+    if (m_SelectedAxis & BBAxisName::AxisX)
+    {
+        // The length of the projection of the mouse's displacement on the axis
+        float d = mouseDisplacement.x();
+        m_Position = m_Position + QVector3D(d, 0, 0);
+    }
+    if (m_SelectedAxis & BBAxisName::AxisY)
+    {
+        float d = mouseDisplacement.y();
+        m_Position = m_Position + QVector3D(0, d, 0);
+    }
+    if (m_SelectedAxis & BBAxisName::AxisZ)
+    {
+        float d = mouseDisplacement.z();
+        m_Position = m_Position + QVector3D(0, 0, d);
+    }
+
+    m_pSelectedObject->setPosition(m_Position);
+    // Update, used to calculate the next displacement
+    m_LastMousePos = mousePos;
+    // The return value indicates whether the transform has really performed
+    return true;
+}
+
+
+//------------------------------
+//  BBRotationCoordinateSystem
+//------------------------------
+
+BBRotationCoordinateSystem::BBRotationCoordinateSystem()
+    : BBCoordinateSystem()
+{
 
 }
 
-bool BBPositionCoordinateSystem::move(BBRay ray)
+BBRotationCoordinateSystem::~BBRotationCoordinateSystem()
+{
+
+}
+
+void BBRotationCoordinateSystem::init()
+{
+
+}
+
+void BBRotationCoordinateSystem::render(BBCamera *pCamera)
+{
+
+}
+
+void BBRotationCoordinateSystem::resize(float fWidth, float fHeight)
+{
+
+}
+
+void BBRotationCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
+{
+
+}
+
+bool BBRotationCoordinateSystem::mouseMoveEvent(BBRay ray)
 {
 
 }
 
 
 //------------------------------
-//
+//  BBScaleCoordinateSystem
 //------------------------------
 
-//------------------------------
-//
-//------------------------------
+BBScaleCoordinateSystem::BBScaleCoordinateSystem()
+    : BBCoordinateSystem()
+{
+
+}
+
+BBScaleCoordinateSystem::~BBScaleCoordinateSystem()
+{
+
+}
+
+void BBScaleCoordinateSystem::init()
+{
+
+}
+
+void BBScaleCoordinateSystem::render(BBCamera *pCamera)
+{
+
+}
+
+void BBScaleCoordinateSystem::resize(float fWidth, float fHeight)
+{
+
+}
+
+void BBScaleCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
+{
+
+}
+
+bool BBScaleCoordinateSystem::mouseMoveEvent(BBRay ray)
+{
+
+}
+
 
 //------------------------------
-//
+//  BBTransformCoordinateSystem
 //------------------------------
 
+BBTransformCoordinateSystem::BBTransformCoordinateSystem()
+    : BBGameObject()
+{
+    m_pPositionCoordinateSystem = new BBPositionCoordinateSystem();
+    m_pRotationCoordinateSystem = new BBRotationCoordinateSystem();
+    m_pScaleCoordinateSystem = new BBScaleCoordinateSystem();
+    // default is m_pPositionCoordinateSystem
+    m_ModeKey = m_PositionCoordinateSystemModeKey;
+    m_pSelectedObject = nullptr;
+    m_bTransforming = false;
+}
 
+BBTransformCoordinateSystem::~BBTransformCoordinateSystem()
+{
+    BB_SAFE_DELETE(m_pPositionCoordinateSystem);
+    BB_SAFE_DELETE(m_pRotationCoordinateSystem);
+    BB_SAFE_DELETE(m_pScaleCoordinateSystem);
+    BB_SAFE_DELETE(m_pSelectedObject);
+}
+
+void BBTransformCoordinateSystem::init()
+{
+    m_pPositionCoordinateSystem->init();
+    m_pRotationCoordinateSystem->init();
+    m_pScaleCoordinateSystem->init();
+}
+
+void BBTransformCoordinateSystem::render(BBCamera *pCamera)
+{
+    // transparent
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    m_pPositionCoordinateSystem->render(pCamera);
+    m_pRotationCoordinateSystem->render(pCamera);
+    m_pScaleCoordinateSystem->render(pCamera);
+    glDisable(GL_BLEND);
+}
+
+void BBTransformCoordinateSystem::resize(float fWidth, float fHeight)
+{
+    m_pPositionCoordinateSystem->resize(fWidth, fHeight);
+    m_pRotationCoordinateSystem->resize(fWidth, fHeight);
+    m_pScaleCoordinateSystem->resize(fWidth, fHeight);
+}
+
+void BBTransformCoordinateSystem::mouseMoveEvent(const BBRay ray)
+{
+    if (m_ModeKey == m_PositionCoordinateSystemModeKey)
+    {
+        m_bTransforming = m_pPositionCoordinateSystem->mouseMoveEvent(ray);
+    }
+    else if (m_ModeKey == m_RotationCoordinateSystemModeKey)
+    {
+        m_bTransforming = m_pRotationCoordinateSystem->mouseMoveEvent(ray);
+    }
+    else if (m_ModeKey == m_ScaleCoordinateSystemModeKey)
+    {
+        m_bTransforming = m_pScaleCoordinateSystem->mouseMoveEvent(ray);
+    }
+    else
+    {
+        m_bTransforming = false;
+    }
+}
+
+void BBTransformCoordinateSystem::setCoordinateSystemMode(const char key)
+{
+    m_ModeKey = key;
+
+    if (m_ModeKey == m_PositionCoordinateSystemModeKey)
+    {
+        m_pPositionCoordinateSystem->setSelectedObject(m_pSelectedObject);
+        m_pRotationCoordinateSystem->setSelectedObject(nullptr);
+        m_pScaleCoordinateSystem->setSelectedObject(nullptr);
+    }
+    else if (m_ModeKey == m_RotationCoordinateSystemModeKey)
+    {
+        m_pPositionCoordinateSystem->setSelectedObject(nullptr);
+        m_pRotationCoordinateSystem->setSelectedObject(m_pSelectedObject);
+        m_pScaleCoordinateSystem->setSelectedObject(nullptr);
+    }
+    else if (m_ModeKey == m_ScaleCoordinateSystemModeKey)
+    {
+        m_pPositionCoordinateSystem->setSelectedObject(nullptr);
+        m_pRotationCoordinateSystem->setSelectedObject(nullptr);
+        m_pScaleCoordinateSystem->setSelectedObject(m_pSelectedObject);
+    }
+}
+
+void BBTransformCoordinateSystem::setSelectedObject(BBGameObject *pObject)
+{
+    // The selected operation object has not changed, no additional operation is required
+    if (m_pSelectedObject == pObject)
+    {
+        return;
+    }
+    // Operation object changed
+
+//    //清空多选项 包围盒 指示器等隐藏
+//    int count = mSelectedObjects.count();
+//    for (int i = 0; i < count; i++)
+//    {
+//        mSelectedObjects.at(i)->setVisible(false);
+//    }
+//    mSelectedObjects.clear();
+
+    // single selection
+    if (m_pSelectedObject != nullptr)
+    {
+        // The bounding box and indicator of the original operation object are hidden
+        m_pSelectedObject->setVisibility(false);
+    }
+    if (pObject != nullptr)
+    {
+        // show bounding box and indicator of now operation object
+        pObject->setVisibility(true);
+    }
+    m_pSelectedObject = pObject;
+    setCoordinateSystemMode(m_ModeKey);
+}
 
 
 ///******************************************************************
@@ -1022,205 +1401,7 @@ bool BBPositionCoordinateSystem::move(BBRay ray)
 //    return deltaAngle;
 //}
 
-///******************************************************************
-//        Coordinate
-//  *********************************************************************/
 
-//QMatrix4x4 Coordinate::getModelMatrix(QVector3D cameraPos)
-//{
-//    QMatrix4x4 modelMatrix;
-//    modelMatrix.translate(mPosition);
-//    float distance = (cameraPos - mPosition).length();
-//    modelMatrix.scale(distance / 6.5);
-//    return modelMatrix;
-//}
-
-//bool Coordinate::hitBoundingBox(QMatrix4x4 matrix, BoundingBox *boundingBox1,
-//                            BoundingBox *boundingBox2, BoundingBox *boundingBox3,
-//                            AxisFlags axisFlags1, AxisFlags axisFlags2, AxisFlags axisFlags3,
-//                            float &distance)
-//{
-//    //检测面边长为0.3
-//    setSelectedAxis(AxisName::AxisNULL);
-//    float distance1, distance2, distance3;
-//    bool result1 = boundingBox1->hitBoundingBox(mRay, distance1, matrix);
-//    bool result2 = boundingBox2->hitBoundingBox(mRay, distance2, matrix);
-//    bool result3 = boundingBox3->hitBoundingBox(mRay, distance3, matrix);
-//    if (!result1 && !result2 && !result3)
-//    {
-//        return false;
-//    }
-
-//    if (distance1 < distance2)
-//    {
-//        if (distance1 < distance3)
-//        {
-//            //yoz最近
-//            setSelectedAxis(axisFlags1);
-//            distance = distance1;
-//        }
-//        else
-//        {
-//            //xoy最近
-//            setSelectedAxis(axisFlags3);
-//            distance = distance3;
-//        }
-//    }
-//    else
-//    {
-//        if (distance1 < distance3)
-//        {
-//            //xoz最近
-//            setSelectedAxis(axisFlags2);
-//            distance = distance2;
-//        }
-//        else
-//        {
-//            if (distance2 < distance3)
-//            {
-//                //xoz最近
-//                setSelectedAxis(axisFlags2);
-//                distance = distance2;
-//            }
-//            else
-//            {
-//                //xoy最近
-//                setSelectedAxis(axisFlags3);
-//                distance = distance3;
-//            }
-//        }
-//    }
-
-//    return true;
-//}
-
-
-///******************************************************************
-//        PositionCoordinate
-//  *********************************************************************/
-
-
-//PositionCoordinate::PositionCoordinate()
-//    : Coordinate()
-//{
-//    mArrow = new Arrow();
-//    mAxis = new Axis();
-//    mSurface = new RectSurface();
-//    xBoundingBox = new BoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, 0.75f, 0.0f, 0.0f, 0.45f, 0.1f, 0.1f);
-//    yBoundingBox = new BoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, 0.0f, 0.75f, 0.0f, 0.1f, 0.45f, 0.1f);
-//    zBoundingBox = new BoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, 0.0f, 0.0f, 0.75f, 0.1f, 0.1f, 0.45f);
-//    yozSurface = new RectBoundingBox2D(0.0f, 0.15f, 0.15f, 0.0f, 0.15f, 0.15f);
-//    xozSurface = new RectBoundingBox2D(0.15f, 0.0f, 0.15f, 0.15f, 0.0f, 0.15f);
-//    xoySurface = new RectBoundingBox2D(0.15f, 0.15f, 0.0f, 0.15f, 0.15f, 0.0f);
-//}
-
-//void PositionCoordinate::init()
-//{
-//    mArrow->init();
-//    mAxis->init();
-//    mSurface->init();
-//}
-
-//void PositionCoordinate::render(Camera camera)
-//{
-//    if (mSelectedObject == nullptr)
-//        return;
-
-//    QMatrix4x4 modelMatrix = getModelMatrix(camera.pos);
-
-//    mArrow->render(modelMatrix, camera);
-//    mAxis->render(modelMatrix, camera);
-//    mSurface->render(modelMatrix, camera);
-
-//    //移动坐标轴时 无需计算坐标系的碰撞
-//    if (!lastMousePos.isNull())
-//        return;
-
-//    //在一个面上移动 无需检测单个坐标轴
-//    float distance;
-//    if (hitBoundingBox(modelMatrix, yozSurface, xozSurface, xoySurface,
-//                       AxisName::AxisY | AxisName::AxisZ,
-//                       AxisName::AxisX | AxisName::AxisZ,
-//                       AxisName::AxisX | AxisName::AxisY, distance))
-//    {
-//        return;
-//    }
-
-//    hitBoundingBox(modelMatrix, xBoundingBox, yBoundingBox, zBoundingBox,
-//                   AxisName::AxisX, AxisName::AxisY, AxisName::AxisZ, distance);
-//}
-
-//void PositionCoordinate::resize(float width, float height)
-//{
-//    mArrow->resize(width, height);
-//    mAxis->resize(width, height);
-//    mSurface->resize(width, height);
-//}
-
-//bool PositionCoordinate::move(Ray ray)
-//{
-//    //坐标隐藏后 不渲染 但鼠标事件会触发
-//    if (mSelectedObject == nullptr)
-//        return false;
-
-//    QVector3D mousePos;
-//    if (mSelectedAxis == AxisName::AxisNULL)
-//    {
-//        return false;
-//    }
-//    else if ((mSelectedAxis == AxisName::AxisY)
-//            || (mSelectedAxis == (AxisName::AxisX | AxisName::AxisY)))
-//    {
-//        mousePos = ray.computeIntersectWithXOYPlane(mPosition.z());
-//    }
-//    else if ((mSelectedAxis == AxisName::AxisX || mSelectedAxis == AxisName::AxisZ)
-//            || (mSelectedAxis == (AxisName::AxisX | AxisName::AxisZ)))
-//    {
-//        mousePos = ray.computeIntersectWithXOZPlane(mPosition.y());
-//    }
-//    else if (mSelectedAxis == (AxisName::AxisY | AxisName::AxisZ))
-//    {
-//        mousePos = ray.computeIntersectWithYOZPlane(mPosition.x());
-//    }
-//    else
-//    {
-//        return false;
-//    }
-
-//    if (lastMousePos.isNull())
-//    {
-//        lastMousePos = mousePos;
-//        return false;
-//    }
-
-//    QVector3D mouseDisplacement = mousePos - lastMousePos;
-//    if (mSelectedAxis & AxisName::AxisX)
-//    {
-//        //鼠标位移在平移轴上的投影的长度
-//        float distance = mouseDisplacement.x();
-//        mPosition = mPosition + QVector3D(distance, 0, 0);
-//    }
-//    if (mSelectedAxis & AxisName::AxisY)
-//    {
-//        float distance = mouseDisplacement.y();
-//        mPosition = mPosition + QVector3D(0, distance, 0);
-//    }
-//    if (mSelectedAxis & AxisName::AxisZ)
-//    {
-//        float distance = mouseDisplacement.z();
-//        mPosition = mPosition + QVector3D(0, 0, distance);
-//    }
-//    mSelectedObject->setPosition(mPosition);
-//    lastMousePos = mousePos;
-//    return true;
-//}
-
-//void PositionCoordinate::setSelectedAxis(AxisFlags axis)
-//{
-//    mArrow->setSelectedAxis(axis);
-//    mAxis->setSelectedAxis(axis);
-//    mSelectedAxis = axis;
-//}
 
 
 ///******************************************************************
@@ -1562,49 +1743,6 @@ bool BBPositionCoordinateSystem::move(BBRay ray)
 //        TransformCoordinate
 //  *********************************************************************/
 
-//TransformCoordinate::TransformCoordinate()
-//{
-//    //默认是位置坐标系
-//    mModeKey = 'W';
-//    mPositionCoordinate = new PositionCoordinate();
-//    mRotationCoordinate = new RotationCoordinate();
-//    mScaleCoordinate = new ScaleCoordinate();
-//    //不赋值为nullptr 值不是nullptr 也不能对指针指定的变量进行访问 会出错
-//    mSelectedObject = nullptr;
-//    mIsTransform = false;
-//}
-
-//void TransformCoordinate::init()
-//{
-//    mPositionCoordinate->init();
-//    mRotationCoordinate->init();
-//    mScaleCoordinate->init();
-//}
-
-//void TransformCoordinate::render(Camera camera)
-//{
-//    //透明处理
-//    glEnable(GL_BLEND);
-//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//    mPositionCoordinate->render(camera);
-//    mRotationCoordinate->render(camera);
-//    mScaleCoordinate->render(camera);
-//    glDisable(GL_BLEND);
-//}
-
-//void TransformCoordinate::resize(float width, float height)
-//{
-//    mPositionCoordinate->resize(width, height);
-//    mRotationCoordinate->resize(width, height);
-//    mScaleCoordinate->resize(width, height);
-//}
-
-//void TransformCoordinate::setRay(Ray ray)
-//{
-//    mPositionCoordinate->setRay(ray);
-//    mRotationCoordinate->setRay(ray);
-//    mScaleCoordinate->setRay(ray);
-//}
 
 //void TransformCoordinate::stopTransform()
 //{
@@ -1615,36 +1753,6 @@ bool BBPositionCoordinateSystem::move(BBRay ray)
 //    mScaleCoordinate->stopScale();
 //    //鼠标释放时 如果是变换操作结束的释放 不需要拾取对象 需要在判断是否拾取对象的代码之后 将他制为false
 //    mIsTransform = false;
-//}
-
-//void TransformCoordinate::setSelectedObject(GameObject *object)
-//{
-//    //选择的操作对象没变 不用做额外操作
-//    if (mSelectedObject == object)
-//    {
-//        return;
-//    }
-//    //操作对象改变了
-//    //清空多选项 包围盒 指示器等隐藏
-//    int count = mSelectedObjects.count();
-//    for (int i = 0; i < count; i++)
-//    {
-//        mSelectedObjects.at(i)->setVisible(false);
-//    }
-//    mSelectedObjects.clear();
-//    //单选
-//    if (mSelectedObject != nullptr)
-//    {
-//        //原来的操作对象包围盒 指示器等隐藏
-//        mSelectedObject->setVisible(false);
-//    }
-//    if (object != nullptr)
-//    {
-//        //现在的操作对象显示包围盒 指示器等
-//        object->setVisible(true);
-//    }
-//    mSelectedObject = object;
-//    setCoordinateMode(mModeKey);
 //}
 
 //void TransformCoordinate::setSelectedObjects(QList<GameObject*> objects, CenterPoint *center)
@@ -1671,55 +1779,6 @@ bool BBPositionCoordinateSystem::move(BBRay ray)
 //    //选中对象们的重心
 //    mSelectedObject = center;
 //    setCoordinateMode(mModeKey);
-//}
-
-//void TransformCoordinate::transform(Ray ray)
-//{
-//    switch (mModeKey)
-//    {
-//    case 'W':
-//        //返回值表示是否真的开始进行变换了 因为没选择对象或者没选中轴等情况 都不会进行变换
-//        mIsTransform = mPositionCoordinate->move(ray);
-//        break;
-//    case 'E':
-//        mIsTransform = mRotationCoordinate->rotate(ray);
-//        break;
-//    case 'R':
-//        mIsTransform = mScaleCoordinate->scale(ray);
-//        break;
-//    default:
-//        break;
-//    }
-//}
-
-//void TransformCoordinate::setCoordinateMode(char key)
-//{
-//    mModeKey = key;
-//    switch (key)
-//    {
-//    case 'W':
-//        mPositionCoordinate->setSelectedObject(mSelectedObject);
-//        mRotationCoordinate->setSelectedObject(nullptr);
-//        mScaleCoordinate->setSelectedObject(nullptr);
-//        break;
-//    case 'E':
-//        mPositionCoordinate->setSelectedObject(nullptr);
-//        mRotationCoordinate->setSelectedObject(mSelectedObject);
-//        mScaleCoordinate->setSelectedObject(nullptr);
-//        break;
-//    case 'R':
-//        mPositionCoordinate->setSelectedObject(nullptr);
-//        mRotationCoordinate->setSelectedObject(nullptr);
-//        mScaleCoordinate->setSelectedObject(mSelectedObject);
-//        break;
-//    default:
-//        break;
-//    }
-//}
-
-//bool TransformCoordinate::getIsTransform()
-//{
-//    return mIsTransform;
 //}
 
 //GameObject *TransformCoordinate::getSelectedObject()

@@ -17,8 +17,12 @@ enum BBAxisName
 // Type of bit operation result
 Q_DECLARE_FLAGS(BBAxisFlags, BBAxisName)
 // override | operator
-Q_DECLARE_INCOMPATIBLE_FLAGS(BBAxisFlags)
+Q_DECLARE_OPERATORS_FOR_FLAGS(BBAxisFlags)
 
+
+class BBBoundingBox;
+class BBRectBoundingBox2D;
+class BBBoundingBox3D;
 
 
 // The base class of each component to be rendered in the coordinate system
@@ -215,24 +219,24 @@ protected:
     BBCoordinateSystem();
     virtual ~BBCoordinateSystem();
 
-//    QMatrix4x4 getModelMatrix(QVector3D cameraPos);
-//    bool hitBoundingBox(QMatrix4x4 matrix, BoundingBox *boundingBox1,
-//                    BoundingBox *boundingBox2, BoundingBox *boundingBox3,
-//                    AxisFlags axisFlags1, AxisFlags axisFlags2, AxisFlags axisFlags3,
-//                    float &distance);
+    QMatrix4x4 getRenderModelMatrix(const QVector3D cameraPos);
+    bool hit(BBRay ray,
+             BBBoundingBox *pBoundingBox1, BBAxisFlags axis1,
+             BBBoundingBox *pBoundingBox2, BBAxisFlags axis2,
+             BBBoundingBox *pBoundingBox3, BBAxisFlags axis3,
+             float &fDistance);
 
-//    BBRay m_Ray;
     BBAxisFlags m_SelectedAxis;
     QVector3D m_LastMousePos;
     BBGameObject *m_pSelectedObject;
 
 public:
-//    inline void setRay(const BBRay ray) { m_Ray = ray; }
     inline BBAxisFlags getSelectedAxis() { return m_SelectedAxis; }
     void setSelectedObject(BBGameObject *pObject);
     void resetLastMousePos();
 
     virtual void setSelectedAxis(BBAxisFlags axis) = 0;
+    virtual bool mouseMoveEvent(BBRay ray) = 0;
 };
 
 
@@ -240,39 +244,45 @@ class BBPositionCoordinateSystem : public BBCoordinateSystem
 {
 public:
     BBPositionCoordinateSystem();
+    virtual ~BBPositionCoordinateSystem();
 
     void init() override;
     void render(BBCamera *pCamera) override;
     void resize(float fWidth, float fHeight) override;
 
     void setSelectedAxis(BBAxisFlags axis) override;
-    bool move(BBRay ray);
+    bool mouseMoveEvent(BBRay ray) override;
 
 private:
-//    Arrow *mArrow;
-//    Axis *mAxis;
-//    RectSurface *mSurface;
-//    BoundingBox3D *xBoundingBox;
-//    BoundingBox3D *yBoundingBox;
-//    BoundingBox3D *zBoundingBox;
-//    RectBoundingBox2D *yozSurface;
-//    RectBoundingBox2D *xozSurface;
-//    RectBoundingBox2D *xoySurface;
+    BBCoordinateArrow *m_pCoordinateArrow;
+    BBCoordinateAxis *m_pCoordinateAxis;
+    BBCoordinateRectFace *m_pCoordinateRectFace;
+
+    BBBoundingBox3D *m_pBoundingBoxX;
+    BBBoundingBox3D *m_pBoundingBoxY;
+    BBBoundingBox3D *m_pBoundingBoxZ;
+    BBRectBoundingBox2D *m_pBoundingBoxYOZ;
+    BBRectBoundingBox2D *m_pBoundingBoxXOZ;
+    BBRectBoundingBox2D *m_pBoundingBoxXOY;
 };
 
-////旋转坐标轴
-//class RotationCoordinate : public Coordinate
-//{
-//public:
-//    RotationCoordinate();
-//    void init() override;
-//    void render(Camera camera) override;
-//    void resize(float width, float height) override;
-//    bool rotate(Ray ray);
-//    void stopRotate();
-//    void setSelectedAxis(AxisFlags axis) override;
 
-//private:
+class BBRotationCoordinateSystem : public BBCoordinateSystem
+{
+public:
+    BBRotationCoordinateSystem();
+    ~BBRotationCoordinateSystem();
+
+    void init() override;
+    void render(BBCamera *pCamera) override;
+    void resize(float fWidth, float fHeight) override;
+
+    void setSelectedAxis(BBAxisFlags axis) override;
+    bool mouseMoveEvent(BBRay ray) override;
+
+//    void stopRotate();
+
+private:
 //    QuarterRound *mQuarterRound;
 //    QuarterRoundBoundingBox2D *yozSurface;
 //    QuarterRoundBoundingBox2D *xozSurface;
@@ -282,21 +292,25 @@ private:
 //    TickLine *mTickLine;
 //    Sector *mSector;
 //    QVector3D mLastVector;
-//};
+};
 
-////缩放坐标轴
-//class ScaleCoordinate : public Coordinate
-//{
-//public:
-//    ScaleCoordinate();
-//    void init() override;
-//    void render(Camera camera) override;
-//    void resize(float width, float height) override;
-//    bool scale(Ray ray);
+
+class BBScaleCoordinateSystem : public BBCoordinateSystem
+{
+public:
+    BBScaleCoordinateSystem();
+    ~BBScaleCoordinateSystem();
+
+    void init() override;
+    void render(BBCamera *pCamera) override;
+    void resize(float fWidth, float fHeight) override;
+
+    void setSelectedAxis(BBAxisFlags axis) override;
+    bool mouseMoveEvent(BBRay ray) override;
+
 //    void stopScale();
-//    void setSelectedAxis(AxisFlags axis) override;
 
-//private:
+private:
 //    Axis *mAxis;
 //    Cube *mCube;
 //    TriangleSurface *surface;
@@ -309,37 +323,49 @@ private:
 //    TriangleBoundingBox2D *xyzSurface;
 //    bool mIsScaling;
 //    QVector3D mSelectedObjectScale;
-//};
+};
 
 
-////管理三大坐标轴的类
-//class TransformCoordinate : public GameObject
-//{
-//public:
-//    TransformCoordinate();
-//    void init() override;
-//    void render(Camera camera) override;
-//    void resize(float width, float height) override;
-//    void setRay(Ray ray);
+// Class that manages the three Coordinate system
+class BBTransformCoordinateSystem : public BBGameObject
+{
+public:
+    BBTransformCoordinateSystem();
+    virtual ~BBTransformCoordinateSystem();
+
+    void init() override;
+    void render(BBCamera *pCamera) override;
+    void resize(float fWidth, float fHeight) override;
+
+    void mouseMoveEvent(const BBRay ray);
+    inline bool isTransforming() { return m_bTransforming; }
+    void setCoordinateSystemMode(const char key);
+    void setSelectedObject(BBGameObject *pObject);
+
 //    void stopTransform();
-//    void setSelectedObject(GameObject *object);
 //    void setSelectedObjects(QList<GameObject*> objects, CenterPoint *center);
-//    void transform(Ray ray);
-//    void setCoordinateMode(char key);
-//    bool getIsTransform();
+
+
 //    GameObject *getSelectedObject();
 //    char getTransformModeKey();
 //    void update();
 
-//private:
-//    PositionCoordinate *mPositionCoordinate;
-//    RotationCoordinate *mRotationCoordinate;
-//    ScaleCoordinate *mScaleCoordinate;
-//    GameObject *mSelectedObject;
+private:
+    BBPositionCoordinateSystem *m_pPositionCoordinateSystem;
+    BBRotationCoordinateSystem *m_pRotationCoordinateSystem;
+    BBScaleCoordinateSystem *m_pScaleCoordinateSystem;
+
+    char m_PositionCoordinateSystemModeKey = 'W';
+    char m_RotationCoordinateSystemModeKey = 'E';
+    char m_ScaleCoordinateSystemModeKey = 'R';
+    char m_ModeKey;
+
+    BBGameObject *m_pSelectedObject;
+    // if not, other mouse events will be processed
+    bool m_bTransforming;
+
 //    QList<GameObject*> mSelectedObjects;
-//    char mModeKey;
-//    bool mIsTransform;
-//};
+};
 
 
 
