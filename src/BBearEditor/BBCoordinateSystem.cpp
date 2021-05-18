@@ -977,84 +977,91 @@ void BBPositionCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
 
 bool BBPositionCoordinateSystem::mouseMoveEvent(BBRay ray)
 {    
-    if (m_pSelectedObject == nullptr)
-        return false;
+    bool bResult = false;
 
-    // handle collision detection, change color of related axis and get m_SelectedAxis
-    // if hitting m_pCoordinateRectFace, no need to handle axis
-    float fDistance;
-    if (!hit(ray,
-             m_pBoundingBoxYOZ, BBAxisName::AxisY | BBAxisName::AxisZ,
-             m_pBoundingBoxXOZ, BBAxisName::AxisX | BBAxisName::AxisZ,
-             m_pBoundingBoxXOY, BBAxisName::AxisX | BBAxisName::AxisY,
-             fDistance))
-    {
-        // handle axis
+    do {
+        BB_END(m_pSelectedObject == nullptr);
+
+        // handle collision detection, change color of related axis and get m_SelectedAxis
+        // if hitting m_pCoordinateRectFace, no need to handle axis
+        float fDistance;
         if (!hit(ray,
-                 m_pBoundingBoxX, BBAxisName::AxisX,
-                 m_pBoundingBoxY, BBAxisName::AxisY,
-                 m_pBoundingBoxZ, BBAxisName::AxisZ,
+                 m_pBoundingBoxYOZ, BBAxisName::AxisY | BBAxisName::AxisZ,
+                 m_pBoundingBoxXOZ, BBAxisName::AxisX | BBAxisName::AxisZ,
+                 m_pBoundingBoxXOY, BBAxisName::AxisX | BBAxisName::AxisY,
                  fDistance))
         {
-            return false;
+            // handle axis
+            BB_END(!hit(ray,
+                        m_pBoundingBoxX, BBAxisName::AxisX,
+                        m_pBoundingBoxY, BBAxisName::AxisY,
+                        m_pBoundingBoxZ, BBAxisName::AxisZ,
+                        fDistance));
         }
+
+        BB_END(m_SelectedAxis == BBAxisName::AxisNULL);
+
+        QVector3D mousePos;
+        if ((m_SelectedAxis == BBAxisName::AxisY)
+         || (m_SelectedAxis == (BBAxisName::AxisX | BBAxisName::AxisY)))
+        {
+            mousePos = ray.computeIntersectWithXOYPlane(m_Position.z());
+        }
+        else if ((m_SelectedAxis == BBAxisName::AxisX
+               || m_SelectedAxis == BBAxisName::AxisZ)
+              || (m_SelectedAxis == (BBAxisName::AxisX | BBAxisName::AxisZ)))
+        {
+            mousePos = ray.computeIntersectWithXOZPlane(m_Position.y());
+        }
+        else if (m_SelectedAxis == (BBAxisName::AxisY | BBAxisName::AxisZ))
+        {
+            mousePos = ray.computeIntersectWithYOZPlane(m_Position.x());
+        }
+        else
+        {
+            BB_END(1);
+        }
+
+        // Just start to move, no need to deal with, and no displacement can be calculated
+        if (m_LastMousePos.isNull())
+        {
+            m_LastMousePos = mousePos;
+            BB_END(1);
+        }
+
+    //    QVector3D mouseDisplacement = mousePos - m_LastMousePos;
+    //    if (m_SelectedAxis & BBAxisName::AxisX)
+    //    {
+    //        // The length of the projection of the mouse's displacement on the axis
+    //        float d = mouseDisplacement.x();
+    //        setPosition(m_Position + QVector3D(d, 0, 0));
+    //    }
+    //    if (m_SelectedAxis & BBAxisName::AxisY)
+    //    {
+    //        float d = mouseDisplacement.y();
+    //        setPosition(m_Position + QVector3D(0, d, 0));
+    //    }
+    //    if (m_SelectedAxis & BBAxisName::AxisZ)
+    //    {
+    //        float d = mouseDisplacement.z();
+    //        setPosition(m_Position + QVector3D(0, 0, d));
+    //    }
+
+    //    m_pSelectedObject->setPosition(m_Position);
+    //    // Update, used to calculate the next displacement
+    //    m_LastMousePos = mousePos;
+
+        bResult = true;
+    } while(0);
+
+    if (!bResult)
+    {
+        // After the mouse is removed from the coordinate system, the color goes back
+        setSelectedAxis(BBAxisName::AxisNULL);
     }
 
-    QVector3D mousePos;
-    if (m_SelectedAxis == BBAxisName::AxisNULL)
-    {
-        return false;
-    }
-    else if ((m_SelectedAxis == BBAxisName::AxisY)
-          || (m_SelectedAxis == (BBAxisName::AxisX | BBAxisName::AxisY)))
-    {
-        mousePos = ray.computeIntersectWithXOYPlane(m_Position.z());
-    }
-    else if ((m_SelectedAxis == BBAxisName::AxisX
-           || m_SelectedAxis == BBAxisName::AxisZ)
-          || (m_SelectedAxis == (BBAxisName::AxisX | BBAxisName::AxisZ)))
-    {
-        mousePos = ray.computeIntersectWithXOZPlane(m_Position.y());
-    }
-    else if (m_SelectedAxis == (BBAxisName::AxisY | BBAxisName::AxisZ))
-    {
-        mousePos = ray.computeIntersectWithYOZPlane(m_Position.x());
-    }
-    else
-    {
-        return false;
-    }
-
-    // Just start to move, no need to deal with, and no displacement can be calculated
-    if (m_LastMousePos.isNull())
-    {
-        m_LastMousePos = mousePos;
-        return false;
-    }
-
-    QVector3D mouseDisplacement = mousePos - m_LastMousePos;
-    if (m_SelectedAxis & BBAxisName::AxisX)
-    {
-        // The length of the projection of the mouse's displacement on the axis
-        float d = mouseDisplacement.x();
-        setPosition(m_Position + QVector3D(d, 0, 0));
-    }
-    if (m_SelectedAxis & BBAxisName::AxisY)
-    {
-        float d = mouseDisplacement.y();
-        setPosition(m_Position + QVector3D(0, d, 0));
-    }
-    if (m_SelectedAxis & BBAxisName::AxisZ)
-    {
-        float d = mouseDisplacement.z();
-        setPosition(m_Position + QVector3D(0, 0, d));
-    }
-
-    m_pSelectedObject->setPosition(m_Position);
-    // Update, used to calculate the next displacement
-    m_LastMousePos = mousePos;
     // The return value indicates whether the transform has really performed
-    return true;
+    return bResult;
 }
 
 void BBPositionCoordinateSystem::setPosition(const QVector3D &position, bool bUpdateLocalTransform)

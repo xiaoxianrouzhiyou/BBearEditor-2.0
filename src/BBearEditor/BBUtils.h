@@ -5,6 +5,7 @@
 #define BB_SAFE_DELETE_ARRAY(p) do{ delete []p; } while(0)
 #define BB_SAFE_DELETE_ARRAY2D(p, n) do{ for (int i = 0; i < n; i++) delete []p[i]; delete []p; } while(0)
 #define BB_PROCESS_ERROR(p) if(!p) break
+#define BB_END(p) if(p) break
 #define BB_SUCCEEDED(hr) (hr>=0)
 
 #define BB_MIMETYPE_BASEOBJECT "BaseObject"

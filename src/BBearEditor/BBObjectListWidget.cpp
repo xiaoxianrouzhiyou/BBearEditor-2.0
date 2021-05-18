@@ -32,7 +32,7 @@ bool BBObjectListWidget::loadListItems(const char *xmlFilePath)
     rapidxml::xml_attribute<> *pAttrFile = NULL;
     rapidxml::xml_attribute<> *pAttrName = NULL;
 
-    do{
+    do {
         pData = BBUtils::loadFileContent(xmlFilePath, nFileSize);
         BB_PROCESS_ERROR(pData);
         // Parsing xml
@@ -41,7 +41,7 @@ bool BBObjectListWidget::loadListItems(const char *xmlFilePath)
         pRoot = doc.first_node();
         BB_PROCESS_ERROR(pRoot);
         pModel = pRoot->first_node();
-        for(; pModel != 0; pModel = pModel->next_sibling())
+        for (; pModel != 0; pModel = pModel->next_sibling())
         {
             pAttrIcon = pModel->first_attribute("icon");
             BB_PROCESS_ERROR(pAttrIcon);
@@ -62,19 +62,19 @@ bool BBObjectListWidget::loadListItems(const char *xmlFilePath)
             pItem->setText(pAttrName->value());
         }
         bResult = true;
-    }while(0);
+    } while(0);
 
-    if(pData)
+    if (pData)
         BB_SAFE_DELETE_ARRAY(pData);
-//    if(pRoot)
+//    if (pRoot)
 //        BB_SAFE_DELETE(pRoot);
-//    if(pModel)
+//    if (pModel)
 //        BB_SAFE_DELETE(pModel);
-//    if(pAttrIcon)
+//    if (pAttrIcon)
 //        BB_SAFE_DELETE(pAttrIcon);
-//    if(pAttrFile)
+//    if (pAttrFile)
 //        BB_SAFE_DELETE(pAttrFile);
-//    if(pAttrName)
+//    if (pAttrName)
 //        BB_SAFE_DELETE(pAttrName);
     return bResult;
 }
