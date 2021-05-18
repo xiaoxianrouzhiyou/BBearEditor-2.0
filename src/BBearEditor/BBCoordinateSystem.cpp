@@ -891,13 +891,13 @@ void BBCoordinateSystem::setSelectedObject(BBGameObject *pObject)
     m_pSelectedObject = pObject;
     if (pObject != nullptr)
     {
-        m_Position = pObject->getPosition();
-        m_Rotation = pObject->getRotation();
+        setPosition(pObject->getPosition());
+        setRotation(pObject->getRotation());
     }
     else
     {
-        m_Position = QVector3D(0, 0, 0);
-        m_Rotation = QVector3D(0, 0, 0);
+        setPosition(QVector3D(0, 0, 0));
+        setRotation(QVector3D(0, 0, 0));
     }
 }
 
@@ -1037,17 +1037,17 @@ bool BBPositionCoordinateSystem::mouseMoveEvent(BBRay ray)
     {
         // The length of the projection of the mouse's displacement on the axis
         float d = mouseDisplacement.x();
-        m_Position = m_Position + QVector3D(d, 0, 0);
+        setPosition(m_Position + QVector3D(d, 0, 0));
     }
     if (m_SelectedAxis & BBAxisName::AxisY)
     {
         float d = mouseDisplacement.y();
-        m_Position = m_Position + QVector3D(0, d, 0);
+        setPosition(m_Position + QVector3D(0, d, 0));
     }
     if (m_SelectedAxis & BBAxisName::AxisZ)
     {
         float d = mouseDisplacement.z();
-        m_Position = m_Position + QVector3D(0, 0, d);
+        setPosition(m_Position + QVector3D(0, 0, d));
     }
 
     m_pSelectedObject->setPosition(m_Position);
@@ -1055,6 +1055,20 @@ bool BBPositionCoordinateSystem::mouseMoveEvent(BBRay ray)
     m_LastMousePos = mousePos;
     // The return value indicates whether the transform has really performed
     return true;
+}
+
+void BBPositionCoordinateSystem::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
+{
+    // Modifying m_Position directly will cause an error
+    // The position of the bounding box needs to be updated at the same time
+    // otherwise, will trigger incorrect mouse events
+    BBCoordinateSystem::setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxX->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxY->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxZ->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxYOZ->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxXOZ->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxXOY->setPosition(position, bUpdateLocalTransform);
 }
 
 

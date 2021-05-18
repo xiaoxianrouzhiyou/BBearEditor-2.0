@@ -34,7 +34,7 @@ BBGameObject::BBGameObject(float px, float py, float pz, float rx, float ry, flo
     m_strIconName = "model";
 }
 
-void BBGameObject::setPosition(QVector3D position, bool bUpdateLocalTransform)
+void BBGameObject::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
 {
     QVector3D displacement = position - m_Position;
     m_Position = position;

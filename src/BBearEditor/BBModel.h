@@ -22,7 +22,7 @@ public:
     void render(BBCamera *pCamera) override;
     void resize(float fWidth, float fHeight) override;
 
-    void setPosition(const QVector3D position, const bool bUpdateLocalTransform = true) override;
+    void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
     void setRotation(const int nAngle, const QVector3D axis, const bool bUpdateLocalTransform = true) override;
     void setRotation(const QVector3D rotation, const bool bUpdateLocalTransform = true) override;
     void setScale(const QVector3D scale, const bool bUpdateLocalTransform = true) override;

@@ -22,7 +22,7 @@ public:
 
     inline QMatrix4x4 getModelMatrix() { return m_ModelMatrix; }
 
-    virtual void setPosition(const QVector3D position, const bool bUpdateLocalTransform = true);
+    virtual void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true);
     inline QVector3D getPosition() { return m_Position; }
     inline QVector3D getLocalPosition() { return m_LocalPosition; }
 

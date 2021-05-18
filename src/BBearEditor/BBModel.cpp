@@ -49,7 +49,7 @@ void BBModel::resize(float fWidth, float fHeight)
     m_pBoundingBox->resize(fWidth, fHeight);
 }
 
-void BBModel::setPosition(const QVector3D position, const bool bUpdateLocalTransform)
+void BBModel::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
 {
     BBGameObject::setPosition(position, bUpdateLocalTransform);
     m_pMesh->setPosition(position, bUpdateLocalTransform);

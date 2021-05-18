@@ -253,6 +253,8 @@ public:
     void setSelectedAxis(BBAxisFlags axis) override;
     bool mouseMoveEvent(BBRay ray) override;
 
+    void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
+
 private:
     BBCoordinateArrow *m_pCoordinateArrow;
     BBCoordinateAxis *m_pCoordinateAxis;
