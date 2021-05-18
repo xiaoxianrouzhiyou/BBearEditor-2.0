@@ -38,8 +38,6 @@ BBCoordinateComponent::BBCoordinateComponent(const float px, const float py, con
                                              const float sx, const float sy, const float sz)
     : BBRenderableObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
-
-
     m_SelectedAxis = BBAxisName::AxisNULL;
 }
 
@@ -815,17 +813,6 @@ BBCoordinateSystem::~BBCoordinateSystem()
     BB_SAFE_DELETE(m_pSelectedObject);
 }
 
-QMatrix4x4 BBCoordinateSystem::getRenderModelMatrix(const QVector3D cameraPos)
-{
-    // The coordinate system cannot be rendered according to its own scale
-    // otherwise, the coordinate system will be very small when the camera is far away from it
-    QMatrix4x4 modelMatrix;
-    modelMatrix.translate(m_Position);
-    float fDistance = (cameraPos - m_Position).length();
-    modelMatrix.scale(fDistance / 6.5f);
-    return modelMatrix;
-}
-
 bool BBCoordinateSystem::hit(BBRay ray,
                              BBBoundingBox *pBoundingBox1, BBAxisFlags axis1,
                              BBBoundingBox *pBoundingBox2, BBAxisFlags axis2,
@@ -949,14 +936,14 @@ void BBPositionCoordinateSystem::init()
 
 void BBPositionCoordinateSystem::render(BBCamera *pCamera)
 {
-    if (m_pSelectedObject == nullptr)
-        return;
+    // The coordinate system will not become smaller as the camera is zoomed out
+    // need to scale according to the distance
+    float fDistance = (pCamera->getPosition() - m_Position).length();
+    setScale(fDistance / 6.5f);
 
-    QMatrix4x4 modelMatrix = getRenderModelMatrix(pCamera->getPosition());
-
-    m_pCoordinateArrow->render(modelMatrix, pCamera);
-    m_pCoordinateAxis->render(modelMatrix, pCamera);
-    m_pCoordinateRectFace->render(modelMatrix, pCamera);
+    m_pCoordinateArrow->render(pCamera);
+    m_pCoordinateAxis->render(pCamera);
+    m_pCoordinateRectFace->render(pCamera);
 }
 
 void BBPositionCoordinateSystem::resize(float fWidth, float fHeight)
@@ -1029,27 +1016,27 @@ bool BBPositionCoordinateSystem::mouseMoveEvent(BBRay ray)
             BB_END(1);
         }
 
-    //    QVector3D mouseDisplacement = mousePos - m_LastMousePos;
-    //    if (m_SelectedAxis & BBAxisName::AxisX)
-    //    {
-    //        // The length of the projection of the mouse's displacement on the axis
-    //        float d = mouseDisplacement.x();
-    //        setPosition(m_Position + QVector3D(d, 0, 0));
-    //    }
-    //    if (m_SelectedAxis & BBAxisName::AxisY)
-    //    {
-    //        float d = mouseDisplacement.y();
-    //        setPosition(m_Position + QVector3D(0, d, 0));
-    //    }
-    //    if (m_SelectedAxis & BBAxisName::AxisZ)
-    //    {
-    //        float d = mouseDisplacement.z();
-    //        setPosition(m_Position + QVector3D(0, 0, d));
-    //    }
+        QVector3D mouseDisplacement = mousePos - m_LastMousePos;
+        if (m_SelectedAxis & BBAxisName::AxisX)
+        {
+            // The length of the projection of the mouse's displacement on the axis
+            float d = mouseDisplacement.x();
+            setPosition(m_Position + QVector3D(d, 0, 0));
+        }
+        if (m_SelectedAxis & BBAxisName::AxisY)
+        {
+            float d = mouseDisplacement.y();
+            setPosition(m_Position + QVector3D(0, d, 0));
+        }
+        if (m_SelectedAxis & BBAxisName::AxisZ)
+        {
+            float d = mouseDisplacement.z();
+            setPosition(m_Position + QVector3D(0, 0, d));
+        }
 
-    //    m_pSelectedObject->setPosition(m_Position);
-    //    // Update, used to calculate the next displacement
-    //    m_LastMousePos = mousePos;
+        m_pSelectedObject->setPosition(m_Position);
+        // Update, used to calculate the next displacement
+        m_LastMousePos = mousePos;
 
         bResult = true;
     } while(0);
@@ -1070,12 +1057,29 @@ void BBPositionCoordinateSystem::setPosition(const QVector3D &position, bool bUp
     // The position of the bounding box needs to be updated at the same time
     // otherwise, will trigger incorrect mouse events
     BBCoordinateSystem::setPosition(position, bUpdateLocalTransform);
+    m_pCoordinateArrow->setPosition(position, bUpdateLocalTransform);
+    m_pCoordinateAxis->setPosition(position, bUpdateLocalTransform);
+    m_pCoordinateRectFace->setPosition(position, bUpdateLocalTransform);
     m_pBoundingBoxX->setPosition(position, bUpdateLocalTransform);
     m_pBoundingBoxY->setPosition(position, bUpdateLocalTransform);
     m_pBoundingBoxZ->setPosition(position, bUpdateLocalTransform);
     m_pBoundingBoxYOZ->setPosition(position, bUpdateLocalTransform);
     m_pBoundingBoxXOZ->setPosition(position, bUpdateLocalTransform);
     m_pBoundingBoxXOY->setPosition(position, bUpdateLocalTransform);
+}
+
+void BBPositionCoordinateSystem::setScale(float scale, bool bUpdateLocalTransform)
+{
+    BBCoordinateSystem::setScale(scale, bUpdateLocalTransform);
+    m_pCoordinateArrow->setScale(scale, bUpdateLocalTransform);
+    m_pCoordinateAxis->setScale(scale, bUpdateLocalTransform);
+    m_pCoordinateRectFace->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxX->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxY->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxZ->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxYOZ->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxXOZ->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxXOY->setScale(scale, bUpdateLocalTransform);
 }
 
 
@@ -1194,6 +1198,9 @@ void BBTransformCoordinateSystem::init()
 
 void BBTransformCoordinateSystem::render(BBCamera *pCamera)
 {
+    if (m_pSelectedObject == NULL)
+        return;
+
     // transparent
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

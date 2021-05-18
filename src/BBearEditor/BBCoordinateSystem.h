@@ -219,7 +219,6 @@ protected:
     BBCoordinateSystem();
     virtual ~BBCoordinateSystem();
 
-    QMatrix4x4 getRenderModelMatrix(const QVector3D cameraPos);
     bool hit(BBRay ray,
              BBBoundingBox *pBoundingBox1, BBAxisFlags axis1,
              BBBoundingBox *pBoundingBox2, BBAxisFlags axis2,
@@ -254,6 +253,7 @@ public:
     bool mouseMoveEvent(BBRay ray) override;
 
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
+    void setScale(float scale, bool bUpdateLocalTransform = true) override;
 
 private:
     BBCoordinateArrow *m_pCoordinateArrow;

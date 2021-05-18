@@ -181,7 +181,12 @@ void BBGameObject::setRotation(QVector3D rotation, bool bUpdateLocalTransform)
 
 }
 
-void BBGameObject::setScale(QVector3D scale, bool bUpdateLocalTransform)
+void BBGameObject::setScale(float scale, bool bUpdateLocalTransform)
+{
+    setScale(QVector3D(scale, scale, scale), bUpdateLocalTransform);
+}
+
+void BBGameObject::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
 {
     // handle itself
     m_Scale = scale;
