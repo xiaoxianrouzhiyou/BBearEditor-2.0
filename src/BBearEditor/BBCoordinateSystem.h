@@ -235,7 +235,7 @@ public:
     void resetLastMousePos();
 
     virtual void setSelectedAxis(BBAxisFlags axis) = 0;
-    virtual bool mouseMoveEvent(BBRay ray) = 0;
+    virtual bool mouseMoveEvent(BBRay &ray, bool bMousePressed) = 0;
 };
 
 
@@ -250,7 +250,7 @@ public:
     void resize(float fWidth, float fHeight) override;
 
     void setSelectedAxis(BBAxisFlags axis) override;
-    bool mouseMoveEvent(BBRay ray) override;
+    bool mouseMoveEvent(BBRay &ray, bool bMousePressed) override;
 
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
     void setScale(float scale, bool bUpdateLocalTransform = true) override;
@@ -280,7 +280,7 @@ public:
     void resize(float fWidth, float fHeight) override;
 
     void setSelectedAxis(BBAxisFlags axis) override;
-    bool mouseMoveEvent(BBRay ray) override;
+    bool mouseMoveEvent(BBRay &ray, bool bMousePressed) override;
 
 //    void stopRotate();
 
@@ -308,7 +308,7 @@ public:
     void resize(float fWidth, float fHeight) override;
 
     void setSelectedAxis(BBAxisFlags axis) override;
-    bool mouseMoveEvent(BBRay ray) override;
+    bool mouseMoveEvent(BBRay &ray, bool bMousePressed) override;
 
 //    void stopScale();
 
@@ -339,8 +339,8 @@ public:
     void render(BBCamera *pCamera) override;
     void resize(float fWidth, float fHeight) override;
 
-    bool mouseMoveEvent(const BBRay ray);
-    void setCoordinateSystemMode(const char key);
+    bool mouseMoveEvent(BBRay &ray, bool bMousePressed);
+    void setCoordinateSystemMode(char key);
     void setSelectedObject(BBGameObject *pObject);
     bool isTransforming() { return m_bTransforming; }
     void stopTransform();

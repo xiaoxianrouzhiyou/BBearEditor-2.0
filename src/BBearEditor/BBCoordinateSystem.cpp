@@ -962,11 +962,14 @@ void BBPositionCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
     m_SelectedAxis = axis;
 }
 
-bool BBPositionCoordinateSystem::mouseMoveEvent(BBRay ray)
+bool BBPositionCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
 {    
     bool bResult = false;
 
     do {
+        // After the mouse is removed from the coordinate system, the color goes back
+        setSelectedAxis(BBAxisName::AxisNULL);
+
         BB_END(m_pSelectedObject == nullptr);
 
         // handle collision detection, change color of related axis and get m_SelectedAxis
@@ -1016,6 +1019,9 @@ bool BBPositionCoordinateSystem::mouseMoveEvent(BBRay ray)
             BB_END(1);
         }
 
+        // do not handle movement when mouse is not pressed
+        BB_END(!bMousePressed);
+
         QVector3D mouseDisplacement = mousePos - m_LastMousePos;
         if (m_SelectedAxis & BBAxisName::AxisX)
         {
@@ -1040,12 +1046,6 @@ bool BBPositionCoordinateSystem::mouseMoveEvent(BBRay ray)
 
         bResult = true;
     } while(0);
-
-    if (!bResult)
-    {
-        // After the mouse is removed from the coordinate system, the color goes back
-        setSelectedAxis(BBAxisName::AxisNULL);
-    }
 
     // The return value indicates whether the transform has really performed
     return bResult;
@@ -1118,7 +1118,7 @@ void BBRotationCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
 
 }
 
-bool BBRotationCoordinateSystem::mouseMoveEvent(BBRay ray)
+bool BBRotationCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
 {
 
 }
@@ -1159,7 +1159,7 @@ void BBScaleCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
 
 }
 
-bool BBScaleCoordinateSystem::mouseMoveEvent(BBRay ray)
+bool BBScaleCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
 {
 
 }
@@ -1217,26 +1217,26 @@ void BBTransformCoordinateSystem::resize(float fWidth, float fHeight)
     m_pScaleCoordinateSystem->resize(fWidth, fHeight);
 }
 
-bool BBTransformCoordinateSystem::mouseMoveEvent(const BBRay ray)
+bool BBTransformCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
 {
     m_bTransforming = false;
     if (m_ModeKey == m_PositionCoordinateSystemModeKey)
     {
-        m_bTransforming = m_pPositionCoordinateSystem->mouseMoveEvent(ray);
+        m_bTransforming = m_pPositionCoordinateSystem->mouseMoveEvent(ray, bMousePressed);
     }
     else if (m_ModeKey == m_RotationCoordinateSystemModeKey)
     {
-        m_bTransforming = m_pRotationCoordinateSystem->mouseMoveEvent(ray);
+        m_bTransforming = m_pRotationCoordinateSystem->mouseMoveEvent(ray, bMousePressed);
     }
     else if (m_ModeKey == m_ScaleCoordinateSystemModeKey)
     {
-        m_bTransforming = m_pScaleCoordinateSystem->mouseMoveEvent(ray);
+        m_bTransforming = m_pScaleCoordinateSystem->mouseMoveEvent(ray, bMousePressed);
     }
     // if false, other mouse events will be processed
     return m_bTransforming;
 }
 
-void BBTransformCoordinateSystem::setCoordinateSystemMode(const char key)
+void BBTransformCoordinateSystem::setCoordinateSystemMode(char key)
 {
     m_ModeKey = key;
 

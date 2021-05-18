@@ -106,7 +106,7 @@ void BBEditViewOpenGLWidget::mouseMoveEvent(QMouseEvent *e)
     else if (e->buttons() & Qt::LeftButton)
     {
         BBRay ray = m_pScene->getCamera()->createRayFromScreen(e->pos().x(), e->pos().y());
-        if (!m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(ray))
+        if (!m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(ray, true))
         {
             // move mouse and do not perform transform of gameobject
             // perform selection operation
@@ -134,7 +134,7 @@ void BBEditViewOpenGLWidget::mouseMoveEvent(QMouseEvent *e)
     {
         // move mouse without press mouse
         BBRay ray = m_pScene->getCamera()->createRayFromScreen(e->pos().x(), e->pos().y());
-        m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(ray);
+        m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(ray, false);
     }
 }
 
