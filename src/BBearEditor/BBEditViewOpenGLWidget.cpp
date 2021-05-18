@@ -179,7 +179,7 @@ void BBEditViewOpenGLWidget::mouseReleaseEvent(QMouseEvent *e)
 
         // When the coordinate system is moved, the mouse leaves the coordinate system
         // If the ray is not updated when released, the selected coordinate axis cannot be restored to its original color
-        m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(ray);
+        m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(ray, false);
 
         // Exit selection mode
         m_pScene->setSelectionRegionVisibility(false);

@@ -278,7 +278,9 @@ bool BBGameObject::hit(BBRay ray, float &fDistance)
     return false;
 }
 
-void BBGameObject::setModelMatrix(float px, float py, float pz, QQuaternion r, float sx, float sy, float sz)
+void BBGameObject::setModelMatrix(float px, float py, float pz,
+                                  const QQuaternion &r,
+                                  float sx, float sy, float sz)
 {
     m_ModelMatrix.setToIdentity();
     m_ModelMatrix.translate(px, py, pz);

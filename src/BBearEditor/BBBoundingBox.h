@@ -26,7 +26,14 @@ public:
     QVector3D getCenter();
 
 protected:
+    void setModelMatrix(float px, float py, float pz,
+                        const QQuaternion &r,
+                        float sx, float sy, float sz) override;
+
     float m_Center[3];
+    int m_nBoxVertexCount;
+    QVector3D *m_pOriginalBoxVertexes;
+    QVector3D *m_pTransformedBoxVertexes;
 };
 
 
@@ -39,14 +46,6 @@ public:
     virtual ~BBRectBoundingBox2D();
 
     bool hit(BBRay ray, float &fDistance) override;
-
-private:
-    void setModelMatrix(const float px, const float py, const float pz,
-                        const QQuaternion r,
-                        const float sx, const float sy, const float sz) override;
-
-    QVector3D m_OriginalBoxVertexes[4];
-    QVector3D m_TransformedBoxVertexes[4];
 };
 
 
@@ -75,14 +74,9 @@ public:
 //                                 QMatrix4x4 matrix);
 
 protected:
-    void setModelMatrix(const float px, const float py, const float pz,
-                        const QQuaternion r,
-                        const float sx, const float sy, const float sz) override;
     void draw() override;
     virtual void computeBoxVertexes(QList<QVector4D> vertexes);
 
-    QVector3D m_OriginalBoxVertexes[8];
-    QVector3D m_TransformedBoxVertexes[8];
     float m_Axis[3][3];
     float m_HalfLength[3];
 };

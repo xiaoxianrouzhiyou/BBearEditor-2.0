@@ -72,9 +72,9 @@ public:
 
 
 protected:
-    virtual void setModelMatrix(const float px, const float py, const float pz,
-                                const QQuaternion r,
-                                const float sx, const float sy, const float sz);
+    virtual void setModelMatrix(float px, float py, float pz,
+                                const QQuaternion &r,
+                                float sx, float sy, float sz);
 
     QVector3D m_Position;
     QVector3D m_LocalPosition;

@@ -23,12 +23,16 @@ BBBoundingBox::BBBoundingBox(const float &px, const float &py, const float &pz,
                              const float &sx, const float &sy, const float &sz)
     : BBRenderableObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
-
+    m_nBoxVertexCount = 0;
+    m_pOriginalBoxVertexes = NULL;
+    m_pTransformedBoxVertexes = NULL;
 }
 
 BBBoundingBox::~BBBoundingBox()
 {
     BB_SAFE_DELETE_ARRAY(m_Center);
+    BB_SAFE_DELETE_ARRAY(m_pOriginalBoxVertexes);
+    BB_SAFE_DELETE_ARRAY(m_pTransformedBoxVertexes);
 }
 
 bool BBBoundingBox::hit(BBRay ray, float &fDistance)
@@ -43,6 +47,18 @@ QVector3D BBBoundingBox::getCenter()
     return QVector3D(m_Center[0], m_Center[1], m_Center[2]);
 }
 
+void BBBoundingBox::setModelMatrix(float px, float py, float pz,
+                                   const QQuaternion &r,
+                                   float sx, float sy, float sz)
+{
+    // When the corresponding model is transformed, invoke
+    BBGameObject::setModelMatrix(px, py, pz, r, sx, sy, sz);
+    for (int i = 0; i < m_nBoxVertexCount; i++)
+    {
+        m_pTransformedBoxVertexes[i] = m_ModelMatrix * m_pOriginalBoxVertexes[i];
+    }
+}
+
 
 //--------------------
 // BBRectBoundingBox2D
@@ -52,29 +68,33 @@ BBRectBoundingBox2D::BBRectBoundingBox2D(const float fCenterX, const float fCent
                                          const float fHalfLengthX, const float fHalfLengthY, const float fHalfLengthZ)
     : BBBoundingBox()
 {
+    m_nBoxVertexCount = 4;
+    m_pOriginalBoxVertexes = new QVector3D[m_nBoxVertexCount];
+    m_pTransformedBoxVertexes = new QVector3D[m_nBoxVertexCount];
+
     m_Center[0] = fCenterX;
     m_Center[1] = fCenterY;
     m_Center[2] = fCenterZ;
     if (fHalfLengthX == 0)
     {
-        m_OriginalBoxVertexes[0] = QVector3D(fCenterX, fCenterY + fHalfLengthY, fCenterZ + fHalfLengthZ);
-        m_OriginalBoxVertexes[1] = QVector3D(fCenterX, fCenterY - fHalfLengthY, fCenterZ + fHalfLengthZ);
-        m_OriginalBoxVertexes[2] = QVector3D(fCenterX, fCenterY - fHalfLengthY, fCenterZ - fHalfLengthZ);
-        m_OriginalBoxVertexes[3] = QVector3D(fCenterX, fCenterY + fHalfLengthY, fCenterZ - fHalfLengthZ);
+        m_pOriginalBoxVertexes[0] = QVector3D(fCenterX, fCenterY + fHalfLengthY, fCenterZ + fHalfLengthZ);
+        m_pOriginalBoxVertexes[1] = QVector3D(fCenterX, fCenterY - fHalfLengthY, fCenterZ + fHalfLengthZ);
+        m_pOriginalBoxVertexes[2] = QVector3D(fCenterX, fCenterY - fHalfLengthY, fCenterZ - fHalfLengthZ);
+        m_pOriginalBoxVertexes[3] = QVector3D(fCenterX, fCenterY + fHalfLengthY, fCenterZ - fHalfLengthZ);
     }
     else if (fHalfLengthY == 0)
     {
-        m_OriginalBoxVertexes[0] = QVector3D(fCenterX + fHalfLengthX, fCenterY, fCenterZ + fHalfLengthZ);
-        m_OriginalBoxVertexes[1] = QVector3D(fCenterX - fHalfLengthX, fCenterY, fCenterZ + fHalfLengthZ);
-        m_OriginalBoxVertexes[2] = QVector3D(fCenterX - fHalfLengthX, fCenterY, fCenterZ - fHalfLengthZ);
-        m_OriginalBoxVertexes[3] = QVector3D(fCenterX + fHalfLengthX, fCenterY, fCenterZ - fHalfLengthZ);
+        m_pOriginalBoxVertexes[0] = QVector3D(fCenterX + fHalfLengthX, fCenterY, fCenterZ + fHalfLengthZ);
+        m_pOriginalBoxVertexes[1] = QVector3D(fCenterX - fHalfLengthX, fCenterY, fCenterZ + fHalfLengthZ);
+        m_pOriginalBoxVertexes[2] = QVector3D(fCenterX - fHalfLengthX, fCenterY, fCenterZ - fHalfLengthZ);
+        m_pOriginalBoxVertexes[3] = QVector3D(fCenterX + fHalfLengthX, fCenterY, fCenterZ - fHalfLengthZ);
     }
     else if (fHalfLengthZ == 0)
     {
-        m_OriginalBoxVertexes[0] = QVector3D(fCenterX + fHalfLengthX, fCenterY + fHalfLengthY, fCenterZ);
-        m_OriginalBoxVertexes[1] = QVector3D(fCenterX - fHalfLengthX, fCenterY + fHalfLengthY, fCenterZ);
-        m_OriginalBoxVertexes[2] = QVector3D(fCenterX - fHalfLengthX, fCenterY - fHalfLengthY, fCenterZ);
-        m_OriginalBoxVertexes[3] = QVector3D(fCenterX + fHalfLengthX, fCenterY - fHalfLengthY, fCenterZ);
+        m_pOriginalBoxVertexes[0] = QVector3D(fCenterX + fHalfLengthX, fCenterY + fHalfLengthY, fCenterZ);
+        m_pOriginalBoxVertexes[1] = QVector3D(fCenterX - fHalfLengthX, fCenterY + fHalfLengthY, fCenterZ);
+        m_pOriginalBoxVertexes[2] = QVector3D(fCenterX - fHalfLengthX, fCenterY - fHalfLengthY, fCenterZ);
+        m_pOriginalBoxVertexes[3] = QVector3D(fCenterX + fHalfLengthX, fCenterY - fHalfLengthY, fCenterZ);
     }
 }
 
@@ -93,27 +113,16 @@ bool BBRectBoundingBox2D::hit(BBRay ray, float &fDistance)
     bool result = false;
     fDistance = FLT_MAX;
 
-    if (ray.computeIntersectWithRectangle(m_TransformedBoxVertexes[0],
-                                          m_TransformedBoxVertexes[1],
-                                          m_TransformedBoxVertexes[2],
-                                          m_TransformedBoxVertexes[3], intersection))
+    if (ray.computeIntersectWithRectangle(m_pTransformedBoxVertexes[0],
+                                          m_pTransformedBoxVertexes[1],
+                                          m_pTransformedBoxVertexes[2],
+                                          m_pTransformedBoxVertexes[3], intersection))
     {
         result = true;
         fDistance = ray.computeIntersectDistance(intersection);
     }
 
     return result;
-}
-
-void BBRectBoundingBox2D::setModelMatrix(const float px, const float py, const float pz,
-                                         const QQuaternion r,
-                                         const float sx, const float sy, const float sz)
-{
-    BBGameObject::setModelMatrix(px, py, pz, r, sx, sy, sz);
-    for (int i = 0; i < 4; i++)
-    {
-        m_TransformedBoxVertexes[i] = m_ModelMatrix * m_OriginalBoxVertexes[i];
-    }
 }
 
 
@@ -133,6 +142,10 @@ BBBoundingBox3D::BBBoundingBox3D(const float &px, const float &py, const float &
                                  QList<QVector4D> vertexes)
     : BBBoundingBox(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
+    m_nBoxVertexCount = 8;
+    m_pOriginalBoxVertexes = new QVector3D[m_nBoxVertexCount];
+    m_pTransformedBoxVertexes = new QVector3D[m_nBoxVertexCount];
+
     m_DefaultColor = QVector3D(0.909804f, 0.337255f, 0.333333f);
     m_Center[0] = 0;
     m_Center[1] = 0;
@@ -160,6 +173,10 @@ BBBoundingBox3D::BBBoundingBox3D(const float &px, const float &py, const float &
                                  const float fHalfLengthX, const float fHalfLengthY, const float fHalfLengthZ)
     : BBBoundingBox(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
+    m_nBoxVertexCount = 8;
+    m_pOriginalBoxVertexes = new QVector3D[m_nBoxVertexCount];
+    m_pTransformedBoxVertexes = new QVector3D[m_nBoxVertexCount];
+
     m_DefaultColor = QVector3D(0.909804f, 0.337255f, 0.333333f);
     m_Center[0] = fCenterX;
     m_Center[1] = fCenterY;
@@ -183,8 +200,6 @@ BBBoundingBox3D::BBBoundingBox3D(const float &px, const float &py, const float &
 
 BBBoundingBox3D::~BBBoundingBox3D()
 {
-    BB_SAFE_DELETE_ARRAY(m_OriginalBoxVertexes);
-    BB_SAFE_DELETE_ARRAY(m_TransformedBoxVertexes);
     BB_SAFE_DELETE_ARRAY2D(m_Axis, 3);
     BB_SAFE_DELETE_ARRAY(m_HalfLength);
 }
@@ -194,7 +209,9 @@ void BBBoundingBox3D::init()
     m_pVertexBuffer = new BBGLVertexBuffer(8);
     for (int i = 0; i < 8; i++)
     {
-        m_pVertexBuffer->setPosition(i, m_OriginalBoxVertexes[i].x(), m_OriginalBoxVertexes[i].y(), m_OriginalBoxVertexes[i].z());
+        m_pVertexBuffer->setPosition(i, m_pOriginalBoxVertexes[i].x(),
+                                        m_pOriginalBoxVertexes[i].y(),
+                                        m_pOriginalBoxVertexes[i].z());
         m_pVertexBuffer->setColor(i, m_DefaultColor);
     }
 
@@ -227,10 +244,10 @@ bool BBBoundingBox3D::hit(BBRay ray, float &fDistance)
                                      0, 1, 5, 4, 3, 2, 6, 7};
     for (int i = 0; i < 24; i += 4)
     {
-        if (ray.computeIntersectWithRectangle(m_TransformedBoxVertexes[indexes[i]],
-                                              m_TransformedBoxVertexes[indexes[i + 1]],
-                                              m_TransformedBoxVertexes[indexes[i + 2]],
-                                              m_TransformedBoxVertexes[indexes[i + 3]], intersection))
+        if (ray.computeIntersectWithRectangle(m_pTransformedBoxVertexes[indexes[i]],
+                                              m_pTransformedBoxVertexes[indexes[i + 1]],
+                                              m_pTransformedBoxVertexes[indexes[i + 2]],
+                                              m_pTransformedBoxVertexes[indexes[i + 3]], intersection))
         {
             float temp = ray.computeIntersectDistance(intersection);
             if (temp < fDistance)
@@ -239,18 +256,6 @@ bool BBBoundingBox3D::hit(BBRay ray, float &fDistance)
         }
     }
     return result;
-}
-
-void BBBoundingBox3D::setModelMatrix(const float px, const float py, const float pz,
-                                     const QQuaternion r,
-                                     const float sx, const float sy, const float sz)
-{
-    // When the corresponding model is transformed, invoke
-    BBGameObject::setModelMatrix(px, py, pz, r, sx, sy, sz);
-    for (int i = 0; i < 8; i++)
-    {
-        m_TransformedBoxVertexes[i] = m_ModelMatrix * m_OriginalBoxVertexes[i];
-    }
 }
 
 void BBBoundingBox3D::draw()
@@ -282,8 +287,8 @@ void BBBoundingBox3D::computeBoxVertexes(QList<QVector4D> vertexes)
                 temp[index].v[i] += m_Axis[j][i] * m_HalfLength[j] * sign[index][j];
             }
         }
-        m_OriginalBoxVertexes[index] = QVector3D(temp[index].v[0], temp[index].v[1], temp[index].v[2]);
-        m_TransformedBoxVertexes[index] = m_ModelMatrix * m_OriginalBoxVertexes[index];
+        m_pOriginalBoxVertexes[index] = QVector3D(temp[index].v[0], temp[index].v[1], temp[index].v[2]);
+        m_pTransformedBoxVertexes[index] = m_ModelMatrix * m_pOriginalBoxVertexes[index];
     }
 }
 
