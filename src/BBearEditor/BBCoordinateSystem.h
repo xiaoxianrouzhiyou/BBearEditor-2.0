@@ -228,11 +228,12 @@ protected:
     BBAxisFlags m_SelectedAxis;
     QVector3D m_LastMousePos;
     BBGameObject *m_pSelectedObject;
+    bool m_bTransforming;
 
 public:
     inline BBAxisFlags getSelectedAxis() { return m_SelectedAxis; }
     void setSelectedObject(BBGameObject *pObject);
-    void resetLastMousePos();
+    void stopTransform();
 
     virtual void setSelectedAxis(BBAxisFlags axis) = 0;
     virtual bool mouseMoveEvent(BBRay &ray, bool bMousePressed) = 0;

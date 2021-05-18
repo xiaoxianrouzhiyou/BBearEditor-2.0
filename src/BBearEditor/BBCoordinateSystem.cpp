@@ -806,6 +806,7 @@ BBCoordinateSystem::BBCoordinateSystem()
     : BBGameObject()
 {
     m_pSelectedObject = NULL;
+    m_bTransforming = false;
 }
 
 BBCoordinateSystem::~BBCoordinateSystem()
@@ -827,6 +828,7 @@ bool BBCoordinateSystem::hit(BBRay ray,
     bool bResult3 = pBoundingBox3->hit(ray, d3);
     if (!bResult1 && !bResult2 && !bResult3)
     {
+        setSelectedAxis(BBAxisName::AxisNULL);
         return false;
     }
 
@@ -888,11 +890,12 @@ void BBCoordinateSystem::setSelectedObject(BBGameObject *pObject)
     }
 }
 
-void BBCoordinateSystem::resetLastMousePos()
+void BBCoordinateSystem::stopTransform()
 {
-    // When no movement
+    // When no movement, reset mouse pos
     QVector3D pos;
     m_LastMousePos = pos;
+    m_bTransforming = false;
 }
 
 
@@ -963,14 +966,13 @@ void BBPositionCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
 }
 
 bool BBPositionCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
-{    
-    bool bResult = false;
-
+{
     do {
-        // After the mouse is removed from the coordinate system, the color goes back
-        setSelectedAxis(BBAxisName::AxisNULL);
+        // if transforming, there is no need to perform other operations
+        BB_END(m_bTransforming);
+        // otherwise, determine whether transform can be turned on
 
-        BB_END(m_pSelectedObject == nullptr);
+        BB_END(m_pSelectedObject == NULL);
 
         // handle collision detection, change color of related axis and get m_SelectedAxis
         // if hitting m_pCoordinateRectFace, no need to handle axis
@@ -989,8 +991,17 @@ bool BBPositionCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
                         fDistance));
         }
 
-        BB_END(m_SelectedAxis == BBAxisName::AxisNULL);
+        // do not handle transform when mouse is not pressed
+        BB_END(!bMousePressed);
 
+        // meet the conditions, turn on m_bTransforming
+        m_bTransforming = true;
+    } while(0);
+
+    if (m_bTransforming)
+    {
+        // perform transform operation
+        // compute now mouse pos
         QVector3D mousePos;
         if ((m_SelectedAxis == BBAxisName::AxisY)
          || (m_SelectedAxis == (BBAxisName::AxisX | BBAxisName::AxisY)))
@@ -1007,48 +1018,36 @@ bool BBPositionCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
         {
             mousePos = ray.computeIntersectWithYOZPlane(m_Position.x());
         }
-        else
+
+        // displacement can be computed
+        if (!m_LastMousePos.isNull())
         {
-            BB_END(1);
+            QVector3D mouseDisplacement = mousePos - m_LastMousePos;
+            if (m_SelectedAxis & BBAxisName::AxisX)
+            {
+                // The length of the projection of the mouse's displacement on the axis
+                float d = mouseDisplacement.x();
+                setPosition(m_Position + QVector3D(d, 0, 0));
+            }
+            if (m_SelectedAxis & BBAxisName::AxisY)
+            {
+                float d = mouseDisplacement.y();
+                setPosition(m_Position + QVector3D(0, d, 0));
+            }
+            if (m_SelectedAxis & BBAxisName::AxisZ)
+            {
+                float d = mouseDisplacement.z();
+                setPosition(m_Position + QVector3D(0, 0, d));
+            }
+            m_pSelectedObject->setPosition(m_Position);
         }
 
-        // Just start to move, no need to deal with, and no displacement can be calculated
-        if (m_LastMousePos.isNull())
-        {
-            m_LastMousePos = mousePos;
-            BB_END(1);
-        }
-
-        // do not handle movement when mouse is not pressed
-        BB_END(!bMousePressed);
-
-        QVector3D mouseDisplacement = mousePos - m_LastMousePos;
-        if (m_SelectedAxis & BBAxisName::AxisX)
-        {
-            // The length of the projection of the mouse's displacement on the axis
-            float d = mouseDisplacement.x();
-            setPosition(m_Position + QVector3D(d, 0, 0));
-        }
-        if (m_SelectedAxis & BBAxisName::AxisY)
-        {
-            float d = mouseDisplacement.y();
-            setPosition(m_Position + QVector3D(0, d, 0));
-        }
-        if (m_SelectedAxis & BBAxisName::AxisZ)
-        {
-            float d = mouseDisplacement.z();
-            setPosition(m_Position + QVector3D(0, 0, d));
-        }
-
-        m_pSelectedObject->setPosition(m_Position);
-        // Update, used to calculate the next displacement
+        // record and wait the next frame
         m_LastMousePos = mousePos;
-
-        bResult = true;
-    } while(0);
+    }
 
     // The return value indicates whether the transform has really performed
-    return bResult;
+    return m_bTransforming;
 }
 
 void BBPositionCoordinateSystem::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
@@ -1294,7 +1293,7 @@ void BBTransformCoordinateSystem::setSelectedObject(BBGameObject *pObject)
 
 void BBTransformCoordinateSystem::stopTransform()
 {
-    m_pPositionCoordinateSystem->resetLastMousePos();
+    m_pPositionCoordinateSystem->stopTransform();
 //    mRotationCoordinate->resetLastMousePos();
 //    mRotationCoordinate->stopRotate();
 //    mScaleCoordinate->resetLastMousePos();
