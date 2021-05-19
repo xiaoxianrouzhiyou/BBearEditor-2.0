@@ -665,6 +665,26 @@ void BBCoordinateCube::init()
                     m_nIndexCount);
 }
 
+void BBCoordinateCube::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
+{
+    Q_UNUSED(bUpdateLocalTransform);
+    for (int i = 0; i < 8; i++)
+    {
+        m_pVertexBuffer->setPosition(i,
+                  1.0f * scale.x() + m_Sign[i].x() * m_fHalfLength,
+                                     m_Sign[i].y() * m_fHalfLength,
+                                     m_Sign[i].z() * m_fHalfLength);
+        m_pVertexBuffer->setPosition(i + 8,
+                                     m_Sign[i].x() * m_fHalfLength,
+                  1.0f * scale.y() + m_Sign[i].y() * m_fHalfLength,
+                                     m_Sign[i].z() * m_fHalfLength);
+        m_pVertexBuffer->setPosition(i + 16,
+                                     m_Sign[i].x() * m_fHalfLength,
+                                     m_Sign[i].y() * m_fHalfLength,
+                  1.0f * scale.z() + m_Sign[i].z() * m_fHalfLength);
+    }
+}
+
 void BBCoordinateCube::draw()
 {
     glEnable(GL_DEPTH_TEST);
@@ -1201,8 +1221,23 @@ void BBScaleCoordinateSystem::setPosition(const QVector3D &position, bool bUpdat
 void BBScaleCoordinateSystem::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
 {
     BBCoordinateSystem::setScale(scale, bUpdateLocalTransform);
-    m_pCoordinateCube->setScale(scale, bUpdateLocalTransform);
-    m_pCoordinateAxis->setScale(scale, bUpdateLocalTransform);
+
+    // when transforming, cube and axis will change as scale operation
+    if (m_bTransforming)
+    {
+        QVector3D delta = m_pSelectedObject->getScale() - m_SelectedObjectOriginalScale;
+        // the normalized scale is not 0 but 1
+        delta += QVector3D(1, 1, 1);
+        m_pCoordinateCube->setScale(scale * delta, bUpdateLocalTransform);
+        m_pCoordinateAxis->setScale(scale * delta, bUpdateLocalTransform);
+    }
+    else
+    {
+        // after stopTransform, go back
+        m_pCoordinateCube->setScale(scale, bUpdateLocalTransform);
+        m_pCoordinateAxis->setScale(scale, bUpdateLocalTransform);
+    }
+
     m_pCoordinateTriangleFace->setScale(scale, bUpdateLocalTransform);
     m_pBoundingBoxX->setScale(scale, bUpdateLocalTransform);
     m_pBoundingBoxY->setScale(scale, bUpdateLocalTransform);
@@ -1304,7 +1339,12 @@ void BBScaleCoordinateSystem::transform(BBRay &ray)
         }
 
         // whether displacement can be computed
-        if (!m_LastMousePos.isNull())
+        if (m_LastMousePos.isNull())
+        {
+            // init for the scale of cube and axis
+            m_SelectedObjectOriginalScale = m_pSelectedObject->getScale();
+        }
+        else
         {
             QVector3D mouseDisplacement = mousePos - m_LastMousePos;
             QVector3D scale = m_pSelectedObject->getScale();
@@ -1312,7 +1352,7 @@ void BBScaleCoordinateSystem::transform(BBRay &ray)
             if (m_SelectedAxis == (BBAxisName::AxisX | BBAxisName::AxisY | BBAxisName::AxisZ))
             {
                 dir = QVector3D(1, -1, 1).normalized();
-                scale = scale + QVector3D::dotProduct(rotMatrix * dir, mouseDisplacement) * QVector3D(1, 1, 1);
+                scale += QVector3D::dotProduct(rotMatrix * dir, mouseDisplacement) * QVector3D(1, 1, 1);
             }
             else
             {
@@ -1341,9 +1381,8 @@ void BBScaleCoordinateSystem::transform(BBRay &ray)
                 {
                     dir = QVector3D(1, 1, 0).normalized();
                 }
-                scale = scale + QVector3D::dotProduct(rotMatrix * dir, mouseDisplacement) * dir;
+                scale += QVector3D::dotProduct(rotMatrix * dir, mouseDisplacement) * dir;
             }
-            setScale(scale);
             m_pSelectedObject->setScale(scale);
         }
 

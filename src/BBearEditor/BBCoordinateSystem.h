@@ -187,6 +187,7 @@ public:
                      const float sx, const float sy, const float sz);
 
     void init() override;
+    void setScale(const QVector3D &scale, bool bUpdateLocalTransform = true) override;
 
 private:
     void draw() override;
@@ -336,6 +337,8 @@ private:
     BBRectBoundingBox2D *m_pBoundingBoxXOZ;
     BBRectBoundingBox2D *m_pBoundingBoxXOY;
     BBTriangleBoundingBox2D *m_pBoundingBoxXYZ;
+
+    QVector3D m_SelectedObjectOriginalScale;
 };
 
 
