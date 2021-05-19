@@ -596,6 +596,30 @@ void BBCoordinateTickMark::draw()
 //  BBCoordinateSector
 //------------------------------
 
+BBCoordinateSector::BBCoordinateSector()
+    : BBCoordinateSector(0, 0, 0, 0, 0, 0, 1, 1, 1)
+{
+
+}
+
+BBCoordinateSector::BBCoordinateSector(float px, float py, float pz,
+                                       float rx, float ry, float rz,
+                                       float sx, float sy, float sz)
+    : BBCoordinateComponent(px, py, pz, rx, ry, rz, sx, sy, sz)
+{
+
+}
+
+void BBCoordinateSector::init()
+{
+
+}
+
+void BBCoordinateSector::draw()
+{
+
+}
+
 
 //------------------------------
 //  BBCoordinateCube
@@ -1104,42 +1128,128 @@ void BBPositionCoordinateSystem::transform(BBRay &ray)
 BBRotationCoordinateSystem::BBRotationCoordinateSystem()
     : BBCoordinateSystem()
 {
-
+    m_pCoordinateQuarterCircle = new BBCoordinateQuarterCircle();
+    m_pBoundingBoxYOZ = new BBQuarterCircleBoundingBox2D(0, 0, 0, 1, BBPlaneName::YOZ);
+    m_pBoundingBoxXOZ = new BBQuarterCircleBoundingBox2D(0, 0, 0, 1, BBPlaneName::XOZ);
+    m_pBoundingBoxXOY = new BBQuarterCircleBoundingBox2D(0, 0, 0, 1, BBPlaneName::XOY);
+    m_pCoordinateCircle = new BBCoordinateCircle();
+    m_pCoordinateTickMark = new BBCoordinateTickMark();
+    m_pCoordinateSector = new BBCoordinateSector();
 }
 
 BBRotationCoordinateSystem::~BBRotationCoordinateSystem()
 {
-
+    BB_SAFE_DELETE(m_pCoordinateQuarterCircle);
+    BB_SAFE_DELETE(m_pBoundingBoxYOZ);
+    BB_SAFE_DELETE(m_pBoundingBoxXOZ);
+    BB_SAFE_DELETE(m_pBoundingBoxXOY);
+    BB_SAFE_DELETE(m_pCoordinateCircle);
+    BB_SAFE_DELETE(m_pCoordinateTickMark);
+    BB_SAFE_DELETE(m_pCoordinateSector);
 }
 
 void BBRotationCoordinateSystem::init()
 {
-
+    m_pCoordinateQuarterCircle->init();
+    m_pCoordinateCircle->init();
+    m_pCoordinateTickMark->init();
+    m_pCoordinateSector->init();
 }
 
 void BBRotationCoordinateSystem::render(BBCamera *pCamera)
 {
+    if (m_pSelectedObject == NULL)
+        return;
 
+    BBCoordinateSystem::render(pCamera);
+
+    // When transforming, render circle. otherwise, render coordinate axis
+    if (m_bTransforming)
+    {
+
+    }
+    else
+    {
+        // coordinate axis always faces camera
+        QVector3D dir = pCamera->getPosition() - m_Position;
+        int signX = dir.x() >= 0 ? 1 : -1;
+        int signY = dir.y() >= 0 ? 1 : -1;
+        int signZ = dir.z() >= 0 ? 1 : -1;
+
+        m_pCoordinateQuarterCircle->render(pCamera);
+    }
+
+
+
+
+//    if (!isRotating)
+//    {
+    //        //圆的四分之一碰撞区域也要镜像变换
+    //        yozSurface->setSign(xSign, ySign, zSign);
+    //        xozSurface->setSign(xSign, ySign, zSign);
+    //        xoySurface->setSign(xSign, ySign, zSign);
+//    //碰撞yoz面 表示绕x轴旋转
+//    float distance;
+//    hitBoundingBox(modelMatrix, yozSurface, xozSurface, xoySurface,
+//                   AxisName::AxisX, AxisName::AxisY, AxisName::AxisZ, distance);
+//    }
+//    else
+//    {
+//        //旋转时的渲染
+//        //根据位置指向摄像机的向量 求圆盘位于左边还是右边 用于判断显示哪一半边的扇形
+//        if (mSelectedAxis == AxisName::AxisY)
+//        {
+//            //旋转圆是以yoz面为标准写的 需要旋转
+//            modelMatrix.rotate(-90, 0, 1, 0);
+//            modelMatrix.rotate(90, 0, 0, 1);
+//        }
+//        else if(mSelectedAxis == AxisName::AxisZ)
+//        {
+//            modelMatrix.rotate(-90, 0, 1, 0);
+//        }
+//        mRound->render(modelMatrix, camera);
+//        mTickLine->render(modelMatrix, camera);
+//        mSector->render(modelMatrix, camera);
+//    }
 }
 
 void BBRotationCoordinateSystem::resize(float fWidth, float fHeight)
 {
-
+    m_pCoordinateQuarterCircle->resize(fWidth, fHeight);
+    m_pCoordinateCircle->resize(fWidth, fHeight);
+    m_pCoordinateTickMark->resize(fWidth, fHeight);
+    m_pCoordinateSector->resize(fWidth, fHeight);
 }
 
 void BBRotationCoordinateSystem::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
 {
-
+    BBCoordinateSystem::setPosition(position, bUpdateLocalTransform);
+    m_pCoordinateQuarterCircle->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxYOZ->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxXOZ->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxXOY->setPosition(position, bUpdateLocalTransform);
+    m_pCoordinateCircle->setPosition(position, bUpdateLocalTransform);
+    m_pCoordinateTickMark->setPosition(position, bUpdateLocalTransform);
+    m_pCoordinateSector->setPosition(position, bUpdateLocalTransform);
 }
 
 void BBRotationCoordinateSystem::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
 {
-
+    BBCoordinateSystem::setScale(scale, bUpdateLocalTransform);
+    m_pCoordinateQuarterCircle->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxYOZ->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxXOZ->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxXOY->setScale(scale, bUpdateLocalTransform);
+    m_pCoordinateCircle->setScale(scale, bUpdateLocalTransform);
+    m_pCoordinateTickMark->setScale(scale, bUpdateLocalTransform);
+    m_pCoordinateSector->setScale(scale, bUpdateLocalTransform);
 }
 
 void BBRotationCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
 {
+    m_pCoordinateQuarterCircle->setSelectedAxis(axis);
 
+    m_SelectedAxis = axis;
 }
 
 bool BBRotationCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
@@ -1544,18 +1654,6 @@ void BBTransformCoordinateSystem::stopTransform()
 //        Sector
 //  *********************************************************************/
 
-//Sector::Sector()
-//    : RenderableCoordinate()
-//{
-
-//}
-
-//Sector::Sector(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz)
-//    : RenderableCoordinate(px, py, pz, rx, ry, rz, sx, sy, sz)
-//{
-
-//}
-
 //void Sector::init()
 //{
 //    mVertexBuffer = new VertexBuffer();
@@ -1682,89 +1780,6 @@ void BBTransformCoordinateSystem::stopTransform()
 //        RotationCoordinate
 //  *********************************************************************/
 
-//RotationCoordinate::RotationCoordinate()
-//    : Coordinate()
-//{
-//    mQuarterRound = new QuarterRound();
-//    yozSurface = new QuarterRoundBoundingBox2D(0, 0, 0, 1, PlaneName::YOZ);
-//    xozSurface = new QuarterRoundBoundingBox2D(0, 0, 0, 1, PlaneName::XOZ);
-//    xoySurface = new QuarterRoundBoundingBox2D(0, 0, 0, 1, PlaneName::XOY);
-//    isRotating = false;
-//    mRound = new Round();
-//    mTickLine = new TickLine();
-//    mSector = new Sector();
-//}
-
-//void RotationCoordinate::init()
-//{
-//    mQuarterRound->init();
-//    mRound->init();
-//    mTickLine->init();
-//    mSector->init();
-//}
-
-//void RotationCoordinate::render(Camera camera)
-//{
-//    //没有选中模型时
-//    if (mSelectedObject == nullptr)
-//        return;
-
-//    QMatrix4x4 modelMatrix = getModelMatrix(camera.pos);
-
-//    //正在旋转的时候渲染圆面 不渲染坐标轴 也不进行坐标轴的碰撞检测
-//    //旋转坐标轴始终正对着视线
-//    QVector3D temp = camera.pos - mPosition;
-//    int xSign = temp.x() >= 0 ? 1 : -1;
-//    int ySign = temp.y() >= 0 ? 1 : -1;
-//    int zSign = temp.z() >= 0 ? 1 : -1;
-//    if (!isRotating)
-//    {
-//        modelMatrix.scale(xSign, ySign, zSign);
-//        //圆的四分之一碰撞区域也要镜像变换
-//        yozSurface->setSign(xSign, ySign, zSign);
-//        xozSurface->setSign(xSign, ySign, zSign);
-//        xoySurface->setSign(xSign, ySign, zSign);
-
-//        mQuarterRound->render(modelMatrix, camera);
-
-//        //碰撞yoz面 表示绕x轴旋转
-//        float distance;
-//        hitBoundingBox(modelMatrix, yozSurface, xozSurface, xoySurface,
-//                       AxisName::AxisX, AxisName::AxisY, AxisName::AxisZ, distance);
-//    }
-//    else
-//    {
-//        //旋转时的渲染
-//        //根据位置指向摄像机的向量 求圆盘位于左边还是右边 用于判断显示哪一半边的扇形
-//        if (mSelectedAxis == AxisName::AxisY)
-//        {
-//            //旋转圆是以yoz面为标准写的 需要旋转
-//            modelMatrix.rotate(-90, 0, 1, 0);
-//            modelMatrix.rotate(90, 0, 0, 1);
-//        }
-//        else if(mSelectedAxis == AxisName::AxisZ)
-//        {
-//            modelMatrix.rotate(-90, 0, 1, 0);
-//        }
-//        mRound->render(modelMatrix, camera);
-//        mTickLine->render(modelMatrix, camera);
-//        mSector->render(modelMatrix, camera);
-//    }
-//}
-
-//void RotationCoordinate::resize(float width, float height)
-//{
-//    mQuarterRound->resize(width, height);
-//    mRound->resize(width, height);
-//    mTickLine->resize(width, height);
-//    mSector->resize(width, height);
-//}
-
-//void RotationCoordinate::setSelectedAxis(AxisFlags axis)
-//{
-//    mQuarterRound->setSelectedAxis(axis);
-//    mSelectedAxis = axis;
-//}
 
 //bool RotationCoordinate::rotate(Ray ray)
 //{
@@ -1823,24 +1838,6 @@ void BBTransformCoordinateSystem::stopTransform()
 
 //    //记录开始旋转时的鼠标位置 不用每次更新！ lastMousePos = mousePos;
 //    return true;
-//}
-
-//void RotationCoordinate::stopRotate()
-//{
-//    //鼠标释放的时候调用
-//    isRotating = false;
-//}
-
-///******************************************************************
-//        ScaleCoordinate
-//  *********************************************************************/
-
-
-
-//void ScaleCoordinate::stopScale()
-//{
-//    mIsScaling = false;
-//    mScale = QVector3D(1, 1, 1);
 //}
 
 ///******************************************************************

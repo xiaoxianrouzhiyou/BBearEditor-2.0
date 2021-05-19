@@ -23,6 +23,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(BBAxisFlags)
 class BBBoundingBox;
 class BBRectBoundingBox2D;
 class BBTriangleBoundingBox2D;
+class BBQuarterCircleBoundingBox2D;
 class BBBoundingBox3D;
 
 
@@ -151,30 +152,28 @@ private:
 };
 
 
-//// Sector of rotation angle
-//class BBCoordinateSector : public BBCoordinateComponent
-//{
-//public:
-//    BBCoordinateSector();
-//    BBCoordinateSector(const float px, const float py, const float pz,
-//                       const float rx, const float ry, const float rz,
-//                       const float sx, const float sy, const float sz);
+// Sector of rotation angle
+class BBCoordinateSector : public BBCoordinateComponent
+{
+public:
+    BBCoordinateSector();
+    BBCoordinateSector(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz);
 
-//    void init() override;
-//    void render(QMatrix4x4 modelMatrix, BBCamera *pCamera) override;
+    void init() override;
+
 //    void reset(QVector3D position);
 //    int setRotateAngle(int nowAngle, float nowCosRadius);
 
-//private:
-//    void draw() override;
-//    unsigned short *mIndexes;
-//    int mIndexCount;
+private:
+    void draw() override;
+
+
 //    //旋转角度
 //    int mAngle;
 //    float mLastCosRadius;
 //    bool mIsUpper180;
 //    bool mIsLowerMinus180;
-//};
+};
 
 
 // Cube of Scale Coordinate system
@@ -295,14 +294,15 @@ public:
 private:
     void transform(BBRay &ray) override;
 
-//    BBCoordinateQuarterCircle *m_pBBCoordinateQuarterCircle;
-//    QuarterRoundBoundingBox2D *yozSurface;
-//    QuarterRoundBoundingBox2D *xozSurface;
-//    QuarterRoundBoundingBox2D *xoySurface;
+    BBCoordinateQuarterCircle *m_pCoordinateQuarterCircle;
+    BBQuarterCircleBoundingBox2D *m_pBoundingBoxYOZ;
+    BBQuarterCircleBoundingBox2D *m_pBoundingBoxXOZ;
+    BBQuarterCircleBoundingBox2D *m_pBoundingBoxXOY;
+    // when transforming, appear
+    BBCoordinateCircle *m_pCoordinateCircle;
+    BBCoordinateTickMark *m_pCoordinateTickMark;
+    BBCoordinateSector *m_pCoordinateSector;
 
-//    Round *mRound;
-//    TickLine *mTickLine;
-//    Sector *mSector;
 //    QVector3D mLastVector;
 };
 
