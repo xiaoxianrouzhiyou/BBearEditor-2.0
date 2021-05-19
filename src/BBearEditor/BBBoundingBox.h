@@ -59,6 +59,21 @@ public:
 };
 
 
+// Parallel to the coordinate plane
+class BBQuarterCircleBoundingBox2D : public BBBoundingBox
+{
+public:
+    BBQuarterCircleBoundingBox2D(float fCenterX, float fCenterY, float fCenterZ,
+                                 float fRadius, const BBPlaneName &ePlaneName);
+
+    bool hit(BBRay ray, float &fDistance) override;
+
+private:
+    BBPlaneName m_eSelectedPlaneName;
+    QVector3D m_QuadrantFlag;
+};
+
+
 class BBBoundingBox3D : public BBBoundingBox
 {
 public:
@@ -114,26 +129,7 @@ private:
 
 
 
-////平行于坐标面
-//class QuarterRoundBoundingBox2D : public BoundingBox
-//{
-//private:
-//    QVector3D mOriginCenter;
-//    //圆上的一个点
-//    QVector3D mOriginPoint;
-//    QVector3D mTransferedCenter;
-//    QVector3D mTransferedPoint;
-//    PlaneName mPlane;
-//    int mXSign;
-//    int mYSign;
-//    int mZSign;
-//    void transformBoundingBoxVertexes(QMatrix4x4 matrix) override;
 
-//public:
-//    QuarterRoundBoundingBox2D(float centerX, float centerY, float centerZ, float radius, PlaneName plane);
-//    bool hitBoundingBox(Ray ray, float &distance, QMatrix4x4 matrix) override;
-//    void setSign(int xSign, int ySign, int zSign);
-//};
 
 
 

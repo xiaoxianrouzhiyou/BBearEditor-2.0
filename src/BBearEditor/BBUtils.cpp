@@ -1,15 +1,5 @@
 #include "BBUtils.h"
 
-BBUtils::BBUtils()
-{
-
-}
-
-BBUtils::~BBUtils()
-{
-
-}
-
 char *BBUtils::loadFileContent(const char *filePath, int &nFileSize)
 {
     FILE *pFile = NULL;

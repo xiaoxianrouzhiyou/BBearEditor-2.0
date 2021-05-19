@@ -1127,6 +1127,16 @@ void BBRotationCoordinateSystem::resize(float fWidth, float fHeight)
 
 }
 
+void BBRotationCoordinateSystem::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
+{
+
+}
+
+void BBRotationCoordinateSystem::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
+{
+
+}
+
 void BBRotationCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
 {
 

@@ -134,72 +134,72 @@ float BBRay::computeIntersectDistance(QVector3D intersection)
     return m_NearPoint.distanceToPoint(intersection);
 }
 
+bool BBRay::computeIntersectWithCircle(const QVector3D &center, float fRadius,
+                                       const BBPlaneName &ePlaneName, QVector3D &intersection)
+{
+    QVector3D normal;
+    if (ePlaneName == BBPlaneName::YOZ)
+    {
+        normal = QVector3D(1, 0, 0);
+    }
+    else if (ePlaneName == BBPlaneName::XOZ)
+    {
+        normal = QVector3D(0, 1, 0);
+    }
+    else if (ePlaneName == BBPlaneName::XOY)
+    {
+        normal = QVector3D(0, 0, 1);
+    }
+    else
+    {
+        return false;
+    }
 
-//bool Ray::computeIntersectWithRound(QVector3D center, float radius, PlaneName plane, QVector3D &intersection)
-//{
-//    QVector3D normal;
-//    if (plane == PlaneName::YOZ)
-//    {
-//        normal = QVector3D(1, 0, 0);
-//    }
-//    else if (plane == PlaneName::XOZ)
-//    {
-//        normal = QVector3D(0, 1, 0);
-//    }
-//    else if (plane == PlaneName::XOY)
-//    {
-//        normal = QVector3D(0, 0, 1);
-//    }
-//    else
-//    {
-//        return false;
-//    }
+    if (computeIntersectWithPlane(center, normal, intersection))
+    {
+        float d = (intersection - center).length();
+        if (d <= fRadius)
+            return true;
+    }
 
-//    if (computeIntersectWithPlane(center, normal, intersection))
-//    {
-//        float distance = (intersection - center).length();
-//        if (distance <= radius)
-//            return true;
-//    }
+    return false;
+}
 
-//    return false;
-//}
+bool BBRay::computeIntersectWithQuarterCircle(const QVector3D &center, float fRadius,
+                                              const BBPlaneName &ePlaneName, QVector3D &intersection,
+                                              const QVector3D &quadrantFlag)
+{
+    if (!computeIntersectWithCircle(center, fRadius, ePlaneName, intersection))
+    {
+        return false;
+    }
 
-//bool Ray::computeIntersectWithQuarterRound(QVector3D center, float radius,
-//                                      PlaneName plane, QVector3D &intersection,
-//                                      int xSign, int ySign, int zSign)
-//{
-//    //根据符号判断是哪一个象限的四分之一圆
-//    if (!computeIntersectWithRound(center, radius, plane, intersection))
-//    {
-//        return false;
-//    }
+    // According to the flag, determine which quadrant the quarter circle belongs to
+    QVector3D temp = intersection - center;
+    if (ePlaneName == BBPlaneName::YOZ)
+    {
+        if ((temp.y() * quadrantFlag.y()) >= 0 && (temp.z() * quadrantFlag.z()) >= 0)
+        {
+            return true;
+        }
+    }
+    else if (ePlaneName == BBPlaneName::XOZ)
+    {
+        if ((temp.x() * quadrantFlag.x()) >= 0 && (temp.z() * quadrantFlag.z()) >= 0)
+        {
+            return true;
+        }
+    }
+    else//ePlaneName == BBPlaneName::XOY
+    {
+        if ((temp.x() * quadrantFlag.x()) >= 0 && (temp.y() * quadrantFlag.y()) >= 0)
+        {
+            return true;
+        }
+    }
+    return false;
+}
 
-//    QVector3D temp = intersection - center;
-//    if (plane == PlaneName::YOZ)
-//    {
-//        //同号 相乘为非负
-//        if ((temp.y() * ySign) >= 0 && (temp.z() * zSign) >= 0)
-//        {
-//            return true;
-//        }
-//    }
-//    else if (plane == PlaneName::XOZ)
-//    {
-//        if ((temp.x() * xSign) >= 0 && (temp.z() * zSign) >= 0)
-//        {
-//            return true;
-//        }
-//    }
-//    else//plane == PlaneName::XOY
-//    {
-//        if ((temp.x() * xSign) >= 0 && (temp.y() * ySign) >= 0)
-//        {
-//            return true;
-//        }
-//    }
-//    return false;
-//}
 
 //bool Ray::equal(Ray ray)
 //{

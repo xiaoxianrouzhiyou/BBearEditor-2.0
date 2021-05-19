@@ -26,13 +26,11 @@
 #define BB_CLASSNAME_MODEL "Model"
 
 #include <QString>
+#include <QVector3D>
 
 class BBUtils
 {
 public:
-    BBUtils();
-    ~BBUtils();
-
     static char *loadFileContent(const char *filePath, int &nFileSize);
 };
 

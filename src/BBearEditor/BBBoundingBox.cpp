@@ -166,6 +166,59 @@ bool BBTriangleBoundingBox2D::hit(BBRay ray, float &fDistance)
 
 
 //--------------------
+// BBQuarterCircleBoundingBox2D
+//--------------------
+
+BBQuarterCircleBoundingBox2D::BBQuarterCircleBoundingBox2D(float fCenterX, float fCenterY, float fCenterZ,
+                                                           float fRadius, const BBPlaneName &ePlaneName)
+    : BBBoundingBox()
+{
+    m_nBoxVertexCount = 1;
+    m_pOriginalBoxVertexes = new QVector3D[m_nBoxVertexCount];
+    m_pTransformedBoxVertexes = new QVector3D[m_nBoxVertexCount];
+
+    m_Center[0] = fCenterX;
+    m_Center[1] = fCenterY;
+    m_Center[2] = fCenterZ;
+
+    m_eSelectedPlaneName = ePlaneName;
+
+    m_QuadrantFlag = QVector3D(0, 0, 0);
+
+    if (ePlaneName == BBPlaneName::YOZ)
+    {
+        m_pOriginalBoxVertexes[0] = QVector3D(m_Center[0], m_Center[1], m_Center[2]) + QVector3D(0, fRadius, 0);
+    }
+    else // XOZ or XOY
+    {
+        m_pOriginalBoxVertexes[0] = QVector3D(m_Center[0], m_Center[1], m_Center[2]) + QVector3D(fRadius, 0, 0);
+    }
+}
+
+bool BBQuarterCircleBoundingBox2D::hit(BBRay ray, float &fDistance)
+{
+    // If it is not activated, no collision occurs
+    if (!BBBoundingBox::hit(ray, fDistance))
+        return false;
+
+    QVector3D intersection;
+    bool result = false;
+    fDistance = FLT_MAX;
+
+    if (ray.computeIntersectWithQuarterCircle(QVector3D(m_Center[0], m_Center[1], m_Center[2]),
+                                              (m_pTransformedBoxVertexes[0] - QVector3D(m_Center[0], m_Center[1], m_Center[2])).length(),
+                                              m_eSelectedPlaneName,
+                                              intersection,
+                                              m_QuadrantFlag))
+    {
+        result = true;
+        fDistance = ray.computeIntersectDistance(intersection);
+    }
+    return result;
+}
+
+
+//--------------------
 // BBBoundingBox3D
 //--------------------
 
@@ -383,65 +436,6 @@ void BBAABBBoundingBox3D::computeBoxVertexes(QList<QVector4D> vertexes)
 }
 
 
-
-
-
-
-
-//#include <iostream>
-
-
-///****************
-// * QuarterRoundBoundingBox2D
-// *
-// *****************/
-
-//QuarterRoundBoundingBox2D::QuarterRoundBoundingBox2D(float centerX, float centerY, float centerZ,
-//                                       float radius, PlaneName plane)
-//{
-//    mOriginCenter = QVector3D(centerX, centerY, centerZ);
-//    mPlane = plane;
-//    if (plane == PlaneName::YOZ)
-//    {
-//        mOriginPoint = mOriginCenter + QVector3D(0, radius, 0);
-//    }
-//    else//plane == PlaneName::XOZ plane == PlaneName::XOY
-//    {
-//        mOriginPoint = mOriginCenter + QVector3D(radius, 0, 0);
-//    }
-//    setSign(1, 1, 1);
-//}
-
-//void QuarterRoundBoundingBox2D::transformBoundingBoxVertexes(QMatrix4x4 matrix)
-//{
-//    mTransferedCenter = matrix * mOriginCenter;
-//    mTransferedPoint = matrix * mOriginPoint;
-//}
-
-//bool QuarterRoundBoundingBox2D::hitBoundingBox(Ray ray, float &distance, QMatrix4x4 matrix)
-//{
-//    //如果没有激活 不产生碰撞
-//    if (!BoundingBox::hitBoundingBox(ray, distance, matrix))
-//        return false;
-//    transformBoundingBoxVertexes(matrix);
-//    QVector3D intersection;
-//    bool result = false;
-//    distance = FLT_MAX;
-//    if (ray.computeIntersectWithQuarterRound(mTransferedCenter,
-//                    (mTransferedPoint - mTransferedCenter).length(), mPlane, intersection, mXSign, mYSign, mZSign))
-//    {
-//        result = true;
-//        distance = ray.computeIntersectDistance(intersection);
-//    }
-//    return result;
-//}
-
-//void QuarterRoundBoundingBox2D::setSign(int xSign, int ySign, int zSign)
-//{
-//    mXSign = xSign;
-//    mYSign = ySign;
-//    mZSign = zSign;
-//}
 
 
 

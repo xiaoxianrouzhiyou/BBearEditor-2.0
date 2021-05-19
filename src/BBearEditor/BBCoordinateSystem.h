@@ -286,18 +286,20 @@ public:
     void render(BBCamera *pCamera) override;
     void resize(float fWidth, float fHeight) override;
 
+    void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
+    void setScale(const QVector3D &scale, bool bUpdateLocalTransform = true) override;
+
     void setSelectedAxis(BBAxisFlags axis) override;
     bool mouseMoveEvent(BBRay &ray, bool bMousePressed) override;
 
-//    void stopRotate();
-
 private:
     void transform(BBRay &ray) override;
-//    QuarterRound *mQuarterRound;
+
+//    BBCoordinateQuarterCircle *m_pBBCoordinateQuarterCircle;
 //    QuarterRoundBoundingBox2D *yozSurface;
 //    QuarterRoundBoundingBox2D *xozSurface;
 //    QuarterRoundBoundingBox2D *xoySurface;
-//    bool isRotating;
+
 //    Round *mRound;
 //    TickLine *mTickLine;
 //    Sector *mSector;
@@ -320,8 +322,6 @@ public:
 
     void setSelectedAxis(BBAxisFlags axis) override;
     bool mouseMoveEvent(BBRay &ray, bool bMousePressed) override;
-
-//    void stopScale();
 
 private:
     void transform(BBRay &ray) override;

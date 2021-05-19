@@ -6,6 +6,14 @@
 #include <QVector3D>
 
 
+enum BBPlaneName
+{
+    XOY = 0,
+    XOZ = 1,
+    YOZ = 2
+};
+
+
 class BBRay
 {
 public:
@@ -25,28 +33,26 @@ public:
 
     float computeIntersectDistance(QVector3D intersection);
 
+    // Circle parallel to coordinate plane
+    bool computeIntersectWithCircle(const QVector3D &center, float fRadius,
+                                    const BBPlaneName &ePlaneName, QVector3D &intersection);
+    bool computeIntersectWithQuarterCircle(const QVector3D &center, float fRadius,
+                                           const BBPlaneName &ePlaneName, QVector3D &intersection,
+                                           const QVector3D &quadrantFlag);
+
 private:
     QVector3D m_NearPoint;
     QVector3D m_FarPoint;
 };
 
 
-//enum PlaneName
-//{
-//    XOY = 0,
-//    XOZ = 1,
-//    YOZ = 2
-//};
+
 
 //class Ray
 //{
 //public:
 
-//    //平行坐标轴的圆
-//    bool computeIntersectWithRound(QVector3D center, float radius, PlaneName plane, QVector3D &intersection);
-//    bool computeIntersectWithQuarterRound(QVector3D center, float radius,
-//                                          PlaneName plane, QVector3D &intersection,
-//                                          int xSign, int ySign, int zSign);
+
 //    bool equal(Ray ray);
 //    QVector3D getNearPoint();
 //    QVector3D getFarPoint();
