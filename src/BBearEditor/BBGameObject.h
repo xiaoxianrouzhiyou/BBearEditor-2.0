@@ -34,7 +34,7 @@ public:
     QQuaternion getLocalQuaternion() { return m_LocalQuaternion; }
 
     virtual void setScale(float scale, bool bUpdateLocalTransform = true);
-    virtual void setScale(const QVector3D &scale, const bool bUpdateLocalTransform = true);
+    virtual void setScale(const QVector3D &scale, bool bUpdateLocalTransform = true);
     QVector3D getScale() { return m_Scale; }
     QVector3D getLocalScale() { return m_LocalScale; }
 

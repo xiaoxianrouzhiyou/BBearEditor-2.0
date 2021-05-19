@@ -665,23 +665,6 @@ void BBCoordinateCube::init()
                     m_nIndexCount);
 }
 
-void BBCoordinateCube::changePositionAfterScale(const float x, const float y, const float z)
-{
-    // Only scale the axis, the size of the cube does not change
-    for (int i = 0; i < 8; i++)
-    {
-        m_pVertexBuffer->setPosition(i, 1.0f * x + m_Sign[i].x() * m_fHalfLength,
-                                                   m_Sign[i].y() * m_fHalfLength,
-                                                   m_Sign[i].z() * m_fHalfLength);
-        m_pVertexBuffer->setPosition(i + 8, m_Sign[i].x() * m_fHalfLength,
-                                 1.0f * y + m_Sign[i].y() * m_fHalfLength,
-                                            m_Sign[i].z() * m_fHalfLength);
-        m_pVertexBuffer->setPosition(i + 16, m_Sign[i].x() * m_fHalfLength,
-                                             m_Sign[i].y() * m_fHalfLength,
-                                  1.0f * z + m_Sign[i].z() * m_fHalfLength);
-    }
-}
-
 void BBCoordinateCube::draw()
 {
     glEnable(GL_DEPTH_TEST);
@@ -814,6 +797,14 @@ BBCoordinateSystem::~BBCoordinateSystem()
     BB_SAFE_DELETE(m_pSelectedObject);
 }
 
+void BBCoordinateSystem::render(BBCamera *pCamera)
+{
+    // The coordinate system will not become smaller as the camera is zoomed out
+    // need to scale according to the distance
+    float fDistance = (pCamera->getPosition() - m_Position).length();
+    setScale(fDistance / 6.5f);
+}
+
 bool BBCoordinateSystem::hit(BBRay ray,
                              BBBoundingBox *pBoundingBox1, BBAxisFlags axis1,
                              BBBoundingBox *pBoundingBox2, BBAxisFlags axis2,
@@ -878,7 +869,7 @@ bool BBCoordinateSystem::hit(BBRay ray,
 void BBCoordinateSystem::setSelectedObject(BBGameObject *pObject)
 {
     m_pSelectedObject = pObject;
-    if (pObject != nullptr)
+    if (pObject != NULL)
     {
         setPosition(pObject->getPosition());
         setRotation(pObject->getRotation());
@@ -939,11 +930,10 @@ void BBPositionCoordinateSystem::init()
 
 void BBPositionCoordinateSystem::render(BBCamera *pCamera)
 {
-    // The coordinate system will not become smaller as the camera is zoomed out
-    // need to scale according to the distance
-    float fDistance = (pCamera->getPosition() - m_Position).length();
-    setScale(fDistance / 6.5f);
+    if (m_pSelectedObject == NULL)
+        return;
 
+    BBCoordinateSystem::render(pCamera);
     m_pCoordinateArrow->render(pCamera);
     m_pCoordinateAxis->render(pCamera);
     m_pCoordinateRectFace->render(pCamera);
@@ -954,6 +944,37 @@ void BBPositionCoordinateSystem::resize(float fWidth, float fHeight)
     m_pCoordinateArrow->resize(fWidth, fHeight);
     m_pCoordinateAxis->resize(fWidth, fHeight);
     m_pCoordinateRectFace->resize(fWidth, fHeight);
+}
+
+void BBPositionCoordinateSystem::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
+{
+    // Modifying m_Position directly will cause an error
+    // The position of the bounding box needs to be updated at the same time
+    // otherwise, will trigger incorrect mouse events
+    BBCoordinateSystem::setPosition(position, bUpdateLocalTransform);
+    m_pCoordinateArrow->setPosition(position, bUpdateLocalTransform);
+    m_pCoordinateAxis->setPosition(position, bUpdateLocalTransform);
+    m_pCoordinateRectFace->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxX->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxY->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxZ->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxYOZ->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxXOZ->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxXOY->setPosition(position, bUpdateLocalTransform);
+}
+
+void BBPositionCoordinateSystem::setScale(float scale, bool bUpdateLocalTransform)
+{
+    BBCoordinateSystem::setScale(scale, bUpdateLocalTransform);
+    m_pCoordinateArrow->setScale(scale, bUpdateLocalTransform);
+    m_pCoordinateAxis->setScale(scale, bUpdateLocalTransform);
+    m_pCoordinateRectFace->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxX->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxY->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxZ->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxYOZ->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxXOZ->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxXOY->setScale(scale, bUpdateLocalTransform);
 }
 
 void BBPositionCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
@@ -998,6 +1019,14 @@ bool BBPositionCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
         m_bTransforming = true;
     } while(0);
 
+    transform(ray);
+
+    // The return value indicates whether the transform has really performed
+    return m_bTransforming;
+}
+
+void BBPositionCoordinateSystem::transform(BBRay &ray)
+{
     if (m_bTransforming)
     {
         // perform transform operation
@@ -1045,40 +1074,6 @@ bool BBPositionCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
         // record and wait the next frame
         m_LastMousePos = mousePos;
     }
-
-    // The return value indicates whether the transform has really performed
-    return m_bTransforming;
-}
-
-void BBPositionCoordinateSystem::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
-{
-    // Modifying m_Position directly will cause an error
-    // The position of the bounding box needs to be updated at the same time
-    // otherwise, will trigger incorrect mouse events
-    BBCoordinateSystem::setPosition(position, bUpdateLocalTransform);
-    m_pCoordinateArrow->setPosition(position, bUpdateLocalTransform);
-    m_pCoordinateAxis->setPosition(position, bUpdateLocalTransform);
-    m_pCoordinateRectFace->setPosition(position, bUpdateLocalTransform);
-    m_pBoundingBoxX->setPosition(position, bUpdateLocalTransform);
-    m_pBoundingBoxY->setPosition(position, bUpdateLocalTransform);
-    m_pBoundingBoxZ->setPosition(position, bUpdateLocalTransform);
-    m_pBoundingBoxYOZ->setPosition(position, bUpdateLocalTransform);
-    m_pBoundingBoxXOZ->setPosition(position, bUpdateLocalTransform);
-    m_pBoundingBoxXOY->setPosition(position, bUpdateLocalTransform);
-}
-
-void BBPositionCoordinateSystem::setScale(float scale, bool bUpdateLocalTransform)
-{
-    BBCoordinateSystem::setScale(scale, bUpdateLocalTransform);
-    m_pCoordinateArrow->setScale(scale, bUpdateLocalTransform);
-    m_pCoordinateAxis->setScale(scale, bUpdateLocalTransform);
-    m_pCoordinateRectFace->setScale(scale, bUpdateLocalTransform);
-    m_pBoundingBoxX->setScale(scale, bUpdateLocalTransform);
-    m_pBoundingBoxY->setScale(scale, bUpdateLocalTransform);
-    m_pBoundingBoxZ->setScale(scale, bUpdateLocalTransform);
-    m_pBoundingBoxYOZ->setScale(scale, bUpdateLocalTransform);
-    m_pBoundingBoxXOZ->setScale(scale, bUpdateLocalTransform);
-    m_pBoundingBoxXOY->setScale(scale, bUpdateLocalTransform);
 }
 
 
@@ -1122,6 +1117,11 @@ bool BBRotationCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
 
 }
 
+void BBRotationCoordinateSystem::transform(BBRay &ray)
+{
+
+}
+
 
 //------------------------------
 //  BBScaleCoordinateSystem
@@ -1130,37 +1130,226 @@ bool BBRotationCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
 BBScaleCoordinateSystem::BBScaleCoordinateSystem()
     : BBCoordinateSystem()
 {
-
+    m_pCoordinateCube = new BBCoordinateCube();
+    m_pCoordinateAxis = new BBCoordinateAxis();
+    m_pCoordinateTriangleFace = new BBCoordinateTriangleFace();
+    m_pBoundingBoxX = new BBBoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, 0.69f, 0.0f, 0.0f, 0.39f, 0.08f, 0.08f);
+    m_pBoundingBoxY = new BBBoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, 0.0f, 0.69f, 0.0f, 0.08f, 0.39f, 0.08f);
+    m_pBoundingBoxZ = new BBBoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, 0.0f, 0.0f, 0.69f, 0.08f, 0.08f, 0.39f);
+    m_pBoundingBoxYOZ = new BBRectBoundingBox2D(0.0f, 0.15f, 0.15f, 0.0f, 0.15f, 0.15f);
+    m_pBoundingBoxXOZ = new BBRectBoundingBox2D(0.15f, 0.0f, 0.15f, 0.15f, 0.0f, 0.15f);
+    m_pBoundingBoxXOY = new BBRectBoundingBox2D(0.15f, 0.15f, 0.0f, 0.15f, 0.15f, 0.0f);
+    m_pBoundingBoxXYZ = new BBTriangleBoundingBox2D(QVector3D(0.3f, 0.0f, 0.0f),
+                                                    QVector3D(0.0f, 0.3f, 0.0f),
+                                                    QVector3D(0.0f, 0.0f, 0.3f));
 }
 
 BBScaleCoordinateSystem::~BBScaleCoordinateSystem()
 {
-
+    BB_SAFE_DELETE(m_pCoordinateCube);
+    BB_SAFE_DELETE(m_pCoordinateAxis);
+    BB_SAFE_DELETE(m_pCoordinateTriangleFace);
+    BB_SAFE_DELETE(m_pBoundingBoxX);
+    BB_SAFE_DELETE(m_pBoundingBoxY);
+    BB_SAFE_DELETE(m_pBoundingBoxZ);
+    BB_SAFE_DELETE(m_pBoundingBoxYOZ);
+    BB_SAFE_DELETE(m_pBoundingBoxXOZ);
+    BB_SAFE_DELETE(m_pBoundingBoxXOY);
+    BB_SAFE_DELETE(m_pBoundingBoxXYZ);
 }
 
 void BBScaleCoordinateSystem::init()
 {
-
+    m_pCoordinateCube->init();
+    m_pCoordinateAxis->init();
+    m_pCoordinateTriangleFace->init();
 }
 
 void BBScaleCoordinateSystem::render(BBCamera *pCamera)
 {
+    if (m_pSelectedObject == NULL)
+        return;
 
+    BBCoordinateSystem::render(pCamera);
+    m_pCoordinateCube->render(pCamera);
+    m_pCoordinateAxis->render(pCamera);
+    m_pCoordinateTriangleFace->render(pCamera);
 }
 
 void BBScaleCoordinateSystem::resize(float fWidth, float fHeight)
 {
+    m_pCoordinateCube->resize(fWidth, fHeight);
+    m_pCoordinateAxis->resize(fWidth, fHeight);
+    m_pCoordinateTriangleFace->resize(fWidth, fHeight);
+}
 
+void BBScaleCoordinateSystem::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
+{
+    BBCoordinateSystem::setPosition(position, bUpdateLocalTransform);
+    m_pCoordinateCube->setPosition(position, bUpdateLocalTransform);
+    m_pCoordinateAxis->setPosition(position, bUpdateLocalTransform);
+    m_pCoordinateTriangleFace->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxX->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxY->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxZ->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxYOZ->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxXOZ->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxXOY->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxXYZ->setPosition(position, bUpdateLocalTransform);
+}
+
+void BBScaleCoordinateSystem::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
+{
+    BBCoordinateSystem::setScale(scale, bUpdateLocalTransform);
+    m_pCoordinateCube->setScale(scale, bUpdateLocalTransform);
+    m_pCoordinateAxis->setScale(scale, bUpdateLocalTransform);
+    m_pCoordinateTriangleFace->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxX->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxY->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxZ->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxYOZ->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxXOZ->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxXOY->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBoxXYZ->setScale(scale, bUpdateLocalTransform);
 }
 
 void BBScaleCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
 {
+    // change color of indicator
+    m_pCoordinateCube->setSelectedAxis(axis);
+    m_pCoordinateAxis->setSelectedAxis(axis);
 
+    m_SelectedAxis = axis;
 }
 
 bool BBScaleCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
 {
+    do {
+        // if transforming, there is no need to perform other operations
+        BB_END(m_bTransforming);
+        // otherwise, determine whether transform can be turned on
 
+        BB_END(m_pSelectedObject == NULL);
+
+        // handle collision detection, change color of related axis and get m_SelectedAxis
+        // if hitting m_pCoordinateRectFace, no need to handle axis
+        float fDistance;
+        if (!hit(ray,
+                 m_pBoundingBoxYOZ, BBAxisName::AxisY | BBAxisName::AxisZ,
+                 m_pBoundingBoxXOZ, BBAxisName::AxisX | BBAxisName::AxisZ,
+                 m_pBoundingBoxXOY, BBAxisName::AxisX | BBAxisName::AxisY,
+                 fDistance))
+        {
+            // handle axis
+            BB_END(!hit(ray,
+                        m_pBoundingBoxX, BBAxisName::AxisX,
+                        m_pBoundingBoxY, BBAxisName::AxisY,
+                        m_pBoundingBoxZ, BBAxisName::AxisZ,
+                        fDistance));
+        }
+        else
+        {
+            // Two axes are selected, determine whether the third axis is also selected
+            // and perform collision detection on the triangle in the middle
+            float d;
+            if (m_pBoundingBoxXYZ->hit(ray, d))
+            {
+                if (d <= fDistance)
+                {
+                    // The middle triangle collision point is closer, select the three axes
+                    setSelectedAxis(BBAxisName::AxisX | BBAxisName::AxisY | BBAxisName::AxisZ);
+                }
+            }
+        }
+
+        // do not handle transform when mouse is not pressed
+        BB_END(!bMousePressed);
+
+        // meet the conditions, turn on m_bTransforming
+        m_bTransforming = true;
+    } while(0);
+
+    transform(ray);
+
+    // The return value indicates whether the transform has really performed
+    return m_bTransforming;
+}
+
+void BBScaleCoordinateSystem::transform(BBRay &ray)
+{
+    if (m_bTransforming)
+    {
+        // perform transform operation
+        // compute now mouse pos
+        QVector3D mousePos;
+        QMatrix4x4 rotMatrix;
+        rotMatrix.rotate(m_Quaternion);
+        if ((m_SelectedAxis == BBAxisName::AxisY)
+         || (m_SelectedAxis == (BBAxisName::AxisX | BBAxisName::AxisY)))
+        {
+            ray.computeIntersectWithPlane(m_Position, rotMatrix * QVector3D(0, 0, 1), mousePos);
+        }
+        else if ((m_SelectedAxis == BBAxisName::AxisX || m_SelectedAxis == BBAxisName::AxisZ)
+              || (m_SelectedAxis == (BBAxisName::AxisX | BBAxisName::AxisZ)))
+        {
+            ray.computeIntersectWithPlane(m_Position, rotMatrix * QVector3D(0, 1, 0), mousePos);
+        }
+        else if (m_SelectedAxis == (BBAxisName::AxisY | BBAxisName::AxisZ))
+        {
+            ray.computeIntersectWithPlane(m_Position, rotMatrix * QVector3D(1, 0, 0), mousePos);
+        }
+        else if (m_SelectedAxis == (BBAxisName::AxisX | BBAxisName::AxisY | BBAxisName::AxisZ))
+        {
+            ray.computeIntersectWithPlane(m_Position, rotMatrix * QVector3D(1, 1, 1), mousePos);
+        }
+
+        // whether displacement can be computed
+        if (!m_LastMousePos.isNull())
+        {
+            QVector3D mouseDisplacement = mousePos - m_LastMousePos;
+            QVector3D scale = m_pSelectedObject->getScale();
+            QVector3D dir;
+            if (m_SelectedAxis == (BBAxisName::AxisX | BBAxisName::AxisY | BBAxisName::AxisZ))
+            {
+                dir = QVector3D(1, -1, 1).normalized();
+                scale = scale + QVector3D::dotProduct(rotMatrix * dir, mouseDisplacement) * QVector3D(1, 1, 1);
+            }
+            else
+            {
+                if (m_SelectedAxis == BBAxisName::AxisX)
+                {
+                    // The length of the projection of the mouse's displacement on the axis
+                    dir = QVector3D(1, 0, 0).normalized();
+                }
+                else if (m_SelectedAxis == BBAxisName::AxisY)
+                {
+                    dir = QVector3D(0, 1, 0).normalized();
+                }
+                else if (m_SelectedAxis == BBAxisName::AxisZ)
+                {
+                    dir = QVector3D(0, 0, 1).normalized();
+                }
+                else if (m_SelectedAxis == (BBAxisName::AxisY | BBAxisName::AxisZ))
+                {
+                    dir = QVector3D(0, 1, 1).normalized();
+                }
+                else if (m_SelectedAxis == (BBAxisName::AxisX | BBAxisName::AxisZ))
+                {
+                    dir = QVector3D(1, 0, 1).normalized();
+                }
+                else if (m_SelectedAxis == (BBAxisName::AxisX | BBAxisName::AxisY))
+                {
+                    dir = QVector3D(1, 1, 0).normalized();
+                }
+                scale = scale + QVector3D::dotProduct(rotMatrix * dir, mouseDisplacement) * dir;
+            }
+            setScale(scale);
+            m_pSelectedObject->setScale(scale);
+        }
+
+        // record and wait the next frame
+        m_LastMousePos = mousePos;
+    }
 }
 
 
@@ -1216,6 +1405,38 @@ void BBTransformCoordinateSystem::resize(float fWidth, float fHeight)
     m_pScaleCoordinateSystem->resize(fWidth, fHeight);
 }
 
+void BBTransformCoordinateSystem::setSelectedObject(BBGameObject *pObject)
+{
+    // The selected operation object has not changed, no additional operation is required
+    if (m_pSelectedObject == pObject)
+    {
+        return;
+    }
+    // Operation object changed
+
+//    //清空多选项 包围盒 指示器等隐藏
+//    int count = mSelectedObjects.count();
+//    for (int i = 0; i < count; i++)
+//    {
+//        mSelectedObjects.at(i)->setVisible(false);
+//    }
+//    mSelectedObjects.clear();
+
+    // single selection
+    if (m_pSelectedObject != nullptr)
+    {
+        // The bounding box and indicator of the original operation object are hidden
+        m_pSelectedObject->setVisibility(false);
+    }
+    if (pObject != nullptr)
+    {
+        // show bounding box and indicator of now operation object
+        pObject->setVisibility(true);
+    }
+    m_pSelectedObject = pObject;
+    setCoordinateSystemMode(m_ModeKey);
+}
+
 bool BBTransformCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
 {
     m_bTransforming = false;
@@ -1259,45 +1480,11 @@ void BBTransformCoordinateSystem::setCoordinateSystemMode(char key)
     }
 }
 
-void BBTransformCoordinateSystem::setSelectedObject(BBGameObject *pObject)
-{
-    // The selected operation object has not changed, no additional operation is required
-    if (m_pSelectedObject == pObject)
-    {
-        return;
-    }
-    // Operation object changed
-
-//    //清空多选项 包围盒 指示器等隐藏
-//    int count = mSelectedObjects.count();
-//    for (int i = 0; i < count; i++)
-//    {
-//        mSelectedObjects.at(i)->setVisible(false);
-//    }
-//    mSelectedObjects.clear();
-
-    // single selection
-    if (m_pSelectedObject != nullptr)
-    {
-        // The bounding box and indicator of the original operation object are hidden
-        m_pSelectedObject->setVisibility(false);
-    }
-    if (pObject != nullptr)
-    {
-        // show bounding box and indicator of now operation object
-        pObject->setVisibility(true);
-    }
-    m_pSelectedObject = pObject;
-    setCoordinateSystemMode(m_ModeKey);
-}
-
 void BBTransformCoordinateSystem::stopTransform()
 {
     m_pPositionCoordinateSystem->stopTransform();
-//    mRotationCoordinate->resetLastMousePos();
-//    mRotationCoordinate->stopRotate();
-//    mScaleCoordinate->resetLastMousePos();
-//    mScaleCoordinate->stopScale();
+    m_pRotationCoordinateSystem->stopTransform();
+    m_pScaleCoordinateSystem->stopTransform();
 
     m_bTransforming = false;
 }
@@ -1599,177 +1786,7 @@ void BBTransformCoordinateSystem::stopTransform()
 //        ScaleCoordinate
 //  *********************************************************************/
 
-//ScaleCoordinate::ScaleCoordinate()
-//    : Coordinate()
-//{
-//    mAxis = new Axis();
-//    mCube = new Cube();
-//    surface = new TriangleSurface();
-//    yozSurface = new RectBoundingBox2D(0.0f, 0.15f, 0.15f, 0.0f, 0.15f, 0.15f);
-//    xozSurface = new RectBoundingBox2D(0.15f, 0.0f, 0.15f, 0.15f, 0.0f, 0.15f);
-//    xoySurface = new RectBoundingBox2D(0.15f, 0.15f, 0.0f, 0.15f, 0.15f, 0.0f);
-//    xBoundingBox = new BoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, 0.69f, 0.0f, 0.0f, 0.39f, 0.08f, 0.08f);
-//    yBoundingBox = new BoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, 0.0f, 0.69f, 0.0f, 0.08f, 0.39f, 0.08f);
-//    zBoundingBox = new BoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, 0.0f, 0.0f, 0.69f, 0.08f, 0.08f, 0.39f);
-//    xyzSurface = new TriangleBoundingBox2D(QVector3D(0.3f, 0.0f, 0.0f),
-//                                           QVector3D(0.0f, 0.3f, 0.0f),
-//                                           QVector3D(0.0f, 0.0f, 0.3f));
-//    mScale = QVector3D(1, 1, 1);
-//}
 
-//void ScaleCoordinate::init()
-//{
-//    mAxis->init();
-//    mCube->init();
-//    surface->init();
-//}
-
-//void ScaleCoordinate::render(Camera camera)
-//{
-//    if (mSelectedObject == nullptr)
-//        return;
-
-//    QMatrix4x4 modelMatrix = getModelMatrix(camera.pos);
-//    modelMatrix.rotate(QQuaternion::fromEulerAngles(mRotation));
-
-//    mCube->scale(mScale.x(), mScale.y(), mScale.z());
-//    mCube->render(modelMatrix, camera);
-//    QMatrix4x4 axisModelMatrix = modelMatrix;
-//    axisModelMatrix.scale(mScale);
-//    mAxis->render(axisModelMatrix, camera);
-//    surface->render(modelMatrix, camera);
-
-//    //缩放坐标轴时 无需计算坐标系的碰撞
-//    if (!lastMousePos.isNull())
-//        return;
-
-//    //在一个面上缩放 无需检测单个坐标轴
-//    float distance;
-//    if (hitBoundingBox(modelMatrix, yozSurface, xozSurface, xoySurface,
-//                       AxisName::AxisY | AxisName::AxisZ,
-//                       AxisName::AxisX | AxisName::AxisZ,
-//                       AxisName::AxisX | AxisName::AxisY, distance))
-//    {
-//        //选中了两个轴 是否第三个轴也被选中 对中间的三角形进行碰撞检测
-//        float xyzDistance;
-//        if (xyzSurface->hitBoundingBox(mRay, xyzDistance, modelMatrix))
-//        {
-//            if (xyzDistance <= distance)
-//            {
-//                //中间三角形碰撞点离得更近 选中三个轴
-//                setSelectedAxis(AxisName::AxisX | AxisName::AxisY | AxisName::AxisZ);
-//            }
-//        }
-//        return;
-//    }
-
-//    hitBoundingBox(modelMatrix, xBoundingBox, yBoundingBox, zBoundingBox,
-//                   AxisName::AxisX, AxisName::AxisY, AxisName::AxisZ, distance);
-//}
-
-//void ScaleCoordinate::resize(float width, float height)
-//{
-//    mAxis->resize(width, height);
-//    mCube->resize(width, height);
-//    surface->resize(width, height);
-//}
-
-//void ScaleCoordinate::setSelectedAxis(AxisFlags axis)
-//{
-//    mAxis->setSelectedAxis(axis);
-//    mCube->setSelectedAxis(axis);
-//    mSelectedAxis = axis;
-//}
-
-//bool ScaleCoordinate::scale(Ray ray)
-//{
-//    //坐标隐藏后 不渲染 但鼠标事件会触发
-//    if (mSelectedObject == nullptr)
-//        return false;
-
-//    QVector3D mousePos;
-//    QMatrix4x4 rotMatrix;
-//    rotMatrix.rotate(QQuaternion::fromEulerAngles(mRotation));
-//    if (mSelectedAxis == AxisName::AxisNULL)
-//    {
-//        return false;
-//    }
-//    else if ((mSelectedAxis == AxisName::AxisY)
-//            || (mSelectedAxis == (AxisName::AxisX | AxisName::AxisY)))
-//    {
-//        ray.computeIntersectWithPlane(mPosition, rotMatrix * QVector3D(0, 0, 1), mousePos);
-//    }
-//    else if ((mSelectedAxis == AxisName::AxisX || mSelectedAxis == AxisName::AxisZ)
-//            || (mSelectedAxis == (AxisName::AxisX | AxisName::AxisZ)))
-//    {
-//        ray.computeIntersectWithPlane(mPosition, rotMatrix * QVector3D(0, 1, 0), mousePos);
-//    }
-//    else if (mSelectedAxis == (AxisName::AxisY | AxisName::AxisZ))
-//    {
-//        ray.computeIntersectWithPlane(mPosition, rotMatrix * QVector3D(1, 0, 0), mousePos);
-//    }
-//    else if (mSelectedAxis == (AxisName::AxisX | AxisName::AxisY | AxisName::AxisZ))
-//    {
-//        ray.computeIntersectWithPlane(mPosition, rotMatrix * QVector3D(1, 1, 1), mousePos);
-//    }
-//    else
-//    {
-//        return false;
-//    }
-
-//    //刚开始缩放 算不出位移 只记录开始缩放时鼠标位置 并开启正在缩放的开关
-//    if (lastMousePos.isNull())
-//    {
-//        mIsScaling = true;
-//        lastMousePos = mousePos;
-//        //刚开始缩放时的缩放值
-//        mSelectedObjectScale = mSelectedObject->getScale();
-//        return false;
-//    }
-
-//    QVector3D mouseDisplacement = mousePos - lastMousePos;
-//    mScale = QVector3D(1, 1, 1);
-//    QVector3D dir;
-//    if (mSelectedAxis == AxisName::AxisX)
-//    {
-//        //鼠标位移在选中轴上的投影的长度
-//        dir = QVector3D(1, 0, 0).normalized();
-//        mScale += QVector3D::dotProduct(rotMatrix * dir, mouseDisplacement) * dir;
-//    }
-//    else if (mSelectedAxis == AxisName::AxisY)
-//    {
-//        dir = QVector3D(0, 1, 0).normalized();
-//        mScale += QVector3D::dotProduct(rotMatrix * dir, mouseDisplacement) * dir;
-//    }
-//    else if (mSelectedAxis == AxisName::AxisZ)
-//    {
-//        dir = QVector3D(0, 0, 1).normalized();
-//        mScale += QVector3D::dotProduct(rotMatrix * dir, mouseDisplacement) * dir;
-//    }
-//    else if (mSelectedAxis == (AxisName::AxisY | AxisName::AxisZ))
-//    {
-//        dir = QVector3D(0, 1, 1).normalized();
-//        mScale += QVector3D::dotProduct(rotMatrix * dir, mouseDisplacement) * dir;
-//    }
-//    else if (mSelectedAxis == (AxisName::AxisX | AxisName::AxisZ))
-//    {
-//        dir = QVector3D(1, 0, 1).normalized();
-//        mScale += QVector3D::dotProduct(rotMatrix * dir, mouseDisplacement) * dir;
-//    }
-//    else if (mSelectedAxis == (AxisName::AxisX | AxisName::AxisY))
-//    {
-//        dir = QVector3D(1, 1, 0).normalized();
-//        mScale += QVector3D::dotProduct(rotMatrix * dir, mouseDisplacement) * dir;
-//    }
-//    else if (mSelectedAxis == (AxisName::AxisX | AxisName::AxisY | AxisName::AxisZ))
-//    {
-//        dir = QVector3D(1, -1, 1).normalized();
-//        mScale += QVector3D::dotProduct(rotMatrix * dir, mouseDisplacement) * QVector3D(1, 1, 1);
-//    }
-
-//    mSelectedObject->setScale(mScale * mSelectedObjectScale);
-//    return true;
-//}
 
 //void ScaleCoordinate::stopScale()
 //{

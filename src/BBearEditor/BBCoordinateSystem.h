@@ -22,6 +22,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(BBAxisFlags)
 
 class BBBoundingBox;
 class BBRectBoundingBox2D;
+class BBTriangleBoundingBox2D;
 class BBBoundingBox3D;
 
 
@@ -186,7 +187,6 @@ public:
                      const float sx, const float sy, const float sz);
 
     void init() override;
-    void changePositionAfterScale(const float x, const float y, const float z);
 
 private:
     void draw() override;
@@ -219,11 +219,14 @@ protected:
     BBCoordinateSystem();
     virtual ~BBCoordinateSystem();
 
+    void render(BBCamera *pCamera) override;
+
     bool hit(BBRay ray,
              BBBoundingBox *pBoundingBox1, BBAxisFlags axis1,
              BBBoundingBox *pBoundingBox2, BBAxisFlags axis2,
              BBBoundingBox *pBoundingBox3, BBAxisFlags axis3,
              float &fDistance);
+    virtual void transform(BBRay &ray) = 0;
 
     BBAxisFlags m_SelectedAxis;
     QVector3D m_LastMousePos;
@@ -233,10 +236,10 @@ protected:
 public:
     inline BBAxisFlags getSelectedAxis() { return m_SelectedAxis; }
     void setSelectedObject(BBGameObject *pObject);
-    void stopTransform();
 
     virtual void setSelectedAxis(BBAxisFlags axis) = 0;
     virtual bool mouseMoveEvent(BBRay &ray, bool bMousePressed) = 0;
+    void stopTransform();
 };
 
 
@@ -250,13 +253,15 @@ public:
     void render(BBCamera *pCamera) override;
     void resize(float fWidth, float fHeight) override;
 
-    void setSelectedAxis(BBAxisFlags axis) override;
-    bool mouseMoveEvent(BBRay &ray, bool bMousePressed) override;
-
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
     void setScale(float scale, bool bUpdateLocalTransform = true) override;
 
+    void setSelectedAxis(BBAxisFlags axis) override;
+    bool mouseMoveEvent(BBRay &ray, bool bMousePressed) override;
+
 private:
+    void transform(BBRay &ray) override;
+
     BBCoordinateArrow *m_pCoordinateArrow;
     BBCoordinateAxis *m_pCoordinateAxis;
     BBCoordinateRectFace *m_pCoordinateRectFace;
@@ -286,6 +291,7 @@ public:
 //    void stopRotate();
 
 private:
+    void transform(BBRay &ray) override;
 //    QuarterRound *mQuarterRound;
 //    QuarterRoundBoundingBox2D *yozSurface;
 //    QuarterRoundBoundingBox2D *xozSurface;
@@ -308,24 +314,28 @@ public:
     void render(BBCamera *pCamera) override;
     void resize(float fWidth, float fHeight) override;
 
+    void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
+    void setScale(const QVector3D &scale, bool bUpdateLocalTransform = true) override;
+
     void setSelectedAxis(BBAxisFlags axis) override;
     bool mouseMoveEvent(BBRay &ray, bool bMousePressed) override;
 
 //    void stopScale();
 
 private:
-//    Axis *mAxis;
-//    Cube *mCube;
-//    TriangleSurface *surface;
-//    RectBoundingBox2D *yozSurface;
-//    RectBoundingBox2D *xozSurface;
-//    RectBoundingBox2D *xoySurface;
-//    BoundingBox3D *xBoundingBox;
-//    BoundingBox3D *yBoundingBox;
-//    BoundingBox3D *zBoundingBox;
-//    TriangleBoundingBox2D *xyzSurface;
-//    bool mIsScaling;
-//    QVector3D mSelectedObjectScale;
+    void transform(BBRay &ray) override;
+
+    BBCoordinateCube *m_pCoordinateCube;
+    BBCoordinateAxis *m_pCoordinateAxis;
+    BBCoordinateTriangleFace *m_pCoordinateTriangleFace;
+
+    BBBoundingBox3D *m_pBoundingBoxX;
+    BBBoundingBox3D *m_pBoundingBoxY;
+    BBBoundingBox3D *m_pBoundingBoxZ;
+    BBRectBoundingBox2D *m_pBoundingBoxYOZ;
+    BBRectBoundingBox2D *m_pBoundingBoxXOZ;
+    BBRectBoundingBox2D *m_pBoundingBoxXOY;
+    BBTriangleBoundingBox2D *m_pBoundingBoxXYZ;
 };
 
 
@@ -340,9 +350,9 @@ public:
     void render(BBCamera *pCamera) override;
     void resize(float fWidth, float fHeight) override;
 
+    void setSelectedObject(BBGameObject *pObject);
     bool mouseMoveEvent(BBRay &ray, bool bMousePressed);
     void setCoordinateSystemMode(char key);
-    void setSelectedObject(BBGameObject *pObject);
     bool isTransforming() { return m_bTransforming; }
     void stopTransform();
 //    void setSelectedObjects(QList<GameObject*> objects, CenterPoint *center);

@@ -61,10 +61,10 @@ void BBEditViewOpenGLWidget::releaseMoveKeySlot(char key)
 
 void BBEditViewOpenGLWidget::pressTransformSlot(char key)
 {
-//    //处理摄像机移动 就不处理坐标轴变换
-//    if (isRightPress)
-//        return;
-//    scene.transformCoordinate->setCoordinateMode(key);
+    // If the camera is processed, the coordinate system transform is not processed
+    if (m_bRightPressed)
+        return;
+    m_pScene->getTransformCoordinateSystem()->setCoordinateSystemMode(key);
 }
 
 void BBEditViewOpenGLWidget::setCoordinateSystemSelectedObject(BBGameObject *pGameObject)

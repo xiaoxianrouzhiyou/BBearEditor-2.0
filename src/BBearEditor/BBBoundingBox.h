@@ -49,6 +49,16 @@ public:
 };
 
 
+// Not necessarily parallel to the coordinate plane
+class BBTriangleBoundingBox2D : public BBBoundingBox
+{
+public:
+    BBTriangleBoundingBox2D(const QVector3D &point1, const QVector3D &point2, const QVector3D &point3);
+
+    bool hit(BBRay ray, float &fDistance) override;
+};
+
+
 class BBBoundingBox3D : public BBBoundingBox
 {
 public:
@@ -125,18 +135,6 @@ private:
 //    void setSign(int xSign, int ySign, int zSign);
 //};
 
-////不一定平行坐标面
-//class TriangleBoundingBox2D : public BoundingBox
-//{
-//private:
-//    QVector3D mOriginBoxVertexes[3];
-//    QVector3D mTransferedBoxVertexes[3];
-//    void transformBoundingBoxVertexes(QMatrix4x4 matrix) override;
-
-//public:
-//    TriangleBoundingBox2D(QVector3D point1, QVector3D point2, QVector3D point3);
-//    bool hitBoundingBox(Ray ray, float &distance, QMatrix4x4 matrix) override;
-//};
 
 
 

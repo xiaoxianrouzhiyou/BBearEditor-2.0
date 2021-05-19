@@ -127,6 +127,45 @@ bool BBRectBoundingBox2D::hit(BBRay ray, float &fDistance)
 
 
 //--------------------
+// BBTriangleBoundingBox2D
+//--------------------
+
+BBTriangleBoundingBox2D::BBTriangleBoundingBox2D(const QVector3D &point1,
+                                                 const QVector3D &point2,
+                                                 const QVector3D &point3)
+    : BBBoundingBox()
+{
+    m_nBoxVertexCount = 3;
+    m_pOriginalBoxVertexes = new QVector3D[m_nBoxVertexCount];
+    m_pTransformedBoxVertexes = new QVector3D[m_nBoxVertexCount];
+
+    m_pOriginalBoxVertexes[0] = point1;
+    m_pOriginalBoxVertexes[1] = point2;
+    m_pOriginalBoxVertexes[2] = point3;
+}
+
+bool BBTriangleBoundingBox2D::hit(BBRay ray, float &fDistance)
+{
+    // If it is not activated, no collision occurs
+    if (!BBBoundingBox::hit(ray, fDistance))
+        return false;
+
+    QVector3D intersection;
+    bool result = false;
+    fDistance = FLT_MAX;
+
+    if (ray.computeIntersectWithTriangle(m_pTransformedBoxVertexes[0],
+                                         m_pTransformedBoxVertexes[1],
+                                         m_pTransformedBoxVertexes[2], intersection))
+    {
+        result = true;
+        fDistance = ray.computeIntersectDistance(intersection);
+    }
+    return result;
+}
+
+
+//--------------------
 // BBBoundingBox3D
 //--------------------
 
@@ -404,45 +443,6 @@ void BBAABBBoundingBox3D::computeBoxVertexes(QList<QVector4D> vertexes)
 //    mZSign = zSign;
 //}
 
-
-///****************
-// * TriangleBoundingBox2D
-// *
-// *****************/
-
-//TriangleBoundingBox2D::TriangleBoundingBox2D(QVector3D point1, QVector3D point2, QVector3D point3)
-//{
-//    mOriginBoxVertexes[0] = point1;
-//    mOriginBoxVertexes[1] = point2;
-//    mOriginBoxVertexes[2] = point3;
-//}
-
-//void TriangleBoundingBox2D::transformBoundingBoxVertexes(QMatrix4x4 matrix)
-//{
-//    for (int i = 0; i < 3; i++)
-//    {
-//        mTransferedBoxVertexes[i] = matrix * mOriginBoxVertexes[i];
-//    }
-//}
-
-//bool TriangleBoundingBox2D::hitBoundingBox(Ray ray, float &distance, QMatrix4x4 matrix)
-//{
-//    //如果没有激活 不产生碰撞
-//    if (!BoundingBox::hitBoundingBox(ray, distance, matrix))
-//        return false;
-//    transformBoundingBoxVertexes(matrix);
-//    QVector3D intersection;
-//    bool result = false;
-//    distance = FLT_MAX;
-//    if (ray.computeIntersectWithTriangle(mTransferedBoxVertexes[0],
-//                                         mTransferedBoxVertexes[1],
-//                                         mTransferedBoxVertexes[2], intersection))
-//    {
-//        result = true;
-//        distance = ray.computeIntersectDistance(intersection);
-//    }
-//    return result;
-//}
 
 
 ///****************
