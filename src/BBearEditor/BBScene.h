@@ -27,10 +27,12 @@ public:
     inline BBCamera* getCamera() { return m_pCamera; }
     inline BBTransformCoordinateSystem* getTransformCoordinateSystem() { return m_pTransformCoordinateSystem; }
 
-    BBModel* createModel(const QString filePath, int x, int y, bool bSelect = true);
-    BBModel* createModel(const QString filePath, QVector3D position = QVector3D(0, 0, 0), bool bSelect = true);
-    BBModel* pickModel(const int x, const int y);
-    BBGameObject* pickObject(BBRay ray, bool bSelect = true);
+    BBModel* createModel(const QString &filePath, int x, int y, bool bSelect = true);
+    BBModel* createModel(const QString &filePath,
+                         const QVector3D &position = QVector3D(0, 0, 0),
+                         bool bSelect = true);
+    BBModel* pickModel(int x, int y);
+    BBGameObject* pickObject(const BBRay &ray, bool bSelect = true);
 
     void deleteGameObject(BBGameObject *pObject);
 

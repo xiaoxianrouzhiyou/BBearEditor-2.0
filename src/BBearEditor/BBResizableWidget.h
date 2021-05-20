@@ -9,7 +9,7 @@ class BBResizableWidget : public QWidget
 public:
     explicit BBResizableWidget(QWidget *parent = nullptr);
     QSize sizeHint() const;
-    void updateSizeHint(const QSize size);
+    void updateSizeHint(const QSize &size);
 
 private:
     QSize m_Size;

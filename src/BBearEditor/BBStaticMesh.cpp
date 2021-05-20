@@ -10,15 +10,15 @@ BBOBJMesh::BBOBJMesh()
 
 }
 
-BBOBJMesh::BBOBJMesh(const float px, const float py, const float pz,
-                     const float rx, const float ry, const float rz,
-                     const float sx, const float sy, const float sz)
+BBOBJMesh::BBOBJMesh(float px, float py, float pz,
+                     float rx, float ry, float rz,
+                     float sx, float sy, float sz)
     : BBMesh(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
 
 }
 
-void BBOBJMesh::load(const QString path, QList<QVector4D> &outPositions)
+void BBOBJMesh::load(const QString &path, QList<QVector4D> &outPositions)
 {
     struct VertexDefine
     {

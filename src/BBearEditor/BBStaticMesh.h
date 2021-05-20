@@ -9,12 +9,12 @@ class BBOBJMesh : public BBMesh
 {
 public:
     BBOBJMesh();
-    BBOBJMesh(const float px, const float py, const float pz,
-              const float rx, const float ry, const float rz,
-              const float sx, const float sy, const float sz);
+    BBOBJMesh(float px, float py, float pz,
+              float rx, float ry, float rz,
+              float sx, float sy, float sz);
 
 private:
-    void load(const QString path, QList<QVector4D> &outPositions) override;
+    void load(const QString &path, QList<QVector4D> &outPositions) override;
 };
 
 #endif // BBOBJMESH_H

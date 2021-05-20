@@ -12,7 +12,7 @@ public:
     virtual ~BBObjectListWidget();
 
     bool loadListItems(const char *xmlFilePath);
-    void setMimeType(QString strMimeType) { m_strMimeType = strMimeType; }
+    void setMimeType(const QString &strMimeType) { m_strMimeType = strMimeType; }
 
 private:
     void startDrag(Qt::DropActions supportedActions) override;

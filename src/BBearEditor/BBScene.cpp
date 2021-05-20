@@ -150,7 +150,7 @@ void BBScene::resize(float width, float height)
 //    mFBO->finish();
 }
 
-BBModel* BBScene::createModel(const QString filePath, int x, int y, bool bSelect)
+BBModel* BBScene::createModel(const QString &filePath, int x, int y, bool bSelect)
 {
     BBRay ray = m_pCamera->createRayFromScreen(x, y);
     // ground y=0
@@ -158,7 +158,7 @@ BBModel* BBScene::createModel(const QString filePath, int x, int y, bool bSelect
     return createModel(filePath, hit, bSelect);
 }
 
-BBModel* BBScene::createModel(const QString filePath, QVector3D position, bool bSelect)
+BBModel* BBScene::createModel(const QString &filePath, const QVector3D &position, bool bSelect)
 {
     BBModel *pModel = NULL;
     if (filePath == "terrain")
@@ -199,7 +199,7 @@ BBModel* BBScene::createModel(const QString filePath, QVector3D position, bool b
     return pModel;
 }
 
-BBModel* BBScene::pickModel(const int x, const int y)
+BBModel* BBScene::pickModel(int x, int y)
 {
     BBRay ray = m_pCamera->createRayFromScreen(x, y);
 
@@ -222,7 +222,7 @@ BBModel* BBScene::pickModel(const int x, const int y)
     return pModel;
 }
 
-BBGameObject* BBScene::pickObject(BBRay ray, bool bSelect)
+BBGameObject* BBScene::pickObject(const BBRay &ray, bool bSelect)
 {
     float fDistance = FLT_MAX;
     BBGameObject *pSelectedObject = nullptr;
