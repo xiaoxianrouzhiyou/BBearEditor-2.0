@@ -1167,7 +1167,23 @@ void BBRotationCoordinateSystem::render(BBCamera *pCamera)
     // When transforming, render circle. otherwise, render coordinate axis
     if (m_bTransforming)
     {
+        // m_pCoordinateCircle is based on face YOZ and needs to rotate
+        QVector3D rot;
+        if (m_SelectedAxis == BBAxisName::AxisY)
+        {
+            rot = QVector3D(0, 0, 90);
+        }
+        else if (m_SelectedAxis == BBAxisName::AxisZ)
+        {
+            rot = QVector3D(0, 90, 0);
+        }
+        m_pCoordinateCircle->setRotation(rot);
+        m_pCoordinateTickMark->setRotation(rot);
+        m_pCoordinateSector->setRotation(rot);
 
+        m_pCoordinateCircle->render(pCamera);
+        m_pCoordinateTickMark->render(pCamera);
+//        m_pCoordinateSector->render(pCamera);
     }
     else
     {
@@ -1178,29 +1194,11 @@ void BBRotationCoordinateSystem::render(BBCamera *pCamera)
         dir.setZ(dir.z() >= 0 ? 1 : -1);
         m_pCoordinateQuarterCircle->setScale(m_pCoordinateQuarterCircle->getScale() * dir);
         m_pCoordinateQuarterCircle->render(pCamera);
+        // bounding box also needs mirror transform
+        m_pBoundingBoxYOZ->setQuadrantFlag(dir);
+        m_pBoundingBoxXOZ->setQuadrantFlag(dir);
+        m_pBoundingBoxXOY->setQuadrantFlag(dir);
     }
-
-
-
-
-//    else
-//    {
-//        //旋转时的渲染
-//        //根据位置指向摄像机的向量 求圆盘位于左边还是右边 用于判断显示哪一半边的扇形
-//        if (mSelectedAxis == AxisName::AxisY)
-//        {
-//            //旋转圆是以yoz面为标准写的 需要旋转
-//            modelMatrix.rotate(-90, 0, 1, 0);
-//            modelMatrix.rotate(90, 0, 0, 1);
-//        }
-//        else if(mSelectedAxis == AxisName::AxisZ)
-//        {
-//            modelMatrix.rotate(-90, 0, 1, 0);
-//        }
-//        mRound->render(modelMatrix, camera);
-//        mTickLine->render(modelMatrix, camera);
-//        mSector->render(modelMatrix, camera);
-//    }
 }
 
 void BBRotationCoordinateSystem::resize(float fWidth, float fHeight)
