@@ -11,15 +11,15 @@ BBMesh::BBMesh()
 
 }
 
-BBMesh::BBMesh(const float px, const float py, const float pz,
-               const float rx, const float ry, const float rz,
-               const float sx, const float sy, const float sz)
+BBMesh::BBMesh(float px, float py, float pz,
+               float rx, float ry, float rz,
+               float sx, float sy, float sz)
     : BBRenderableObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
 
 }
 
-void BBMesh::init(const QString path, BBBoundingBox3D *&pOutBoundingBox)
+void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
 {
     QList<QVector4D> positions;
     load(path, positions);
@@ -46,7 +46,7 @@ void BBMesh::init(const QString path, BBBoundingBox3D *&pOutBoundingBox)
 //    setDefaultMaterial();
 }
 
-bool BBMesh::hit(BBRay ray, float &fDistance)
+bool BBMesh::hit(const BBRay &ray, float &fDistance)
 {
     QVector3D intersection;
     bool bResult = false;

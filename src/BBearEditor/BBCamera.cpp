@@ -77,10 +77,10 @@ void BBCamera::update(float fDeltaTime)
                               m_pModelView[3], m_pModelView[7], m_pModelView[11], m_pModelView[15]);
 }
 
-void BBCamera::setViewportSize(int width, int height)
+void BBCamera::setViewportSize(int fWidth, int fHeight)
 {
-    m_iViewportWidth = width;
-    m_iViewportHeight = height;
+    m_iViewportWidth = fWidth;
+    m_iViewportHeight = fHeight;
     m_pViewport[0] = 0;
     m_pViewport[1] = 0;
     m_pViewport[2] = m_iViewportWidth;

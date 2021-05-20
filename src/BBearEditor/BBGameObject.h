@@ -14,10 +14,10 @@ class BBGameObject
 {
 public:
     BBGameObject();
-    BBGameObject(const QVector3D position, const QVector3D rotation, const QVector3D scale);
-    BBGameObject(const float px, const float py, const float pz,
-                 const float rx, const float ry, const float rz,
-                 const float sx, const float sy, const float sz);
+    BBGameObject(const QVector3D &position, const QVector3D &rotation, const QVector3D &scale);
+    BBGameObject(float px, float py, float pz,
+                 float rx, float ry, float rz,
+                 float sx, float sy, float sz);
     virtual ~BBGameObject() {}
 
     inline QMatrix4x4 getModelMatrix() { return m_ModelMatrix; }
@@ -26,7 +26,7 @@ public:
     inline QVector3D getPosition() { return m_Position; }
     inline QVector3D getLocalPosition() { return m_LocalPosition; }
 
-    virtual void setRotation(const int nAngle, const QVector3D axis, const bool bUpdateLocalTransform = true);
+    virtual void setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform = true);
     virtual void setRotation(const QVector3D &rotation, bool bUpdateLocalTransform = true);
     QVector3D getRotation() { return m_Rotation; }
     QVector3D getLocalRotation() { return m_LocalRotation; }
@@ -38,25 +38,25 @@ public:
     QVector3D getScale() { return m_Scale; }
     QVector3D getLocalScale() { return m_LocalScale; }
 
-    virtual void setActivity(const bool bActive) { m_bActive = bActive; }
+    virtual void setActivity(bool bActive) { m_bActive = bActive; }
     inline bool getActivity() { return m_bActive; }
-    virtual void setVisibility(const bool bVisible) { m_bVisible = bVisible; }
+    virtual void setVisibility(bool bVisible) { m_bVisible = bVisible; }
 
-    void setName(const QString name) { m_strName = name; }
+    void setName(const QString &name) { m_strName = name; }
     inline QString getName() { return m_strName; }
-    void setClassName(const QString className) { m_strClassName = className; }
+    void setClassName(const QString &className) { m_strClassName = className; }
     inline QString getClassName()  { return m_strClassName; }
-    void setIconName(const QString iconName) { m_strIconName = iconName; }
+    void setIconName(const QString &iconName) { m_strIconName = iconName; }
     inline QString getIconName()  { return m_strIconName; }
-    void setBaseAttributes(QString name, QString className, QString iconName, bool bActive = true);
+    void setBaseAttributes(const QString &name, const QString &className, const QString &iconName, bool bActive = true);
 
     virtual void init();
-    virtual void init(const QString path);
+    virtual void init(const QString &path);
     virtual void render(BBCamera *pCamera);
-    virtual void render(QMatrix4x4 modelMatrix, BBCamera *pCamera);
+    virtual void render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera);
     virtual void resize(float fWidth, float fHeight);
 
-    virtual bool hit(BBRay ray, float &fDistance);
+    virtual bool hit(const BBRay &ray, float &fDistance);
 
 
 //    void setLocalTransform();

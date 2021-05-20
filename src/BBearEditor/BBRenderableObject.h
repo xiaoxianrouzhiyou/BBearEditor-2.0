@@ -11,16 +11,18 @@ class BBRenderableObject : public BBGameObject
 {
 public:
     BBRenderableObject();
-    BBRenderableObject(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz);
+    BBRenderableObject(float px, float py, float pz,
+                       float rx, float ry, float rz,
+                       float sx, float sy, float sz);
     virtual ~BBRenderableObject();
 
     void render(BBCamera *pCamera) override;
-    void render(QMatrix4x4 modelMatrix, BBCamera *pCamera) override;
+    void render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera) override;
     void resize(float fWidth, float fHeight) override;
 
-    void setTexture(const QString filePath, const bool bInvertY = true);
-    void setTexture(const int nSize);
-    void setTexture(const GLuint nTexture);
+    void setTexture(const QString &filePath, bool bInvertY = true);
+    void setTexture(int nSize);
+    void setTexture(const GLuint &nTexture);
 
 //    void setAmbientMaterial(float r, float g, float b, float a);
 //    void setAmbientMaterial(QColor color);

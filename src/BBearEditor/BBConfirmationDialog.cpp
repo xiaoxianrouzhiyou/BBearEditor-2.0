@@ -24,12 +24,12 @@ BBConfirmationDialog::~BBConfirmationDialog()
     BB_SAFE_DELETE(m_pUi);
 }
 
-void BBConfirmationDialog::setTitle(QString title)
+void BBConfirmationDialog::setTitle(const QString &title)
 {
     m_pUi->labelTitle->setText(title);
 }
 
-void BBConfirmationDialog::setMessage(QString message)
+void BBConfirmationDialog::setMessage(const QString &message)
 {
     m_pUi->labelMessage->setText(message);
 }

@@ -39,7 +39,7 @@ void BBRenderableObject::render(BBCamera *pCamera)
                           m_pVertexBuffer);
 }
 
-void BBRenderableObject::render(QMatrix4x4 modelMatrix, BBCamera *pCamera)
+void BBRenderableObject::render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera)
 {
     if (m_bVisible)
         m_pShader->render([this]()->void { draw(); },
@@ -54,17 +54,17 @@ void BBRenderableObject::resize(float fWidth, float fHeight)
     m_pShader->resize(fWidth, fHeight);
 }
 
-void BBRenderableObject::setTexture(const QString filePath, const bool bInvertY)
+void BBRenderableObject::setTexture(const QString &filePath, bool bInvertY)
 {
     m_pShader->setTexture(NAME_TEXTURE, filePath, bInvertY);
 }
 
-void BBRenderableObject::setTexture(const int nSize)
+void BBRenderableObject::setTexture(int nSize)
 {
     m_pShader->setTexture(NAME_TEXTURE, nSize);
 }
 
-void BBRenderableObject::setTexture(const GLuint nTexture)
+void BBRenderableObject::setTexture(const GLuint &nTexture)
 {
     m_pShader->setTexture(NAME_TEXTURE, nTexture);
 }

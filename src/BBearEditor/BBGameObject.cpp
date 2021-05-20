@@ -7,7 +7,7 @@ BBGameObject::BBGameObject()
 
 }
 
-BBGameObject::BBGameObject(QVector3D position, QVector3D rotation, QVector3D scale)
+BBGameObject::BBGameObject(const QVector3D &position, const QVector3D &rotation, const QVector3D &scale)
     : BBGameObject(position.x(), position.y(), position.z(),
                    rotation.x(), rotation.y(), rotation.z(),
                       scale.x(),    scale.y(),    scale.z())
@@ -15,7 +15,9 @@ BBGameObject::BBGameObject(QVector3D position, QVector3D rotation, QVector3D sca
 
 }
 
-BBGameObject::BBGameObject(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz)
+BBGameObject::BBGameObject(float px, float py, float pz,
+                           float rx, float ry, float rz,
+                           float sx, float sy, float sz)
 {
     m_Position        = QVector3D(px, py, pz);
     m_Rotation        = QVector3D(rx, ry, rz);
@@ -61,7 +63,7 @@ void BBGameObject::setPosition(const QVector3D &position, bool bUpdateLocalTrans
 //    }
 }
 
-void BBGameObject::setRotation(int nAngle, QVector3D axis, bool bUpdateLocalTransform)
+void BBGameObject::setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform)
 {
     // Rotate the current quaternion
     QQuaternion rot = QQuaternion::fromAxisAndAngle(axis, nAngle);
@@ -236,7 +238,7 @@ void BBGameObject::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
 //    }
 }
 
-void BBGameObject::setBaseAttributes(QString name, QString className, QString iconName, bool bActive)
+void BBGameObject::setBaseAttributes(const QString &name, const QString &className, const QString &iconName, bool bActive)
 {
     m_strName = name;
     m_strClassName = className;
@@ -249,7 +251,7 @@ void BBGameObject::init()
 
 }
 
-void BBGameObject::init(const QString path)
+void BBGameObject::init(const QString &path)
 {
     Q_UNUSED(path);
 }
@@ -259,7 +261,7 @@ void BBGameObject::render(BBCamera *pCamera)
     Q_UNUSED(pCamera);
 }
 
-void BBGameObject::render(QMatrix4x4 modelMatrix, BBCamera *pCamera)
+void BBGameObject::render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera)
 {
     Q_UNUSED(modelMatrix);
     Q_UNUSED(pCamera);
@@ -271,11 +273,11 @@ void BBGameObject::resize(float fWidth, float fHeight)
     Q_UNUSED(fHeight);
 }
 
-bool BBGameObject::hit(BBRay ray, float &fDistance)
+bool BBGameObject::hit(const BBRay &ray, float &fDistance)
 {
     Q_UNUSED(ray);
     Q_UNUSED(fDistance);
-    return false;
+    return m_bActive;
 }
 
 void BBGameObject::setModelMatrix(float px, float py, float pz,

@@ -13,24 +13,24 @@ class BBModel : public BBGameObject
 {
 public:
     BBModel(BBMeshType eType);
-    BBModel(const float px, const float py, const float pz,
-            const float rx, const float ry, const float rz,
-            const float sx, const float sy, const float sz, BBMeshType eType);
+    BBModel(float px, float py, float pz,
+            float rx, float ry, float rz,
+            float sx, float sy, float sz, const BBMeshType &eType);
     virtual ~BBModel();
 
-    void init(const QString path) override;
+    void init(const QString &path) override;
     void render(BBCamera *pCamera) override;
     void resize(float fWidth, float fHeight) override;
 
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
-    void setRotation(const int nAngle, const QVector3D axis, const bool bUpdateLocalTransform = true) override;
+    void setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform = true) override;
     void setRotation(const QVector3D &rotation, bool bUpdateLocalTransform = true) override;
     void setScale(const QVector3D &scale, const bool bUpdateLocalTransform = true) override;
 
-    void setActivity(const bool bActive) override;
-    void setVisibility(const bool bVisible) override;
+    void setActivity(bool bActive) override;
+    void setVisibility(bool bVisible) override;
 
-    bool hit(BBRay ray, float &fDistance) override;
+    bool hit(const BBRay &ray, float &fDistance) override;
 
 private:
     BBMesh *m_pMesh;

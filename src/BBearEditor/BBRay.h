@@ -17,28 +17,31 @@ enum BBPlaneName
 class BBRay
 {
 public:
-    BBRay(GLdouble nearX, GLdouble nearY, GLdouble nearZ, GLdouble farX, GLdouble farY, GLdouble farZ);
+    BBRay(const GLdouble &nearX, const GLdouble &nearY, const GLdouble &nearZ,
+          const GLdouble &farX, const GLdouble &farY, const GLdouble &farZ);
 
-    QVector3D computeIntersectWithXOZPlane(float y);
-    QVector3D computeIntersectWithXOYPlane(float z);
-    QVector3D computeIntersectWithYOZPlane(float x);
+    QVector3D computeIntersectWithXOZPlane(float y) const;
+    QVector3D computeIntersectWithXOYPlane(float z) const;
+    QVector3D computeIntersectWithYOZPlane(float x) const;
 
-    bool computeIntersectWithPlane(QVector3D point1, QVector3D point2,
-                                   QVector3D point3, QVector3D &intersection);
-    bool computeIntersectWithPlane(QVector3D point, QVector3D normal, QVector3D &intersection);
-    bool computeIntersectWithTriangle(QVector3D point1, QVector3D point2,
-                                      QVector3D point3, QVector3D &intersection);
-    bool computeIntersectWithRectangle(QVector3D point1, QVector3D point2,
-                                       QVector3D point3, QVector3D point4, QVector3D &intersection);
+    bool computeIntersectWithPlane(const QVector3D &point1, const QVector3D &point2,
+                                   const QVector3D &point3, QVector3D &outIntersection) const;
+    bool computeIntersectWithPlane(const QVector3D &point, const QVector3D &normal,
+                                   QVector3D &outIntersection) const;
+    bool computeIntersectWithTriangle(const QVector3D &point1, const QVector3D &point2,
+                                      const QVector3D &point3, QVector3D &outIntersection) const;
+    bool computeIntersectWithRectangle(const QVector3D &point1, const QVector3D &point2,
+                                       const QVector3D &point3, const QVector3D &point4,
+                                       QVector3D &outIntersection) const;
 
-    float computeIntersectDistance(QVector3D intersection);
+    float computeIntersectDistance(const QVector3D &intersection) const;
 
     // Circle parallel to coordinate plane
     bool computeIntersectWithCircle(const QVector3D &center, float fRadius,
-                                    const BBPlaneName &ePlaneName, QVector3D &intersection);
+                                    const BBPlaneName &ePlaneName, QVector3D &outIntersection) const;
     bool computeIntersectWithQuarterCircle(const QVector3D &center, float fRadius,
-                                           const BBPlaneName &ePlaneName, QVector3D &intersection,
-                                           const QVector3D &quadrantFlag);
+                                           const BBPlaneName &ePlaneName, QVector3D &outIntersection,
+                                           const QVector3D &quadrantFlag) const;
 
 private:
     QVector3D m_NearPoint;

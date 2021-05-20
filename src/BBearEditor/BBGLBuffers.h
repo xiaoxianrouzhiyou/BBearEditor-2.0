@@ -12,33 +12,33 @@
 class BBGLVertexBuffer
 {
 public:
-    BBGLVertexBuffer(const int nVertexCount);
+    BBGLVertexBuffer(int nVertexCount);
     virtual ~BBGLVertexBuffer();
 
-    void setPosition(const int index, const float x, const float y, const float z, const float w = 1.0f);
-    void setPosition(const int index, const QVector3D position);
-    void setPosition(const int index, const QVector4D position);
-    QVector3D getPosition(const int index);
+    void setPosition(int index, float x, float y, float z, float w = 1.0f);
+    void setPosition(int index, const QVector3D &position);
+    void setPosition(int index, const QVector4D &position);
+    QVector3D getPosition(int index);
     inline float *getPosition() { return m_fPosition; }
 
-    void setColor(const int index, const float r, const float g, const float b, const float a = 1.0f);
-    void setColor(const int index, const QVector3D rgb);
-    void setColor(const int index, const QVector4D rgba);
+    void setColor(int index, float r, float g, float b, float a = 1.0f);
+    void setColor(int index, const QVector3D &rgb);
+    void setColor(int index, const QVector4D &rgba);
     inline float *getColor() { return m_fColor; }
 
-    void setTexcoord(const int index, const float u, const float v);
-    void setTexcoord(const int index, const QVector2D uv);
+    void setTexcoord(int index, float u, float v);
+    void setTexcoord(int index, const QVector2D &uv);
     inline float *getTexcoord() { return m_fTexcoord; }
 
-    void setNormal(const int index, const float x, const float y, const float z);
-    void setNormal(const int index, const QVector3D normal);
-    void setNormal(const int index, const QVector4D normal);
+    void setNormal(int index, float x, float y, float z);
+    void setNormal(int index, const QVector3D &normal);
+    void setNormal(int index, const QVector4D &normal);
     inline float *getNormal() { return m_fNormal; }
 
     inline int getVertexCount() { return m_nVertexCount; }
 
 private:
-    void setSize(const int nVertexCount);
+    void setSize(int nVertexCount);
 
     int m_nVertexCount;
     float *m_fPosition;
@@ -63,9 +63,9 @@ public:
 class BBGLTexture2D : public BBGLTexture
 {
 public:
-    BBGLTexture2D(const int nWidth, const int nHeight);
-    BBGLTexture2D(const QString &fileName, const bool bInvertY = true);
-    void load(const int nWidth, const int nHeight, QRgb *pData);
+    BBGLTexture2D(int nWidth, int nHeight);
+    BBGLTexture2D(const QString &fileName, bool bInvertY = true);
+    void load(int nWidth, int nHeight, QRgb *pData);
     void bind() override;
     void unbind() override;
 };

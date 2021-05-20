@@ -46,8 +46,8 @@ BBGLShader::~BBGLShader()
     }
 }
 
-void BBGLShader::init(const QString vertexShaderPath, const QString fragmentShaderPath,
-                      const unsigned short *pIndexes, const int nIndexCount)
+void BBGLShader::init(const QString &vertexShaderPath, const QString &fragmentShaderPath,
+                      const unsigned short *pIndexes, int nIndexCount)
 {
     // protected QOpenGLFunctions + initializeOpenGLFunctions in order to use OpenGL's extension mechanism
     // so that invoke glActiveTexture
@@ -75,14 +75,14 @@ void BBGLShader::init(const QString vertexShaderPath, const QString fragmentShad
     bindElementBufferObject(pIndexes, nIndexCount);
 }
 
-void BBGLShader::render(const std::function<void()> draw, const QMatrix4x4 modelMatrix, const QMatrix4x4 viewMatrix,
-                        const QVector3D cameraPos, BBGLVertexBuffer *pVertexbuffer)
+void BBGLShader::render(const std::function<void()> &draw, const QMatrix4x4 &modelMatrix, const QMatrix4x4 &viewMatrix,
+                        const QVector3D &cameraPos, BBGLVertexBuffer *pVertexbuffer)
 {
     render(draw, modelMatrix, viewMatrix, m_ProjectionMatrix, cameraPos, pVertexbuffer);
 }
 
-void BBGLShader::render(const std::function<void()> draw, const QMatrix4x4 modelMatrix, const QMatrix4x4 viewMatrix, const QMatrix4x4 projectionMatrix,
-                        const QVector3D cameraPos, BBGLVertexBuffer *pVertexbuffer)
+void BBGLShader::render(const std::function<void()> &draw, const QMatrix4x4 &modelMatrix, const QMatrix4x4 &viewMatrix, const QMatrix4x4 &projectionMatrix,
+                        const QVector3D &cameraPos, BBGLVertexBuffer *pVertexbuffer)
 {
     // camera movement
     m_ViewMatrix = viewMatrix;
@@ -163,13 +163,13 @@ void BBGLShader::render(const std::function<void()> draw, const QMatrix4x4 model
     m_pProgram->release();
 }
 
-void BBGLShader::resize(const float fWidth, const float fHeight)
+void BBGLShader::resize(float fWidth, float fHeight)
 {
     m_ProjectionMatrix.setToIdentity();
     m_ProjectionMatrix.perspective(50.0f, fWidth / fHeight, 0.1f, 1000.0f);
 }
 
-void BBGLShader::setVector4f(const QString name, const float x, const float y, const float z, const float w)
+void BBGLShader::setVector4f(const QString &name, float x, float y, float z, float w)
 {
     GLint location = m_pProgram->uniformLocation(name);
     if (location != -1)
@@ -184,7 +184,7 @@ void BBGLShader::setVector4f(const QString name, const float x, const float y, c
     }
 }
 
-void BBGLShader::setTexture(const QString name, const QString filePath, const bool bInvertY)
+void BBGLShader::setTexture(const QString &name, const QString &filePath, bool bInvertY)
 {
     GLint location = m_pProgram->uniformLocation(name);
     if (location != -1)
@@ -197,17 +197,17 @@ void BBGLShader::setTexture(const QString name, const QString filePath, const bo
     }
 }
 
-void BBGLShader::setTexture(const QString name, const int nSize)
+void BBGLShader::setTexture(const QString &name, int nSize)
 {
 
 }
 
-void BBGLShader::setTexture(const QString name, const GLuint nTexture)
+void BBGLShader::setTexture(const QString &name, const GLuint &nTexture)
 {
 
 }
 
-void BBGLShader::bindElementBufferObject(const unsigned short *pIndexes, const int nIndexCount)
+void BBGLShader::bindElementBufferObject(const unsigned short *pIndexes, int nIndexCount)
 {
     m_pElementBufferObject = new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
     m_pElementBufferObject->create();

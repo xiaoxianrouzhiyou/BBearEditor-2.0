@@ -18,16 +18,16 @@ class BBMesh : public BBRenderableObject
 {
 public:
     BBMesh();
-    BBMesh(const float px, const float py, const float pz,
-           const float rx, const float ry, const float rz,
-           const float sx, const float sy, const float sz);
+    BBMesh(float px, float py, float pz,
+           float rx, float ry, float rz,
+           float sx, float sy, float sz);
 
-    virtual void init(const QString path, BBBoundingBox3D *&pOutBoundingBox);
+    virtual void init(const QString &path, BBBoundingBox3D *&pOutBoundingBox);
 
-    bool hit(BBRay ray, float &fDistance) override;
+    bool hit(const BBRay &ray, float &fDistance) override;
 
 protected:
-    virtual void load(const QString path, QList<QVector4D> &outPositions) = 0;
+    virtual void load(const QString &path, QList<QVector4D> &outPositions) = 0;
     void draw() override;
 };
 

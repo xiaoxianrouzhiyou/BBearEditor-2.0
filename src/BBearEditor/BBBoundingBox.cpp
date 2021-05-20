@@ -35,7 +35,7 @@ BBBoundingBox::~BBBoundingBox()
     BB_SAFE_DELETE_ARRAY(m_pTransformedBoxVertexes);
 }
 
-bool BBBoundingBox::hit(BBRay ray, float &fDistance)
+bool BBBoundingBox::hit(const BBRay &ray, float &fDistance)
 {
     Q_UNUSED(ray);
     Q_UNUSED(fDistance);
@@ -103,7 +103,7 @@ BBRectBoundingBox2D::~BBRectBoundingBox2D()
 
 }
 
-bool BBRectBoundingBox2D::hit(BBRay ray, float &fDistance)
+bool BBRectBoundingBox2D::hit(const BBRay &ray, float &fDistance)
 {
     // If it is not activated, no collision occurs
     if (!BBBoundingBox::hit(ray, fDistance))
@@ -144,7 +144,7 @@ BBTriangleBoundingBox2D::BBTriangleBoundingBox2D(const QVector3D &point1,
     m_pOriginalBoxVertexes[2] = point3;
 }
 
-bool BBTriangleBoundingBox2D::hit(BBRay ray, float &fDistance)
+bool BBTriangleBoundingBox2D::hit(const BBRay &ray, float &fDistance)
 {
     // If it is not activated, no collision occurs
     if (!BBBoundingBox::hit(ray, fDistance))
@@ -195,7 +195,7 @@ BBQuarterCircleBoundingBox2D::BBQuarterCircleBoundingBox2D(float fCenterX, float
     }
 }
 
-bool BBQuarterCircleBoundingBox2D::hit(BBRay ray, float &fDistance)
+bool BBQuarterCircleBoundingBox2D::hit(const BBRay &ray, float &fDistance)
 {
     // If it is not activated, no collision occurs
     if (!BBBoundingBox::hit(ray, fDistance))
@@ -222,7 +222,7 @@ bool BBQuarterCircleBoundingBox2D::hit(BBRay ray, float &fDistance)
 // BBBoundingBox3D
 //--------------------
 
-BBBoundingBox3D::BBBoundingBox3D(QList<QVector4D> vertexes)
+BBBoundingBox3D::BBBoundingBox3D(const QList<QVector4D> &vertexes)
     : BBBoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, vertexes)
 {
 
@@ -231,7 +231,7 @@ BBBoundingBox3D::BBBoundingBox3D(QList<QVector4D> vertexes)
 BBBoundingBox3D::BBBoundingBox3D(float px, float py, float pz,
                                  float rx, float ry, float rz,
                                  float sx, float sy, float sz,
-                                 QList<QVector4D> vertexes)
+                                 const QList<QVector4D> &vertexes)
     : BBBoundingBox(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
     m_nBoxVertexCount = 8;
@@ -321,7 +321,7 @@ void BBBoundingBox3D::init()
                     m_nIndexCount);
 }
 
-bool BBBoundingBox3D::hit(BBRay ray, float &fDistance)
+bool BBBoundingBox3D::hit(const BBRay &ray, float &fDistance)
 {
     // If it is not activated, no collision occurs
     if (!BBBoundingBox::hit(ray, fDistance))
@@ -357,7 +357,7 @@ void BBBoundingBox3D::draw()
     glDrawElements(GL_LINES, m_nIndexCount, GL_UNSIGNED_SHORT, 0);
 }
 
-void BBBoundingBox3D::computeBoxVertexes(QList<QVector4D> vertexes)
+void BBBoundingBox3D::computeBoxVertexes(const QList<QVector4D> &vertexes)
 {
     Q_UNUSED(vertexes);
     FloatData temp[8];
@@ -389,7 +389,7 @@ void BBBoundingBox3D::computeBoxVertexes(QList<QVector4D> vertexes)
 // BBAABBBoundingBox3D
 //--------------------
 
-BBAABBBoundingBox3D::BBAABBBoundingBox3D(QList<QVector4D> vertexes)
+BBAABBBoundingBox3D::BBAABBBoundingBox3D(const QList<QVector4D> &vertexes)
     : BBAABBBoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, vertexes)
 {
 
@@ -398,7 +398,7 @@ BBAABBBoundingBox3D::BBAABBBoundingBox3D(QList<QVector4D> vertexes)
 BBAABBBoundingBox3D::BBAABBBoundingBox3D(float px, float py, float pz,
                                          float rx, float ry, float rz,
                                          float sx, float sy, float sz,
-                                         QList<QVector4D> vertexes)
+                                         const QList<QVector4D> &vertexes)
     : BBBoundingBox3D(px, py, pz, rx, ry, rz, sx, sy, sz, vertexes)
 {
     m_HalfLength[0] = 0;
@@ -407,7 +407,7 @@ BBAABBBoundingBox3D::BBAABBBoundingBox3D(float px, float py, float pz,
     computeBoxVertexes(vertexes);
 }
 
-void BBAABBBoundingBox3D::computeBoxVertexes(QList<QVector4D> vertexes)
+void BBAABBBoundingBox3D::computeBoxVertexes(const QList<QVector4D> &vertexes)
 {
     int nVertexCount = vertexes.count();
 

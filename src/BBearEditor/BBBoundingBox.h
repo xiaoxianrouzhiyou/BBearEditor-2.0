@@ -21,7 +21,7 @@ public:
                   float sx, float sy, float sz);
     virtual ~BBBoundingBox();
 
-    bool hit(BBRay ray, float &fDistance) override;
+    bool hit(const BBRay &ray, float &fDistance) override;
 
     QVector3D getCenter();
 
@@ -45,7 +45,7 @@ public:
                         float fHalfLengthX, float fHalfLengthY, float fHalfLengthZ);
     virtual ~BBRectBoundingBox2D();
 
-    bool hit(BBRay ray, float &fDistance) override;
+    bool hit(const BBRay &ray, float &fDistance) override;
 };
 
 
@@ -55,7 +55,7 @@ class BBTriangleBoundingBox2D : public BBBoundingBox
 public:
     BBTriangleBoundingBox2D(const QVector3D &point1, const QVector3D &point2, const QVector3D &point3);
 
-    bool hit(BBRay ray, float &fDistance) override;
+    bool hit(const BBRay &ray, float &fDistance) override;
 };
 
 
@@ -66,7 +66,7 @@ public:
     BBQuarterCircleBoundingBox2D(float fCenterX, float fCenterY, float fCenterZ,
                                  float fRadius, const BBPlaneName &ePlaneName);
 
-    bool hit(BBRay ray, float &fDistance) override;
+    bool hit(const BBRay &ray, float &fDistance) override;
     inline void setQuadrantFlag(const QVector3D &flag) { m_QuadrantFlag = flag; }
 
 private:
@@ -78,11 +78,11 @@ private:
 class BBBoundingBox3D : public BBBoundingBox
 {
 public:
-    BBBoundingBox3D(QList<QVector4D> vertexes = QList<QVector4D>());
+    BBBoundingBox3D(const QList<QVector4D> &vertexes = QList<QVector4D>());
     BBBoundingBox3D(float px, float py, float pz,
                     float rx, float ry, float rz,
                     float sx, float sy, float sz,
-                    QList<QVector4D> vertexes = QList<QVector4D>());
+                    const QList<QVector4D> &vertexes = QList<QVector4D>());
     BBBoundingBox3D(float px, float py, float pz,
                     float rx, float ry, float rz,
                     float sx, float sy, float sz,
@@ -91,7 +91,7 @@ public:
     virtual ~BBBoundingBox3D();
 
     void init() override;
-    bool hit(BBRay ray, float &fDistance) override;
+    bool hit(const BBRay &ray, float &fDistance) override;
 //    QVector3D getHalfLength();
 //    bool belongToSelectionRegion(QVector3D left1, QVector3D left2, QVector3D left3,
 //                                 QVector3D top1, QVector3D top2, QVector3D top3,
@@ -101,7 +101,7 @@ public:
 
 protected:
     void draw() override;
-    virtual void computeBoxVertexes(QList<QVector4D> vertexes);
+    virtual void computeBoxVertexes(const QList<QVector4D> &vertexes);
 
     float m_Axis[3][3];
     float m_HalfLength[3];
@@ -111,14 +111,14 @@ protected:
 class BBAABBBoundingBox3D : public BBBoundingBox3D
 {
 public:
-    BBAABBBoundingBox3D(QList<QVector4D> vertexes = QList<QVector4D>());
+    BBAABBBoundingBox3D(const QList<QVector4D> &vertexes = QList<QVector4D>());
     BBAABBBoundingBox3D(float px, float py, float pz,
                         float rx, float ry, float rz,
                         float sx, float sy, float sz,
-                        QList<QVector4D> vertexes = QList<QVector4D>());
+                        const QList<QVector4D> &vertexes = QList<QVector4D>());
 
 private:
-    void computeBoxVertexes(QList<QVector4D> vertexes) override;
+    void computeBoxVertexes(const QList<QVector4D> &vertexes) override;
 };
 
 

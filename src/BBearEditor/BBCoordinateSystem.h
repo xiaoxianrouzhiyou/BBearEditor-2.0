@@ -32,9 +32,9 @@ class BBCoordinateComponent : public BBRenderableObject
 {
 protected:
     BBCoordinateComponent();
-    BBCoordinateComponent(const float px, const float py, const float pz,
-                          const float rx, const float ry, const float rz,
-                          const float sx, const float sy, const float sz);
+    BBCoordinateComponent(float px, float py, float pz,
+                          float rx, float ry, float rz,
+                          float sx, float sy, float sz);
 
     BBAxisFlags m_SelectedAxis;
     static QVector3D m_Red;
@@ -48,12 +48,12 @@ protected:
     static QVector4D m_GrayTransparency;
 
 public:
-    void setSelectedAxis(BBAxisFlags axis);
+    void setSelectedAxis(const BBAxisFlags &axis);
 
 private:
-    void setVertexColor(BBAxisFlags axis, bool bSelected);
-    void setVertexColor(int start, int end, QVector3D color);
-    void setVertexColor(int start, int end, QVector4D color);
+    void setVertexColor(const BBAxisFlags &axis, bool bSelected);
+    void setVertexColor(int start, int end, const QVector3D &color);
+    void setVertexColor(int start, int end, const QVector4D &color);
 };
 
 
@@ -62,9 +62,9 @@ class BBCoordinateArrow : public BBCoordinateComponent
 {
 public:
     BBCoordinateArrow();
-    BBCoordinateArrow(const float px, const float py, const float pz,
-                      const float rx, const float ry, const float rz,
-                      const float sx, const float sy, const float sz);
+    BBCoordinateArrow(float px, float py, float pz,
+                      float rx, float ry, float rz,
+                      float sx, float sy, float sz);
 
     void init() override;
 
@@ -78,9 +78,9 @@ class BBCoordinateAxis : public BBCoordinateComponent
 {
 public:
     BBCoordinateAxis();
-    BBCoordinateAxis(const float px, const float py, const float pz,
-                     const float rx, const float ry, const float rz,
-                     const float sx, const float sy, const float sz);
+    BBCoordinateAxis(float px, float py, float pz,
+                     float rx, float ry, float rz,
+                     float sx, float sy, float sz);
 
     void init() override;
 
@@ -94,9 +94,9 @@ class BBCoordinateRectFace : public BBCoordinateComponent
 {
 public:
     BBCoordinateRectFace();
-    BBCoordinateRectFace(const float px, const float py, const float pz,
-                         const float rx, const float ry, const float rz,
-                         const float sx, const float sy, const float sz);
+    BBCoordinateRectFace(float px, float py, float pz,
+                         float rx, float ry, float rz,
+                         float sx, float sy, float sz);
 
     void init() override;
 
@@ -110,9 +110,9 @@ class BBCoordinateQuarterCircle : public BBCoordinateComponent
 {
 public:
     BBCoordinateQuarterCircle();
-    BBCoordinateQuarterCircle(const float px, const float py, const float pz,
-                              const float rx, const float ry, const float rz,
-                              const float sx, const float sy, const float sz);
+    BBCoordinateQuarterCircle(float px, float py, float pz,
+                              float rx, float ry, float rz,
+                              float sx, float sy, float sz);
 
     void init() override;
 
@@ -125,9 +125,9 @@ class BBCoordinateCircle : public BBCoordinateComponent
 {
 public:
     BBCoordinateCircle();
-    BBCoordinateCircle(const float px, const float py, const float pz,
-                       const float rx, const float ry, const float rz,
-                       const float sx, const float sy, const float sz);
+    BBCoordinateCircle(float px, float py, float pz,
+                       float rx, float ry, float rz,
+                       float sx, float sy, float sz);
 
     void init() override;
 
@@ -141,9 +141,9 @@ class BBCoordinateTickMark : public BBCoordinateComponent
 {
 public:
     BBCoordinateTickMark();
-    BBCoordinateTickMark(const float px, const float py, const float pz,
-                         const float rx, const float ry, const float rz,
-                         const float sx, const float sy, const float sz);
+    BBCoordinateTickMark(float px, float py, float pz,
+                         float rx, float ry, float rz,
+                         float sx, float sy, float sz);
 
     void init() override;
 
@@ -157,7 +157,9 @@ class BBCoordinateSector : public BBCoordinateComponent
 {
 public:
     BBCoordinateSector();
-    BBCoordinateSector(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz);
+    BBCoordinateSector(float px, float py, float pz,
+                       float rx, float ry, float rz,
+                       float sx, float sy, float sz);
 
     void init() override;
     void render(BBCamera *pCamera) override;
@@ -177,12 +179,12 @@ class BBCoordinateCube : public BBCoordinateComponent
 {
 public:
     BBCoordinateCube();
-    BBCoordinateCube(const float px, const float py, const float pz,
-                     const float rx, const float ry, const float rz,
-                     const float sx, const float sy, const float sz);
+    BBCoordinateCube(float px, float py, float pz,
+                     float rx, float ry, float rz,
+                     float sx, float sy, float sz);
 
     void init() override;
-    void moveAsScale(QVector3D delta);
+    void moveAsScale(const QVector3D &delta);
 
 private:
     void draw() override;
@@ -197,9 +199,9 @@ class BBCoordinateTriangleFace : public BBCoordinateComponent
 {
 public:
     BBCoordinateTriangleFace();
-    BBCoordinateTriangleFace(const float px, const float py, const float pz,
-                             const float rx, const float ry, const float rz,
-                             const float sx, const float sy, const float sz);
+    BBCoordinateTriangleFace(float px, float py, float pz,
+                             float rx, float ry, float rz,
+                             float sx, float sy, float sz);
 
     void init() override;
 
@@ -217,12 +219,12 @@ protected:
 
     void render(BBCamera *pCamera) override;
 
-    bool hit(BBRay ray,
-             BBBoundingBox *pBoundingBox1, BBAxisFlags axis1,
-             BBBoundingBox *pBoundingBox2, BBAxisFlags axis2,
-             BBBoundingBox *pBoundingBox3, BBAxisFlags axis3,
+    bool hit(const BBRay &ray,
+             BBBoundingBox *pBoundingBox1, const BBAxisFlags &axis1,
+             BBBoundingBox *pBoundingBox2, const BBAxisFlags &axis2,
+             BBBoundingBox *pBoundingBox3, const BBAxisFlags &axis3,
              float &fDistance);
-    virtual void transform(BBRay &ray) = 0;
+    virtual void transform(const BBRay &ray) = 0;
 
     BBAxisFlags m_SelectedAxis;
     QVector3D m_LastMousePos;
@@ -233,8 +235,8 @@ public:
     inline BBAxisFlags getSelectedAxis() { return m_SelectedAxis; }
     void setSelectedObject(BBGameObject *pObject);
 
-    virtual void setSelectedAxis(BBAxisFlags axis) = 0;
-    virtual bool mouseMoveEvent(BBRay &ray, bool bMousePressed) = 0;
+    virtual void setSelectedAxis(const BBAxisFlags &axis) = 0;
+    virtual bool mouseMoveEvent(const BBRay &ray, bool bMousePressed) = 0;
     void stopTransform();
 };
 
@@ -252,11 +254,11 @@ public:
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
     void setScale(float scale, bool bUpdateLocalTransform = true) override;
 
-    void setSelectedAxis(BBAxisFlags axis) override;
-    bool mouseMoveEvent(BBRay &ray, bool bMousePressed) override;
+    void setSelectedAxis(const BBAxisFlags &axis) override;
+    bool mouseMoveEvent(const BBRay &ray, bool bMousePressed) override;
 
 private:
-    void transform(BBRay &ray) override;
+    void transform(const BBRay &ray) override;
 
     BBCoordinateArrow *m_pCoordinateArrow;
     BBCoordinateAxis *m_pCoordinateAxis;
@@ -284,11 +286,11 @@ public:
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
     void setScale(const QVector3D &scale, bool bUpdateLocalTransform = true) override;
 
-    void setSelectedAxis(BBAxisFlags axis) override;
-    bool mouseMoveEvent(BBRay &ray, bool bMousePressed) override;
+    void setSelectedAxis(const BBAxisFlags &axis) override;
+    bool mouseMoveEvent(const BBRay &ray, bool bMousePressed) override;
 
 private:
-    void transform(BBRay &ray) override;
+    void transform(const BBRay &ray) override;
 
     BBCoordinateQuarterCircle *m_pCoordinateQuarterCircle;
     BBQuarterCircleBoundingBox2D *m_pBoundingBoxYOZ;
@@ -317,11 +319,11 @@ public:
     void setRotation(const QVector3D &rotation, bool bUpdateLocalTransform = true) override;
     void setScale(const QVector3D &scale, bool bUpdateLocalTransform = true) override;
 
-    void setSelectedAxis(BBAxisFlags axis) override;
-    bool mouseMoveEvent(BBRay &ray, bool bMousePressed) override;
+    void setSelectedAxis(const BBAxisFlags &axis) override;
+    bool mouseMoveEvent(const BBRay &ray, bool bMousePressed) override;
 
 private:
-    void transform(BBRay &ray) override;
+    void transform(const BBRay &ray) override;
 
     BBCoordinateCube *m_pCoordinateCube;
     BBCoordinateAxis *m_pCoordinateAxis;
@@ -351,7 +353,7 @@ public:
     void resize(float fWidth, float fHeight) override;
 
     void setSelectedObject(BBGameObject *pObject);
-    bool mouseMoveEvent(BBRay &ray, bool bMousePressed);
+    bool mouseMoveEvent(const BBRay &ray, bool bMousePressed);
     void setCoordinateSystemMode(char key);
     bool isTransforming() { return m_bTransforming; }
     void stopTransform();

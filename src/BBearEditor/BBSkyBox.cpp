@@ -14,7 +14,7 @@ BBSkyBoxSide::BBSkyBoxSide(BBGLVertexBuffer *pVertexBuffer)
     m_pVertexBuffer = pVertexBuffer;
 }
 
-void BBSkyBoxSide::init(const QString path)
+void BBSkyBoxSide::init(const QString &path)
 {
     m_pShader->init(QString(BB_PATH_RESOURCE_SHADER) + "texture.vert",
                     QString(BB_PATH_RESOURCE_SHADER) + "texture.frag");
@@ -60,7 +60,7 @@ BBSkyBox::~BBSkyBox()
     BB_SAFE_DELETE(m_pBottom);
 }
 
-void BBSkyBox::init(const QString path)
+void BBSkyBox::init(const QString &path)
 {
     m_pFront->init(path + "front");
     m_pBack->init(path + "back");

@@ -1,6 +1,7 @@
 #include "BBRay.h"
 
-BBRay::BBRay(GLdouble nearX, GLdouble nearY, GLdouble nearZ, GLdouble farX, GLdouble farY, GLdouble farZ)
+BBRay::BBRay(const GLdouble &nearX, const GLdouble &nearY, const GLdouble &nearZ,
+             const GLdouble &farX, const GLdouble &farY, const GLdouble &farZ)
 {
     m_NearPoint.setX(nearX);
     m_NearPoint.setY(nearY);
@@ -10,7 +11,7 @@ BBRay::BBRay(GLdouble nearX, GLdouble nearY, GLdouble nearZ, GLdouble farX, GLdo
     m_FarPoint.setZ(farZ);
 }
 
-QVector3D BBRay::computeIntersectWithXOZPlane(float y)
+QVector3D BBRay::computeIntersectWithXOZPlane(float y) const
 {
     // (x-x1)/(x2-x1)=(y-y1)/(y2-y1)
     float temp = (y - m_NearPoint.y()) / (m_FarPoint.y() - m_NearPoint.y());
@@ -19,7 +20,7 @@ QVector3D BBRay::computeIntersectWithXOZPlane(float y)
     return QVector3D(x, y, z);
 }
 
-QVector3D BBRay::computeIntersectWithXOYPlane(float z)
+QVector3D BBRay::computeIntersectWithXOYPlane(float z) const
 {
     float temp = (z - m_NearPoint.z()) / (m_FarPoint.z() - m_NearPoint.z());
     float x = temp * (m_FarPoint.x() - m_NearPoint.x()) + m_NearPoint.x();
@@ -27,7 +28,7 @@ QVector3D BBRay::computeIntersectWithXOYPlane(float z)
     return QVector3D(x, y, z);
 }
 
-QVector3D BBRay::computeIntersectWithYOZPlane(float x)
+QVector3D BBRay::computeIntersectWithYOZPlane(float x) const
 {
     float temp = (x - m_NearPoint.x()) / (m_FarPoint.x() - m_NearPoint.x());
     float y = temp * (m_FarPoint.y() - m_NearPoint.y()) + m_NearPoint.y();
@@ -35,15 +36,16 @@ QVector3D BBRay::computeIntersectWithYOZPlane(float x)
     return QVector3D(x, y, z);
 }
 
-bool BBRay::computeIntersectWithPlane(QVector3D point1, QVector3D point2,
-                                      QVector3D point3, QVector3D &intersection)
+bool BBRay::computeIntersectWithPlane(const QVector3D &point1, const QVector3D &point2,
+                                      const QVector3D &point3, QVector3D &outIntersection) const
 {
     // The cross product of two straight lines in a plane, the plane normal
     QVector3D normal = QVector3D::crossProduct(point1 - point2, point1 - point3);
-    return computeIntersectWithPlane(point1, normal, intersection);
+    return computeIntersectWithPlane(point1, normal, outIntersection);
 }
 
-bool BBRay::computeIntersectWithPlane(QVector3D point, QVector3D normal, QVector3D &intersection)
+bool BBRay::computeIntersectWithPlane(const QVector3D &point, const QVector3D &normal,
+                                      QVector3D &outIntersection) const
 {
     QVector3D direction = m_FarPoint - m_NearPoint;
     // The mouse does not move into the scene
@@ -62,14 +64,14 @@ bool BBRay::computeIntersectWithPlane(QVector3D point, QVector3D normal, QVector
     }
     float t = QVector3D::dotProduct(point - m_NearPoint, normal) / temp;
     // Use t in the parametric equation to calculate the point of intersection
-    intersection = direction * t + m_NearPoint;
+    outIntersection = direction * t + m_NearPoint;
     return true;
 }
 
-bool BBRay::computeIntersectWithTriangle(QVector3D point1, QVector3D point2,
-                                         QVector3D point3, QVector3D &intersection)
+bool BBRay::computeIntersectWithTriangle(const QVector3D &point1, const QVector3D &point2,
+                                         const QVector3D &point3, QVector3D &outIntersection) const
 {
-    if (!computeIntersectWithPlane(point1, point2, point3, intersection))
+    if (!computeIntersectWithPlane(point1, point2, point3, outIntersection))
     {
         return false;
     }
@@ -78,7 +80,7 @@ bool BBRay::computeIntersectWithTriangle(QVector3D point1, QVector3D point2,
     // u >= 0 v >= 0 u + v <= 1, point is within the triangle
     QVector3D v0 = point3 - point1;
     QVector3D v1 = point2 - point1;
-    QVector3D v2 = intersection - point1;
+    QVector3D v2 = outIntersection - point1;
     float dot00 = QVector3D::dotProduct(v0, v0);
     float dot01 = QVector3D::dotProduct(v0, v1);
     float dot02 = QVector3D::dotProduct(v0, v2);
@@ -108,17 +110,18 @@ bool BBRay::computeIntersectWithTriangle(QVector3D point1, QVector3D point2,
     }
 }
 
-bool BBRay::computeIntersectWithRectangle(QVector3D point1, QVector3D point2,
-                                          QVector3D point3, QVector3D point4, QVector3D &intersection)
+bool BBRay::computeIntersectWithRectangle(const QVector3D &point1, const QVector3D &point2,
+                                          const QVector3D &point3, const QVector3D &point4,
+                                          QVector3D &outIntersection) const
 {
     // Order of the 1234 quadrant
-    if (computeIntersectWithTriangle(point1, point2, point3, intersection))
+    if (computeIntersectWithTriangle(point1, point2, point3, outIntersection))
     {
         return true;
     }
     else
     {
-        if (computeIntersectWithTriangle(point1, point3, point4, intersection))
+        if (computeIntersectWithTriangle(point1, point3, point4, outIntersection))
         {
             return true;
         }
@@ -129,13 +132,13 @@ bool BBRay::computeIntersectWithRectangle(QVector3D point1, QVector3D point2,
     }
 }
 
-float BBRay::computeIntersectDistance(QVector3D intersection)
+float BBRay::computeIntersectDistance(const QVector3D &intersection) const
 {
     return m_NearPoint.distanceToPoint(intersection);
 }
 
 bool BBRay::computeIntersectWithCircle(const QVector3D &center, float fRadius,
-                                       const BBPlaneName &ePlaneName, QVector3D &intersection)
+                                       const BBPlaneName &ePlaneName, QVector3D &outIntersection) const
 {
     QVector3D normal;
     if (ePlaneName == BBPlaneName::YOZ)
@@ -155,9 +158,9 @@ bool BBRay::computeIntersectWithCircle(const QVector3D &center, float fRadius,
         return false;
     }
 
-    if (computeIntersectWithPlane(center, normal, intersection))
+    if (computeIntersectWithPlane(center, normal, outIntersection))
     {
-        float d = (intersection - center).length();
+        float d = (outIntersection - center).length();
         if (d <= fRadius)
             return true;
     }
@@ -166,16 +169,16 @@ bool BBRay::computeIntersectWithCircle(const QVector3D &center, float fRadius,
 }
 
 bool BBRay::computeIntersectWithQuarterCircle(const QVector3D &center, float fRadius,
-                                              const BBPlaneName &ePlaneName, QVector3D &intersection,
-                                              const QVector3D &quadrantFlag)
+                                              const BBPlaneName &ePlaneName, QVector3D &outIntersection,
+                                              const QVector3D &quadrantFlag) const
 {
-    if (!computeIntersectWithCircle(center, fRadius, ePlaneName, intersection))
+    if (!computeIntersectWithCircle(center, fRadius, ePlaneName, outIntersection))
     {
         return false;
     }
 
     // According to the flag, determine which quadrant the quarter circle belongs to
-    QVector3D temp = intersection - center;
+    QVector3D temp = outIntersection - center;
     if (ePlaneName == BBPlaneName::YOZ)
     {
         if ((temp.y() * quadrantFlag.y()) >= 0 && (temp.z() * quadrantFlag.z()) >= 0)

@@ -88,20 +88,20 @@ public:
     BBGLShader();
     virtual ~BBGLShader();
 
-    void init(const QString vertexShaderPath, const QString fragmentShaderPath,
-              const unsigned short *pIndexes = 0, const int nIndexCount = 0);
-    void render(const std::function<void()> draw, const QMatrix4x4 modelMatrix, const QMatrix4x4 viewMatrix,
-                const QVector3D cameraPos, BBGLVertexBuffer *pVertexbuffer);
-    void render(const std::function<void()> draw, const QMatrix4x4 modelMatrix, const QMatrix4x4 viewMatrix, const QMatrix4x4 projectionMatrix,
-                const QVector3D cameraPos, BBGLVertexBuffer *pVertexbuffer);
-    void resize(const float fWidth, const float fHeight);
+    void init(const QString &vertexShaderPath, const QString &fragmentShaderPath,
+              const unsigned short *pIndexes = 0, int nIndexCount = 0);
+    void render(const std::function<void()> &draw, const QMatrix4x4 &modelMatrix, const QMatrix4x4 &viewMatrix,
+                const QVector3D &cameraPos, BBGLVertexBuffer *pVertexbuffer);
+    void render(const std::function<void()> &draw, const QMatrix4x4 &modelMatrix, const QMatrix4x4 &viewMatrix, const QMatrix4x4 &projectionMatrix,
+                const QVector3D &cameraPos, BBGLVertexBuffer *pVertexbuffer);
+    void resize(float fWidth, float fHeight);
 
-    void setVector4f(const QString name, const float x, const float y, const float z, const float w);
-    void setTexture(const QString name, const QString filePath, const bool bInvertY = true);
-    void setTexture(const QString name, const int nSize);
-    void setTexture(const QString name, const GLuint nTexture);
+    void setVector4f(const QString &name, float x, float y, float z, float w);
+    void setTexture(const QString &name, const QString &filePath, bool bInvertY = true);
+    void setTexture(const QString &name, int nSize);
+    void setTexture(const QString &name, const GLuint &nTexture);
 
-    void bindElementBufferObject(const unsigned short *pIndexes, const int nIndexCount);
+    void bindElementBufferObject(const unsigned short *pIndexes, int nIndexCount);
 
 private:
     QOpenGLShaderProgram *m_pProgram;

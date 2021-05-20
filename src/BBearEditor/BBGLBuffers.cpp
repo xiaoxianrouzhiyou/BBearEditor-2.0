@@ -2,7 +2,7 @@
 #include "BBUtils.h"
 #include <QImage>
 
-BBGLVertexBuffer::BBGLVertexBuffer(const int nVertexCount)
+BBGLVertexBuffer::BBGLVertexBuffer(int nVertexCount)
 {
     setSize(nVertexCount);
 }
@@ -15,7 +15,7 @@ BBGLVertexBuffer::~BBGLVertexBuffer()
     BB_SAFE_DELETE_ARRAY(m_fNormal);
 }
 
-void BBGLVertexBuffer::setPosition(const int index, const float x, const float y, const float z, const float w)
+void BBGLVertexBuffer::setPosition(int index, float x, float y, float z, float w)
 {
     m_fPosition[index * 4] = x;
     m_fPosition[index * 4 + 1] = y;
@@ -23,22 +23,22 @@ void BBGLVertexBuffer::setPosition(const int index, const float x, const float y
     m_fPosition[index * 4 + 3] = w;
 }
 
-void BBGLVertexBuffer::setPosition(const int index, const QVector3D position)
+void BBGLVertexBuffer::setPosition(int index, const QVector3D &position)
 {
     setPosition(index, position.x(), position.y(), position.z());
 }
 
-void BBGLVertexBuffer::setPosition(const int index, const QVector4D position)
+void BBGLVertexBuffer::setPosition(int index, const QVector4D &position)
 {
     setPosition(index, position.x(), position.y(), position.z(), position.w());
 }
 
-QVector3D BBGLVertexBuffer::getPosition(const int index)
+QVector3D BBGLVertexBuffer::getPosition(int index)
 {
     return QVector3D(m_fPosition[index * 4], m_fPosition[index * 4 + 1], m_fPosition[index * 4 + 2]);
 }
 
-void BBGLVertexBuffer::setColor(const int index, const float r, const float g, const float b, const float a)
+void BBGLVertexBuffer::setColor(int index, float r, float g, float b, float a)
 {
     m_fColor[index * 4] = r;
     m_fColor[index * 4 + 1] = g;
@@ -46,28 +46,28 @@ void BBGLVertexBuffer::setColor(const int index, const float r, const float g, c
     m_fColor[index * 4 + 3] = a;
 }
 
-void BBGLVertexBuffer::setColor(const int index, const QVector3D rgb)
+void BBGLVertexBuffer::setColor(int index, const QVector3D &rgb)
 {
     setColor(index, rgb.x(), rgb.y(), rgb.z());
 }
 
-void BBGLVertexBuffer::setColor(const int index, const QVector4D rgba)
+void BBGLVertexBuffer::setColor(int index, const QVector4D &rgba)
 {
     setColor(index, rgba.x(), rgba.y(), rgba.z(), rgba.w());
 }
 
-void BBGLVertexBuffer::setTexcoord(const int index, const float u, const float v)
+void BBGLVertexBuffer::setTexcoord(int index, float u, float v)
 {
     m_fTexcoord[index * 2] = u;
     m_fTexcoord[index * 2 + 1] = v;
 }
 
-void BBGLVertexBuffer::setTexcoord(const int index, const QVector2D uv)
+void BBGLVertexBuffer::setTexcoord(int index, const QVector2D &uv)
 {
     setTexcoord(index, uv.x(), uv.y());
 }
 
-void BBGLVertexBuffer::setNormal(const int index, const float x, const float y, const float z)
+void BBGLVertexBuffer::setNormal(int index, float x, float y, float z)
 {
     m_fNormal[index * 4] = x;
     m_fNormal[index * 4 + 1] = y;
@@ -75,17 +75,17 @@ void BBGLVertexBuffer::setNormal(const int index, const float x, const float y, 
     m_fNormal[index * 4 + 3] = 1.0f;
 }
 
-void BBGLVertexBuffer::setNormal(const int index, const QVector3D normal)
+void BBGLVertexBuffer::setNormal(int index, const QVector3D &normal)
 {
     setNormal(index, normal.x(), normal.y(), normal.z());
 }
 
-void BBGLVertexBuffer::setNormal(const int index, const QVector4D normal)
+void BBGLVertexBuffer::setNormal(int index, const QVector4D &normal)
 {
     setNormal(index, normal.x(), normal.y(), normal.z());
 }
 
-void BBGLVertexBuffer::setSize(const int nVertexCount)
+void BBGLVertexBuffer::setSize(int nVertexCount)
 {
     m_nVertexCount = nVertexCount;
     m_fPosition = new float[m_nVertexCount * 4];
@@ -120,7 +120,7 @@ BBGLTexture::~BBGLTexture()
 // BBGLTexture2D
 //--------------------
 
-BBGLTexture2D::BBGLTexture2D(const int nWidth, const int nHeight)
+BBGLTexture2D::BBGLTexture2D(int nWidth, int nHeight)
 {
     glBindTexture(GL_TEXTURE_2D, m_nTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, 4, nWidth, nHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
@@ -135,7 +135,7 @@ BBGLTexture2D::BBGLTexture2D(const int nWidth, const int nHeight)
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-BBGLTexture2D::BBGLTexture2D(const QString &fileName, const bool bInvertY)
+BBGLTexture2D::BBGLTexture2D(const QString &fileName, bool bInvertY)
     : BBGLTexture()
 {
     // Add error handling.
@@ -175,7 +175,7 @@ BBGLTexture2D::BBGLTexture2D(const QString &fileName, const bool bInvertY)
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void BBGLTexture2D::load(const int nWidth, const int nHeight, QRgb *pData)
+void BBGLTexture2D::load(int nWidth, int nHeight, QRgb *pData)
 {
     glBindTexture(GL_TEXTURE_2D, m_nTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, 4, nWidth, nHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, pData);

@@ -16,11 +16,11 @@ private:
     void setMenu();
     bool moveItemFromOthers(const QMimeData *pMimeData) override;
     void moveItemToIndicator();
-    QIcon getClassIcon(QString className);
+    QIcon getClassIcon(const QString &className);
     int getDragIconColumnIndex() override { return 1; }
 
 signals:
-    void createModel(QString filePath);
+    void createModel(const QString &filePath);
 
 public slots:
     void addGameObjectSlot(BBGameObject *pGameObject);

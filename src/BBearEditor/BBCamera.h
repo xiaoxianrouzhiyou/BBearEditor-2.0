@@ -13,7 +13,7 @@ public:
     BBCamera();
     void resetMove();
     void update(float fDeltaTime);
-    void setViewportSize(int width, int height);
+    void setViewportSize(int fWidth, int fHeight);
     void switchTo3D();
     void switchTo2D();
     void move(char dir, bool bMove);

@@ -15,8 +15,8 @@ public:
     explicit BBConfirmationDialog(QWidget *parent = 0);
     virtual ~BBConfirmationDialog();
 
-    void setTitle(QString title);
-    void setMessage(QString message);
+    void setTitle(const QString &title);
+    void setMessage(const QString &message);
 
 private:
     Ui::BBConfirmationDialog *m_pUi;

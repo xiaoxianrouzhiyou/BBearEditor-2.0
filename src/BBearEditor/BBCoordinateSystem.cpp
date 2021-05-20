@@ -33,15 +33,15 @@ BBCoordinateComponent::BBCoordinateComponent()
 
 }
 
-BBCoordinateComponent::BBCoordinateComponent(const float px, const float py, const float pz,
-                                             const float rx, const float ry, const float rz,
-                                             const float sx, const float sy, const float sz)
+BBCoordinateComponent::BBCoordinateComponent(float px, float py, float pz,
+                                             float rx, float ry, float rz,
+                                             float sx, float sy, float sz)
     : BBRenderableObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
     m_SelectedAxis = BBAxisName::AxisNULL;
 }
 
-void BBCoordinateComponent::setSelectedAxis(BBAxisFlags axis)
+void BBCoordinateComponent::setSelectedAxis(const BBAxisFlags &axis)
 {
     if (axis == m_SelectedAxis)
         return;
@@ -58,7 +58,7 @@ void BBCoordinateComponent::setSelectedAxis(BBAxisFlags axis)
     m_SelectedAxis = axis;
 }
 
-void BBCoordinateComponent::setVertexColor(BBAxisFlags axis, bool bSelected)
+void BBCoordinateComponent::setVertexColor(const BBAxisFlags &axis, bool bSelected)
 {
     int count1 = m_pVertexBuffer->getVertexCount() / 3;
     int count2 = count1 * 2;
@@ -98,7 +98,7 @@ void BBCoordinateComponent::setVertexColor(BBAxisFlags axis, bool bSelected)
     }
 }
 
-void BBCoordinateComponent::setVertexColor(int start, int end, QVector3D color)
+void BBCoordinateComponent::setVertexColor(int start, int end, const QVector3D &color)
 {
     for (int i = start; i < end; i++)
     {
@@ -106,7 +106,7 @@ void BBCoordinateComponent::setVertexColor(int start, int end, QVector3D color)
     }
 }
 
-void BBCoordinateComponent::setVertexColor(int start, int end, QVector4D color)
+void BBCoordinateComponent::setVertexColor(int start, int end, const QVector4D &color)
 {
     for (int i = start; i < end; i++)
     {
@@ -125,9 +125,9 @@ BBCoordinateArrow::BBCoordinateArrow()
 
 }
 
-BBCoordinateArrow::BBCoordinateArrow(const float px, const float py, const float pz,
-                                     const float rx, const float ry, const float rz,
-                                     const float sx, const float sy, const float sz)
+BBCoordinateArrow::BBCoordinateArrow(float px, float py, float pz,
+                                     float rx, float ry, float rz,
+                                     float sx, float sy, float sz)
     : BBCoordinateComponent(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
 
@@ -229,9 +229,9 @@ BBCoordinateAxis::BBCoordinateAxis()
 
 }
 
-BBCoordinateAxis::BBCoordinateAxis(const float px, const float py, const float pz,
-                                   const float rx, const float ry, const float rz,
-                                   const float sx, const float sy, const float sz)
+BBCoordinateAxis::BBCoordinateAxis(float px, float py, float pz,
+                                   float rx, float ry, float rz,
+                                   float sx, float sy, float sz)
     : BBCoordinateComponent(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
 
@@ -290,9 +290,9 @@ BBCoordinateRectFace::BBCoordinateRectFace()
 
 }
 
-BBCoordinateRectFace::BBCoordinateRectFace(const float px, const float py, const float pz,
-                                           const float rx, const float ry, const float rz,
-                                           const float sx, const float sy, const float sz)
+BBCoordinateRectFace::BBCoordinateRectFace(float px, float py, float pz,
+                                           float rx, float ry, float rz,
+                                           float sx, float sy, float sz)
     : BBCoordinateComponent(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
 
@@ -383,9 +383,9 @@ BBCoordinateQuarterCircle::BBCoordinateQuarterCircle()
 
 }
 
-BBCoordinateQuarterCircle::BBCoordinateQuarterCircle(const float px, const float py, const float pz,
-                                                     const float rx, const float ry, const float rz,
-                                                     const float sx, const float sy, const float sz)
+BBCoordinateQuarterCircle::BBCoordinateQuarterCircle(float px, float py, float pz,
+                                                     float rx, float ry, float rz,
+                                                     float sx, float sy, float sz)
     : BBCoordinateComponent(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
 
@@ -462,9 +462,9 @@ BBCoordinateCircle::BBCoordinateCircle()
 
 }
 
-BBCoordinateCircle::BBCoordinateCircle(const float px, const float py, const float pz,
-                                       const float rx, const float ry, const float rz,
-                                       const float sx, const float sy, const float sz)
+BBCoordinateCircle::BBCoordinateCircle(float px, float py, float pz,
+                                       float rx, float ry, float rz,
+                                       float sx, float sy, float sz)
     : BBCoordinateComponent(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
 
@@ -526,9 +526,9 @@ BBCoordinateTickMark::BBCoordinateTickMark()
 
 }
 
-BBCoordinateTickMark::BBCoordinateTickMark(const float px, const float py, const float pz,
-                                           const float rx, const float ry, const float rz,
-                                           const float sx, const float sy, const float sz)
+BBCoordinateTickMark::BBCoordinateTickMark(float px, float py, float pz,
+                                           float rx, float ry, float rz,
+                                           float sx, float sy, float sz)
     : BBCoordinateComponent(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
 
@@ -716,9 +716,9 @@ BBCoordinateCube::BBCoordinateCube()
 
 }
 
-BBCoordinateCube::BBCoordinateCube(const float px, const float py, const float pz,
-                                   const float rx, const float ry, const float rz,
-                                   const float sx, const float sy, const float sz)
+BBCoordinateCube::BBCoordinateCube(float px, float py, float pz,
+                                   float rx, float ry, float rz,
+                                   float sx, float sy, float sz)
     : BBCoordinateComponent(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
     m_fHalfLength = 0.08f;
@@ -765,7 +765,7 @@ void BBCoordinateCube::init()
                     m_nIndexCount);
 }
 
-void BBCoordinateCube::moveAsScale(QVector3D delta)
+void BBCoordinateCube::moveAsScale(const QVector3D &delta)
 {
     // Only scale the axis, the size of the cube does not change
     // As scale, the position of cube changes
@@ -805,9 +805,9 @@ BBCoordinateTriangleFace::BBCoordinateTriangleFace()
 
 }
 
-BBCoordinateTriangleFace::BBCoordinateTriangleFace(const float px, const float py, const float pz,
-                                                   const float rx, const float ry, const float rz,
-                                                   const float sx, const float sy, const float sz)
+BBCoordinateTriangleFace::BBCoordinateTriangleFace(float px, float py, float pz,
+                                                   float rx, float ry, float rz,
+                                                   float sx, float sy, float sz)
     : BBCoordinateComponent(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
 
@@ -926,10 +926,10 @@ void BBCoordinateSystem::render(BBCamera *pCamera)
     setScale(fDistance / 6.5f);
 }
 
-bool BBCoordinateSystem::hit(BBRay ray,
-                             BBBoundingBox *pBoundingBox1, BBAxisFlags axis1,
-                             BBBoundingBox *pBoundingBox2, BBAxisFlags axis2,
-                             BBBoundingBox *pBoundingBox3, BBAxisFlags axis3,
+bool BBCoordinateSystem::hit(const BBRay &ray,
+                             BBBoundingBox *pBoundingBox1, const BBAxisFlags &axis1,
+                             BBBoundingBox *pBoundingBox2, const BBAxisFlags &axis2,
+                             BBBoundingBox *pBoundingBox3, const BBAxisFlags &axis3,
                              float &fDistance)
 {
     // axis1 is the coordinate axis name corresponding to pBoundingBox1
@@ -1098,7 +1098,7 @@ void BBPositionCoordinateSystem::setScale(float scale, bool bUpdateLocalTransfor
     m_pBoundingBoxXOY->setScale(scale, bUpdateLocalTransform);
 }
 
-void BBPositionCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
+void BBPositionCoordinateSystem::setSelectedAxis(const BBAxisFlags &axis)
 {
     // change color of indicator
     m_pCoordinateArrow->setSelectedAxis(axis);
@@ -1107,7 +1107,7 @@ void BBPositionCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
     m_SelectedAxis = axis;
 }
 
-bool BBPositionCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
+bool BBPositionCoordinateSystem::mouseMoveEvent(const BBRay &ray, bool bMousePressed)
 {
     do {
         // if transforming, there is no need to perform other operations
@@ -1146,7 +1146,7 @@ bool BBPositionCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
     return m_bTransforming;
 }
 
-void BBPositionCoordinateSystem::transform(BBRay &ray)
+void BBPositionCoordinateSystem::transform(const BBRay &ray)
 {
     if (m_bTransforming)
     {
@@ -1295,7 +1295,7 @@ void BBRotationCoordinateSystem::setScale(const QVector3D &scale, bool bUpdateLo
     m_pCoordinateSector->setScale(scale, bUpdateLocalTransform);
 }
 
-void BBRotationCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
+void BBRotationCoordinateSystem::setSelectedAxis(const BBAxisFlags &axis)
 {
     m_pCoordinateQuarterCircle->setSelectedAxis(axis);
 
@@ -1317,7 +1317,7 @@ void BBRotationCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
     m_SelectedAxis = axis;
 }
 
-bool BBRotationCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
+bool BBRotationCoordinateSystem::mouseMoveEvent(const BBRay &ray, bool bMousePressed)
 {
     do {
         // if transforming, there is no need to perform other operations
@@ -1348,7 +1348,7 @@ bool BBRotationCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
     return m_bTransforming;
 }
 
-void BBRotationCoordinateSystem::transform(BBRay &ray)
+void BBRotationCoordinateSystem::transform(const BBRay &ray)
 {
     if (m_bTransforming)
     {
@@ -1527,7 +1527,7 @@ void BBScaleCoordinateSystem::setScale(const QVector3D &scale, bool bUpdateLocal
     m_pBoundingBoxXYZ->setScale(scale, bUpdateLocalTransform);
 }
 
-void BBScaleCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
+void BBScaleCoordinateSystem::setSelectedAxis(const BBAxisFlags &axis)
 {
     // change color of indicator
     m_pCoordinateCube->setSelectedAxis(axis);
@@ -1536,7 +1536,7 @@ void BBScaleCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
     m_SelectedAxis = axis;
 }
 
-bool BBScaleCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
+bool BBScaleCoordinateSystem::mouseMoveEvent(const BBRay &ray, bool bMousePressed)
 {
     do {
         // if transforming, there is no need to perform other operations
@@ -1589,7 +1589,7 @@ bool BBScaleCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
     return m_bTransforming;
 }
 
-void BBScaleCoordinateSystem::transform(BBRay &ray)
+void BBScaleCoordinateSystem::transform(const BBRay &ray)
 {
     if (m_bTransforming)
     {
@@ -1755,7 +1755,7 @@ void BBTransformCoordinateSystem::setSelectedObject(BBGameObject *pObject)
     setCoordinateSystemMode(m_ModeKey);
 }
 
-bool BBTransformCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
+bool BBTransformCoordinateSystem::mouseMoveEvent(const BBRay &ray, bool bMousePressed)
 {
     m_bTransforming = false;
     if (m_ModeKey == m_PositionCoordinateSystemModeKey)

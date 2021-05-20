@@ -159,7 +159,7 @@ void BBHierarchyTreeWidget::moveItemToIndicator()
     // if m_pIndicatorItem is NULL, means adding to the end. No need to move
 }
 
-QIcon BBHierarchyTreeWidget::getClassIcon(QString className)
+QIcon BBHierarchyTreeWidget::getClassIcon(const QString &className)
 {
     return QIcon(BB_PATH_RESOURCE_ICON + className + ".png");
 }

@@ -9,9 +9,9 @@ BBModel::BBModel(BBMeshType eType)
 
 }
 
-BBModel::BBModel(const float px, const float py, const float pz,
-                 const float rx, const float ry, const float rz,
-                 const float sx, const float sy, const float sz, BBMeshType eType)
+BBModel::BBModel(float px, float py, float pz,
+                 float rx, float ry, float rz,
+                 float sx, float sy, float sz, const BBMeshType &eType)
     : BBGameObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
     setClassName(BB_CLASSNAME_MODEL);
@@ -29,7 +29,7 @@ BBModel::~BBModel()
     BB_SAFE_DELETE(m_pBoundingBox);
 }
 
-void BBModel::init(const QString path)
+void BBModel::init(const QString &path)
 {
     m_pMesh->init(path, m_pBoundingBox);
 }
@@ -56,7 +56,7 @@ void BBModel::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
     m_pBoundingBox->setPosition(position, bUpdateLocalTransform);
 }
 
-void BBModel::setRotation(const int nAngle, const QVector3D axis, const bool bUpdateLocalTransform)
+void BBModel::setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform)
 {
     BBGameObject::setRotation(nAngle, axis, bUpdateLocalTransform);
     m_pMesh->setRotation(nAngle, axis, bUpdateLocalTransform);
@@ -77,7 +77,7 @@ void BBModel::setScale(const QVector3D &scale, const bool bUpdateLocalTransform)
     m_pBoundingBox->setScale(scale, bUpdateLocalTransform);
 }
 
-void BBModel::setActivity(const bool bActive)
+void BBModel::setActivity(bool bActive)
 {
     // Visibility and does not exist
     BBGameObject::setActivity(bActive);
@@ -86,14 +86,14 @@ void BBModel::setActivity(const bool bActive)
     setVisibility(bActive);
 }
 
-void BBModel::setVisibility(const bool bVisible)
+void BBModel::setVisibility(bool bVisible)
 {
     // Visibility and exist
     BBGameObject::setVisibility(bVisible);
     m_pBoundingBox->setVisibility(bVisible);
 }
 
-bool BBModel::hit(BBRay ray, float &fDistance)
+bool BBModel::hit(const BBRay &ray, float &fDistance)
 {
     // use bounding box for rough collision detection at first
     if (m_pBoundingBox->hit(ray, fDistance))
