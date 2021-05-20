@@ -1,5 +1,5 @@
 #include "BBModel.h"
-#include "BBOBJMesh.h"
+#include "BBStaticMesh.h"
 #include "BBUtils.h"
 #include "BBBoundingBox.h"
 

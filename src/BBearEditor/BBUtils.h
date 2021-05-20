@@ -14,10 +14,10 @@
 #define BB_MIMETYPE_HIERARCHYTREEWIDGET "HierarchyTreeWidget"
 #define BB_MIMETYPE_FILETREEWIDGET "FileTreeWidget"
 
-#define BB_PATH_BASEOBJECTLIST "../BBearEditor/xmlfiles/baselist.xml"
-#define BB_PATH_RESOURCE "../BBearEditor/resources/"
-#define BB_PATH_RESOURCE_MESH "../BBearEditor/resources/meshes/"
-#define BB_PATH_RESOURCE_SHADER "../BBearEditor/resources/shaders/"
+#define BB_PATH_BASEOBJECTLIST "../../../BBearEditor/resources/xmlfiles/baselist.xml"
+#define BB_PATH_RESOURCE "../../../BBearEditor/resources/"
+#define BB_PATH_RESOURCE_MESH "../../../BBearEditor/resources/meshes/"
+#define BB_PATH_RESOURCE_SHADER "../../../BBearEditor/resources/shaders/"
 #define BB_PATH_RESOURCE_ICON "://resources/icons/"
 #define BB_PATH_TERRAIN "terrain"
 

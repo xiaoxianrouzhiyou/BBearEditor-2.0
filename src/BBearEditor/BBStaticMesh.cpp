@@ -1,4 +1,4 @@
-#include "BBOBJMesh.h"
+#include "BBStaticMesh.h"
 #include "BBUtils.h"
 #include "BBGLBuffers.h"
 #include <sstream>
