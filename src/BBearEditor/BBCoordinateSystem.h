@@ -160,19 +160,15 @@ public:
     BBCoordinateSector(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz);
 
     void init() override;
+    void render(BBCamera *pCamera) override;
 
-//    void reset(QVector3D position);
-//    int setRotateAngle(int nowAngle, float nowCosRadius);
+    void setAngle(int nDeltaAngle);
+    void reset();
 
 private:
     void draw() override;
 
-
-//    //旋转角度
-//    int mAngle;
-//    float mLastCosRadius;
-//    bool mIsUpper180;
-//    bool mIsLowerMinus180;
+    int m_nAngle;
 };
 
 
@@ -303,7 +299,7 @@ private:
     BBCoordinateTickMark *m_pCoordinateTickMark;
     BBCoordinateSector *m_pCoordinateSector;
 
-//    QVector3D mLastVector;
+    QVector3D m_LastMousePosDir;
 };
 
 

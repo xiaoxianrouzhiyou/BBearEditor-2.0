@@ -101,9 +101,9 @@ public:
     void setTexture(const QString name, const int nSize);
     void setTexture(const QString name, const GLuint nTexture);
 
-private:
     void bindElementBufferObject(const unsigned short *pIndexes, const int nIndexCount);
 
+private:
     QOpenGLShaderProgram *m_pProgram;
 
     QMatrix4x4 m_ProjectionMatrix;

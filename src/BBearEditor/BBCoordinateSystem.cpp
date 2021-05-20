@@ -607,17 +607,93 @@ BBCoordinateSector::BBCoordinateSector(float px, float py, float pz,
                                        float sx, float sy, float sz)
     : BBCoordinateComponent(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
-
+    reset();
 }
 
 void BBCoordinateSector::init()
 {
+    // unit = 1     2pi/360
+    // +1 is center of circle
+    m_pVertexBuffer = new BBGLVertexBuffer(361);
+    m_pVertexBuffer->setPosition(360, 0.0f, 0.0f, 0.0f);
+    m_pVertexBuffer->setColor(360, m_GrayTransparency);
+    for (int i = 0; i < 360; i++)
+    {
+        float c = 0.8f * cosf(0.017453f * i);
+        float s = 0.8f * sinf(0.017453f * i);
+        // on the circle
+        m_pVertexBuffer->setPosition(i, 0.0f, c, s);
+        m_pVertexBuffer->setColor(i, m_Gray);
+    }
 
+    m_nIndexCount = 1080;
+    m_pIndexes = new unsigned short[m_nIndexCount];
+    for (int i = 0; i < 360; i++)
+    {
+        m_pIndexes[3 * i] = 360;
+        m_pIndexes[3 * i + 1] = i;
+        m_pIndexes[3 * i + 2] = i + 1;
+    }
+    m_pIndexes[1079] = 0;
+
+    m_pShader->init(QString(BB_PATH_RESOURCE_SHADER) + "coordinate.vert",
+                    QString(BB_PATH_RESOURCE_SHADER) + "coordinate.frag",
+                    m_pIndexes,
+                    m_nIndexCount);
+}
+
+void BBCoordinateSector::render(BBCamera *pCamera)
+{
+    // unit = 1 degree, 1 triangle, 3 indexes
+    int nIndexCount = abs(m_nAngle) * 3;
+    unsigned short *pIndexes = new unsigned short[nIndexCount];
+
+    // if the angle is positive, show sector in front semicircle
+    if (m_nAngle > 0)
+    {
+        for (int i = 0; i < nIndexCount; i++)
+        {
+            pIndexes[i] = m_pIndexes[i];
+        }
+    }
+    // if the angle is negative, show sector in back semicircle
+    else
+    {
+        for (int i = 0; i < nIndexCount; i++)
+        {
+            pIndexes[i] = m_pIndexes[m_nIndexCount - i - 1];
+        }
+    }
+
+    m_pShader->bindElementBufferObject(pIndexes, nIndexCount);
+    BBCoordinateComponent::render(pCamera);
+}
+
+void BBCoordinateSector::setAngle(int nDeltaAngle)
+{
+    m_nAngle += nDeltaAngle;
+    // m_nAngle in [-360, 360]
+    if (m_nAngle > 360)
+    {
+        m_nAngle -= 360;
+    }
+    else if (m_nAngle < -360)
+    {
+        m_nAngle += 360;
+    }
+}
+
+void BBCoordinateSector::reset()
+{
+    m_nAngle = 0;
 }
 
 void BBCoordinateSector::draw()
 {
-
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_ALWAYS);
+    glDrawElements(GL_TRIANGLES, abs(m_nAngle) * 3, GL_UNSIGNED_SHORT, 0);
+    glDepthFunc(GL_LEQUAL);
 }
 
 
@@ -1167,23 +1243,9 @@ void BBRotationCoordinateSystem::render(BBCamera *pCamera)
     // When transforming, render circle. otherwise, render coordinate axis
     if (m_bTransforming)
     {
-        // m_pCoordinateCircle is based on face YOZ and needs to rotate
-        QVector3D rot;
-        if (m_SelectedAxis == BBAxisName::AxisY)
-        {
-            rot = QVector3D(0, 0, 90);
-        }
-        else if (m_SelectedAxis == BBAxisName::AxisZ)
-        {
-            rot = QVector3D(0, 90, 0);
-        }
-        m_pCoordinateCircle->setRotation(rot);
-        m_pCoordinateTickMark->setRotation(rot);
-        m_pCoordinateSector->setRotation(rot);
-
         m_pCoordinateCircle->render(pCamera);
         m_pCoordinateTickMark->render(pCamera);
-//        m_pCoordinateSector->render(pCamera);
+        m_pCoordinateSector->render(pCamera);
     }
     else
     {
@@ -1237,6 +1299,21 @@ void BBRotationCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
 {
     m_pCoordinateQuarterCircle->setSelectedAxis(axis);
 
+    // m_pCoordinateCircle is based on face YOZ and needs to rotate
+    QVector3D rot;
+    if (m_SelectedAxis == BBAxisName::AxisY)
+    {
+
+        rot = QVector3D(0, -90, 90);
+    }
+    else if (m_SelectedAxis == BBAxisName::AxisZ)
+    {
+        rot = QVector3D(0, -90, 0);
+    }
+    m_pCoordinateCircle->setRotation(rot);
+    m_pCoordinateTickMark->setRotation(rot);
+    m_pCoordinateSector->setRotation(rot);
+
     m_SelectedAxis = axis;
 }
 
@@ -1273,7 +1350,60 @@ bool BBRotationCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
 
 void BBRotationCoordinateSystem::transform(BBRay &ray)
 {
+    if (m_bTransforming)
+    {
+        // perform transform operation
+        // compute now mouse pos
+        QVector3D mousePos;
+        QVector3D rotAxis;
 
+        if (m_SelectedAxis == BBAxisName::AxisX)
+        {
+            mousePos = ray.computeIntersectWithYOZPlane(m_Position.x());
+            rotAxis = QVector3D(1, 0, 0);
+        }
+        else if (m_SelectedAxis == BBAxisName::AxisY)
+        {
+            mousePos = ray.computeIntersectWithXOZPlane(m_Position.y());
+            rotAxis = QVector3D(0, 1, 0);
+        }
+        else if (m_SelectedAxis == BBAxisName::AxisZ)
+        {
+            mousePos = ray.computeIntersectWithXOYPlane(m_Position.z());
+            rotAxis = QVector3D(0, 0, 1);
+        }
+        else
+        {
+            return;
+        }
+
+        // whether displacement can be computed
+        if (m_LastMousePos.isNull())
+        {
+            // init
+            m_pCoordinateSector->reset();
+        }
+        else
+        {
+            // compute the intersection angle between two of mouse pos dir
+            QVector3D mousePosDir = (mousePos - m_Position).normalized();
+            float c = QVector3D::dotProduct(m_LastMousePosDir, mousePosDir);
+            int nDeltaAngle = round(acosf(c) / 3.141593f * 180);
+            // compute the sign of angle
+            QVector3D crossResult = QVector3D::crossProduct(m_LastMousePosDir, mousePosDir);
+            float sign = crossResult.x() + crossResult.y() + crossResult.z();
+            sign = sign > 0 ? 1 : -1;
+            nDeltaAngle = sign * nDeltaAngle;
+
+            m_pCoordinateSector->setAngle(nDeltaAngle);
+
+            m_pSelectedObject->setRotation(nDeltaAngle, rotAxis);
+        }
+
+        // record and wait the next frame
+        m_LastMousePos = mousePos;
+        m_LastMousePosDir = (m_LastMousePos - m_Position).normalized();
+    }
 }
 
 
@@ -1663,197 +1793,6 @@ void BBTransformCoordinateSystem::stopTransform()
 }
 
 
-
-///******************************************************************
-//        Sector
-//  *********************************************************************/
-
-//void Sector::init()
-//{
-//    mVertexBuffer = new VertexBuffer();
-//    //最小可旋转1度 2pi/360
-//    //+1存中心点
-//    mVertexBuffer->setSize(361);
-//    mVertexBuffer->setPosition(360, 0.0f, 0.0f, 0.0f);
-//    mVertexBuffer->setColor(360, mGrayTransparency);
-//    for (int i = 0; i < 360; i++)
-//    {
-//        float c = 0.8f * cosf(0.017453f * i);
-//        float s = 0.8f * sinf(0.017453f * i);
-//        //圆环
-//        mVertexBuffer->setPosition(i, 0.0f, c, s);
-//        mVertexBuffer->setColor(i, mGray);
-//    }
-
-//    mIndexCount = 1080;
-//    mIndexes = new unsigned short[mIndexCount];
-//    for (int i = 0; i < 360; i++)
-//    {
-//        mIndexes[3 * i] = 360;
-//        mIndexes[3 * i + 1] = i;
-//        mIndexes[3 * i + 2] = i + 1;
-//    }
-//    mIndexes[1079] = 0;
-
-//    mShader.init("../../../../BBearEngine/resources/shaders/coordinate.vert",
-//                 "../../../../BBearEngine/resources/shaders/coordinate.frag", mIndexes, mIndexCount);
-
-//}
-
-//void Sector::render(QMatrix4x4 modelMatrix, Camera camera)
-//{
-//    //1度为一个单位 1个三角形 3个索引值
-//    int indexCount = abs(mAngle) * 3;
-//    unsigned short *indexes = new unsigned short[indexCount];
-
-//    //正角 左半圆显示扇形角度
-//    if (mAngle > 0)
-//    {
-//        //前部分索引
-//        for (int i = 0; i < indexCount; i++)
-//        {
-//            indexes[i] = mIndexes[i];
-//        }
-//    }
-//    //负角 右半圆显示扇形角度
-//    else
-//    {
-//        //后部分索引
-//        for (int i = 0; i < indexCount; i++)
-//        {
-//            indexes[i] = mIndexes[mIndexCount - i - 1];
-//        }
-//    }
-
-//    mShader.bingEBO(indexes, indexCount);
-//    RenderableObject::render(modelMatrix, camera);
-//}
-
-//void Sector::draw()
-//{
-//    glEnable(GL_DEPTH_TEST);
-//    glDepthFunc(GL_ALWAYS);
-//    glDrawElements(GL_TRIANGLES, abs(mAngle) * 3, GL_UNSIGNED_SHORT, 0);
-//    glDepthFunc(GL_LEQUAL);
-//}
-
-//void Sector::reset(QVector3D position)
-//{
-//    //在需要修改渲染内容时调用
-//    mPosition = position;
-//    //清空上一次渲染的角度
-//    mAngle = 0;
-//    mLastCosRadius = 1;
-//    mIsUpper180 = false;
-//    mIsLowerMinus180 = false;
-//}
-
-//int Sector::setRotateAngle(int nowAngle, float nowCosRadius)
-//{
-//    //角度由正变为负 并且上一次的角度为钝角 是从180到181 而不是-179
-//    if (!mIsUpper180 && mAngle > 0 && nowAngle < 0 && mLastCosRadius < 0)
-//    {
-//        mIsUpper180 = true;
-//    }
-//    else if (mIsUpper180 && nowAngle > 0)
-//    {
-//        mIsUpper180 = false;
-//    }
-//    //角度由负变为正 并且上一次的角度为钝角
-//    if (!mIsLowerMinus180 && mAngle < 0 && nowAngle > 0 && mLastCosRadius < 0)
-//    {
-//        mIsLowerMinus180 = true;
-//    }
-//    else if (mIsLowerMinus180 && nowAngle < 0)
-//    {
-//        mIsLowerMinus180 = false;
-//    }
-
-//    if (mIsUpper180)
-//    {
-//        nowAngle += 360;
-//    }
-//    else if (mIsLowerMinus180)
-//    {
-//        nowAngle -= 360;
-//    }
-
-//    //本次数据保存为last 用于下一次计算
-//    mLastCosRadius = nowCosRadius;
-//    //设置正确需要旋转的角度
-//    int deltaAngle = nowAngle - mAngle;
-//    mAngle = nowAngle;
-//    //返回角度的变化值 用于进行模型的旋转
-//    return deltaAngle;
-//}
-
-
-
-
-///******************************************************************
-//        RotationCoordinate
-//  *********************************************************************/
-
-
-//bool RotationCoordinate::rotate(Ray ray)
-//{
-//    //坐标隐藏后 不渲染 但鼠标事件会触发
-//    if (mSelectedObject == nullptr)
-//        return false;
-
-//    QVector3D mousePos;
-//    QVector3D rotateAxis;
-//    if (mSelectedAxis == AxisName::AxisNULL)
-//    {
-//        return false;
-//    }
-//    else if (mSelectedAxis == AxisName::AxisX)
-//    {
-//        mousePos = ray.computeIntersectWithYOZPlane(mPosition.x());
-//        rotateAxis = QVector3D(1, 0, 0);
-//    }
-//    else if (mSelectedAxis == AxisName::AxisY)
-//    {
-//        mousePos = ray.computeIntersectWithXOZPlane(mPosition.y());
-//        rotateAxis = QVector3D(0, 1, 0);
-//    }
-//    else if (mSelectedAxis == AxisName::AxisZ)
-//    {
-//        mousePos = ray.computeIntersectWithXOYPlane(mPosition.z());
-//        rotateAxis = QVector3D(0, 0, 1);
-//    }
-//    else
-//    {
-//        return false;
-//    }
-
-//    //刚开始旋转 算不出位移 只记录上一次鼠标位置 并开启正在旋转的开关
-//    if (lastMousePos.isNull())
-//    {
-//        isRotating = true;
-//        lastMousePos = mousePos;
-//        mLastVector = (lastMousePos - mPosition).normalized();
-//        //旋转圆盘重置位置 清空上一次渲染的角度 等信息
-//        mSector->reset(mPosition);
-//        return false;
-//    }
-
-//    //计算两次鼠标位置与坐标原点组成的夹角
-//    QVector3D nowVector = (mousePos - mPosition).normalized();
-//    float cosRadius = QVector3D::dotProduct(mLastVector, nowVector);
-//    int angle = round(acosf(cosRadius) / 3.141593f * 180);
-//    QVector3D crossResult = QVector3D::crossProduct(mLastVector, nowVector);
-//    float sign = crossResult.x() + crossResult.y() + crossResult.z();
-//    sign = sign > 0 ? 1 : -1;
-//    angle = sign * angle;
-//    int deltaAngle = mSector->setRotateAngle(angle, cosRadius);
-
-//    mSelectedObject->setRotation(deltaAngle, rotateAxis);
-
-//    //记录开始旋转时的鼠标位置 不用每次更新！ lastMousePos = mousePos;
-//    return true;
-//}
-
 ///******************************************************************
 //        TransformCoordinate
 //  *********************************************************************/
@@ -1884,10 +1823,6 @@ void BBTransformCoordinateSystem::stopTransform()
 //    setCoordinateMode(mModeKey);
 //}
 
-//GameObject *TransformCoordinate::getSelectedObject()
-//{
-//    return mSelectedObject;
-//}
 
 //char TransformCoordinate::getTransformModeKey()
 //{
