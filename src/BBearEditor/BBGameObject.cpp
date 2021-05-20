@@ -111,7 +111,7 @@ void BBGameObject::setRotation(int nAngle, QVector3D axis, bool bUpdateLocalTran
 //    }
 }
 
-void BBGameObject::setRotation(QVector3D rotation, bool bUpdateLocalTransform)
+void BBGameObject::setRotation(const QVector3D &rotation, bool bUpdateLocalTransform)
 {
     // handle itself
     m_Rotation = rotation;

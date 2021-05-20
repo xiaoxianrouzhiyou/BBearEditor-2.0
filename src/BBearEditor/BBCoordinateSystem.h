@@ -314,6 +314,7 @@ public:
     void resize(float fWidth, float fHeight) override;
 
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
+    void setRotation(const QVector3D &rotation, bool bUpdateLocalTransform = true) override;
     void setScale(const QVector3D &scale, bool bUpdateLocalTransform = true) override;
 
     void setSelectedAxis(BBAxisFlags axis) override;

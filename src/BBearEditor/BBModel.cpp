@@ -63,7 +63,7 @@ void BBModel::setRotation(const int nAngle, const QVector3D axis, const bool bUp
     m_pBoundingBox->setRotation(nAngle, axis, bUpdateLocalTransform);
 }
 
-void BBModel::setRotation(const QVector3D rotation, const bool bUpdateLocalTransform)
+void BBModel::setRotation(const QVector3D &rotation, bool bUpdateLocalTransform)
 {
     BBGameObject::setRotation(rotation, bUpdateLocalTransform);
     m_pMesh->setRotation(rotation, bUpdateLocalTransform);

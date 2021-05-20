@@ -27,7 +27,7 @@ public:
     inline QVector3D getLocalPosition() { return m_LocalPosition; }
 
     virtual void setRotation(const int nAngle, const QVector3D axis, const bool bUpdateLocalTransform = true);
-    virtual void setRotation(const QVector3D rotation, const bool bUpdateLocalTransform = true);
+    virtual void setRotation(const QVector3D &rotation, bool bUpdateLocalTransform = true);
     QVector3D getRotation() { return m_Rotation; }
     QVector3D getLocalRotation() { return m_LocalRotation; }
     QQuaternion getQuaternion() { return m_Quaternion; }

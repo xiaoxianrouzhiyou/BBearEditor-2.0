@@ -1482,6 +1482,21 @@ void BBScaleCoordinateSystem::setPosition(const QVector3D &position, bool bUpdat
     m_pBoundingBoxXYZ->setPosition(position, bUpdateLocalTransform);
 }
 
+void BBScaleCoordinateSystem::setRotation(const QVector3D &rotation, bool bUpdateLocalTransform)
+{
+    BBCoordinateSystem::setRotation(rotation, bUpdateLocalTransform);
+    m_pCoordinateCube->setRotation(rotation, bUpdateLocalTransform);
+    m_pCoordinateAxis->setRotation(rotation, bUpdateLocalTransform);
+    m_pCoordinateTriangleFace->setRotation(rotation, bUpdateLocalTransform);
+    m_pBoundingBoxX->setRotation(rotation, bUpdateLocalTransform);
+    m_pBoundingBoxY->setRotation(rotation, bUpdateLocalTransform);
+    m_pBoundingBoxZ->setRotation(rotation, bUpdateLocalTransform);
+    m_pBoundingBoxYOZ->setRotation(rotation, bUpdateLocalTransform);
+    m_pBoundingBoxXOZ->setRotation(rotation, bUpdateLocalTransform);
+    m_pBoundingBoxXOY->setRotation(rotation, bUpdateLocalTransform);
+    m_pBoundingBoxXYZ->setRotation(rotation, bUpdateLocalTransform);
+}
+
 void BBScaleCoordinateSystem::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
 {
     BBCoordinateSystem::setScale(scale, bUpdateLocalTransform);
