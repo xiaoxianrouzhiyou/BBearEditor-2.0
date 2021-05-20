@@ -689,23 +689,24 @@ void BBCoordinateCube::init()
                     m_nIndexCount);
 }
 
-void BBCoordinateCube::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
+void BBCoordinateCube::moveAsScale(QVector3D delta)
 {
-    Q_UNUSED(bUpdateLocalTransform);
+    // Only scale the axis, the size of the cube does not change
+    // As scale, the position of cube changes
     for (int i = 0; i < 8; i++)
     {
         m_pVertexBuffer->setPosition(i,
-                  1.0f * scale.x() + m_Sign[i].x() * m_fHalfLength,
+                                     m_Sign[i].x() * m_fHalfLength + 1.0f * delta.x(),
                                      m_Sign[i].y() * m_fHalfLength,
                                      m_Sign[i].z() * m_fHalfLength);
         m_pVertexBuffer->setPosition(i + 8,
                                      m_Sign[i].x() * m_fHalfLength,
-                  1.0f * scale.y() + m_Sign[i].y() * m_fHalfLength,
+                                     m_Sign[i].y() * m_fHalfLength + 1.0f * delta.y(),
                                      m_Sign[i].z() * m_fHalfLength);
         m_pVertexBuffer->setPosition(i + 16,
                                      m_Sign[i].x() * m_fHalfLength,
                                      m_Sign[i].y() * m_fHalfLength,
-                  1.0f * scale.z() + m_Sign[i].z() * m_fHalfLength);
+                                     m_Sign[i].z() * m_fHalfLength + 1.0f * delta.z());
     }
 }
 
@@ -1363,16 +1364,16 @@ void BBScaleCoordinateSystem::setScale(const QVector3D &scale, bool bUpdateLocal
         QVector3D delta = m_pSelectedObject->getScale() - m_SelectedObjectOriginalScale;
         // the normalized scale is not 0 but 1
         delta += QVector3D(1, 1, 1);
-        m_pCoordinateCube->setScale(scale * delta, bUpdateLocalTransform);
+        m_pCoordinateCube->moveAsScale(delta);
         m_pCoordinateAxis->setScale(scale * delta, bUpdateLocalTransform);
     }
     else
     {
         // after stopTransform, go back
-        m_pCoordinateCube->setScale(scale, bUpdateLocalTransform);
+        m_pCoordinateCube->moveAsScale(QVector3D(1, 1, 1));
         m_pCoordinateAxis->setScale(scale, bUpdateLocalTransform);
     }
-
+    m_pCoordinateCube->setScale(scale, bUpdateLocalTransform);
     m_pCoordinateTriangleFace->setScale(scale, bUpdateLocalTransform);
     m_pBoundingBoxX->setScale(scale, bUpdateLocalTransform);
     m_pBoundingBoxY->setScale(scale, bUpdateLocalTransform);

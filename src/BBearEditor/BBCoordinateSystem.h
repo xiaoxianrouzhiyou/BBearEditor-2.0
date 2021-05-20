@@ -186,7 +186,7 @@ public:
                      const float sx, const float sy, const float sz);
 
     void init() override;
-    void setScale(const QVector3D &scale, bool bUpdateLocalTransform = true) override;
+    void moveAsScale(QVector3D delta);
 
 private:
     void draw() override;
