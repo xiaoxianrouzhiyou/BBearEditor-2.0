@@ -67,6 +67,7 @@ public:
                                  float fRadius, const BBPlaneName &ePlaneName);
 
     bool hit(BBRay ray, float &fDistance) override;
+    inline void setQuadrantFlag(const QVector3D &flag) { m_QuadrantFlag = flag; }
 
 private:
     BBPlaneName m_eSelectedPlaneName;

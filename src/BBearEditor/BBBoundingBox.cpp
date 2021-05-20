@@ -205,8 +205,8 @@ bool BBQuarterCircleBoundingBox2D::hit(BBRay ray, float &fDistance)
     bool result = false;
     fDistance = FLT_MAX;
 
-    if (ray.computeIntersectWithQuarterCircle(QVector3D(m_Center[0], m_Center[1], m_Center[2]),
-                                              (m_pTransformedBoxVertexes[0] - QVector3D(m_Center[0], m_Center[1], m_Center[2])).length(),
+    if (ray.computeIntersectWithQuarterCircle(m_Position,
+                                              (m_pTransformedBoxVertexes[0] - m_Position).length(),
                                               m_eSelectedPlaneName,
                                               intersection,
                                               m_QuadrantFlag))

@@ -1172,27 +1172,16 @@ void BBRotationCoordinateSystem::render(BBCamera *pCamera)
     {
         // coordinate axis always faces camera
         QVector3D dir = pCamera->getPosition() - m_Position;
-        int signX = dir.x() >= 0 ? 1 : -1;
-        int signY = dir.y() >= 0 ? 1 : -1;
-        int signZ = dir.z() >= 0 ? 1 : -1;
-
+        dir.setX(dir.x() >= 0 ? 1 : -1);
+        dir.setY(dir.y() >= 0 ? 1 : -1);
+        dir.setZ(dir.z() >= 0 ? 1 : -1);
+        m_pCoordinateQuarterCircle->setScale(m_pCoordinateQuarterCircle->getScale() * dir);
         m_pCoordinateQuarterCircle->render(pCamera);
     }
 
 
 
 
-//    if (!isRotating)
-//    {
-    //        //圆的四分之一碰撞区域也要镜像变换
-    //        yozSurface->setSign(xSign, ySign, zSign);
-    //        xozSurface->setSign(xSign, ySign, zSign);
-    //        xoySurface->setSign(xSign, ySign, zSign);
-//    //碰撞yoz面 表示绕x轴旋转
-//    float distance;
-//    hitBoundingBox(modelMatrix, yozSurface, xozSurface, xoySurface,
-//                   AxisName::AxisX, AxisName::AxisY, AxisName::AxisZ, distance);
-//    }
 //    else
 //    {
 //        //旋转时的渲染
@@ -1254,7 +1243,33 @@ void BBRotationCoordinateSystem::setSelectedAxis(BBAxisFlags axis)
 
 bool BBRotationCoordinateSystem::mouseMoveEvent(BBRay &ray, bool bMousePressed)
 {
+    do {
+        // if transforming, there is no need to perform other operations
+        BB_END(m_bTransforming);
+        // otherwise, determine whether transform can be turned on
 
+        BB_END(m_pSelectedObject == NULL);
+
+        // handle collision detection, change color of related axis and get m_SelectedAxis
+        // hit face YOZ, rotate around AxisX
+        float fDistance;
+        BB_END(!hit(ray,
+                    m_pBoundingBoxYOZ, BBAxisName::AxisX,
+                    m_pBoundingBoxXOZ, BBAxisName::AxisY,
+                    m_pBoundingBoxXOY, BBAxisName::AxisZ,
+                    fDistance));
+
+        // do not handle transform when mouse is not pressed
+        BB_END(!bMousePressed);
+
+        // meet the conditions, turn on m_bTransforming
+        m_bTransforming = true;
+    } while(0);
+
+    transform(ray);
+
+    // The return value indicates whether the transform has really performed
+    return m_bTransforming;
 }
 
 void BBRotationCoordinateSystem::transform(BBRay &ray)
