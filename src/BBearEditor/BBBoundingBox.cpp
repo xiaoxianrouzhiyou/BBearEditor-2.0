@@ -18,9 +18,9 @@ BBBoundingBox::BBBoundingBox()
 
 }
 
-BBBoundingBox::BBBoundingBox(const float &px, const float &py, const float &pz,
-                             const float &rx, const float &ry, const float &rz,
-                             const float &sx, const float &sy, const float &sz)
+BBBoundingBox::BBBoundingBox(float px, float py, float pz,
+                             float rx, float ry, float rz,
+                             float sx, float sy, float sz)
     : BBRenderableObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
     m_nBoxVertexCount = 0;
@@ -64,8 +64,8 @@ void BBBoundingBox::setModelMatrix(float px, float py, float pz,
 // BBRectBoundingBox2D
 //--------------------
 
-BBRectBoundingBox2D::BBRectBoundingBox2D(const float fCenterX, const float fCenterY, const float fCenterZ,
-                                         const float fHalfLengthX, const float fHalfLengthY, const float fHalfLengthZ)
+BBRectBoundingBox2D::BBRectBoundingBox2D(float fCenterX, float fCenterY, float fCenterZ,
+                                         float fHalfLengthX, float fHalfLengthY, float fHalfLengthZ)
     : BBBoundingBox()
 {
     m_nBoxVertexCount = 4;
@@ -228,9 +228,9 @@ BBBoundingBox3D::BBBoundingBox3D(QList<QVector4D> vertexes)
 
 }
 
-BBBoundingBox3D::BBBoundingBox3D(const float &px, const float &py, const float &pz,
-                                 const float &rx, const float &ry, const float &rz,
-                                 const float &sx, const float &sy, const float &sz,
+BBBoundingBox3D::BBBoundingBox3D(float px, float py, float pz,
+                                 float rx, float ry, float rz,
+                                 float sx, float sy, float sz,
                                  QList<QVector4D> vertexes)
     : BBBoundingBox(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
@@ -258,11 +258,11 @@ BBBoundingBox3D::BBBoundingBox3D(const float &px, const float &py, const float &
     computeBoxVertexes(vertexes);
 }
 
-BBBoundingBox3D::BBBoundingBox3D(const float &px, const float &py, const float &pz,
-                                 const float &rx, const float &ry, const float &rz,
-                                 const float &sx, const float &sy, const float &sz,
-                                 const float fCenterX, const float fCenterY, const float fCenterZ,
-                                 const float fHalfLengthX, const float fHalfLengthY, const float fHalfLengthZ)
+BBBoundingBox3D::BBBoundingBox3D(float px, float py, float pz,
+                                 float rx, float ry, float rz,
+                                 float sx, float sy, float sz,
+                                 float fCenterX, float fCenterY, float fCenterZ,
+                                 float fHalfLengthX, float fHalfLengthY, float fHalfLengthZ)
     : BBBoundingBox(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
     m_nBoxVertexCount = 8;
@@ -395,9 +395,9 @@ BBAABBBoundingBox3D::BBAABBBoundingBox3D(QList<QVector4D> vertexes)
 
 }
 
-BBAABBBoundingBox3D::BBAABBBoundingBox3D(const float &px, const float &py, const float &pz,
-                                         const float &rx, const float &ry, const float &rz,
-                                         const float &sx, const float &sy, const float &sz,
+BBAABBBoundingBox3D::BBAABBBoundingBox3D(float px, float py, float pz,
+                                         float rx, float ry, float rz,
+                                         float sx, float sy, float sz,
                                          QList<QVector4D> vertexes)
     : BBBoundingBox3D(px, py, pz, rx, ry, rz, sx, sy, sz, vertexes)
 {

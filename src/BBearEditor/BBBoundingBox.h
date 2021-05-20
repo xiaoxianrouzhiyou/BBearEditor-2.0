@@ -16,9 +16,9 @@ class BBBoundingBox : public BBRenderableObject
 {
 public:
     BBBoundingBox();
-    BBBoundingBox(const float &px, const float &py, const float &pz,
-                  const float &rx, const float &ry, const float &rz,
-                  const float &sx, const float &sy, const float &sz);
+    BBBoundingBox(float px, float py, float pz,
+                  float rx, float ry, float rz,
+                  float sx, float sy, float sz);
     virtual ~BBBoundingBox();
 
     bool hit(BBRay ray, float &fDistance) override;
@@ -41,8 +41,8 @@ protected:
 class BBRectBoundingBox2D : public BBBoundingBox
 {
 public:
-    BBRectBoundingBox2D(const float fCenterX, const float fCenterY, const float fCenterZ,
-                        const float fHalfLengthX, const float fHalfLengthY, const float fHalfLengthZ);
+    BBRectBoundingBox2D(float fCenterX, float fCenterY, float fCenterZ,
+                        float fHalfLengthX, float fHalfLengthY, float fHalfLengthZ);
     virtual ~BBRectBoundingBox2D();
 
     bool hit(BBRay ray, float &fDistance) override;
@@ -79,15 +79,15 @@ class BBBoundingBox3D : public BBBoundingBox
 {
 public:
     BBBoundingBox3D(QList<QVector4D> vertexes = QList<QVector4D>());
-    BBBoundingBox3D(const float &px, const float &py, const float &pz,
-                    const float &rx, const float &ry, const float &rz,
-                    const float &sx, const float &sy, const float &sz,
+    BBBoundingBox3D(float px, float py, float pz,
+                    float rx, float ry, float rz,
+                    float sx, float sy, float sz,
                     QList<QVector4D> vertexes = QList<QVector4D>());
-    BBBoundingBox3D(const float &px, const float &py, const float &pz,
-                    const float &rx, const float &ry, const float &rz,
-                    const float &sx, const float &sy, const float &sz,
-                    const float fCenterX, const float fCenterY, const float fCenterZ,
-                    const float fHalfLengthX, const float fHalfLengthY, const float fHalfLengthZ);
+    BBBoundingBox3D(float px, float py, float pz,
+                    float rx, float ry, float rz,
+                    float sx, float sy, float sz,
+                    float fCenterX, float fCenterY, float fCenterZ,
+                    float fHalfLengthX, float fHalfLengthY, float fHalfLengthZ);
     virtual ~BBBoundingBox3D();
 
     void init() override;
@@ -112,9 +112,9 @@ class BBAABBBoundingBox3D : public BBBoundingBox3D
 {
 public:
     BBAABBBoundingBox3D(QList<QVector4D> vertexes = QList<QVector4D>());
-    BBAABBBoundingBox3D(const float &px, const float &py, const float &pz,
-                        const float &rx, const float &ry, const float &rz,
-                        const float &sx, const float &sy, const float &sz,
+    BBAABBBoundingBox3D(float px, float py, float pz,
+                        float rx, float ry, float rz,
+                        float sx, float sy, float sz,
                         QList<QVector4D> vertexes = QList<QVector4D>());
 
 private:
