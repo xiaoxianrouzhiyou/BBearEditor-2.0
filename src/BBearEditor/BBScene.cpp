@@ -315,6 +315,11 @@ QList<BBGameObject*> BBScene::getSelectedObjects(QPoint start, QPoint end)
     int y = start.y() > end.y() ? start.y() : end.y();
     int w = abs(start.x() - end.x());
     int h = abs(start.y() - end.y());
+    // 3D ray of the 4 vertexes in the selection region
+    BBRay topLeft = m_pCamera->createRayFromScreen(x, y - h);
+    BBRay topRight = m_pCamera->createRayFromScreen(x + w, y - h);
+    BBRay bottomRight = m_pCamera->createRayFromScreen(x + w, y);
+    BBRay bottomLeft = m_pCamera->createRayFromScreen(x, y);
 
     // The top-left corner is origin, transform origin into the center
     y = -y;
@@ -322,11 +327,6 @@ QList<BBGameObject*> BBScene::getSelectedObjects(QPoint start, QPoint end)
     y = y + m_pCamera->getViewportHeight() / 2;
     m_pSelectionRegion->setRect(x, y, w, h);
 
-    // 3D ray of the 4 vertexes in the selection region
-    BBRay topLeft = m_pCamera->createRayFromScreen(x, y - h);
-    BBRay topRight = m_pCamera->createRayFromScreen(x + w, y - h);
-    BBRay bottomRight = m_pCamera->createRayFromScreen(x + w, y);
-    BBRay bottomLeft = m_pCamera->createRayFromScreen(x, y);
     // Two rays form a plane
     // 4 planes, object in the middle of top bottom left right planes is selected
     QList<BBGameObject*> objects = m_Models;// + directionLights + pointLights + spotLights + audios;
