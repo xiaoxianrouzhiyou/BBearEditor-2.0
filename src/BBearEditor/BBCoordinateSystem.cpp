@@ -1506,6 +1506,7 @@ void BBScaleCoordinateSystem::setScale(const QVector3D &scale, bool bUpdateLocal
     {
         QVector3D delta = m_pSelectedObject->getScale() - m_SelectedObjectOriginalScale;
         m_pCoordinateCube->move(delta);
+        // the normalized scale is not 0 but 1
         m_pCoordinateAxis->setScale(scale * (delta + QVector3D(1, 1, 1)), bUpdateLocalTransform);
     }
     else

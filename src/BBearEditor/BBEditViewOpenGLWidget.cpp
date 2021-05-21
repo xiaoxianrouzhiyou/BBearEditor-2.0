@@ -105,28 +105,28 @@ void BBEditViewOpenGLWidget::mouseMoveEvent(QMouseEvent *e)
     }
     else if (e->buttons() & Qt::LeftButton)
     {
-        BBRay ray = m_pScene->getCamera()->createRayFromScreen(e->pos().x(), e->pos().y());
-        if (!m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(ray, true))
+        if (m_bRegionSelecting)
         {
-            // move mouse and do not perform transform of gameobject
-            // perform selection operation
-            if (m_bRegionSelecting)
-            {
-                // show selection region, and select gameobjects
-                m_pScene->setSelectionRegionVisibility(true);
-                m_pScene->setSelectionRegion(m_SelectionRegionStartingPoint, e->pos());
+            // do not perform transform of gameobject
+            // show selection region, and select gameobjects
+            m_pScene->setSelectionRegionVisibility(true);
+            m_pScene->setSelectionRegion(m_SelectionRegionStartingPoint, e->pos());
 //                regionSelectObjects(scene.setSelectionRegion(selectionRegionStart, e->pos()));
+        }
+        else
+        {
+            // do not perform selection operation
+            // If the mouse moves only a small distance, it is not considered as selection operation
+            QPoint delta = e->pos() - m_SelectionRegionStartingPoint;
+            static int nThreshold = 49;
+            if ((delta.x() * delta.x() + delta.y() * delta.y()) > nThreshold)
+            {
+                m_bRegionSelecting = true;
             }
             else
             {
-                // do not perform selection operation
-                // If the mouse moves only a small distance, it is not considered as selection operation
-                QPoint delta = e->pos() - m_SelectionRegionStartingPoint;
-                static int nThreshold = 49;
-                if ((delta.x() * delta.x() + delta.y() * delta.y()) > nThreshold)
-                {
-                    m_bRegionSelecting = true;
-                }
+                BBRay ray = m_pScene->getCamera()->createRayFromScreen(e->pos().x(), e->pos().y());
+                m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(ray, true);
             }
         }
     }
