@@ -184,7 +184,7 @@ public:
                      float sx, float sy, float sz);
 
     void init() override;
-    void moveAsScale(const QVector3D &delta);
+    void move(const QVector3D &delta);
 
 private:
     void draw() override;
