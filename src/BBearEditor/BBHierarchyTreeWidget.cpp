@@ -3,7 +3,8 @@
 #include <QMenu>
 #include "BBGameObject.h"
 
-//QMap<QTreeWidgetItem*, GameObject*> HierarchyTree::mMap;
+
+QMap<QTreeWidgetItem*, BBGameObject*> BBHierarchyTreeWidget::m_ObjectMap;
 
 BBHierarchyTreeWidget::BBHierarchyTreeWidget(QWidget *parent)
     : BBTreeWidget(parent)
@@ -15,11 +16,12 @@ BBHierarchyTreeWidget::BBHierarchyTreeWidget(QWidget *parent)
     // Column width of the first column
     setColumnWidth(0, 280);
 
+    QObject::connect(this, SIGNAL(itemSelectionChanged()),
+                     this, SLOT(changeSelectedItems()));
 //    QObject::connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
 //                     this, SLOT(itemDoubleClickedSlot(QTreeWidgetItem*, int)));
 //    QObject::connect(this, SIGNAL(itemChanged(QTreeWidgetItem*, int)),
 //                     this, SLOT(itemChangedSlot(QTreeWidgetItem*, int)));
-//    QObject::connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(itemSelectionChangedSlot()));
 
     // Popup menu
     setMenu();
@@ -164,7 +166,7 @@ QIcon BBHierarchyTreeWidget::getClassIcon(const QString &className)
     return QIcon(BB_PATH_RESOURCE_ICON + className + ".png");
 }
 
-void BBHierarchyTreeWidget::addGameObjectSlot(BBGameObject *pGameObject)
+void BBHierarchyTreeWidget::addGameObject(BBGameObject *pGameObject)
 {
     QTreeWidgetItem* pItem = new QTreeWidgetItem({pGameObject->getName(), pGameObject->getClassName()});
     pItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable
@@ -179,18 +181,104 @@ void BBHierarchyTreeWidget::addGameObjectSlot(BBGameObject *pGameObject)
     pItem->setIcon(1, getClassIcon(pGameObject->getIconName()));
 
     addTopLevelItem(pItem);
-
-//    mMap.insert(item, gameObject);
-//    //设置相对坐标
-//    gameObject->setLocalTransform();
-
-//    //选中新增item 这句一定要在插入map之后
-//    //否则current变化触发的槽函数itemSelectionChangedSlot将在map中找不到对应的gameObject
+    m_ObjectMap.insert(pItem, pGameObject);
+    // parent = NULL, since pItem is in the top level
+    pGameObject->setLocalTransform(NULL);
+    // setCurrentItem needs to be placed in back of insert map
+    // otherwise, when currentItem is changed and trigger changeSelectedItems that cannot find pGameObject in map
     setCurrentItem(pItem);
 }
 
+void BBHierarchyTreeWidget::selectPickedObject(BBGameObject *pGameObject)
+{
+    if (pGameObject == NULL)
+    {
+        setCurrentItem(NULL);
+    }
+    else
+    {
+        setCurrentItem(m_ObjectMap.key(pGameObject));
+    }
+}
 
+void BBHierarchyTreeWidget::changeSelectedItems()
+{
+    QList<QTreeWidgetItem*> items = selectedItems();
+    int count = items.count();
+    if (count == 0)
+    {
+        // do not select object in OpenGL view
+        setCoordinateSystemSelectedObject(NULL);
+        // do not show properties in inspector
+//        showGameObjectProperty(NULL);
+    }
+    else if (count == 1)
+    {
+        // single selection
+        BBGameObject *pGameObject = m_ObjectMap.value(items.first());
+        // select corresponding object in OpenGL view
+        setCoordinateSystemSelectedObject(pGameObject);
+        // show properties in inspector
+//        showGameObjectProperty(gameObject);
+    }
+    else
+    {
+//        else
+//        {
+//            QList<GameObject*> gameObjects;
+//            for (int i = 0; i < count; i++)
+//            {
+//                //父子结点都被选中 多滤掉孩子节点对应的对象
+//                QTreeWidgetItem *parent;
+//                for (parent = items.at(i)->parent(); parent; parent = parent->parent())
+//                {
+//                    //遍历祖先 看是否也被选中
+//                    if (items.contains(parent))
+//                    {
+//                        //祖先和子孙同时被选中 只处理祖先
+//                        //处理祖先时 会对所有子孙进行处理
+//                        break;
+//                    }
+//                }
+//                //选中项对应的gameobj加入对象集合
+//                if (parent == NULL)
+//                {
+//                    //祖先没有被选中 该对象需要加入列表进行处理
+//                    gameObjects.append(mMap.value(items.at(i)));
+//                }
+//            }
+//            count = gameObjects.count();
+//            if (count == 1)
+//            {
+//                //过滤后 真正处理的只有一个对象
+//                GameObject *gameObject = gameObjects.first();
+//                setCoordinateSelectedObject(gameObject);
+//                //属性栏显示该项对应属性
+//                showGameObjectProperty(gameObject);
+//            }
+//            else
+//            {
+//                //真正处理多个对象 坐标系选中所有对象的重心
+//                CenterPoint *center = new CenterPoint(gameObjects);
+//                center->setBaseAttributes("multiple", "Set", "set");
+//                //所有对象都是不可见 center为不可见图标
+//                center->setActive(false);
 
+//                for (int i = 0; i < count; i++)
+//                {
+//                    if (gameObjects.at(i)->getActive())
+//                    {
+//                        center->setActive(true);
+//                        break;
+//                    }
+//                }
+//                setCoordinateSelectedObjects(gameObjects, center);
+//                //属性栏显示集合的transform
+//                showSetProperty(gameObjects, center);
+//            }
+//        }
+    }
+}
 
 //void HierarchyTree::itemDoubleClickedSlot(QTreeWidgetItem *item, int column)
 //{
@@ -301,89 +389,7 @@ void BBHierarchyTreeWidget::addGameObjectSlot(BBGameObject *pGameObject)
 //    }
 //}
 
-//void HierarchyTree::selectPickedObject(GameObject *gameObject)
-//{
-//    //如果gameobject为空 item也为空
-//    setCurrentItem(mMap.key(gameObject));
-//}
 
-//void HierarchyTree::itemSelectionChangedSlot()
-//{
-//    QList<QTreeWidgetItem*> items = selectedItems();
-//    int count = items.count();
-//    if (count == 1)
-//    {
-//        //单选 显示对应属性 场景中选中对应对象
-//        GameObject *gameObject = mMap.value(items.first());
-//        setCoordinateSelectedObject(gameObject);
-//        //属性栏显示该项对应属性
-//        showGameObjectProperty(gameObject);
-//    }
-//    else
-//    {
-//        if (count == 0)
-//        {
-//            //不显示对应属性
-//            showGameObjectProperty(NULL);
-//            //不选对象 场景中坐标系也不选择
-//            setCoordinateSelectedObject(NULL);
-//        }
-//        else
-//        {
-//            QList<GameObject*> gameObjects;
-//            for (int i = 0; i < count; i++)
-//            {
-//                //父子结点都被选中 多滤掉孩子节点对应的对象
-//                QTreeWidgetItem *parent;
-//                for (parent = items.at(i)->parent(); parent; parent = parent->parent())
-//                {
-//                    //遍历祖先 看是否也被选中
-//                    if (items.contains(parent))
-//                    {
-//                        //祖先和子孙同时被选中 只处理祖先
-//                        //处理祖先时 会对所有子孙进行处理
-//                        break;
-//                    }
-//                }
-//                //选中项对应的gameobj加入对象集合
-//                if (parent == NULL)
-//                {
-//                    //祖先没有被选中 该对象需要加入列表进行处理
-//                    gameObjects.append(mMap.value(items.at(i)));
-//                }
-//            }
-//            count = gameObjects.count();
-//            if (count == 1)
-//            {
-//                //过滤后 真正处理的只有一个对象
-//                GameObject *gameObject = gameObjects.first();
-//                setCoordinateSelectedObject(gameObject);
-//                //属性栏显示该项对应属性
-//                showGameObjectProperty(gameObject);
-//            }
-//            else
-//            {
-//                //真正处理多个对象 坐标系选中所有对象的重心
-//                CenterPoint *center = new CenterPoint(gameObjects);
-//                center->setBaseAttributes("multiple", "Set", "set");
-//                //所有对象都是不可见 center为不可见图标
-//                center->setActive(false);
-
-//                for (int i = 0; i < count; i++)
-//                {
-//                    if (gameObjects.at(i)->getActive())
-//                    {
-//                        center->setActive(true);
-//                        break;
-//                    }
-//                }
-//                setCoordinateSelectedObjects(gameObjects, center);
-//                //属性栏显示集合的transform
-//                showSetProperty(gameObjects, center);
-//            }
-//        }
-//    }
-//}
 
 //void HierarchyTree::selectedObjects(QList<GameObject*> gameObjects)
 //{

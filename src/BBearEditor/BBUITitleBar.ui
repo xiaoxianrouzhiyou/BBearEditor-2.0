@@ -39,7 +39,7 @@
 }
 
 #icon {
-    border-image: url(://resources/icons/face.png);
+    border-image: url(../../resources/icons/face.png);
     border-radius: 3px;
     margin: 3px;
 }
@@ -74,31 +74,31 @@ QPushButton:default {
 }
 
 #buttonHand {
-    image: url(://resources/icons/hand.png);
+    image: url(../../resources/icons/hand.png);
 }
 
 #buttonMove {
-    image: url(://resources/icons/move.png);
+    image: url(../../resources/icons/move.png);
 }
 
 #buttonRotate {
-    image: url(://resources/icons/rotate.png);
+    image: url(../../resources/icons/rotate.png);
 }
 
 #buttonScale {
-    image: url(://resources/icons/scale.png);
+    image: url(../../resources/icons/scale.png);
 }
 
 #buttonRun {
-    image: url(://resources/icons/play.png);
+    image: url(../../resources/icons/play.png);
 }
 
 #buttonDebug {
-    image: url(://resources/icons/debug.png);
+    image: url(../../resources/icons/debug.png);
 }
 
 #buttonBuild {
-    image: url(://resources/icons/build.png);
+    image: url(../../resources/icons/build.png);
 }
 
 #buttonClose {

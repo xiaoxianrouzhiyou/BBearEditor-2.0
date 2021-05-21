@@ -34,7 +34,7 @@ private slots:
 //    void onKeyPress(QKeyEvent *e);
 
 signals:
-    void addGameObjectSignal(BBGameObject *pGameObject);
+    void addGameObject(BBGameObject *pGameObject);
     void updateMultipleSelectedObjects(BBGameObject *pGameObject);
     void pickObject(BBGameObject *pGameObject);
 //    void updateTransform(GameObject *gameObject, char transformModeKey);

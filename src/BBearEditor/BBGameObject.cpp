@@ -238,6 +238,39 @@ void BBGameObject::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
 //    }
 }
 
+void BBGameObject::setLocalTransform(BBGameObject *pParent)
+{
+    if (pParent)
+    {
+        m_LocalPosition = m_Position - pParent->getPosition();
+        m_LocalScale = m_Scale / pParent->getScale();
+        QMatrix4x4 relativeMatrix = pParent->getModelMatrix().inverted() * m_ModelMatrix;
+        // remove scale from the matrix that includes rotation and scale
+        relativeMatrix.scale(QVector3D(1, 1, 1) / m_LocalScale);
+        // 3x3 in the top-left is rotation matrix
+        QMatrix3x3 rotMatrix;
+        rotMatrix(0, 0) = relativeMatrix.data()[0];
+        rotMatrix(1, 0) = relativeMatrix.data()[1];
+        rotMatrix(2, 0) = relativeMatrix.data()[2];
+        rotMatrix(0, 1) = relativeMatrix.data()[4];
+        rotMatrix(1, 1) = relativeMatrix.data()[5];
+        rotMatrix(2, 1) = relativeMatrix.data()[6];
+        rotMatrix(0, 2) = relativeMatrix.data()[8];
+        rotMatrix(1, 2) = relativeMatrix.data()[9];
+        rotMatrix(2, 2) = relativeMatrix.data()[10];
+        m_LocalQuaternion = QQuaternion::fromRotationMatrix(rotMatrix);
+        m_LocalRotation = m_LocalQuaternion.toEulerAngles();
+    }
+    else
+    {
+        //at the top level, local = global
+        m_LocalPosition = m_Position;
+        m_LocalRotation = m_Rotation;
+        m_LocalQuaternion = m_Quaternion;
+        m_LocalScale = m_Scale;
+    }
+}
+
 void BBGameObject::setBaseAttributes(const QString &name, const QString &className, const QString &iconName, bool bActive)
 {
     m_strName = name;
@@ -291,51 +324,7 @@ void BBGameObject::setModelMatrix(float px, float py, float pz,
 }
 
 
-//void GameObject::setLocalTransform()
-//{
-//    //不能在构造函数中设置 因为创建对象时 还没有创建树节点 找不到父对象 在插入映射后调用
-//    //得到对应的树节点
-//    QTreeWidgetItem *item = HierarchyTree::mMap.key(this);
-//    if (item)
-//    {
-//        //如果是层级视图管理的结点
-//        QTreeWidgetItem *parent = item->parent();
-//        if (parent)
-//        {
-//            //如果有父节点 求出相对于父节点的坐标
-//            //父节点对应的对象
-//            GameObject *gameObject = HierarchyTree::mMap.value(parent);
-//            mLocalPosition = mPosition - gameObject->getPosition();
-//            //子节点的缩放值是父节点的缩放值乘以子节点相对于父节点的缩放值
-//            mLocalScale = mScale / gameObject->getScale();
-//            //相对矩阵
-//            QMatrix4x4 relativeMatrix = gameObject->getModelMatrix().inverted() * getModelMatrix();
-//            //缩放矩阵和旋转矩阵叠加 去掉缩放变换
-//            relativeMatrix.scale(QVector3D(1, 1, 1) / mLocalScale);
-//            //左上的3x3是旋转矩阵
-//            QMatrix3x3 rotMatrix;
-//            rotMatrix(0, 0) = relativeMatrix.data()[0];
-//            rotMatrix(1, 0) = relativeMatrix.data()[1];
-//            rotMatrix(2, 0) = relativeMatrix.data()[2];
-//            rotMatrix(0, 1) = relativeMatrix.data()[4];
-//            rotMatrix(1, 1) = relativeMatrix.data()[5];
-//            rotMatrix(2, 1) = relativeMatrix.data()[6];
-//            rotMatrix(0, 2) = relativeMatrix.data()[8];
-//            rotMatrix(1, 2) = relativeMatrix.data()[9];
-//            rotMatrix(2, 2) = relativeMatrix.data()[10];
-//            mLocalQuaternion = QQuaternion::fromRotationMatrix(rotMatrix);
-//            mLocalRotation = mLocalQuaternion.toEulerAngles();
-//        }
-//        else
-//        {
-//            //top结点 相对坐标就是全局坐标
-//            mLocalPosition = mPosition;
-//            mLocalRotation = mRotation;
-//            mLocalQuaternion = mQuaternion;
-//            mLocalScale = mScale;
-//        }
-//    }
-//}
+
 
 
 

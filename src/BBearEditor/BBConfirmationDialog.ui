@@ -55,7 +55,7 @@ QPushButton {
 }
 
 #labelIcon {
-    image: url(://resources/icons/notice.png);
+    image: url(../../resources/icons/notice.png);
 }
 
 #scrollAreaWidgetContents { /*The background color of the scroll area*/

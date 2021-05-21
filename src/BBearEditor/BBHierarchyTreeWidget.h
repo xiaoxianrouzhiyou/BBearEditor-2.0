@@ -19,19 +19,23 @@ private:
     QIcon getClassIcon(const QString &className);
     int getDragIconColumnIndex() override { return 1; }
 
+    // Save the mapping between each item and its corresponding GameObject
+    static QMap<QTreeWidgetItem*, BBGameObject*> m_ObjectMap;
+
 signals:
     void createModel(const QString &filePath);
+    void setCoordinateSystemSelectedObject(BBGameObject *pGameObject);
 
 public slots:
-    void addGameObjectSlot(BBGameObject *pGameObject);
+    void addGameObject(BBGameObject *pGameObject);
+    void selectPickedObject(BBGameObject *pGameObject);
 
+private slots:
+    void changeSelectedItems();
 
-//    //保存每个item与其对应的GameObject的地址的映射
-//    static QMap<QTreeWidgetItem*, GameObject*> mMap;
 
 //public slots:
 //    void itemDoubleClickedSlot(QTreeWidgetItem *item, int column);
-//    void selectPickedObject(GameObject *gameObject);
 //    void finishRename() override;
 //    void deleteAction() override;
 //    void cancelSelectedItems();
@@ -41,13 +45,11 @@ public slots:
 //    void renameItemName(GameObject *gameObject);
 //    void changeGameObjectActivation(GameObject *gameObject, bool isActive);
 //    void copyGameObjectInsertMap(QTreeWidgetItem *item, GameObject *gameObject);
-//    void itemSelectionChangedSlot();
 //    void selectedObjects(QList<GameObject*> gameObjects);
 //    void updateMultipleSelectObjects(GameObject *gameObject);
 
 //signals:
 //    void lookAtGameObjectSignal(GameObject *gameObject);
-//    void setCoordinateSelectedObject(GameObject *gameObject);
 //    void setCoordinateSelectedObjects(QList<GameObject*> gameObjects, CenterPoint *center);
 //    void deleteSceneGameObject(GameObject *gameObject);
 //    void showGameObjectProperty(GameObject *gameObject);

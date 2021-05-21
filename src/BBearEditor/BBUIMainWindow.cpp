@@ -63,6 +63,17 @@ void BBUIMainWindow::setConnect()
     QObject::connect(m_pUi->dockEditview, SIGNAL(keyPress(QKeyEvent*)), m_pUi->openGLWidget, SLOT(onKeyPress(QKeyEvent*)));
 //    QObject::connect(this, SIGNAL(sceneMultipleSelectKey(bool)), ui->openGLWidget, SLOT(multipleSelectKey(bool)));
     // Drag into the model, and add item in the Hierarchy tree
-    QObject::connect(m_pUi->openGLWidget, SIGNAL(addGameObjectSignal(BBGameObject*)),
-                     m_pUi->treeHierarchy, SLOT(addGameObjectSlot(BBGameObject*)));
+    QObject::connect(m_pUi->openGLWidget, SIGNAL(addGameObject(BBGameObject*)),
+                     m_pUi->treeHierarchy, SLOT(addGameObject(BBGameObject*)));
+    // select item in treeHierarchy, use coordinate system to select  object in OpenGL view
+    QObject::connect(m_pUi->treeHierarchy, SIGNAL(setCoordinateSystemSelectedObject(BBGameObject*)),
+                     m_pUi->openGLWidget, SLOT(setCoordinateSystemSelectedObject(BBGameObject*)));
+    // pick object in OpenGL view, select corresponding item in treeHierarchy
+    QObject::connect(m_pUi->openGLWidget, SIGNAL(pickObject(BBGameObject*)),
+                     m_pUi->treeHierarchy, SLOT(selectPickedObject(BBGameObject*)));
+//    //点击层级视图对象 在属性栏中显示属性
+//    QObject::connect(ui->treeHierarchy, SIGNAL(showGameObjectProperty(GameObject*)),
+//                     ui->propertyManager, SLOT(showHierarchyTreeItemProperty(GameObject*)));
+
+
 }

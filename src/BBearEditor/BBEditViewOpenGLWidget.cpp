@@ -171,6 +171,7 @@ void BBEditViewOpenGLWidget::mouseReleaseEvent(QMouseEvent *e)
             {
                 // Single selection
                 pickObject(pObject);
+                setCoordinateSystemSelectedObject(pObject);
             }
         }
         // When the coordinate system is no longer moved, reset m_LastMousePos
@@ -289,14 +290,13 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
     QByteArray data;
     if ((data = event->mimeData()->data(BB_MIMETYPE_BASEOBJECT)) != nullptr)
     {
-        // After dropping, the pre-created object becomes a formal object, and use coordinate system to select it
-        setCoordinateSystemSelectedObject(m_pPreviewObject);
+        // After dropping, the pre-created object becomes a formal object
         // Set the position of the drop point
         BBRay ray = m_pScene->getCamera()->createRayFromScreen(event->pos().x(), event->pos().y());
         m_pPreviewObject->setPosition(ray.computeIntersectWithXOZPlane(0));
         // Show item in hierarchical tree
         // need the item so that set local coordinate
-        addGameObjectSignal(m_pPreviewObject);
+        addGameObject(m_pPreviewObject);
         // Set to empty for the next calculation
         m_pPreviewObject = NULL;
         event->accept();

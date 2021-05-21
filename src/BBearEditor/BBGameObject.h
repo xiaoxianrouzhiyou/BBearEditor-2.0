@@ -38,6 +38,8 @@ public:
     QVector3D getScale() { return m_Scale; }
     QVector3D getLocalScale() { return m_LocalScale; }
 
+    void setLocalTransform(BBGameObject* pParent);
+
     virtual void setActivity(bool bActive) { m_bActive = bActive; }
     inline bool getActivity() { return m_bActive; }
     virtual void setVisibility(bool bVisible) { m_bVisible = bVisible; }
@@ -59,7 +61,6 @@ public:
     virtual bool hit(const BBRay &ray, float &fDistance);
 
 
-//    void setLocalTransform();
 
 //    virtual void lookAtSelf(QVector3D &pos, QVector3D &viewCenter, float distFactor = 2.4);
 

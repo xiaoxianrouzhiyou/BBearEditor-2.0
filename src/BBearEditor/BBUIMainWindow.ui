@@ -51,7 +51,7 @@ QMenu::item:selected {
 
 QMenu::right-arrow {
     margin: 1px;
-    border-image: url(://resources/icons/arrow_right.png);
+    border-image: url(../../resources/icons/arrow_right.png);
 }
 
 QMenuBar {
@@ -68,8 +68,8 @@ QStatusBar {
 }
 
 QDockWidget {
-    titlebar-close-icon: url(://resources/icons/close.png);
-    titlebar-normal-icon: url(://resources/icons/float.png);
+    titlebar-close-icon: url(../../resources/icons/close.png);
+    titlebar-normal-icon: url(../../resources/icons/float.png);
     color: #d6dfeb;
     font: 75 9pt &quot;Arial&quot;;
     background: rgb(14, 19, 25);
@@ -283,11 +283,11 @@ BBObjectListWidget::item:focus {
 }
 
 #searchIconGameObject, #searchIconHierarchy, #searchIconFolder, #searchIconFile, #searchIconInspector {
-    image: url(://resources/icons/search2.png);
+    image: url(../../resources/icons/search2.png);
 }
 
 #closeIconGameObject, #closeIconHierarchy, #closeIconFolder, #closeIconFile, #closeIconInspector {
-    image: url(://resources/icons/search_close2.png);
+    image: url(../../resources/icons/search_close2.png);
 }
 
 #buttonRootHierarchy, #buttonRootProject, #buttonRootInspector {
@@ -308,11 +308,11 @@ BBObjectListWidget::item:focus {
 }
 
 #buttonMoreProject {
-    image: url(://resources/icons/setting.png);
+    image: url(../../resources/icons/setting.png);
 }
 
 #buttonSettingFile, #buttonSettingInspector, #buttonSettingFile {
-    image: url(://resources/icons/setting.png);
+    image: url(../../resources/icons/setting.png);
 }
 
 QTreeWidget {
@@ -345,22 +345,22 @@ QTreeWidget::branch:selected {
 QTreeWidget::branch:closed:has-children:!has-siblings,
 QTreeWidget::branch:closed:has-children:has-siblings {
     border-image: none;
-    image: url(://resources/icons/branch-closed.png);
+    image: url(../../resources/icons/branch-closed.png);
 }
 
 QTreeWidget::branch:open:has-children:!has-siblings,
 QTreeWidget::branch:open:has-children:has-siblings {
     border-image: none;
-    image: url(://resources/icons/branch-open.png);
+    image: url(../../resources/icons/branch-open.png);
 }
 
 /*item checkbox*/
 QTreeWidget::indicator:checked {
-    image: url(://resources/icons/visible2.png);
+    image: url(../../resources/icons/visible2.png);
 }
 
 QTreeWidget::indicator:unchecked {
-    image: url(://resources/icons/invisible3.png);
+    image: url(../../resources/icons/invisible3.png);
 }
 
 QHeaderView {
@@ -396,7 +396,7 @@ QPushButton {
 
 #buttonFilter {
     padding: 5px;
-    image: url(://resources/icons/more.png);
+    image: url(../../resources/icons/more.png);
 }
 
 FileList {
