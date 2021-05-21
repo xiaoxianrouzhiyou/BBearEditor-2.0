@@ -201,6 +201,24 @@ void BBHierarchyTreeWidget::selectPickedObject(BBGameObject *pGameObject)
     }
 }
 
+void BBHierarchyTreeWidget::selectPickedObjects(QList<BBGameObject*> gameObjects)
+{
+    QMap<QTreeWidgetItem*, BBGameObject*>::Iterator itr;
+    for (itr = m_ObjectMap.begin(); itr != m_ObjectMap.end(); itr++)
+    {
+        QTreeWidgetItem *pItem = itr.key();
+        BBGameObject *pGameObject = itr.value();
+        if (gameObjects.contains(pGameObject))
+        {
+            pItem->setSelected(true);
+        }
+        else
+        {
+            pItem->setSelected(false);
+        }
+    }
+}
+
 void BBHierarchyTreeWidget::changeSelectedItems()
 {
     QList<QTreeWidgetItem*> items = selectedItems();
@@ -389,25 +407,6 @@ void BBHierarchyTreeWidget::changeSelectedItems()
 //    }
 //}
 
-
-
-//void HierarchyTree::selectedObjects(QList<GameObject*> gameObjects)
-//{
-//    QMap<QTreeWidgetItem*, GameObject*>::Iterator itr;
-//    for (itr = mMap.begin(); itr != mMap.end(); itr++)
-//    {
-//        GameObject *gameObject = itr.value();
-//        QTreeWidgetItem *item = itr.key();
-//        if (gameObjects.contains(gameObject))
-//        {
-//            item->setSelected(true);
-//        }
-//        else
-//        {
-//            item->setSelected(false);
-//        }
-//    }
-//}
 
 //void HierarchyTree::updateMultipleSelectObjects(GameObject *gameObject)
 //{

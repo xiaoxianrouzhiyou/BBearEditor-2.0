@@ -110,8 +110,7 @@ void BBEditViewOpenGLWidget::mouseMoveEvent(QMouseEvent *e)
             // do not perform transform of gameobject
             // show selection region, and select gameobjects
             m_pScene->setSelectionRegionVisibility(true);
-            m_pScene->setSelectionRegion(m_SelectionRegionStartingPoint, e->pos());
-//                regionSelectObjects(scene.setSelectionRegion(selectionRegionStart, e->pos()));
+            pickObjects(m_pScene->getSelectedObjects(m_SelectionRegionStartingPoint, e->pos()));
         }
         else
         {

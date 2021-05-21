@@ -107,6 +107,29 @@ bool BBModel::hit(const BBRay &ray, float &fDistance)
     return false;
 }
 
+bool BBModel::belongToSelectionRegion(const QVector3D &left1, const QVector3D &left2, const QVector3D &left3,
+                                      const QVector3D &top1, const QVector3D &top2, const QVector3D &top3,
+                                      const QVector3D &right1, const QVector3D &right2, const QVector3D &right3,
+                                      const QVector3D &bottom1, const QVector3D &bottom2, const QVector3D &bottom3)
+{
+    // Eliminate objects whose the center point of the bounding box is on the outside
+    QVector3D center = getModelMatrix() * m_pBoundingBox->getCenter();
+    if (center.distanceToPlane(left1, left2, left3) < 0)
+        return false;
+    if (center.distanceToPlane(top1, top2, top3) < 0)
+        return false;
+    if (center.distanceToPlane(right1, right2, right3) < 0)
+        return false;
+    if (center.distanceToPlane(bottom1, bottom2, bottom3) < 0)
+        return false;
+    // If the center point of the bounding box is inside,
+    // further calculate whether each vertex of the bounding box is inside
+    return m_pBoundingBox->belongToSelectionRegion(left1, left2, left3,
+                                                   top1, top2, top3,
+                                                   right1, right2, right3,
+                                                   bottom1, bottom2, bottom3);
+}
+
 //void Model::renderBuffer(QMatrix4x4 viewMatrix, QMatrix4x4 projectionMatrix, QVector3D cameraPos)
 //{
 //    mMesh->renderBuffer(viewMatrix, projectionMatrix, cameraPos);
@@ -131,26 +154,7 @@ bool BBModel::hit(const BBRay &ray, float &fDistance)
 //    pos = viewCenter + distFactor * size * QVector3D(1, 1, 1);
 //}
 
-//bool Model::belongToSelectionRegion(QVector3D left1, QVector3D left2, QVector3D left3,
-//                                    QVector3D top1, QVector3D top2, QVector3D top3,
-//                                    QVector3D right1, QVector3D right2, QVector3D right3,
-//                                    QVector3D bottom1, QVector3D bottom2, QVector3D bottom3)
-//{
-//    //计算对象的包围盒是否位于选区的上下左右四个平面之中
-//    //包围盒中心点在外侧的直接排除
-//    QVector3D boundingBoxCenter = getModelMatrix() * boundingBox->getCenter();
-//    if (boundingBoxCenter.distanceToPlane(left1, left2, left3) < 0)
-//        return false;
-//    if (boundingBoxCenter.distanceToPlane(top1, top2, top3) < 0)
-//        return false;
-//    if (boundingBoxCenter.distanceToPlane(right1, right2, right3) < 0)
-//        return false;
-//    if (boundingBoxCenter.distanceToPlane(bottom1, bottom2, bottom3) < 0)
-//        return false;
-//    //包围盒中心点在内测的 进一步计算包围盒的每一个顶点是否在内测
-//    return boundingBox->belongToSelectionRegion(left1, left2, left3, top1, top2, top3,
-//                                                right1, right2, right3, bottom1, bottom2, bottom3, getModelMatrix());
-//}
+
 
 //void Model::setMaterial(Material *material)
 //{

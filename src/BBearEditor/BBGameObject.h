@@ -59,16 +59,15 @@ public:
     virtual void resize(float fWidth, float fHeight);
 
     virtual bool hit(const BBRay &ray, float &fDistance);
-
-
+    virtual bool belongToSelectionRegion(const QVector3D &left1, const QVector3D &left2, const QVector3D &left3,
+                                         const QVector3D &top1, const QVector3D &top2, const QVector3D &top3,
+                                         const QVector3D &right1, const QVector3D &right2, const QVector3D &right3,
+                                         const QVector3D &bottom1, const QVector3D &bottom2, const QVector3D &bottom3);
 
 //    virtual void lookAtSelf(QVector3D &pos, QVector3D &viewCenter, float distFactor = 2.4);
 
 
-//    virtual bool belongToSelectionRegion(QVector3D left1, QVector3D left2, QVector3D left3,
-//                                         QVector3D top1, QVector3D top2, QVector3D top3,
-//                                         QVector3D right1, QVector3D right2, QVector3D right3,
-//                                         QVector3D bottom1, QVector3D bottom2, QVector3D bottom3);
+
 //    QString getFilePath();
 
 

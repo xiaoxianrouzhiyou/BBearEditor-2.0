@@ -31,6 +31,10 @@ public:
     void setVisibility(bool bVisible) override;
 
     bool hit(const BBRay &ray, float &fDistance) override;
+    bool belongToSelectionRegion(const QVector3D &left1, const QVector3D &left2, const QVector3D &left3,
+                                 const QVector3D &top1, const QVector3D &top2, const QVector3D &top3,
+                                 const QVector3D &right1, const QVector3D &right2, const QVector3D &right3,
+                                 const QVector3D &bottom1, const QVector3D &bottom2, const QVector3D &bottom3) override;
 
 private:
     BBMesh *m_pMesh;
@@ -44,13 +48,7 @@ private:
 
 //    void renderBuffer(QMatrix4x4 viewMatrix, QMatrix4x4 projectionMatrix, QVector3D cameraPos);
 //    void setDiffuseMaterial(float r, float g, float b, float a);
-//    bool hit(Ray ray, float &distance) override;
-
 //    void lookAtSelf(QVector3D &pos, QVector3D &viewCenter, float distFactor = 2.4) override;
-//    bool belongToSelectionRegion(QVector3D left1, QVector3D left2, QVector3D left3,
-//                                 QVector3D top1, QVector3D top2, QVector3D top3,
-//                                 QVector3D right1, QVector3D right2, QVector3D right3,
-//                                 QVector3D bottom1, QVector3D bottom2, QVector3D bottom3) override;
 //    void setMaterial(Material *material);
 //    Material *getMaterial();
 //    void previewMaterial(Material *material);

@@ -37,8 +37,8 @@ signals:
     void addGameObject(BBGameObject *pGameObject);
     void updateMultipleSelectedObjects(BBGameObject *pGameObject);
     void pickObject(BBGameObject *pGameObject);
+    void pickObjects(QList<BBGameObject*> gameObjects);
 //    void updateTransform(GameObject *gameObject, char transformModeKey);
-//    void regionSelectObjects(QList<GameObject*> gameObjects);
 //    void copyGameObjectInsertMap(QTreeWidgetItem *item, GameObject *gameObject);
 //    void updateMaterialProperty(Model *model);
 

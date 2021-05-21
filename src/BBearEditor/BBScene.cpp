@@ -298,7 +298,7 @@ void BBScene::setSelectionRegionVisibility(bool bVisible)
     m_pSelectionRegion->setVisibility(bVisible);
 }
 
-QList<BBGameObject*> BBScene::setSelectionRegion(QPoint start, QPoint end)
+QList<BBGameObject*> BBScene::getSelectedObjects(QPoint start, QPoint end)
 {
     QList<BBGameObject*> result;
     // end cannot exceed the viewport
@@ -310,7 +310,7 @@ QList<BBGameObject*> BBScene::setSelectionRegion(QPoint start, QPoint end)
         end.setY(0);
     else if (end.y() > m_pCamera->getViewportHeight())
         end.setY(m_pCamera->getViewportHeight());
-    // Find the coordinates of the bottom-left corner, get the smaller x and the larger y
+    // compute the coordinates of the bottom-left corner, get the smaller x and the larger y
     int x = start.x() < end.x() ? start.x() : end.x();
     int y = start.y() > end.y() ? start.y() : end.y();
     int w = abs(start.x() - end.x());
@@ -322,27 +322,26 @@ QList<BBGameObject*> BBScene::setSelectionRegion(QPoint start, QPoint end)
     y = y + m_pCamera->getViewportHeight() / 2;
     m_pSelectionRegion->setRect(x, y, w, h);
 
-//    //选区四个顶点对应的3D射线
-//    Ray topLeft = camera.createRayFromScreen(x, y - h);
-//    Ray topRight = camera.createRayFromScreen(x + w, y - h);
-//    Ray bottomRight = camera.createRayFromScreen(x + w, y);
-//    Ray bottomLeft = camera.createRayFromScreen(x, y);
-//    //计算2D框选区对应的3D包围盒
-//    //两条射线组成一个平面 包围盒在上下左右平面之中的被选中
-//    QList<GameObject*> objects = models + directionLights + pointLights + spotLights + audios;
-//    int count = objects.count();
-//    for (int i = 0; i < count; i++)
-//    {
-//        //计算对象的包围盒是否位于选区的上下左右四个平面之中
-//        if (objects.at(i)->belongToSelectionRegion(
-//                    topLeft.getNearPoint(), bottomLeft.getNearPoint(), topLeft.getFarPoint(),
-//                    topLeft.getNearPoint(), topLeft.getFarPoint(), topRight.getNearPoint(),
-//                    topRight.getNearPoint(), topRight.getFarPoint(), bottomRight.getNearPoint(),
-//                    bottomLeft.getNearPoint(), bottomRight.getNearPoint(), bottomLeft.getFarPoint()))
-//        {
-//            result.append(objects.at(i));
-//        }
-//    }
+    // 3D ray of the 4 vertexes in the selection region
+    BBRay topLeft = m_pCamera->createRayFromScreen(x, y - h);
+    BBRay topRight = m_pCamera->createRayFromScreen(x + w, y - h);
+    BBRay bottomRight = m_pCamera->createRayFromScreen(x + w, y);
+    BBRay bottomLeft = m_pCamera->createRayFromScreen(x, y);
+    // Two rays form a plane
+    // 4 planes, object in the middle of top bottom left right planes is selected
+    QList<BBGameObject*> objects = m_Models;// + directionLights + pointLights + spotLights + audios;
+    for (int i = 0; i < objects.count(); i++)
+    {
+        // whether the bounding box of object is placed in the middle of 4 planes
+        if (objects.at(i)->belongToSelectionRegion(
+                    topLeft.getNearPoint(), bottomLeft.getNearPoint(), topLeft.getFarPoint(),
+                    topLeft.getNearPoint(), topLeft.getFarPoint(), topRight.getNearPoint(),
+                    topRight.getNearPoint(), topRight.getFarPoint(), bottomRight.getNearPoint(),
+                    bottomLeft.getNearPoint(), bottomRight.getNearPoint(), bottomLeft.getFarPoint()))
+        {
+            result.append(objects.at(i));
+        }
+    }
 
     // return all objects in the selection region
     return result;

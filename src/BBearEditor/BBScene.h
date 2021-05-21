@@ -37,7 +37,7 @@ public:
     void deleteGameObject(BBGameObject *pObject);
 
     void setSelectionRegionVisibility(bool bVisible);
-    QList<BBGameObject*> setSelectionRegion(QPoint start, QPoint end);
+    QList<BBGameObject*> getSelectedObjects(QPoint start, QPoint end);
 
 private:
     float m_fUpdateRate;

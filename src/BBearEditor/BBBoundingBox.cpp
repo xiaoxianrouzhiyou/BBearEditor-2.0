@@ -350,6 +350,25 @@ bool BBBoundingBox3D::hit(const BBRay &ray, float &fDistance)
     return result;
 }
 
+bool BBBoundingBox3D::belongToSelectionRegion(const QVector3D &left1, const QVector3D &left2, const QVector3D &left3,
+                                              const QVector3D &top1, const QVector3D &top2, const QVector3D &top3,
+                                              const QVector3D &right1, const QVector3D &right2, const QVector3D &right3,
+                                              const QVector3D &bottom1, const QVector3D &bottom2, const QVector3D &bottom3)
+{
+    for (int i = 0; i < m_nBoxVertexCount; i++)
+    {
+        if (m_pTransformedBoxVertexes[i].distanceToPlane(left1, left2, left3) < 0)
+            return false;
+        if (m_pTransformedBoxVertexes[i].distanceToPlane(top1, top2, top3) < 0)
+            return false;
+        if (m_pTransformedBoxVertexes[i].distanceToPlane(right1, right2, right3) < 0)
+            return false;
+        if (m_pTransformedBoxVertexes[i].distanceToPlane(bottom1, bottom2, bottom3) < 0)
+            return false;
+    }
+    return true;
+}
+
 void BBBoundingBox3D::draw()
 {
     glEnable(GL_DEPTH_TEST);
@@ -450,27 +469,6 @@ void BBAABBBoundingBox3D::computeBoxVertexes(const QList<QVector4D> &vertexes)
 //    return QVector3D(radius[0], radius[1], radius[2]);
 //}
 
-//bool BoundingBox3D::belongToSelectionRegion(QVector3D left1, QVector3D left2, QVector3D left3,
-//                                            QVector3D top1, QVector3D top2, QVector3D top3,
-//                                            QVector3D right1, QVector3D right2, QVector3D right3,
-//                                            QVector3D bottom1, QVector3D bottom2, QVector3D bottom3,
-//                                            QMatrix4x4 matrix)
-//{
-//    //计算包围盒的每一个顶点是否在4个平面内测
-//    transformBoundingBoxVertexes(matrix);
-//    for (int i = 0; i < 8; i++)
-//    {
-//        if (transferedBoxVertexes[i].distanceToPlane(left1, left2, left3) < 0)
-//            return false;
-//        if (transferedBoxVertexes[i].distanceToPlane(top1, top2, top3) < 0)
-//            return false;
-//        if (transferedBoxVertexes[i].distanceToPlane(right1, right2, right3) < 0)
-//            return false;
-//        if (transferedBoxVertexes[i].distanceToPlane(bottom1, bottom2, bottom3) < 0)
-//            return false;
-//    }
-//    return true;
-//}
 
 
 ///****************

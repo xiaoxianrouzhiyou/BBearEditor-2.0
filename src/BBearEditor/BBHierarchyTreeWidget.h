@@ -29,6 +29,7 @@ signals:
 public slots:
     void addGameObject(BBGameObject *pGameObject);
     void selectPickedObject(BBGameObject *pGameObject);
+    void selectPickedObjects(QList<BBGameObject*> gameObjects);
 
 private slots:
     void changeSelectedItems();
@@ -45,7 +46,6 @@ private slots:
 //    void renameItemName(GameObject *gameObject);
 //    void changeGameObjectActivation(GameObject *gameObject, bool isActive);
 //    void copyGameObjectInsertMap(QTreeWidgetItem *item, GameObject *gameObject);
-//    void selectedObjects(QList<GameObject*> gameObjects);
 //    void updateMultipleSelectObjects(GameObject *gameObject);
 
 //signals:

@@ -313,6 +313,19 @@ bool BBGameObject::hit(const BBRay &ray, float &fDistance)
     return m_bActive;
 }
 
+bool BBGameObject::belongToSelectionRegion(const QVector3D &left1, const QVector3D &left2, const QVector3D &left3,
+                                           const QVector3D &top1, const QVector3D &top2, const QVector3D &top3,
+                                           const QVector3D &right1, const QVector3D &right2, const QVector3D &right3,
+                                           const QVector3D &bottom1, const QVector3D &bottom2, const QVector3D &bottom3)
+{
+    // 4 planes, object in the middle of top bottom left right planes is selected
+    // Whether the bounding box of object is placed in the middle of 4 planes
+    // Eliminate objects whose the center point of the bounding box is on the outside
+    // If the center point of the bounding box is inside,
+    // further calculate whether each vertex of the bounding box is inside
+    return true;
+}
+
 void BBGameObject::setModelMatrix(float px, float py, float pz,
                                   const QQuaternion &r,
                                   float sx, float sy, float sz)
@@ -350,16 +363,6 @@ void BBGameObject::setModelMatrix(float px, float py, float pz,
 //    pos = viewCenter + QVector3D(0, 0.5, 4);
 //}
 
-//bool GameObject::belongToSelectionRegion(QVector3D left1, QVector3D left2, QVector3D left3,
-//                                         QVector3D top1, QVector3D top2, QVector3D top3,
-//                                         QVector3D right1, QVector3D right2, QVector3D right3,
-//                                         QVector3D bottom1, QVector3D bottom2, QVector3D bottom3)
-//{
-//    //计算对象的包围盒是否位于选区的上下左右四个平面之中
-//    //包围盒中心点在外侧的直接排除
-//    //包围盒中心点在内测的 进一步计算包围盒的每一个顶点是否在内测
-//    return true;
-//}
 
 
 
