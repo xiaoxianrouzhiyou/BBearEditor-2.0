@@ -5,6 +5,7 @@
 
 class QMouseEvent;
 class BBGameObject;
+class BBGameObjectSet;
 class BBEditViewOpenGLWidget : public BBOpenGLWidget
 {
     Q_OBJECT
@@ -23,9 +24,9 @@ private slots:
     void releaseMoveKeySlot(char key);
     void pressTransformSlot(char key);
     void setCoordinateSystemSelectedObject(BBGameObject *pGameObject);
+    void setCoordinateSystemSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet);
 //    void multipleSelectKey(bool isPress);
 //    void lookAtGameObjectSlot(GameObject *gameObject);
-//    void setCoordinateSelectedObjects(QList<GameObject*> gameObjects, CenterPoint *center);
 //    void deleteSceneGameObject(GameObject *gameObject);
 //    void updateCoordinate();
 //    void createModelDependParent(QString filePath);

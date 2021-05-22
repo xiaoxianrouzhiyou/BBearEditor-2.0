@@ -4,6 +4,7 @@
 #include "BBUtils.h"
 #include "BBCamera.h"
 #include "BBBoundingBox.h"
+#include "BBGameObjectSet.h"
 
 
 //------------------------------
@@ -1751,7 +1752,29 @@ void BBTransformCoordinateSystem::setSelectedObject(BBGameObject *pObject)
         pObject->setVisibility(true);
     }
     m_pSelectedObject = pObject;
-    setCoordinateSystemMode(m_ModeKey);
+    setCoordinateSystem(m_ModeKey);
+}
+
+void BBTransformCoordinateSystem::setSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet)
+{
+    // The operation object has not changed, no additional operations are required
+    if (m_SelectedObjects == gameObjects)
+        return;
+
+    int count = m_SelectedObjects.count();
+    for (int i = 0; i < count; i++)
+    {
+        m_SelectedObjects.at(i)->setVisibility(false);
+    }
+    count = gameObjects.count();
+    for (int i = 0; i < count; i++)
+    {
+        gameObjects.at(i)->setVisibility(true);
+    }
+    m_SelectedObjects = gameObjects;
+    // select center of gravity
+    m_pSelectedObject = pSet;
+    setCoordinateSystem(m_ModeKey);
 }
 
 bool BBTransformCoordinateSystem::mouseMoveEvent(const BBRay &ray, bool bMousePressed)
@@ -1773,7 +1796,7 @@ bool BBTransformCoordinateSystem::mouseMoveEvent(const BBRay &ray, bool bMousePr
     return m_bTransforming;
 }
 
-void BBTransformCoordinateSystem::setCoordinateSystemMode(char key)
+void BBTransformCoordinateSystem::setCoordinateSystem(char key)
 {
     m_ModeKey = key;
 
@@ -1810,32 +1833,6 @@ void BBTransformCoordinateSystem::stopTransform()
 ///******************************************************************
 //        TransformCoordinate
 //  *********************************************************************/
-
-//void TransformCoordinate::setSelectedObjects(QList<GameObject*> objects, CenterPoint *center)
-//{
-//    //多选的操作对象没变 不用做额外操作
-//    //if (mSelectedObjects == objects)
-//        //return;
-//    //有个这句 当子节点取消选中时 真正的多选对象列表并没有变 会出错
-
-//    //原来的操作对象包围盒 指示器等隐藏
-//    int count = mSelectedObjects.count();
-//    for (int i = 0; i < count; i++)
-//    {
-//        mSelectedObjects.at(i)->setVisible(false);
-//    }
-//    //现在的操作对象显示包围盒 指示器等
-//    count = objects.count();
-//    for (int i = 0; i < count; i++)
-//    {
-//        objects.at(i)->setVisible(true);
-//    }
-//    //刷新当前选中
-//    mSelectedObjects = objects;
-//    //选中对象们的重心
-//    mSelectedObject = center;
-//    setCoordinateMode(mModeKey);
-//}
 
 
 //char TransformCoordinate::getTransformModeKey()

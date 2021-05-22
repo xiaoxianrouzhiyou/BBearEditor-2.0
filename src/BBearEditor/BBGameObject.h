@@ -66,11 +66,6 @@ public:
 
 //    virtual void lookAtSelf(QVector3D &pos, QVector3D &viewCenter, float distFactor = 2.4);
 
-
-
-//    QString getFilePath();
-
-
 protected:
     virtual void setModelMatrix(float px, float py, float pz,
                                 const QQuaternion &r,
@@ -92,9 +87,6 @@ protected:
     QString m_strName;
     QString m_strClassName;
     QString m_strIconName;
-
-
-//    QString mFilePath;
 
 };
 

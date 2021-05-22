@@ -64,12 +64,17 @@ void BBEditViewOpenGLWidget::pressTransformSlot(char key)
     // If the camera is processed, the coordinate system transform is not processed
     if (m_bRightPressed)
         return;
-    m_pScene->getTransformCoordinateSystem()->setCoordinateSystemMode(key);
+    m_pScene->getTransformCoordinateSystem()->setCoordinateSystem(key);
 }
 
 void BBEditViewOpenGLWidget::setCoordinateSystemSelectedObject(BBGameObject *pGameObject)
 {
     m_pScene->getTransformCoordinateSystem()->setSelectedObject(pGameObject);
+}
+
+void BBEditViewOpenGLWidget::setCoordinateSystemSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet)
+{
+    m_pScene->getTransformCoordinateSystem()->setSelectedObjects(gameObjects, pSet);
 }
 
 void BBEditViewOpenGLWidget::mousePressEvent(QMouseEvent *e)
@@ -406,11 +411,6 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
 //void OpenGLWidget::lookAtGameObjectSlot(GameObject *gameObject)
 //{
 //    scene.lookAtGameObject(gameObject);
-//}
-
-//void OpenGLWidget::setCoordinateSelectedObjects(QList<GameObject*> gameObjects, CenterPoint *center)
-//{
-//    scene.transformCoordinate->setSelectedObjects(gameObjects, center);
 //}
 
 //void OpenGLWidget::deleteSceneGameObject(GameObject *gameObject)

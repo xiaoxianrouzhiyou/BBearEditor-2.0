@@ -51,7 +51,8 @@ SOURCES += \
     BBBoundingBox.cpp \
     BBSelectionRegion.cpp \
     BBCoordinateSystem.cpp \
-    BBStaticMesh.cpp
+    BBStaticMesh.cpp \
+    BBGameObjectSet.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
@@ -80,7 +81,8 @@ HEADERS += \
     BBBoundingBox.h \
     BBSelectionRegion.h \
     BBCoordinateSystem.h \
-    BBStaticMesh.h
+    BBStaticMesh.h \
+    BBGameObjectSet.h
 
 FORMS += \
     BBUITitleBar.ui \

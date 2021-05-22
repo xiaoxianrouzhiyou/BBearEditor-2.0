@@ -25,6 +25,7 @@ class BBRectBoundingBox2D;
 class BBTriangleBoundingBox2D;
 class BBQuarterCircleBoundingBox2D;
 class BBBoundingBox3D;
+class BBGameObjectSet;
 
 
 // The base class of each component to be rendered in the coordinate system
@@ -353,11 +354,11 @@ public:
     void resize(float fWidth, float fHeight) override;
 
     void setSelectedObject(BBGameObject *pObject);
+    void setSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet);
     bool mouseMoveEvent(const BBRay &ray, bool bMousePressed);
-    void setCoordinateSystemMode(char key);
+    void setCoordinateSystem(char modeKey);
     bool isTransforming() { return m_bTransforming; }
     void stopTransform();
-//    void setSelectedObjects(QList<GameObject*> objects, CenterPoint *center);
 
 
 //    GameObject *getSelectedObject();
@@ -375,9 +376,10 @@ private:
     char m_ModeKey;
 
     BBGameObject *m_pSelectedObject;
+    QList<BBGameObject*> m_SelectedObjects;
     bool m_bTransforming;
 
-//    QList<GameObject*> mSelectedObjects;
+
 };
 
 

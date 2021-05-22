@@ -4,6 +4,7 @@
 #include "BBTreeWidget.h"
 
 class BBGameObject;
+class BBGameObjectSet;
 class BBHierarchyTreeWidget : public BBTreeWidget
 {
     Q_OBJECT
@@ -25,6 +26,7 @@ private:
 signals:
     void createModel(const QString &filePath);
     void setCoordinateSystemSelectedObject(BBGameObject *pGameObject);
+    void setCoordinateSystemSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet);
 
 public slots:
     void addGameObject(BBGameObject *pGameObject);
@@ -50,7 +52,6 @@ private slots:
 
 //signals:
 //    void lookAtGameObjectSignal(GameObject *gameObject);
-//    void setCoordinateSelectedObjects(QList<GameObject*> gameObjects, CenterPoint *center);
 //    void deleteSceneGameObject(GameObject *gameObject);
 //    void showGameObjectProperty(GameObject *gameObject);
 //    void showSetProperty(QList<GameObject*> gameObjects, CenterPoint *center);

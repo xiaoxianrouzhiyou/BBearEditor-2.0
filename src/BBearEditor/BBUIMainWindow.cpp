@@ -65,9 +65,11 @@ void BBUIMainWindow::setConnect()
     // Drag into the model, and add item in the Hierarchy tree
     QObject::connect(m_pUi->openGLWidget, SIGNAL(addGameObject(BBGameObject*)),
                      m_pUi->treeHierarchy, SLOT(addGameObject(BBGameObject*)));
-    // select item in treeHierarchy, use coordinate system to select object in OpenGL view
+    // select item in treeHierarchy, use coordinate system to select corresponding object in OpenGL view
     QObject::connect(m_pUi->treeHierarchy, SIGNAL(setCoordinateSystemSelectedObject(BBGameObject*)),
                      m_pUi->openGLWidget, SLOT(setCoordinateSystemSelectedObject(BBGameObject*)));
+    QObject::connect(m_pUi->treeHierarchy, SIGNAL(setCoordinateSystemSelectedObjects(QList<BBGameObject*>, BBGameObjectSet*)),
+                     m_pUi->openGLWidget, SLOT(setCoordinateSystemSelectedObjects(QList<BBGameObject*>, BBGameObjectSet*)));
     // pick object in OpenGL view, select corresponding item in treeHierarchy
     QObject::connect(m_pUi->openGLWidget, SIGNAL(pickObject(BBGameObject*)),
                      m_pUi->treeHierarchy, SLOT(selectPickedObject(BBGameObject*)));
@@ -179,9 +181,7 @@ void BBUIMainWindow::setConnect()
 //    //在场景中拷贝的对象 需要将层级视图树节点和拷贝的对象插入层级视图映射中
 //    QObject::connect(ui->openGLWidget, SIGNAL(copyGameObjectInsertMap(QTreeWidgetItem*, GameObject*)),
 //                     ui->treeHierarchy, SLOT(copyGameObjectInsertMap(QTreeWidgetItem*, GameObject*)));
-//    //在层级视图中选择多项 场景中坐标系选择多项的重心
-//    QObject::connect(ui->treeHierarchy, SIGNAL(setCoordinateSelectedObjects(QList<GameObject*>, CenterPoint*)),
-//                     ui->openGLWidget, SLOT(setCoordinateSelectedObjects(QList<GameObject*>, CenterPoint*)));
+
 //    //在层级视图中选择多项 属性栏显示集合的属性
 //    QObject::connect(ui->treeHierarchy, SIGNAL(showSetProperty(QList<GameObject*>, CenterPoint*)),
 //                     ui->propertyManager, SLOT(showHierarchyTreeItemsProperty(QList<GameObject*>, CenterPoint*)));

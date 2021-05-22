@@ -2,6 +2,7 @@
 #include <QMimeData>
 #include <QMenu>
 #include "BBGameObject.h"
+#include "BBGameObjectSet.h"
 
 
 QMap<QTreeWidgetItem*, BBGameObject*> BBHierarchyTreeWidget::m_ObjectMap;
@@ -241,60 +242,53 @@ void BBHierarchyTreeWidget::changeSelectedItems()
     }
     else
     {
-//        else
-//        {
-//            QList<GameObject*> gameObjects;
-//            for (int i = 0; i < count; i++)
-//            {
-//                //父子结点都被选中 多滤掉孩子节点对应的对象
-//                QTreeWidgetItem *parent;
-//                for (parent = items.at(i)->parent(); parent; parent = parent->parent())
-//                {
-//                    //遍历祖先 看是否也被选中
-//                    if (items.contains(parent))
-//                    {
-//                        //祖先和子孙同时被选中 只处理祖先
-//                        //处理祖先时 会对所有子孙进行处理
-//                        break;
-//                    }
-//                }
-//                //选中项对应的gameobj加入对象集合
-//                if (parent == NULL)
-//                {
-//                    //祖先没有被选中 该对象需要加入列表进行处理
-//                    gameObjects.append(mMap.value(items.at(i)));
-//                }
-//            }
-//            count = gameObjects.count();
-//            if (count == 1)
-//            {
-//                //过滤后 真正处理的只有一个对象
-//                GameObject *gameObject = gameObjects.first();
-//                setCoordinateSelectedObject(gameObject);
-//                //属性栏显示该项对应属性
-//                showGameObjectProperty(gameObject);
-//            }
-//            else
-//            {
-//                //真正处理多个对象 坐标系选中所有对象的重心
-//                CenterPoint *center = new CenterPoint(gameObjects);
-//                center->setBaseAttributes("multiple", "Set", "set");
-//                //所有对象都是不可见 center为不可见图标
-//                center->setActive(false);
-
-//                for (int i = 0; i < count; i++)
-//                {
-//                    if (gameObjects.at(i)->getActive())
-//                    {
-//                        center->setActive(true);
-//                        break;
-//                    }
-//                }
-//                setCoordinateSelectedObjects(gameObjects, center);
-//                //属性栏显示集合的transform
-//                showSetProperty(gameObjects, center);
-//            }
-//        }
+        QList<BBGameObject*> gameObjects;
+        for (int i = 0; i < count; i++)
+        {
+            // Ancestors and descendants are selected at the same time, only ancestors are processed
+            QTreeWidgetItem *parent;
+            for (parent = items.at(i)->parent(); parent; parent = parent->parent())
+            {
+                // Traverse ancestors to see if they are also selected
+                if (items.contains(parent))
+                {
+                    break;
+                }
+            }
+            if (parent == NULL)
+            {
+                gameObjects.append(m_ObjectMap.value(items.at(i)));
+            }
+            // if there is parent, the item can be processed when its parent is processed
+        }
+        count = gameObjects.count();
+        if (count == 1)
+        {
+            // after filter, there is just an item that needs to be processed
+            BBGameObject *pGameObject = gameObjects.first();
+            setCoordinateSystemSelectedObject(pGameObject);
+            // show properties in inspector
+    //        showGameObjectProperty(gameObject);
+        }
+        else
+        {
+            // The center of gravity of all objects selected in the coordinate system
+            BBGameObjectSet *pSet = new BBGameObjectSet(gameObjects);
+            pSet->setBaseAttributes("multiple", "Set", "set");
+            // When all objects are invisible, pSet shows an invisible icon
+            pSet->setActivity(false);
+            for (int i = 0; i < count; i++)
+            {
+                if (gameObjects.at(i)->getActivity())
+                {
+                    pSet->setActivity(true);
+                    break;
+                }
+            }
+            setCoordinateSystemSelectedObjects(gameObjects, pSet);
+            // show properties of the set in inspector
+//            showSetProperty(gameObjects, pSet);
+        }
     }
 }
 
