@@ -42,77 +42,47 @@ void BBGameObjectSet::setPosition(const QVector3D &position, bool bUpdateLocalTr
 
 void BBGameObjectSet::setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform)
 {
-
+    BBGameObject::setRotation(nAngle, axis);
+    // Relative to center point
+    QMatrix4x4 matrix;
+    matrix.translate(m_Position);
+    matrix.rotate(m_Quaternion);
+    matrix.scale(m_Scale);
+    matrix.translate(-m_Position);
+    for (int i = 0; i < m_GameObjectSet.count(); i++)
+    {
+        BBGameObject *pObject = m_GameObjectSet.at(i);
+        pObject->setRotation(nAngle, axis, bUpdateLocalTransform);
+        // change position at the same time
+        pObject->setPosition(matrix * m_OriginalPositions.at(i), bUpdateLocalTransform);
+    }
 }
 
 void BBGameObjectSet::setRotation(const QVector3D &rotation, bool bUpdateLocalTransform)
 {
-
+    // Set the value directly
+    for (int i = 0; i < m_GameObjectSet.count(); i++)
+    {
+        BBGameObject *pObject = m_GameObjectSet.at(i);
+        pObject->setRotation(rotation, bUpdateLocalTransform);
+        // do not change position
+    }
 }
 
 void BBGameObjectSet::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
 {
-
+    BBGameObject::setScale(scale);
+    // Relative to center point
+    QMatrix4x4 matrix;
+    matrix.translate(m_Position);
+    matrix.rotate(m_Quaternion);
+    matrix.scale(m_Scale);
+    matrix.translate(-m_Position);
+    for (int i = 0; i < m_GameObjectSet.count(); i++)
+    {
+        BBGameObject *pObject = m_GameObjectSet.at(i);
+        pObject->setScale(scale * m_OriginalScales.at(i), bUpdateLocalTransform);
+        // change position at the same time
+        pObject->setPosition(matrix * m_OriginalPositions.at(i), bUpdateLocalTransform);
+    }
 }
-
-
-//void CenterPoint::setRotation(int angle, QVector3D axis, bool isUpdateLocalTransform)
-//{
-//    GameObject::setRotation(angle, axis);
-//    int count = mGameObjects.count();
-//    for (int i = 0; i < count; i++)
-//    {
-//        GameObject *object = mGameObjects.at(i);
-//        //相对于中心点旋转
-//        QMatrix4x4 matrix;
-//        matrix.translate(mPosition);
-//        matrix.rotate(mQuaternion);
-//        matrix.scale(mScale);
-//        matrix.translate(-mPosition);
-//        //各对象旋转的角(变化值)与中心点的旋转角一致
-//        object->setRotation(angle, axis, isUpdateLocalTransform);
-//        //位置也会发生变化
-//        object->setPosition(matrix * mOriginPosition.at(i), isUpdateLocalTransform);
-//    }
-//}
-
-//void CenterPoint::setRotation(QVector3D rotation, bool isUpdateLocalTransform)
-//{
-//    //直接设置数值给选中的对象 集合旋转角不累计 注释掉下面一行
-//    //GameObject::setRotation(rotation);
-//    int count = mGameObjects.count();
-//    for (int i = 0; i < count; i++)
-//    {
-//        GameObject *object = mGameObjects.at(i);
-//        //相对于中心点旋转
-//        //QMatrix4x4 matrix;
-//        //matrix.translate(mPosition);
-//        //matrix.rotate(mQuaternion);
-//        //matrix.scale(mScale);
-//        //matrix.translate(-mPosition);
-//        //各对象旋转角(非变化值)直接设为指定值
-//        object->setRotation(rotation, isUpdateLocalTransform);
-//        //位置不发生变化
-//        //object->setPosition(matrix * mOriginPosition.at(i));
-//    }
-//}
-
-//void CenterPoint::setScale(QVector3D scale, bool isUpdateLocalTransform)
-//{
-//    GameObject::setScale(scale);
-//    int count = mGameObjects.count();
-//    for (int i = 0; i < count; i++)
-//    {
-//        GameObject *object = mGameObjects.at(i);
-//        //相对于中心点缩放
-//        QMatrix4x4 matrix;
-//        matrix.translate(mPosition);
-//        matrix.rotate(mQuaternion);
-//        matrix.scale(mScale);
-//        matrix.translate(-mPosition);
-//        //各对象保持原来的缩放倍数关系
-//        object->setScale(scale * mOriginScale.at(i), isUpdateLocalTransform);
-//        //位置也会发生变化
-//        object->setPosition(matrix * mOriginPosition.at(i), isUpdateLocalTransform);
-//    }
-//}
