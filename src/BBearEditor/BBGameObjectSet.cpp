@@ -20,8 +20,8 @@ BBGameObjectSet::BBGameObjectSet(const QList<BBGameObject*> &objects, const QVec
     for (int i = 0; i < objects.count(); i++)
     {
         // m_OriginalPosition is position before setRotation
-        m_OriginalPositions[i] = objects.at(i)->getPosition();
-        m_OriginalScales[i] = objects.at(i)->getScale();
+        m_OriginalPositions.append(objects.at(i)->getPosition());
+        m_OriginalScales.append(objects.at(i)->getScale());
     }
 }
 
