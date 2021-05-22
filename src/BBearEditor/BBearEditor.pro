@@ -26,15 +26,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     NcFramelessHelper.cpp \
-    BBUITitleBar.cpp \
-    BBUIMainWindow.cpp \
     BBObjectListWidget.cpp \
     BBUtils.cpp \
     BBResizableWidget.cpp \
     BBTreeWidget.cpp \
     BBHierarchyTreeWidget.cpp \
     BBGameObject.cpp \
-    BBConfirmationDialog.cpp \
+    Window/BBConfirmationDialog.cpp \
     BBOpenGLWidget.cpp \
     BBScene.cpp \
     BBCamera.cpp \
@@ -52,19 +50,20 @@ SOURCES += \
     BBSelectionRegion.cpp \
     BBCoordinateSystem.cpp \
     BBStaticMesh.cpp \
-    BBGameObjectSet.cpp
+    BBGameObjectSet.cpp \
+    Window/BBTitleBar.cpp \
+    Window/BBMainWindow.cpp \
+    PropertyManager/BBPropertyManager.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
-    BBUITitleBar.h \
-    BBUIMainWindow.h \
     BBObjectListWidget.h \
     BBUtils.h \
     BBResizableWidget.h \
     BBTreeWidget.h \
     BBHierarchyTreeWidget.h \
     BBGameObject.h \
-    BBConfirmationDialog.h \
+    Window/BBConfirmationDialog.h \
     BBOpenGLWidget.h \
     BBScene.h \
     BBCamera.h \
@@ -82,12 +81,15 @@ HEADERS += \
     BBSelectionRegion.h \
     BBCoordinateSystem.h \
     BBStaticMesh.h \
-    BBGameObjectSet.h
+    BBGameObjectSet.h \
+    Window/BBTitleBar.h \
+    Window/BBMainWindow.h \
+    PropertyManager/BBPropertyManager.h
 
 FORMS += \
-    BBUITitleBar.ui \
-    BBUIMainWindow.ui \
-    BBConfirmationDialog.ui
+    Window/BBConfirmationDialog.ui \
+    Window/BBMainWindow.ui \
+    Window/BBTitleBar.ui
 
 RESOURCES += \
     ../../resources/BBBasicResource.qrc

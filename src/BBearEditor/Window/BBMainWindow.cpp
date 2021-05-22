@@ -1,4 +1,4 @@
-#include "BBUIMainWindow.h"
+#include "BBMainWindow.h"
 #include "ui_BBUIMainWindow.h"
 #include "BBUtils.h"
 #include <QKeyEvent>
