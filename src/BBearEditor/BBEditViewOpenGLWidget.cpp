@@ -120,17 +120,17 @@ void BBEditViewOpenGLWidget::mouseMoveEvent(QMouseEvent *e)
         else
         {
             // do not perform selection operation
-            // If the mouse moves only a small distance, it is not considered as selection operation
-            QPoint delta = e->pos() - m_SelectionRegionStartingPoint;
-            static int nThreshold = 49;
-            if ((delta.x() * delta.x() + delta.y() * delta.y()) > nThreshold)
+            BBRay ray = m_pScene->getCamera()->createRayFromScreen(e->pos().x(), e->pos().y());
+            if (!m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(ray, true))
             {
-                m_bRegionSelecting = true;
-            }
-            else
-            {
-                BBRay ray = m_pScene->getCamera()->createRayFromScreen(e->pos().x(), e->pos().y());
-                m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(ray, true);
+                // if also do not perform transform, determine whether turn on m_bRegionSelecting
+                // If the mouse moves only a small distance, it is not considered as selection operation
+                QPoint delta = e->pos() - m_SelectionRegionStartingPoint;
+                static int nThreshold = 49;
+                if ((delta.x() * delta.x() + delta.y() * delta.y()) > nThreshold)
+                {
+                    m_bRegionSelecting = true;
+                }
             }
         }
     }
