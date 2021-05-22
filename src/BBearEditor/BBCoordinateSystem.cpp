@@ -1732,13 +1732,12 @@ void BBTransformCoordinateSystem::setSelectedObject(BBGameObject *pObject)
     }
     // Operation object changed
 
-//    //清空多选项 包围盒 指示器等隐藏
-//    int count = mSelectedObjects.count();
-//    for (int i = 0; i < count; i++)
-//    {
-//        mSelectedObjects.at(i)->setVisible(false);
-//    }
-//    mSelectedObjects.clear();
+    // Clear multiple options
+    for (int i = 0; i < m_SelectedObjects.count(); i++)
+    {
+        m_SelectedObjects.at(i)->setVisibility(false);
+    }
+    m_SelectedObjects.clear();
 
     // single selection
     if (m_pSelectedObject != nullptr)
