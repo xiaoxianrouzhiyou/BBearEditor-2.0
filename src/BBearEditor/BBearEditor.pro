@@ -53,7 +53,10 @@ SOURCES += \
     BBGameObjectSet.cpp \
     Window/BBTitleBar.cpp \
     Window/BBMainWindow.cpp \
-    PropertyManager/BBPropertyManager.cpp
+    PropertyManager/BBPropertyManager.cpp \
+    PropertyManager/BBGroupManager.cpp \
+    PropertyManager/BBPropertyFactory.cpp \
+    PropertyManager/BBFactoryComponent.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
@@ -84,7 +87,10 @@ HEADERS += \
     BBGameObjectSet.h \
     Window/BBTitleBar.h \
     Window/BBMainWindow.h \
-    PropertyManager/BBPropertyManager.h
+    PropertyManager/BBPropertyManager.h \
+    PropertyManager/BBGroupManager.h \
+    PropertyManager/BBPropertyFactory.h \
+    PropertyManager/BBFactoryComponent.h
 
 FORMS += \
     Window/BBConfirmationDialog.ui \

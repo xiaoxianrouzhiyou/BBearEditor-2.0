@@ -18,7 +18,7 @@
 #define BB_PATH_RESOURCE "../../../BBearEditor/resources/"
 #define BB_PATH_RESOURCE_MESH "../../../BBearEditor/resources/meshes/"
 #define BB_PATH_RESOURCE_SHADER "../../../BBearEditor/resources/shaders/"
-#define BB_PATH_RESOURCE_ICON "://resources/icons/"
+#define BB_PATH_RESOURCE_ICON "../../../BBearEditor/resources/icons/"
 #define BB_PATH_TERRAIN "terrain"
 
 #define BB_CONSTANT_UPDATE_RATE 16

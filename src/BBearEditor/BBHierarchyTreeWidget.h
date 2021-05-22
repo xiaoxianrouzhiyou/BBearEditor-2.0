@@ -13,15 +13,15 @@ public:
     explicit BBHierarchyTreeWidget(QWidget *parent = 0);
     QString getMimeType() { return BB_MIMETYPE_HIERARCHYTREEWIDGET; }
 
+    // Save the mapping between each item and its corresponding GameObject
+    static QMap<QTreeWidgetItem*, BBGameObject*> m_ObjectMap;
+
 private:
     void setMenu();
     bool moveItemFromOthers(const QMimeData *pMimeData) override;
     void moveItemToIndicator();
     QIcon getClassIcon(const QString &className);
     int getDragIconColumnIndex() override { return 1; }
-
-    // Save the mapping between each item and its corresponding GameObject
-    static QMap<QTreeWidgetItem*, BBGameObject*> m_ObjectMap;
 
 signals:
     void createModel(const QString &filePath);

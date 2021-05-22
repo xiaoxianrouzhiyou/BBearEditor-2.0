@@ -939,7 +939,7 @@ FileList::item:selected {
           <number>0</number>
          </property>
          <item alignment="Qt::AlignTop">
-          <widget class="QWidget" name="propertyManager" native="true"/>
+          <widget class="BBPropertyManager" name="propertyManager" native="true"/>
          </item>
         </layout>
        </widget>
@@ -1314,6 +1314,11 @@ FileList::item:selected {
    <class>BBEditViewOpenGLWidget</class>
    <extends>QOpenGLWidget</extends>
    <header>bbeditviewopenglwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BBPropertyManager</class>
+   <extends>QWidget</extends>
+   <header>BBPropertyManager.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

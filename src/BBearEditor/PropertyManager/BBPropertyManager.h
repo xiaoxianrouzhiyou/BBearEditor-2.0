@@ -3,91 +3,95 @@
 
 #include <QWidget>
 
+
+class BBGroupManager;
+class BBTransformGroupManager;
+
+
 class BBPropertyManager : public QWidget
 {
     Q_OBJECT
+
 public:
-    explicit BBPropertyManager(QWidget *parent = nullptr);
+    explicit BBPropertyManager(QWidget *pParent = nullptr);
+    ~BBPropertyManager();
 
 signals:
 
 public slots:
+
+private:
+    void setWidgetStyle();
+
+    BBGroupManager* addGroupManager(const QString &name, const QString &iconPath);
+
+    BBTransformGroupManager *m_pTransformGroupManager;
 };
 
 #endif // BBPROPERTYMANAGER_H
 
 
-////悬浮变为调节大小的光标 按下后左右移动可调节大小
-//class Label : public QPushButton
-//{
-//    Q_OBJECT
 
+
+
+
+
+
+
+
+//class PropertyManager : public QWidget
+//{
 //public:
-//    Label(QWidget *parent = nullptr);
+//    void bindPreview(BaseOpenGLWidget *preview);
 
 //private:
-//    void mouseMoveEvent(QMouseEvent *event) override;
-//    void mousePressEvent(QMouseEvent *event) override;
-//    void mouseReleaseEvent(QMouseEvent *event) override;
-//    QPoint lastPos;
-//    bool isPress;
+//    void addGameObjectBaseInfoManager(GameObject *gameObject);
+//    void addGameObjectSetBaseInfoManager(QList<GameObject*> gameObjects, CenterPoint *center);
+//    void addTransformManager(GameObject *gameObject);
+//    GameObject *currentObject;
+//    GameObjectBaseInfoManager *gameObjectBaseInfoManager;
+//    GameObjectSetBaseInfoManager *gameObjectSetBaseInfoManager;
+//    MaterialFactory *materialFactory;
+//    BaseOpenGLWidget *mPreview;
 
 //signals:
-//    void slide(int deltaX);
-//};
-
-
-////左侧带有name的单行编辑框
-//class LineEditFactory : public QWidget
-//{
-//    Q_OBJECT
-
-//public:
-//    LineEditFactory(QWidget *parent, QString name, float value, int nameStretch = 0, int valueStretch = 0);
-//    QString setValue(float value);
-//    void setRegExp(const QString &pattern);
-//    void setSliderRange(float min, float max);
-//    void setSliderStep(float step);
-
-//private slots:
-//    void editTextChanged(QString text);
-//    void slideChangeValue(int deltaX);
-//    void showLeft();
-
-//signals:
-//    void valueChanged(float value);
-
-//private:
-//    Label *label;
-//    QLineEdit *edit;
-//    float sliderMaxValue;
-//    float sliderMinValue;
-//    float sliderStep;
-//};
-
-////由3个LineEditFactory组成的三维向量编辑框
-//class Vector3DFactory : public QWidget
-//{
-//    Q_OBJECT
-
-//public:
-//    Vector3DFactory(QWidget *parent, QVector3D value);
-//    void setValue(QVector3D value);
+//    void updateCoordinateSignal();
+//    void renameGameObjectInHierarchySignal(GameObject *gameObject);
+//    void changeActivationSignal(GameObject *gameObject, bool isActive);
+//    void setSelectedObjects(QList<GameObject*> gameObjects);
+//    void updateMaterialPreviewInOtherWidgetSignal(QString filePath);
 
 //public slots:
-//    void xChanged(float x);
-//    void yChanged(float y);
-//    void zChanged(float z);
+//    void showSceneProperty(Scene *scene);
 
-//signals:
-//    void valueChanged(QVector3D value);
+//private slots:
+//    void clear();
+//    void showHierarchyTreeItemProperty(GameObject *gameObject);
+//    void showHierarchyTreeItemsProperty(QList<GameObject*> gameObjects, CenterPoint *center);
+//    void showMaterialProperty(QString filePath);
+//    void showFbxProperty(QString filePath);
+//    void updateTransform(GameObject *gameObject, char transformModeKey);
+//    void updateCoordinate();
+//    void renameGameObject(GameObject *gameObject, QString newName);
+//    void renameGameObjectInHierarchy(GameObject *gameObject);
+//    void changeActivation(GameObject *gameObject, bool isActive);
+//    void changeActivation(QList<GameObject*> gameObjects, bool isActive);
+//    void changeButtonActiveCheckState(GameObject *gameObject, bool isActive);
+//    void updateMaterialPreviewInOtherWidget(QString filePath);
+//    void updateMaterialFactory(Model* model);
 
-//private:
-//    LineEditFactory *xEdit;
-//    LineEditFactory *yEdit;
-//    LineEditFactory *zEdit;
-//    QVector3D mValue;
 //};
+
+
+
+
+
+
+
+
+
+
+
 
 
 ////左侧名字 右侧枚举框
@@ -337,28 +341,6 @@ public slots:
 //};
 
 
-////管理一组属性
-//class GroupManager : public QWidget
-//{
-//    Q_OBJECT
-
-//public:
-//    GroupManager(QWidget *parent, QString name, QString iconPath);
-//    void addProperty(QString name, QWidget *factory, int stretch = 1);
-//    void addProperty(QWidget *factory);
-//    LineEditFactory *addProperty(QString name, float value);
-//    void removeProperty(int index);
-
-//protected:
-//    QToolButton *mainButton;
-//    QPushButton *settingButton;
-//    QMenu *menu;
-//    QWidget *container;
-
-//public slots:
-//    void containerTrigger(bool isTrigger);
-//};
-
 
 ////管理名字 类名 可见性等基本信息
 //class GameObjectBaseInfoManager : public QWidget
@@ -404,43 +386,6 @@ public slots:
 //};
 
 
-//enum ReferenceSystem
-//{
-//    Global = 0,
-//    Local = 1
-//};
-
-////管理transform属性的一个属性组
-//class TransformGroupManager : public GroupManager
-//{
-//    Q_OBJECT
-
-//public:
-//    TransformGroupManager(QWidget *parent, GameObject *gameObject);
-//    void setPositionValue();
-//    void setRotationValue();
-//    void setScaleValue();
-
-//public slots:
-//    void positionChanged(QVector3D value);
-//    void rotationChanged(QVector3D value);
-//    void scaleChanged(QVector3D value);
-
-//private slots:
-//    void clickButtonSetting();
-//    void switchToGlobal();
-//    void switchToLocal();
-
-//signals:
-//    void updateCoordinate();
-
-//private:
-//    Vector3DFactory *positionFactory;
-//    Vector3DFactory *rotationFactory;
-//    Vector3DFactory *scaleFactory;
-//    GameObject *mGameObject;
-//    ReferenceSystem referenceSystem;
-//};
 
 
 ////材质各项属性
@@ -540,55 +485,4 @@ public slots:
 //private slots:
 
 //private:
-//};
-
-
-////属性栏控件
-//class PropertyManager : public QWidget
-//{
-//    Q_OBJECT
-
-//public:
-//    explicit PropertyManager(QWidget *parent = nullptr);
-//    void bindPreview(BaseOpenGLWidget *preview);
-
-//private:
-//    GroupManager *addGroupManager(QString name, QString iconPath);
-//    void addGameObjectBaseInfoManager(GameObject *gameObject);
-//    void addGameObjectSetBaseInfoManager(QList<GameObject*> gameObjects, CenterPoint *center);
-//    void addTransformManager(GameObject *gameObject);
-//    void setWidgetStyle();
-//    GameObject *currentObject;
-//    GameObjectBaseInfoManager *gameObjectBaseInfoManager;
-//    GameObjectSetBaseInfoManager *gameObjectSetBaseInfoManager;
-//    TransformGroupManager *transformManager;
-//    MaterialFactory *materialFactory;
-//    BaseOpenGLWidget *mPreview;
-
-//signals:
-//    void updateCoordinateSignal();
-//    void renameGameObjectInHierarchySignal(GameObject *gameObject);
-//    void changeActivationSignal(GameObject *gameObject, bool isActive);
-//    void setSelectedObjects(QList<GameObject*> gameObjects);
-//    void updateMaterialPreviewInOtherWidgetSignal(QString filePath);
-
-//public slots:
-//    void showSceneProperty(Scene *scene);
-
-//private slots:
-//    void clear();
-//    void showHierarchyTreeItemProperty(GameObject *gameObject);
-//    void showHierarchyTreeItemsProperty(QList<GameObject*> gameObjects, CenterPoint *center);
-//    void showMaterialProperty(QString filePath);
-//    void showFbxProperty(QString filePath);
-//    void updateTransform(GameObject *gameObject, char transformModeKey);
-//    void updateCoordinate();
-//    void renameGameObject(GameObject *gameObject, QString newName);
-//    void renameGameObjectInHierarchy(GameObject *gameObject);
-//    void changeActivation(GameObject *gameObject, bool isActive);
-//    void changeActivation(QList<GameObject*> gameObjects, bool isActive);
-//    void changeButtonActiveCheckState(GameObject *gameObject, bool isActive);
-//    void updateMaterialPreviewInOtherWidget(QString filePath);
-//    void updateMaterialFactory(Model* model);
-
 //};

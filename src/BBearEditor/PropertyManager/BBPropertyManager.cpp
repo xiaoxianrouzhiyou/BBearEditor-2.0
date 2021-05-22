@@ -1,190 +1,46 @@
 #include "BBPropertyManager.h"
+#include "BBUtils.h"
+#include <QVBoxLayout>
+#include "BBGroupManager.h"
 
-BBPropertyManager::BBPropertyManager(QWidget *parent)
-    : QWidget(parent)
+
+BBPropertyManager::BBPropertyManager(QWidget *pParent)
+    : QWidget(pParent)
 {
-
+    setWidgetStyle();
+    // init a vertical layout
+    QVBoxLayout layout(this);
+    layout.setContentsMargins(0, 8, 10, 0);
 }
 
+BBPropertyManager::~BBPropertyManager()
+{
+    BB_SAFE_DELETE(m_pTransformGroupManager);
+}
 
-////------------------Label----------------------
+void BBPropertyManager::setWidgetStyle()
+{
+    setStyleSheet("QToolButton {border: none; border-radius: 2px; color: #d6dfeb; background: transparent; font: 75 11pt \"Arial\";}"
+                  "QLineEdit {border: none; border-radius: 2px; color: #d6dfeb; font: 10pt \"Arial\"; background: rgb(60, 64, 75); selection-color: #d6dfeb; selection-background-color: #8193bc; padding-left: 3px; padding-right: 3px;}"
+                  "QLabel {border: none; border-radius: 2px; color: #d6dfeb; font: 10pt \"Arial\";}"
+                  "QCheckBox {border: none; border-radius: 2px; color: #d6dfeb; font: 10pt \"Arial\"; background: none; padding-top: 1px; padding-bottom: 1px;}"
+                  "QCheckBox::indicator:checked {border: none; border-radius: 2px; background: #0ebf9c;}"
+                  "QCheckBox::indicator:unchecked {border: none; border-radius: 2px; background: rgb(60, 64, 75);}"
+                  "QPushButton {border: none; border-radius: 2px; color: #d6dfeb; font: 10pt \"Arial\"; background: none;}"
+                  "QComboBox {border: none; border-radius: 2px; color: #d6dfeb; font: 10pt \"Arial\"; background: rgb(60, 64, 75);}"
+                  "QComboBox::drop-down {margin: 4px; border-image: url(:/icon/resources/icons/arrow_right.png);}"
+                  "QComboBox QAbstractItemView {border: none; color: #d6dfeb; font: 10pt \"Arial\"; background: rgb(60, 64, 75);}"
+                  "QComboBox QAbstractItemView::item {height: 16px; border: none; padding-left: 3px; padding-right: 3px;}"
+                  "QComboBox QAbstractItemView::item:selected {height: 16px; border: none; background-color: #8193bc;}"
+                  "QSpinBox {border: none; border-radius: 2px; color: #191f28; font: 10pt \"Arial\"; selection-background-color: rgb(251, 236, 213);}");
+}
 
-//Label::Label(QWidget *parent)
-//    : QPushButton(parent)
-//{
-//    //初始没有按下
-//    isPress = false;
-//    setMouseTracking(true);
-//}
-
-//void Label::mouseMoveEvent(QMouseEvent *event)
-//{
-//    QPixmap pix(":/icon/resources/icons/arrows_stretch_horizontal.png");
-//    //针对R屏
-//    pix.setDevicePixelRatio(devicePixelRatio());
-//    pix = pix.scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-//    setCursor(QCursor(pix));
-
-//    if (isPress)
-//    {
-//        QPoint currentPos = event->globalPos();
-//        int deltaX = currentPos.x() - lastPos.x();
-//        lastPos = currentPos;
-//        if (deltaX != 0)
-//        {
-//            slide(deltaX);
-//        }
-//    }
-
-//}
-
-//void Label::mousePressEvent(QMouseEvent *event)
-//{
-//    if (event->button() == Qt::LeftButton)
-//    {
-//        isPress = true;
-//        lastPos = event->globalPos();
-//    }
-//}
-
-//void Label::mouseReleaseEvent(QMouseEvent *event)
-//{
-//    if (event->button() == Qt::LeftButton)
-//    {
-//        isPress = false;
-//    }
-//}
-
-
-////------------------LineEditFactory----------------------
-
-//LineEditFactory::LineEditFactory(QWidget *parent, QString name, float value, int nameStretch, int valueStretch)
-//    : QWidget(parent)
-//{
-//    QHBoxLayout *l = new QHBoxLayout(this);
-//    l->setMargin(0);
-//    //左侧名字
-//    label = new Label(this);
-//    label->setText(name);
-//    //否则tab键会选中
-//    label->setFocusPolicy(Qt::NoFocus);
-//    l->addWidget(label, nameStretch, Qt::AlignLeft);
-//    //右侧编辑框
-//    edit = new QLineEdit(this);
-//    //edit->setAlignment(Qt::AlignRight);
-//    //限制浮点数输入范围为[-999999.999999,999999.999999]
-//    setSliderStep(0.2f);
-//    setSliderRange(-1000000, 1000000);
-//    setRegExp("^(-?[0]|-?[1-9][0-9]{0,5})(?:\\.\\d{1,6})?$|(^\\t?$)");
-//    setValue(value);
-//    l->addWidget(edit, valueStretch);
-//    //绑定右侧编辑框值改变的信号槽
-//    QObject::connect(edit, SIGNAL(textEdited(QString)), this, SLOT(editTextChanged(QString)));
-//    QObject::connect(edit, SIGNAL(editingFinished()), this, SLOT(showLeft()));
-//    //绑定左侧滑动信号
-//    QObject::connect(label, SIGNAL(slide(int)), this, SLOT(slideChangeValue(int)));
-//}
-
-//QString LineEditFactory::setValue(float value)
-//{
-//    QString text = QString("%1").arg(value, 0, 'f').replace(QRegExp("(\\.){0,1}0+$"), "");
-//    //不采用科学计数法 并且不显示末尾多余的0
-//    edit->setText(text);
-//    showLeft();
-//    return text;
-//}
-
-//void LineEditFactory::setRegExp(const QString &pattern)
-//{
-//    //限制输入范围
-//    QRegExp rx(pattern);
-//    QRegExpValidator *pReg = new QRegExpValidator(rx, edit);
-//    edit->setValidator(pReg);
-//}
-
-//void LineEditFactory::setSliderRange(float min, float max)
-//{
-//    sliderMaxValue = max;
-//    sliderMinValue = min;
-//}
-
-//void LineEditFactory::setSliderStep(float step)
-//{
-//    sliderStep = step;
-//}
-
-//void LineEditFactory::editTextChanged(QString text)
-//{
-//    valueChanged(text.toFloat());
-//}
-
-//void LineEditFactory::slideChangeValue(int deltaX)
-//{
-//    float value = edit->text().toFloat();
-//    value += deltaX * sliderStep;
-//    //限定范围
-//    if (value >= sliderMaxValue)
-//        value = sliderMaxValue;
-//    if (value <= sliderMinValue)
-//        value = sliderMinValue;
-//    QString text = setValue(value);
-//    //人为触发编辑框内容改变信号 使场景相应对象改变
-//    edit->textEdited(text);
-//}
-
-//void LineEditFactory::showLeft()
-//{
-//    //从首位开始显示 否则看不到负号
-//    edit->setCursorPosition(0);
-//}
-
-
-////------------------Vector3DFactory----------------------
-
-//Vector3DFactory::Vector3DFactory(QWidget *parent, QVector3D value)
-//    : QWidget(parent)
-//{
-//    mValue = value;
-//    QHBoxLayout *l = new QHBoxLayout(this);
-//    l->setMargin(0);
-//    //x y z 三个编辑框
-//    xEdit = new LineEditFactory(this, "X", value.x());
-//    yEdit = new LineEditFactory(this, "Y", value.y());
-//    zEdit = new LineEditFactory(this, "Z", value.z());
-//    l->addWidget(xEdit);
-//    l->addWidget(yEdit);
-//    l->addWidget(zEdit);
-//    //绑定x y z值改变信号槽 通过移动坐标轴 settext使编辑框改变值的信号不需要
-//    QObject::connect(xEdit, SIGNAL(valueChanged(float)), this, SLOT(xChanged(float)));
-//    QObject::connect(yEdit, SIGNAL(valueChanged(float)), this, SLOT(yChanged(float)));
-//    QObject::connect(zEdit, SIGNAL(valueChanged(float)), this, SLOT(zChanged(float)));
-//}
-
-//void Vector3DFactory::setValue(QVector3D value)
-//{
-//    mValue = value;
-//    xEdit->setValue(value.x());
-//    yEdit->setValue(value.y());
-//    zEdit->setValue(value.z());
-//}
-
-//void Vector3DFactory::xChanged(float x)
-//{
-//    mValue.setX(x);
-//    valueChanged(mValue);
-//}
-
-//void Vector3DFactory::yChanged(float y)
-//{
-//    mValue.setY(y);
-//    valueChanged(mValue);
-//}
-
-//void Vector3DFactory::zChanged(float z)
-//{
-//    mValue.setZ(z);
-//    valueChanged(mValue);
-//}
+BBGroupManager* BBPropertyManager::addGroupManager(const QString &name, const QString &iconPath)
+{
+    BBGroupManager *pGroupManager = new BBGroupManager(name, iconPath, this);
+    layout()->addWidget(pGroupManager);
+    return pGroupManager;
+}
 
 
 ////------------------EnumFactory--------------------------
@@ -795,80 +651,6 @@ BBPropertyManager::BBPropertyManager(QWidget *parent)
 ////------------------GroupManager-------------------------
 
 
-//GroupManager::GroupManager(QWidget *parent, QString name, QString iconPath)
-//    : QWidget(parent)
-//{
-//    //创建顶部横条和下面的容器
-//    QVBoxLayout *l = new QVBoxLayout(this);
-//    l->setMargin(0);
-//    //上方的横条
-//    QWidget *top = new QWidget(this);
-//    top->setFocusPolicy(Qt::NoFocus);
-//    QHBoxLayout *topLayout = new QHBoxLayout(top);
-//    topLayout->setMargin(0);
-//    topLayout->setSpacing(0);
-//    //用于开关容器的按钮
-//    mainButton = new QToolButton(top);
-//    mainButton->setCheckable(true);
-//    mainButton->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed));
-//    mainButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-//    //默认展开容器
-//    mainButton->setArrowType(Qt::DownArrow);
-//    mainButton->setChecked(true);
-//    mainButton->setText(name);
-//    //绑定按钮开关容器的槽
-//    QObject::connect(mainButton, SIGNAL(clicked(bool)), this, SLOT(containerTrigger(bool)));
-//    topLayout->addWidget(mainButton, 1);
-//    //group的设置按钮
-//    settingButton = new QPushButton(top);
-//    settingButton->setIcon(QIcon(iconPath));
-//    topLayout->addWidget(settingButton, 0, Qt::AlignRight);
-//    //顶部控件加到总布局
-//    l->addWidget(top);
-//    //下方的容器
-//    container = new QWidget(this);
-//    //为容器添加竖直布局 用于添加属性
-//    QVBoxLayout *containerLayout = new QVBoxLayout(container);
-//    containerLayout->setContentsMargins(10, 0, 0, 0);
-//    l->addWidget(container);
-//}
-
-//void GroupManager::containerTrigger(bool isTrigger)
-//{
-//    if (isTrigger)
-//    {
-//        //修改箭头指示
-//        mainButton->setArrowType(Qt::DownArrow);
-//        //展开容器
-//        container->setVisible(true);
-//    }
-//    else
-//    {
-//        mainButton->setArrowType(Qt::UpArrow);
-//        //关闭容器
-//        //如果只设置容器看不见 瞬间父控件高度不变 却少了容器的高度 按钮会居中显示 瞬间下移 造成不好的视觉效果
-//        //先让总体看不见 再让容器看不见 再还原总体
-//        setVisible(false);
-//        container->setVisible(false);
-//        setVisible(true);
-//    }
-//}
-
-//void GroupManager::addProperty(QString name, QWidget *factory, int stretch)
-//{
-//    //向一组属性的容器中添加一行属性
-//    QWidget *w = new QWidget(container);
-//    QHBoxLayout *l = new QHBoxLayout(w);
-//    l->setMargin(0);
-//    //左侧属性名
-//    QLabel *label = new QLabel(w);
-//    label->setText(name);
-//    l->addWidget(label, 1);
-//    //右侧factory
-//    factory->setParent(w);
-//    l->addWidget(factory, stretch);
-//    container->layout()->addWidget(w);
-//}
 
 //void GroupManager::addProperty(QWidget *factory)
 //{
@@ -1029,210 +811,6 @@ BBPropertyManager::BBPropertyManager(QWidget *parent)
 //        buttonActive->setStyleSheet("image: url(:/icon/resources/icons/invisible3.png);");
 //    }
 //    activationChanged(mGameObjects, buttonActive->isChecked());
-//}
-
-
-////------------------TransformGroupManager----------------
-
-//TransformGroupManager::TransformGroupManager(QWidget *parent, GameObject *gameObject)
-//    : GroupManager(parent, "Transform (Global)", ":/icon/resources/icons/transform.png")
-//{
-//    mGameObject = gameObject;
-//    //默认全局坐标
-//    referenceSystem = ReferenceSystem::Global;
-//    positionFactory = new Vector3DFactory(0, mGameObject->getPosition());
-//    rotationFactory = new Vector3DFactory(0, mGameObject->getRotation());
-//    scaleFactory = new Vector3DFactory(0, mGameObject->getScale());
-//    addProperty("Position", positionFactory, 3);
-//    addProperty("Rotation", rotationFactory, 3);
-//    addProperty("Scale", scaleFactory, 3);
-//    //pos rot s 向量值改变的信号槽
-//    QObject::connect(positionFactory, SIGNAL(valueChanged(QVector3D)), this, SLOT(positionChanged(QVector3D)));
-//    QObject::connect(rotationFactory, SIGNAL(valueChanged(QVector3D)), this, SLOT(rotationChanged(QVector3D)));
-//    QObject::connect(scaleFactory, SIGNAL(valueChanged(QVector3D)), this, SLOT(scaleChanged(QVector3D)));
-//    //弹出菜单
-//    QObject::connect(settingButton, SIGNAL(clicked()), this, SLOT(clickButtonSetting()));
-//    //菜单
-//    menu = new QMenu(this);
-//    QAction *actionReset = new QAction(tr("Reset"));
-//    QAction *actionResetPosition = new QAction(tr("Reset Position"));
-//    QAction *actionResetRotation = new QAction(tr("Reset Rotation"));
-//    QAction *actionResetScale = new QAction(tr("Reset Scale"));
-//    QAction *actionGlobal = new QAction(tr("Global Transform"));
-//    QAction *actionLocal = new QAction(tr("Local Transform"));
-//    menu->addAction(actionReset);
-//    menu->addSeparator();
-//    menu->addAction(actionResetPosition);
-//    menu->addAction(actionResetRotation);
-//    menu->addAction(actionResetScale);
-//    menu->addSeparator();
-//    menu->addAction(actionGlobal);
-//    menu->addAction(actionLocal);
-//    QObject::connect(actionGlobal, SIGNAL(triggered()), this, SLOT(switchToGlobal()));
-//    QObject::connect(actionLocal, SIGNAL(triggered()), this, SLOT(switchToLocal()));
-//    //如果不是top结点 显示相对坐标
-//    QTreeWidgetItem *item = HierarchyTree::mMap.key(mGameObject);
-//    if (item)
-//    {
-//        if (item->parent())
-//        {
-//            switchToLocal();
-//        }
-//    }
-//    else
-//    {
-//        //集合没有对应的item 也没有相对坐标
-//        actionLocal->setEnabled(false);
-//    }
-//}
-
-//void TransformGroupManager::setPositionValue()
-//{
-//    if (referenceSystem == ReferenceSystem::Global)
-//    {
-//        positionFactory->setValue(mGameObject->getPosition());
-//    }
-//    else
-//    {
-//        //显示局部坐标
-//        positionFactory->setValue(mGameObject->getLocalPosition());
-//    }
-//}
-
-//void TransformGroupManager::setRotationValue()
-//{
-//    if (referenceSystem == ReferenceSystem::Global)
-//    {
-//        rotationFactory->setValue(mGameObject->getRotation());
-//    }
-//    else
-//    {
-//        rotationFactory->setValue(mGameObject->getLocalRotation());
-//    }
-//}
-
-//void TransformGroupManager::setScaleValue()
-//{
-//    if (referenceSystem == ReferenceSystem::Global)
-//    {
-//        scaleFactory->setValue(mGameObject->getScale());
-//    }
-//    else
-//    {
-//        scaleFactory->setValue(mGameObject->getLocalScale());
-//    }
-//}
-
-//void TransformGroupManager::positionChanged(QVector3D value)
-//{
-//    if (referenceSystem == ReferenceSystem::Global)
-//    {
-//        mGameObject->setPosition(value);
-//    }
-//    else
-//    {
-//        //父对象
-//        QTreeWidgetItem *parent = HierarchyTree::mMap.key(mGameObject)->parent();
-//        if (parent)
-//        {
-//            GameObject *parentObject = HierarchyTree::mMap.value(parent);
-//            //相对坐标转换为全局坐标
-//            mGameObject->setPosition(parentObject->getPosition() + value);
-//        }
-//        else
-//        {
-//            //top结点 相对坐标就是绝对坐标
-//            mGameObject->setPosition(value);
-//        }
-//    }
-//    //坐标轴需要跟着对象移动
-//    updateCoordinate();
-//}
-
-//void TransformGroupManager::rotationChanged(QVector3D value)
-//{
-//    if (referenceSystem == ReferenceSystem::Global)
-//    {
-//        mGameObject->setRotation(value);
-//    }
-//    else
-//    {
-//        //父对象
-//        QTreeWidgetItem *parent = HierarchyTree::mMap.key(mGameObject)->parent();
-//        if (parent)
-//        {
-//            GameObject *parentObject = HierarchyTree::mMap.value(parent);
-//            //相对四元数
-//            QQuaternion rot = QQuaternion::fromEulerAngles(value);
-//            //相对坐标转换为全局坐标
-//            rot = parentObject->getQuaternion() * rot;
-//            mGameObject->setRotation(rot.toEulerAngles());
-//        }
-//        else
-//        {
-//            //top结点 相对坐标就是绝对坐标
-//            mGameObject->setRotation(value);
-//        }
-//    }
-//    //在缩放坐标系中需要更新坐标系的旋转
-//    updateCoordinate();
-//}
-
-//void TransformGroupManager::scaleChanged(QVector3D value)
-//{
-//    if (referenceSystem == ReferenceSystem::Global)
-//    {
-//        mGameObject->setScale(value);
-//    }
-//    else
-//    {
-//        //父对象
-//        QTreeWidgetItem *parent = HierarchyTree::mMap.key(mGameObject)->parent();
-//        if (parent)
-//        {
-//            GameObject *parentObject = HierarchyTree::mMap.value(parent);
-//            //相对缩放值转化为绝对缩放值
-//            mGameObject->setScale(parentObject->getScale() * value);
-//        }
-//        else
-//        {
-//            //top结点 相对坐标就是绝对坐标
-//            mGameObject->setScale(value);
-//        }
-//    }
-//}
-
-//void TransformGroupManager::clickButtonSetting()
-//{
-//    menu->exec(QCursor::pos());
-//}
-
-//void TransformGroupManager::switchToGlobal()
-//{
-//    //重复操作
-//    if (referenceSystem == ReferenceSystem::Global)
-//        return;
-
-//    mainButton->setText("Transform (Global)");
-//    referenceSystem = ReferenceSystem::Global;
-//    //显示全局坐标
-//    setPositionValue();
-//    setRotationValue();
-//    setScaleValue();
-//}
-
-//void TransformGroupManager::switchToLocal()
-//{
-//    if (referenceSystem == ReferenceSystem::Local)
-//        return;
-//    //标题
-//    mainButton->setText("Transform (Local)");
-//    //参考系
-//    referenceSystem = ReferenceSystem::Local;
-//    //显示局部坐标
-//    setPositionValue();
-//    setRotationValue();
-//    setScaleValue();
 //}
 
 
@@ -1625,43 +1203,12 @@ BBPropertyManager::BBPropertyManager(QWidget *parent)
 
 ////------------------PropertyManager----------------------
 
-//PropertyManager::PropertyManager(QWidget *parent)
-//    : QWidget(parent)
-//{
-//    setWidgetStyle();
-//    //为控件指定垂直布局
-//    QVBoxLayout *l = new QVBoxLayout(this);
-//    l->setContentsMargins(0, 8, 10, 0);
-//}
 
 //void PropertyManager::bindPreview(BaseOpenGLWidget *preview)
 //{
 //    mPreview = preview;
 //}
 
-//void PropertyManager::setWidgetStyle()
-//{
-//    setStyleSheet("QToolButton {border: none; border-radius: 2px; color: #d6dfeb; background: transparent; font: 75 11pt \"Arial\";}"
-//                  "QLineEdit {border: none; border-radius: 2px; color: #d6dfeb; font: 10pt \"Arial\"; background: rgb(60, 64, 75); selection-color: #d6dfeb; selection-background-color: #8193bc; padding-left: 3px; padding-right: 3px;}"
-//                  "QLabel {border: none; border-radius: 2px; color: #d6dfeb; font: 10pt \"Arial\";}"
-//                  "QCheckBox {border: none; border-radius: 2px; color: #d6dfeb; font: 10pt \"Arial\"; background: none; padding-top: 1px; padding-bottom: 1px;}"
-//                  "QCheckBox::indicator:checked {border: none; border-radius: 2px; background: #0ebf9c;}"
-//                  "QCheckBox::indicator:unchecked {border: none; border-radius: 2px; background: rgb(60, 64, 75);}"
-//                  "QPushButton {border: none; border-radius: 2px; color: #d6dfeb; font: 10pt \"Arial\"; background: none;}"
-//                  "QComboBox {border: none; border-radius: 2px; color: #d6dfeb; font: 10pt \"Arial\"; background: rgb(60, 64, 75);}"
-//                  "QComboBox::drop-down {margin: 4px; border-image: url(:/icon/resources/icons/arrow_right.png);}"
-//                  "QComboBox QAbstractItemView {border: none; color: #d6dfeb; font: 10pt \"Arial\"; background: rgb(60, 64, 75);}"
-//                  "QComboBox QAbstractItemView::item {height: 16px; border: none; padding-left: 3px; padding-right: 3px;}"
-//                  "QComboBox QAbstractItemView::item:selected {height: 16px; border: none; background-color: #8193bc;}"
-//                  "QSpinBox {border: none; border-radius: 2px; color: #191f28; font: 10pt \"Arial\"; selection-background-color: rgb(251, 236, 213);}");
-//}
-
-//GroupManager *PropertyManager::addGroupManager(QString name, QString iconPath)
-//{
-//    GroupManager *groupManager = new GroupManager(this, name, iconPath);
-//    layout()->addWidget(groupManager);
-//    return groupManager;
-//}
 
 //void PropertyManager::addGameObjectBaseInfoManager(GameObject *gameObject)
 //{
