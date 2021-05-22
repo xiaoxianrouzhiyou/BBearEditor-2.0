@@ -30,8 +30,9 @@ signals:
 
 public slots:
     void addGameObject(BBGameObject *pGameObject);
-    void selectPickedObject(BBGameObject *pGameObject);
-    void selectPickedObjects(QList<BBGameObject*> gameObjects);
+    void selectPickedItem(BBGameObject *pGameObject);
+    void selectPickedItems(QList<BBGameObject*> gameObjects);
+    void updateMultipleSelectedItems(BBGameObject *pGameObject);
 
 private slots:
     void changeSelectedItems();

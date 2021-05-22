@@ -16,30 +16,30 @@ void BBEditViewDockWidget::keyPressEvent(QKeyEvent *e)
 
     switch (e->key()) {
     case Qt::Key_W:
-        pressMoveKeySignal('W');
-        pressTransformSignal('W');
+        pressMoveKey('W');
+        pressTransform('W');
         break;
     case Qt::Key_A:
-        pressMoveKeySignal('A');
+        pressMoveKey('A');
         break;
     case Qt::Key_S:
-        pressMoveKeySignal('S');
+        pressMoveKey('S');
         break;
     case Qt::Key_D:
-        pressMoveKeySignal('D');
+        pressMoveKey('D');
         break;
     case Qt::Key_Q:
-        pressMoveKeySignal('Q');
+        pressMoveKey('Q');
         break;
     case Qt::Key_E:
-        pressMoveKeySignal('E');
-        pressTransformSignal('E');
+        pressMoveKey('E');
+        pressTransform('E');
         break;
     case Qt::Key_R:
-        pressTransformSignal('R');
+        pressTransform('R');
         break;
     case Qt::Key_Escape:
-        pressESCSignal();
+        pressESC();
         break;
     default:
         break;
@@ -50,22 +50,22 @@ void BBEditViewDockWidget::keyReleaseEvent(QKeyEvent *e)
 {
     switch (e->key()) {
     case Qt::Key_W:
-        releaseMoveKeySignal('W');
+        releaseMoveKey('W');
         break;
     case Qt::Key_A:
-        releaseMoveKeySignal('A');
+        releaseMoveKey('A');
         break;
     case Qt::Key_S:
-        releaseMoveKeySignal('S');
+        releaseMoveKey('S');
         break;
     case Qt::Key_D:
-        releaseMoveKeySignal('D');
+        releaseMoveKey('D');
         break;
     case Qt::Key_Q:
-        releaseMoveKeySignal('Q');
+        releaseMoveKey('Q');
         break;
     case Qt::Key_E:
-        releaseMoveKeySignal('E');
+        releaseMoveKey('E');
         break;
     default:
         break;

@@ -1,6 +1,7 @@
 #include "BBUIMainWindow.h"
 #include "ui_BBUIMainWindow.h"
 #include "BBUtils.h"
+#include <QKeyEvent>
 
 BBUIMainWindow::BBUIMainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -52,16 +53,18 @@ void BBUIMainWindow::setGameObjectDockWidget()
 
 void BBUIMainWindow::setConnect()
 {
+    // global event about pressing Control key
+    QObject::connect(this, SIGNAL(pressMultipleSelectionKey(bool)),
+                     m_pUi->openGLWidget, SLOT(pressMultipleSelectionKey(bool)));
     // The handling of key events in the EditView in OpenGL
-    QObject::connect(m_pUi->dockEditview, SIGNAL(pressMoveKeySignal(char)),
-                     m_pUi->openGLWidget, SLOT(pressMoveKeySlot(char)));
-    QObject::connect(m_pUi->dockEditview, SIGNAL(releaseMoveKeySignal(char)),
-                     m_pUi->openGLWidget, SLOT(releaseMoveKeySlot(char)));
-    QObject::connect(m_pUi->dockEditview, SIGNAL(pressTransformSignal(char)),
-                     m_pUi->openGLWidget, SLOT(pressTransformSlot(char)));
-    QObject::connect(m_pUi->dockEditview, SIGNAL(pressESCSignal()), m_pUi->openGLWidget, SLOT(pressESCSlot()));
+    QObject::connect(m_pUi->dockEditview, SIGNAL(pressMoveKey(char)),
+                     m_pUi->openGLWidget, SLOT(pressMoveKey(char)));
+    QObject::connect(m_pUi->dockEditview, SIGNAL(releaseMoveKey(char)),
+                     m_pUi->openGLWidget, SLOT(releaseMoveKey(char)));
+    QObject::connect(m_pUi->dockEditview, SIGNAL(pressTransform(char)),
+                     m_pUi->openGLWidget, SLOT(pressTransform(char)));
+    QObject::connect(m_pUi->dockEditview, SIGNAL(pressESC()), m_pUi->openGLWidget, SLOT(pressESC()));
     QObject::connect(m_pUi->dockEditview, SIGNAL(keyPress(QKeyEvent*)), m_pUi->openGLWidget, SLOT(onKeyPress(QKeyEvent*)));
-//    QObject::connect(this, SIGNAL(sceneMultipleSelectKey(bool)), ui->openGLWidget, SLOT(multipleSelectKey(bool)));
     // Drag into the model, and add item in the Hierarchy tree
     QObject::connect(m_pUi->openGLWidget, SIGNAL(addGameObject(BBGameObject*)),
                      m_pUi->treeHierarchy, SLOT(addGameObject(BBGameObject*)));
@@ -72,10 +75,12 @@ void BBUIMainWindow::setConnect()
                      m_pUi->openGLWidget, SLOT(setCoordinateSystemSelectedObjects(QList<BBGameObject*>, BBGameObjectSet*)));
     // pick object in OpenGL view, select corresponding item in treeHierarchy
     QObject::connect(m_pUi->openGLWidget, SIGNAL(pickObject(BBGameObject*)),
-                     m_pUi->treeHierarchy, SLOT(selectPickedObject(BBGameObject*)));
+                     m_pUi->treeHierarchy, SLOT(selectPickedItem(BBGameObject*)));
     QObject::connect(m_pUi->openGLWidget, SIGNAL(pickObjects(QList<BBGameObject*>)),
-                     m_pUi->treeHierarchy, SLOT(selectPickedObjects(QList<BBGameObject*>)));
-
+                     m_pUi->treeHierarchy, SLOT(selectPickedItems(QList<BBGameObject*>)));
+    // press control to perform multiple selection in OpenGL view, also perform multiple selection in Hierarchy tree
+    QObject::connect(m_pUi->openGLWidget, SIGNAL(updateMultipleSelectedObjects(BBGameObject*)),
+                     m_pUi->treeHierarchy, SLOT(updateMultipleSelectedItems(BBGameObject*)));
 
 //    //点击层级视图对象 在属性栏中显示属性
 //    QObject::connect(ui->treeHierarchy, SIGNAL(showGameObjectProperty(GameObject*)),
@@ -188,9 +193,7 @@ void BBUIMainWindow::setConnect()
 //    //在集合的属性栏中修改可见性 最后 重新选中所有对象 否则会选中最后一项
 //    QObject::connect(ui->propertyManager, SIGNAL(setSelectedObjects(QList<GameObject*>)),
 //                     ui->treeHierarchy, SLOT(selectedObjects(QList<GameObject*>)));
-//    //在场景中按下shift或者cmd进行多选 层级视图也进行多选
-//    QObject::connect(ui->openGLWidget, SIGNAL(updateMultipleSelectObjects(GameObject*)),
-//                     ui->treeHierarchy, SLOT(updateMultipleSelectObjects(GameObject*)));
+
 //    //在场景中框选的对象 在层级视图中选中
 //    QObject::connect(ui->openGLWidget, SIGNAL(regionSelectObjects(QList<GameObject*>)),
 //                     ui->treeHierarchy, SLOT(selectedObjects(QList<GameObject*>)));
@@ -226,4 +229,30 @@ void BBUIMainWindow::setConnect()
 //    //点击场景根按钮 属性栏显示场景属性
 //    QObject::connect(ui->buttonRootHierarchy, SIGNAL(clicked()), this, SLOT(clickedButtonRootHierarchy()));
 
+}
+
+void BBUIMainWindow::keyPressEvent(QKeyEvent *e)
+{
+//    QMainWindow::keyPressEvent(e);
+
+    switch (e->key()) {
+    case Qt::Key_Control:
+        pressMultipleSelectionKey(true);
+        break;
+    default:
+        break;
+    }
+}
+
+void BBUIMainWindow::keyReleaseEvent(QKeyEvent *e)
+{
+//    QMainWindow::keyReleaseEvent(e);
+
+    switch (e->key()) {
+    case Qt::Key_Control:
+        pressMultipleSelectionKey(false);
+        break;
+    default:
+        break;
+    }
 }

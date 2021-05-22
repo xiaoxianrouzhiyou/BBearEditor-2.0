@@ -21,7 +21,7 @@ BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
     setMouseTracking(true);
     m_bRegionSelecting = false;
     // Single selection mode
-    m_bMultipleSelected = false;
+    m_bMultipleSelecting = false;
 
 //    //右下角的浏览视图
 //    QHBoxLayout *l = new QHBoxLayout(this);
@@ -37,12 +37,12 @@ BBEditViewOpenGLWidget::~BBEditViewOpenGLWidget()
     BB_SAFE_DELETE(m_pPreviewObject);
 }
 
-void BBEditViewOpenGLWidget::pressESCSlot()
+void BBEditViewOpenGLWidget::pressESC()
 {
     setCoordinateSystemSelectedObject(nullptr);
 }
 
-void BBEditViewOpenGLWidget::pressMoveKeySlot(char key)
+void BBEditViewOpenGLWidget::pressMoveKey(char key)
 {
     // Handling camera movement
     if (!m_bRightPressed)
@@ -51,7 +51,7 @@ void BBEditViewOpenGLWidget::pressMoveKeySlot(char key)
     m_pScene->getCamera()->move(key, true);
 }
 
-void BBEditViewOpenGLWidget::releaseMoveKeySlot(char key)
+void BBEditViewOpenGLWidget::releaseMoveKey(char key)
 {
     if (!m_bRightPressed)
         return;
@@ -59,7 +59,7 @@ void BBEditViewOpenGLWidget::releaseMoveKeySlot(char key)
     m_pScene->getCamera()->move(key, false);
 }
 
-void BBEditViewOpenGLWidget::pressTransformSlot(char key)
+void BBEditViewOpenGLWidget::pressTransform(char key)
 {
     // If the camera is processed, the coordinate system transform is not processed
     if (m_bRightPressed)
@@ -75,6 +75,12 @@ void BBEditViewOpenGLWidget::setCoordinateSystemSelectedObject(BBGameObject *pGa
 void BBEditViewOpenGLWidget::setCoordinateSystemSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet)
 {
     m_pScene->getTransformCoordinateSystem()->setSelectedObjects(gameObjects, pSet);
+}
+
+void BBEditViewOpenGLWidget::pressMultipleSelectionKey(bool bPressed)
+{
+    // switch single or multiple selection mode
+    m_bMultipleSelecting = bPressed;
 }
 
 void BBEditViewOpenGLWidget::mousePressEvent(QMouseEvent *e)
@@ -162,10 +168,10 @@ void BBEditViewOpenGLWidget::mouseReleaseEvent(QMouseEvent *e)
             // 3D pick objects
             BBGameObject *pObject = m_pScene->pickObject(ray);
             // send signals, show related imformation in Hierarchy tree and inspector
-            if (m_bMultipleSelected)
+            if (m_bMultipleSelecting)
             {
                 // If the object is not NULL
-                // add it to the multi-selection object (or subtract it when it is already selected)
+                // add it to the multi-selection objects (or subtract it when it is already selected)
                 if (pObject)
                 {
                     updateMultipleSelectedObjects(pObject);
@@ -175,7 +181,6 @@ void BBEditViewOpenGLWidget::mouseReleaseEvent(QMouseEvent *e)
             {
                 // Single selection
                 pickObject(pObject);
-                setCoordinateSystemSelectedObject(pObject);
             }
         }
         // When the coordinate system is no longer moved, reset m_LastMousePos
@@ -400,12 +405,6 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
 //BaseOpenGLWidget *OpenGLWidget::getPreview()
 //{
 //    return mPreview;
-//}
-
-//void OpenGLWidget::multipleSelectKey(bool isPress)
-//{
-//    //设置单选 多选模式
-//    isMultipleSelect = isPress;
 //}
 
 //void OpenGLWidget::lookAtGameObjectSlot(GameObject *gameObject)

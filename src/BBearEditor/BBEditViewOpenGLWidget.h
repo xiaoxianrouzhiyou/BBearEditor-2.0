@@ -17,15 +17,15 @@ public:
 //    BaseOpenGLWidget *getPreview();
 
 public slots:
-    void pressESCSlot();
+    void pressESC();
 
 private slots:
-    void pressMoveKeySlot(char key);
-    void releaseMoveKeySlot(char key);
-    void pressTransformSlot(char key);
+    void pressMoveKey(char key);
+    void releaseMoveKey(char key);
+    void pressTransform(char key);
     void setCoordinateSystemSelectedObject(BBGameObject *pGameObject);
     void setCoordinateSystemSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet);
-//    void multipleSelectKey(bool isPress);
+    void pressMultipleSelectionKey(bool bPressed);
 //    void lookAtGameObjectSlot(GameObject *gameObject);
 //    void deleteSceneGameObject(GameObject *gameObject);
 //    void updateCoordinate();
@@ -36,9 +36,9 @@ private slots:
 
 signals:
     void addGameObject(BBGameObject *pGameObject);
-    void updateMultipleSelectedObjects(BBGameObject *pGameObject);
     void pickObject(BBGameObject *pGameObject);
     void pickObjects(QList<BBGameObject*> gameObjects);
+    void updateMultipleSelectedObjects(BBGameObject *pGameObject);
 //    void updateTransform(GameObject *gameObject, char transformModeKey);
 //    void copyGameObjectInsertMap(QTreeWidgetItem *item, GameObject *gameObject);
 //    void updateMaterialProperty(Model *model);
@@ -61,7 +61,7 @@ private:
 
     QPoint m_SelectionRegionStartingPoint;
     bool m_bRegionSelecting;
-    bool m_bMultipleSelected;
+    bool m_bMultipleSelecting;
 
 //    void paintGL() override;
 //    GLuint texture;

@@ -190,7 +190,7 @@ void BBHierarchyTreeWidget::addGameObject(BBGameObject *pGameObject)
     setCurrentItem(pItem);
 }
 
-void BBHierarchyTreeWidget::selectPickedObject(BBGameObject *pGameObject)
+void BBHierarchyTreeWidget::selectPickedItem(BBGameObject *pGameObject)
 {
     if (pGameObject == NULL)
     {
@@ -202,7 +202,7 @@ void BBHierarchyTreeWidget::selectPickedObject(BBGameObject *pGameObject)
     }
 }
 
-void BBHierarchyTreeWidget::selectPickedObjects(QList<BBGameObject*> gameObjects)
+void BBHierarchyTreeWidget::selectPickedItems(QList<BBGameObject*> gameObjects)
 {
     QMap<QTreeWidgetItem*, BBGameObject*>::Iterator itr;
     for (itr = m_ObjectMap.begin(); itr != m_ObjectMap.end(); itr++)
@@ -217,6 +217,38 @@ void BBHierarchyTreeWidget::selectPickedObjects(QList<BBGameObject*> gameObjects
         {
             pItem->setSelected(false);
         }
+    }
+}
+
+void BBHierarchyTreeWidget::updateMultipleSelectedItems(BBGameObject *pGameObject)
+{
+    // get item corresponding object
+    QTreeWidgetItem *pItem = m_ObjectMap.key(pGameObject);
+    if (pItem->isSelected())
+    {
+        // If it is already selected, uncheck it
+        pItem->setSelected(false);
+        // show indicator and bounding box ...
+        // If the parent of the item is selected, the bounding box of the item still needs to be displayed
+        QList<QTreeWidgetItem*> items = selectedItems();
+        QTreeWidgetItem *parent = NULL;
+        for (parent = pItem->parent(); parent; parent = parent->parent())
+        {
+            if (items.contains(parent))
+            {
+                break;
+            }
+        }
+        if (parent == NULL)
+        {
+            // all itself and its parent are not selected
+            pGameObject->setVisibility(false);
+        }
+    }
+    else
+    {
+        // If it is not selected, select it
+        pItem->setSelected(true);
     }
 }
 
@@ -402,36 +434,6 @@ void BBHierarchyTreeWidget::changeSelectedItems()
 //}
 
 
-//void HierarchyTree::updateMultipleSelectObjects(GameObject *gameObject)
-//{
-//    //得到对象对应的树节点 没被选中就将其选中 已经选中 则取消选中
-//    QTreeWidgetItem *item = mMap.key(gameObject);
-//    if (item->isSelected())
-//    {
-//        item->setSelected(false);
-//        //操作对象包围盒 指示器等隐藏 点击对象会使包围盒显示
-//        //如果结点的父节点被选中 包围盒还是要显示
-//        QList<QTreeWidgetItem*> items = selectedItems();
-//        QTreeWidgetItem *parent;
-//        for (parent = item->parent(); parent; parent = parent->parent())
-//        {
-//            //遍历祖先 看是否也被选中
-//            if (items.contains(parent))
-//            {
-//                //祖先也被选中 包围盒还是显示
-//                break;
-//            }
-//        }
-//        if (parent == NULL)
-//        {
-//            gameObject->setVisible(false);
-//        }
-//    }
-//    else
-//    {
-//        item->setSelected(true);
-//    }
-//}
 
 //void HierarchyTree::cancelSelectedItems()
 //{

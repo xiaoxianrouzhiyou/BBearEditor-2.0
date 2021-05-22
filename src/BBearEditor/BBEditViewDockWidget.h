@@ -12,10 +12,10 @@ public:
     explicit BBEditViewDockWidget(QWidget *pParent = 0);
 
 signals:
-    void pressMoveKeySignal(char key);
-    void releaseMoveKeySignal(char key);
-    void pressTransformSignal(char key);
-    void pressESCSignal();
+    void pressMoveKey(char key);
+    void releaseMoveKey(char key);
+    void pressTransform(char key);
+    void pressESC();
     void cancelFileListSelectedItems();
     void keyPress(QKeyEvent *e);
 
