@@ -94,6 +94,11 @@ void BBEditViewOpenGLWidget::createModelAtOrigin(const QString &filePath)
     addGameObject(m_pScene->createModel(filePath));
 }
 
+void BBEditViewOpenGLWidget::deleteGameObject(BBGameObject *pGameObject)
+{
+    m_pScene->deleteGameObject(pGameObject);
+}
+
 void BBEditViewOpenGLWidget::mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::RightButton)
@@ -417,10 +422,6 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
 //    scene.lookAtGameObject(gameObject);
 //}
 
-//void OpenGLWidget::deleteSceneGameObject(GameObject *gameObject)
-//{
-//    scene.deleteGameObject(gameObject);
-//}
 
 //void OpenGLWidget::createLightDependParent(QString fileName)
 //{

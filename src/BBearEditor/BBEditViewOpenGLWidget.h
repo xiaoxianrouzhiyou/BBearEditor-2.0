@@ -26,8 +26,8 @@ private slots:
     void pressMultipleSelectionKey(bool bPressed);
     void updateCoordinateSystem();
     void createModelAtOrigin(const QString &filePath);
+    void deleteGameObject(BBGameObject *pGameObject);
 //    void lookAtGameObjectSlot(GameObject *gameObject);
-//    void deleteSceneGameObject(GameObject *gameObject);
 //    void createLightDependParent(QString fileName);
 //    void copyGameObject(GameObject *sourceObject, QTreeWidgetItem* transcript, QVector3D position);
 //    void onKeyPress(QKeyEvent *e);

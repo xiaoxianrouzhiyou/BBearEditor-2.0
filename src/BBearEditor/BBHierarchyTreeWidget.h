@@ -18,6 +18,8 @@ public:
 
 private:
     void setMenu();
+    void deleteOne(QTreeWidgetItem *pItem) override;
+
     bool moveItemFromOthers(const QMimeData *pMimeData) override;
     void moveItemToIndicator();
     QIcon getClassIcon(const QString &className);
@@ -28,6 +30,7 @@ signals:
     void setCoordinateSystemSelectedObject(BBGameObject *pGameObject);
     void setCoordinateSystemSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet);
     void showGameObjectProperty(BBGameObject *pGameObject);
+    void deleteGameObject(BBGameObject *pGameObject);
 
 private slots:
     void addGameObject(BBGameObject *pGameObject);
@@ -52,7 +55,6 @@ private slots:
 
 //signals:
 //    void lookAtGameObjectSignal(GameObject *gameObject);
-//    void deleteSceneGameObject(GameObject *gameObject);
 //    void showSetProperty(QList<GameObject*> gameObjects, CenterPoint *center);
 //    void updateNameInInspector(GameObject *gameObject, QString newName);
 //    void changeButtonActiveCheckStateInInspector(GameObject *gameObject, bool isActive);
@@ -61,7 +63,6 @@ private slots:
 //    void cancelFileListSelectedItems();
 
 //private:
-//    void deleteOne(QTreeWidgetItem *item) override;
 //    void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript) override;
 //    bool moveItemFromFileList(const QMimeData *mimeData) override;
 //    bool dragDropItem() override;

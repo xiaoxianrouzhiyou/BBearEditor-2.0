@@ -64,6 +64,23 @@ void BBHierarchyTreeWidget::setMenu()
     QObject::connect(pActionDelete, SIGNAL(triggered()), this, SLOT(deleteAction()));
 }
 
+void BBHierarchyTreeWidget::deleteOne(QTreeWidgetItem *pItem)
+{
+    // remove corresponding gameobject and map
+    BBGameObject *pGameObject = m_ObjectMap.value(pItem);
+
+//    //如果是模型对象 其使用的材质的使用者列表 需要除去该对象
+//    if (object->getClassName() == ModelClassName)
+//    {
+//        Model *model = (Model*) object;
+//        model->materialRemoveUser();
+//    }
+
+    deleteGameObject(pGameObject);
+    m_ObjectMap.remove(pItem);
+    BBTreeWidget::deleteOne(pItem);
+}
+
 bool BBHierarchyTreeWidget::moveItemFromOthers(const QMimeData *pMimeData)
 {
     QByteArray data;
@@ -323,21 +340,7 @@ void BBHierarchyTreeWidget::changeSelectedItems()
 //    setCurrentItem(NULL);
 //}
 
-////递归 删除场景中的gameobj 删除item及其孩子与gameobj的映射
-//void HierarchyTree::deleteOne(QTreeWidgetItem *item)
-//{
-//    GameObject *object = mMap.value(item);
-//    //如果是模型对象 其使用的材质的使用者列表 需要除去该对象
-//    if (object->getClassName() == ModelClassName)
-//    {
-//        Model *model = (Model*) object;
-//        model->materialRemoveUser();
-//    }
 
-//    deleteSceneGameObject(object);
-//    mMap.remove(item);
-//    BaseTree::deleteOne(item);
-//}
 
 //void HierarchyTree::pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript)
 //{

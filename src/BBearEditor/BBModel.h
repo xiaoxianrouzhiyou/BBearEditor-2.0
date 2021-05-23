@@ -16,7 +16,7 @@ public:
     BBModel(float px, float py, float pz,
             float rx, float ry, float rz,
             float sx, float sy, float sz, const BBMeshType &eType);
-    virtual ~BBModel();
+    ~BBModel();
 
     void init(const QString &path) override;
     void render(BBCamera *pCamera) override;

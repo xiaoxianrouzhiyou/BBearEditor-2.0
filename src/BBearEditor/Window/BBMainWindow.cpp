@@ -93,6 +93,9 @@ void BBUIMainWindow::setConnect()
     // Drag files or prefabs into the hierarchical view, create model in the scene
     QObject::connect(m_pUi->treeHierarchy, SIGNAL(createModel(QString)),
                      m_pUi->openGLWidget, SLOT(createModelAtOrigin(QString)));
+    // perform operation in treeHierarchy, delete corresponding object in the scene
+    QObject::connect(m_pUi->treeHierarchy, SIGNAL(deleteGameObject(BBGameObject*)),
+                     m_pUi->openGLWidget, SLOT(deleteGameObject(BBGameObject*)));
 
 //    //对整个项目操作的菜单事件
 //    QObject::connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(save()));
@@ -104,9 +107,7 @@ void BBUIMainWindow::setConnect()
 //    //双击item 摄像机以其对应的gameobject为焦点
 //    QObject::connect(ui->treeHierarchy, SIGNAL(lookAtGameObjectSignal(GameObject*)),
 //                     ui->openGLWidget, SLOT(lookAtGameObjectSlot(GameObject*)));
-//    //操作层级视图 删除场景中的对象
-//    QObject::connect(ui->treeHierarchy, SIGNAL(deleteSceneGameObject(GameObject*)),
-//                     ui->openGLWidget, SLOT(deleteSceneGameObject(GameObject*)));
+
 //    //点击文件夹控件上的按钮
 //    QObject::connect(ui->buttonRootProject, SIGNAL(clicked()), ui->treeProject, SLOT(pressRootButton()));
 //    QObject::connect(ui->buttonMoreProject, SIGNAL(clicked()), ui->treeProject, SLOT(pressSettingButton()));
