@@ -31,6 +31,7 @@ BBModel::~BBModel()
 
 void BBModel::init(const QString &path)
 {
+    BBGameObject::init(path);
     m_pMesh->init(path, m_pBoundingBox);
 }
 

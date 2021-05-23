@@ -241,7 +241,9 @@ void BBGameObject::setVisibility(bool bVisible)
     {
         for (int i = 0; i < pItem->childCount(); i++)
         {
-            BBHierarchyTreeWidget::m_ObjectMap.value(pItem->child(i))->setVisibility(bVisible);
+            BBGameObject *pGameObject = BBHierarchyTreeWidget::m_ObjectMap.value(pItem->child(i));
+            if (pGameObject)
+                pGameObject->setVisibility(bVisible);
         }
     }
 }
@@ -261,7 +263,7 @@ void BBGameObject::init()
 
 void BBGameObject::init(const QString &path)
 {
-    Q_UNUSED(path);
+    m_strFilePath = path;
 }
 
 void BBGameObject::render(BBCamera *pCamera)

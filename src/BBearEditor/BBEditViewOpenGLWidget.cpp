@@ -9,6 +9,7 @@
 #include <QDrag>
 #include "BBRay.h"
 #include "BBCoordinateSystem.h"
+#include <QTreeWidgetItem>
 
 
 BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
@@ -97,6 +98,31 @@ void BBEditViewOpenGLWidget::createModelAtOrigin(const QString &filePath)
 void BBEditViewOpenGLWidget::deleteGameObject(BBGameObject *pGameObject)
 {
     m_pScene->deleteGameObject(pGameObject);
+}
+
+void BBEditViewOpenGLWidget::copyGameObject(BBGameObject *pSourceObject, QTreeWidgetItem *pTranscriptItem)
+{
+    BBGameObject *pTranscriptObject = NULL;
+    if (pSourceObject->getClassName() == BB_CLASSNAME_MODEL)
+    {
+        pTranscriptObject = m_pScene->createModel(pSourceObject->getFilePath(), pSourceObject->getPosition());
+    }
+//    else if (sourceObject->getClassName() == DirectionLightClassName
+//             || sourceObject->getClassName() == PointLightClassName
+//             || sourceObject->getClassName() == SpotLightClassName)
+//    {
+//        //拷贝一个灯光对象
+//        transcriptObject = scene.createLight(sourceObject->getFilePath(), position);
+//    }
+    else
+    {
+
+    }
+    BB_PROCESS_ERROR_EXIT(pTranscriptObject);
+    pTranscriptObject->setName(pTranscriptItem->text(0));
+    pTranscriptObject->setActivity(pSourceObject->getActivity());
+    // then, handle in HierarchyTreeWidget
+    addGameObject(pTranscriptObject, pTranscriptItem);
 }
 
 void BBEditViewOpenGLWidget::mousePressEvent(QMouseEvent *e)
@@ -428,33 +454,6 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
 //    addGameObjectSignal(scene.createLight(fileName));
 //}
 
-//void OpenGLWidget::copyGameObject(GameObject *sourceObject, QTreeWidgetItem* transcript, QVector3D position)
-//{
-//    //创建一个文件名 类型 图标 可见性和源对象一样的对象
-//    GameObject *transcriptObject = NULL;
-//    if (sourceObject->getClassName() == ModelClassName)
-//    {
-//        //拷贝一个模型对象
-//        transcriptObject = scene.createModel(sourceObject->getFilePath(), position);
-//    }
-//    else if (sourceObject->getClassName() == DirectionLightClassName
-//             || sourceObject->getClassName() == PointLightClassName
-//             || sourceObject->getClassName() == SpotLightClassName)
-//    {
-//        //拷贝一个灯光对象
-//        transcriptObject = scene.createLight(sourceObject->getFilePath(), position);
-//    }
-//    else
-//    {
-
-//    }
-//    //名字使用副本的名字
-//    transcriptObject->setName(transcript->text(0));
-//    //可见性与源对象一样
-//    transcriptObject->setActive(sourceObject->getActive());
-//    //拷贝的新对象与拷贝的新树节点插入映射
-//    copyGameObjectInsertMap(transcript, transcriptObject);
-//}
 
 //void OpenGLWidget::onKeyPress(QKeyEvent *e)
 //{

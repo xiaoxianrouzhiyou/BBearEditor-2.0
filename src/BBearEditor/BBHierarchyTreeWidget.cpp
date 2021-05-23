@@ -64,6 +64,17 @@ void BBHierarchyTreeWidget::setMenu()
     QObject::connect(pActionDelete, SIGNAL(triggered()), this, SLOT(deleteAction()));
 }
 
+void BBHierarchyTreeWidget::pasteOne(QTreeWidgetItem *pSource, QTreeWidgetItem* pTranscript)
+{
+    // copy GameObject in the scene, and insert map
+    copyGameObject(m_ObjectMap.value(pSource), pTranscript);
+    // handle children
+    for (int i = 0; i < pSource->childCount(); i++)
+    {
+        pasteOne(pSource->child(i), pTranscript->child(i));
+    }
+}
+
 void BBHierarchyTreeWidget::deleteOne(QTreeWidgetItem *pItem)
 {
     // remove corresponding gameobject and map
@@ -208,6 +219,19 @@ void BBHierarchyTreeWidget::addGameObject(BBGameObject *pGameObject)
     setCurrentItem(pItem);
 }
 
+void BBHierarchyTreeWidget::addGameObject(BBGameObject *pGameObject, QTreeWidgetItem *pItem)
+{
+    m_ObjectMap.insert(pItem, pGameObject);
+
+    BBGameObject *pParent = m_ObjectMap.value(pItem->parent());
+    pGameObject->setLocalTransform(pParent);
+
+    // show property in inspector
+    setItemSelected(pItem, true);
+    setItemExpanded(pItem, true);
+    changeSelectedItems();
+}
+
 void BBHierarchyTreeWidget::selectPickedItem(BBGameObject *pGameObject)
 {
     if (pGameObject == NULL)
@@ -342,58 +366,27 @@ void BBHierarchyTreeWidget::changeSelectedItems()
     }
 }
 
+void BBHierarchyTreeWidget::deleteAction()
+{
+    // no need to show BBConfirmationDialog
+    filterSelectedItems();
+    QList<QTreeWidgetItem*> items = selectedItems();
+    if (items.count() == 0)
+        return;
+
+    for (int i = 0; i < items.count(); i++)
+    {
+        BBTreeWidget::deleteAction(items.at(i));
+    }
+    setCurrentItem(NULL);
+}
+
 //void HierarchyTree::itemDoubleClickedSlot(QTreeWidgetItem *item, int column)
 //{
 //    Q_UNUSED(column);
 //    lookAtGameObjectSignal(mMap.value(item));
 //}
 
-//void HierarchyTree::deleteAction()
-//{
-//    //不需要确认对话框
-//    //过滤选中项 父亲孩子同时选中 只处理父亲
-//    filterSelectedItems();
-//    //遍历所选项
-//    QList<QTreeWidgetItem*> items = selectedItems();
-//    if (items.count() == 0)
-//        return;
-//    //真正开始删除
-//    for (int i = 0; i < items.count(); i++)
-//    {
-//        BaseTree::deleteAction(items.at(i));
-//    }
-//    setCurrentItem(NULL);
-//}
-
-
-
-//void HierarchyTree::pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript)
-//{
-//    //场景中拷贝同样的对象 并插入映射
-//    //位置与父节点对象的位置一样
-//    QVector3D position;
-//    if (transcript->parent())
-//    {
-//        position = mMap.value(transcript->parent())->getPosition();
-//    }
-//    //top结点初始位置与源对象一样
-//    else
-//    {
-//        position = mMap.value(source)->getPosition();
-//    }
-//    copyGameObject(mMap.value(source), transcript, position);
-//}
-
-//void HierarchyTree::copyGameObjectInsertMap(QTreeWidgetItem *item, GameObject *gameObject)
-//{
-//    //在场景中拷贝的对象 需要将树节点和对象插入映射中
-//    mMap.insert(item, gameObject);
-//    //设置相对坐标
-//    gameObject->setLocalTransform();
-//    //属性栏显示该项对应属性
-//    setCurrentItem(item);
-//    setItemSelected(item, true);
-//}
 
 //bool HierarchyTree::moveItemFromFileList(const QMimeData *mimeData)
 //{

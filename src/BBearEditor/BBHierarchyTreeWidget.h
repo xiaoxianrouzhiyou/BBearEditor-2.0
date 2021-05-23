@@ -18,6 +18,7 @@ public:
 
 private:
     void setMenu();
+    void pasteOne(QTreeWidgetItem *pSource, QTreeWidgetItem* pTranscript) override;
     void deleteOne(QTreeWidgetItem *pItem) override;
 
     bool moveItem() override;
@@ -32,19 +33,21 @@ signals:
     void setCoordinateSystemSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet);
     void showGameObjectProperty(BBGameObject *pGameObject);
     void deleteGameObject(BBGameObject *pGameObject);
+    void copyGameObject(BBGameObject *pSourceObject, QTreeWidgetItem *pTranscriptItem);
 
 private slots:
     void addGameObject(BBGameObject *pGameObject);
+    void addGameObject(BBGameObject *pGameObject, QTreeWidgetItem *pItem);
     void selectPickedItem(BBGameObject *pGameObject);
     void selectPickedItems(QList<BBGameObject*> gameObjects);
     void updateMultipleSelectedItems(BBGameObject *pGameObject);
     void changeSelectedItems();
+    void deleteAction() override;
 
 
 //public slots:
 //    void itemDoubleClickedSlot(QTreeWidgetItem *item, int column);
 //    void finishRename() override;
-//    void deleteAction() override;
 //    void cancelSelectedItems();
 
 //private slots:
@@ -60,13 +63,11 @@ private slots:
 //    void updateNameInInspector(GameObject *gameObject, QString newName);
 //    void changeButtonActiveCheckStateInInspector(GameObject *gameObject, bool isActive);
 //    void createLight(QString fileName);
-//    void copyGameObject(GameObject *sourceObject, QTreeWidgetItem* transcript, QVector3D position);
 //    void cancelFileListSelectedItems();
 
 //private:
 //    void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript) override;
 //    bool moveItemFromFileList(const QMimeData *mimeData) override;
-//    bool dragDropItem() override;
 //    void focusInEvent(QFocusEvent *event) override;
 };
 

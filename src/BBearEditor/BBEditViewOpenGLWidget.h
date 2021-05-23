@@ -2,10 +2,12 @@
 #define BBEDITVIEWOPENGLWIDGET_H
 
 #include "BBOpenGLWidget.h"
+#include <QVector3D>
 
 class QMouseEvent;
 class BBGameObject;
 class BBGameObjectSet;
+class QTreeWidgetItem;
 class BBEditViewOpenGLWidget : public BBOpenGLWidget
 {
     Q_OBJECT
@@ -27,18 +29,21 @@ private slots:
     void updateCoordinateSystem();
     void createModelAtOrigin(const QString &filePath);
     void deleteGameObject(BBGameObject *pGameObject);
+    void copyGameObject(BBGameObject *pSourceObject, QTreeWidgetItem *pTranscriptItem);
 //    void lookAtGameObjectSlot(GameObject *gameObject);
 //    void createLightDependParent(QString fileName);
-//    void copyGameObject(GameObject *sourceObject, QTreeWidgetItem* transcript, QVector3D position);
 //    void onKeyPress(QKeyEvent *e);
 
 signals:
+    // create QTreeWidgetItem
     void addGameObject(BBGameObject *pGameObject);
+    // specified QTreeWidgetItem
+    void addGameObject(BBGameObject *pGameObject, QTreeWidgetItem *pItem);
     void pickObject(BBGameObject *pGameObject);
     void pickObjects(QList<BBGameObject*> gameObjects);
     void updateMultipleSelectedObjects(BBGameObject *pGameObject);
     void updateTransformInPropertyManager(BBGameObject *pGameObject, char transformModeKey);
-//    void copyGameObjectInsertMap(QTreeWidgetItem *item, GameObject *gameObject);
+
 //    void updateMaterialProperty(Model *model);
 
 private:

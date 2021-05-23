@@ -68,6 +68,9 @@ void BBUIMainWindow::setConnect()
     // Drag into the model, and add item in the Hierarchy tree
     QObject::connect(m_pUi->openGLWidget, SIGNAL(addGameObject(BBGameObject*)),
                      m_pUi->treeHierarchy, SLOT(addGameObject(BBGameObject*)));
+    // copy object in the scene, need to insert map and perform some operations in hierarchy tree
+    QObject::connect(m_pUi->openGLWidget, SIGNAL(addGameObject(BBGameObject*, QTreeWidgetItem*)),
+                     m_pUi->treeHierarchy, SLOT(addGameObject(BBGameObject*, QTreeWidgetItem*)));
     // select item in treeHierarchy, use coordinate system to select corresponding object in OpenGL view
     QObject::connect(m_pUi->treeHierarchy, SIGNAL(setCoordinateSystemSelectedObject(BBGameObject*)),
                      m_pUi->openGLWidget, SLOT(setCoordinateSystemSelectedObject(BBGameObject*)));
@@ -96,6 +99,10 @@ void BBUIMainWindow::setConnect()
     // perform operation in treeHierarchy, delete corresponding object in the scene
     QObject::connect(m_pUi->treeHierarchy, SIGNAL(deleteGameObject(BBGameObject*)),
                      m_pUi->openGLWidget, SLOT(deleteGameObject(BBGameObject*)));
+    // copy tree item in treeHierarchy, and copy game object in scene
+    QObject::connect(m_pUi->treeHierarchy, SIGNAL(copyGameObject(BBGameObject*, QTreeWidgetItem*)),
+                     m_pUi->openGLWidget, SLOT(copyGameObject(BBGameObject*, QTreeWidgetItem*)));
+
 
 //    //对整个项目操作的菜单事件
 //    QObject::connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(save()));
@@ -181,12 +188,6 @@ void BBUIMainWindow::setConnect()
 //    //灯光拖入层级视图 在场景中创建灯光
 //    QObject::connect(ui->treeHierarchy, SIGNAL(createLight(QString)),
 //                     ui->openGLWidget, SLOT(createLightDependParent(QString)));
-//    //在层级视图中拷贝树节点 场景中拷贝对象并与拷贝的结点对应起来
-//    QObject::connect(ui->treeHierarchy, SIGNAL(copyGameObject(GameObject*, QTreeWidgetItem*, QVector3D)),
-//                     ui->openGLWidget, SLOT(copyGameObject(GameObject*, QTreeWidgetItem*, QVector3D)));
-//    //在场景中拷贝的对象 需要将层级视图树节点和拷贝的对象插入层级视图映射中
-//    QObject::connect(ui->openGLWidget, SIGNAL(copyGameObjectInsertMap(QTreeWidgetItem*, GameObject*)),
-//                     ui->treeHierarchy, SLOT(copyGameObjectInsertMap(QTreeWidgetItem*, GameObject*)));
 
 //    //在层级视图中选择多项 属性栏显示集合的属性
 //    QObject::connect(ui->treeHierarchy, SIGNAL(showSetProperty(QList<GameObject*>, CenterPoint*)),

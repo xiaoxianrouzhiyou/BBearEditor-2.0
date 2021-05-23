@@ -50,6 +50,7 @@ public:
     inline QString getClassName()  { return m_strClassName; }
     void setIconName(const QString &iconName) { m_strIconName = iconName; }
     inline QString getIconName()  { return m_strIconName; }
+    inline QString getFilePath()  { return m_strFilePath; }
     void setBaseAttributes(const QString &name, const QString &className, const QString &iconName, bool bActive = true);
 
     virtual void init();
@@ -87,7 +88,7 @@ protected:
     QString m_strName;
     QString m_strClassName;
     QString m_strIconName;
-
+    QString m_strFilePath;
 };
 
 #endif // BBGAMEOBJECT_H
