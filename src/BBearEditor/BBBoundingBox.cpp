@@ -30,7 +30,6 @@ BBBoundingBox::BBBoundingBox(float px, float py, float pz,
 
 BBBoundingBox::~BBBoundingBox()
 {
-    BB_SAFE_DELETE_ARRAY(m_Center);
     BB_SAFE_DELETE_ARRAY(m_pOriginalBoxVertexes);
     BB_SAFE_DELETE_ARRAY(m_pTransformedBoxVertexes);
 }
@@ -292,8 +291,7 @@ BBBoundingBox3D::BBBoundingBox3D(float px, float py, float pz,
 
 BBBoundingBox3D::~BBBoundingBox3D()
 {
-    BB_SAFE_DELETE_ARRAY2D(m_Axis, 3);
-    BB_SAFE_DELETE_ARRAY(m_HalfLength);
+
 }
 
 void BBBoundingBox3D::init()
