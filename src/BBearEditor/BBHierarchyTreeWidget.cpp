@@ -83,6 +83,29 @@ void BBHierarchyTreeWidget::deleteOne(QTreeWidgetItem *pItem)
     deleteGameObject(pGameObject);
 }
 
+bool BBHierarchyTreeWidget::moveItem()
+{
+    if (BBTreeWidget::moveItem())
+    {
+        // successful drop, change local transform of all selected items
+        QList<QTreeWidgetItem*> items = selectedItems();
+        for (int i = 0; i < items.count(); i++)
+        {
+            QTreeWidgetItem *pItem = items.at(i);
+            BBGameObject *pParent = m_ObjectMap.value(pItem->parent());
+            m_ObjectMap.value(pItem)->setLocalTransform(pParent);
+        }
+        // update the property manager
+        // otherwise, the local coordinates is the previous value that is relative to previous parent
+        changeSelectedItems();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 bool BBHierarchyTreeWidget::moveItemFromOthers(const QMimeData *pMimeData)
 {
     QByteArray data;
@@ -392,29 +415,6 @@ void BBHierarchyTreeWidget::changeSelectedItems()
 //    moveItemToIndicator();
 //    return true;
 //}
-
-//bool HierarchyTree::dragDropItem()
-//{
-//    if (BaseTree::dragDropItem())
-//    {
-//        //成功落下 修改所有选中结点的相对坐标
-//        QList<QTreeWidgetItem*> items = selectedItems();
-//        int count = items.count();
-//        for (int i = 0; i < count; i++)
-//        {
-//            mMap.value(items.at(i))->setLocalTransform();
-//        }
-//        //刷新一次属性栏 否则相对坐标显示的是改变父节点之前的值
-//        itemSelectionChangedSlot();
-//        return true;
-//    }
-//    else
-//    {
-//        return false;
-//    }
-//}
-
-
 
 //void HierarchyTree::cancelSelectedItems()
 //{

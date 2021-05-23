@@ -20,6 +20,7 @@ private:
     void setMenu();
     void deleteOne(QTreeWidgetItem *pItem) override;
 
+    bool moveItem() override;
     bool moveItemFromOthers(const QMimeData *pMimeData) override;
     void moveItemToIndicator();
     QIcon getClassIcon(const QString &className);

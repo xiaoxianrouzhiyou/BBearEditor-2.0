@@ -32,8 +32,9 @@ void BBPropertyManager::clear()
 
 void BBPropertyManager::showPropertyOfGameObject(BBGameObject *pGameObject)
 {
-    if (m_pCurrentGameObject == pGameObject)
-        return;
+    // sometimes need to refresh
+//    if (m_pCurrentGameObject == pGameObject)
+//        return;
 
     // clear the last time
     clear();
