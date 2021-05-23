@@ -1,5 +1,8 @@
 #include "BBGameObject.h"
 #include "BBCamera.h"
+#include "BBHierarchyTreeWidget.h"
+#include "BBGameObjectSet.h"
+
 
 BBGameObject::BBGameObject()
     : BBGameObject(0, 0, 0, 0, 0, 0, 1, 1, 1)
@@ -43,24 +46,25 @@ void BBGameObject::setPosition(const QVector3D &position, bool bUpdateLocalTrans
     setModelMatrix(m_Position.x(), m_Position.y(), m_Position.z(),
                    m_Quaternion,
                    m_Scale.x(), m_Scale.y(), m_Scale.z());
-//    QTreeWidgetItem *pItem = HierarchyTree::mMap.key(this);
-//    //有些对象并不是层级视图管理的对象
-//    if (pItem)
-//    {
-//        //设置孩子结点
-//        int count = item->childCount();
-//        for (int i = 0; i < count; i++)
-//        {
-//            GameObject *gameObject = HierarchyTree::mMap.value(item->child(i));
-//            //移动父节点 其孩子节点相对于父节点的坐标不变 isUpdateLocalTransform为false
-//            gameObject->setPosition(gameObject->getPosition() + displacement, false);
-//        }
-//        //设置相对坐标
-//        if (isUpdateLocalTransform)
-//        {
-//            mLocalPosition = mLocalPosition + displacement;
-//        }
-//    }
+
+    QTreeWidgetItem *pItem = BBHierarchyTreeWidget::m_ObjectMap.key(this);
+    // Some objects are not managed by BBHierarchyTreeWidget
+    if (pItem)
+    {
+        // handle children
+        for (int i = 0; i < pItem->childCount(); i++)
+        {
+            BBGameObject *pGameObject = BBHierarchyTreeWidget::m_ObjectMap.value(pItem->child(i));
+            // the localTransform of child is not changed, bUpdateLocalTransform = false
+            pGameObject->setPosition(pGameObject->getPosition() + displacement, false);
+        }
+
+        // set local
+        if (bUpdateLocalTransform)
+        {
+            m_LocalPosition = m_LocalPosition + displacement;
+        }
+    }
 }
 
 void BBGameObject::setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform)
@@ -71,46 +75,43 @@ void BBGameObject::setRotation(int nAngle, const QVector3D &axis, bool bUpdateLo
     m_Quaternion = rot * m_Quaternion;
     // Turn to Euler Angle
     m_Rotation = m_Quaternion.toEulerAngles();
-
-    //test
-//    float temp = round(mRotation.x());
-//    if (temp - mRotation.x() < 0.001)
-//        mRotation.setX(temp);
-//    temp = round(mRotation.y());
-//    if (temp - mRotation.y() < 0.001)
-//        mRotation.setY(temp);
-//    temp = round(mRotation.z());
-//    if (temp - mRotation.z() < 0.001)
-//        mRotation.setZ(temp);
-
+    // test
+//    float temp = round(m_Rotation.x());
+//    if (temp - m_Rotation.x() < 0.001)
+//        m_Rotation.setX(temp);
+//    temp = round(m_Rotation.y());
+//    if (temp - m_Rotation.y() < 0.001)
+//        m_Rotation.setY(temp);
+//    temp = round(m_Rotation.z());
+//    if (temp - m_Rotation.z() < 0.001)
+//        m_Rotation.setZ(temp);
     setModelMatrix(m_Position.x(), m_Position.y(), m_Position.z(),
                    m_Quaternion,
                    m_Scale.x(), m_Scale.y(), m_Scale.z());
 
-//    //处理孩子结点
-//    QTreeWidgetItem *item = HierarchyTree::mMap.key(this);
-//    //有些对象并不是层级视图管理的对象
-//    if (item)
-//    {
-//        //所有孩子结点作为集合
-//        QList<GameObject*> gameObjects;
-//        int count = item->childCount();
-//        for (int i = 0; i < count; i++)
-//        {
-//            GameObject *gameObject = HierarchyTree::mMap.value(item->child(i));
-//            gameObjects.append(gameObject);
-//        }
-//        //中心点不是所有对象的中心 而是父节点的位置
-//        CenterPoint *center = new CenterPoint(gameObjects, mPosition);
-//        //子节点的相对坐标不变
-//        center->setRotation(angle, axis, false);
-//        //自身的相对坐标
-//        if (isUpdateLocalTransform)
-//        {
-//            mLocalQuaternion = rot * mLocalQuaternion;
-//            mLocalRotation = mLocalQuaternion.toEulerAngles();
-//        }
-//    }
+    QTreeWidgetItem *pItem = BBHierarchyTreeWidget::m_ObjectMap.key(this);
+    // Some objects are not managed by BBHierarchyTreeWidget
+    if (pItem)
+    {
+        // handle children
+        // push all children into set
+        QList<BBGameObject*> gameObjects;
+        for (int i = 0; i < pItem->childCount(); i++)
+        {
+            BBGameObject *pGameObject = BBHierarchyTreeWidget::m_ObjectMap.value(pItem->child(i));
+            gameObjects.append(pGameObject);
+        }
+        // The center point is not the center of all objects, but the position of the parent
+        BBGameObjectSet *pSet = new BBGameObjectSet(gameObjects, m_Position);
+        // the localTransform of child is not changed, bUpdateLocalTransform = false
+        pSet->setRotation(nAngle, axis, false);
+
+        if (bUpdateLocalTransform)
+        {
+            m_LocalQuaternion = rot * m_LocalQuaternion;
+            m_LocalRotation = m_LocalQuaternion.toEulerAngles();
+        }
+    }
 }
 
 void BBGameObject::setRotation(const QVector3D &rotation, bool bUpdateLocalTransform)
@@ -122,65 +123,31 @@ void BBGameObject::setRotation(const QVector3D &rotation, bool bUpdateLocalTrans
                    m_Quaternion,
                    m_Scale.x(), m_Scale.y(), m_Scale.z());
 
-//    //处理孩子结点
-//    QTreeWidgetItem *item = HierarchyTree::mMap.key(this);
-//    //有些对象并不是层级视图管理的对象
-//    if (item)
-//    {
-//        //子节点改变绝对坐标 不改变相对坐标
-//        int count = item->childCount();
-//        for (int i = 0; i < count; i++)
-//        {
-//            GameObject *childObject = HierarchyTree::mMap.value(item->child(i));
-//            //子对象相对于父对象的变换矩阵
-//            QMatrix4x4 relativeMatrix;
-//            relativeMatrix.translate(childObject->getLocalPosition());
-//            relativeMatrix.rotate(childObject->getLocalQuaternion());
-//            relativeMatrix.scale(childObject->getLocalScale());
-//            //在父对象变换矩阵的基础上得到子对象的变换矩阵
-//            QMatrix4x4 childMatrix = getModelMatrix() * relativeMatrix;
-//            childObject->setPosition(childMatrix * QVector3D(0, 0, 0), false);
-//            //绝对旋转为父节点的绝对四元数*子节点的相对四元数
-//            QVector3D gameObjectRotation = (mQuaternion * childObject->getLocalQuaternion()).toEulerAngles();
-//            childObject->setRotation(gameObjectRotation, false);
-//            //旋转变换 不会改变孩子结点的缩放值
-//        }
-//        //自己的相对坐标
-//        if (isUpdateLocalTransform)
-//        {
-//            QTreeWidgetItem *parent = item->parent();
-//            if (parent)
-//            {
-//                //如果有父节点 求出相对于父节点的坐标
-//                //父节点对应的对象
-//                GameObject *gameObject = HierarchyTree::mMap.value(parent);
-//                //相对矩阵
-//                QMatrix4x4 relativeMatrix = gameObject->getModelMatrix().inverted() * getModelMatrix();
-//                //缩放矩阵和旋转矩阵叠加 去掉缩放变换
-//                relativeMatrix.scale(QVector3D(1, 1, 1) / mLocalScale);
-//                //左上的3x3是旋转矩阵
-//                QMatrix3x3 rotMatrix;
-//                rotMatrix(0, 0) = relativeMatrix.data()[0];
-//                rotMatrix(1, 0) = relativeMatrix.data()[1];
-//                rotMatrix(2, 0) = relativeMatrix.data()[2];
-//                rotMatrix(0, 1) = relativeMatrix.data()[4];
-//                rotMatrix(1, 1) = relativeMatrix.data()[5];
-//                rotMatrix(2, 1) = relativeMatrix.data()[6];
-//                rotMatrix(0, 2) = relativeMatrix.data()[8];
-//                rotMatrix(1, 2) = relativeMatrix.data()[9];
-//                rotMatrix(2, 2) = relativeMatrix.data()[10];
-//                mLocalQuaternion = QQuaternion::fromRotationMatrix(rotMatrix);
-//                mLocalRotation = mLocalQuaternion.toEulerAngles();
-//            }
-//            else
-//            {
-//                //top结点 相对坐标就是全局坐标
-//                mLocalRotation = mRotation;
-//                mLocalQuaternion = mQuaternion;
-//            }
-//        }
-//    }
+    QTreeWidgetItem *pItem = BBHierarchyTreeWidget::m_ObjectMap.key(this);
+    // Some objects are not managed by BBHierarchyTreeWidget
+    if (pItem)
+    {
+        for (int i = 0; i < pItem->childCount(); i++)
+        {
+            BBGameObject *pGameObject = BBHierarchyTreeWidget::m_ObjectMap.value(pItem->child(i));
+            // The transform matrix of the child object relative to the parent object
+            QMatrix4x4 localMatrix;
+            localMatrix.translate(pGameObject->getLocalPosition());
+            localMatrix.rotate(pGameObject->getLocalQuaternion());
+            localMatrix.scale(pGameObject->getLocalScale());
 
+            QMatrix4x4 globalMatrix = m_ModelMatrix * localMatrix;
+            pGameObject->setPosition(globalMatrix * QVector3D(0, 0, 0), false);
+            pGameObject->setRotation((m_Quaternion * pGameObject->getLocalQuaternion()).toEulerAngles(), false);
+        }
+
+        if (bUpdateLocalTransform)
+        {
+            QTreeWidgetItem *pParent = pItem->parent();
+            BBGameObject *pGameObject = BBHierarchyTreeWidget::m_ObjectMap.value(pParent);
+            setLocalTransform(pGameObject);
+        }
+    }
 }
 
 void BBGameObject::setScale(float scale, bool bUpdateLocalTransform)
@@ -196,46 +163,39 @@ void BBGameObject::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
                    m_Quaternion,
                    m_Scale.x(), m_Scale.y(), m_Scale.z());
 
-//    //处理孩子结点
-//    QTreeWidgetItem *item = HierarchyTree::mMap.key(this);
-//    //有些对象并不是层级视图管理的对象
-//    if (item)
-//    {
-//        int count = item->childCount();
-//        for (int i = 0; i < count; i++)
-//        {
-//            GameObject *childObject = HierarchyTree::mMap.value(item->child(i));
-//            //子对象相对于父对象的变换矩阵
-//            QMatrix4x4 relativeMatrix;
-//            relativeMatrix.translate(childObject->getLocalPosition());
-//            relativeMatrix.rotate(childObject->getLocalQuaternion());
-//            relativeMatrix.scale(childObject->getLocalScale());
-//            //在新的父对象变换矩阵的基础上得到子对象的变换矩阵
-//            QMatrix4x4 childMatrix = getModelMatrix() * relativeMatrix;
-//            childObject->setPosition(childMatrix * QVector3D(0, 0, 0), false);
-//            //缩放变换不会改变旋转值
-//            //子节点的缩放值是父节点的缩放值乘以子节点相对于父节点的缩放值
-//            childObject->setScale(mScale * childObject->getLocalScale(), false);
-//        }
-//        //自身的相对缩放值
-//        if (isUpdateLocalTransform)
-//        {
-//            QTreeWidgetItem *parent = item->parent();
-//            if (parent)
-//            {
-//                //如果有父节点 求出相对于父节点的坐标
-//                //父节点对应的对象
-//                GameObject *gameObject = HierarchyTree::mMap.value(parent);
-//                //子节点的缩放值是父节点的缩放值乘以子节点相对于父节点的缩放值
-//                mLocalScale = mScale / gameObject->getScale();
-//            }
-//            else
-//            {
-//                //top结点 相对坐标就是全局坐标
-//                mLocalScale = mScale;
-//            }
-//        }
-//    }
+    QTreeWidgetItem *pItem = BBHierarchyTreeWidget::m_ObjectMap.key(this);
+    // Some objects are not managed by BBHierarchyTreeWidget
+    if (pItem)
+    {
+        for (int i = 0; i < pItem->childCount(); i++)
+        {
+            BBGameObject *pGameObject = BBHierarchyTreeWidget::m_ObjectMap.value(pItem->child(i));
+            // The transform matrix of the child object relative to the parent object
+            QMatrix4x4 localMatrix;
+            localMatrix.translate(pGameObject->getLocalPosition());
+            localMatrix.rotate(pGameObject->getLocalQuaternion());
+            localMatrix.scale(pGameObject->getLocalScale());
+
+            QMatrix4x4 globalMatrix = m_ModelMatrix * localMatrix;
+            pGameObject->setPosition(globalMatrix * QVector3D(0, 0, 0), false);
+            pGameObject->setScale(m_Scale * pGameObject->getLocalScale(), false);
+        }
+
+        if (bUpdateLocalTransform)
+        {
+            QTreeWidgetItem *pParent = pItem->parent();
+            if (pParent)
+            {
+                BBGameObject *pGameObject = BBHierarchyTreeWidget::m_ObjectMap.value(pParent);
+                m_LocalScale = m_Scale / pGameObject->getScale();
+            }
+            else
+            {
+                // at the top level
+                m_LocalScale = m_Scale;
+            }
+        }
+    }
 }
 
 void BBGameObject::setLocalTransform(BBGameObject *pParent)
@@ -244,20 +204,20 @@ void BBGameObject::setLocalTransform(BBGameObject *pParent)
     {
         m_LocalPosition = m_Position - pParent->getPosition();
         m_LocalScale = m_Scale / pParent->getScale();
-        QMatrix4x4 relativeMatrix = pParent->getModelMatrix().inverted() * m_ModelMatrix;
+        QMatrix4x4 localMatrix = pParent->getModelMatrix().inverted() * m_ModelMatrix;
         // remove scale from the matrix that includes rotation and scale
-        relativeMatrix.scale(QVector3D(1, 1, 1) / m_LocalScale);
+        localMatrix.scale(QVector3D(1, 1, 1) / m_LocalScale);
         // 3x3 in the top-left is rotation matrix
         QMatrix3x3 rotMatrix;
-        rotMatrix(0, 0) = relativeMatrix.data()[0];
-        rotMatrix(1, 0) = relativeMatrix.data()[1];
-        rotMatrix(2, 0) = relativeMatrix.data()[2];
-        rotMatrix(0, 1) = relativeMatrix.data()[4];
-        rotMatrix(1, 1) = relativeMatrix.data()[5];
-        rotMatrix(2, 1) = relativeMatrix.data()[6];
-        rotMatrix(0, 2) = relativeMatrix.data()[8];
-        rotMatrix(1, 2) = relativeMatrix.data()[9];
-        rotMatrix(2, 2) = relativeMatrix.data()[10];
+        rotMatrix(0, 0) = localMatrix.data()[0];
+        rotMatrix(1, 0) = localMatrix.data()[1];
+        rotMatrix(2, 0) = localMatrix.data()[2];
+        rotMatrix(0, 1) = localMatrix.data()[4];
+        rotMatrix(1, 1) = localMatrix.data()[5];
+        rotMatrix(2, 1) = localMatrix.data()[6];
+        rotMatrix(0, 2) = localMatrix.data()[8];
+        rotMatrix(1, 2) = localMatrix.data()[9];
+        rotMatrix(2, 2) = localMatrix.data()[10];
         m_LocalQuaternion = QQuaternion::fromRotationMatrix(rotMatrix);
         m_LocalRotation = m_LocalQuaternion.toEulerAngles();
     }
@@ -268,6 +228,21 @@ void BBGameObject::setLocalTransform(BBGameObject *pParent)
         m_LocalRotation = m_Rotation;
         m_LocalQuaternion = m_Quaternion;
         m_LocalScale = m_Scale;
+    }
+}
+
+void BBGameObject::setVisibility(bool bVisible)
+{
+    m_bVisible = bVisible;
+    // handle children
+    QTreeWidgetItem *pItem = BBHierarchyTreeWidget::m_ObjectMap.key(this);
+    // Some objects are not managed by BBHierarchyTreeWidget
+    if (pItem)
+    {
+        for (int i = 0; i < pItem->childCount(); i++)
+        {
+            BBHierarchyTreeWidget::m_ObjectMap.value(pItem->child(i))->setVisibility(bVisible);
+        }
     }
 }
 
@@ -318,6 +293,18 @@ bool BBGameObject::belongToSelectionRegion(const QVector3D &left1, const QVector
                                            const QVector3D &right1, const QVector3D &right2, const QVector3D &right3,
                                            const QVector3D &bottom1, const QVector3D &bottom2, const QVector3D &bottom3)
 {
+    Q_UNUSED(left1);
+    Q_UNUSED(left2);
+    Q_UNUSED(left3);
+    Q_UNUSED(top1);
+    Q_UNUSED(top2);
+    Q_UNUSED(top3);
+    Q_UNUSED(right1);
+    Q_UNUSED(right2);
+    Q_UNUSED(right3);
+    Q_UNUSED(bottom1);
+    Q_UNUSED(bottom2);
+    Q_UNUSED(bottom3);
     // 4 planes, object in the middle of top bottom left right planes is selected
     // Whether the bounding box of object is placed in the middle of 4 planes
     // Eliminate objects whose the center point of the bounding box is on the outside
@@ -338,22 +325,6 @@ void BBGameObject::setModelMatrix(float px, float py, float pz,
 
 
 
-
-
-
-//void GameObject::setVisible(bool isVisible)
-//{
-//    //孩子对象的可见性
-//    QTreeWidgetItem *item = HierarchyTree::mMap.key(this);
-//    if (item)
-//    {
-//        int count = item->childCount();
-//        for (int i = 0; i < count; i++)
-//        {
-//            HierarchyTree::mMap.value(item->child(i))->setVisible(isVisible);
-//        }
-//    }
-//}
 
 
 //void GameObject::lookAtSelf(QVector3D &pos, QVector3D &viewCenter, float distFactor)

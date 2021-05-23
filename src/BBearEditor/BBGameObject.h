@@ -42,7 +42,7 @@ public:
 
     virtual void setActivity(bool bActive) { m_bActive = bActive; }
     inline bool getActivity() { return m_bActive; }
-    virtual void setVisibility(bool bVisible) { m_bVisible = bVisible; }
+    virtual void setVisibility(bool bVisible);
 
     void setName(const QString &name) { m_strName = name; }
     inline QString getName() { return m_strName; }
