@@ -1000,6 +1000,7 @@ void BBCoordinateSystem::setSelectedObject(BBGameObject *pObject)
     {
         setPosition(QVector3D(0, 0, 0));
         setRotation(QVector3D(0, 0, 0));
+        setSelectedAxis(BBAxisName::AxisNULL);
     }
 }
 
