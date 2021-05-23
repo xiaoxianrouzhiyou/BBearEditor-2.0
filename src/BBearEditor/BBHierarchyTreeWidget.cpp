@@ -76,9 +76,11 @@ void BBHierarchyTreeWidget::deleteOne(QTreeWidgetItem *pItem)
 //        model->materialRemoveUser();
 //    }
 
-    deleteGameObject(pGameObject);
     m_ObjectMap.remove(pItem);
     BBTreeWidget::deleteOne(pItem);
+    // cannot delete pGameObject before deleting treeItem
+    // because when treeitem changes, removing coordinate system will be triggered, which needs pGameObject
+    deleteGameObject(pGameObject);
 }
 
 bool BBHierarchyTreeWidget::moveItemFromOthers(const QMimeData *pMimeData)
