@@ -72,6 +72,7 @@ private:
 
 protected:
     void filterSelectedItems();
+    QTreeWidgetItem* getParentOfMovingItem(int &nIndex);
     // drag, Which column of icons to use
     virtual int getDragIconColumnIndex() { return 0; }
     QString getLevelPath(QTreeWidgetItem *pItem);

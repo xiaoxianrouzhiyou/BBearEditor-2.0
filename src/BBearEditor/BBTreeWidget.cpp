@@ -157,37 +157,8 @@ bool BBTreeWidget::moveItem()
     if (m_pIndicatorItem)
     {
         // drop position of moving item
-        QTreeWidgetItem *pParent = NULL;
-        // drop index of moving item
         int index = -1;
-        if (m_eIndicatorPos == BBIndicatorPos::CENTER)
-        {
-            // become the child of m_pIndicatorItem
-            pParent = m_pIndicatorItem;
-            // If add to the end, use parent->childCount()
-            // But when item is dragged to its parent, deleting itself makes parent->childCount() decrease
-            // add itself at the end is wrong
-            // Add to the first
-            index = 0;
-        }
-        else if (m_eIndicatorPos == BBIndicatorPos::TOP)
-        {
-            // become the front sibling of m_pIndicatorItem
-            pParent = m_pIndicatorItem->parent();
-            if (pParent)
-                index = pParent->indexOfChild(m_pIndicatorItem);
-            else
-                index = indexOfTopLevelItem(m_pIndicatorItem);
-        }
-        else//m_eIndicatorPos == BBIndicatorPos::BOTTOM
-        {
-            // become the back sibling of m_pIndicatorItem
-            pParent = m_pIndicatorItem->parent();
-            if (pParent)
-                index = pParent->indexOfChild(m_pIndicatorItem) + 1;
-            else
-                index = indexOfTopLevelItem(m_pIndicatorItem) + 1;
-        }
+        QTreeWidgetItem *pParent = getParentOfMovingItem(index);
         // The movable item has been filtered in startDrag
         QList<QTreeWidgetItem*> items = selectedItems();
         // Cannot move to an item that are moving and its descendants
@@ -501,6 +472,41 @@ void BBTreeWidget::filterSelectedItems()
             }
         }
     }
+}
+
+QTreeWidgetItem* BBTreeWidget::getParentOfMovingItem(int &nIndex)
+{
+    QTreeWidgetItem *pParent = NULL;
+    //nIndex is the position inserted
+    if (m_eIndicatorPos == BBIndicatorPos::CENTER)
+    {
+        // become the child of m_pIndicatorItem
+        pParent = m_pIndicatorItem;
+        // If add to the end, use parent->childCount()
+        // But when item is dragged to its parent, deleting itself makes parent->childCount() decrease
+        // add itself at the end is wrong
+        // Add to the first
+        nIndex = 0;
+    }
+    else if (m_eIndicatorPos == BBIndicatorPos::TOP)
+    {
+        // become the front sibling of m_pIndicatorItem
+        pParent = m_pIndicatorItem->parent();
+        if (pParent)
+            nIndex = pParent->indexOfChild(m_pIndicatorItem);
+        else
+            nIndex = indexOfTopLevelItem(m_pIndicatorItem);
+    }
+    else//m_eIndicatorPos == BBIndicatorPos::BOTTOM
+    {
+        // become the back sibling of m_pIndicatorItem
+        pParent = m_pIndicatorItem->parent();
+        if (pParent)
+            nIndex = pParent->indexOfChild(m_pIndicatorItem) + 1;
+        else
+            nIndex = indexOfTopLevelItem(m_pIndicatorItem) + 1;
+    }
+    return pParent;
 }
 
 QString BBTreeWidget::getLevelPath(QTreeWidgetItem *pItem)

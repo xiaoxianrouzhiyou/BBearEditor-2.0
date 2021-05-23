@@ -88,6 +88,12 @@ void BBEditViewOpenGLWidget::updateCoordinateSystem()
     m_pScene->getTransformCoordinateSystem()->update();
 }
 
+void BBEditViewOpenGLWidget::createModelAtOrigin(const QString &filePath)
+{
+    // Send signal to treeHierarchy
+    addGameObject(m_pScene->createModel(filePath));
+}
+
 void BBEditViewOpenGLWidget::mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::RightButton)
@@ -390,18 +396,6 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
     }
 }
 
-//void OpenGLWidget::paintGL()
-//{
-//    BaseOpenGLWidget::paintGL();
-//    //如果正在进行变换 修改右侧属性栏中的数据
-//    //重新渲染才会改变transform
-//    if (scene.transformCoordinate->getIsTransform())
-//    {
-//        //transform被修改 发送信号给属性栏
-//        updateTransform(scene.transformCoordinate->getSelectedObject(),
-//                        scene.transformCoordinate->getTransformModeKey());
-//    }
-//}
 
 
 
@@ -426,13 +420,6 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
 //void OpenGLWidget::deleteSceneGameObject(GameObject *gameObject)
 //{
 //    scene.deleteGameObject(gameObject);
-//}
-
-
-//void OpenGLWidget::createModelDependParent(QString filePath)
-//{
-//    //在原点创建模型 并在层级视图中加入对应结点
-//    addGameObjectSignal(scene.createModel(filePath));
 //}
 
 //void OpenGLWidget::createLightDependParent(QString fileName)

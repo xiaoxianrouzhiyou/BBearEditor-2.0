@@ -90,6 +90,9 @@ void BBUIMainWindow::setConnect()
     // perform transform in OpenGL view, change transform in propertyManager
     QObject::connect(m_pUi->openGLWidget, SIGNAL(updateTransformInPropertyManager(BBGameObject*, char)),
                      m_pUi->propertyManager, SLOT(updateTransform(BBGameObject*, char)));
+    // Drag files or prefabs into the hierarchical view, create model in the scene
+    QObject::connect(m_pUi->treeHierarchy, SIGNAL(createModel(QString)),
+                     m_pUi->openGLWidget, SLOT(createModelAtOrigin(QString)));
 
 //    //对整个项目操作的菜单事件
 //    QObject::connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(save()));
@@ -173,9 +176,7 @@ void BBUIMainWindow::setConnect()
 //    //层级视图修改激活性 属性栏对应图标更新
 //    QObject::connect(ui->treeHierarchy, SIGNAL(changeButtonActiveCheckStateInInspector(GameObject*, bool)),
 //                     ui->propertyManager, SLOT(changeButtonActiveCheckState(GameObject*, bool)));
-//    //文件或预制体拖入层级视图 在场景中创建模型
-//    QObject::connect(ui->treeHierarchy, SIGNAL(createModel(QString)),
-//                     ui->openGLWidget, SLOT(createModelDependParent(QString)));
+
 //    //灯光拖入层级视图 在场景中创建灯光
 //    QObject::connect(ui->treeHierarchy, SIGNAL(createLight(QString)),
 //                     ui->openGLWidget, SLOT(createLightDependParent(QString)));

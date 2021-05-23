@@ -104,60 +104,36 @@ void BBHierarchyTreeWidget::moveItemToIndicator()
     // The default item created is the last one at the top level
     QTreeWidgetItem *pItem = topLevelItem(topLevelItemCount() - 1);
 
-    //移动到指示器指示处
+    // move to m_pIndicatorItem
     if (m_pIndicatorItem)
     {
-//        QTreeWidgetItem *parent = NULL;
-//        //位置的索引值
-//        int index;
-//        if (indicatorPos == IndicatorPos::RECT)
-//        {
-//            //成为indicatorItem的孩子
-//            parent = indicatorItem;
-//            index = 0;
-//        }
-//        else if (indicatorPos == IndicatorPos::TOP)
-//        {
-//            //成为indicatorItem的兄弟
-//            parent = indicatorItem->parent();
-//            if (parent)
-//                index = parent->indexOfChild(indicatorItem);
-//            else
-//                index = indexOfTopLevelItem(indicatorItem);
-//        }
-//        else//indicatorPos == IndicatorPos::BOTTOM
-//        {
-//            //成为indicatorItem的兄弟
-//            parent = indicatorItem->parent();
-//            if (parent)
-//                index = parent->indexOfChild(indicatorItem) + 1;
-//            else
-//                index = indexOfTopLevelItem(indicatorItem) + 1;
-//        }
-//        //最后一个结点从树中移除
-//        takeTopLevelItem(topLevelItemCount() - 1);
-//        //结点添加在新的位置
-//        if (parent)
-//        {
-//            parent->insertChild(index, pItem);
-//            GameObject *obj = mMap.value(pItem);
-//            //成为新父节点的子节点 修改相对坐标
-//            obj->setLocalTransform();
-//            //场景中的对象移动到parent处
-//            obj->setPosition(mMap.value(parent)->getPosition());
-//        }
-//        else
-//        {
-//            //成为top结点
-//            insertTopLevelItem(index, pItem);
-//        }
-//        //选中新结点
-//        setCurrentItem(pItem);
-//        //展开parent 新的结点可见
-//        if (parent)
-//        {
-//            setItemExpanded(parent, true);
-//        }
+        // pos
+        int index = -1;
+        QTreeWidgetItem *pParent = getParentOfMovingItem(index);
+        // remove item that needs to move
+        takeTopLevelItem(topLevelItemCount() - 1);
+        // change local coordinate
+        BBGameObject *pGameObject = m_ObjectMap.value(pItem);
+        if (!pGameObject)
+            return;
+        BBGameObject *pParentGameObject = m_ObjectMap.value(pParent);
+        pGameObject->setLocalTransform(pParentGameObject);
+        // add in the new position
+        if (pParent)
+        {
+            pParent->insertChild(index, pItem);
+        }
+        else
+        {
+            insertTopLevelItem(index, pItem);
+        }
+        // focus on
+        setCurrentItem(pItem);
+        // expand parent, show new item
+        if (pParent)
+        {
+            setItemExpanded(pParent, true);
+        }
     }
     // if m_pIndicatorItem is NULL, means adding to the end. No need to move
 }
@@ -300,7 +276,7 @@ void BBHierarchyTreeWidget::changeSelectedItems()
             BBGameObject *pGameObject = gameObjects.first();
             setCoordinateSystemSelectedObject(pGameObject);
             // show properties in inspector
-    //        showGameObjectProperty(gameObject);
+            showGameObjectProperty(pGameObject);
         }
         else
         {
