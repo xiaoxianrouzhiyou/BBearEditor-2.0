@@ -14,14 +14,14 @@ BBLineEditFactory::BBLineEditFactory(const QString &name, float fValue, QWidget 
                                      int nNameStretch, int nValueStretch)
     : QWidget(pParent)
 {
-    QHBoxLayout layout(this);
-    layout.setMargin(0);
+    QHBoxLayout *pLayout = new QHBoxLayout(this);
+    pLayout->setMargin(0);
     // name lable in the left side
     m_pSliderLabel = new BBSliderLabel(this);
     m_pSliderLabel->setText(name);
     // otherwise, using tab key can focus on it
     m_pSliderLabel->setFocusPolicy(Qt::NoFocus);
-    layout.addWidget(m_pSliderLabel, nNameStretch, Qt::AlignLeft);
+    pLayout->addWidget(m_pSliderLabel, nNameStretch, Qt::AlignLeft);
     // edit in the right side
     m_pEdit = new QLineEdit(this);
     // m_pEdit->setAlignment(Qt::AlignRight);
@@ -30,7 +30,7 @@ BBLineEditFactory::BBLineEditFactory(const QString &name, float fValue, QWidget 
     setRegExp("^(-?[0]|-?[1-9][0-9]{0,5})(?:\\.\\d{1,6})?$|(^\\t?$)");
     setSlideStep(0.2f);
     setValue(fValue);
-    layout.addWidget(m_pEdit, nValueStretch);
+    pLayout->addWidget(m_pEdit, nValueStretch);
 
     QObject::connect(m_pSliderLabel, SIGNAL(slide(int)), this, SLOT(changeValueBySlider(int)));
     QObject::connect(m_pEdit, SIGNAL(textEdited(QString)), this, SLOT(changeEditText(QString)));
@@ -100,15 +100,15 @@ BBVector3DFactory::BBVector3DFactory(const QVector3D &value, QWidget *pParent)
     : QWidget(pParent)
 {
     m_Value = value;
-    QHBoxLayout layout(this);
-    layout.setMargin(0);
+    QHBoxLayout *pLayout = new QHBoxLayout(this);
+    pLayout->setMargin(0);
 
     m_pEditX = new BBLineEditFactory("X", value.x(), this);
     m_pEditY = new BBLineEditFactory("Y", value.y(), this);
     m_pEditZ = new BBLineEditFactory("Z", value.z(), this);
-    layout.addWidget(m_pEditX);
-    layout.addWidget(m_pEditY);
-    layout.addWidget(m_pEditZ);
+    pLayout->addWidget(m_pEditX);
+    pLayout->addWidget(m_pEditY);
+    pLayout->addWidget(m_pEditZ);
 
     QObject::connect(m_pEditX, SIGNAL(valueChanged(float)), this, SLOT(setX(float)));
     QObject::connect(m_pEditY, SIGNAL(valueChanged(float)), this, SLOT(setY(float)));

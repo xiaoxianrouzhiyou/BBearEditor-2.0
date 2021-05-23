@@ -10,8 +10,8 @@ BBPropertyManager::BBPropertyManager(QWidget *pParent)
     m_pCurrentGameObject = NULL;
     setWidgetStyle();
     // init a vertical layout
-    QVBoxLayout layout(this);
-    layout.setContentsMargins(0, 8, 10, 0);
+    QVBoxLayout *pLayout = new QVBoxLayout(this);
+    pLayout->setContentsMargins(0, 8, 10, 0);
 }
 
 BBPropertyManager::~BBPropertyManager()
@@ -26,6 +26,7 @@ void BBPropertyManager::clear()
     {
         layout()->removeWidget(pItem->widget());
         delete pItem->widget();
+        delete pItem;
     }
 }
 
@@ -98,19 +99,19 @@ void BBPropertyManager::updateCoordinateSystem()
 
 void BBPropertyManager::setWidgetStyle()
 {
-    setStyleSheet("QToolButton {border: none; border-radius: 2px; color: #d6dfeb; background: transparent; font: 75 11pt \"Arial\";}"
-                  "QLineEdit {border: none; border-radius: 2px; color: #d6dfeb; font: 10pt \"Arial\"; background: rgb(60, 64, 75); selection-color: #d6dfeb; selection-background-color: #8193bc; padding-left: 3px; padding-right: 3px;}"
-                  "QLabel {border: none; border-radius: 2px; color: #d6dfeb; font: 10pt \"Arial\";}"
-                  "QCheckBox {border: none; border-radius: 2px; color: #d6dfeb; font: 10pt \"Arial\"; background: none; padding-top: 1px; padding-bottom: 1px;}"
+    setStyleSheet("QToolButton {border: none; border-radius: 2px; color: #d6dfeb; background: transparent; font: 9pt \"Arial\"; font-weight: bold;}"
+                  "QLineEdit {border: none; border-radius: 2px; color: #d6dfeb; font: 9pt \"Arial\"; background: rgb(60, 64, 75); selection-color: #d6dfeb; selection-background-color: #8193bc; padding-left: 3px; padding-right: 3px;}"
+                  "QLabel {border: none; border-radius: 2px; color: #d6dfeb; font: 9pt \"Arial\";}"
+                  "QCheckBox {border: none; border-radius: 2px; color: #d6dfeb; font: 9pt \"Arial\"; background: none; padding-top: 1px; padding-bottom: 1px;}"
                   "QCheckBox::indicator:checked {border: none; border-radius: 2px; background: #0ebf9c;}"
                   "QCheckBox::indicator:unchecked {border: none; border-radius: 2px; background: rgb(60, 64, 75);}"
-                  "QPushButton {border: none; border-radius: 2px; color: #d6dfeb; font: 10pt \"Arial\"; background: none;}"
-                  "QComboBox {border: none; border-radius: 2px; color: #d6dfeb; font: 10pt \"Arial\"; background: rgb(60, 64, 75);}"
+                  "QPushButton {border: none; border-radius: 2px; color: #d6dfeb; font: 9pt \"Arial\"; background: none;}"
+                  "QComboBox {border: none; border-radius: 2px; color: #d6dfeb; font: 9pt \"Arial\"; background: rgb(60, 64, 75);}"
                   "QComboBox::drop-down {margin: 4px; border-image: url(:/icon/resources/icons/arrow_right.png);}"
-                  "QComboBox QAbstractItemView {border: none; color: #d6dfeb; font: 10pt \"Arial\"; background: rgb(60, 64, 75);}"
+                  "QComboBox QAbstractItemView {border: none; color: #d6dfeb; font: 9pt \"Arial\"; background: rgb(60, 64, 75);}"
                   "QComboBox QAbstractItemView::item {height: 16px; border: none; padding-left: 3px; padding-right: 3px;}"
                   "QComboBox QAbstractItemView::item:selected {height: 16px; border: none; background-color: #8193bc;}"
-                  "QSpinBox {border: none; border-radius: 2px; color: #191f28; font: 10pt \"Arial\"; selection-background-color: rgb(251, 236, 213);}");
+                  "QSpinBox {border: none; border-radius: 2px; color: #191f28; font: 9pt \"Arial\"; selection-background-color: rgb(251, 236, 213);}");
 }
 
 BBGroupManager* BBPropertyManager::addGroupManager(const QString &name, const QString &iconPath)

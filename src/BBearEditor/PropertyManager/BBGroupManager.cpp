@@ -18,15 +18,15 @@
 BBGroupManager::BBGroupManager(const QString &groupName, const QString &iconPath, QWidget *pParent)
     : QWidget(pParent)
 {
-    QVBoxLayout layout(this);
-    layout.setMargin(0);
+    QVBoxLayout *pLayout = new QVBoxLayout(this);
+    pLayout->setMargin(0);
 
     // Upper bar
     QWidget *pBar = new QWidget(this);
     pBar->setFocusPolicy(Qt::NoFocus);
-    QHBoxLayout barLayout(pBar);
-    barLayout.setMargin(0);
-    barLayout.setSpacing(0);
+    QHBoxLayout *pBarLayout = new QHBoxLayout(pBar);
+    pBarLayout->setMargin(0);
+    pBarLayout->setSpacing(0);
 
     // button used to expand container
     m_pMainButton = new QToolButton(pBar);
@@ -38,19 +38,19 @@ BBGroupManager::BBGroupManager(const QString &groupName, const QString &iconPath
     m_pMainButton->setChecked(true);
     m_pMainButton->setText(groupName);
     QObject::connect(m_pMainButton, SIGNAL(clicked(bool)), this, SLOT(setContainerExpanded(bool)));
-    barLayout.addWidget(m_pMainButton, 1);
+    pBarLayout->addWidget(m_pMainButton, 1);
 
     m_pMenuButton = new QPushButton(pBar);
     m_pMenuButton->setIcon(QIcon(iconPath));
-    barLayout.addWidget(m_pMenuButton, 0, Qt::AlignRight);
+    pBarLayout->addWidget(m_pMenuButton, 0, Qt::AlignRight);
 
-    layout.addWidget(pBar);
+    pLayout->addWidget(pBar);
 
     m_pContainer = new QWidget(this);
     // Add a vertical layout to the container for addFactory
-    QVBoxLayout containerLayout(m_pContainer);
-    containerLayout.setContentsMargins(10, 0, 0, 0);
-    layout.addWidget(m_pContainer);
+    QVBoxLayout *pContainerLayout = new QVBoxLayout(m_pContainer);
+    pContainerLayout->setContentsMargins(10, 0, 0, 0);
+    pLayout->addWidget(m_pContainer);
 }
 
 BBGroupManager::~BBGroupManager()
@@ -65,15 +65,15 @@ void BBGroupManager::addFactory(const QString &name, QWidget *pFactory, int nStr
 {
     // Add a line of content to the container
     QWidget *pWidget = new QWidget(m_pContainer);
-    QHBoxLayout layout(pWidget);
-    layout.setMargin(0);
+    QHBoxLayout *pLayout = new QHBoxLayout(pWidget);
+    pLayout->setMargin(0);
     // name showed in the left side
     QLabel *pLabel = new QLabel(pWidget);
     pLabel->setText(name);
-    layout.addWidget(pLabel, 1);
+    pLayout->addWidget(pLabel, 1);
     // factory showed in the right side
     pFactory->setParent(pWidget);
-    layout.addWidget(pFactory, nStretch);
+    pLayout->addWidget(pFactory, nStretch);
     m_pContainer->layout()->addWidget(pWidget);
 }
 
@@ -106,7 +106,7 @@ void BBGroupManager::setContainerExpanded(bool bExpanded)
 //---------------------------------------------------------------------------------------------------
 
 BBTransformGroupManager::BBTransformGroupManager(BBGameObject *pGameObject, QWidget *pParent)
-    : BBGroupManager("Transform (Global)", QString(BB_PATH_RESOURCE_ICON) + "transform.png", pParent)
+    : BBGroupManager("Transform [Global]", QString(BB_PATH_RESOURCE_ICON) + "transform.png", pParent)
 {
     m_pGameObject = pGameObject;
     // default is to show global coordinate
@@ -164,7 +164,6 @@ BBTransformGroupManager::~BBTransformGroupManager()
     BB_SAFE_DELETE(m_pPositionFactory);
     BB_SAFE_DELETE(m_pRotationFactory);
     BB_SAFE_DELETE(m_pScaleFactory);
-    BB_SAFE_DELETE(m_pGameObject);
 }
 
 void BBTransformGroupManager::changePosition(const QVector3D &value)
