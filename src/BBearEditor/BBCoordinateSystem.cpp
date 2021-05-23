@@ -1828,19 +1828,7 @@ void BBTransformCoordinateSystem::stopTransform()
     m_bTransforming = false;
 }
 
-
-///******************************************************************
-//        TransformCoordinate
-//  *********************************************************************/
-
-
-//char TransformCoordinate::getTransformModeKey()
-//{
-//    return mModeKey;
-//}
-
-//void TransformCoordinate::update()
-//{
-//    setCoordinateMode(mModeKey);
-//}
-
+void BBTransformCoordinateSystem::update()
+{
+    setCoordinateSystem(m_ModeKey);
+}

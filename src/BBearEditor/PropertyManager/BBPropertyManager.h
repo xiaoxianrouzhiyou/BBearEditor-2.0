@@ -21,6 +21,7 @@ private slots:
     void clear();
     void showPropertyOfGameObject(BBGameObject *pGameObject);
     void updateCoordinateSystem();
+    void updateTransform(BBGameObject *pGameObject, char transformModeKey);
 
 signals:
     void coordinateSystemUpdated();
@@ -74,7 +75,7 @@ private:
 //    void showHierarchyTreeItemsProperty(QList<GameObject*> gameObjects, CenterPoint *center);
 //    void showMaterialProperty(QString filePath);
 //    void showFbxProperty(QString filePath);
-//    void updateTransform(GameObject *gameObject, char transformModeKey);
+
 //    void renameGameObject(GameObject *gameObject, QString newName);
 //    void renameGameObjectInHierarchy(GameObject *gameObject);
 //    void changeActivation(GameObject *gameObject, bool isActive);

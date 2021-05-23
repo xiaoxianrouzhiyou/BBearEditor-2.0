@@ -84,6 +84,12 @@ void BBUIMainWindow::setConnect()
     // click item in treeHierarchy, and then show property in inspector
     QObject::connect(m_pUi->treeHierarchy, SIGNAL(showGameObjectProperty(BBGameObject*)),
                      m_pUi->propertyManager, SLOT(showPropertyOfGameObject(BBGameObject*)));
+    // change transform in propertyManager, update coordinate system in OpenGL view
+    QObject::connect(m_pUi->propertyManager, SIGNAL(coordinateSystemUpdated()),
+                     m_pUi->openGLWidget, SLOT(updateCoordinateSystem()));
+    // perform transform in OpenGL view, change transform in propertyManager
+    QObject::connect(m_pUi->openGLWidget, SIGNAL(updateTransformInPropertyManager(BBGameObject*, char)),
+                     m_pUi->propertyManager, SLOT(updateTransform(BBGameObject*, char)));
 
 //    //对整个项目操作的菜单事件
 //    QObject::connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(save()));
@@ -104,13 +110,6 @@ void BBUIMainWindow::setConnect()
 //    //文件夹与文件视图
 //    QObject::connect(ui->treeProject, SIGNAL(showFolderContent(QString)),
 //                     ui->listFile, SLOT(showFolderContent(QString)));
-
-//    //对场景中的对象进行transform操作 属性栏相应值改变
-//    QObject::connect(ui->openGLWidget, SIGNAL(updateTransform(GameObject*, char)),
-//                     ui->propertyManager, SLOT(updateTransform(GameObject*, char)));
-//    //修改属性栏transform 场景中对应坐标系也要进行位置旋转的修改
-//    QObject::connect(ui->propertyManager, SIGNAL(updateCoordinateSignal()),
-//                     ui->openGLWidget, SLOT(updateCoordinate()));
 //    //文件视图改变 需要刷新文件夹树
 //    QObject::connect(ui->listFile, SIGNAL(updateProjectTree()), ui->treeProject, SLOT(loadProject()));
 //    //显示文件夹的内容 上方显示文件夹的路径

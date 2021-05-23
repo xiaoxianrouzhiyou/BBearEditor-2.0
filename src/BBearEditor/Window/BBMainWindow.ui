@@ -1318,7 +1318,7 @@ FileList::item:selected {
   <customwidget>
    <class>BBPropertyManager</class>
    <extends>QWidget</extends>
-   <header>BBPropertyManager.h</header>
+   <header>PropertyManager/BBPropertyManager.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

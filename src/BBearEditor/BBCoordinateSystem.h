@@ -359,11 +359,9 @@ public:
     void setCoordinateSystem(char modeKey);
     bool isTransforming() { return m_bTransforming; }
     void stopTransform();
-
-
-//    GameObject *getSelectedObject();
-//    char getTransformModeKey();
-//    void update();
+    void update();
+    inline BBGameObject* getSelectedObject() { return m_pSelectedObject; }
+    inline char getTransformModeKey() { return m_ModeKey; }
 
 private:
     BBPositionCoordinateSystem *m_pPositionCoordinateSystem;
@@ -378,8 +376,6 @@ private:
     BBGameObject *m_pSelectedObject;
     QList<BBGameObject*> m_SelectedObjects;
     bool m_bTransforming;
-
-
 };
 
 

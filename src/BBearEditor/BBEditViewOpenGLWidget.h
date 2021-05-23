@@ -16,19 +16,17 @@ public:
 
 //    BaseOpenGLWidget *getPreview();
 
-public slots:
-    void pressESC();
-
 private slots:
+    void pressESC();
     void pressMoveKey(char key);
     void releaseMoveKey(char key);
     void pressTransform(char key);
     void setCoordinateSystemSelectedObject(BBGameObject *pGameObject);
     void setCoordinateSystemSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet);
     void pressMultipleSelectionKey(bool bPressed);
+    void updateCoordinateSystem();
 //    void lookAtGameObjectSlot(GameObject *gameObject);
 //    void deleteSceneGameObject(GameObject *gameObject);
-//    void updateCoordinate();
 //    void createModelDependParent(QString filePath);
 //    void createLightDependParent(QString fileName);
 //    void copyGameObject(GameObject *sourceObject, QTreeWidgetItem* transcript, QVector3D position);
@@ -39,7 +37,7 @@ signals:
     void pickObject(BBGameObject *pGameObject);
     void pickObjects(QList<BBGameObject*> gameObjects);
     void updateMultipleSelectedObjects(BBGameObject *pGameObject);
-//    void updateTransform(GameObject *gameObject, char transformModeKey);
+    void updateTransformInPropertyManager(BBGameObject *pGameObject, char transformModeKey);
 //    void copyGameObjectInsertMap(QTreeWidgetItem *item, GameObject *gameObject);
 //    void updateMaterialProperty(Model *model);
 

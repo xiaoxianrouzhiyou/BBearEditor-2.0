@@ -83,6 +83,11 @@ void BBEditViewOpenGLWidget::pressMultipleSelectionKey(bool bPressed)
     m_bMultipleSelecting = bPressed;
 }
 
+void BBEditViewOpenGLWidget::updateCoordinateSystem()
+{
+    m_pScene->getTransformCoordinateSystem()->update();
+}
+
 void BBEditViewOpenGLWidget::mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::RightButton)
@@ -127,7 +132,13 @@ void BBEditViewOpenGLWidget::mouseMoveEvent(QMouseEvent *e)
         {
             // do not perform selection operation
             BBRay ray = m_pScene->getCamera()->createRayFromScreen(e->pos().x(), e->pos().y());
-            if (!m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(ray, true))
+            if (m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(ray, true))
+            {
+                // update value in property manager
+                updateTransformInPropertyManager(m_pScene->getTransformCoordinateSystem()->getSelectedObject(),
+                                                 m_pScene->getTransformCoordinateSystem()->getTransformModeKey());
+            }
+            else
             {
                 // if also do not perform transform, determine whether turn on m_bRegionSelecting
                 // If the mouse moves only a small distance, it is not considered as selection operation
@@ -417,10 +428,6 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
 //    scene.deleteGameObject(gameObject);
 //}
 
-//void OpenGLWidget::updateCoordinate()
-//{
-//    scene.transformCoordinate->update();
-//}
 
 //void OpenGLWidget::createModelDependParent(QString filePath)
 //{

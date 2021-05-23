@@ -51,6 +51,10 @@ public:
     BBTransformGroupManager(BBGameObject *pGameObject, QWidget *pParent = 0);
     ~BBTransformGroupManager();
 
+    void updatePositionValue();
+    void updateRotationValue();
+    void updateScaleValue();
+
 private slots:
     void changePosition(const QVector3D &value);
     void changeRotation(const QVector3D &value);
@@ -63,10 +67,6 @@ signals:
     void coordinateSystemUpdated();
 
 private:
-    void switchPositionValue();
-    void switchRotationValue();
-    void switchScaleValue();
-
     BBVector3DFactory *m_pPositionFactory;
     BBVector3DFactory *m_pRotationFactory;
     BBVector3DFactory *m_pScaleFactory;

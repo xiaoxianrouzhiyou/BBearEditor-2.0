@@ -97,6 +97,27 @@ void BBPropertyManager::updateCoordinateSystem()
     coordinateSystemUpdated();
 }
 
+void BBPropertyManager::updateTransform(BBGameObject *pGameObject, char transformModeKey)
+{
+    // Determine whether the property manager displays the properties of the current operation object
+    // because the property manager may be locked
+    if (m_pCurrentGameObject != pGameObject)
+        return;
+
+    switch (transformModeKey)
+    {
+    case 'W':
+        m_pTransformGroupManager->updatePositionValue();
+        break;
+    case 'E':
+        m_pTransformGroupManager->updateRotationValue();
+        break;
+    case 'R':
+        m_pTransformGroupManager->updateScaleValue();
+        break;
+    }
+}
+
 void BBPropertyManager::setWidgetStyle()
 {
     setStyleSheet("QToolButton {border: none; border-radius: 2px; color: #d6dfeb; background: transparent; font: 9pt \"Arial\"; font-weight: bold;}"
@@ -1358,26 +1379,6 @@ void BBPropertyManager::addTransformGroupManager(BBGameObject *pGameObject)
 //    clear();
 //    SceneManager *sceneManager = new SceneManager(scene, this);
 //    layout()->addWidget(sceneManager);
-//}
-
-//void PropertyManager::updateTransform(GameObject *gameObject, char transformModeKey)
-//{
-//    //判断属性栏是否显示的是当前操作对象的属性 因为属性栏可能被锁定
-//    if (currentObject != gameObject)
-//        return;
-
-//    switch (transformModeKey)
-//    {
-//    case 'W':
-//        transformManager->setPositionValue();
-//        break;
-//    case 'E':
-//        transformManager->setRotationValue();
-//        break;
-//    case 'R':
-//        transformManager->setScaleValue();
-//        break;
-//    }
 //}
 
 

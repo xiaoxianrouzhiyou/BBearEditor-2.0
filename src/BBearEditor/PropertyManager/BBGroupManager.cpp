@@ -166,6 +166,42 @@ BBTransformGroupManager::~BBTransformGroupManager()
     BB_SAFE_DELETE(m_pScaleFactory);
 }
 
+void BBTransformGroupManager::updatePositionValue()
+{
+    if (m_eReferenceSystem == BBReferenceSystem::Global)
+    {
+        m_pPositionFactory->setValue(m_pGameObject->getPosition());
+    }
+    else
+    {
+        m_pPositionFactory->setValue(m_pGameObject->getLocalPosition());
+    }
+}
+
+void BBTransformGroupManager::updateRotationValue()
+{
+    if (m_eReferenceSystem == BBReferenceSystem::Global)
+    {
+        m_pRotationFactory->setValue(m_pGameObject->getRotation());
+    }
+    else
+    {
+        m_pRotationFactory->setValue(m_pGameObject->getLocalRotation());
+    }
+}
+
+void BBTransformGroupManager::updateScaleValue()
+{
+    if (m_eReferenceSystem == BBReferenceSystem::Global)
+    {
+        m_pScaleFactory->setValue(m_pGameObject->getScale());
+    }
+    else
+    {
+        m_pScaleFactory->setValue(m_pGameObject->getLocalScale());
+    }
+}
+
 void BBTransformGroupManager::changePosition(const QVector3D &value)
 {
     if (m_eReferenceSystem == BBReferenceSystem::Global)
@@ -254,9 +290,9 @@ void BBTransformGroupManager::showGlobalCoordinate()
     m_pMainButton->setText("Transform [Global]");
     m_eReferenceSystem = BBReferenceSystem::Global;
     // change value
-    switchPositionValue();
-    switchRotationValue();
-    switchScaleValue();
+    updatePositionValue();
+    updateRotationValue();
+    updateScaleValue();
 }
 
 void BBTransformGroupManager::showLocalCoordinate()
@@ -266,46 +302,11 @@ void BBTransformGroupManager::showLocalCoordinate()
 
     m_pMainButton->setText("Transform [Local]");
     m_eReferenceSystem = BBReferenceSystem::Local;
-    switchPositionValue();
-    switchRotationValue();
-    switchScaleValue();
+    updatePositionValue();
+    updateRotationValue();
+    updateScaleValue();
 }
 
-void BBTransformGroupManager::switchPositionValue()
-{
-    if (m_eReferenceSystem == BBReferenceSystem::Global)
-    {
-        m_pPositionFactory->setValue(m_pGameObject->getPosition());
-    }
-    else
-    {
-        m_pPositionFactory->setValue(m_pGameObject->getLocalPosition());
-    }
-}
-
-void BBTransformGroupManager::switchRotationValue()
-{
-    if (m_eReferenceSystem == BBReferenceSystem::Global)
-    {
-        m_pRotationFactory->setValue(m_pGameObject->getRotation());
-    }
-    else
-    {
-        m_pRotationFactory->setValue(m_pGameObject->getLocalRotation());
-    }
-}
-
-void BBTransformGroupManager::switchScaleValue()
-{
-    if (m_eReferenceSystem == BBReferenceSystem::Global)
-    {
-        m_pScaleFactory->setValue(m_pGameObject->getScale());
-    }
-    else
-    {
-        m_pScaleFactory->setValue(m_pGameObject->getLocalScale());
-    }
-}
 
 
 //---------------------------------------------------------------------------------------------------
