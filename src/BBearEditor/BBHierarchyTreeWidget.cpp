@@ -261,7 +261,7 @@ void BBHierarchyTreeWidget::changeSelectedItems()
         // do not select object in OpenGL view
         setCoordinateSystemSelectedObject(NULL);
         // do not show properties in inspector
-//        showGameObjectProperty(NULL);
+        showGameObjectProperty(NULL);
     }
     else if (count == 1)
     {
@@ -270,7 +270,7 @@ void BBHierarchyTreeWidget::changeSelectedItems()
         // select corresponding object in OpenGL view
         setCoordinateSystemSelectedObject(pGameObject);
         // show properties in inspector
-//        showGameObjectProperty(gameObject);
+        showGameObjectProperty(pGameObject);
     }
     else
     {

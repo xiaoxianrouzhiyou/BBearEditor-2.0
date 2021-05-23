@@ -1,5 +1,5 @@
 #include "BBMainWindow.h"
-#include "ui_BBUIMainWindow.h"
+#include "ui_BBMainWindow.h"
 #include "BBUtils.h"
 #include <QKeyEvent>
 
@@ -81,10 +81,10 @@ void BBUIMainWindow::setConnect()
     // press control to perform multiple selection in OpenGL view, also perform multiple selection in Hierarchy tree
     QObject::connect(m_pUi->openGLWidget, SIGNAL(updateMultipleSelectedObjects(BBGameObject*)),
                      m_pUi->treeHierarchy, SLOT(updateMultipleSelectedItems(BBGameObject*)));
+    // click item in treeHierarchy, and then show property in inspector
+    QObject::connect(m_pUi->treeHierarchy, SIGNAL(showGameObjectProperty(BBGameObject*)),
+                     m_pUi->propertyManager, SLOT(showPropertyOfGameObject(BBGameObject*)));
 
-//    //点击层级视图对象 在属性栏中显示属性
-//    QObject::connect(ui->treeHierarchy, SIGNAL(showGameObjectProperty(GameObject*)),
-//                     ui->propertyManager, SLOT(showHierarchyTreeItemProperty(GameObject*)));
 //    //对整个项目操作的菜单事件
 //    QObject::connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(save()));
 

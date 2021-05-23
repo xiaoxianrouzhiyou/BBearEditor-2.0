@@ -1,8 +1,8 @@
 #include <QApplication>
 #include "NcFramelessHelper.h"
 #include <QVBoxLayout>
-#include "BBUITitleBar.h"
-#include "BBUIMainWindow.h"
+#include "Window/BBTitleBar.h"
+#include "Window/BBMainWindow.h"
 
 
 //#include "boundingbox.h"

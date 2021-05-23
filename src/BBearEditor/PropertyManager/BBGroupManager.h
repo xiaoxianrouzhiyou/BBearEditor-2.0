@@ -60,7 +60,7 @@ private slots:
     void showLocalCoordinate();
 
 signals:
-    void updateCoordinateSystem();
+    void coordinateSystemUpdated();
 
 private:
     void switchPositionValue();

@@ -7,6 +7,7 @@
 BBPropertyManager::BBPropertyManager(QWidget *pParent)
     : QWidget(pParent)
 {
+    m_pCurrentGameObject = NULL;
     setWidgetStyle();
     // init a vertical layout
     QVBoxLayout layout(this);
@@ -16,6 +17,83 @@ BBPropertyManager::BBPropertyManager(QWidget *pParent)
 BBPropertyManager::~BBPropertyManager()
 {
     BB_SAFE_DELETE(m_pTransformGroupManager);
+}
+
+void BBPropertyManager::clear()
+{
+    m_pCurrentGameObject = NULL;
+    while (QLayoutItem *pItem = layout()->takeAt(0))
+    {
+        layout()->removeWidget(pItem->widget());
+        delete pItem->widget();
+    }
+}
+
+void BBPropertyManager::showPropertyOfGameObject(BBGameObject *pGameObject)
+{
+    if (m_pCurrentGameObject == pGameObject)
+        return;
+
+    // clear the last time
+    clear();
+    if (pGameObject)
+    {
+        m_pCurrentGameObject = pGameObject;
+        addTransformGroupManager(pGameObject);
+    }
+
+
+//    if (gameObject)
+//    {
+//        addGameObjectBaseInfoManager(gameObject);
+//        if (gameObject->getClassName() == ModelClassName || gameObject->getClassName() == TerrainClassName)
+//        {
+//            //渲染属性组
+//            GroupManager *renderManager = addGroupManager("Render", ":/icon/resources/icons/render.png");
+//            Model *model = (Model*) gameObject;
+//            materialFactory = new MaterialFactory(model);
+//            renderManager->addProperty("Material", materialFactory, 0);
+//            //动画属性组 fbx文件才有动画
+//            if (model->getMeshType() == MeshType::fbx)
+//            {
+//                GroupManager *animManager = addGroupManager("Animation", ":/icon/resources/icons/moive.png");
+//                AnimFactory *animFactory = new AnimFactory(model, mPreview);
+//                animManager->addProperty("Default", animFactory);
+//            }
+//            else if (model->getMeshType() == MeshType::terrain)
+//            {
+//                HeightMapFactory *heightMapFactory = new HeightMapFactory(model);
+//                renderManager->addProperty("HeightMap", heightMapFactory, 0);
+//            }
+//        }
+//        else if (gameObject->getClassName() == DirectionLightClassName)
+//        {
+//            GroupManager *renderManager = addGroupManager("Render", ":/icon/resources/icons/render.png");
+//            //转为DirectionLight*才会多态
+//            DirectionLight *light = (DirectionLight*) gameObject;
+//            LightColorFactory *colorFactory = new LightColorFactory(light);
+//            renderManager->addProperty("Color", colorFactory, 1);
+//        }
+//        else if (gameObject->getClassName() == PointLightClassName)
+//        {
+//            PointLight *light = (PointLight*) gameObject;
+//            PointLightManager *renderManager = new PointLightManager(light, this, "Render",
+//                                                                     ":/icon/resources/icons/render.png");
+//            layout()->addWidget(renderManager);
+//        }
+//        else if (gameObject->getClassName() == SpotLightClassName)
+//        {
+//            SpotLight *light = (SpotLight*) gameObject;
+//            SpotLightManager *renderManager = new SpotLightManager(light, this, "Render",
+//                                                                   ":/icon/resources/icons/render.png");
+//            layout()->addWidget(renderManager);
+//        }
+//    }
+}
+
+void BBPropertyManager::updateCoordinateSystem()
+{
+    coordinateSystemUpdated();
 }
 
 void BBPropertyManager::setWidgetStyle()
@@ -40,6 +118,14 @@ BBGroupManager* BBPropertyManager::addGroupManager(const QString &name, const QS
     BBGroupManager *pGroupManager = new BBGroupManager(name, iconPath, this);
     layout()->addWidget(pGroupManager);
     return pGroupManager;
+}
+
+void BBPropertyManager::addTransformGroupManager(BBGameObject *pGameObject)
+{
+    m_pTransformGroupManager = new BBTransformGroupManager(pGameObject, this);
+    layout()->addWidget(m_pTransformGroupManager);
+
+    QObject::connect(m_pTransformGroupManager, SIGNAL(coordinateSystemUpdated()), this, SLOT(updateCoordinateSystem()));
 }
 
 
@@ -1231,84 +1317,6 @@ BBGroupManager* BBPropertyManager::addGroupManager(const QString &name, const QS
 //                     this, SLOT(changeActivation(QList<GameObject*>, bool)));
 //}
 
-
-//void PropertyManager::addTransformManager(GameObject *gameObject)
-//{
-//    transformManager = new TransformGroupManager(this, gameObject);
-//    layout()->addWidget(transformManager);
-//    //修改对象位置 坐标轴也需要改变位置
-//    QObject::connect(transformManager, SIGNAL(updateCoordinate()), this, SLOT(updateCoordinate()));
-//}
-
-//void PropertyManager::clear()
-//{
-//    //清空属性栏
-//    while (QLayoutItem *child = layout()->takeAt(0))
-//    {
-//        //removeItem 只是从布局中移除 控件还存在
-//        layout()->removeWidget(child->widget());
-//        delete child->widget();
-//    }
-//    currentObject = NULL;
-//}
-
-//void PropertyManager::showHierarchyTreeItemProperty(GameObject *gameObject)
-//{
-//    //清除上一次显示的属性
-//    clear();
-//    //记录属性栏所指的对象
-//    currentObject = gameObject;
-//    //如果没有选中任何对象 只清除属性栏 不进行其他操作
-//    if (gameObject)
-//    {
-//        //在属性栏中添加层级视图item对应的属性
-//        addGameObjectBaseInfoManager(gameObject);
-//        addTransformManager(gameObject);
-//        if (gameObject->getClassName() == ModelClassName || gameObject->getClassName() == TerrainClassName)
-//        {
-//            //渲染属性组
-//            GroupManager *renderManager = addGroupManager("Render", ":/icon/resources/icons/render.png");
-//            Model *model = (Model*) gameObject;
-//            materialFactory = new MaterialFactory(model);
-//            renderManager->addProperty("Material", materialFactory, 0);
-//            //动画属性组 fbx文件才有动画
-//            if (model->getMeshType() == MeshType::fbx)
-//            {
-//                GroupManager *animManager = addGroupManager("Animation", ":/icon/resources/icons/moive.png");
-//                AnimFactory *animFactory = new AnimFactory(model, mPreview);
-//                animManager->addProperty("Default", animFactory);
-//            }
-//            else if (model->getMeshType() == MeshType::terrain)
-//            {
-//                HeightMapFactory *heightMapFactory = new HeightMapFactory(model);
-//                renderManager->addProperty("HeightMap", heightMapFactory, 0);
-//            }
-//        }
-//        else if (gameObject->getClassName() == DirectionLightClassName)
-//        {
-//            GroupManager *renderManager = addGroupManager("Render", ":/icon/resources/icons/render.png");
-//            //转为DirectionLight*才会多态
-//            DirectionLight *light = (DirectionLight*) gameObject;
-//            LightColorFactory *colorFactory = new LightColorFactory(light);
-//            renderManager->addProperty("Color", colorFactory, 1);
-//        }
-//        else if (gameObject->getClassName() == PointLightClassName)
-//        {
-//            PointLight *light = (PointLight*) gameObject;
-//            PointLightManager *renderManager = new PointLightManager(light, this, "Render",
-//                                                                     ":/icon/resources/icons/render.png");
-//            layout()->addWidget(renderManager);
-//        }
-//        else if (gameObject->getClassName() == SpotLightClassName)
-//        {
-//            SpotLight *light = (SpotLight*) gameObject;
-//            SpotLightManager *renderManager = new SpotLightManager(light, this, "Render",
-//                                                                   ":/icon/resources/icons/render.png");
-//            layout()->addWidget(renderManager);
-//        }
-//    }
-//}
-
 //void PropertyManager::showHierarchyTreeItemsProperty(QList<GameObject*> gameObjects, CenterPoint *center)
 //{
 //    //清除上一次显示的属性
@@ -1371,10 +1379,6 @@ BBGroupManager* BBPropertyManager::addGroupManager(const QString &name, const QS
 //    }
 //}
 
-//void PropertyManager::updateCoordinate()
-//{
-//    updateCoordinateSignal();
-//}
 
 //void PropertyManager::renameGameObject(GameObject *gameObject, QString newName)
 //{

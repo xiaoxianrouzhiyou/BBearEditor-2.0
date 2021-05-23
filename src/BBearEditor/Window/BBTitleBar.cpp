@@ -1,5 +1,5 @@
 #include "BBTitleBar.h"
-#include "ui_BBUITitleBar.h"
+#include "ui_BBTitleBar.h"
 #include "BBUtils.h"
 
 BBUITitleBar::BBUITitleBar(QWidget *parent) :

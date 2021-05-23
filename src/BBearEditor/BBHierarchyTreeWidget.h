@@ -27,14 +27,13 @@ signals:
     void createModel(const QString &filePath);
     void setCoordinateSystemSelectedObject(BBGameObject *pGameObject);
     void setCoordinateSystemSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet);
+    void showGameObjectProperty(BBGameObject *pGameObject);
 
-public slots:
+private slots:
     void addGameObject(BBGameObject *pGameObject);
     void selectPickedItem(BBGameObject *pGameObject);
     void selectPickedItems(QList<BBGameObject*> gameObjects);
     void updateMultipleSelectedItems(BBGameObject *pGameObject);
-
-private slots:
     void changeSelectedItems();
 
 
@@ -54,7 +53,6 @@ private slots:
 //signals:
 //    void lookAtGameObjectSignal(GameObject *gameObject);
 //    void deleteSceneGameObject(GameObject *gameObject);
-//    void showGameObjectProperty(GameObject *gameObject);
 //    void showSetProperty(QList<GameObject*> gameObjects, CenterPoint *center);
 //    void updateNameInInspector(GameObject *gameObject, QString newName);
 //    void changeButtonActiveCheckStateInInspector(GameObject *gameObject, bool isActive);

@@ -189,7 +189,7 @@ void BBTransformGroupManager::changePosition(const QVector3D &value)
         }
     }
     // The coordinate system needs to move with the object
-    updateCoordinateSystem();
+    coordinateSystemUpdated();
 }
 
 void BBTransformGroupManager::changeRotation(const QVector3D &value)
@@ -215,7 +215,7 @@ void BBTransformGroupManager::changeRotation(const QVector3D &value)
             m_pGameObject->setRotation(value);
         }
     }
-    updateCoordinateSystem();
+    coordinateSystemUpdated();
 }
 
 void BBTransformGroupManager::changeScale(const QVector3D &value)
@@ -238,6 +238,7 @@ void BBTransformGroupManager::changeScale(const QVector3D &value)
             m_pGameObject->setScale(value);
         }
     }
+    coordinateSystemUpdated();
 }
 
 void BBTransformGroupManager::popMenu()

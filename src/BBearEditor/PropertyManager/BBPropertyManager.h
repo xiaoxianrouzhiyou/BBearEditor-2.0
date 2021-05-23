@@ -6,6 +6,7 @@
 
 class BBGroupManager;
 class BBTransformGroupManager;
+class BBGameObject;
 
 
 class BBPropertyManager : public QWidget
@@ -16,16 +17,22 @@ public:
     explicit BBPropertyManager(QWidget *pParent = nullptr);
     ~BBPropertyManager();
 
-signals:
+private slots:
+    void clear();
+    void showPropertyOfGameObject(BBGameObject *pGameObject);
+    void updateCoordinateSystem();
 
-public slots:
+signals:
+    void coordinateSystemUpdated();
 
 private:
     void setWidgetStyle();
 
     BBGroupManager* addGroupManager(const QString &name, const QString &iconPath);
+    void addTransformGroupManager(BBGameObject *pGameObject);
 
     BBTransformGroupManager *m_pTransformGroupManager;
+    BBGameObject *m_pCurrentGameObject;
 };
 
 #endif // BBPROPERTYMANAGER_H
@@ -47,7 +54,6 @@ private:
 //private:
 //    void addGameObjectBaseInfoManager(GameObject *gameObject);
 //    void addGameObjectSetBaseInfoManager(QList<GameObject*> gameObjects, CenterPoint *center);
-//    void addTransformManager(GameObject *gameObject);
 //    GameObject *currentObject;
 //    GameObjectBaseInfoManager *gameObjectBaseInfoManager;
 //    GameObjectSetBaseInfoManager *gameObjectSetBaseInfoManager;
@@ -65,13 +71,10 @@ private:
 //    void showSceneProperty(Scene *scene);
 
 //private slots:
-//    void clear();
-//    void showHierarchyTreeItemProperty(GameObject *gameObject);
 //    void showHierarchyTreeItemsProperty(QList<GameObject*> gameObjects, CenterPoint *center);
 //    void showMaterialProperty(QString filePath);
 //    void showFbxProperty(QString filePath);
 //    void updateTransform(GameObject *gameObject, char transformModeKey);
-//    void updateCoordinate();
 //    void renameGameObject(GameObject *gameObject, QString newName);
 //    void renameGameObjectInHierarchy(GameObject *gameObject);
 //    void changeActivation(GameObject *gameObject, bool isActive);
