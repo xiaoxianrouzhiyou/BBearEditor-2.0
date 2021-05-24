@@ -1,6 +1,7 @@
 #include "BBGroupManager.h"
 #include "BBUtils.h"
 #include <QVBoxLayout>
+#include <QLineEdit>
 #include <QToolButton>
 #include <QPushButton>
 #include <QMenu>
@@ -9,6 +10,121 @@
 #include "BBPropertyFactory.h"
 #include "BBGameObject.h"
 #include "BBHierarchyTreeWidget.h"
+
+
+//---------------------------------------------------------------------------------------------------
+//  BBBaseInformationManager
+//---------------------------------------------------------------------------------------------------
+
+BBBaseInformationManager::BBBaseInformationManager(BBGameObject *pGameObject, QWidget *pParent)
+    : QWidget(pParent)
+{
+    m_pCurrentGameObject = pGameObject;
+    // Horizontal layout of icon and specific information
+    QHBoxLayout *pLayout = new QHBoxLayout(this);
+    pLayout->setContentsMargins(10, 0, 0, 0);
+
+    // left side
+    // icon
+    QLabel *pIcon = new QLabel(this);
+    pIcon->setFocusPolicy(Qt::NoFocus);
+    QPixmap pixmap = QPixmap(BB_PATH_RESOURCE_ICON + pGameObject->getIconName() + ".png");
+    pixmap.setDevicePixelRatio(devicePixelRatio());
+    pixmap = pixmap.scaled(30 * devicePixelRatio(), 30 * devicePixelRatio(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    pIcon->setPixmap(pixmap);
+    pLayout->addWidget(pIcon, 1, Qt::AlignLeft);
+
+    // right side
+    // specific information
+    QWidget *pInfoWidget = new QWidget(this);
+    QVBoxLayout *pInfoLayout = new QVBoxLayout(pInfoWidget);
+    pInfoLayout->setMargin(0);
+    // visibility button and name edit box in the top
+    QWidget *pInfoWidgetTop = new QWidget(pInfoWidget);
+    QHBoxLayout *pInfoLayoutTop = new QHBoxLayout(pInfoWidgetTop);
+    pInfoLayoutTop->setMargin(0);
+    m_pVisibilityButton = new QPushButton(pInfoWidgetTop);
+    m_pVisibilityButton->setMaximumWidth(17);
+    m_pVisibilityButton->setFocusPolicy(Qt::NoFocus);
+    m_pVisibilityButton->setCheckable(true);
+    setVisibilityButtonChecked(pGameObject->getActivity());
+    QObject::connect(m_pVisibilityButton, SIGNAL(clicked()), this, SLOT(changeVisibility()));
+    pInfoLayoutTop->addWidget(m_pVisibilityButton, 0, Qt::AlignLeft);
+    m_pNameEdit = new QLineEdit(pInfoWidgetTop);
+    m_pNameEdit->setText(pGameObject->getName());
+//    QObject::connect(editName, SIGNAL(editingFinished()), this, SLOT(finishRename()));
+    pInfoLayoutTop->addWidget(m_pNameEdit, 1);
+    pInfoLayout->addWidget(pInfoWidgetTop);
+    // tag and layer in the bottom
+    QWidget *pInfoWidgetBottom = new QWidget(pInfoWidget);
+    QHBoxLayout *pInfoLayoutBottom = new QHBoxLayout(pInfoWidgetBottom);
+    pInfoLayoutBottom->setMargin(0);
+    QStringList tagItems;
+    tagItems.append("tag1");
+    tagItems.append("tag2");
+    pInfoLayoutBottom->addWidget(new BBEnumFactory("Tag", tagItems, "", pInfoWidgetBottom));
+    QStringList layerItems;
+    layerItems.append("layer1");
+    layerItems.append("layer2");
+    pInfoLayoutBottom->addWidget(new BBEnumFactory("Layer", layerItems, "", pInfoWidgetBottom));
+    pInfoLayout->addWidget(pInfoWidgetBottom);
+    pLayout->addWidget(pInfoWidget, 3);
+}
+
+BBBaseInformationManager::~BBBaseInformationManager()
+{
+    BB_SAFE_DELETE(m_pVisibilityButton);
+    BB_SAFE_DELETE(m_pNameEdit);
+}
+
+void BBBaseInformationManager::changeVisibility()
+{
+    if (m_pVisibilityButton->isChecked())
+    {
+        m_pVisibilityButton->setStyleSheet("image: url(" + QString(BB_PATH_RESOURCE_ICON) + "visible2.png);");
+    }
+    else
+    {
+        m_pVisibilityButton->setStyleSheet("image: url(" + QString(BB_PATH_RESOURCE_ICON) + "invisible3.png);");
+    }
+    visibilityChanged(m_pCurrentGameObject, m_pVisibilityButton->isChecked());
+}
+
+void BBBaseInformationManager::setVisibilityButtonChecked(bool bChecked)
+{
+    m_pVisibilityButton->setChecked(bChecked);
+    if (bChecked)
+        m_pVisibilityButton->setStyleSheet("image: url(" + QString(BB_PATH_RESOURCE_ICON) + "visible2.png);");
+    else
+        m_pVisibilityButton->setStyleSheet("image: url(" + QString(BB_PATH_RESOURCE_ICON) + "invisible3.png);");
+}
+
+
+//---------------------------------------------------------------------------------------------------
+//  BBSetBaseInformationManager
+//---------------------------------------------------------------------------------------------------
+
+BBSetBaseInformationManager::BBSetBaseInformationManager(BBGameObject *pCenterGameObject,
+                                                         const QList<BBGameObject*> &gameObjectSet,
+                                                         QWidget *pParent)
+    : BBBaseInformationManager(pCenterGameObject, pParent)
+{
+    m_pNameEdit->setEnabled(false);
+    m_CurrentGameObjectSet = gameObjectSet;
+}
+
+void BBSetBaseInformationManager::changeVisibility()
+{
+    if (m_pVisibilityButton->isChecked())
+    {
+        m_pVisibilityButton->setStyleSheet("image: url(" + QString(BB_PATH_RESOURCE_ICON) + "visible2.png);");
+    }
+    else
+    {
+        m_pVisibilityButton->setStyleSheet("image: url(" + QString(BB_PATH_RESOURCE_ICON) + "invisible3.png);");
+    }
+    visibilityChanged(m_CurrentGameObjectSet, m_pVisibilityButton->isChecked());
+}
 
 
 //---------------------------------------------------------------------------------------------------
@@ -108,12 +224,12 @@ void BBGroupManager::setContainerExpanded(bool bExpanded)
 BBTransformGroupManager::BBTransformGroupManager(BBGameObject *pGameObject, QWidget *pParent)
     : BBGroupManager("Transform [Global]", QString(BB_PATH_RESOURCE_ICON) + "transform.png", pParent)
 {
-    m_pGameObject = pGameObject;
+    m_pCurrentGameObject = pGameObject;
     // default is to show global coordinate
     m_eReferenceSystem = BBReferenceSystem::Global;
-    m_pPositionFactory = new BBVector3DFactory(m_pGameObject->getPosition(), this);
-    m_pRotationFactory = new BBVector3DFactory(m_pGameObject->getRotation(), this);
-    m_pScaleFactory = new BBVector3DFactory(m_pGameObject->getScale(), this);
+    m_pPositionFactory = new BBVector3DFactory(m_pCurrentGameObject->getPosition(), this);
+    m_pRotationFactory = new BBVector3DFactory(m_pCurrentGameObject->getRotation(), this);
+    m_pScaleFactory = new BBVector3DFactory(m_pCurrentGameObject->getScale(), this);
     addFactory("Position", m_pPositionFactory, 3);
     addFactory("Rotation", m_pRotationFactory, 3);
     addFactory("Scale", m_pScaleFactory, 3);
@@ -143,7 +259,7 @@ BBTransformGroupManager::BBTransformGroupManager(BBGameObject *pGameObject, QWid
     QObject::connect(pActionLocal, SIGNAL(triggered()), this, SLOT(showLocalCoordinate()));
 
     // if the item corresponding pGameObject is not at the top level, show local coordinate
-    QTreeWidgetItem *pItem = BBHierarchyTreeWidget::m_ObjectMap.key(m_pGameObject);
+    QTreeWidgetItem *pItem = BBHierarchyTreeWidget::m_ObjectMap.key(m_pCurrentGameObject);
     if (pItem)
     {
         pActionLocal->setEnabled(true);
@@ -170,11 +286,11 @@ void BBTransformGroupManager::updatePositionValue()
 {
     if (m_eReferenceSystem == BBReferenceSystem::Global)
     {
-        m_pPositionFactory->setValue(m_pGameObject->getPosition());
+        m_pPositionFactory->setValue(m_pCurrentGameObject->getPosition());
     }
     else
     {
-        m_pPositionFactory->setValue(m_pGameObject->getLocalPosition());
+        m_pPositionFactory->setValue(m_pCurrentGameObject->getLocalPosition());
     }
 }
 
@@ -182,11 +298,11 @@ void BBTransformGroupManager::updateRotationValue()
 {
     if (m_eReferenceSystem == BBReferenceSystem::Global)
     {
-        m_pRotationFactory->setValue(m_pGameObject->getRotation());
+        m_pRotationFactory->setValue(m_pCurrentGameObject->getRotation());
     }
     else
     {
-        m_pRotationFactory->setValue(m_pGameObject->getLocalRotation());
+        m_pRotationFactory->setValue(m_pCurrentGameObject->getLocalRotation());
     }
 }
 
@@ -194,11 +310,11 @@ void BBTransformGroupManager::updateScaleValue()
 {
     if (m_eReferenceSystem == BBReferenceSystem::Global)
     {
-        m_pScaleFactory->setValue(m_pGameObject->getScale());
+        m_pScaleFactory->setValue(m_pCurrentGameObject->getScale());
     }
     else
     {
-        m_pScaleFactory->setValue(m_pGameObject->getLocalScale());
+        m_pScaleFactory->setValue(m_pCurrentGameObject->getLocalScale());
     }
 }
 
@@ -206,21 +322,21 @@ void BBTransformGroupManager::changePosition(const QVector3D &value)
 {
     if (m_eReferenceSystem == BBReferenceSystem::Global)
     {
-        m_pGameObject->setPosition(value);
+        m_pCurrentGameObject->setPosition(value);
     }
     else
     {
-        QTreeWidgetItem *pParent = BBHierarchyTreeWidget::m_ObjectMap.key(m_pGameObject)->parent();
+        QTreeWidgetItem *pParent = BBHierarchyTreeWidget::m_ObjectMap.key(m_pCurrentGameObject)->parent();
         if (pParent)
         {
             BBGameObject *pParentObject = BBHierarchyTreeWidget::m_ObjectMap.value(pParent);
             // Convert local coordinates to global coordinates
-            m_pGameObject->setPosition(pParentObject->getPosition() + value);
+            m_pCurrentGameObject->setPosition(pParentObject->getPosition() + value);
         }
         else
         {
             // if at the top level, local coordinates == global coordinates
-            m_pGameObject->setPosition(value);
+            m_pCurrentGameObject->setPosition(value);
         }
     }
     // The coordinate system needs to move with the object
@@ -231,11 +347,11 @@ void BBTransformGroupManager::changeRotation(const QVector3D &value)
 {
     if (m_eReferenceSystem == BBReferenceSystem::Global)
     {
-        m_pGameObject->setRotation(value);
+        m_pCurrentGameObject->setRotation(value);
     }
     else
     {
-        QTreeWidgetItem *pParent = BBHierarchyTreeWidget::m_ObjectMap.key(m_pGameObject)->parent();
+        QTreeWidgetItem *pParent = BBHierarchyTreeWidget::m_ObjectMap.key(m_pCurrentGameObject)->parent();
         if (pParent)
         {
             BBGameObject *pParentObject = BBHierarchyTreeWidget::m_ObjectMap.value(pParent);
@@ -243,11 +359,11 @@ void BBTransformGroupManager::changeRotation(const QVector3D &value)
             QQuaternion rot = QQuaternion::fromEulerAngles(value);
             // Convert local coordinates to global coordinates
             rot = pParentObject->getQuaternion() * rot;
-            m_pGameObject->setRotation(rot.toEulerAngles());
+            m_pCurrentGameObject->setRotation(rot.toEulerAngles());
         }
         else
         {
-            m_pGameObject->setRotation(value);
+            m_pCurrentGameObject->setRotation(value);
         }
     }
     coordinateSystemUpdated();
@@ -257,20 +373,20 @@ void BBTransformGroupManager::changeScale(const QVector3D &value)
 {
     if (m_eReferenceSystem == BBReferenceSystem::Global)
     {
-        m_pGameObject->setScale(value);
+        m_pCurrentGameObject->setScale(value);
     }
     else
     {
-        QTreeWidgetItem *pParent = BBHierarchyTreeWidget::m_ObjectMap.key(m_pGameObject)->parent();
+        QTreeWidgetItem *pParent = BBHierarchyTreeWidget::m_ObjectMap.key(m_pCurrentGameObject)->parent();
         if (pParent)
         {
             BBGameObject *pParentObject = BBHierarchyTreeWidget::m_ObjectMap.value(pParent);
             // Convert local coordinates to global coordinates
-            m_pGameObject->setScale(pParentObject->getScale() * value);
+            m_pCurrentGameObject->setScale(pParentObject->getScale() * value);
         }
         else
         {
-            m_pGameObject->setScale(value);
+            m_pCurrentGameObject->setScale(value);
         }
     }
     coordinateSystemUpdated();
@@ -306,12 +422,6 @@ void BBTransformGroupManager::showLocalCoordinate()
     updateRotationValue();
     updateScaleValue();
 }
-
-
-
-//---------------------------------------------------------------------------------------------------
-//
-//---------------------------------------------------------------------------------------------------
 
 
 

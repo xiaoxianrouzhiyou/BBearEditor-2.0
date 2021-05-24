@@ -361,7 +361,7 @@ void BBHierarchyTreeWidget::changeSelectedItems()
             }
             setCoordinateSystemSelectedObjects(gameObjects, pSet);
             // show properties of the set in inspector
-//            showSetProperty(gameObjects, pSet);
+            showGameObjectSetProperty(pSet, gameObjects);
         }
     }
 }

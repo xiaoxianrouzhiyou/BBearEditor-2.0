@@ -86,7 +86,7 @@ void BBUIMainWindow::setConnect()
                      m_pUi->treeHierarchy, SLOT(updateMultipleSelectedItems(BBGameObject*)));
     // click item in treeHierarchy, and then show property in inspector
     QObject::connect(m_pUi->treeHierarchy, SIGNAL(showGameObjectProperty(BBGameObject*)),
-                     m_pUi->propertyManager, SLOT(showPropertyOfGameObject(BBGameObject*)));
+                     m_pUi->propertyManager, SLOT(showGameObjectProperty(BBGameObject*)));
     // change transform in propertyManager, update coordinate system in OpenGL view
     QObject::connect(m_pUi->propertyManager, SIGNAL(coordinateSystemUpdated()),
                      m_pUi->openGLWidget, SLOT(updateCoordinateSystem()));
@@ -105,6 +105,9 @@ void BBUIMainWindow::setConnect()
     // double item, show close-up of corresponding gameobject
     QObject::connect(m_pUi->treeHierarchy, SIGNAL(lookAtGameObject(BBGameObject*)),
                      m_pUi->openGLWidget, SLOT(lookAtGameObject(BBGameObject*)));
+    // Select multiple items in the hierarchy tree, the property manager shows the properties of the set
+    QObject::connect(m_pUi->treeHierarchy, SIGNAL(showGameObjectSetProperty(BBGameObject*, QList<BBGameObject*>)),
+                     m_pUi->propertyManager, SLOT(showGameObjectSetProperty(BBGameObject*, QList<BBGameObject*>)));
 
 
 //    //对整个项目操作的菜单事件
@@ -189,10 +192,6 @@ void BBUIMainWindow::setConnect()
 //    //灯光拖入层级视图 在场景中创建灯光
 //    QObject::connect(ui->treeHierarchy, SIGNAL(createLight(QString)),
 //                     ui->openGLWidget, SLOT(createLightDependParent(QString)));
-
-//    //在层级视图中选择多项 属性栏显示集合的属性
-//    QObject::connect(ui->treeHierarchy, SIGNAL(showSetProperty(QList<GameObject*>, CenterPoint*)),
-//                     ui->propertyManager, SLOT(showHierarchyTreeItemsProperty(QList<GameObject*>, CenterPoint*)));
 //    //在集合的属性栏中修改可见性 最后 重新选中所有对象 否则会选中最后一项
 //    QObject::connect(ui->propertyManager, SIGNAL(setSelectedObjects(QList<GameObject*>)),
 //                     ui->treeHierarchy, SLOT(selectedObjects(QList<GameObject*>)));

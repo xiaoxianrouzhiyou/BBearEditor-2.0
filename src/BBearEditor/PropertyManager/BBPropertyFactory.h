@@ -7,6 +7,8 @@
 
 class BBSliderLabel;
 class QLineEdit;
+class QLabel;
+class QComboBox;
 
 
 // QLineEdit with the BBSliderLabel of name on the left
@@ -65,6 +67,28 @@ private:
     BBLineEditFactory *m_pEditY;
     BBLineEditFactory *m_pEditZ;
     QVector3D m_Value;
+};
+
+
+// name showed in the left side and enum box showed in the right side
+class BBEnumFactory : public QWidget
+{
+    Q_OBJECT
+
+public:
+    BBEnumFactory(const QString &name, const QStringList &comboBoxItems,
+                  const QString &currentText = "", QWidget *pParent = 0);
+    ~BBEnumFactory();
+
+//private slots:
+//    void currentIndexChangedSlot(const QString &text);
+
+//signals:
+//    void currentIndexChanged(const QString &text);
+
+private:
+    QLabel *m_pLabel;
+    QComboBox *m_pComboBox;
 };
 
 

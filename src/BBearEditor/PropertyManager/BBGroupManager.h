@@ -5,14 +5,64 @@
 #include <QWidget>
 
 
+class QLineEdit;
 class QToolButton;
 class QPushButton;
 class QMenu;
 class BBGameObject;
 class BBVector3DFactory;
 
-// Manage a group of property
 
+// manage name, class name, visibility, and so on
+// showed in the top of property manager
+class BBBaseInformationManager : public QWidget
+{
+    Q_OBJECT
+
+public:
+    BBBaseInformationManager(BBGameObject *pGameObject, QWidget *pParent = 0);
+    ~BBBaseInformationManager();
+//    void rename(QString newName);
+
+private slots:
+    virtual void changeVisibility();
+//    void finishRename();
+
+signals:
+    void visibilityChanged(BBGameObject *pGameObject, bool bVisible);
+//    void nameChanged(GameObject *gameObject);
+
+protected:
+    void setVisibilityButtonChecked(bool bChecked);
+
+    QPushButton *m_pVisibilityButton;
+    QLineEdit *m_pNameEdit;
+    BBGameObject *m_pCurrentGameObject;
+};
+
+
+// manage base information of BBGameObjectSet
+class BBSetBaseInformationManager : public BBBaseInformationManager
+{
+    Q_OBJECT
+
+public:
+    BBSetBaseInformationManager(BBGameObject *pCenterGameObject,
+                                const QList<BBGameObject*> &gameObjectSet,
+                                QWidget *pParent = 0);
+
+private slots:
+    void changeVisibility() override;
+
+signals:
+    void visibilityChanged(const QList<BBGameObject*> &gameObjectSet, bool bVisible);
+
+private:
+    QList<BBGameObject*> m_CurrentGameObjectSet;
+};
+
+
+// Manage a group of property
 class BBGroupManager : public QWidget
 {
     Q_OBJECT
@@ -70,9 +120,12 @@ private:
     BBVector3DFactory *m_pPositionFactory;
     BBVector3DFactory *m_pRotationFactory;
     BBVector3DFactory *m_pScaleFactory;
-    BBGameObject *m_pGameObject;
+    BBGameObject *m_pCurrentGameObject;
     BBReferenceSystem m_eReferenceSystem;
 };
+
+
+
 
 
 #endif // BBGROUPMANAGER_H

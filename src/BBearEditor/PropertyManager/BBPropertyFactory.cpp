@@ -4,11 +4,14 @@
 #include "BBFactoryComponent.h"
 #include <QLineEdit>
 #include <QRegExpValidator>
+#include <QListView>
+#include <QLabel>
+#include <QComboBox>
 
 
-//------------------------------
+//---------------------------------------------------------------------------------------------------
 //  BBLineEditFactory
-//------------------------------
+//---------------------------------------------------------------------------------------------------
 
 BBLineEditFactory::BBLineEditFactory(const QString &name, float fValue, QWidget *pParent,
                                      int nNameStretch, int nValueStretch)
@@ -92,9 +95,9 @@ void BBLineEditFactory::showFromLeft()
 }
 
 
-//------------------------------
+//---------------------------------------------------------------------------------------------------
 //  BBVector3DFactory
-//------------------------------
+//---------------------------------------------------------------------------------------------------
 
 BBVector3DFactory::BBVector3DFactory(const QVector3D &value, QWidget *pParent)
     : QWidget(pParent)
@@ -147,3 +150,57 @@ void BBVector3DFactory::setZ(float z)
     m_Value.setZ(z);
     valueChanged(m_Value);
 }
+
+
+//---------------------------------------------------------------------------------------------------
+//  BBEnumFactory
+//---------------------------------------------------------------------------------------------------
+
+BBEnumFactory::BBEnumFactory(const QString &name, const QStringList &comboBoxItems,
+                             const QString &currentText, QWidget *pParent)
+    : QWidget(pParent)
+{
+    QHBoxLayout *pLayout = new QHBoxLayout(this);
+    pLayout->setMargin(0);
+    m_pLabel = new QLabel(name, this);
+    m_pLabel->setFocusPolicy(Qt::NoFocus);
+    pLayout->addWidget(m_pLabel, 0);
+    m_pComboBox = new QComboBox(this);
+    m_pComboBox->addItems(comboBoxItems);
+    // With this sentence, qss can take effect
+    m_pComboBox->setView(new QListView());
+    m_pComboBox->setCurrentText(currentText);
+    pLayout->addWidget(m_pComboBox, 1);
+
+//    QObject::connect(comboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(currentIndexChangedSlot(QString)));
+}
+
+BBEnumFactory::~BBEnumFactory()
+{
+    BB_SAFE_DELETE(m_pLabel);
+    BB_SAFE_DELETE(m_pComboBox);
+}
+
+//void EnumFactory::currentIndexChangedSlot(const QString &text)
+//{
+//    currentIndexChanged(text);
+//}
+
+
+//---------------------------------------------------------------------------------------------------
+//
+//---------------------------------------------------------------------------------------------------
+
+
+
+
+//---------------------------------------------------------------------------------------------------
+//
+//---------------------------------------------------------------------------------------------------
+
+
+
+
+//---------------------------------------------------------------------------------------------------
+//
+//---------------------------------------------------------------------------------------------------

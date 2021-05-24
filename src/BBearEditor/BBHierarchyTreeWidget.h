@@ -32,6 +32,8 @@ signals:
     void setCoordinateSystemSelectedObject(BBGameObject *pGameObject);
     void setCoordinateSystemSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet);
     void showGameObjectProperty(BBGameObject *pGameObject);
+    void showGameObjectSetProperty(BBGameObject *pCenterGameObject,
+                                   const QList<BBGameObject*> &gameObjectSet);
     void deleteGameObject(BBGameObject *pGameObject);
     void copyGameObject(BBGameObject *pSourceObject, QTreeWidgetItem *pTranscriptItem);
     void lookAtGameObject(BBGameObject *pGameObject);

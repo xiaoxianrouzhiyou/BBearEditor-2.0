@@ -7,6 +7,8 @@
 BBPropertyManager::BBPropertyManager(QWidget *pParent)
     : QWidget(pParent)
 {
+    m_pBaseInformationManager = NULL;
+    m_pTransformGroupManager = NULL;
     m_pCurrentGameObject = NULL;
     setWidgetStyle();
     // init a vertical layout
@@ -16,6 +18,8 @@ BBPropertyManager::BBPropertyManager(QWidget *pParent)
 
 BBPropertyManager::~BBPropertyManager()
 {
+    BB_SAFE_DELETE(m_pBaseInformationManager);
+    BB_SAFE_DELETE(m_pSetBaseInformationManager);
     BB_SAFE_DELETE(m_pTransformGroupManager);
 }
 
@@ -30,7 +34,7 @@ void BBPropertyManager::clear()
     }
 }
 
-void BBPropertyManager::showPropertyOfGameObject(BBGameObject *pGameObject)
+void BBPropertyManager::showGameObjectProperty(BBGameObject *pGameObject)
 {
     // sometimes need to refresh
 //    if (m_pCurrentGameObject == pGameObject)
@@ -38,16 +42,13 @@ void BBPropertyManager::showPropertyOfGameObject(BBGameObject *pGameObject)
 
     // clear the last time
     clear();
-    if (pGameObject)
-    {
-        m_pCurrentGameObject = pGameObject;
-        addTransformGroupManager(pGameObject);
-    }
-
+    BB_PROCESS_ERROR_EXIT(pGameObject);
+    m_pCurrentGameObject = pGameObject;
+    addBaseInformationManager(pGameObject);
+    addTransformGroupManager(pGameObject);
 
 //    if (gameObject)
 //    {
-//        addGameObjectBaseInfoManager(gameObject);
 //        if (gameObject->getClassName() == ModelClassName || gameObject->getClassName() == TerrainClassName)
 //        {
 //            //渲染属性组
@@ -93,6 +94,15 @@ void BBPropertyManager::showPropertyOfGameObject(BBGameObject *pGameObject)
 //    }
 }
 
+void BBPropertyManager::showGameObjectSetProperty(BBGameObject *pCenterGameObject,
+                                                    const QList<BBGameObject*> &gameObjectSet)
+{
+    clear();
+    m_pCurrentGameObject = pCenterGameObject;
+    addSetBaseInformationManager(pCenterGameObject, gameObjectSet);
+    addTransformGroupManager(pCenterGameObject);
+}
+
 void BBPropertyManager::updateCoordinateSystem()
 {
     coordinateSystemUpdated();
@@ -129,11 +139,32 @@ void BBPropertyManager::setWidgetStyle()
                   "QCheckBox::indicator:unchecked {border: none; border-radius: 2px; background: rgb(60, 64, 75);}"
                   "QPushButton {border: none; border-radius: 2px; color: #d6dfeb; font: 9pt \"Arial\"; background: none;}"
                   "QComboBox {border: none; border-radius: 2px; color: #d6dfeb; font: 9pt \"Arial\"; background: rgb(60, 64, 75);}"
-                  "QComboBox::drop-down {margin: 4px; border-image: url(:/icon/resources/icons/arrow_right.png);}"
+                  "QComboBox::drop-down {margin: 2px; border-image: url(../../resources/icons/arrow_right.png);}"
                   "QComboBox QAbstractItemView {border: none; color: #d6dfeb; font: 9pt \"Arial\"; background: rgb(60, 64, 75);}"
                   "QComboBox QAbstractItemView::item {height: 16px; border: none; padding-left: 3px; padding-right: 3px;}"
                   "QComboBox QAbstractItemView::item:selected {height: 16px; border: none; background-color: #8193bc;}"
                   "QSpinBox {border: none; border-radius: 2px; color: #191f28; font: 9pt \"Arial\"; selection-background-color: rgb(251, 236, 213);}");
+}
+
+void BBPropertyManager::addBaseInformationManager(BBGameObject *pGameObject)
+{
+    m_pBaseInformationManager = new BBBaseInformationManager(pGameObject, this);
+    layout()->addWidget(m_pBaseInformationManager);
+//    //修改对象的名字 层级视图的树节点的名字也要修改
+//    QObject::connect(gameObjectBaseInfoManager, SIGNAL(nameChanged(GameObject*)),
+//                     this, SLOT(renameGameObjectInHierarchy(GameObject*)));
+//    QObject::connect(gameObjectBaseInfoManager, SIGNAL(activationChanged(GameObject*, bool)),
+//                     this, SLOT(changeActivation(GameObject*, bool)));
+}
+
+void BBPropertyManager::addSetBaseInformationManager(BBGameObject *pCenterGameObject,
+                                                     const QList<BBGameObject*> &gameObjectSet)
+{
+    m_pSetBaseInformationManager = new BBSetBaseInformationManager(pCenterGameObject, gameObjectSet, this);
+    layout()->addWidget(m_pSetBaseInformationManager);
+//    //修改集合的可见性
+//    QObject::connect(gameObjectSetBaseInfoManager, SIGNAL(activationChanged(QList<GameObject*>, bool)),
+//                     this, SLOT(changeActivation(QList<GameObject*>, bool)));
 }
 
 BBGroupManager* BBPropertyManager::addGroupManager(const QString &name, const QString &iconPath)
@@ -152,31 +183,7 @@ void BBPropertyManager::addTransformGroupManager(BBGameObject *pGameObject)
 }
 
 
-////------------------EnumFactory--------------------------
 
-
-//EnumFactory::EnumFactory(QString name, QStringList comboBoxItems, QWidget *parent, QString currentText)
-//    : QWidget(parent)
-//{
-//    QHBoxLayout *l = new QHBoxLayout(this);
-//    l->setMargin(0);
-//    label = new QLabel(name, this);
-//    label->setFocusPolicy(Qt::NoFocus);
-//    l->addWidget(label, 0);
-//    comboBox = new QComboBox(this);
-//    comboBox->addItems(comboBoxItems);
-//    //加上这句 qss才有用
-//    comboBox->setView(new QListView());
-//    comboBox->setCurrentText(currentText);
-//    l->addWidget(comboBox, 1);
-
-//    QObject::connect(comboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(currentIndexChangedSlot(QString)));
-//}
-
-//void EnumFactory::currentIndexChangedSlot(const QString &text)
-//{
-//    currentIndexChanged(text);
-//}
 
 
 ////------------------ColorButton--------------------------
@@ -798,57 +805,6 @@ void BBPropertyManager::addTransformGroupManager(BBGameObject *pGameObject)
 ////------------------GameObjectBaseInfoManager----------------------
 
 
-//GameObjectBaseInfoManager::GameObjectBaseInfoManager(QWidget *parent, GameObject *gameObject)
-//    : QWidget(parent)
-//{
-//    mGameObject = gameObject;
-//    //图标和具体信息的水平布局
-//    QHBoxLayout *l = new QHBoxLayout(this);
-//    l->setContentsMargins(10, 0, 0, 0);
-//    QLabel *icon = new QLabel(this);
-//    icon->setFocusPolicy(Qt::NoFocus);
-//    //和两行差不多高
-//    QPixmap pixmap = QPixmap(":/icon/resources/icons/" + gameObject->getIconName() + ".png");
-//    pixmap.setDevicePixelRatio(devicePixelRatio());
-//    pixmap = pixmap.scaled(30 * devicePixelRatio(), 30 * devicePixelRatio(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-//    icon->setPixmap(pixmap);
-//    l->addWidget(icon, 1, Qt::AlignLeft);
-//    //右侧具体数据
-//    QWidget *infoWidget = new QWidget(this);
-//    QVBoxLayout *infoLayout = new QVBoxLayout(infoWidget);
-//    infoLayout->setMargin(0);
-//    //右上的可见性按钮和名字编辑框
-//    QWidget *infoHWidget1 = new QWidget(infoWidget);
-//    QHBoxLayout *infoHLayout1 = new QHBoxLayout(infoHWidget1);
-//    infoHLayout1->setMargin(0);
-//    buttonActive = new QPushButton(infoHWidget1);
-//    //与tag对齐
-//    buttonActive->setMaximumWidth(17);
-//    buttonActive->setFocusPolicy(Qt::NoFocus);
-//    buttonActive->setCheckable(true);
-//    changeButtonActiveCheckState(gameObject->getActive());
-//    QObject::connect(buttonActive, SIGNAL(clicked()), this, SLOT(changeActivation()));
-//    infoHLayout1->addWidget(buttonActive, 0, Qt::AlignLeft);
-//    editName = new QLineEdit(infoHWidget1);
-//    //editName->setAlignment(Qt::AlignRight);
-//    editName->setText(gameObject->getName());
-//    QObject::connect(editName, SIGNAL(editingFinished()), this, SLOT(finishRename()));
-//    infoHLayout1->addWidget(editName, 1);
-//    infoLayout->addWidget(infoHWidget1);
-//    //右下的tag和layer
-//    QWidget *infoHWidget2 = new QWidget(infoWidget);
-//    QHBoxLayout *infoHLayout2 = new QHBoxLayout(infoHWidget2);
-//    infoHLayout2->setMargin(0);
-//    QStringList tagItems;
-//    tagItems.append("tag1");
-//    infoHLayout2->addWidget(new EnumFactory("Tag", tagItems, infoHWidget2));
-//    QStringList layerItems;
-//    layerItems.append("layer1");
-//    infoHLayout2->addWidget(new EnumFactory("Layer", layerItems, infoHWidget2));
-//    infoLayout->addWidget(infoHWidget2);
-//    l->addWidget(infoWidget, 3);
-//}
-
 //void GameObjectBaseInfoManager::rename(QString newName)
 //{
 //    editName->setText(newName);
@@ -871,55 +827,6 @@ void BBPropertyManager::addTransformGroupManager(BBGameObject *pGameObject)
 //            nameChanged(mGameObject);
 //        }
 //    }
-//}
-
-//void GameObjectBaseInfoManager::changeButtonActiveCheckState(bool isActive)
-//{
-//    buttonActive->setChecked(isActive);
-//    if (isActive)
-//        buttonActive->setStyleSheet("image: url(:/icon/resources/icons/visible2.png);");
-//    else
-//        buttonActive->setStyleSheet("image: url(:/icon/resources/icons/invisible3.png);");
-//}
-
-//void GameObjectBaseInfoManager::changeActivation()
-//{
-//    if (buttonActive->isChecked())
-//    {
-//        buttonActive->setStyleSheet("image: url(:/icon/resources/icons/visible2.png);");
-//    }
-//    else
-//    {
-//        buttonActive->setStyleSheet("image: url(:/icon/resources/icons/invisible3.png);");
-//    }
-//    activationChanged(mGameObject, buttonActive->isChecked());
-//}
-
-
-////------------------SetBaseInfoManager-------------------
-
-
-//GameObjectSetBaseInfoManager::GameObjectSetBaseInfoManager
-//    (QWidget *parent, GameObject *gameObject, QList<GameObject*> gameObjects)
-//    : GameObjectBaseInfoManager(parent, gameObject)
-//{
-//    //名字编辑框不可修改
-//    editName->setEnabled(false);
-//    mGameObjects = gameObjects;
-//}
-
-
-//void GameObjectSetBaseInfoManager::changeActivation()
-//{
-//    if (buttonActive->isChecked())
-//    {
-//        buttonActive->setStyleSheet("image: url(:/icon/resources/icons/visible2.png);");
-//    }
-//    else
-//    {
-//        buttonActive->setStyleSheet("image: url(:/icon/resources/icons/invisible3.png);");
-//    }
-//    activationChanged(mGameObjects, buttonActive->isChecked());
 //}
 
 
@@ -1316,39 +1223,6 @@ void BBPropertyManager::addTransformGroupManager(BBGameObject *pGameObject)
 //void PropertyManager::bindPreview(BaseOpenGLWidget *preview)
 //{
 //    mPreview = preview;
-//}
-
-
-//void PropertyManager::addGameObjectBaseInfoManager(GameObject *gameObject)
-//{
-//    gameObjectBaseInfoManager = new GameObjectBaseInfoManager(this, gameObject);
-//    layout()->addWidget(gameObjectBaseInfoManager);
-//    //修改对象的名字 层级视图的树节点的名字也要修改
-//    QObject::connect(gameObjectBaseInfoManager, SIGNAL(nameChanged(GameObject*)),
-//                     this, SLOT(renameGameObjectInHierarchy(GameObject*)));
-//    QObject::connect(gameObjectBaseInfoManager, SIGNAL(activationChanged(GameObject*, bool)),
-//                     this, SLOT(changeActivation(GameObject*, bool)));
-//}
-
-//void PropertyManager::addGameObjectSetBaseInfoManager(QList<GameObject*> gameObjects, CenterPoint *center)
-//{
-//    //对象集合的基本信息
-//    gameObjectSetBaseInfoManager = new GameObjectSetBaseInfoManager(this, center, gameObjects);
-//    layout()->addWidget(gameObjectSetBaseInfoManager);
-//    //修改集合的可见性
-//    QObject::connect(gameObjectSetBaseInfoManager, SIGNAL(activationChanged(QList<GameObject*>, bool)),
-//                     this, SLOT(changeActivation(QList<GameObject*>, bool)));
-//}
-
-//void PropertyManager::showHierarchyTreeItemsProperty(QList<GameObject*> gameObjects, CenterPoint *center)
-//{
-//    //清除上一次显示的属性
-//    clear();
-//    //记录属性栏所指的对象
-//    currentObject = center;
-//    //在属性栏中添加层级视图集合对应的属性
-//    addGameObjectSetBaseInfoManager(gameObjects, center);
-//    addTransformManager(center);
 //}
 
 //void PropertyManager::showMaterialProperty(QString filePath)

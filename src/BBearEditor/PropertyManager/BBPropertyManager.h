@@ -4,6 +4,8 @@
 #include <QWidget>
 
 
+class BBBaseInformationManager;
+class BBSetBaseInformationManager;
 class BBGroupManager;
 class BBTransformGroupManager;
 class BBGameObject;
@@ -19,7 +21,9 @@ public:
 
 private slots:
     void clear();
-    void showPropertyOfGameObject(BBGameObject *pGameObject);
+    void showGameObjectProperty(BBGameObject *pGameObject);
+    void showGameObjectSetProperty(BBGameObject *pCenterGameObject,
+                                   const QList<BBGameObject*> &gameObjectSet);
     void updateCoordinateSystem();
     void updateTransform(BBGameObject *pGameObject, char transformModeKey);
 
@@ -29,9 +33,14 @@ signals:
 private:
     void setWidgetStyle();
 
+    void addBaseInformationManager(BBGameObject *pGameObject);
+    void addSetBaseInformationManager(BBGameObject *pCenterGameObject,
+                                      const QList<BBGameObject*> &gameObjectSet);
     BBGroupManager* addGroupManager(const QString &name, const QString &iconPath);
     void addTransformGroupManager(BBGameObject *pGameObject);
 
+    BBBaseInformationManager *m_pBaseInformationManager;
+    BBSetBaseInformationManager *m_pSetBaseInformationManager;
     BBTransformGroupManager *m_pTransformGroupManager;
     BBGameObject *m_pCurrentGameObject;
 };
@@ -53,11 +62,6 @@ private:
 //    void bindPreview(BaseOpenGLWidget *preview);
 
 //private:
-//    void addGameObjectBaseInfoManager(GameObject *gameObject);
-//    void addGameObjectSetBaseInfoManager(QList<GameObject*> gameObjects, CenterPoint *center);
-//    GameObject *currentObject;
-//    GameObjectBaseInfoManager *gameObjectBaseInfoManager;
-//    GameObjectSetBaseInfoManager *gameObjectSetBaseInfoManager;
 //    MaterialFactory *materialFactory;
 //    BaseOpenGLWidget *mPreview;
 
@@ -72,10 +76,8 @@ private:
 //    void showSceneProperty(Scene *scene);
 
 //private slots:
-//    void showHierarchyTreeItemsProperty(QList<GameObject*> gameObjects, CenterPoint *center);
 //    void showMaterialProperty(QString filePath);
 //    void showFbxProperty(QString filePath);
-
 //    void renameGameObject(GameObject *gameObject, QString newName);
 //    void renameGameObjectInHierarchy(GameObject *gameObject);
 //    void changeActivation(GameObject *gameObject, bool isActive);
@@ -98,24 +100,7 @@ private:
 
 
 
-////左侧名字 右侧枚举框
-//class EnumFactory : public QWidget
-//{
-//    Q_OBJECT
 
-//public:
-//    EnumFactory(QString name, QStringList comboBoxItems, QWidget *parent = 0, QString currentText = "");
-
-//signals:
-//    void currentIndexChanged(const QString &text);
-
-//private slots:
-//    void currentIndexChangedSlot(const QString &text);
-
-//private:
-//    QLabel *label;
-//    QComboBox *comboBox;
-//};
 
 
 ////可以设置背景颜色的按钮
@@ -343,53 +328,6 @@ private:
 //private slots:
 //    void changeCurrentAnim(int index);
 //};
-
-
-
-////管理名字 类名 可见性等基本信息
-//class GameObjectBaseInfoManager : public QWidget
-//{
-//    Q_OBJECT
-
-//public:
-//    GameObjectBaseInfoManager(QWidget *parent, GameObject *gameObject);
-//    void rename(QString newName);
-//    void changeButtonActiveCheckState(bool isActive);
-
-//private slots:
-//    void finishRename();
-//    virtual void changeActivation();
-
-//signals:
-//    void nameChanged(GameObject *gameObject);
-//    void activationChanged(GameObject *gameObject, bool isActive);
-
-//protected:
-//    QPushButton *buttonActive;
-//    QLineEdit *editName;
-//    GameObject *mGameObject;
-//};
-
-
-////管理多个对象的集合的基本信息
-//class GameObjectSetBaseInfoManager : public GameObjectBaseInfoManager
-//{
-//    Q_OBJECT
-
-//public:
-//    GameObjectSetBaseInfoManager(QWidget *parent, GameObject *gameObject, QList<GameObject*> gameObjects);
-
-//private slots:
-//    void changeActivation() override;
-
-//signals:
-//    void activationChanged(QList<GameObject*> gameObjects, bool isActive);
-
-//private:
-//    QList<GameObject*> mGameObjects;
-//};
-
-
 
 
 ////材质各项属性
