@@ -30,7 +30,7 @@ private slots:
     void createModelAtOrigin(const QString &filePath);
     void deleteGameObject(BBGameObject *pGameObject);
     void copyGameObject(BBGameObject *pSourceObject, QTreeWidgetItem *pTranscriptItem);
-//    void lookAtGameObjectSlot(GameObject *gameObject);
+    void lookAtGameObject(BBGameObject *pGameObject);
 //    void createLightDependParent(QString fileName);
 //    void onKeyPress(QKeyEvent *e);
 

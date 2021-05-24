@@ -50,8 +50,8 @@ public:
     inline QString getClassName()  { return m_strClassName; }
     void setIconName(const QString &iconName) { m_strIconName = iconName; }
     inline QString getIconName()  { return m_strIconName; }
-    inline QString getFilePath()  { return m_strFilePath; }
     void setBaseAttributes(const QString &name, const QString &className, const QString &iconName, bool bActive = true);
+    inline QString getFilePath()  { return m_strFilePath; }
 
     virtual void init();
     virtual void init(const QString &path);
@@ -64,8 +64,7 @@ public:
                                          const QVector3D &top1, const QVector3D &top2, const QVector3D &top3,
                                          const QVector3D &right1, const QVector3D &right2, const QVector3D &right3,
                                          const QVector3D &bottom1, const QVector3D &bottom2, const QVector3D &bottom3);
-
-//    virtual void lookAtSelf(QVector3D &pos, QVector3D &viewCenter, float distFactor = 2.4);
+    virtual void showCloseUp(QVector3D &outPosition, QVector3D &outViewCenter, float fDistFactor = 2.4);
 
 protected:
     virtual void setModelMatrix(float px, float py, float pz,

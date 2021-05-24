@@ -34,6 +34,7 @@ signals:
     void showGameObjectProperty(BBGameObject *pGameObject);
     void deleteGameObject(BBGameObject *pGameObject);
     void copyGameObject(BBGameObject *pSourceObject, QTreeWidgetItem *pTranscriptItem);
+    void lookAtGameObject(BBGameObject *pGameObject);
 
 private slots:
     void addGameObject(BBGameObject *pGameObject);
@@ -42,13 +43,12 @@ private slots:
     void selectPickedItems(QList<BBGameObject*> gameObjects);
     void updateMultipleSelectedItems(BBGameObject *pGameObject);
     void changeSelectedItems();
+    void doubleClickItem(QTreeWidgetItem *pItem, int nColumn);
     void deleteAction() override;
 
 
-//public slots:
-//    void itemDoubleClickedSlot(QTreeWidgetItem *item, int column);
-//    void finishRename() override;
-//    void cancelSelectedItems();
+
+
 
 //private slots:
 //    void itemChangedSlot(QTreeWidgetItem *item, int column);
@@ -56,9 +56,10 @@ private slots:
 //    void changeGameObjectActivation(GameObject *gameObject, bool isActive);
 //    void copyGameObjectInsertMap(QTreeWidgetItem *item, GameObject *gameObject);
 //    void updateMultipleSelectObjects(GameObject *gameObject);
+//    void finishRename() override;
+//    void cancelSelectedItems();
 
 //signals:
-//    void lookAtGameObjectSignal(GameObject *gameObject);
 //    void showSetProperty(QList<GameObject*> gameObjects, CenterPoint *center);
 //    void updateNameInInspector(GameObject *gameObject, QString newName);
 //    void changeButtonActiveCheckStateInInspector(GameObject *gameObject, bool isActive);

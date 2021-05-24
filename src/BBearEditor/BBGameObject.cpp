@@ -315,6 +315,13 @@ bool BBGameObject::belongToSelectionRegion(const QVector3D &left1, const QVector
     return true;
 }
 
+void BBGameObject::showCloseUp(QVector3D &outPosition, QVector3D &outViewCenter, float fDistFactor)
+{
+    Q_UNUSED(fDistFactor);
+    outViewCenter = m_Position + QVector3D(0, 0.5, 0);
+    outPosition = outViewCenter + QVector3D(0, 0.5, 4);
+}
+
 void BBGameObject::setModelMatrix(float px, float py, float pz,
                                   const QQuaternion &r,
                                   float sx, float sy, float sz)
@@ -324,14 +331,3 @@ void BBGameObject::setModelMatrix(float px, float py, float pz,
     m_ModelMatrix.rotate(r);
     m_ModelMatrix.scale(sx, sy, sz);
 }
-
-
-
-
-
-//void GameObject::lookAtSelf(QVector3D &pos, QVector3D &viewCenter, float distFactor)
-//{
-//    Q_UNUSED(distFactor);
-//    viewCenter = mPosition + QVector3D(0, 0.5, 0);
-//    pos = viewCenter + QVector3D(0, 0.5, 4);
-//}

@@ -5,8 +5,9 @@
 #include <GL/glu.h>
 #include <QMatrix4x4>
 
-//class BBGameObject;
+class BBGameObject;
 class BBRay;
+
 class BBCamera
 {
 public:
@@ -20,17 +21,13 @@ public:
     void pitch(float fAngle);
     void yaw(float fAngle);
     void setMoveSpeed(int dir);
-
+    void lookAt(BBGameObject *pGameObject);
     BBRay createRayFromScreen(int x, int y);
 
     inline QVector3D getPosition() { return m_Position; }
     inline QMatrix4x4 getViewMatrix() { return m_ViewMatrix; }
     inline int getViewportWidth() { return m_iViewportWidth; }
     inline int getViewportHeight() { return m_iViewportHeight; }
-
-
-//    void lookAt(GameObject *object);
-
 
 private:
     void rotateView(float fAngle, float x, float y, float z);

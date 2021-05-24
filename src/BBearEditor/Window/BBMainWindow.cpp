@@ -102,6 +102,9 @@ void BBUIMainWindow::setConnect()
     // copy tree item in treeHierarchy, and copy game object in scene
     QObject::connect(m_pUi->treeHierarchy, SIGNAL(copyGameObject(BBGameObject*, QTreeWidgetItem*)),
                      m_pUi->openGLWidget, SLOT(copyGameObject(BBGameObject*, QTreeWidgetItem*)));
+    // double item, show close-up of corresponding gameobject
+    QObject::connect(m_pUi->treeHierarchy, SIGNAL(lookAtGameObject(BBGameObject*)),
+                     m_pUi->openGLWidget, SLOT(lookAtGameObject(BBGameObject*)));
 
 
 //    //对整个项目操作的菜单事件
@@ -111,9 +114,7 @@ void BBUIMainWindow::setConnect()
 //    QObject::connect(this, SIGNAL(pressTransformSignal(char)),
 //                     ui->openGLWidget, SLOT(pressTransformSlot(char)));
 
-//    //双击item 摄像机以其对应的gameobject为焦点
-//    QObject::connect(ui->treeHierarchy, SIGNAL(lookAtGameObjectSignal(GameObject*)),
-//                     ui->openGLWidget, SLOT(lookAtGameObjectSlot(GameObject*)));
+
 
 //    //点击文件夹控件上的按钮
 //    QObject::connect(ui->buttonRootProject, SIGNAL(clicked()), ui->treeProject, SLOT(pressRootButton()));

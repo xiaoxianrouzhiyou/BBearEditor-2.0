@@ -199,28 +199,28 @@ BBModel* BBScene::createModel(const QString &filePath, const QVector3D &position
     return pModel;
 }
 
-BBModel* BBScene::pickModel(int x, int y)
-{
-    BBRay ray = m_pCamera->createRayFromScreen(x, y);
+//BBModel* BBScene::pickModel(int x, int y)
+//{
+//    BBRay ray = m_pCamera->createRayFromScreen(x, y);
 
-    float fDistance = FLT_MAX;
-    BBModel *pModel = nullptr;
-    QList<BBGameObject*>::Iterator itr;
-    for (itr = m_Models.begin(); itr != m_Models.end(); itr++)
-    {
-        BBGameObject *pObject = *itr;
-        float d;
-        if (pObject->hit(ray, d))
-        {
-            if (d < fDistance)
-            {
-                fDistance = d;
-                pModel = (BBModel*)pObject;
-            }
-        }
-    }
-    return pModel;
-}
+//    float fDistance = FLT_MAX;
+//    BBModel *pModel = nullptr;
+//    QList<BBGameObject*>::Iterator itr;
+//    for (itr = m_Models.begin(); itr != m_Models.end(); itr++)
+//    {
+//        BBGameObject *pObject = *itr;
+//        float d;
+//        if (pObject->hit(ray, d))
+//        {
+//            if (d < fDistance)
+//            {
+//                fDistance = d;
+//                pModel = (BBModel*)pObject;
+//            }
+//        }
+//    }
+//    return pModel;
+//}
 
 BBGameObject* BBScene::pickObject(const BBRay &ray, bool bSelect)
 {
@@ -252,11 +252,19 @@ BBGameObject* BBScene::pickObject(const BBRay &ray, bool bSelect)
     return pSelectedObject;
 }
 
-void BBScene::deleteGameObject(BBGameObject *pObject)
+void BBScene::lookAtGameObject(BBGameObject *pGameObject)
 {
-    if (pObject->getClassName() == BB_CLASSNAME_MODEL)
+    BB_PROCESS_ERROR_EXIT(pGameObject);
+
+    m_pTransformCoordinateSystem->setSelectedObject(pGameObject);
+    m_pCamera->lookAt(pGameObject);
+}
+
+void BBScene::deleteGameObject(BBGameObject *pGameObject)
+{
+    if (pGameObject->getClassName() == BB_CLASSNAME_MODEL)
     {
-        m_Models.removeOne(pObject);
+        m_Models.removeOne(pGameObject);
     }
 //    else if (object->getClassName() == TerrainClassName)
 //    {
@@ -290,7 +298,7 @@ void BBScene::deleteGameObject(BBGameObject *pObject)
 //    }
 //    transformCoordinate->setSelectedObject(nullptr);
 
-    BB_SAFE_DELETE(pObject);
+    BB_SAFE_DELETE(pGameObject);
 }
 
 void BBScene::setSelectionRegionVisibility(bool bVisible)
@@ -472,16 +480,6 @@ QList<BBGameObject*> BBScene::getSelectedObjects(QPoint start, QPoint end)
 //    }
 //    return audio;
 //}
-
-//void Scene::lookAtGameObject(GameObject *object)
-//{
-//    if (object != nullptr)
-//    {
-//        transformCoordinate->setSelectedObject(object);
-//        camera.lookAt(object);
-//    }
-//}
-
 
 //bool Scene::setModelMaterial(Model *model, QString mtlPath)
 //{
@@ -688,11 +686,6 @@ QList<BBGameObject*> BBScene::getSelectedObjects(QPoint start, QPoint end)
 //    }
 //}
 
-//float Scene::getFogSwitch()
-//{
-//    return fogSwitch;
-//}
-
 //void Scene::setFogColor(float r, float g, float b)
 //{
 //    fogColor = QColor::fromRgbF(r, g, b);
@@ -704,10 +697,6 @@ QList<BBGameObject*> BBScene::getSelectedObjects(QPoint start, QPoint end)
 //    }
 //}
 
-//QColor Scene::getFogColor()
-//{
-//    return fogColor;
-//}
 
 //void Scene::setFogOption(float start, float end, int density, float power)
 //{
@@ -723,26 +712,6 @@ QList<BBGameObject*> BBScene::getSelectedObjects(QPoint start, QPoint end)
 //    }
 //}
 
-//float Scene::getFogStart()
-//{
-//    return fogStart;
-//}
-
-//float Scene::getFogEnd()
-//{
-//    return fogEnd;
-//}
-
-//int Scene::getFogDensity()
-//{
-//    return fogDensity;
-//}
-
-//float Scene::getFogPower()
-//{
-//    return fogPower;
-//}
-
 //void Scene::setFogMode(int mode)
 //{
 //    fogMode = mode;
@@ -754,10 +723,6 @@ QList<BBGameObject*> BBScene::getSelectedObjects(QPoint start, QPoint end)
 //    }
 //}
 
-//int Scene::getFogMode()
-//{
-//    return fogMode;
-//}
 
 //void Scene::play()
 //{

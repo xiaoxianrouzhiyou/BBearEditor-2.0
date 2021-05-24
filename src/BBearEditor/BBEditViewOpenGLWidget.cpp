@@ -125,6 +125,11 @@ void BBEditViewOpenGLWidget::copyGameObject(BBGameObject *pSourceObject, QTreeWi
     addGameObject(pTranscriptObject, pTranscriptItem);
 }
 
+void BBEditViewOpenGLWidget::lookAtGameObject(BBGameObject *pGameObject)
+{
+    m_pScene->lookAtGameObject(pGameObject);
+}
+
 void BBEditViewOpenGLWidget::mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::RightButton)
@@ -437,16 +442,6 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
 
 
 
-
-//BaseOpenGLWidget *OpenGLWidget::getPreview()
-//{
-//    return mPreview;
-//}
-
-//void OpenGLWidget::lookAtGameObjectSlot(GameObject *gameObject)
-//{
-//    scene.lookAtGameObject(gameObject);
-//}
 
 
 //void OpenGLWidget::createLightDependParent(QString fileName)

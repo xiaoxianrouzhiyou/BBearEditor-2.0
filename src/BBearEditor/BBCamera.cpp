@@ -1,6 +1,8 @@
 #include "BBCamera.h"
 #include "math.h"
 #include "BBRay.h"
+#include "BBGameObject.h"
+
 
 BBCamera::BBCamera()
     : m_Position(0, 1, 10), m_ViewCenter(0, 1, 0), m_Up(0, 1, 0)
@@ -157,6 +159,11 @@ void BBCamera::setMoveSpeed(int dir)
         m_fMoveSpeed = 100;
 }
 
+void BBCamera::lookAt(BBGameObject *pGameObject)
+{
+    pGameObject->showCloseUp(m_Position, m_ViewCenter);
+}
+
 BBRay BBCamera::createRayFromScreen(int x, int y)
 {
     int winX = x;
@@ -185,13 +192,3 @@ void BBCamera::rotateView(float fAngle, float x, float y, float z)
     newDirection.setZ(QVector3D::dotProduct(tempZ, viewDirection));
     m_ViewCenter = m_Position + newDirection;
 }
-
-
-
-//void Camera::lookAt(GameObject *object)
-//{
-//    object->lookAtSelf(pos, viewCenter);
-//}
-
-
-

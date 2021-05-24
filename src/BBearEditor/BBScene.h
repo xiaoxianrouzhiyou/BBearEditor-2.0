@@ -31,10 +31,10 @@ public:
     BBModel* createModel(const QString &filePath,
                          const QVector3D &position = QVector3D(0, 0, 0),
                          bool bSelect = true);
-    BBModel* pickModel(int x, int y);
+//    BBModel* pickModel(int x, int y);
     BBGameObject* pickObject(const BBRay &ray, bool bSelect = true);
-
-    void deleteGameObject(BBGameObject *pObject);
+    void lookAtGameObject(BBGameObject *pGameObject);
+    void deleteGameObject(BBGameObject *pGameObject);
 
     void setSelectionRegionVisibility(bool bVisible);
     QList<BBGameObject*> getSelectedObjects(QPoint start, QPoint end);

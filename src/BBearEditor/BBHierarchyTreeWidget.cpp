@@ -19,8 +19,8 @@ BBHierarchyTreeWidget::BBHierarchyTreeWidget(QWidget *parent)
 
     QObject::connect(this, SIGNAL(itemSelectionChanged()),
                      this, SLOT(changeSelectedItems()));
-//    QObject::connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
-//                     this, SLOT(itemDoubleClickedSlot(QTreeWidgetItem*, int)));
+    QObject::connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
+                     this, SLOT(doubleClickItem(QTreeWidgetItem*, int)));
 //    QObject::connect(this, SIGNAL(itemChanged(QTreeWidgetItem*, int)),
 //                     this, SLOT(itemChangedSlot(QTreeWidgetItem*, int)));
 
@@ -366,6 +366,12 @@ void BBHierarchyTreeWidget::changeSelectedItems()
     }
 }
 
+void BBHierarchyTreeWidget::doubleClickItem(QTreeWidgetItem *pItem, int nColumn)
+{
+    Q_UNUSED(nColumn);
+    lookAtGameObject(m_ObjectMap.value(pItem));
+}
+
 void BBHierarchyTreeWidget::deleteAction()
 {
     // no need to show BBConfirmationDialog
@@ -381,11 +387,6 @@ void BBHierarchyTreeWidget::deleteAction()
     setCurrentItem(NULL);
 }
 
-//void HierarchyTree::itemDoubleClickedSlot(QTreeWidgetItem *item, int column)
-//{
-//    Q_UNUSED(column);
-//    lookAtGameObjectSignal(mMap.value(item));
-//}
 
 
 //bool HierarchyTree::moveItemFromFileList(const QMimeData *mimeData)
