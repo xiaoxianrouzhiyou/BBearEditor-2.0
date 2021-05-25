@@ -5,16 +5,16 @@
 #include <QMouseEvent>
 
 namespace Ui {
-class BBUITitleBar;
+class BBTitleBar;
 }
 
-class BBUITitleBar : public QWidget
+class BBTitleBar : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit BBUITitleBar(QWidget *parent = 0);
-    virtual ~BBUITitleBar();
+    explicit BBTitleBar(QWidget *parent = 0);
+    virtual ~BBTitleBar();
 
 signals:
     void run(bool trigger);
@@ -27,7 +27,7 @@ private slots:
     void mouseDoubleClickEvent(QMouseEvent *event) override;
 
 private:
-    Ui::BBUITitleBar *m_pUi;
+    Ui::BBTitleBar *m_pUi;
     QWidget *m_pParent;
 };
 

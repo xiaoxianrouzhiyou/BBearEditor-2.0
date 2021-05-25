@@ -56,7 +56,9 @@ SOURCES += \
     PropertyManager/BBPropertyManager.cpp \
     PropertyManager/BBGroupManager.cpp \
     PropertyManager/BBPropertyFactory.cpp \
-    PropertyManager/BBFactoryComponent.cpp
+    PropertyManager/BBFactoryComponent.cpp \
+    FileSystem/BBFolderTreeWidget.cpp \
+    Window/BBProjectDialog.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
@@ -90,12 +92,15 @@ HEADERS += \
     PropertyManager/BBPropertyManager.h \
     PropertyManager/BBGroupManager.h \
     PropertyManager/BBPropertyFactory.h \
-    PropertyManager/BBFactoryComponent.h
+    PropertyManager/BBFactoryComponent.h \
+    FileSystem/BBFolderTreeWidget.h \
+    Window/BBProjectDialog.h
 
 FORMS += \
     Window/BBConfirmationDialog.ui \
     Window/BBMainWindow.ui \
-    Window/BBTitleBar.ui
+    Window/BBTitleBar.ui \
+    Window/BBProjectDialog.ui
 
 RESOURCES += \
     ../../resources/BBBasicResource.qrc

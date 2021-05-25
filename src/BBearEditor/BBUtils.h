@@ -25,6 +25,9 @@
 
 #define BB_CLASSNAME_MODEL "Model"
 
+#define BB_USER_NAME "BigBugBear"
+#define BB_USER_PROJECT_NAME "BBearEditor"
+
 #include <QString>
 #include <QVector3D>
 

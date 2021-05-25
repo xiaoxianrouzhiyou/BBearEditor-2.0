@@ -2,9 +2,9 @@
 #include "ui_BBTitleBar.h"
 #include "BBUtils.h"
 
-BBUITitleBar::BBUITitleBar(QWidget *parent) :
+BBTitleBar::BBTitleBar(QWidget *parent) :
     QWidget(parent),
-    m_pUi(new Ui::BBUITitleBar)
+    m_pUi(new Ui::BBTitleBar)
 {
     m_pUi->setupUi(this);
     this->m_pParent = parent;
@@ -15,23 +15,23 @@ BBUITitleBar::BBUITitleBar(QWidget *parent) :
     QObject::connect(m_pUi->buttonRun, SIGNAL(clicked(bool)), this, SLOT(buttonRunClicked(bool)));
 }
 
-BBUITitleBar::~BBUITitleBar()
+BBTitleBar::~BBTitleBar()
 {
     BB_SAFE_DELETE(m_pUi);
     BB_SAFE_DELETE(m_pParent);
 }
 
-void BBUITitleBar::closeWindow()
+void BBTitleBar::closeWindow()
 {
     m_pParent->close();
 }
 
-void BBUITitleBar::minimizeWindow()
+void BBTitleBar::minimizeWindow()
 {
     m_pParent->showMinimized();
 }
 
-void BBUITitleBar::maximizeWindow()
+void BBTitleBar::maximizeWindow()
 {
     if (m_pUi->buttonMaximize->isChecked())
         m_pParent->showFullScreen();
@@ -39,12 +39,12 @@ void BBUITitleBar::maximizeWindow()
         m_pParent->showMaximized();
 }
 
-void BBUITitleBar::buttonRunClicked(bool trigger)
+void BBTitleBar::buttonRunClicked(bool trigger)
 {
     run(trigger);
 }
 
-void BBUITitleBar::mouseDoubleClickEvent(QMouseEvent *event)
+void BBTitleBar::mouseDoubleClickEvent(QMouseEvent *event)
 {
     QWidget::mouseDoubleClickEvent(event);
     m_pParent->move(0, 0);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>BBUIMainWindow</class>
+ <class>BBMainWindow</class>
  <widget class="QMainWindow" name="BBUIMainWindow">
   <property name="geometry">
    <rect>

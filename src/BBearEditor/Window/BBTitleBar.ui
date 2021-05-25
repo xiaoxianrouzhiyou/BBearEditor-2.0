@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>BBUITitleBar</class>
+ <class>BBTitleBar</class>
  <widget class="QWidget" name="BBUITitleBar">
   <property name="geometry">
    <rect>

@@ -3,9 +3,9 @@
 #include "BBUtils.h"
 #include <QKeyEvent>
 
-BBUIMainWindow::BBUIMainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    m_pUi(new Ui::BBUIMainWindow)
+BBMainWindow::BBMainWindow(QWidget *parent)
+    : QMainWindow(parent),
+      m_pUi(new Ui::BBMainWindow)
 {
     m_pUi->setupUi(this);
     setWindowLayout();
@@ -13,12 +13,12 @@ BBUIMainWindow::BBUIMainWindow(QWidget *parent) :
     setConnect();
 }
 
-BBUIMainWindow::~BBUIMainWindow()
+BBMainWindow::~BBMainWindow()
 {
     BB_SAFE_DELETE(m_pUi);
 }
 
-void BBUIMainWindow::setWindowLayout()
+void BBMainWindow::setWindowLayout()
 {
     // Allow nesting of docks
     setDockNestingEnabled(true);
@@ -44,14 +44,14 @@ void BBUIMainWindow::setWindowLayout()
     m_pUi->splitterProject->setStretchFactor(1, 1);
 }
 
-void BBUIMainWindow::setGameObjectDockWidget()
+void BBMainWindow::setGameObjectDockWidget()
 {
     // Load contents for list
     m_pUi->listBaseGameObject->loadListItems(BB_PATH_BASEOBJECTLIST);
     m_pUi->listBaseGameObject->setMimeType(BB_MIMETYPE_BASEOBJECT);
 }
 
-void BBUIMainWindow::setConnect()
+void BBMainWindow::setConnect()
 {
     // global event about pressing Control key
     QObject::connect(this, SIGNAL(pressMultipleSelectionKey(bool)),
@@ -233,7 +233,7 @@ void BBUIMainWindow::setConnect()
 
 }
 
-void BBUIMainWindow::keyPressEvent(QKeyEvent *e)
+void BBMainWindow::keyPressEvent(QKeyEvent *e)
 {
 //    QMainWindow::keyPressEvent(e);
 
@@ -246,7 +246,7 @@ void BBUIMainWindow::keyPressEvent(QKeyEvent *e)
     }
 }
 
-void BBUIMainWindow::keyReleaseEvent(QKeyEvent *e)
+void BBMainWindow::keyReleaseEvent(QKeyEvent *e)
 {
 //    QMainWindow::keyReleaseEvent(e);
 

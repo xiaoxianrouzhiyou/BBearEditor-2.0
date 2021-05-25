@@ -4,16 +4,16 @@
 #include <QMainWindow>
 
 namespace Ui {
-class BBUIMainWindow;
+class BBMainWindow;
 }
 
-class BBUIMainWindow : public QMainWindow
+class BBMainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit BBUIMainWindow(QWidget *parent = 0);
-    virtual ~BBUIMainWindow();
+    explicit BBMainWindow(QWidget *parent = 0);
+    virtual ~BBMainWindow();
 
 signals:
     void pressMultipleSelectionKey(bool);
@@ -26,7 +26,7 @@ private:
     void keyPressEvent(QKeyEvent *e) override;
     void keyReleaseEvent(QKeyEvent *e) override;
 
-    Ui::BBUIMainWindow *m_pUi;
+    Ui::BBMainWindow *m_pUi;
 };
 
 #endif // BBUIMAINWINDOW_H

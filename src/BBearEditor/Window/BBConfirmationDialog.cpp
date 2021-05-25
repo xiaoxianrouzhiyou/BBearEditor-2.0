@@ -4,9 +4,9 @@
 #include <QApplication>
 #include <QDesktopWidget>
 
-BBConfirmationDialog::BBConfirmationDialog(QWidget *parent) :
-    QDialog(parent),
-    m_pUi(new Ui::BBConfirmationDialog)
+BBConfirmationDialog::BBConfirmationDialog(QWidget *pParent)
+    : QDialog(pParent),
+      m_pUi(new Ui::BBConfirmationDialog)
 {
     m_pUi->setupUi(this);
 

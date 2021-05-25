@@ -3,10 +3,10 @@
 #include <QVBoxLayout>
 #include "Window/BBTitleBar.h"
 #include "Window/BBMainWindow.h"
+#include "Window/BBProjectDialog.h"
 
 
 //#include "boundingbox.h"
-//#include "beginningdialog.h"
 #include <QDesktopWidget>
 //#include "assetmanager.h"
 #include <QStyleFactory>
@@ -17,12 +17,12 @@ int main(int argc, char *argv[])
 
     // main interface
     QWidget mainWidget;
-    //mainWidget.setWindowState(Qt::WindowMaximized);
+//    mainWidget.setWindowState(Qt::WindowMaximized);
     mainWidget.resize(1600, 1000);
     mainWidget.setWindowFlags(Qt::FramelessWindowHint | mainWidget.windowFlags());
 
-    NcFramelessHelper fHelper;
-    fHelper.activateOn(&mainWidget);
+    NcFramelessHelper mainWidgetHelper;
+    mainWidgetHelper.activateOn(&mainWidget);
 
     QVBoxLayout mainVlayout(&mainWidget);
     mainVlayout.setMargin(0);
@@ -31,29 +31,29 @@ int main(int argc, char *argv[])
     // parent object must be passed in
     // and invoke the close function of the parent object to close the window
     // to prevent errors
-    BBUITitleBar titleBar(&mainWidget);
+    BBTitleBar titleBar(&mainWidget);
     mainVlayout.addWidget(&titleBar);
 
-    BBUIMainWindow mainWindow;
+    BBMainWindow mainWindow;
     mainVlayout.addWidget(&mainWindow);
 
-    //mainWidget.hide();
-    mainWidget.show();
+    mainWidget.hide();
+//    mainWidget.show();
+
+    // BBProjectDialog, select project to open
+    BBProjectDialog dialog(&mainWindow, &mainWidget);
+    dialog.resize(QSize(800, 480));
+    dialog.setWindowFlags(Qt::FramelessWindowHint | dialog.windowFlags());
+    NcFramelessHelper dialogHelper;
+    dialogHelper.activateOn(&dialog);
+    dialog.move((QApplication::desktop()->width()  - dialog.sizeHint().width())  / 2,
+                (QApplication::desktop()->height() - dialog.sizeHint().height()) / 2);
+    dialog.show();
 
 
 
 
 
-
-    //开始对话框
-    //BeginningDialog beginningDialog(&mainWidget);
-    //beginningDialog.resize(QSize(800, 480));
-    //beginningDialog.setWindowFlags(Qt::FramelessWindowHint | beginningDialog.windowFlags());
-    //NcFramelessHelper *beginningFh = new NcFramelessHelper;
-    //beginningFh->activateOn(&beginningDialog);
-    //beginningDialog.move((QApplication::desktop()->width() - beginningDialog.sizeHint().width()) / 2,
-    //            (QApplication::desktop()->height() - beginningDialog.sizeHint().height()) / 2);
-    //beginningDialog.show();
 
     //支持R屏
     a.setAttribute(Qt::AA_UseHighDpiPixmaps);
