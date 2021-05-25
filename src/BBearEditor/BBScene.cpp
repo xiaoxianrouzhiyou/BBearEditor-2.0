@@ -254,7 +254,7 @@ BBGameObject* BBScene::pickObject(const BBRay &ray, bool bSelect)
 
 void BBScene::lookAtGameObject(BBGameObject *pGameObject)
 {
-    BB_PROCESS_ERROR_EXIT(pGameObject);
+    BB_PROCESS_ERROR_RETURN(pGameObject);
 
     m_pTransformCoordinateSystem->setSelectedObject(pGameObject);
     m_pCamera->lookAt(pGameObject);

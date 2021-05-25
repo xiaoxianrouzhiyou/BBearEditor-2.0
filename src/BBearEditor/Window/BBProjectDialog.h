@@ -17,7 +17,7 @@ class BBProjectDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit BBProjectDialog(QWidget *pMainWidget, QWidget *pParent = 0);
+    explicit BBProjectDialog(QWidget *pParent = 0);
     ~BBProjectDialog();
 
 private slots:
@@ -35,9 +35,9 @@ private:
     void setLineEdit();
 
     Ui::BBProjectDialog *m_pUi;
-    QWidget *m_pMainWidget;
     static QString m_ProjectDirArrayKey;
     static QString m_ProjectDirKey;
+    static QString m_WorkSpaceDirKey;
     int m_nProjectCount;
     QList<QString> m_ProjectDirs;
 };

@@ -3,20 +3,24 @@
 #include "BBUtils.h"
 #include <QSettings>
 #include <QDir>
+#include <QFileDialog>
 
 
 QString BBProjectDialog::m_ProjectDirArrayKey = "ProjectDirArrayKey";
 QString BBProjectDialog::m_ProjectDirKey = "ProjectDirKey";
+QString BBProjectDialog::m_WorkSpaceDirKey = "WorkSpaceDirKey";
 
-BBProjectDialog::BBProjectDialog(QWidget *pMainWidget, QWidget *pParent)
+
+BBProjectDialog::BBProjectDialog(QWidget *pParent)
     : QDialog(pParent),
       m_pUi(new Ui::BBProjectDialog)
 {
     m_pUi->setupUi(this);
 
     QObject::connect(m_pUi->buttonClose, SIGNAL(clicked()), this, SLOT(closeDialog()));
+    QObject::connect(m_pUi->buttonOpenLocation, SIGNAL(clicked()), this, SLOT(selectFolder()));
+    QObject::connect(m_pUi->buttonCreate, SIGNAL(clicked()), this, SLOT(createNewProject()));
 
-    m_pMainWidget = pMainWidget;
     setButtonTabBar();
     loadExistingProject();
     setListWidget();
@@ -54,17 +58,60 @@ void BBProjectDialog::switchFolderAndNew(QAbstractButton *pButton)
 
 void BBProjectDialog::selectFolder()
 {
-
+    QSettings settings(BB_USER_NAME, BB_USER_PROJECT_NAME);
+    QString directory = settings.value(m_WorkSpaceDirKey).value<QString>();
+    QString filePath = QFileDialog::getExistingDirectory(this, "Select Folder", directory);
+    if (!filePath.isNull())
+    {
+        // The line edit shows the address of the workspace
+        m_pUi->lineEditLocation->setText(filePath);
+        // Save the default workspace address and show it next time
+        settings.setValue(m_WorkSpaceDirKey, filePath);
+    }
 }
 
 void BBProjectDialog::createNewProject()
 {
+    // create project folder
+    QDir dir;
+    QString fileName = m_pUi->lineEditProjectName->text();
+    QString filePath = m_pUi->lineEditLocation->text() + "/" + fileName;
+    BB_PROCESS_ERROR_RETURN(!dir.exists(filePath));
 
+    m_pUi->lineEditProjectName->setFocus();
+    m_pUi->lineEditProjectName->selectAll();
+
+    BB_PROCESS_ERROR_RETURN(dir.mkdir(filePath));
+    // Successfully created the project
+    // Create subfolders required for the project
+    // Used to save user's files
+    BB_PROCESS_ERROR_RETURN(dir.mkdir(filePath + "/" + BBConstant::BB_NAME_FILE_SYSTEM_USER));
+    // Used to save engine-related files
+    BB_PROCESS_ERROR_RETURN(dir.mkdir(filePath + "/" + BBConstant::BB_NAME_FILE_SYSTEM_ENGINE));
+    // save constant
+    BBConstant::BB_PATH_PROJECT = filePath + "/";
+    BBConstant::BB_PATH_PROJECT_ENGINE = BBConstant::BB_PATH_PROJECT + BBConstant::BB_NAME_FILE_SYSTEM_ENGINE + "/";
+    // Place a project overview map in the engine folder
+    BB_PROCESS_ERROR_RETURN(QFile::copy(BBConstant::BB_PATH_RESOURCE_PICTURES + BBConstant::BB_NAME_OVERVIEW_MAP,
+                                        BBConstant::BB_PATH_PROJECT_ENGINE + BBConstant::BB_NAME_OVERVIEW_MAP));
+    // save the project into QSettings
+    QSettings settings(BB_USER_NAME, BB_USER_PROJECT_NAME);
+    settings.beginWriteArray(m_ProjectDirArrayKey);
+    // Add to the end of the project catalog
+    settings.setArrayIndex(m_nProjectCount);
+    settings.setValue(m_ProjectDirKey, filePath);
+    settings.endArray();
+    // Close the dialog
+    accept();
+//    //新工程的预设定
+//    MainWindow *mainWindow = qobject_cast<MainWindow*>(mMainWidget->layout()->itemAt(1)->widget());
+//    if (mainWindow)
+//        mainWindow->newProject();
 }
 
 void BBProjectDialog::closeDialog()
 {
-    exit(0);
+    reject();
 }
 
 void BBProjectDialog::openSelectedProject(QListWidgetItem *pItem)
@@ -152,86 +199,18 @@ void BBProjectDialog::setListWidget()
 void BBProjectDialog::setLineEdit()
 {
     // The dir default is the last used dir
-//    QSettings settings(BB_USER_NAME, BB_USER_PROJECT_NAME);
-//    m_pUi->lineEditLocation->setText(settings.value("WorkSpaceDirectory").value<QString>());
-//    // Give an initial project name, if it exists, increase the number
-//    QDir dir;
-//    int i = 1;
-//    while (dir.exists(m_pUi->lineEditLocation->text() + "/New Project " + QString::number(i)))
-//    {
-//        i++;
-//    }
-//    m_pUi->lineEditProjectName->setText("New Project " + QString::number(i));
+    QSettings settings(BB_USER_NAME, BB_USER_PROJECT_NAME);
+    m_pUi->lineEditLocation->setText(settings.value(m_WorkSpaceDirKey).value<QString>());
+    // Give an initial project name, if it exists, increase the number
+    QDir dir;
+    int i = 1;
+    while (dir.exists(m_pUi->lineEditLocation->text() + "/New Project " + QString::number(i)))
+    {
+        i++;
+    }
+    m_pUi->lineEditProjectName->setText("New Project " + QString::number(i));
 }
 
-
-
-
-
-
-
-
-//void BeginningDialog::selectFolder()
-//{
-//    QSettings settings(MyName, MyProjectName);
-//    QString directory = settings.value("workspaceDirectory").value<QString>();
-//    QString fileName = QFileDialog::getExistingDirectory(this, "Select Folder", directory);
-//    if (!fileName.isNull())
-//    {
-//        //点的确定
-//        //编辑框显示工作空间地址
-//        ui->lineEditLocation->setText(fileName);
-//        //保存默认工作空间地址 下次显示
-//        settings.setValue("workspaceDirectory", fileName);
-//    }
-//}
-
-//void BeginningDialog::createNewProject()
-//{
-//    //创建工程文件夹
-//    QDir *dir = new QDir();
-//    QString directoryName = ui->lineEditLocation->text() + "/" + ui->lineEditProjectName->text();
-//    bool result = dir->exists(directoryName);
-//    if (result)
-//    {
-//        ui->lineEditProjectName->setFocus();
-//        ui->lineEditProjectName->selectAll();
-//    }
-//    else
-//    {
-//        result = dir->mkdir(directoryName);
-//        if (result)
-//        {
-//            //创建项目成功
-//            //创建工程所需子文件夹
-//            //用于存放用户的文件
-//            dir->mkdir(directoryName + "/contents");
-//            //用于存放引擎与项目相关的文件
-//            dir->mkdir(directoryName + "/engine");
-//            //保存工程相关的全局变量
-//            projectName = ui->lineEditProjectName->text();
-//            projectPath = directoryName + "/";
-//            projectEngineFolderPath = projectPath + "engine/";
-//            //预置一张新工程总览图在engine文件夹中
-//            QFile::copy(engineResourcesPicturesPath + overviewMapName, projectEngineFolderPath + overviewMapName);
-//            //保存工程路径 添加到工程路径组中 用于下次打开已有工程
-//            QSettings settings(MyName, MyProjectName);
-//            settings.beginWriteArray(projectDirArrayKey);
-//            //添加到工程目录表尾
-//            settings.setArrayIndex(projectCount);
-//            settings.setValue(projectDirKey, directoryName);
-//            settings.endArray();
-//            //关闭对话框
-//            close();
-//            //显示主界面
-//            mMainWidget->show();
-//            //新工程的预设定
-//            MainWindow *mainWindow = qobject_cast<MainWindow*>(mMainWidget->layout()->itemAt(1)->widget());
-//            if (mainWindow)
-//                mainWindow->newProject();
-//        }
-//    }
-//}
 
 
 //void BeginningDialog::openSelectedProject(QListWidgetItem *item)

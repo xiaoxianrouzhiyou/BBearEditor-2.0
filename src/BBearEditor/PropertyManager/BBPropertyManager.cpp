@@ -42,7 +42,7 @@ void BBPropertyManager::showGameObjectProperty(BBGameObject *pGameObject)
 
     // clear the last time
     clear();
-    BB_PROCESS_ERROR_EXIT(pGameObject);
+    BB_PROCESS_ERROR_RETURN(pGameObject);
     m_pCurrentGameObject = pGameObject;
     addBaseInformationManager(pGameObject);
     addTransformGroupManager(pGameObject);

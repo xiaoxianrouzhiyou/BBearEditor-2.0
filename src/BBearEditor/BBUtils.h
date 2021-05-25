@@ -4,7 +4,7 @@
 #define BB_SAFE_DELETE(p) do{ delete p; p = NULL; } while(0)
 #define BB_SAFE_DELETE_ARRAY(p) do{ delete []p; p = NULL; } while(0)
 #define BB_PROCESS_ERROR(p) if(!p) break
-#define BB_PROCESS_ERROR_EXIT(p) if(!p) return
+#define BB_PROCESS_ERROR_RETURN(p) if(!p) return
 #define BB_END(p) if(p) break
 #define BB_SUCCEEDED(hr) (hr>=0)
 
@@ -30,6 +30,17 @@
 
 #include <QString>
 #include <QVector3D>
+
+class BBConstant
+{
+public:
+    static QString BB_PATH_PROJECT;
+    static QString BB_PATH_PROJECT_ENGINE;
+    static QString BB_PATH_RESOURCE_PICTURES;
+    static QString BB_NAME_FILE_SYSTEM_USER;
+    static QString BB_NAME_FILE_SYSTEM_ENGINE;
+    static QString BB_NAME_OVERVIEW_MAP;
+};
 
 class BBUtils
 {

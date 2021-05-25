@@ -1,5 +1,14 @@
 #include "BBUtils.h"
 
+
+QString BBConstant::BB_PATH_PROJECT = "";
+QString BBConstant::BB_PATH_PROJECT_ENGINE = "";
+QString BBConstant::BB_PATH_RESOURCE_PICTURES = "../../../BBearEditor/resources/pictures/";
+QString BBConstant::BB_NAME_FILE_SYSTEM_USER = "contents";
+QString BBConstant::BB_NAME_FILE_SYSTEM_ENGINE = "engine";
+QString BBConstant::BB_NAME_OVERVIEW_MAP = "overview map.jpg";
+
+
 char *BBUtils::loadFileContent(const char *filePath, int &nFileSize)
 {
     FILE *pFile = NULL;

@@ -37,11 +37,11 @@ int main(int argc, char *argv[])
     BBMainWindow mainWindow;
     mainVlayout.addWidget(&mainWindow);
 
-    mainWidget.hide();
-//    mainWidget.show();
+//    mainWidget.hide();
+    mainWidget.show();
 
     // BBProjectDialog, select project to open
-    BBProjectDialog dialog(&mainWindow, &mainWidget);
+    BBProjectDialog dialog;
     dialog.resize(QSize(800, 480));
     dialog.setWindowFlags(Qt::FramelessWindowHint | dialog.windowFlags());
     NcFramelessHelper dialogHelper;

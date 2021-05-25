@@ -118,7 +118,7 @@ void BBEditViewOpenGLWidget::copyGameObject(BBGameObject *pSourceObject, QTreeWi
     {
 
     }
-    BB_PROCESS_ERROR_EXIT(pTranscriptObject);
+    BB_PROCESS_ERROR_RETURN(pTranscriptObject);
     pTranscriptObject->setName(pTranscriptItem->text(0));
     pTranscriptObject->setActivity(pSourceObject->getActivity());
     // then, handle in HierarchyTreeWidget
