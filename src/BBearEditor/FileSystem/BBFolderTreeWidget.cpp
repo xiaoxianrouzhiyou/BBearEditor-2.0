@@ -1,7 +1,868 @@
 #include "BBFolderTreeWidget.h"
+#include "BBUtils.h"
+#include <QDir>
+#include <QQueue>
+
 
 BBFolderTreeWidget::BBFolderTreeWidget(QWidget *pParent)
     : BBTreeWidget(pParent)
 {
 
 }
+
+BBFolderTreeWidget::loadProject()
+{
+//    //currentShowFolderContentItem将被清空 记录下对应路径 树重建完成后找到新的currentShowFolderContentItem
+//    QString currentShowFolderContentPath;
+//    if (currentShowFolderContentItem)
+//    {
+//        currentShowFolderContentPath = getFilePath(getLevelPath(currentShowFolderContentItem));
+//    }
+    // clear tree, and create new tree
+    clear();
+    QDir dir(BBConstant::BB_PATH_PROJECT_USER);
+    if (dir.exists())
+    {
+        dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
+        // The path is used to traverse the subfolders
+        // The item is used to insert
+        struct Node
+        {
+            QString path;
+            QTreeWidgetItem *pItem;
+            Node(QString path, QTreeWidgetItem *pItem)
+            {
+                this->path = path;
+                this->pItem = pItem;
+            }
+        };
+        // The queue of the parent node of the node to be created
+        QQueue<Node> queue;
+        // Traverse the contents folder
+        QFileInfoList fileInfoList = dir.entryInfoList();
+        foreach (QFileInfo fileInfo, fileInfoList)
+        {
+            // is folder
+            if (fileInfo.isDir())
+            {
+                // add item at the top level
+                QTreeWidgetItem *pItem = new QTreeWidgetItem({fileInfo.fileName()});
+                pItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
+                addTopLevelItem(pItem);
+                // push queue, used for adding child item
+                queue.enqueue(Node(fileInfo.absoluteFilePath(), pItem));
+            }
+            else
+            {
+                QString suffix = getFileSuffix(fileInfo);
+                if (suffix == "mtl")
+                {
+//                    loadMaterial(fileInfo.absoluteFilePath());
+                }
+            }
+        }
+        // breadth-first traverse subfolders
+        while (!queue.isEmpty())
+        {
+            Node node = queue.dequeue();
+            dir = QDir(node.path);
+            dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
+            fileInfoList = dir.entryInfoList();
+            foreach (QFileInfo fileInfo, fileInfoList)
+            {
+                // is folder
+                if (fileInfo.isDir())
+                {
+                    // is not at the top level
+                    QTreeWidgetItem *pItem = new QTreeWidgetItem({fileInfo.fileName()});
+                    pItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
+                    node.pItem->addChild(pItem);
+                    // push queue, used for adding child item
+                    queue.enqueue(Node(fileInfo.absoluteFilePath(), pItem));
+                }
+                else
+                {
+                    QString suffix = getFileSuffix(fileInfo);
+                    if (suffix == "mtl")
+                    {
+//                        loadMaterial(fileInfo.absoluteFilePath());
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        dir.mkpath(dir.absolutePath());
+    }
+
+    sortItems(0, Qt::AscendingOrder);
+
+//    //树重建完成后找到新的currentShowFolderContentItem
+//    if (currentShowFolderContentItem)
+//    {
+//        currentShowFolderContentPath = currentShowFolderContentPath.mid(0, currentShowFolderContentPath.length() - 1);
+//        currentShowFolderContentItem = getItemByPath(currentShowFolderContentPath);
+//    }
+
+//    //之后重新加载工程时 无需加载材质
+//    isLoadMaterial = false;
+}
+
+QString BBFolderTreeWidget::getFileSuffix(QFileInfo fileInfo)
+{
+    return fileInfo.fileName().mid(fileInfo.fileName().lastIndexOf('.') + 1);
+}
+
+
+
+//ProjectTree::ProjectTree(QWidget *parent)
+//    : BaseTree(parent), currentShowFolderContentItem(NULL)
+//{
+//    QObject::connect(this, SIGNAL(itemClicked(QTreeWidgetItem*, int)),
+//                     this, SLOT(itemClickedSlot(QTreeWidgetItem*, int)));
+
+//    initMenu();
+
+//    //初始时 需要加载材质
+//    isLoadMaterial = true;
+//}
+
+//QString ProjectTree::getMimeType()
+//{
+//    return "ProjectTree";
+//}
+
+//void ProjectTree::initMenu()
+//{
+//    //一级菜单项
+//    menu = new QMenu(this);
+//    QAction *actionNewFolder = new QAction(tr("New Folder"));
+//    QAction *actionShowInFolder = new QAction(tr("Show In Folder"));
+//    QAction *actionCopy = new QAction(tr("Copy"));
+//    actionCopy->setShortcut(QKeySequence(tr("Ctrl+C")));
+//    QAction *actionPaste = new QAction(tr("Paste"));
+//    actionPaste->setShortcut(QKeySequence(tr("Ctrl+V")));
+//    QAction *actionRename = new QAction(tr("Rename"));
+//#if defined(Q_OS_WIN32)
+//    actionRename->setShortcut(Qt::F2);
+//#elif defined(Q_OS_MAC)
+//    actionRename->setShortcut(Qt::Key_Return);
+//#endif
+//    QAction *actionDelete = new QAction(tr("Delete"));
+//    //二级菜单
+//    //不指定parent为menu 无法使用父亲的样式表
+//    QMenu *menuNewAsset = new QMenu(tr("New Asset"), menu);
+//    //创建资源的菜单项 带图标
+//    menuNewAsset->addAction(createWidgetAction(menuNewAsset, ":/icon/resources/icons/scene.png", tr("Scene")));
+//    menuNewAsset->addAction(createWidgetAction(menuNewAsset, ":/icon/resources/icons/material.png", tr("Material")));
+//    menuNewAsset->addAction(createWidgetAction(menuNewAsset, ":/icon/resources/icons/animation.png", tr("Animation")));
+//    menuNewAsset->addAction(createWidgetAction(menuNewAsset, ":/icon/resources/icons/particle.png", tr("Particle")));
+//    menuNewAsset->addAction(createWidgetAction(menuNewAsset, ":/icon/resources/icons/script.png", tr("Script")));
+//    //一级菜单
+//    menu->addAction(actionNewFolder);
+//    menu->addMenu(menuNewAsset);
+//    menu->addSeparator();
+//    menu->addAction(actionShowInFolder);
+//    menu->addSeparator();
+//    menu->addAction(actionCopy);
+//    menu->addAction(actionPaste);
+//    menu->addSeparator();
+//    menu->addAction(actionRename);
+//    menu->addAction(actionDelete);
+//    //绑定点击事件
+//    QObject::connect(actionNewFolder, SIGNAL(triggered()), this, SLOT(newFolder()));
+//    QObject::connect(actionShowInFolder, SIGNAL(triggered()), this, SLOT(showInFolder()));
+//    QObject::connect(actionCopy, SIGNAL(triggered()), this, SLOT(copyAction()));
+//    QObject::connect(actionPaste, SIGNAL(triggered()), this, SLOT(pasteAction()));
+//    QObject::connect(actionRename, SIGNAL(triggered()), this, SLOT(openEditor()));
+//    QObject::connect(actionDelete, SIGNAL(triggered()), this, SLOT(deleteAction()));
+//}
+
+//QWidgetAction *ProjectTree::createWidgetAction(QMenu *parent, QString iconPath, QString name)
+//{
+//    QWidgetAction *action = new QWidgetAction(parent);
+//    QWidget *w = new QWidget(this);
+//    w->setObjectName("widgetAction");
+//    w->setStyleSheet("#widgetAction:hover {background: #0ebf9c;}");
+//    QHBoxLayout *l = new QHBoxLayout(w);
+//    l->setContentsMargins(6, 2, 6, 2);
+//    QLabel *icon = new QLabel(w);
+//    QPixmap pix(iconPath);
+//    pix.setDevicePixelRatio(devicePixelRatio());
+//    pix = pix.scaled(13 * devicePixelRatio(), 13 * devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+//    icon->setPixmap(pix);
+//    l->addWidget(icon);
+//    QLabel *text = new QLabel(w);
+//    text->setText(name);
+//    text->setStyleSheet("color: #d6dfeb; font: 11pt \"Arial\";");
+//    l->addWidget(text, Qt::AlignLeft);
+//    action->setDefaultWidget(w);
+//    return action;
+//}
+
+//void ProjectTree::newFolder()
+//{
+//    QString filePath = getFilePath(getLevelPath(currentItem()));
+//    QString fileName = filePath + "new folder ";
+//    //给定初始文件夹名 如果存在 数字推后
+//    QDir *dir = new QDir();
+//    int i = 1;
+//    while (dir->exists(fileName + QString::number(i)))
+//    {
+//        i++;
+//    }
+//    //创建文件夹
+//    bool result = dir->mkdir(fileName + QString::number(i));
+//    if (result)
+//    {
+//        //创建树的结点
+//        QTreeWidgetItem *item = new QTreeWidgetItem({"new folder " + QString::number(i)});
+//        item->setIcon(0, QIcon(":/icon/resources/icons/folder5.png"));
+//        QTreeWidgetItem *parent = currentItem();
+//        //展开parent 并选中新建项
+//        if (parent)
+//        {
+//            parent->addChild(item);
+//            setItemExpanded(parent, true);
+//        }
+//        else
+//        {
+//            addTopLevelItem(item);
+//        }
+//        setCurrentItem(item);
+//        //创建了新文件夹 右侧文件列表可能要刷新
+//        //如果文件列表显示的是刚创建的文件夹的上一级文件夹的内容 需要更新列表
+//        showFolderContent(filePath.mid(0, filePath.length() - 1));
+//        //打开编辑框让用户指定名字
+//        openEditor();
+//    }
+//}
+
+//void ProjectTree::showInFolder()
+//{
+//    QTreeWidgetItem *item = currentItem();
+//    QString filePath = getFilePath(getLevelPath(item));
+//    filePath = filePath.mid(0, filePath.length() - 1);
+//    //QDesktopServices::openUrl(QUrl("file://" + filePath, QUrl::TolerantMode));
+//    //QProcess process;
+//    //process.start("explorer /select," + filePath);
+//    qDebug() << "showInFolder";
+//}
+
+//void ProjectTree::deleteAction()
+//{
+//    BaseTree::deleteAction();
+//    if (currentShowFolderContentItem)
+//    {
+//        //正在显示的文件夹还存在 其子文件可能被删除 对应项应该移除 刷新一次文件列表
+//        QString updatePath = getFilePath(getLevelPath(currentShowFolderContentItem));
+//        showFolderContent(updatePath.mid(0, updatePath.length() - 1));
+//    }
+//    else
+//    {
+//        //如果正在文件列表中被显示文件夹被删除 显示根文件夹
+//        showFolderContent(projectPath + contentsFolderName);
+//    }
+//    //刷新材质文件的映射 被删除的材质文件的映射不再占用内存
+//    Material::updateMap();
+//    //清空属性栏 包括场景 层级视图选中
+//    cancelHierarchyTreeSelectedItems();
+//    clearPropertyWidget();
+//}
+
+//void ProjectTree::updateCurrentShowFolderContentItem(QString path)
+//{
+//    currentShowFolderContentItem = getItemByPath(path);
+//}
+
+//void ProjectTree::addFolderItemInTree(QString parentPath, QString name)
+//{
+//    QTreeWidgetItem *parent = getItemByPath(parentPath);
+//    QTreeWidgetItem *item = new QTreeWidgetItem({name});
+//    item->setIcon(0, QIcon(":/icon/resources/icons/folder5.png"));
+//    if (parent)
+//    {
+//        parent->addChild(item);
+//    }
+//    else
+//    {
+//        //是top结点
+//        addTopLevelItem(item);
+//    }
+//    //添加好新的结点后 排序
+//    sortItems(0, Qt::AscendingOrder);
+//}
+
+//void ProjectTree::deleteFolderItemInTree(QString path)
+//{
+//    QTreeWidgetItem *item = getItemByPath(path);
+//    //如果该项在剪贴板中 移除
+//    if (clipBoardItems.contains(item))
+//    {
+//        clipBoardItems.removeOne(item);
+//    }
+//    delete item;
+//}
+
+//void ProjectTree::moveFolderItemInTree(QString prePath, QString newPath)
+//{
+//    //原来的结点
+//    QTreeWidgetItem *item = getItemByPath(prePath);
+//    //新位置的parent
+//    int index = newPath.lastIndexOf('/');
+//    QTreeWidgetItem *parent = getItemByPath(newPath.mid(0, index));
+//    //新名字
+//    QString name = newPath.mid(index + 1);
+//    //删去原来的结点
+//    if (item->parent())
+//    {
+//        item->parent()->removeChild(item);
+//    }
+//    else
+//    {
+//        takeTopLevelItem(indexOfTopLevelItem(item));
+//    }
+//    //在parent下接上结点
+//    if (parent)
+//    {
+//        parent->addChild(item);
+//    }
+//    else
+//    {
+//        addTopLevelItem(item);
+//    }
+//    //重命名
+//    item->setText(0, name);
+//    //重新排序
+//    sortItems(0, Qt::AscendingOrder);
+//}
+
+//void ProjectTree::deleteOne(QTreeWidgetItem *item)
+//{
+//    //删除文件夹
+//    QString path = getFilePath(getLevelPath(item));
+//    QDir *dir = new QDir(path);
+//    dir->removeRecursively();
+//    //删除对应meta文件夹
+//    QString metaFolderPath = path.mid((projectPath + contentsFolderName).length());
+//    metaFolderPath = projectEngineFolderPath + contentMetaFolderName + metaFolderPath;
+//    dir = new QDir(metaFolderPath);
+//    dir->removeRecursively();
+//    //如果该结点对应的文件夹正在文件列表中被显示 需要清空 显示根文件夹
+//    if (item == currentShowFolderContentItem)
+//    {
+//        currentShowFolderContentItem = NULL;
+//    }
+//    //删除树节点
+//    BaseTree::deleteOne(item);
+//}
+
+//QTreeWidgetItem *ProjectTree::getItemByPath(QString path)
+//{
+//    //根据路径找相应的树节点
+//    path = path.mid((projectPath + contentsFolderName).length());
+//    if (path.length() == 0)
+//    {
+//        //contents文件夹
+//        return NULL;
+//    }
+//    else
+//    {
+//        QTreeWidgetItem *item = NULL;
+//        //去掉一开始的/号 否则split的第一项是""
+//        path = path.mid(1);
+//        QStringList list = path.split('/');
+//        //查找第0项对应的top结点 同一级的文件夹不可能重名
+//        for (int i = 0; i < topLevelItemCount(); i++)
+//        {
+//            if (topLevelItem(i)->text(0) == list.at(0))
+//            {
+//                item = topLevelItem(i);
+//                break;
+//            }
+//        }
+//        //从第1项开始 查找非top结点
+//        for (int i = 1; i < list.count(); i++)
+//        {
+//            //第i项是第i代子孙
+//            for (int j = 0; j < item->childCount(); j++)
+//            {
+//                QTreeWidgetItem *child = item->child(j);
+//                if (list.at(i) == child->text(0))
+//                {
+//                    item = child;
+//                    break;
+//                }
+//            }
+//        }
+//        return item;
+//    }
+//}
+
+//void ProjectTree::copyAction()
+//{
+//    //重置剪贴板
+//    BaseTree::copyAction();
+//    //遍历剪贴板的项 算出对应的路径
+//    QList<QString> folderPaths;
+//    int count = clipBoardItems.count();
+//    for (int i = 0; i < count; i++)
+//    {
+//        QString folderPath = getFilePath(getLevelPath(clipBoardItems.at(i)));
+//        folderPath = folderPath.mid(0, folderPath.length() - 1);
+//        folderPaths.append(folderPath);
+//    }
+//    //发送信号给文件列表 修改文件列表的剪贴板
+//    copyToFileList(folderPaths);
+//}
+
+//void ProjectTree::copyByFileList(QList<QString> filePaths)
+//{
+//    //在文件列表中复制 修改文件夹树的剪贴板
+//    //清空上一次剪贴板存下的复制内容
+//    clipBoardItems.clear();
+//    clipBoardFilePaths.clear();
+//    //父亲孩子不会同时被选中
+//    int count = filePaths.count();
+//    for (int i = 0; i < count; i++)
+//    {
+//        QString path = filePaths.at(i);
+//        QFileInfo *fileInfo = new QFileInfo(path);
+//        if (fileInfo->isDir())
+//        {
+//            clipBoardItems.append(getItemByPath(path));
+//        }
+//        else
+//        {
+//            //不是文件夹的文件没有对应树结点 存入路径 粘贴时只进行文件粘贴操作 不进行树节点的粘贴操作
+//            clipBoardFilePaths.append(path);
+//        }
+//    }
+//}
+
+//void ProjectTree::pasteAction()
+//{
+//    //清空用于存粘贴的副本文件夹名字 用于高亮显示
+//    pastedFolderNames.clear();
+//    BaseTree::pasteAction();
+//}
+
+//void ProjectTree::pasteEnd()
+//{
+//    //粘贴结束后调用 粘贴不合法时 不会调用
+//    //树重新排序
+//    sortItems(0, Qt::AscendingOrder);
+//    //处理剪贴板中的非文件夹文件 同时传副本文件夹的路径 用于高亮显示
+//    QString destPath = getFilePath(getLevelPath(currentItem()));
+//    pasteFile(clipBoardFilePaths, destPath.mid(0, destPath.length() - 1), pastedFolderNames);
+//    //可能复制到当前显示的文件夹下了 更新文件列表 这个操作放在pasteFile里执行
+//}
+
+//void ProjectTree::pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript)
+//{
+//    //复制文件夹
+//    QString sourcePath = getFilePath(getLevelPath(source));
+//    sourcePath = sourcePath.mid(0, sourcePath.length() - 1);
+//    QString transcriptPath = getFilePath(getLevelPath(transcript));
+//    transcriptPath = transcriptPath.mid(0, transcriptPath.length() - 1);
+//    copyDirectoryFiles(sourcePath, transcriptPath);
+//    //复制对应meta文件夹
+//    copyDirectoryFiles(FileList::getMetaFilePath(sourcePath), FileList::getMetaFilePath(transcriptPath));
+//    //存副本文件夹名字 用于文件列表的高亮显示
+//    pastedFolderNames.append(transcriptPath.mid(transcriptPath.lastIndexOf('/') + 1));
+//}
+
+//void ProjectTree::pasteItemWithoutPasteFile(QList<QString> clipBoardTranscriptFolderNames)
+//{
+//    //只粘贴树节点 不粘贴文件 粘贴文件的操作已经在FileList中执行了
+//    //修改目的结点currentItem为FileList所指 下次在ProjectTree中粘贴 也使用这个目的结点
+//    setCurrentItem(currentShowFolderContentItem);
+//    //能执行到这个函数 粘贴操作一定合法
+//    //去掉选中项的高亮
+//    QList<QTreeWidgetItem*> selected = selectedItems();
+//    int count = selected.count();
+//    for (int i = 0; i < count; i++)
+//    {
+//        setItemSelected(selected.at(i), false);
+//    }
+//    //遍历剪贴板
+//    count = clipBoardItems.count();
+//    for (int i = 0; i < count; i++)
+//    {
+//        QTreeWidgetItem *item = clipBoardItems.at(i);
+//        //拷贝结点
+//        QTreeWidgetItem *transcript = item->clone();
+//        //副本的名字可能重复 重命名
+//        transcript->setText(0, clipBoardTranscriptFolderNames.at(i));
+//        //在目的结点下接入拷贝的结点
+//        if (currentShowFolderContentItem)
+//        {
+//            currentShowFolderContentItem->addChild(transcript);
+//        }
+//        else
+//        {
+//            addTopLevelItem(transcript);
+//        }
+//        //粘贴项高亮
+//        setItemSelected(transcript, true);
+//    }
+//    //展开目的结点
+//    if (currentShowFolderContentItem)
+//        setItemExpanded(currentShowFolderContentItem, true);
+//    //重新排序
+//    sortItems(0, Qt::AscendingOrder);
+//}
+
+//void ProjectTree::removeClipBoardRenameItem(QString path)
+//{
+//    clipBoardItems.removeOne(getItemByPath(path));
+//}
+
+//void ProjectTree::pressRootButton()
+//{
+//    //去除树的选中项
+//    setCurrentItem(NULL);
+//    //右侧文件列表显示根目录的文件
+//    showFolderContent(projectPath + contentsFolderName);
+//    //根节点对应item用null表示
+//    currentShowFolderContentItem = NULL;
+//}
+
+//void ProjectTree::pressSettingButton()
+//{
+//    //去除树的选中项
+//    setCurrentItem(NULL);
+//    //弹出菜单
+//    menu->exec(cursor().pos());
+//}
+
+//void ProjectTree::itemClickedSlot(QTreeWidgetItem *item, int column)
+//{
+//    Q_UNUSED(column);
+//    QString folderPath = getFilePath(getLevelPath(item));
+//    folderPath = folderPath.mid(0, folderPath.length() - 1);
+//    showFolderContent(folderPath);
+//    currentShowFolderContentItem = item;
+//}
+
+//void ProjectTree::finishRename()
+//{
+//    if (editingItem == NULL)
+//        return;
+
+//    //是否对名字进行了修改
+//    //新名字不为空
+//    QString name = edit->text();
+//    QString preName = editingItem->text(0);
+//    if (preName != name && !name.isEmpty())
+//    {
+//        QString path = getFilePath(getLevelPath(editingItem));
+//        QString pre = path.mid(0, path.length() - 1);
+//        //不带名字的文件夹路径
+//        path = pre.mid(0, pre.lastIndexOf('/') + 1);
+//        //新名字
+//        QString now = path + name;
+//        //检查是否重名
+//        QDir *dir = new QDir(now);
+//        if (dir->exists())
+//        {
+//            //修改后的名字存在 末尾加2 类推
+//            dir = new QDir();
+//            int i = 2;
+//            while (dir->exists(now + "(" + QString::number(i) + ")"))
+//            {
+//                i++;
+//            }
+//            now += "(" + QString::number(i) + ")";
+//            name += "(" + QString::number(i) + ")";
+//        }
+
+//        QFile::rename(pre, now);
+//        editingItem->setText(0, name);
+//        //向文件列表发送信号 更新路径
+//        updateFolderName(pre, now);
+//        //重命名后 如果在剪贴板中 移除掉
+//        if (clipBoardItems.contains(editingItem))
+//        {
+//            clipBoardItems.removeOne(editingItem);
+//        }
+//        //名字变化后 排序
+//        sortItems(0, Qt::AscendingOrder);
+//    }
+//    BaseTree::finishRename();
+//}
+
+//void ProjectTree::updateFolderNameInvert(QString preName, QString newName)
+//{
+//    //修改名字的文件夹对应的树节点是当前正在显示的文件夹对应的树节点的孩子节点
+//    //遍历currentShowFolderContentItem的所有孩子找名为preName的 改为newName
+//    //孩子节点表示子文件夹名 不可能重名
+//    if (currentShowFolderContentItem)
+//    {
+//        for (int i = 0; i < currentShowFolderContentItem->childCount(); i++)
+//        {
+//            QTreeWidgetItem *item = currentShowFolderContentItem->child(i);
+//            if (item->text(0) == preName)
+//            {
+//                item->setText(0, newName);
+//                break;
+//            }
+//        }
+//    }
+//    else
+//    {
+//        //修改的是top节点
+//        for (int i = 0; i < topLevelItemCount(); i++)
+//        {
+//            QTreeWidgetItem *item = topLevelItem(i);
+//            if (item->text(0) == preName)
+//            {
+//                item->setText(0, newName);
+//                break;
+//            }
+//        }
+//    }
+//    sortItems(0, Qt::AscendingOrder);
+//}
+
+//void ProjectTree::dragMoveEvent(QDragMoveEvent *event)
+//{
+//    if (!event->mimeData()->hasFormat(getMimeType()) && !event->mimeData()->hasFormat(FileList::getMimeType()))
+//    {
+//        event->ignore();
+//        return;
+//    }
+//    BaseTree::dragMoveEvent(event);
+//}
+
+//bool ProjectTree::dragDropItem()
+//{
+//    //拖拽的结点 已经在startDrag中进行过过滤了
+//    QList<QTreeWidgetItem*> dragItems = selectedItems();
+//    //落下前计算出拖拽之前的选中项的层级位置 便于移动或者撤销移动
+//    //清空上一次的dragItemLocations （或者保存到撤销队列中）
+//    QList<QString> dragItemLocations;
+//    for (int i = 0; i < dragItems.count(); i++)
+//    {
+//        dragItemLocations.append(getLevelPath(dragItems.at(i)));
+//    }
+//    //落下
+//    if (BaseTree::dragDropItem())
+//    {
+//        for (int i = 0; i < dragItemLocations.count(); i++)
+//        {
+//            //落下前保存的拖动项dragItems 之前的路径
+//            QString oldPath = getFilePath(dragItemLocations.at(i));
+//            //落下后 计算现在的拖动项路径
+//            QString newPath = getFilePath(getLevelPath(dragItems.at(i)));
+//            //路径没有改变 兄弟之间换了顺序 无需后续操作
+//            if (oldPath == newPath)
+//                continue;
+//            //去掉路径最后的斜杠
+//            oldPath = oldPath.mid(0, oldPath.length() - 1);
+//            newPath = newPath.mid(0, newPath.length() - 1);
+//            //目标路径有重名文件夹 该文件夹名字后加(2)或(3) 类推
+//            QDir *dir = new QDir();
+//            if (dir->exists(newPath))
+//            {
+//                int j = 2;
+//                while (dir->exists(newPath + "(" + QString::number(j) + ")"))
+//                {
+//                    j++;
+//                }
+//                newPath = newPath + "(" + QString::number(j) + ")";
+//                //树中对应项也要修改名字
+//                dragItems.at(i)->setText(0, dragItems.at(i)->text(0) + "(" + QString::number(j) + ")");
+//            }
+//            //文件夹拷贝
+//            copyDirectoryFiles(oldPath, newPath);
+//            //删除原来的文件夹
+//            dir = new QDir(oldPath);
+//            dir->removeRecursively();
+//            //对应的meta文件夹也要移动
+//            QString newMetaFolderPath = newPath.mid((projectPath + contentsFolderName).length());
+//            newMetaFolderPath = projectEngineFolderPath + contentMetaFolderName + newMetaFolderPath;
+//            QString oldMetaFolderPath = oldPath.mid((projectPath + contentsFolderName).length());
+//            oldMetaFolderPath = projectEngineFolderPath + contentMetaFolderName + oldMetaFolderPath;
+//            copyDirectoryFiles(oldMetaFolderPath, newMetaFolderPath);
+//            dir = new QDir(oldMetaFolderPath);
+//            dir->removeRecursively();
+//        }
+//        //树各项按名称排序
+//        sortItems(0, Qt::AscendingOrder);
+//        //如果当前显示的文件夹是移动的文件夹 需要更新路径 如果移入了当前显示的文件夹 列表增加项
+//        //刷新右侧 显示currentShowFolderContentItem对应的文件夹 这个item可能被移动 路径发生了变化
+//        QString updatePath = getFilePath(getLevelPath(currentShowFolderContentItem));
+//        showFolderContent(updatePath.mid(0, updatePath.length() - 1));
+//        return true;
+//    }
+//    else
+//    {
+//        return false;
+//    }
+//}
+
+//bool ProjectTree::moveItemFromFileList(const QMimeData *mimeData)
+//{
+//    if (indicatorItem)
+//    {
+//        //拖拽的新路径 只含路径 不带自己的名字
+//        QString destPath;
+//        if (indicatorPos == IndicatorPos::RECT)
+//        {
+//            //成为indicatorItem的孩子
+//            destPath = getFilePath(getLevelPath(indicatorItem));
+//        }
+//        else
+//        {
+//            //成为indicatorItem的兄弟
+//            destPath = getFilePath(getLevelPath(indicatorItem->parent()));
+//        }
+//        //得到所有拖动文件的路径
+//        QList<QString> sourceFilePaths;
+//        QByteArray data = mimeData->data(FileList::getMimeType());
+//        QDataStream dataStream(&data, QIODevice::ReadOnly);
+//        QString sourceFilePath;
+//        //第一个存的是current项对应路径 不需要 需要之后selected对应的路径
+//        dataStream >> sourceFilePath;
+//        dataStream >> sourceFilePath;
+//        while (!sourceFilePath.isEmpty())
+//        {
+//            sourceFilePaths.append(sourceFilePath);
+//            //文件夹不能移到自己里面 也不能移到自己的子文件夹里面
+//            if (destPath.mid(0, sourceFilePath.length()) == sourceFilePath)
+//            {
+//                return false;
+//            }
+//            //也不能自己成为自己的兄弟 移到自己的父文件夹里
+//            if (sourceFilePath.mid(0, sourceFilePath.lastIndexOf('/') + 1) == destPath)
+//            {
+//                return false;
+//            }
+//            dataStream >> sourceFilePath;
+//        }
+//        //移动合法 将所有文件夹移到destPath里面
+//        for (int i = 0; i < sourceFilePaths.count(); i++)
+//        {
+//            QString prePath = sourceFilePaths.at(i);
+//            QString fileName = prePath.mid(prePath.lastIndexOf('/') + 1);
+//            if (QFileInfo(prePath).isDir())
+//            {
+//                QString newPath = FileList::checkFolderDuplicateName(destPath + fileName);
+//                //移动文件夹
+//                copyDirectoryFiles(prePath, newPath);
+//                //删除原来位置的文件夹
+//                QDir *dir = new QDir(prePath);
+//                dir->removeRecursively();
+//                //对应的meta文件夹也要移动
+//                QString oldMetaFolderPath = FileList::getMetaFilePath(prePath);
+//                ProjectTree::copyDirectoryFiles(oldMetaFolderPath, FileList::getMetaFilePath(newPath));
+//                dir = new QDir(oldMetaFolderPath);
+//                dir->removeRecursively();
+//                //文件夹树的结点也要移动
+//                moveFolderItemInTree(prePath, newPath);
+//            }
+//            else
+//            {
+//                QString newPath = FileList::checkFileDuplicateName(destPath + fileName);
+//                QFile::copy(prePath, newPath);
+//                //删除原来位置的文件
+//                //删除文件
+//                if (QFile::remove(prePath))
+//                {
+//                    QString suffix = newPath.mid(newPath.lastIndexOf('.') + 1);
+//                    //有些文件对应的meta文件夹也要移动
+//                    if (suffix == "obj")
+//                    {
+//                        QString oldMetaFilePath = FileList::getMetaFilePath(prePath);
+//                        QString newMetaFilePath = FileList::getMetaFilePath(newPath);
+//                        //修改后缀为jpg
+//                        int index = oldMetaFilePath.lastIndexOf('.');
+//                        oldMetaFilePath = oldMetaFilePath.mid(0, index) + ".jpg";
+//                        index = newMetaFilePath.lastIndexOf('.');
+//                        newMetaFilePath = newMetaFilePath.mid(0, index) + ".jpg";
+//                        QFile::copy(oldMetaFilePath, newMetaFilePath);
+//                        QFile::remove(oldMetaFilePath);
+//                    }
+//                    //材质文件需要新建材质对象
+//                    else if (suffix == "mtl")
+//                    {
+//                        new Material(newPath);
+//                    }
+//                }
+//            }
+//        }
+//        //刷新列表 删去移走的项和映射
+//        deleteFileItemInList();
+//        return true;
+//    }
+//    else
+//    {
+//        return false;
+//    }
+//}
+
+//QString ProjectTree::getFilePath(QString relativeLocation)
+//{
+//    //求文件夹的路径
+//    return projectPath + "contents/" + relativeLocation;
+//}
+
+//bool ProjectTree::copyDirectoryFiles(QString fromDir, QString toDir)
+//{
+//    //拷贝文件夹
+//    QDir sourceDir(fromDir);
+//    QDir targetDir(toDir);
+//    if (!targetDir.exists())
+//    {
+//        //如果目标目录不存在，则进行创建
+//        //mkdir在已有路径上创建文件夹 mkpath可以在没有的路径上创建多级文件夹
+//        if (!targetDir.mkpath(targetDir.absolutePath()))
+//        {
+//            return false;
+//        }
+//    }
+//    //遍历源文件夹
+//    QFileInfoList fileInfoList = sourceDir.entryInfoList();
+//    foreach (QFileInfo fileInfo, fileInfoList)
+//    {
+//        //fileInfo.filePath()会出现/./
+//        if (fileInfo.fileName() == "." || fileInfo.fileName() == "..")
+//            continue;
+
+//        if (fileInfo.isDir())
+//        {
+//            //当为目录时，递归的进行copy
+//            if (!copyDirectoryFiles(fileInfo.filePath(), targetDir.filePath(fileInfo.fileName())))
+//                return false;
+//        }
+//        else
+//        {
+//            //进行文件copy
+//            if (!QFile::copy(fileInfo.filePath(), targetDir.filePath(fileInfo.fileName())))
+//            {
+//                return false;
+//            }
+//            else
+//            {
+//                //材质文件需要新建材质对象
+//                QString suffix = fileInfo.fileName().mid(fileInfo.fileName().lastIndexOf('.') + 1);
+//                if (suffix == "mtl")
+//                {
+//                    new Material(fileInfo.absoluteFilePath());
+//                }
+//            }
+//        }
+//    }
+//    return true;
+//}
+
+
+//void ProjectTree::loadMaterial(QString filePath)
+//{
+//    if (isLoadMaterial)
+//    {
+//        new Material(filePath);
+//    }
+//}

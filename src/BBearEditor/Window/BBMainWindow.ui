@@ -1111,7 +1111,7 @@ FileList::item:selected {
           </widget>
          </item>
          <item>
-          <widget class="QTreeWidget" name="treeProject">
+          <widget class="BBFolderTreeWidget" name="treeFolder">
            <property name="focusPolicy">
             <enum>Qt::ClickFocus</enum>
            </property>
@@ -1319,6 +1319,11 @@ FileList::item:selected {
    <class>BBPropertyManager</class>
    <extends>QWidget</extends>
    <header>PropertyManager/BBPropertyManager.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BBFolderTreeWidget</class>
+   <extends>QTreeWidget</extends>
+   <header>FileSystem/BBFolderTreeWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

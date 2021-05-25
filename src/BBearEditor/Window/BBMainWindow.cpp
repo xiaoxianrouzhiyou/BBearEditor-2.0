@@ -3,6 +3,7 @@
 #include "BBUtils.h"
 #include <QKeyEvent>
 
+
 BBMainWindow::BBMainWindow(QWidget *parent)
     : QMainWindow(parent),
       m_pUi(new Ui::BBMainWindow)
@@ -16,6 +17,28 @@ BBMainWindow::BBMainWindow(QWidget *parent)
 BBMainWindow::~BBMainWindow()
 {
     BB_SAFE_DELETE(m_pUi);
+}
+
+void BBMainWindow::createProject()
+{
+//    //新项目预创建直射光
+//    GameObject *object = ui->openGLWidget->scene.createLight("directional light.png", 650, 300);
+//    //结点加入层级视图
+//    ui->treeHierarchy->addGameObjectSlot(object);
+//    //取消直射光的选中状态
+//    ui->treeHierarchy->cancelSelectedItems();
+}
+
+void BBMainWindow::openProject()
+{
+//    //显示指定场景 或者新场景
+//    newProject();
+//    //加载层级视图 以及结点对应的场景对象
+
+    // load file system
+    m_pUi->treeFolder->loadProject();
+//    //在文件列表中 显示contents里的文件
+//    ui->listFile->showFolderContent(projectPath + contentsFolderName);
 }
 
 void BBMainWindow::setWindowLayout()

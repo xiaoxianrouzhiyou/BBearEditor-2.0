@@ -28,6 +28,10 @@ private slots:
     void closeDialog();
     void openSelectedProject(QListWidgetItem *pItem);
 
+signals:
+    void createProject();
+    void openProject();
+
 private:
     void setButtonTabBar();
     void loadExistingProject();

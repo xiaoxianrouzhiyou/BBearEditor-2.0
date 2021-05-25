@@ -25,6 +25,8 @@ BBProjectDialog::BBProjectDialog(QWidget *pParent)
     loadExistingProject();
     setListWidget();
     setLineEdit();
+
+    m_pUi->stackedFolderAndNew->setCurrentIndex(0);
 }
 
 BBProjectDialog::~BBProjectDialog()
@@ -89,10 +91,12 @@ void BBProjectDialog::createNewProject()
     // Used to save engine-related files
     BB_PROCESS_ERROR_RETURN(dir.mkdir(filePath + "/" + BBConstant::BB_NAME_FILE_SYSTEM_ENGINE));
     // save constant
+    BBConstant::BB_NAME_PROJECT = fileName;
     BBConstant::BB_PATH_PROJECT = filePath + "/";
-    BBConstant::BB_PATH_PROJECT_ENGINE = BBConstant::BB_PATH_PROJECT + BBConstant::BB_NAME_FILE_SYSTEM_ENGINE + "/";
+    BBConstant::BB_PATH_PROJECT_USER = BBConstant::BB_PATH_PROJECT + BBConstant::BB_NAME_FILE_SYSTEM_USER;
+    BBConstant::BB_PATH_PROJECT_ENGINE = BBConstant::BB_PATH_PROJECT + BBConstant::BB_NAME_FILE_SYSTEM_ENGINE;
     // Place a project overview map in the engine folder
-    BB_PROCESS_ERROR_RETURN(QFile::copy(BBConstant::BB_PATH_RESOURCE_PICTURES + BBConstant::BB_NAME_OVERVIEW_MAP,
+    BB_PROCESS_ERROR_RETURN(QFile::copy(BBConstant::BB_PATH_RESOURCE_PICTURE + BBConstant::BB_NAME_OVERVIEW_MAP,
                                         BBConstant::BB_PATH_PROJECT_ENGINE + BBConstant::BB_NAME_OVERVIEW_MAP));
     // save the project into QSettings
     QSettings settings(BB_USER_NAME, BB_USER_PROJECT_NAME);
@@ -103,10 +107,8 @@ void BBProjectDialog::createNewProject()
     settings.endArray();
     // Close the dialog
     accept();
-//    //新工程的预设定
-//    MainWindow *mainWindow = qobject_cast<MainWindow*>(mMainWidget->layout()->itemAt(1)->widget());
-//    if (mainWindow)
-//        mainWindow->newProject();
+
+    createProject();
 }
 
 void BBProjectDialog::closeDialog()
@@ -116,7 +118,16 @@ void BBProjectDialog::closeDialog()
 
 void BBProjectDialog::openSelectedProject(QListWidgetItem *pItem)
 {
+    QString filePath = m_ProjectDirs.at(m_pUi->listDiskProject->row(pItem));
+    // save constant
+    BBConstant::BB_NAME_PROJECT = pItem->text();
+    BBConstant::BB_PATH_PROJECT = filePath + "/";
+    BBConstant::BB_PATH_PROJECT_USER = BBConstant::BB_PATH_PROJECT + BBConstant::BB_NAME_FILE_SYSTEM_USER;
+    BBConstant::BB_PATH_PROJECT_ENGINE = BBConstant::BB_PATH_PROJECT + BBConstant::BB_NAME_FILE_SYSTEM_ENGINE;
+    // Close the dialog
+    accept();
 
+    openProject();
 }
 
 void BBProjectDialog::setButtonTabBar()
@@ -179,8 +190,9 @@ void BBProjectDialog::setListWidget()
     for (int i = 0; i < m_ProjectDirs.count(); i++)
     {
         QString projectDir = m_ProjectDirs.at(i);
-        QString projectName = "test name";
-        QString iconPath = "../../resources/icons/empty2.png";
+        QFileInfo info(projectDir);
+        QString projectName = info.fileName();
+        QString iconPath = projectDir + "/" + BBConstant::BB_NAME_FILE_SYSTEM_ENGINE + "/" + BBConstant::BB_NAME_OVERVIEW_MAP;
         // Cut the overview image into a square
         QPixmap pix(iconPath);
         int h = pix.height();
@@ -210,25 +222,3 @@ void BBProjectDialog::setLineEdit()
     }
     m_pUi->lineEditProjectName->setText("New Project " + QString::number(i));
 }
-
-
-
-//void BeginningDialog::openSelectedProject(QListWidgetItem *item)
-//{
-//    //打开已存在的项目
-//    //获取项目路径
-//    QString dirName = projectDirs.at(ui->listDiskProject->row(item));
-//    //保存工程相关的全局变量
-//    projectName = item->text();
-//    projectPath = dirName + "/";
-//    projectEngineFolderPath = projectPath + "engine/";
-//    //关闭对话框
-//    close();
-//    //显示主界面
-//    mMainWidget->show();
-//    //读取已有工程 加载到主界面
-//    MainWindow *mainWindow = qobject_cast<MainWindow*>(mMainWidget->layout()->itemAt(1)->widget());
-//    if (mainWindow)
-//        mainWindow->openExistingProject();
-//}
-

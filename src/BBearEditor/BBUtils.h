@@ -34,9 +34,11 @@
 class BBConstant
 {
 public:
+    static QString BB_NAME_PROJECT;
     static QString BB_PATH_PROJECT;
     static QString BB_PATH_PROJECT_ENGINE;
-    static QString BB_PATH_RESOURCE_PICTURES;
+    static QString BB_PATH_PROJECT_USER;
+    static QString BB_PATH_RESOURCE_PICTURE;
     static QString BB_NAME_FILE_SYSTEM_USER;
     static QString BB_NAME_FILE_SYSTEM_ENGINE;
     static QString BB_NAME_OVERVIEW_MAP;

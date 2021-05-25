@@ -67,22 +67,6 @@
    background-color: rgb(239, 78, 73);
 }
 
-#buttonMinimize {
-   background-color: rgb(253, 191, 65);
-}
-
-#buttonMinimize:pressed {
-   background-color: rgb(162, 114, 29);
-}
-
-#buttonMaximize {
-   background-color: rgb(52, 200, 74);
-}
-
-#buttonMaximize:pressed {
-   background-color: rgb(20, 128, 34);
-}
-
 #pageFolder {
     background-color: rgb(14, 19, 25);
 }
@@ -214,6 +198,10 @@ QListWidget::item:hover {
     font: 9pt &quot;Arial&quot;;
 }
 
+#buttonCancel:hover {
+    background: #8c8193bc;
+}
+
 #buttonCreate {
     border: none;
     border-radius: 4px;
@@ -324,51 +312,13 @@ QListWidget::item:hover {
               </property>
              </widget>
             </item>
-            <item alignment="Qt::AlignLeft">
-             <widget class="QPushButton" name="buttonMinimize">
-              <property name="minimumSize">
-               <size>
-                <width>14</width>
-                <height>14</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>14</width>
-                <height>14</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="buttonMaximize">
-              <property name="minimumSize">
-               <size>
-                <width>14</width>
-                <height>14</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>14</width>
-                <height>14</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
            </layout>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="introduction">
            <property name="text">
-            <string>我是聪明可爱的大熊！！</string>
+            <string>Project Management</string>
            </property>
           </widget>
          </item>

@@ -15,6 +15,10 @@ public:
     explicit BBMainWindow(QWidget *parent = 0);
     virtual ~BBMainWindow();
 
+private slots:
+    void createProject();
+    void openProject();
+
 signals:
     void pressMultipleSelectionKey(bool);
 

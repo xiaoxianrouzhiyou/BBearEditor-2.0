@@ -50,17 +50,13 @@ int main(int argc, char *argv[])
                 (QApplication::desktop()->height() - dialog.sizeHint().height()) / 2);
     dialog.show();
 
-
-
-
-
-
-    //支持R屏
+    // Retina screen
     a.setAttribute(Qt::AA_UseHighDpiPixmaps);
-    //不用mac的风格
+    // do not use the style of mac
     a.setStyle(QStyleFactory::create("Fusion"));
 
-    //绑定全局信号槽
+    QObject::connect(&dialog, SIGNAL(createProject()), &mainWindow, SLOT(createProject()));
+    QObject::connect(&dialog, SIGNAL(openProject()), &mainWindow, SLOT(openProject()));
     //QObject::connect(&a, SIGNAL(pressTransformSignal(char)), &mainWindow, SLOT(globalPressTransformKey(char)));
     //QObject::connect(&a, SIGNAL(multipleSelectKey(bool)), &mainWindow, SLOT(multipleSelectKey(bool)));
     //QObject::connect(&titleBar, SIGNAL(run(bool)), &mainWindow, SLOT(run(bool)));
