@@ -1,13 +1,23 @@
 #include "BBFolderTreeWidget.h"
-#include "BBUtils.h"
 #include <QDir>
 #include <QQueue>
+#include <QMenu>
+#include <QWidgetAction>
+#include <QHBoxLayout>
+#include <QLabel>
 
 
 BBFolderTreeWidget::BBFolderTreeWidget(QWidget *pParent)
     : BBTreeWidget(pParent)
 {
+//    currentShowFolderContentItem(NULL)
+//    //初始时 需要加载材质
+//    isLoadMaterial = true;
 
+    setMenu();
+
+//    QObject::connect(this, SIGNAL(itemClicked(QTreeWidgetItem*, int)),
+//                     this, SLOT(itemClickedSlot(QTreeWidgetItem*, int)));
 }
 
 BBFolderTreeWidget::loadProject()
@@ -114,92 +124,75 @@ QString BBFolderTreeWidget::getFileSuffix(QFileInfo fileInfo)
     return fileInfo.fileName().mid(fileInfo.fileName().lastIndexOf('.') + 1);
 }
 
+void BBFolderTreeWidget::setMenu()
+{
+    // first level menu
+    m_pMenu = new QMenu(this);
+    QAction *pActionNewFolder = new QAction(tr("New Folder"));
+    QAction *pActionShowInFolder = new QAction(tr("Show In Folder"));
+    QAction *pActionCopy = new QAction(tr("Copy"));
+    pActionCopy->setShortcut(QKeySequence(tr("Ctrl+C")));
+    QAction *pActionPaste = new QAction(tr("Paste"));
+    pActionPaste->setShortcut(QKeySequence(tr("Ctrl+V")));
+    QAction *pActionRename = new QAction(tr("Rename"));
+#if defined(Q_OS_WIN32)
+    pActionRename->setShortcut(Qt::Key_F2);
+#elif defined(Q_OS_MAC)
+    pActionRename->setShortcut(Qt::Key_Return);
+#endif
+    QAction *pActionDelete = new QAction(tr("Delete"));
+    // second level menu
+    QMenu *pMenuNewAsset = new QMenu(tr("New Asset"), m_pMenu);
+    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "scene.png", tr("Scene")));
+    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "material.png", tr("Material")));
+    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "animation.png", tr("Animation")));
+    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "particle.png", tr("Particle")));
+    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "script.png", tr("Script")));
+    // first level menu
+    m_pMenu->addAction(pActionNewFolder);
+    m_pMenu->addMenu(pMenuNewAsset);
+    m_pMenu->addSeparator();
+    m_pMenu->addAction(pActionShowInFolder);
+    m_pMenu->addSeparator();
+    m_pMenu->addAction(pActionCopy);
+    m_pMenu->addAction(pActionPaste);
+    m_pMenu->addSeparator();
+    m_pMenu->addAction(pActionRename);
+    m_pMenu->addAction(pActionDelete);
+
+    QObject::connect(pActionNewFolder, SIGNAL(triggered()), this, SLOT(newFolder()));
+    QObject::connect(pActionShowInFolder, SIGNAL(triggered()), this, SLOT(showInFolder()));
+    QObject::connect(pActionCopy, SIGNAL(triggered()), this, SLOT(copyAction()));
+    QObject::connect(pActionPaste, SIGNAL(triggered()), this, SLOT(pasteAction()));
+    QObject::connect(pActionRename, SIGNAL(triggered()), this, SLOT(openRenameEditor()));
+    QObject::connect(pActionDelete, SIGNAL(triggered()), this, SLOT(deleteAction()));
+}
+
+QWidgetAction* BBFolderTreeWidget::createWidgetAction(QMenu *pParent, const QString &iconPath, const QString &name)
+{
+    QWidgetAction *pAction = new QWidgetAction(pParent);
+    QWidget *pWidget = new QWidget(this);
+    pWidget->setObjectName("widgetAction");
+    pWidget->setStyleSheet("#widgetAction:hover {background: #0ebf9c;}");
+    QHBoxLayout *pLayout = new QHBoxLayout(pWidget);
+    pLayout->setContentsMargins(6, 2, 6, 2);
+    QLabel *pIcon = new QLabel(pWidget);
+    QPixmap pix(iconPath);
+    pix.setDevicePixelRatio(devicePixelRatio());
+    pix = pix.scaled(13 * devicePixelRatio(), 13 * devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    pIcon->setPixmap(pix);
+    pLayout->addWidget(pIcon);
+    QLabel *pText = new QLabel(pWidget);
+    pText->setText(name);
+    pText->setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\";");
+    pLayout->addWidget(pText, Qt::AlignLeft);
+    pAction->setDefaultWidget(pWidget);
+    return pAction;
+}
 
 
-//ProjectTree::ProjectTree(QWidget *parent)
-//    : BaseTree(parent), currentShowFolderContentItem(NULL)
-//{
-//    QObject::connect(this, SIGNAL(itemClicked(QTreeWidgetItem*, int)),
-//                     this, SLOT(itemClickedSlot(QTreeWidgetItem*, int)));
 
-//    initMenu();
 
-//    //初始时 需要加载材质
-//    isLoadMaterial = true;
-//}
-
-//QString ProjectTree::getMimeType()
-//{
-//    return "ProjectTree";
-//}
-
-//void ProjectTree::initMenu()
-//{
-//    //一级菜单项
-//    menu = new QMenu(this);
-//    QAction *actionNewFolder = new QAction(tr("New Folder"));
-//    QAction *actionShowInFolder = new QAction(tr("Show In Folder"));
-//    QAction *actionCopy = new QAction(tr("Copy"));
-//    actionCopy->setShortcut(QKeySequence(tr("Ctrl+C")));
-//    QAction *actionPaste = new QAction(tr("Paste"));
-//    actionPaste->setShortcut(QKeySequence(tr("Ctrl+V")));
-//    QAction *actionRename = new QAction(tr("Rename"));
-//#if defined(Q_OS_WIN32)
-//    actionRename->setShortcut(Qt::F2);
-//#elif defined(Q_OS_MAC)
-//    actionRename->setShortcut(Qt::Key_Return);
-//#endif
-//    QAction *actionDelete = new QAction(tr("Delete"));
-//    //二级菜单
-//    //不指定parent为menu 无法使用父亲的样式表
-//    QMenu *menuNewAsset = new QMenu(tr("New Asset"), menu);
-//    //创建资源的菜单项 带图标
-//    menuNewAsset->addAction(createWidgetAction(menuNewAsset, ":/icon/resources/icons/scene.png", tr("Scene")));
-//    menuNewAsset->addAction(createWidgetAction(menuNewAsset, ":/icon/resources/icons/material.png", tr("Material")));
-//    menuNewAsset->addAction(createWidgetAction(menuNewAsset, ":/icon/resources/icons/animation.png", tr("Animation")));
-//    menuNewAsset->addAction(createWidgetAction(menuNewAsset, ":/icon/resources/icons/particle.png", tr("Particle")));
-//    menuNewAsset->addAction(createWidgetAction(menuNewAsset, ":/icon/resources/icons/script.png", tr("Script")));
-//    //一级菜单
-//    menu->addAction(actionNewFolder);
-//    menu->addMenu(menuNewAsset);
-//    menu->addSeparator();
-//    menu->addAction(actionShowInFolder);
-//    menu->addSeparator();
-//    menu->addAction(actionCopy);
-//    menu->addAction(actionPaste);
-//    menu->addSeparator();
-//    menu->addAction(actionRename);
-//    menu->addAction(actionDelete);
-//    //绑定点击事件
-//    QObject::connect(actionNewFolder, SIGNAL(triggered()), this, SLOT(newFolder()));
-//    QObject::connect(actionShowInFolder, SIGNAL(triggered()), this, SLOT(showInFolder()));
-//    QObject::connect(actionCopy, SIGNAL(triggered()), this, SLOT(copyAction()));
-//    QObject::connect(actionPaste, SIGNAL(triggered()), this, SLOT(pasteAction()));
-//    QObject::connect(actionRename, SIGNAL(triggered()), this, SLOT(openEditor()));
-//    QObject::connect(actionDelete, SIGNAL(triggered()), this, SLOT(deleteAction()));
-//}
-
-//QWidgetAction *ProjectTree::createWidgetAction(QMenu *parent, QString iconPath, QString name)
-//{
-//    QWidgetAction *action = new QWidgetAction(parent);
-//    QWidget *w = new QWidget(this);
-//    w->setObjectName("widgetAction");
-//    w->setStyleSheet("#widgetAction:hover {background: #0ebf9c;}");
-//    QHBoxLayout *l = new QHBoxLayout(w);
-//    l->setContentsMargins(6, 2, 6, 2);
-//    QLabel *icon = new QLabel(w);
-//    QPixmap pix(iconPath);
-//    pix.setDevicePixelRatio(devicePixelRatio());
-//    pix = pix.scaled(13 * devicePixelRatio(), 13 * devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-//    icon->setPixmap(pix);
-//    l->addWidget(icon);
-//    QLabel *text = new QLabel(w);
-//    text->setText(name);
-//    text->setStyleSheet("color: #d6dfeb; font: 11pt \"Arial\";");
-//    l->addWidget(text, Qt::AlignLeft);
-//    action->setDefaultWidget(w);
-//    return action;
-//}
 
 //void ProjectTree::newFolder()
 //{

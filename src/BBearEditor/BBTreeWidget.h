@@ -71,6 +71,7 @@ private:
 
 
 protected:
+    virtual void setMenu() = 0;
     void filterSelectedItems();
     QTreeWidgetItem* getParentOfMovingItem(int &nIndex);
     // drag, Which column of icons to use

@@ -1270,7 +1270,7 @@ FileList::item:selected {
           </widget>
          </item>
          <item>
-          <widget class="BBTreeWidget" name="listFile" native="true">
+          <widget class="QWidget" name="listFile" native="true">
            <property name="focusPolicy">
             <enum>Qt::ClickFocus</enum>
            </property>

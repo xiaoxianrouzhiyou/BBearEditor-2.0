@@ -239,7 +239,7 @@ void BBTreeWidget::dragEnterEvent(QDragEnterEvent *event)
         // Receive internal drag
         event->accept();
     }
-    else if (event->mimeData()->hasFormat(BB_MIMETYPE_FILETREEWIDGET))
+    else if (event->mimeData()->hasFormat(BB_MIMETYPE_FOLDERTREEWIDGET))
     {
         // Receive items dragged from the file list
         event->accept();
@@ -340,7 +340,7 @@ void BBTreeWidget::dropEvent(QDropEvent *event)
             event->ignore();
         }
     }
-    else if (event->mimeData()->hasFormat(BB_MIMETYPE_FILETREEWIDGET))
+    else if (event->mimeData()->hasFormat(BB_MIMETYPE_FOLDERTREEWIDGET))
     {
         // Receive items dropped from the file list
         if (moveItemFromFileList(event->mimeData()))

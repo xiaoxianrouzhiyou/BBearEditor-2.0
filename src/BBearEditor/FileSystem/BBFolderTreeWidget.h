@@ -2,7 +2,11 @@
 #define BBFOLDERTREEWIDGET_H
 
 #include "BBTreeWidget.h"
+#include "BBUtils.h"
 #include <QFileInfo>
+
+
+class QWidgetAction;
 
 
 class BBFolderTreeWidget : public BBTreeWidget
@@ -11,6 +15,7 @@ class BBFolderTreeWidget : public BBTreeWidget
 
 public:
     explicit BBFolderTreeWidget(QWidget *pParent = nullptr);
+    QString getMimeType() { return BB_MIMETYPE_FOLDERTREEWIDGET; }
 
     loadProject();
 
@@ -20,6 +25,8 @@ private slots:
 
 private:
     QString getFileSuffix(QFileInfo fileInfo);
+    void setMenu() override;
+    QWidgetAction* createWidgetAction(QMenu *pParent, const QString &iconPath, const QString &name);
 
 };
 
@@ -34,8 +41,6 @@ private:
 //    Q_OBJECT
 
 //public:
-//    ProjectTree(QWidget *parent = 0);
-//    QString getMimeType() override;
 //    static bool copyDirectoryFiles(QString fromDir, QString toDir);
 
 //signals:
@@ -48,7 +53,6 @@ private:
 //    void clearPropertyWidget();
 
 //public slots:
-//    void loadProject();
 //    void copyAction() override;
 //    void pasteAction() override;
 
@@ -74,8 +78,6 @@ private:
 //    bool dragDropItem() override;
 //    bool moveItemFromFileList(const QMimeData *mimeData) override;
 //    QString getFilePath(QString relativeLocation);
-//    void initMenu();
-//    QWidgetAction *createWidgetAction(QMenu *parent, QString iconPath, QString name);
 //    void deleteOne(QTreeWidgetItem *item) override;
 //    QTreeWidgetItem *getItemByPath(QString path);
 //    void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript) override;

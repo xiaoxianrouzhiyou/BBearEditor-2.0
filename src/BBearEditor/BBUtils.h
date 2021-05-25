@@ -12,7 +12,7 @@
 #define BB_MIMETYPE_LIGHTOBJECT "LightObject"
 #define BB_MIMETYPE_TREEWIDGET "TreeWidget"
 #define BB_MIMETYPE_HIERARCHYTREEWIDGET "HierarchyTreeWidget"
-#define BB_MIMETYPE_FILETREEWIDGET "FileTreeWidget"
+#define BB_MIMETYPE_FOLDERTREEWIDGET "FolderTreeWidget"
 
 #define BB_PATH_BASEOBJECTLIST "../../../BBearEditor/resources/xmlfiles/baselist.xml"
 #define BB_PATH_RESOURCE "../../../BBearEditor/resources/"

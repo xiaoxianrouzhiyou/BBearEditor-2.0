@@ -17,7 +17,7 @@ public:
     static QMap<QTreeWidgetItem*, BBGameObject*> m_ObjectMap;
 
 private:
-    void setMenu();
+    void setMenu() override;
     void pasteOne(QTreeWidgetItem *pSource, QTreeWidgetItem* pTranscript) override;
     void deleteOne(QTreeWidgetItem *pItem) override;
 
