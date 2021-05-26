@@ -19,15 +19,22 @@ public:
 
     loadProject();
 
-signals:
-
 private slots:
+    void pressRootButton();
+    void clickItem(QTreeWidgetItem *pItem, int nColumn);
+
+signals:
+    void showFolderContent(const QString &folderPath);
 
 private:
     QString getFileSuffix(QFileInfo fileInfo);
-    void setMenu() override;
-    QWidgetAction* createWidgetAction(QMenu *pParent, const QString &iconPath, const QString &name);
+    QString getAbsolutePath(const QString &relativePath);
+    QString getAbsolutePath(QTreeWidgetItem *pItem);
 
+    void setMenu() override;
+    QWidgetAction* createWidgetAction(QMenu *pParent, const QString &iconPath, const QString &name);   
+
+    QTreeWidgetItem *m_pCurrentShowFolderContentItem;
 };
 
 #endif // BBFOLDERTREEWIDGET_H
@@ -57,9 +64,7 @@ private:
 //    void pasteAction() override;
 
 //private slots:
-//    void pressRootButton();
 //    void pressSettingButton();
-//    void itemClickedSlot(QTreeWidgetItem *item, int column);
 //    void finishRename() override;
 //    void updateFolderNameInvert(QString preName, QString newName);
 //    void newFolder();
@@ -83,7 +88,6 @@ private:
 //    void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript) override;
 //    void pasteEnd() override;
 //    void loadMaterial(QString filePath);
-//    QTreeWidgetItem *currentShowFolderContentItem;
 //    QList<QString> clipBoardFilePaths;
 //    //用于存粘贴的副本文件夹名字 用于高亮显示
 //    QList<QString> pastedFolderNames;

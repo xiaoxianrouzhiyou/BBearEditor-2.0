@@ -131,6 +131,14 @@ void BBMainWindow::setConnect()
     // Select multiple items in the hierarchy tree, the property manager shows the properties of the set
     QObject::connect(m_pUi->treeHierarchy, SIGNAL(showGameObjectSetProperty(BBGameObject*, QList<BBGameObject*>)),
                      m_pUi->propertyManager, SLOT(showGameObjectSetProperty(BBGameObject*, QList<BBGameObject*>)));
+    // click item in folder tree, show contents in file list
+    QObject::connect(m_pUi->treeFolder, SIGNAL(showFolderContent(QString)),
+                     m_pUi->listFile, SLOT(showFolderContent(QString)));
+    // click buttons in the file system
+    QObject::connect(m_pUi->buttonRootProject, SIGNAL(clicked()),
+                     m_pUi->treeFolder, SLOT(pressRootButton()));
+    QObject::connect(m_pUi->buttonMoreProject, SIGNAL(clicked()),
+                     m_pUi->treeFolder, SLOT(pressSettingButton()));
 
 
 //    //对整个项目操作的菜单事件
@@ -142,12 +150,8 @@ void BBMainWindow::setConnect()
 
 
 
-//    //点击文件夹控件上的按钮
-//    QObject::connect(ui->buttonRootProject, SIGNAL(clicked()), ui->treeProject, SLOT(pressRootButton()));
-//    QObject::connect(ui->buttonMoreProject, SIGNAL(clicked()), ui->treeProject, SLOT(pressSettingButton()));
-//    //文件夹与文件视图
-//    QObject::connect(ui->treeProject, SIGNAL(showFolderContent(QString)),
-//                     ui->listFile, SLOT(showFolderContent(QString)));
+
+
 //    //文件视图改变 需要刷新文件夹树
 //    QObject::connect(ui->listFile, SIGNAL(updateProjectTree()), ui->treeProject, SLOT(loadProject()));
 //    //显示文件夹的内容 上方显示文件夹的路径

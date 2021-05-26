@@ -399,7 +399,7 @@ QPushButton {
     image: url(../../resources/icons/more.png);
 }
 
-FileList {
+BBFileListWidget {
     color: #d6dfeb;
     font: 9pt &quot;Arial&quot;;
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #191f28, stop: 1 rgb(36, 43, 58));
@@ -407,11 +407,11 @@ FileList {
 }
 
 /*After selected, the blue box will not appear*/
-FileList::item:focus {
+BBFileListWidget::item:focus {
     background: transparent;
 }
 
-FileList::item:selected {
+BBFileListWidget::item:selected {
     background: #8193bc;
     color: #d6dfeb;
 }</string>
@@ -1270,7 +1270,7 @@ FileList::item:selected {
           </widget>
          </item>
          <item>
-          <widget class="QWidget" name="listFile" native="true">
+          <widget class="BBFileListWidget" name="listFile" native="true">
            <property name="focusPolicy">
             <enum>Qt::ClickFocus</enum>
            </property>
@@ -1324,6 +1324,11 @@ FileList::item:selected {
    <class>BBFolderTreeWidget</class>
    <extends>QTreeWidget</extends>
    <header>FileSystem/BBFolderTreeWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BBFileListWidget</class>
+   <extends>QListWidget</extends>
+   <header>FileSystem/BBFileListWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

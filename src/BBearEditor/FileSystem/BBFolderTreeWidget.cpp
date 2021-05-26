@@ -10,14 +10,14 @@
 BBFolderTreeWidget::BBFolderTreeWidget(QWidget *pParent)
     : BBTreeWidget(pParent)
 {
-//    currentShowFolderContentItem(NULL)
+    m_pCurrentShowFolderContentItem = NULL;
 //    //初始时 需要加载材质
 //    isLoadMaterial = true;
 
     setMenu();
 
-//    QObject::connect(this, SIGNAL(itemClicked(QTreeWidgetItem*, int)),
-//                     this, SLOT(itemClickedSlot(QTreeWidgetItem*, int)));
+    QObject::connect(this, SIGNAL(itemClicked(QTreeWidgetItem*, int)),
+                     this, SLOT(clickItem(QTreeWidgetItem*, int)));
 }
 
 BBFolderTreeWidget::loadProject()
@@ -119,9 +119,39 @@ BBFolderTreeWidget::loadProject()
 //    isLoadMaterial = false;
 }
 
+void BBFolderTreeWidget::pressRootButton()
+{
+    setCurrentItem(NULL);
+    // show the files in the root dir in the file list on the right
+    showFolderContent(BBConstant::BB_PATH_PROJECT_USER);
+    // use NULL to indicate root item
+    m_pCurrentShowFolderContentItem = NULL;
+}
+
+void BBFolderTreeWidget::clickItem(QTreeWidgetItem *pItem, int nColumn)
+{
+    Q_UNUSED(nColumn);
+    QString folderPath = getAbsolutePath(pItem);
+    showFolderContent(folderPath);
+    m_pCurrentShowFolderContentItem = pItem;
+}
+
 QString BBFolderTreeWidget::getFileSuffix(QFileInfo fileInfo)
 {
     return fileInfo.fileName().mid(fileInfo.fileName().lastIndexOf('.') + 1);
+}
+
+QString BBFolderTreeWidget::getAbsolutePath(const QString &relativePath)
+{
+    QString absolutePath = BBConstant::BB_PATH_PROJECT_USER + "/" + relativePath;
+    // remove "/" that is at the end
+    absolutePath = absolutePath.mid(0, absolutePath.length() - 1);
+    return absolutePath;
+}
+
+QString BBFolderTreeWidget::getAbsolutePath(QTreeWidgetItem *pItem)
+{
+    return getAbsolutePath(getLevelPath(pItem));
 }
 
 void BBFolderTreeWidget::setMenu()
@@ -512,31 +542,12 @@ QWidgetAction* BBFolderTreeWidget::createWidgetAction(QMenu *pParent, const QStr
 //    clipBoardItems.removeOne(getItemByPath(path));
 //}
 
-//void ProjectTree::pressRootButton()
-//{
-//    //去除树的选中项
-//    setCurrentItem(NULL);
-//    //右侧文件列表显示根目录的文件
-//    showFolderContent(projectPath + contentsFolderName);
-//    //根节点对应item用null表示
-//    currentShowFolderContentItem = NULL;
-//}
-
 //void ProjectTree::pressSettingButton()
 //{
 //    //去除树的选中项
 //    setCurrentItem(NULL);
 //    //弹出菜单
 //    menu->exec(cursor().pos());
-//}
-
-//void ProjectTree::itemClickedSlot(QTreeWidgetItem *item, int column)
-//{
-//    Q_UNUSED(column);
-//    QString folderPath = getFilePath(getLevelPath(item));
-//    folderPath = folderPath.mid(0, folderPath.length() - 1);
-//    showFolderContent(folderPath);
-//    currentShowFolderContentItem = item;
 //}
 
 //void ProjectTree::finishRename()
@@ -796,11 +807,6 @@ QWidgetAction* BBFolderTreeWidget::createWidgetAction(QMenu *pParent, const QStr
 //    }
 //}
 
-//QString ProjectTree::getFilePath(QString relativeLocation)
-//{
-//    //求文件夹的路径
-//    return projectPath + "contents/" + relativeLocation;
-//}
 
 //bool ProjectTree::copyDirectoryFiles(QString fromDir, QString toDir)
 //{
