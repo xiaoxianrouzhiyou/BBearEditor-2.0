@@ -139,27 +139,23 @@ void BBMainWindow::setConnect()
                      m_pUi->treeFolder, SLOT(pressRootButton()));
     QObject::connect(m_pUi->buttonMoreProject, SIGNAL(clicked()),
                      m_pUi->treeFolder, SLOT(pressSettingButton()));
+    // show folder path in the bar
+    QObject::connect(m_pUi->treeFolder, SIGNAL(showFolderContent(QString)),
+                     m_pUi->barFilePath, SLOT(showCurrentFolderPath(QString)));
+    QObject::connect(m_pUi->buttonMovePathLeft, SIGNAL(pressed()),
+                     m_pUi->scrollAreaFilePath, SLOT(moveToLeft()));
+    QObject::connect(m_pUi->buttonMovePathRight, SIGNAL(pressed()),
+                     m_pUi->scrollAreaFilePath, SLOT(moveToRight()));
+    // click an item in the file path bar, and change selected item in the folder tree
+    QObject::connect(m_pUi->barFilePath, SIGNAL(showFolderContent(QString)),
+                     m_pUi->treeFolder, SLOT(setCurrentItemByPath(QString)));
 
 
 //    //对整个项目操作的菜单事件
 //    QObject::connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(save()));
-
-//    //更换坐标系的模式
-//    QObject::connect(this, SIGNAL(pressTransformSignal(char)),
-//                     ui->openGLWidget, SLOT(pressTransformSlot(char)));
-
-
-
-
-
 //    //文件视图改变 需要刷新文件夹树
 //    QObject::connect(ui->listFile, SIGNAL(updateProjectTree()), ui->treeProject, SLOT(loadProject()));
-//    //显示文件夹的内容 上方显示文件夹的路径
-//    QObject::connect(ui->listFile, SIGNAL(showFolderPath(QString)),
-//                     ui->filePathWidget, SLOT(showCurrentFolderPath(QString)));
-//    //点击文件夹路径内的一项 跳转显示该文件夹
-//    QObject::connect(ui->filePathWidget, SIGNAL(showFolderContent(QString)),
-//                     ui->listFile, SLOT(showFolderContent(QString)));
+
 //    //文件列表跳转之后 文件夹树的currentShowFolderContentItem需要更新
 //    QObject::connect(ui->listFile, SIGNAL(updateCurrentShowFolderContentItem(QString)),
 //                     ui->treeProject, SLOT(updateCurrentShowFolderContentItem(QString)));

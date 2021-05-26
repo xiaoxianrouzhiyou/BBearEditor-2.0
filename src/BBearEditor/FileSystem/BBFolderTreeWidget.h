@@ -22,6 +22,7 @@ public:
 private slots:
     void pressRootButton();
     void clickItem(QTreeWidgetItem *pItem, int nColumn);
+    void setCurrentItemByPath(const QString &folderPath);
 
 signals:
     void showFolderContent(const QString &folderPath);
@@ -30,6 +31,7 @@ private:
     QString getFileSuffix(QFileInfo fileInfo);
     QString getAbsolutePath(const QString &relativePath);
     QString getAbsolutePath(QTreeWidgetItem *pItem);
+    QTreeWidgetItem* getItemByPath(const QString &absolutePath);
 
     void setMenu() override;
     QWidgetAction* createWidgetAction(QMenu *pParent, const QString &iconPath, const QString &name);   
@@ -51,7 +53,6 @@ private:
 //    static bool copyDirectoryFiles(QString fromDir, QString toDir);
 
 //signals:
-//    void showFolderContent(QString folderPath);
 //    void updateFolderName(QString prePath, QString newPath);
 //    void deleteFileItemInList();
 //    void copyToFileList(QList<QString> folderPaths);
@@ -82,9 +83,7 @@ private:
 //    void dragMoveEvent(QDragMoveEvent *event) override;
 //    bool dragDropItem() override;
 //    bool moveItemFromFileList(const QMimeData *mimeData) override;
-//    QString getFilePath(QString relativeLocation);
 //    void deleteOne(QTreeWidgetItem *item) override;
-//    QTreeWidgetItem *getItemByPath(QString path);
 //    void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript) override;
 //    void pasteEnd() override;
 //    void loadMaterial(QString filePath);

@@ -115,6 +115,7 @@ BBFolderTreeWidget::loadProject()
 //        currentShowFolderContentItem = getItemByPath(currentShowFolderContentPath);
 //    }
 
+    showFolderContent(BBConstant::BB_PATH_PROJECT_USER);
 //    //之后重新加载工程时 无需加载材质
 //    isLoadMaterial = false;
 }
@@ -136,6 +137,13 @@ void BBFolderTreeWidget::clickItem(QTreeWidgetItem *pItem, int nColumn)
     m_pCurrentShowFolderContentItem = pItem;
 }
 
+void BBFolderTreeWidget::setCurrentItemByPath(const QString &folderPath)
+{
+    QTreeWidgetItem *pItem = getItemByPath(folderPath);
+    setCurrentItem(pItem);
+    clickItem(pItem, 0);
+}
+
 QString BBFolderTreeWidget::getFileSuffix(QFileInfo fileInfo)
 {
     return fileInfo.fileName().mid(fileInfo.fileName().lastIndexOf('.') + 1);
@@ -152,6 +160,48 @@ QString BBFolderTreeWidget::getAbsolutePath(const QString &relativePath)
 QString BBFolderTreeWidget::getAbsolutePath(QTreeWidgetItem *pItem)
 {
     return getAbsolutePath(getLevelPath(pItem));
+}
+
+QTreeWidgetItem* BBFolderTreeWidget::getItemByPath(const QString &absolutePath)
+{
+    // Find the corresponding tree item according to the path
+    QString path = absolutePath.mid(BBConstant::BB_PATH_PROJECT_USER.length());
+    if (path.length() == 0)
+    {
+        // "contents" folder
+        return NULL;
+    }
+    else
+    {
+        QTreeWidgetItem *pItem = NULL;
+        // remove "/" at the beginning
+        path = path.mid(1);
+        QStringList list = path.split('/');
+        // Find the item that is at the top level corresponds to item 0 in the list
+        // Folders at the same level cannot have the same name
+        for (int i = 0; i < topLevelItemCount(); i++)
+        {
+            if (topLevelItem(i)->text(0) == list.at(0))
+            {
+                pItem = topLevelItem(i);
+                break;
+            }
+        }
+        // Start from item 1 to find non-top items
+        for (int i = 1; i < list.count(); i++)
+        {
+            for (int j = 0; j < pItem->childCount(); j++)
+            {
+                QTreeWidgetItem *pChild = pItem->child(j);
+                if (list.at(i) == pChild->text(0))
+                {
+                    pItem = pChild;
+                    break;
+                }
+            }
+        }
+        return pItem;
+    }
 }
 
 void BBFolderTreeWidget::setMenu()
@@ -381,47 +431,6 @@ QWidgetAction* BBFolderTreeWidget::createWidgetAction(QMenu *pParent, const QStr
 //    BaseTree::deleteOne(item);
 //}
 
-//QTreeWidgetItem *ProjectTree::getItemByPath(QString path)
-//{
-//    //根据路径找相应的树节点
-//    path = path.mid((projectPath + contentsFolderName).length());
-//    if (path.length() == 0)
-//    {
-//        //contents文件夹
-//        return NULL;
-//    }
-//    else
-//    {
-//        QTreeWidgetItem *item = NULL;
-//        //去掉一开始的/号 否则split的第一项是""
-//        path = path.mid(1);
-//        QStringList list = path.split('/');
-//        //查找第0项对应的top结点 同一级的文件夹不可能重名
-//        for (int i = 0; i < topLevelItemCount(); i++)
-//        {
-//            if (topLevelItem(i)->text(0) == list.at(0))
-//            {
-//                item = topLevelItem(i);
-//                break;
-//            }
-//        }
-//        //从第1项开始 查找非top结点
-//        for (int i = 1; i < list.count(); i++)
-//        {
-//            //第i项是第i代子孙
-//            for (int j = 0; j < item->childCount(); j++)
-//            {
-//                QTreeWidgetItem *child = item->child(j);
-//                if (list.at(i) == child->text(0))
-//                {
-//                    item = child;
-//                    break;
-//                }
-//            }
-//        }
-//        return item;
-//    }
-//}
 
 //void ProjectTree::copyAction()
 //{

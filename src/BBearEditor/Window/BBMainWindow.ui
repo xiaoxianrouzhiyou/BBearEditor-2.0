@@ -1217,7 +1217,7 @@ BBFileListWidget::item:selected {
              </widget>
             </item>
             <item>
-             <widget class="QScrollArea" name="filePathScrollArea">
+             <widget class="BBFilePathBarScrollArea" name="scrollAreaFilePath">
               <property name="horizontalScrollBarPolicy">
                <enum>Qt::ScrollBarAlwaysOff</enum>
               </property>
@@ -1250,7 +1250,7 @@ BBFileListWidget::item:selected {
                  <number>0</number>
                 </property>
                 <item alignment="Qt::AlignLeft">
-                 <widget class="QWidget" name="filePathWidget" native="true"/>
+                 <widget class="BBFilePathBar" name="barFilePath" native="true"/>
                 </item>
                </layout>
               </widget>
@@ -1329,6 +1329,16 @@ BBFileListWidget::item:selected {
    <class>BBFileListWidget</class>
    <extends>QListWidget</extends>
    <header>FileSystem/BBFileListWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BBFilePathBar</class>
+   <extends>QWidget</extends>
+   <header>FileSystem/BBFilePathBar.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BBFilePathBarScrollArea</class>
+   <extends>QScrollArea</extends>
+   <header>FileSystem/BBFilePathBar.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

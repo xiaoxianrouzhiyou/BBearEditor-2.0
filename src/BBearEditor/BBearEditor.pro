@@ -59,7 +59,8 @@ SOURCES += \
     PropertyManager/BBFactoryComponent.cpp \
     FileSystem/BBFolderTreeWidget.cpp \
     Window/BBProjectDialog.cpp \
-    FileSystem/BBFileListWidget.cpp
+    FileSystem/BBFileListWidget.cpp \
+    FileSystem/BBFilePathBar.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
@@ -96,7 +97,8 @@ HEADERS += \
     PropertyManager/BBFactoryComponent.h \
     FileSystem/BBFolderTreeWidget.h \
     Window/BBProjectDialog.h \
-    FileSystem/BBFileListWidget.h
+    FileSystem/BBFileListWidget.h \
+    FileSystem/BBFilePathBar.h
 
 FORMS += \
     Window/BBConfirmationDialog.ui \
