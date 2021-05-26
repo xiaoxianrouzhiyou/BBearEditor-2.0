@@ -2,6 +2,12 @@
 #include "BBUtils.h"
 #include <QDir>
 #include <QPainter>
+#include <QWidgetAction>
+#include <QMenu>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QApplication>
+#include <QDesktopWidget>
 
 
 QSize BBFileListWidget::m_StandardIconSize = QSize(43, 43);
@@ -13,6 +19,11 @@ QList<QString> BBFileListWidget::m_MeshSuffixs = {"obj", "fbx"};
 QList<QString> BBFileListWidget::m_TextureSuffixs = {"png", "jpg", "jpeg", "bmp", "ico", "dds"};
 QList<QString> BBFileListWidget::m_AudioSuffixs = {"mp3", "wav"};
 QList<QString> BBFileListWidget::m_ScriptSuffixs = {"lua"};
+
+QString BBFileListWidget::m_MeshFileLogoColor = "#e85655";
+QString BBFileListWidget::m_TextureFileLogoColor = "#e49831";
+QString BBFileListWidget::m_AudioFileLogoColor = "#64abe4";
+QString BBFileListWidget::m_MaterialFileLogoColor = "#fab8b7";
 
 
 BBFileListWidget::BBFileListWidget(QWidget *pParent)
@@ -41,6 +52,11 @@ BBFileListWidget::BBFileListWidget(QWidget *pParent)
 //                     this, SLOT(itemDoubleClickedSlot(QListWidgetItem*)));
 //    QObject::connect(this, SIGNAL(itemClicked(QListWidgetItem*)),
 //                     this, SLOT(itemClickedSlot(QListWidgetItem*)));
+}
+
+BBFileListWidget::~BBFileListWidget()
+{
+    BB_SAFE_DELETE(m_pMenu);
 }
 
 void BBFileListWidget::showFolderContent(const QString &folderPath)
@@ -141,7 +157,103 @@ void BBFileListWidget::showFolderContent(const QString &folderPath)
 
 void BBFileListWidget::setMenu()
 {
+    // first level menu
+    m_pMenu = new QMenu(this);
+    QAction *pActionNewFolder = new QAction(tr("New Folder"));
+    QAction *pLabelNewAsset = new QAction(tr("New Asset ..."));
+    // As the title of a column, not clickable
+    pLabelNewAsset->setEnabled(false);
 
+    QWidgetAction *pActionNewMaterial = createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "material.png", tr("Material"));
+    QWidgetAction *pActionNewScript = createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "script.png", tr("Script"));
+
+    QAction *pActionShowInFolder = new QAction(tr("Show In Folder"));
+    QAction *pActionCopy = new QAction(tr("Copy"));
+    pActionCopy->setShortcut(QKeySequence(tr("Ctrl+C")));
+    QAction *pActionPaste = new QAction(tr("Paste"));
+    pActionPaste->setShortcut(QKeySequence(tr("Ctrl+V")));
+    QAction *pActionRename = new QAction(tr("Rename"));
+#if defined(Q_OS_WIN32)
+    pActionRename->setShortcut(Qt::Key_F2);
+#elif defined(Q_OS_MAC)
+    pActionRename->setShortcut(Qt::Key_Return);
+#endif
+    QAction *pActionDelete = new QAction(tr("Delete"));
+    // second level menu
+    QMenu *pMenuSort = new QMenu(tr("Sort By"), m_pMenu);
+    QAction *pActionNameSort = new QAction(tr("Name"));
+    QAction *pActionTypeSort = new QAction(tr("Type"));
+    QAction *pActionCreateDateSort = new QAction(tr("Create Date"));
+    QAction *pActionModifyDateSort = new QAction(tr("Modify Date"));
+    pMenuSort->addAction(pActionNameSort);
+    pMenuSort->addAction(pActionTypeSort);
+    pMenuSort->addAction(pActionCreateDateSort);
+    pMenuSort->addAction(pActionModifyDateSort);
+    // slider
+    QWidgetAction *pActionSlider = new QWidgetAction(m_pMenu);
+    QWidget *pWidget = new QWidget(this);
+    QHBoxLayout *pLayout = new QHBoxLayout(pWidget);
+    pLayout->setContentsMargins(6, 1, 6, 1);
+    QLabel *pLabel = new QLabel("Size", pWidget);
+    pLabel->setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\";");
+    pLayout->addWidget(pLabel);
+    QSlider *pSlider = new QSlider(Qt::Horizontal, pWidget);
+    pSlider->setRange(-2, 2);
+    pSlider->setValue(0);
+    QObject::connect(pSlider, SIGNAL(valueChanged(int)), this, SLOT(changeItemSize(int)));
+    pLayout->addWidget(pSlider);
+    pActionSlider->setDefaultWidget(pWidget);
+
+    m_pMenu->addAction(pActionNewFolder);
+    m_pMenu->addSeparator();
+    m_pMenu->addAction(pLabelNewAsset);
+    m_pMenu->addAction(createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "scene.png", tr("Scene")));
+    m_pMenu->addAction(pActionNewMaterial);
+    m_pMenu->addAction(createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "animation.png", tr("Animation")));
+    m_pMenu->addAction(createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "particle.png", tr("Particle")));
+    m_pMenu->addAction(pActionNewScript);
+    m_pMenu->addSeparator();
+    m_pMenu->addAction(pActionShowInFolder);
+    m_pMenu->addSeparator();
+    m_pMenu->addAction(pActionCopy);
+    m_pMenu->addAction(pActionPaste);
+    m_pMenu->addSeparator();
+    m_pMenu->addAction(pActionRename);
+    m_pMenu->addAction(pActionDelete);
+    m_pMenu->addSeparator();
+    m_pMenu->addMenu(pMenuSort);
+    m_pMenu->addSeparator();
+    m_pMenu->addAction(pActionSlider);
+
+    QObject::connect(pActionNewFolder, SIGNAL(triggered()), this, SLOT(newFolder()));
+    QObject::connect(pActionNewMaterial, SIGNAL(triggered()), this, SLOT(newMaterial()));
+    QObject::connect(pActionNewScript, SIGNAL(triggered()), this, SLOT(newScript()));
+    QObject::connect(pActionCopy, SIGNAL(triggered()), this, SLOT(copyAction()));
+    QObject::connect(pActionPaste, SIGNAL(triggered()), this, SLOT(pasteAction()));
+    QObject::connect(pActionRename, SIGNAL(triggered()), this, SLOT(openRenameEditor()));
+    QObject::connect(pActionDelete, SIGNAL(triggered()), this, SLOT(deleteAction()));
+}
+
+QWidgetAction* BBFileListWidget::createWidgetAction(const QString &iconPath, const QString &name)
+{
+    QWidgetAction *pAction = new QWidgetAction(m_pMenu);
+    QWidget *pWidget = new QWidget(this);
+    pWidget->setObjectName("widgetAction");
+    pWidget->setStyleSheet("#widgetAction:hover {background: #0ebf9c;}");
+    QHBoxLayout *pLayout = new QHBoxLayout(pWidget);
+    pLayout->setContentsMargins(6, 2, 6, 2);
+    QLabel *pIcon = new QLabel(pWidget);
+    QPixmap pix(iconPath);
+    pix.setDevicePixelRatio(devicePixelRatio());
+    pix = pix.scaled(13 * devicePixelRatio(), 13 * devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    pIcon->setPixmap(pix);
+    pLayout->addWidget(pIcon);
+    QLabel *pText = new QLabel(pWidget);
+    pText->setText(name);
+    pText->setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\";");
+    pLayout->addWidget(pText, Qt::AlignLeft);
+    pAction->setDefaultWidget(pWidget);
+    return pAction;
 }
 
 QString BBFileListWidget::lineFeed(QString originalText)
@@ -197,6 +309,85 @@ QIcon BBFileListWidget::getTextureIcon(const QString &path)
     return QIcon(background);
 }
 
+QColor BBFileListWidget::getFileLogoColor(const BBFileType &eFileType)
+{
+    if (eFileType == BBFileType::mesh)
+    {
+        return QColor(m_MeshFileLogoColor);
+    }
+    else if (eFileType == BBFileType::texture)
+    {
+        return QColor(m_TextureFileLogoColor);
+    }
+    else if (eFileType == BBFileType::audio)
+    {
+        return QColor(m_AudioFileLogoColor);
+    }
+    else if (eFileType == BBFileType::material)
+    {
+        return QColor(m_MaterialFileLogoColor);
+    }
+    else
+    {
+        return nullptr;
+    }
+}
+
+void BBFileListWidget::paintEvent(QPaintEvent *event)
+{
+    QListWidget::paintEvent(event);
+
+    // using "this" is wrong
+    QPainter painter(viewport());
+    // The file type logo color is painted in the top left corner
+    for (int i = 0; i < count(); i++)
+    {
+        // Get the logo color of the corresponding file type of the item
+        QColor color = getFileLogoColor(m_Map.value(item(i))->m_eFileType);
+        if (color == nullptr)
+            continue;
+        QPen pen(color);
+        painter.setPen(pen);
+        // item position
+        QRect rect = visualItemRect(item(i));
+        for (int j = 8; j < 20; j++)
+        {
+            QPoint p1 = rect.topLeft() + QPoint(1, 2 + j);
+            QPoint p2 = rect.topLeft() + QPoint(1 + j, 2);
+            painter.drawLine(p1, p2);
+        }
+    }
+//    //绘制拖拽落下位置
+//    if (indicatorItem)
+//    {
+//        painter.setPen(QColor("#d6dfeb"));
+//        QRect rect = visualItemRect(indicatorItem);
+//        painter.drawRect(rect);
+//    }
+    painter.end();
+}
+
+void BBFileListWidget::contextMenuEvent(QContextMenuEvent *event)
+{
+    Q_UNUSED(event);
+    m_pMenu->show();
+    QPoint pos = cursor().pos();
+    // default: showed in bottom-right of cursor
+    // when exceed screen in horizon, the right side of the menu and the right side of the screen are aligned
+    if (pos.x() + m_pMenu->width() > QApplication::desktop()->width())
+    {
+        pos.setX(QApplication::desktop()->width() - m_pMenu->width());
+    }
+    // when exceed screen in vertical, showed in top-right, 4 is margin
+    if (pos.y() + m_pMenu->height() > QApplication::desktop()->height() - 4)
+    {
+        pos.setY(pos.y() - m_pMenu->height());
+    }
+    m_pMenu->move(pos);
+}
+
+
+
 
 
 ////--------------------PlainTextEdit
@@ -230,175 +421,11 @@ QIcon BBFileListWidget::getTextureIcon(const QString &path)
 ////--------------------FileList
 
 
-//QString FileList::meshFileColor = "#e85655";
-//QString FileList::audioFileColor = "#64abe4";
-//QString FileList::textureFileColor = "#e49831";
-//QString FileList::materialFileColor = "#fab8b7";
-
-
-//void FileList::initMenu()
-//{
-//    //一级菜单项
-//    menu = new QMenu(this);
-//    QAction *actionNewFolder = new QAction(tr("New Folder"));
-//    QAction *labelNewAsset = new QAction(tr("New Asset ..."));
-//    //作为一栏的标题 不可点击
-//    labelNewAsset->setEnabled(false);
-
-//    QWidgetAction *actionNewMaterial = createWidgetAction(":/icon/resources/icons/material.png", tr("Material"));
-//    QWidgetAction *actionNewScript = createWidgetAction(":/icon/resources/icons/script.png", tr("Script"));
-
-//    QAction *actionShowInFolder = new QAction(tr("Show In Folder"));
-//    QAction *actionCopy = new QAction(tr("Copy"));
-//    actionCopy->setShortcut(QKeySequence(tr("Ctrl+C")));
-//    QAction *actionPaste = new QAction(tr("Paste"));
-//    actionPaste->setShortcut(QKeySequence(tr("Ctrl+V")));
-//    QAction *actionRename = new QAction(tr("Rename"));
-//#if defined(Q_OS_WIN32)
-//    actionRename->setShortcut(Qt::F2);
-//#elif defined(Q_OS_MAC)
-//    actionRename->setShortcut(Qt::Key_Return);
-//#endif
-//    QAction *actionDelete = new QAction(tr("Delete"));
-//    //二级菜单
-//    QMenu *menuSort = new QMenu(tr("Sort By"), menu);
-//    QAction *actionNameSort = new QAction(tr("Name"));
-//    QAction *actionTypeSort = new QAction(tr("Type"));
-//    QAction *actionCreateDateSort = new QAction(tr("Create Date"));
-//    QAction *actionModifyDateSort = new QAction(tr("Modify Date"));
-//    menuSort->addAction(actionNameSort);
-//    menuSort->addAction(actionTypeSort);
-//    menuSort->addAction(actionCreateDateSort);
-//    menuSort->addAction(actionModifyDateSort);
-//    //滑块菜单项
-//    QWidgetAction *sliderAction = new QWidgetAction(menu);
-//    QWidget *w = new QWidget(this);
-//    QHBoxLayout *l = new QHBoxLayout(w);
-//    l->setContentsMargins(6, 1, 6, 1);
-//    QLabel *label = new QLabel("Size", w);
-//    label->setStyleSheet("color: #d6dfeb; font: 11pt \"Arial\";");
-//    l->addWidget(label);
-//    QSlider *slider = new QSlider(Qt::Horizontal, w);
-//    slider->setRange(-2, 2);
-//    slider->setValue(0);
-//    QObject::connect(slider, SIGNAL(valueChanged(int)), this, SLOT(changeItemSize(int)));
-//    l->addWidget(slider);
-//    sliderAction->setDefaultWidget(w);
-
-//    menu->addAction(actionNewFolder);
-//    menu->addSeparator();
-//    menu->addAction(labelNewAsset);
-//    menu->addAction(createWidgetAction(":/icon/resources/icons/scene.png", tr("Scene")));
-//    menu->addAction(actionNewMaterial);
-//    menu->addAction(createWidgetAction(":/icon/resources/icons/animation.png", tr("Animation")));
-//    menu->addAction(createWidgetAction(":/icon/resources/icons/particle.png", tr("Particle")));
-//    menu->addAction(actionNewScript);
-//    menu->addSeparator();
-//    menu->addAction(actionShowInFolder);
-//    menu->addSeparator();
-//    menu->addAction(actionCopy);
-//    menu->addAction(actionPaste);
-//    menu->addSeparator();
-//    menu->addAction(actionRename);
-//    menu->addAction(actionDelete);
-//    menu->addSeparator();
-//    menu->addMenu(menuSort);
-//    menu->addSeparator();
-//    menu->addAction(sliderAction);
-//    //绑定点击事件
-//    QObject::connect(actionNewFolder, SIGNAL(triggered()), this, SLOT(newFolder()));
-//    QObject::connect(actionNewMaterial, SIGNAL(triggered()), this, SLOT(newMaterial()));
-//    QObject::connect(actionNewScript, SIGNAL(triggered()), this, SLOT(newScript()));
-//    QObject::connect(actionCopy, SIGNAL(triggered()), this, SLOT(copyAction()));
-//    QObject::connect(actionPaste, SIGNAL(triggered()), this, SLOT(pasteAction()));
-//    QObject::connect(actionRename, SIGNAL(triggered()), this, SLOT(openEditor()));
-//    QObject::connect(actionDelete, SIGNAL(triggered()), this, SLOT(deleteFile()));
-//}
-
-//QWidgetAction *FileList::createWidgetAction(QString iconPath, QString name)
-//{
-//    QWidgetAction *action = new QWidgetAction(menu);
-//    QWidget *w = new QWidget(this);
-//    w->setObjectName("widgetAction");
-//    w->setStyleSheet("#widgetAction:hover {background: #0ebf9c;}");
-//    QHBoxLayout *l = new QHBoxLayout(w);
-//    l->setContentsMargins(6, 2, 6, 2);
-//    QLabel *icon = new QLabel(w);
-//    QPixmap pix(iconPath);
-//    pix.setDevicePixelRatio(devicePixelRatio());
-//    pix = pix.scaled(13 * devicePixelRatio(), 13 * devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-//    icon->setPixmap(pix);
-//    l->addWidget(icon);
-//    QLabel *text = new QLabel(w);
-//    text->setText(name);
-//    text->setStyleSheet("color: #d6dfeb; font: 11pt \"Arial\";");
-//    l->addWidget(text, Qt::AlignLeft);
-//    action->setDefaultWidget(w);
-//    return action;
-//}
-
 //QString FileList::getMimeType()
 //{
 //    return "FileList";
 //}
 
-//void FileList::paintEvent(QPaintEvent *event)
-//{
-//    QListWidget::paintEvent(event);
-
-//    //this参数 会报错
-//    QPainter painter(viewport());
-//    //左上角绘制文件类型标识颜色
-//    for (int i = 0; i < count(); i++)
-//    {
-//        //得到该item对应文件类型的标识颜色
-//        QColor color = getFileColor(mMap.value(item(i))->mFileType);
-//        if (color == nullptr)
-//            continue;
-//        QPen pen(color);
-//        painter.setPen(pen);
-//        //得到item的位置
-//        QRect rect = visualItemRect(item(i));
-//        for (int i = 8; i < 20; i++)
-//        {
-//            QPoint p1 = rect.topLeft() + QPoint(1, 2 + i);
-//            QPoint p2 = rect.topLeft() + QPoint(1 + i, 2);
-//            painter.drawLine(p1, p2);
-//        }
-//    }
-//    //绘制拖拽落下位置
-//    if (indicatorItem)
-//    {
-//        painter.setPen(QColor("#d6dfeb"));
-//        QRect rect = visualItemRect(indicatorItem);
-//        painter.drawRect(rect);
-//    }
-//    painter.end();
-//}
-
-//QColor FileList::getFileColor(FileType fileType)
-//{
-//    if (fileType == FileType::texture)
-//    {
-//        return QColor(textureFileColor);
-//    }
-//    else if (fileType == FileType::audio)
-//    {
-//        return QColor(audioFileColor);
-//    }
-//    else if (fileType == FileType::mesh)
-//    {
-//        return QColor(meshFileColor);
-//    }
-//    else if (fileType == FileType::material)
-//    {
-//        return QColor(materialFileColor);
-//    }
-//    else
-//    {
-//        return nullptr;
-//    }
-//}
 
 //void FileList::updateFolderName(QString prePath, QString newPath)
 //{
@@ -1544,24 +1571,6 @@ QIcon BBFileListWidget::getTextureIcon(const QString &path)
 
 
 
-//void FileList::contextMenuEvent(QContextMenuEvent *event)
-//{
-//    Q_UNUSED(event);
-//    menu->show();
-//    QPoint pos = cursor().pos();
-//    //默认菜单显示在鼠标的右下方 如果水平超出了屏幕 菜单右侧和屏幕右侧对齐
-//    if (pos.x() + menu->width() > QApplication::desktop()->width())
-//    {
-//        pos.setX(QApplication::desktop()->width() - menu->width());
-//    }
-//    //当垂直超出屏幕时 显示在右上 4为底边留白
-//    if (pos.y() + menu->height() > QApplication::desktop()->height() - 4)
-//    {
-//        pos.setY(pos.y() - menu->height());
-//    }
-//    menu->move(pos);
-//}
-
 //void FileList::keyPressEvent(QKeyEvent *event)
 //{
 //    //处理菜单快捷键事件
@@ -1589,12 +1598,6 @@ QIcon BBFileListWidget::getTextureIcon(const QString &path)
 //    //不需要移动框选多个目标的功能
 //    if (currentItem())
 //        QListWidget::mouseMoveEvent(event);
-//}
-
-//void FileList::popupMenu()
-//{
-//    setCurrentItem(NULL);
-//    menu->exec(cursor().pos());
 //}
 
 //void FileList::changeItemSize(int factor)

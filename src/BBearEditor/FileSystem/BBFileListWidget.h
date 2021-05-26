@@ -5,6 +5,9 @@
 #include <QListWidget>
 
 
+class QWidgetAction;
+
+
 enum BBFileType
 {
     dir = 0,
@@ -35,6 +38,7 @@ class BBFileListWidget : public QListWidget
     Q_OBJECT
 public:
     explicit BBFileListWidget(QWidget *pParent = nullptr);
+    ~BBFileListWidget();
 
 private slots:
     void showFolderContent(const QString &folderPath);
@@ -43,10 +47,15 @@ signals:
 
 private:
     void setMenu();
+    QWidgetAction* createWidgetAction(const QString &iconPath, const QString &name);
 
     QString lineFeed(QString originalText);
     QIcon getIcon(const QString &path);
     QIcon getTextureIcon(const QString &path);
+    QColor getFileLogoColor(const BBFileType &eFileType);
+
+    void paintEvent(QPaintEvent *event) override;
+    void contextMenuEvent(QContextMenuEvent *event) override;
 
     static QSize m_StandardIconSize;
     static QSize m_StandardItemSize;
@@ -56,6 +65,12 @@ private:
     static QList<QString> m_AudioSuffixs;
     static QList<QString> m_ScriptSuffixs;
 
+    static QString m_MeshFileLogoColor;
+    static QString m_TextureFileLogoColor;
+    static QString m_AudioFileLogoColor;
+    static QString m_MaterialFileLogoColor;
+
+    QMenu *m_pMenu;
     QMap<QListWidgetItem*, BBFileInfo*> m_Map;
     QSize m_ItemSize;
 };
@@ -136,8 +151,6 @@ private:
 //    void clearPropertyWidget();
 
 //private:
-//    void paintEvent(QPaintEvent *event) override;
-//    QColor getFileColor(FileType fileType);
 //    void dragEnterEvent(QDragEnterEvent *event) override;
 //    void dragMoveEvent(QDragMoveEvent *event) override;
 //    void dragLeaveEvent(QDragLeaveEvent *event) override;
@@ -150,18 +163,12 @@ private:
 //    void createMeshMetaFile(QString sourcePath);
 //    void startDrag(Qt::DropActions supportedActions) override;
 //    void mousePressEvent(QMouseEvent *event) override;
-//    void initMenu();
 //    QWidgetAction *createWidgetAction(QString iconPath, QString name);
-//    void contextMenuEvent(QContextMenuEvent *event) override;
 //    void keyPressEvent(QKeyEvent *event) override;
 //    void focusInEvent(QFocusEvent *event) override;
 //    void mouseMoveEvent(QMouseEvent *event) override;
 //    void selectPasteItem(QList<QString> itemNames);
 
-//    static QString meshFileColor;
-//    static QString audioFileColor;
-//    static QString textureFileColor;
-//    static QString materialFileColor;
 //    QString mFolderPath;
 //    QMenu *menu;
 //    QListWidgetItem *editingItem;
