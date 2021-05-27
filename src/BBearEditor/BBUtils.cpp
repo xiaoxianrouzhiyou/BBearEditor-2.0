@@ -52,20 +52,46 @@ QString BBUtils::getExclusiveFolderPath(const QString &parentPath, QString &file
 {
     QDir dir;
     QString filePath = parentPath + "/" + fileName;
-    if (!dir.exists(filePath))
+    if (dir.exists(filePath))
+    {
+        // if exist, number that is at the end will increase
+        filePath += " ";
+        int i = 2;
+        while (dir.exists(filePath + QString::number(i)))
+        {
+            i++;
+        }
+        fileName = fileName + " " + QString::number(i);
+        return filePath + QString::number(i);
+    }
+    else
     {
         // there is no the same name
         return filePath;
     }
-    // if exist, number that is at the end will increase
-    filePath += " ";
-    int i = 1;
-    while (dir.exists(filePath + QString::number(i)))
+}
+
+QString BBUtils::getExclusiveFilePath(const QString &parentPath, QString &fileName)
+{
+    QFile file;
+    QString filePath = parentPath + "/" + fileName;
+    if (file.exists(filePath))
     {
-        i++;
+        QString suffix = getFileSuffix(fileName);
+        QString baseName = getBaseName(fileName);
+        filePath = parentPath + "/" + baseName + " ";
+        int i = 2;
+        while (file.exists(filePath + QString::number(i) + "." + suffix))
+        {
+            i++;
+        }
+        fileName = baseName + " " + QString::number(i) + "." + suffix;
+        return filePath + QString::number(i) + "." + suffix;
     }
-    fileName = fileName + " " + QString::number(i);
-    return filePath + QString::number(i);
+    else
+    {
+        return filePath;
+    }
 }
 
 QString BBUtils::getFileSuffix(const QFileInfo &fileInfo)

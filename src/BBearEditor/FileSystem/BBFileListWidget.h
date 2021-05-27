@@ -126,10 +126,8 @@ private:
 //    Q_OBJECT
 
 //public:
-//    static QString getMimeType();
 //    static QString getMetaFilePath(QString sourcePath);
 //    static QString getMetaJpgFilePath(QString sourcePath);
-//    static QString checkFileDuplicateName(QString path);
 
 
 //public slots:

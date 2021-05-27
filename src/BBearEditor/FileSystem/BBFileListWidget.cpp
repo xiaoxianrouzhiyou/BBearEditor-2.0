@@ -330,17 +330,16 @@ void BBFileListWidget::finishRename()
             }
             else
             {
-//                //文件
-//                newPath = checkFileDuplicateName(newPath);
-//                if (QFile::rename(oldPath, newPath))
-//                {
-//                    newName = newPath.mid(newPath.lastIndexOf('/') + 1);
-//                    newBaseName = newName.mid(0, newName.lastIndexOf('.'));
-//                    fileInfo->mFileName = newName;
-//                    editingItem->setText(lineFeed(newBaseName));
+                // file
+                newPath = BBUtils::getExclusiveFilePath(m_FolderPath, newName);
+                if (QFile::rename(oldPath, newPath))
+                {
+                    newBaseName = BBUtils::getBaseName(newName);
+                    pFileInfo->m_FileName = newName;
+                    m_pEditingItem->setText(lineFeed(newBaseName));
 
-//                    if (fileInfo->mFileType == FileType::mesh)
-//                    {
+                    if (pFileInfo->m_eFileType == BBFileType::mesh)
+                    {
 //                        //有些文件需要对相应meta修改名字
 //                        QString oldMetaFilePath = getMetaFilePath(oldPath);
 //                        QString newMetaFilePath = getMetaFilePath(newPath);
@@ -350,13 +349,13 @@ void BBFileListWidget::finishRename()
 //                        index = newMetaFilePath.lastIndexOf('.');
 //                        newMetaFilePath = newMetaFilePath.mid(0, index) + ".jpg";
 //                        QFile::rename(oldMetaFilePath, newMetaFilePath);
-//                    }
-//                    else if (fileInfo->mFileType == FileType::material)
-//                    {
+                    }
+                    else if (pFileInfo->m_eFileType == BBFileType::material)
+                    {
 //                        //材质文件 需要修改文件路径与材质对象的映射
 //                        Material::rename(oldPath, newPath);
-//                    }
-//                }
+                    }
+                }
 //                //重命名后 如果在剪贴板中 移除掉
 //                if (clipBoardPaths.contains(oldPath))
 //                {
@@ -1335,30 +1334,6 @@ void BBFileListWidget::keyPressEvent(QKeyEvent *event)
 //    return true;
 //}
 
-//QString FileList::checkFileDuplicateName(QString path)
-//{
-//    QFile *file = new QFile(path);
-//    if (file->exists())
-//    {
-//        //去掉后缀 便于重命名
-//        QString suffix = path.mid(path.lastIndexOf('.') + 1);
-//        path = path.mid(0, path.lastIndexOf('.'));
-//        file = new QFile;
-//        QString renamePath;
-//        int i = 2;
-//        do
-//        {
-//            renamePath = path + "(" + QString::number(i) + ")." + suffix;
-//            i++;
-//        }
-//        while (file->exists(renamePath));
-//        return renamePath;
-//    }
-//    else
-//    {
-//        return path;
-//    }
-//}
 
 //void FileList::importAsset(QFileInfo fileInfo, QString newPath)
 //{
