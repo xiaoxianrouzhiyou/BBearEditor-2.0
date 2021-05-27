@@ -62,8 +62,6 @@ protected:
     BBIndicatorPos m_eIndicatorPos;
     QMenu *m_pMenu;
     QList<QTreeWidgetItem*> m_ClipBoardItems;
-
-private:
     QTreeWidgetItem *m_pLastItem;
     QTime m_LastTime;
     QTreeWidgetItem *m_pEditingItem;

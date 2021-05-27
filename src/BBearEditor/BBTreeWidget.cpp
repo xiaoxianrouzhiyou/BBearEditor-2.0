@@ -401,7 +401,7 @@ void BBTreeWidget::paintEvent(QPaintEvent *event)
 void BBTreeWidget::mousePressEvent(QMouseEvent *event)
 {
     QTreeWidget::mousePressEvent(event);
-    if (event->buttons() & Qt::LeftButton)
+    if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)
     {
         // There is no item at the mouse click position, remove the selection
         QTreeWidgetItem *pItem = itemAt(event->pos());

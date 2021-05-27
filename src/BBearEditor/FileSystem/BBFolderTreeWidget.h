@@ -21,8 +21,11 @@ public:
 
 private slots:
     void pressRootButton();
-    void clickItem(QTreeWidgetItem *pItem, int nColumn);
+    void changeCurrentItem(QTreeWidgetItem *pCurrent, QTreeWidgetItem *pPrevious);
     void setCurrentItemByPath(const QString &folderPath);
+    void newFolder();
+    void showInFolder();
+    void finishRename() override;
 
 signals:
     void showFolderContent(const QString &folderPath);
@@ -34,7 +37,8 @@ private:
     QTreeWidgetItem* getItemByPath(const QString &absolutePath);
 
     void setMenu() override;
-    QWidgetAction* createWidgetAction(QMenu *pParent, const QString &iconPath, const QString &name);   
+    QWidgetAction* createWidgetAction(QMenu *pParent, const QString &iconPath, const QString &name);
+    void updateCorrespondingWidget(QTreeWidgetItem *pItem);
 
     QTreeWidgetItem *m_pCurrentShowFolderContentItem;
 };
@@ -65,11 +69,7 @@ private:
 //    void pasteAction() override;
 
 //private slots:
-//    void pressSettingButton();
-//    void finishRename() override;
 //    void updateFolderNameInvert(QString preName, QString newName);
-//    void newFolder();
-//    void showInFolder();
 //    void deleteAction() override;
 //    void updateCurrentShowFolderContentItem(QString path);
 //    void addFolderItemInTree(QString parentPath, QString name);

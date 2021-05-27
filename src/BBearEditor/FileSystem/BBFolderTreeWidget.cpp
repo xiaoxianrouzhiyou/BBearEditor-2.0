@@ -16,8 +16,8 @@ BBFolderTreeWidget::BBFolderTreeWidget(QWidget *pParent)
 
     setMenu();
 
-    QObject::connect(this, SIGNAL(itemClicked(QTreeWidgetItem*, int)),
-                     this, SLOT(clickItem(QTreeWidgetItem*, int)));
+    QObject::connect(this, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
+                     this, SLOT(changeCurrentItem(QTreeWidgetItem*, QTreeWidgetItem*)));
 }
 
 BBFolderTreeWidget::loadProject()
@@ -129,12 +129,10 @@ void BBFolderTreeWidget::pressRootButton()
     m_pCurrentShowFolderContentItem = NULL;
 }
 
-void BBFolderTreeWidget::clickItem(QTreeWidgetItem *pItem, int nColumn)
+void BBFolderTreeWidget::changeCurrentItem(QTreeWidgetItem *pCurrent, QTreeWidgetItem *pPrevious)
 {
-    Q_UNUSED(nColumn);
-    QString folderPath = getAbsolutePath(pItem);
-    showFolderContent(folderPath);
-    m_pCurrentShowFolderContentItem = pItem;
+    Q_UNUSED(pPrevious);
+    updateCorrespondingWidget(pCurrent);
 }
 
 void BBFolderTreeWidget::setCurrentItemByPath(const QString &folderPath)
@@ -142,7 +140,91 @@ void BBFolderTreeWidget::setCurrentItemByPath(const QString &folderPath)
     QTreeWidgetItem *pItem = getItemByPath(folderPath);
     setCurrentItem(pItem);
     setItemExpanded(pItem, true);
-    clickItem(pItem, 0);
+}
+
+void BBFolderTreeWidget::newFolder()
+{
+    QTreeWidgetItem *pParent = currentItem();
+    QString parentFilePath = getAbsolutePath(pParent);
+    QString filePath = parentFilePath + "/new folder ";
+    // Given the initial folder name, if it exists, the number will increase
+    QDir dir;
+    int i = 1;
+    while (dir.exists(filePath + QString::number(i)))
+    {
+        i++;
+    }
+    // create folder
+    BB_PROCESS_ERROR_RETURN(dir.mkdir(filePath + QString::number(i)));
+
+    // create tree item
+    QTreeWidgetItem *pItem = new QTreeWidgetItem({"new folder " + QString::number(i)});
+    pItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
+
+    if (pParent)
+    {
+        pParent->addChild(pItem);
+        setItemExpanded(pParent, true);
+    }
+    else
+    {
+        addTopLevelItem(pItem);
+    }
+    setCurrentItem(pItem);
+    // Open the edit box to let the user set name
+    openRenameEditor();
+}
+
+void BBFolderTreeWidget::showInFolder()
+{
+    QTreeWidgetItem *pItem = currentItem();
+    QString filePath = getAbsolutePath(pItem);
+    // to do
+}
+
+void BBFolderTreeWidget::finishRename()
+{
+    BB_PROCESS_ERROR_RETURN(m_pEditingItem);
+
+    // whether name is changed
+    // new name cannot be null
+    QString name = m_pRenameEditor->text();
+    QString preName = m_pEditingItem->text(0);
+    if (preName != name && !name.isEmpty())
+    {
+        // previous path
+        QString previous = getAbsolutePath(m_pEditingItem);
+        // file path without its own file name + new name
+        QString current = previous.mid(0, previous.lastIndexOf('/') + 1) + name;
+        // Check if there are the same names
+        QDir dir(current);
+        if (dir.exists())
+        {
+            // add "2" at the end
+            dir = QDir();
+            int i = 2;
+            while (dir.exists(current + "(" + QString::number(i) + ")"))
+            {
+                i++;
+            }
+            current += "(" + QString::number(i) + ")";
+            name += "(" + QString::number(i) + ")";
+        }
+
+        QFile::rename(previous, current);
+        m_pEditingItem->setText(0, name);
+
+        // After renaming, remove it from the clipboard
+        if (m_ClipBoardItems.contains(m_pEditingItem))
+        {
+            m_ClipBoardItems.removeOne(m_pEditingItem);
+        }
+        // After renaming, sort
+        sortItems(0, Qt::AscendingOrder);
+
+        updateCorrespondingWidget(m_pEditingItem);
+    }
+    BBTreeWidget::finishRename();
 }
 
 QString BBFolderTreeWidget::getFileSuffix(QFileInfo fileInfo)
@@ -271,58 +353,14 @@ QWidgetAction* BBFolderTreeWidget::createWidgetAction(QMenu *pParent, const QStr
     return pAction;
 }
 
+void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
+{
+    QString folderPath = getAbsolutePath(pItem);
+    showFolderContent(folderPath);
+    m_pCurrentShowFolderContentItem = pItem;
+}
 
 
-
-
-//void ProjectTree::newFolder()
-//{
-//    QString filePath = getFilePath(getLevelPath(currentItem()));
-//    QString fileName = filePath + "new folder ";
-//    //给定初始文件夹名 如果存在 数字推后
-//    QDir *dir = new QDir();
-//    int i = 1;
-//    while (dir->exists(fileName + QString::number(i)))
-//    {
-//        i++;
-//    }
-//    //创建文件夹
-//    bool result = dir->mkdir(fileName + QString::number(i));
-//    if (result)
-//    {
-//        //创建树的结点
-//        QTreeWidgetItem *item = new QTreeWidgetItem({"new folder " + QString::number(i)});
-//        item->setIcon(0, QIcon(":/icon/resources/icons/folder5.png"));
-//        QTreeWidgetItem *parent = currentItem();
-//        //展开parent 并选中新建项
-//        if (parent)
-//        {
-//            parent->addChild(item);
-//            setItemExpanded(parent, true);
-//        }
-//        else
-//        {
-//            addTopLevelItem(item);
-//        }
-//        setCurrentItem(item);
-//        //创建了新文件夹 右侧文件列表可能要刷新
-//        //如果文件列表显示的是刚创建的文件夹的上一级文件夹的内容 需要更新列表
-//        showFolderContent(filePath.mid(0, filePath.length() - 1));
-//        //打开编辑框让用户指定名字
-//        openEditor();
-//    }
-//}
-
-//void ProjectTree::showInFolder()
-//{
-//    QTreeWidgetItem *item = currentItem();
-//    QString filePath = getFilePath(getLevelPath(item));
-//    filePath = filePath.mid(0, filePath.length() - 1);
-//    //QDesktopServices::openUrl(QUrl("file://" + filePath, QUrl::TolerantMode));
-//    //QProcess process;
-//    //process.start("explorer /select," + filePath);
-//    qDebug() << "showInFolder";
-//}
 
 //void ProjectTree::deleteAction()
 //{
@@ -558,53 +596,6 @@ QWidgetAction* BBFolderTreeWidget::createWidgetAction(QMenu *pParent, const QStr
 //    setCurrentItem(NULL);
 //    //弹出菜单
 //    menu->exec(cursor().pos());
-//}
-
-//void ProjectTree::finishRename()
-//{
-//    if (editingItem == NULL)
-//        return;
-
-//    //是否对名字进行了修改
-//    //新名字不为空
-//    QString name = edit->text();
-//    QString preName = editingItem->text(0);
-//    if (preName != name && !name.isEmpty())
-//    {
-//        QString path = getFilePath(getLevelPath(editingItem));
-//        QString pre = path.mid(0, path.length() - 1);
-//        //不带名字的文件夹路径
-//        path = pre.mid(0, pre.lastIndexOf('/') + 1);
-//        //新名字
-//        QString now = path + name;
-//        //检查是否重名
-//        QDir *dir = new QDir(now);
-//        if (dir->exists())
-//        {
-//            //修改后的名字存在 末尾加2 类推
-//            dir = new QDir();
-//            int i = 2;
-//            while (dir->exists(now + "(" + QString::number(i) + ")"))
-//            {
-//                i++;
-//            }
-//            now += "(" + QString::number(i) + ")";
-//            name += "(" + QString::number(i) + ")";
-//        }
-
-//        QFile::rename(pre, now);
-//        editingItem->setText(0, name);
-//        //向文件列表发送信号 更新路径
-//        updateFolderName(pre, now);
-//        //重命名后 如果在剪贴板中 移除掉
-//        if (clipBoardItems.contains(editingItem))
-//        {
-//            clipBoardItems.removeOne(editingItem);
-//        }
-//        //名字变化后 排序
-//        sortItems(0, Qt::AscendingOrder);
-//    }
-//    BaseTree::finishRename();
 //}
 
 //void ProjectTree::updateFolderNameInvert(QString preName, QString newName)
