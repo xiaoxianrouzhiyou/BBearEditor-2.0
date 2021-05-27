@@ -141,6 +141,7 @@ void BBFolderTreeWidget::setCurrentItemByPath(const QString &folderPath)
 {
     QTreeWidgetItem *pItem = getItemByPath(folderPath);
     setCurrentItem(pItem);
+    setItemExpanded(pItem, true);
     clickItem(pItem, 0);
 }
 

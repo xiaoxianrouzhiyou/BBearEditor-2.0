@@ -42,8 +42,10 @@ public:
 
 private slots:
     void showFolderContent(const QString &folderPath);
+    void doubleClickItem(QListWidgetItem *pItem);
 
 signals:
+    void clickFolderTreeItem(const QString &folderPath);
 
 private:
     void setMenu();
@@ -73,6 +75,7 @@ private:
     QMenu *m_pMenu;
     QMap<QListWidgetItem*, BBFileInfo*> m_Map;
     QSize m_ItemSize;
+    QString m_FolderPath;
 };
 
 #endif // BBFILELISTWIDGET_H
@@ -169,8 +172,7 @@ private:
 //    void mouseMoveEvent(QMouseEvent *event) override;
 //    void selectPasteItem(QList<QString> itemNames);
 
-//    QString mFolderPath;
-//    QMenu *menu;
+
 //    QListWidgetItem *editingItem;
 //    PlainTextEdit *edit;
 //    QListWidgetItem *indicatorItem;

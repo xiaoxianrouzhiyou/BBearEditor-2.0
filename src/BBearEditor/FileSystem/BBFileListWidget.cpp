@@ -8,6 +8,8 @@
 #include <QLabel>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QDesktopServices>
+#include <QUrl>
 
 
 QSize BBFileListWidget::m_StandardIconSize = QSize(43, 43);
@@ -48,8 +50,8 @@ BBFileListWidget::BBFileListWidget(QWidget *pParent)
 
     setMenu();
 
-//    QObject::connect(this, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
-//                     this, SLOT(itemDoubleClickedSlot(QListWidgetItem*)));
+    QObject::connect(this, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+                     this, SLOT(doubleClickItem(QListWidgetItem*)));
 //    QObject::connect(this, SIGNAL(itemClicked(QListWidgetItem*)),
 //                     this, SLOT(itemClickedSlot(QListWidgetItem*)));
 }
@@ -70,8 +72,7 @@ void BBFileListWidget::showFolderContent(const QString &folderPath)
     // show the contents of the newly selected folder, the original list is cleared
     clear();
 
-//    //用于list item的事件
-//    mFolderPath = folderPath;
+    m_FolderPath = folderPath;
 //    //向显示当前路径的控件发送路径
 //    showFolderPath(mFolderPath);
 //    //向文件夹树发送信号 修改当前正在显示的文件夹对应的树节点
@@ -153,6 +154,26 @@ void BBFileListWidget::showFolderContent(const QString &folderPath)
         dir.mkpath(dir.absolutePath());
     }
     sortItems();
+}
+
+void BBFileListWidget::doubleClickItem(QListWidgetItem *pItem)
+{
+    // pItem->text() is text after line feed, is not real name
+    BBFileInfo *pInfo = m_Map.value(pItem);
+    QString filePath = m_FolderPath + "/" + pInfo->m_FileName;
+    QFileInfo fileInfo(filePath);
+    if (fileInfo.isDir())
+    {
+        clickFolderTreeItem(filePath);
+    }
+    else
+    {
+        if (pInfo->m_eFileType == BBFileType::script)
+        {
+            // open file
+            QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
+        }
+    }
 }
 
 void BBFileListWidget::setMenu()
@@ -468,27 +489,6 @@ void BBFileListWidget::contextMenuEvent(QContextMenuEvent *event)
 //        sortItems();
 //    }
 
-//}
-
-//void FileList::itemDoubleClickedSlot(QListWidgetItem *item)
-//{
-//    //item->text()是换行的text 不是真的名字
-//    FileInfo *info = mMap.value(item);
-//    QString filePath = mFolderPath + "/" + info->mFileName;
-//    QFileInfo *fileInfo = new QFileInfo(filePath);
-//    if (fileInfo->isDir())
-//    {
-//        showFolderContent(filePath);
-//    }
-//    else
-//    {
-//        if (info->mFileType == FileType::script)
-//        {
-//            //是脚本文件
-//            //打开文件
-//            QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
-//        }
-//    }
 //}
 
 //void FileList::openEditor()

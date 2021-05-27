@@ -146,8 +146,10 @@ void BBMainWindow::setConnect()
                      m_pUi->scrollAreaFilePath, SLOT(moveToLeft()));
     QObject::connect(m_pUi->buttonMovePathRight, SIGNAL(pressed()),
                      m_pUi->scrollAreaFilePath, SLOT(moveToRight()));
-    // click an item in the file path bar, and change selected item in the folder tree
+    // click an item in the file path bar or file list, and change selected item in the folder tree
     QObject::connect(m_pUi->barFilePath, SIGNAL(showFolderContent(QString)),
+                     m_pUi->treeFolder, SLOT(setCurrentItemByPath(QString)));
+    QObject::connect(m_pUi->listFile, SIGNAL(clickFolderTreeItem(QString)),
                      m_pUi->treeFolder, SLOT(setCurrentItemByPath(QString)));
 
 
