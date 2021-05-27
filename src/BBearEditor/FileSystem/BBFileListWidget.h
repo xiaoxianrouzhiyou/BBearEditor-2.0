@@ -3,6 +3,8 @@
 
 
 #include <QListWidget>
+#include <QPlainTextEdit>
+#include <BBUtils.h>
 
 
 class QWidgetAction;
@@ -33,6 +35,22 @@ struct BBFileInfo
 };
 
 
+class BBPlainTextEdit : public QPlainTextEdit
+{
+    Q_OBJECT
+
+public:
+    BBPlainTextEdit(QWidget *pParent = 0);
+
+signals:
+    void editFinished();
+
+private:
+    void focusOutEvent(QFocusEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+};
+
+
 class BBFileListWidget : public QListWidget
 {
     Q_OBJECT
@@ -40,12 +58,22 @@ public:
     explicit BBFileListWidget(QWidget *pParent = nullptr);
     ~BBFileListWidget();
 
+    QString getMimeType() { return BB_MIMETYPE_FILELISTWIDGET; }
+
 private slots:
     void showFolderContent(const QString &folderPath);
     void doubleClickItem(QListWidgetItem *pItem);
+    void newFolder();
+    void copyAction();
+    void pasteAction();
+    void openRenameEditor();
+    void finishRename();
+    void deleteAction();
 
 signals:
     void clickFolderTreeItem(const QString &folderPath);
+    void addItemInFolderTree(const QString &parentPath, const QString &name);
+    void updateItemInFolderTree(const QString &oldName, const QString &newName);
 
 private:
     void setMenu();
@@ -58,6 +86,7 @@ private:
 
     void paintEvent(QPaintEvent *event) override;
     void contextMenuEvent(QContextMenuEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
 
     static QSize m_StandardIconSize;
     static QSize m_StandardItemSize;
@@ -76,6 +105,8 @@ private:
     QMap<QListWidgetItem*, BBFileInfo*> m_Map;
     QSize m_ItemSize;
     QString m_FolderPath;
+    QListWidgetItem *m_pEditingItem;
+    BBPlainTextEdit *m_pRenameEditor;
 };
 
 #endif // BBFILELISTWIDGET_H
@@ -83,19 +114,7 @@ private:
 
 
 
-////重写多行文本编辑框 捕获焦点移除、输入回车
-//class PlainTextEdit : public QPlainTextEdit
-//{
-//    Q_OBJECT
 
-//public:
-//    PlainTextEdit(QWidget *parent = 0);
-//signals:
-//    void editingFinished();
-//private:
-//    void focusOutEvent(QFocusEvent *event) override;
-//    void keyPressEvent(QKeyEvent *event) override;
-//};
 
 
 
@@ -107,29 +126,19 @@ private:
 //    Q_OBJECT
 
 //public:
-//    FileList(QWidget *parent = 0);
 //    static QString getMimeType();
 //    static QString getMetaFilePath(QString sourcePath);
 //    static QString getMetaJpgFilePath(QString sourcePath);
-//    static QString checkFolderDuplicateName(QString path);
 //    static QString checkFileDuplicateName(QString path);
 
 
 //public slots:
-//    void popupMenu();
 //    void newMaterial();
 //    void newScript();
-//    void copyAction();
-//    void pasteAction();
 //    void cancelSelectedItems();
 
 //private slots:
 //    void updateFolderName(QString prePath, QString newPath);
-//    void itemDoubleClickedSlot(QListWidgetItem *item);
-//    void openEditor();
-//    void finishRename();
-//    void newFolder();
-//    void deleteFile();
 //    void deleteItem();
 //    void copyByProjectTree(QList<QString> folderPaths);
 //    void pasteFileFromProjectTree(QList<QString> filePaths, QString destPath, QList<QString> pastedFolderNames);
@@ -139,10 +148,7 @@ private:
 
 //signals:
 //    void updateProjectTree();
-//    void showFolderPath(QString path);
-//    void updateFolderNameInvert(QString preName, QString newName);
 //    void updateCurrentShowFolderContentItem(QString path);
-//    void addItemInProjectTree(QString parentPath, QString name);
 //    void deleteItemInProjectTree(QString path);
 //    void moveItemInProjectTree(QString prePath, QString newPath);
 //    void copyToProjectTree(QList<QString> filePaths);
@@ -173,8 +179,8 @@ private:
 //    void selectPasteItem(QList<QString> itemNames);
 
 
-//    QListWidgetItem *editingItem;
-//    PlainTextEdit *edit;
+
+
 //    QListWidgetItem *indicatorItem;
 //    QList<QString> clipBoardPaths;
 

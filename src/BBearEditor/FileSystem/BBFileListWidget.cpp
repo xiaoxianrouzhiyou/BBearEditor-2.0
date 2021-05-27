@@ -1,5 +1,4 @@
 #include "BBFileListWidget.h"
-#include "BBUtils.h"
 #include <QDir>
 #include <QPainter>
 #include <QWidgetAction>
@@ -10,7 +9,41 @@
 #include <QDesktopWidget>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QPlainTextEdit>
 
+
+//---------------------------------------------------------------------------------------------------
+//  BBPlainTextEdit
+//---------------------------------------------------------------------------------------------------
+
+BBPlainTextEdit::BBPlainTextEdit(QWidget *pParent)
+    : QPlainTextEdit(pParent)
+{
+
+}
+
+void BBPlainTextEdit::focusOutEvent(QFocusEvent *event)
+{
+    Q_UNUSED(event);
+    editFinished();
+}
+
+void BBPlainTextEdit::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Return)
+    {
+        editFinished();
+    }
+    else
+    {
+        QPlainTextEdit::keyPressEvent(event);
+    }
+}
+
+
+//---------------------------------------------------------------------------------------------------
+//  BBFileListWidget
+//---------------------------------------------------------------------------------------------------
 
 QSize BBFileListWidget::m_StandardIconSize = QSize(43, 43);
 QSize BBFileListWidget::m_StandardItemSize = QSize(45, 90);
@@ -32,7 +65,8 @@ BBFileListWidget::BBFileListWidget(QWidget *pParent)
     : QListWidget(pParent)
 {
     m_ItemSize = m_StandardItemSize;
-//     editingItem(NULL), indicatorItem(NULL)
+    m_pEditingItem = NULL;
+    m_pRenameEditor = NULL;
 
     // icon is at the top, and text is at the bottom
     setViewMode(QListView::IconMode);
@@ -174,6 +208,176 @@ void BBFileListWidget::doubleClickItem(QListWidgetItem *pItem)
             QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
         }
     }
+}
+
+void BBFileListWidget::newFolder()
+{
+    // Otherwise, after creating, several items will be selected
+    QList<QListWidgetItem*> items = selectedItems();
+    for (int i = 0; i < items.count(); i++)
+    {
+        setItemSelected(items.at(i), false);
+    }
+
+    QString fileName = "new folder";
+    QString filePath = BBUtils::getExclusiveFolderPath(m_FolderPath, fileName);
+
+    QDir dir;
+    BB_PROCESS_ERROR_RETURN(dir.mkdir(filePath));
+
+    // add item at the beginning
+    QListWidgetItem *pItem = new QListWidgetItem(this);
+    pItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
+    pItem->setSizeHint(m_ItemSize);
+    pItem->setText(lineFeed(fileName));
+    pItem->setIcon(getIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
+
+    m_Map.insert(pItem, new BBFileInfo(fileName, BBFileType::dir));
+
+    sortItems();
+    addItemInFolderTree(m_FolderPath, fileName);
+    setCurrentItem(pItem);
+    openRenameEditor();
+}
+
+void BBFileListWidget::copyAction()
+{
+
+}
+
+void BBFileListWidget::pasteAction()
+{
+
+}
+
+void BBFileListWidget::openRenameEditor()
+{
+    QList<QListWidgetItem*> items = selectedItems();
+    if (items.count() == 1)
+    {
+        m_pEditingItem = items.first();
+        QWidget *pWidget = new QWidget(this);
+        QVBoxLayout *pLayout = new QVBoxLayout(pWidget);
+        pLayout->setContentsMargins(1, 2, 1, 2);
+        pLayout->setSpacing(3);
+        m_pRenameEditor = new BBPlainTextEdit(pWidget);
+        m_pRenameEditor->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        // margin: 47px 1px 2px 1px;
+        m_pRenameEditor->setStyleSheet("border: none; background: #d6dfeb; color: #191f28;"
+                                       "selection-color: #d6dfeb; selection-background-color: #8193bc;"
+                                       "font: 9pt \"Arial\"; padding: -2px;");
+        BBFileInfo *pFileInfo = m_Map.value(m_pEditingItem);
+        QString fileName = pFileInfo->m_FileName;
+        if (pFileInfo->m_eFileType != BBFileType::dir)
+        {
+            // remove suffix
+            fileName = fileName.mid(0, fileName.lastIndexOf('.'));
+        }
+        m_pRenameEditor->setPlainText(fileName);
+        m_pRenameEditor->selectAll();
+        QObject::connect(m_pRenameEditor, SIGNAL(editFinished()), this, SLOT(finishRename()));
+        pLayout->addWidget(m_pRenameEditor, 1);
+        setItemWidget(m_pEditingItem, pWidget);
+        m_pRenameEditor->setFocus();
+    }
+}
+
+void BBFileListWidget::finishRename()
+{
+    BB_PROCESS_ERROR_RETURN(m_pEditingItem);
+
+    // without suffix
+    QString newBaseName = m_pRenameEditor->toPlainText();
+    if (!newBaseName.isEmpty())
+    {
+        QString newName = newBaseName;
+        BBFileInfo *pFileInfo = m_Map.value(m_pEditingItem);
+        QString oldName = pFileInfo->m_FileName;
+        QString oldBaseName = oldName;
+        if (pFileInfo->m_eFileType != BBFileType::dir)
+        {
+            // add suffix
+            QString suffix = BBUtils::getFileSuffix(oldName);
+            newName = newBaseName + "." + suffix;
+            oldBaseName = BBUtils::getBaseName(oldName);
+        }
+        if (oldName != newName)
+        {
+            QString oldPath = m_FolderPath + "/" + oldName;
+            QString newPath;
+            if (pFileInfo->m_eFileType == BBFileType::dir)
+            {
+                newPath = BBUtils::getExclusiveFolderPath(m_FolderPath, newName);
+                if (QFile::rename(oldPath, newPath))
+                {
+                    newBaseName = BBUtils::getBaseName(newName);
+                    pFileInfo->m_FileName = newName;
+                    m_pEditingItem->setText(lineFeed(newBaseName));
+//                    //修改对应meta文件夹
+//                    QString oldMetaFolderPath = getMetaFilePath(oldPath);
+//                    QString newMetaFolderPath = getMetaFilePath(newPath);
+//                    QFile::rename(oldMetaFolderPath, newMetaFolderPath);
+                    // update corresponding item in the folder tree
+                    updateItemInFolderTree(oldName, newName);
+                }
+//                //如果该文件夹在剪贴板中 则也在文件夹树的剪贴板中 自己和树的剪贴板都要移除
+//                if (clipBoardPaths.contains(oldPath))
+//                {
+//                    clipBoardPaths.removeOne(oldPath);
+//                    //树结点的名字已经改了 需要使用新路径找对应结点
+//                    removeRenameItemInTreeClipBoard(newPath);
+//                }
+            }
+            else
+            {
+//                //文件
+//                newPath = checkFileDuplicateName(newPath);
+//                if (QFile::rename(oldPath, newPath))
+//                {
+//                    newName = newPath.mid(newPath.lastIndexOf('/') + 1);
+//                    newBaseName = newName.mid(0, newName.lastIndexOf('.'));
+//                    fileInfo->mFileName = newName;
+//                    editingItem->setText(lineFeed(newBaseName));
+
+//                    if (fileInfo->mFileType == FileType::mesh)
+//                    {
+//                        //有些文件需要对相应meta修改名字
+//                        QString oldMetaFilePath = getMetaFilePath(oldPath);
+//                        QString newMetaFilePath = getMetaFilePath(newPath);
+//                        //修改后缀为jpg
+//                        int index = oldMetaFilePath.lastIndexOf('.');
+//                        oldMetaFilePath = oldMetaFilePath.mid(0, index) + ".jpg";
+//                        index = newMetaFilePath.lastIndexOf('.');
+//                        newMetaFilePath = newMetaFilePath.mid(0, index) + ".jpg";
+//                        QFile::rename(oldMetaFilePath, newMetaFilePath);
+//                    }
+//                    else if (fileInfo->mFileType == FileType::material)
+//                    {
+//                        //材质文件 需要修改文件路径与材质对象的映射
+//                        Material::rename(oldPath, newPath);
+//                    }
+//                }
+//                //重命名后 如果在剪贴板中 移除掉
+//                if (clipBoardPaths.contains(oldPath))
+//                {
+//                    clipBoardPaths.removeOne(oldPath);
+//                }
+            }
+            sortItems();
+        }
+    }
+
+    removeItemWidget(m_pEditingItem);
+    m_pEditingItem = NULL;
+    // Otherwise, the list has no focus and no longer triggers key events
+    setFocus();
+//    //重新显示属性栏的属性 名字更新
+//    itemClicked(editingItem);
+}
+
+void BBFileListWidget::deleteAction()
+{
+
 }
 
 void BBFileListWidget::setMenu()
@@ -407,46 +611,20 @@ void BBFileListWidget::contextMenuEvent(QContextMenuEvent *event)
     m_pMenu->move(pos);
 }
 
-
-
-
-
-////--------------------PlainTextEdit
-
-
-//PlainTextEdit::PlainTextEdit(QWidget *parent)
-//    : QPlainTextEdit(parent)
-//{
-
-//}
-
-//void PlainTextEdit::focusOutEvent(QFocusEvent *event)
-//{
-//    Q_UNUSED(event);
-//    editingFinished();
-//}
-
-//void PlainTextEdit::keyPressEvent(QKeyEvent *event)
-//{
-//    if (event->key() == Qt::Key_Return)
-//    {
-//        editingFinished();
-//    }
-//    else
-//    {
-//        QPlainTextEdit::keyPressEvent(event);
-//    }
-//}
-
-
-////--------------------FileList
-
-
-//QString FileList::getMimeType()
-//{
-//    return "FileList";
-//}
-
+void BBFileListWidget::keyPressEvent(QKeyEvent *event)
+{
+    // Handling menu shortcut events
+    int key;
+#if defined(Q_OS_WIN32)
+    key = Qt::Key_F2;
+#elif defined(Q_OS_MAC)
+    key = Qt::Key_Return;
+#endif
+    if (event->key() == key)
+    {
+        openRenameEditor();
+    }
+}
 
 //void FileList::updateFolderName(QString prePath, QString newPath)
 //{
@@ -491,189 +669,6 @@ void BBFileListWidget::contextMenuEvent(QContextMenuEvent *event)
 
 //}
 
-//void FileList::openEditor()
-//{
-//    QList<QListWidgetItem*> selected = selectedItems();
-//    if (selected.count() == 1)
-//    {
-//        //多选或不选都不会进行重命名操作
-//        editingItem = selected.first();
-//        QWidget *w = new QWidget(this);
-//        QVBoxLayout *l = new QVBoxLayout(w);
-//        l->setContentsMargins(1, 2, 1, 2);
-//        l->setSpacing(3);
-//        //占位用的 否则编辑框点击图标仍然有焦点
-//        QLabel *icon = new QLabel(w);
-//        l->addWidget(icon, 1);
-//        edit = new PlainTextEdit(w);
-//        edit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//        //margin: 47px 1px 2px 1px;
-//        edit->setStyleSheet("border: none; background: #d6dfeb; color: #191f28;"
-//                            "selection-color: #d6dfeb; selection-background-color: #8193bc;"
-//                            "font: 10pt \"Arial\"; padding: -2px;");
-//        FileInfo *fileInfo = mMap.value(editingItem);
-//        QString fileName = fileInfo->mFileName;
-//        if (fileInfo->mFileType != FileType::dir)
-//        {
-//            //文件去掉后缀
-//            fileName = fileName.mid(0, fileName.lastIndexOf('.'));
-//        }
-//        edit->setPlainText(fileName);
-//        edit->selectAll();
-//        QObject::connect(edit, SIGNAL(editingFinished()), this, SLOT(finishRename()));
-//        l->addWidget(edit, 1);
-//        setItemWidget(editingItem, w);
-//        edit->setFocus();
-//    }
-//}
-
-//void FileList::finishRename()
-//{
-//    if (editingItem == NULL)
-//        return;
-
-//    QString newBaseName = edit->toPlainText();
-//    //新名字不为空
-//    if (!newBaseName.isEmpty())
-//    {
-//        QString newName = newBaseName;
-//        FileInfo *fileInfo = mMap.value(editingItem);
-//        QString oldName = fileInfo->mFileName;
-//        QString oldBaseName = oldName;
-//        QString suffix;
-//        if (fileInfo->mFileType != FileType::dir)
-//        {
-//            //文件处理后缀
-//            int index = oldName.lastIndexOf('.');
-//            suffix = oldName.mid(index + 1);
-//            newName = newBaseName + "." + suffix;
-//            oldBaseName = oldName.mid(0, index);
-//        }
-//        //是否对名字进行了修改
-//        if (oldName != newName)
-//        {
-//            QString oldPath = mFolderPath + "/" + oldName;
-//            QString newPath = mFolderPath + "/" + newName;
-//            if (fileInfo->mFileType == FileType::dir)
-//            {
-//                //文件夹
-//                //检测修改后的文件名是否存在 若存在尾部加(2) (3)..
-//                newPath = checkFolderDuplicateName(newPath);
-//                //改名
-//                if (QFile::rename(oldPath, newPath))
-//                {
-//                    newName = newPath.mid(newPath.lastIndexOf('/') + 1);
-//                    newBaseName = newName.mid(0, newName.lastIndexOf('.'));
-//                    //修改映射
-//                    fileInfo->mFileName = newName;
-//                    //修改列表中的item
-//                    editingItem->setText(lineFeed(newBaseName));
-//                    //修改对应meta文件夹
-//                    QString oldMetaFolderPath = getMetaFilePath(oldPath);
-//                    QString newMetaFolderPath = getMetaFilePath(newPath);
-//                    QFile::rename(oldMetaFolderPath, newMetaFolderPath);
-//                    //文件夹列表树相应项也需要改名
-//                    updateFolderNameInvert(oldName, newName);
-//                }
-//                //如果该文件夹在剪贴板中 则也在文件夹树的剪贴板中 自己和树的剪贴板都要移除
-//                if (clipBoardPaths.contains(oldPath))
-//                {
-//                    clipBoardPaths.removeOne(oldPath);
-//                    //树结点的名字已经改了 需要使用新路径找对应结点
-//                    removeRenameItemInTreeClipBoard(newPath);
-//                }
-//            }
-//            else
-//            {
-//                //文件
-//                newPath = checkFileDuplicateName(newPath);
-//                if (QFile::rename(oldPath, newPath))
-//                {
-//                    newName = newPath.mid(newPath.lastIndexOf('/') + 1);
-//                    newBaseName = newName.mid(0, newName.lastIndexOf('.'));
-//                    fileInfo->mFileName = newName;
-//                    editingItem->setText(lineFeed(newBaseName));
-
-//                    if (fileInfo->mFileType == FileType::mesh)
-//                    {
-//                        //有些文件需要对相应meta修改名字
-//                        QString oldMetaFilePath = getMetaFilePath(oldPath);
-//                        QString newMetaFilePath = getMetaFilePath(newPath);
-//                        //修改后缀为jpg
-//                        int index = oldMetaFilePath.lastIndexOf('.');
-//                        oldMetaFilePath = oldMetaFilePath.mid(0, index) + ".jpg";
-//                        index = newMetaFilePath.lastIndexOf('.');
-//                        newMetaFilePath = newMetaFilePath.mid(0, index) + ".jpg";
-//                        QFile::rename(oldMetaFilePath, newMetaFilePath);
-//                    }
-//                    else if (fileInfo->mFileType == FileType::material)
-//                    {
-//                        //材质文件 需要修改文件路径与材质对象的映射
-//                        Material::rename(oldPath, newPath);
-//                    }
-//                }
-//                //重命名后 如果在剪贴板中 移除掉
-//                if (clipBoardPaths.contains(oldPath))
-//                {
-//                    clipBoardPaths.removeOne(oldPath);
-//                }
-//            }
-//            //列表重新排序
-//            sortItems();
-//        }
-//    }
-//    //QWidget *w = itemWidget(editingItem);
-//    removeItemWidget(editingItem);
-//    //delete w; 会报错
-//    editingItem = NULL;
-//    //否则列表没有焦点 不再相应按键事件
-//    setFocus();
-//    //重新显示属性栏的属性 名字更新
-//    itemClicked(editingItem);
-//}
-
-//void FileList::newFolder()
-//{
-//    //否则创建完毕后 会有多项被选中
-//    QList<QListWidgetItem*> items = selectedItems();
-//    int count = items.count();
-//    for (int i = 0; i < count; i++)
-//    {
-//        setItemSelected(items.at(i), false);
-//    }
-//    //给定初始路径+名字
-//    QString fileName = mFolderPath + "/new folder ";
-//    //文件夹名 如果存在 数字推后
-//    QDir *dir = new QDir();
-//    int i = 1;
-//    while (dir->exists(fileName + QString::number(i)))
-//    {
-//        i++;
-//    }
-//    //创建文件夹
-//    bool result = dir->mkdir(fileName + QString::number(i));
-//    if (result)
-//    {
-//        //不带路径的名字
-//        fileName = "new folder " + QString::number(i);
-//        //在列表第一项插入item 表示文件夹
-//        QListWidgetItem *item = new QListWidgetItem(this);
-//        item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
-//        item->setSizeHint(itemSize);
-//        item->setText(lineFeed(fileName));
-//        item->setIcon(getIcon(":/icon/resources/icons/folder5.png"));
-//        //插入映射
-//        mMap.insert(item, new FileInfo(fileName, FileType::dir));
-//        //列表重新排序
-//        sortItems();
-//        //文件夹树增加相应项
-//        addItemInProjectTree(mFolderPath, fileName);
-//        //选中新建项
-//        setCurrentItem(item);
-//        //打开重命名编辑框
-//        openEditor();
-//    }
-//}
 
 //void FileList::deleteFile()
 //{
@@ -1338,28 +1333,6 @@ void BBFileListWidget::contextMenuEvent(QContextMenuEvent *event)
 //    //刷新列表
 //    showFolderContent(mFolderPath);
 //    return true;
-//}
-
-//QString FileList::checkFolderDuplicateName(QString path)
-//{
-//    QDir *dir = new QDir(path);
-//    if (dir->exists())
-//    {
-//        dir = new QDir;
-//        QString renamePath;
-//        int i = 2;
-//        do
-//        {
-//            renamePath = path + "(" + QString::number(i) + ")";
-//            i++;
-//        }
-//        while (dir->exists(renamePath));
-//        return renamePath;
-//    }
-//    else
-//    {
-//        return path;
-//    }
 //}
 
 //QString FileList::checkFileDuplicateName(QString path)

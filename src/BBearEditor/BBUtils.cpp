@@ -1,4 +1,5 @@
 #include "BBUtils.h"
+#include <QDir>
 
 
 QString BBConstant::BB_NAME_PROJECT = "";
@@ -45,4 +46,39 @@ char *BBUtils::loadFileContent(const char *filePath, int &nFileSize)
         fclose(pFile);
 
     return pData;
+}
+
+QString BBUtils::getExclusiveFolderPath(const QString &parentPath, QString &fileName)
+{
+    QDir dir;
+    QString filePath = parentPath + "/" + fileName;
+    if (!dir.exists(filePath))
+    {
+        // there is no the same name
+        return filePath;
+    }
+    // if exist, number that is at the end will increase
+    filePath += " ";
+    int i = 1;
+    while (dir.exists(filePath + QString::number(i)))
+    {
+        i++;
+    }
+    fileName = fileName + " " + QString::number(i);
+    return filePath + QString::number(i);
+}
+
+QString BBUtils::getFileSuffix(const QFileInfo &fileInfo)
+{
+    return fileInfo.fileName().mid(fileInfo.fileName().lastIndexOf('.') + 1);
+}
+
+QString BBUtils::getFileSuffix(const QString &name)
+{
+    return name.mid(name.lastIndexOf('.') + 1);
+}
+
+QString BBUtils::getBaseName(const QString &name)
+{
+    return name.mid(0, name.lastIndexOf('.'));
 }

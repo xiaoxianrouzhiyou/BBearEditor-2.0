@@ -24,6 +24,8 @@ private slots:
     void changeCurrentItem(QTreeWidgetItem *pCurrent, QTreeWidgetItem *pPrevious);
     void setCurrentItemByPath(const QString &folderPath);
     void newFolder();
+    void addItem(const QString &parentPath, const QString &name);
+    void updateItem(const QString &oldName, const QString &newName);
     void showInFolder();
     void finishRename() override;
 
@@ -31,7 +33,6 @@ signals:
     void showFolderContent(const QString &folderPath);
 
 private:
-    QString getFileSuffix(QFileInfo fileInfo);
     QString getAbsolutePath(const QString &relativePath);
     QString getAbsolutePath(QTreeWidgetItem *pItem);
     QTreeWidgetItem* getItemByPath(const QString &absolutePath);
@@ -49,9 +50,6 @@ private:
 
 
 
-//class ProjectTree : public BaseTree
-//{
-//    Q_OBJECT
 
 //public:
 //    static bool copyDirectoryFiles(QString fromDir, QString toDir);
@@ -69,7 +67,6 @@ private:
 //    void pasteAction() override;
 
 //private slots:
-//    void updateFolderNameInvert(QString preName, QString newName);
 //    void deleteAction() override;
 //    void updateCurrentShowFolderContentItem(QString path);
 //    void addFolderItemInTree(QString parentPath, QString name);
@@ -92,4 +89,4 @@ private:
 //    QList<QString> pastedFolderNames;
 //    //有时候加载工程 却无需加载材质
 //    bool isLoadMaterial;
-//};
+

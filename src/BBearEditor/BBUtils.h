@@ -5,6 +5,7 @@
 #define BB_SAFE_DELETE_ARRAY(p) do{ delete []p; p = NULL; } while(0)
 #define BB_PROCESS_ERROR(p) if(!p) break
 #define BB_PROCESS_ERROR_RETURN(p) if(!p) return
+#define BB_PROCESS_ERROR_RETURN_FALSE(p) if(!p) return false
 #define BB_END(p) if(p) break
 #define BB_SUCCEEDED(hr) (hr>=0)
 
@@ -13,6 +14,7 @@
 #define BB_MIMETYPE_TREEWIDGET "TreeWidget"
 #define BB_MIMETYPE_HIERARCHYTREEWIDGET "HierarchyTreeWidget"
 #define BB_MIMETYPE_FOLDERTREEWIDGET "FolderTreeWidget"
+#define BB_MIMETYPE_FILELISTWIDGET "FileListWidget"
 
 #define BB_PATH_BASEOBJECTLIST "../../../BBearEditor/resources/xmlfiles/baselist.xml"
 #define BB_PATH_RESOURCE "../../../BBearEditor/resources/"
@@ -31,6 +33,8 @@
 #include <QString>
 #include <QVector3D>
 
+class QFileInfo;
+
 class BBConstant
 {
 public:
@@ -48,6 +52,10 @@ class BBUtils
 {
 public:
     static char *loadFileContent(const char *filePath, int &nFileSize);
+    static QString getExclusiveFolderPath(const QString &parentPath, QString &fileName);
+    static QString getFileSuffix(const QFileInfo &fileInfo);
+    static QString getFileSuffix(const QString &name);
+    static QString getBaseName(const QString &name);
 };
 
 #endif // BBUTILS_H

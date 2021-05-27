@@ -151,25 +151,18 @@ void BBMainWindow::setConnect()
                      m_pUi->treeFolder, SLOT(setCurrentItemByPath(QString)));
     QObject::connect(m_pUi->listFile, SIGNAL(clickFolderTreeItem(QString)),
                      m_pUi->treeFolder, SLOT(setCurrentItemByPath(QString)));
-
+    // new folder in file list, and add corresponding item in folder tree
+    QObject::connect(m_pUi->listFile, SIGNAL(addItemInFolderTree(QString, QString)),
+                     m_pUi->treeFolder, SLOT(addItem(QString, QString)));
+    // rename folder name in the file list, and update the name of corresponding item in the folder tree
+    QObject::connect(m_pUi->listFile, SIGNAL(updateItemInFolderTree(QString, QString)),
+                     m_pUi->treeFolder, SLOT(updateItem(QString, QString)));
 
 //    //对整个项目操作的菜单事件
 //    QObject::connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(save()));
 //    //文件视图改变 需要刷新文件夹树
 //    QObject::connect(ui->listFile, SIGNAL(updateProjectTree()), ui->treeProject, SLOT(loadProject()));
 
-//    //文件列表跳转之后 文件夹树的currentShowFolderContentItem需要更新
-//    QObject::connect(ui->listFile, SIGNAL(updateCurrentShowFolderContentItem(QString)),
-//                     ui->treeProject, SLOT(updateCurrentShowFolderContentItem(QString)));
-//    //在文件夹树中修改文件夹名字 当前文件夹路径更新 至文件列表
-//    QObject::connect(ui->treeProject, SIGNAL(updateFolderName(QString, QString)),
-//                     ui->listFile, SLOT(updateFolderName(QString, QString)));
-//    //在文件列表中修改文件夹名字 树中相应项更新名字
-//    QObject::connect(ui->listFile, SIGNAL(updateFolderNameInvert(QString, QString)),
-//                     ui->treeProject, SLOT(updateFolderNameInvert(QString, QString)));
-//    //在文件列表中创建文件夹 文件夹树添加相应项
-//    QObject::connect(ui->listFile, SIGNAL(addItemInProjectTree(QString, QString)),
-//                     ui->treeProject, SLOT(addFolderItemInTree(QString, QString)));
 //    //在文件列表中删除文件夹 文件夹树相应项删去
 //    QObject::connect(ui->listFile, SIGNAL(deleteItemInProjectTree(QString)),
 //                     ui->treeProject, SLOT(deleteFolderItemInTree(QString)));

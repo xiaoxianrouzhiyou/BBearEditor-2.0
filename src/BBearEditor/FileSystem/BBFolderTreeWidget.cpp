@@ -64,7 +64,7 @@ BBFolderTreeWidget::loadProject()
             }
             else
             {
-                QString suffix = getFileSuffix(fileInfo);
+                QString suffix = BBUtils::getFileSuffix(fileInfo);
                 if (suffix == "mtl")
                 {
 //                    loadMaterial(fileInfo.absoluteFilePath());
@@ -92,7 +92,7 @@ BBFolderTreeWidget::loadProject()
                 }
                 else
                 {
-                    QString suffix = getFileSuffix(fileInfo);
+                    QString suffix = BBUtils::getFileSuffix(fileInfo);
                     if (suffix == "mtl")
                     {
 //                        loadMaterial(fileInfo.absoluteFilePath());
@@ -145,20 +145,15 @@ void BBFolderTreeWidget::setCurrentItemByPath(const QString &folderPath)
 void BBFolderTreeWidget::newFolder()
 {
     QTreeWidgetItem *pParent = currentItem();
-    QString parentFilePath = getAbsolutePath(pParent);
-    QString filePath = parentFilePath + "/new folder ";
-    // Given the initial folder name, if it exists, the number will increase
+    QString parentPath = getAbsolutePath(pParent);
+    QString fileName = "new folder";
+    QString filePath = BBUtils::getExclusiveFolderPath(parentPath, fileName);
+
     QDir dir;
-    int i = 1;
-    while (dir.exists(filePath + QString::number(i)))
-    {
-        i++;
-    }
-    // create folder
-    BB_PROCESS_ERROR_RETURN(dir.mkdir(filePath + QString::number(i)));
+    BB_PROCESS_ERROR_RETURN(dir.mkdir(filePath));
 
     // create tree item
-    QTreeWidgetItem *pItem = new QTreeWidgetItem({"new folder " + QString::number(i)});
+    QTreeWidgetItem *pItem = new QTreeWidgetItem({fileName});
     pItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
 
     if (pParent)
@@ -173,6 +168,55 @@ void BBFolderTreeWidget::newFolder()
     setCurrentItem(pItem);
     // Open the edit box to let the user set name
     openRenameEditor();
+}
+
+void BBFolderTreeWidget::addItem(const QString &parentPath, const QString &name)
+{
+    QTreeWidgetItem *pParent = getItemByPath(parentPath);
+
+    QTreeWidgetItem *pItem = new QTreeWidgetItem({name});
+    pItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
+
+    if (pParent)
+    {
+        pParent->addChild(pItem);
+        setItemExpanded(pParent, true);
+    }
+    else
+    {
+        addTopLevelItem(pItem);
+    }
+}
+
+void BBFolderTreeWidget::updateItem(const QString &oldName, const QString &newName)
+{
+    // the name of child of m_pCurrentShowFolderContentItem is changed
+    if (m_pCurrentShowFolderContentItem)
+    {
+        for (int i = 0; i < m_pCurrentShowFolderContentItem->childCount(); i++)
+        {
+            QTreeWidgetItem *pItem = m_pCurrentShowFolderContentItem->child(i);
+            if (pItem->text(0) == oldName)
+            {
+                pItem->setText(0, newName);
+                break;
+            }
+        }
+    }
+    else
+    {
+        // at the top level
+        for (int i = 0; i < topLevelItemCount(); i++)
+        {
+            QTreeWidgetItem *pItem = topLevelItem(i);
+            if (pItem->text(0) == oldName)
+            {
+                pItem->setText(0, newName);
+                break;
+            }
+        }
+    }
+    sortItems(0, Qt::AscendingOrder);
 }
 
 void BBFolderTreeWidget::showInFolder()
@@ -194,22 +238,9 @@ void BBFolderTreeWidget::finishRename()
     {
         // previous path
         QString previous = getAbsolutePath(m_pEditingItem);
-        // file path without its own file name + new name
-        QString current = previous.mid(0, previous.lastIndexOf('/') + 1) + name;
+        QString parentPath = previous.mid(0, previous.lastIndexOf('/'));
         // Check if there are the same names
-        QDir dir(current);
-        if (dir.exists())
-        {
-            // add "2" at the end
-            dir = QDir();
-            int i = 2;
-            while (dir.exists(current + "(" + QString::number(i) + ")"))
-            {
-                i++;
-            }
-            current += "(" + QString::number(i) + ")";
-            name += "(" + QString::number(i) + ")";
-        }
+        QString current = BBUtils::getExclusiveFolderPath(parentPath, name);
 
         QFile::rename(previous, current);
         m_pEditingItem->setText(0, name);
@@ -225,11 +256,6 @@ void BBFolderTreeWidget::finishRename()
         updateCorrespondingWidget(m_pEditingItem);
     }
     BBTreeWidget::finishRename();
-}
-
-QString BBFolderTreeWidget::getFileSuffix(QFileInfo fileInfo)
-{
-    return fileInfo.fileName().mid(fileInfo.fileName().lastIndexOf('.') + 1);
 }
 
 QString BBFolderTreeWidget::getAbsolutePath(const QString &relativePath)
@@ -598,38 +624,6 @@ void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
 //    menu->exec(cursor().pos());
 //}
 
-//void ProjectTree::updateFolderNameInvert(QString preName, QString newName)
-//{
-//    //修改名字的文件夹对应的树节点是当前正在显示的文件夹对应的树节点的孩子节点
-//    //遍历currentShowFolderContentItem的所有孩子找名为preName的 改为newName
-//    //孩子节点表示子文件夹名 不可能重名
-//    if (currentShowFolderContentItem)
-//    {
-//        for (int i = 0; i < currentShowFolderContentItem->childCount(); i++)
-//        {
-//            QTreeWidgetItem *item = currentShowFolderContentItem->child(i);
-//            if (item->text(0) == preName)
-//            {
-//                item->setText(0, newName);
-//                break;
-//            }
-//        }
-//    }
-//    else
-//    {
-//        //修改的是top节点
-//        for (int i = 0; i < topLevelItemCount(); i++)
-//        {
-//            QTreeWidgetItem *item = topLevelItem(i);
-//            if (item->text(0) == preName)
-//            {
-//                item->setText(0, newName);
-//                break;
-//            }
-//        }
-//    }
-//    sortItems(0, Qt::AscendingOrder);
-//}
 
 //void ProjectTree::dragMoveEvent(QDragMoveEvent *event)
 //{
