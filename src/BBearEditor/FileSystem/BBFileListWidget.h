@@ -74,10 +74,12 @@ signals:
     void clickFolderTreeItem(const QString &folderPath);
     void addItemInFolderTree(const QString &parentPath, const QString &name);
     void updateItemInFolderTree(const QString &oldName, const QString &newName);
+    void deleteItemInFolderTree(const QString &folderPath);
 
 private:
     void setMenu();
     QWidgetAction* createWidgetAction(const QString &iconPath, const QString &name);
+    void deleteOne(QListWidgetItem *pItem);
 
     QString lineFeed(QString originalText);
     QIcon getIcon(const QString &path);
@@ -137,7 +139,6 @@ private:
 
 //private slots:
 //    void updateFolderName(QString prePath, QString newPath);
-//    void deleteItem();
 //    void copyByProjectTree(QList<QString> folderPaths);
 //    void pasteFileFromProjectTree(QList<QString> filePaths, QString destPath, QList<QString> pastedFolderNames);
 //    void changeItemSize(int factor);
@@ -147,7 +148,6 @@ private:
 //signals:
 //    void updateProjectTree();
 //    void updateCurrentShowFolderContentItem(QString path);
-//    void deleteItemInProjectTree(QString path);
 //    void moveItemInProjectTree(QString prePath, QString newPath);
 //    void copyToProjectTree(QList<QString> filePaths);
 //    void pasteItemInProjectTree(QList<QString> clipBoardTranscriptFolderNames);

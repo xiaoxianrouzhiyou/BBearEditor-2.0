@@ -186,6 +186,7 @@ void BBFolderTreeWidget::addItem(const QString &parentPath, const QString &name)
     {
         addTopLevelItem(pItem);
     }
+    sortItems(0, Qt::AscendingOrder);
 }
 
 void BBFolderTreeWidget::updateItem(const QString &oldName, const QString &newName)
@@ -217,6 +218,17 @@ void BBFolderTreeWidget::updateItem(const QString &oldName, const QString &newNa
         }
     }
     sortItems(0, Qt::AscendingOrder);
+}
+
+void BBFolderTreeWidget::deleteItem(const QString &folderPath)
+{
+    QTreeWidgetItem *pItem = getItemByPath(folderPath);
+    // remove from clipBoard
+//    if (clipBoardItems.contains(pItem))
+//    {
+//        clipBoardItems.removeOne(pItem);
+//    }
+    BB_SAFE_DELETE(pItem);
 }
 
 void BBFolderTreeWidget::showInFolder()
@@ -256,6 +268,19 @@ void BBFolderTreeWidget::finishRename()
         updateCorrespondingWidget(m_pEditingItem);
     }
     BBTreeWidget::finishRename();
+}
+
+void BBFolderTreeWidget::deleteAction()
+{
+    BBTreeWidget::deleteAction();
+
+    updateCorrespondingWidget(m_pCurrentShowFolderContentItem);
+
+//    //刷新材质文件的映射 被删除的材质文件的映射不再占用内存
+//    Material::updateMap();
+//    //清空属性栏 包括场景 层级视图选中
+//    cancelHierarchyTreeSelectedItems();
+//    clearPropertyWidget();
 }
 
 QString BBFolderTreeWidget::getAbsolutePath(const QString &relativePath)
@@ -311,6 +336,13 @@ QTreeWidgetItem* BBFolderTreeWidget::getItemByPath(const QString &absolutePath)
         }
         return pItem;
     }
+}
+
+void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
+{
+    QString folderPath = getAbsolutePath(pItem);
+    showFolderContent(folderPath);
+    m_pCurrentShowFolderContentItem = pItem;
 }
 
 void BBFolderTreeWidget::setMenu()
@@ -379,35 +411,30 @@ QWidgetAction* BBFolderTreeWidget::createWidgetAction(QMenu *pParent, const QStr
     return pAction;
 }
 
-void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
+void BBFolderTreeWidget::deleteOne(QTreeWidgetItem *pItem)
 {
-    QString folderPath = getAbsolutePath(pItem);
-    showFolderContent(folderPath);
-    m_pCurrentShowFolderContentItem = pItem;
+    // delete folder
+    QString path = getAbsolutePath(pItem);
+    QDir dir(path);
+    BB_PROCESS_ERROR_RETURN(dir.removeRecursively());
+
+//    //删除对应meta文件夹
+//    QString metaFolderPath = path.mid((projectPath + contentsFolderName).length());
+//    metaFolderPath = projectEngineFolderPath + contentMetaFolderName + metaFolderPath;
+//    dir = new QDir(metaFolderPath);
+//    dir->removeRecursively();
+
+    // if showing its content, clear, and show root folder
+    if (pItem == m_pCurrentShowFolderContentItem)
+    {
+        m_pCurrentShowFolderContentItem = NULL;
+    }
+
+
+    BBTreeWidget::deleteOne(pItem);
 }
 
 
-
-//void ProjectTree::deleteAction()
-//{
-//    BaseTree::deleteAction();
-//    if (currentShowFolderContentItem)
-//    {
-//        //正在显示的文件夹还存在 其子文件可能被删除 对应项应该移除 刷新一次文件列表
-//        QString updatePath = getFilePath(getLevelPath(currentShowFolderContentItem));
-//        showFolderContent(updatePath.mid(0, updatePath.length() - 1));
-//    }
-//    else
-//    {
-//        //如果正在文件列表中被显示文件夹被删除 显示根文件夹
-//        showFolderContent(projectPath + contentsFolderName);
-//    }
-//    //刷新材质文件的映射 被删除的材质文件的映射不再占用内存
-//    Material::updateMap();
-//    //清空属性栏 包括场景 层级视图选中
-//    cancelHierarchyTreeSelectedItems();
-//    clearPropertyWidget();
-//}
 
 //void ProjectTree::updateCurrentShowFolderContentItem(QString path)
 //{
@@ -430,17 +457,6 @@ void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
 //    }
 //    //添加好新的结点后 排序
 //    sortItems(0, Qt::AscendingOrder);
-//}
-
-//void ProjectTree::deleteFolderItemInTree(QString path)
-//{
-//    QTreeWidgetItem *item = getItemByPath(path);
-//    //如果该项在剪贴板中 移除
-//    if (clipBoardItems.contains(item))
-//    {
-//        clipBoardItems.removeOne(item);
-//    }
-//    delete item;
 //}
 
 //void ProjectTree::moveFolderItemInTree(QString prePath, QString newPath)
@@ -476,25 +492,6 @@ void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
 //    sortItems(0, Qt::AscendingOrder);
 //}
 
-//void ProjectTree::deleteOne(QTreeWidgetItem *item)
-//{
-//    //删除文件夹
-//    QString path = getFilePath(getLevelPath(item));
-//    QDir *dir = new QDir(path);
-//    dir->removeRecursively();
-//    //删除对应meta文件夹
-//    QString metaFolderPath = path.mid((projectPath + contentsFolderName).length());
-//    metaFolderPath = projectEngineFolderPath + contentMetaFolderName + metaFolderPath;
-//    dir = new QDir(metaFolderPath);
-//    dir->removeRecursively();
-//    //如果该结点对应的文件夹正在文件列表中被显示 需要清空 显示根文件夹
-//    if (item == currentShowFolderContentItem)
-//    {
-//        currentShowFolderContentItem = NULL;
-//    }
-//    //删除树节点
-//    BaseTree::deleteOne(item);
-//}
 
 
 //void ProjectTree::copyAction()

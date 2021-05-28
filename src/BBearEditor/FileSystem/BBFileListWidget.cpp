@@ -9,7 +9,7 @@
 #include <QDesktopWidget>
 #include <QDesktopServices>
 #include <QUrl>
-#include <QPlainTextEdit>
+#include <Window/BBConfirmationDialog.h>
 
 
 //---------------------------------------------------------------------------------------------------
@@ -376,7 +376,71 @@ void BBFileListWidget::finishRename()
 
 void BBFileListWidget::deleteAction()
 {
+    QList<QListWidgetItem*> items = selectedItems();
+    BB_PROCESS_ERROR_RETURN(items.count() > 0);
 
+    BBConfirmationDialog dialog;
+    dialog.setTitle("Delete selected?");
+    if (items.count() == 1)
+    {
+        dialog.setMessage("You cannot undo this action.\n\nAre you sure to delete this?");
+    }
+    else
+    {
+        dialog.setMessage("You cannot undo this action.\n\nAre you sure to delete these "
+                          + QString::number(items.count()) + " items?");
+    }
+    if (dialog.exec())
+    {
+        for (int i = 0; i < items.count(); i++)
+        {
+            QListWidgetItem* pItem = items.at(i);
+            BBFileInfo *pFileInfo = m_Map.value(pItem);
+            QString path = m_FolderPath + "/" + pFileInfo->m_FileName;
+            if (pFileInfo->m_eFileType == BBFileType::dir)
+            {
+                QDir dir(path);
+                BB_PROCESS_ERROR_RETURN(dir.removeRecursively());
+//                //删除对应的meta文件夹
+//                dir = new QDir(getMetaFilePath(path));
+//                dir->removeRecursively();
+                // delete the corresponding item in the folder tree
+                deleteItemInFolderTree(path);
+//                //刷新材质文件的映射 被删除的材质文件的映射不再占用内存
+//                Material::updateMap();
+            }
+            else
+            {
+                BB_PROCESS_ERROR_RETURN(QFile::remove(path));
+//                //有些文件需要删除对应meta
+//                if (fileInfo->mFileType == FileType::mesh)
+//                {
+//                    QString metaFilePath = getMetaFilePath(path);
+//                    //修改后缀为jpg
+//                    int index = metaFilePath.lastIndexOf('.');
+//                    metaFilePath = metaFilePath.mid(0, index) + ".jpg";
+//                    QFile::remove(metaFilePath);
+//                }
+//                //材质文件 需要删除材质对象
+//                else if (fileInfo->mFileType == FileType::material)
+//                {
+//                    Material::deleteOne(path);
+//                }
+            }
+            // remove from clipboard
+//            if (clipBoardPaths.contains(path))
+//            {
+//                clipBoardPaths.removeOne(path);
+//            }
+            m_Map.remove(pItem);
+            BB_SAFE_DELETE(pFileInfo);
+            BB_SAFE_DELETE(pItem);
+        }
+        setCurrentItem(NULL);
+//        //清空属性栏 包括场景 层级视图选中
+//        cancelHierarchyTreeSelectedItems();
+//        itemClickedSlot(NULL);
+    }
 }
 
 void BBFileListWidget::setMenu()
@@ -666,110 +730,6 @@ void BBFileListWidget::keyPressEvent(QKeyEvent *event)
 //        sortItems();
 //    }
 
-//}
-
-
-//void FileList::deleteFile()
-//{
-//    //遍历所选项
-//    QList<QListWidgetItem*> items = selectedItems();
-//    if (items.count() == 0)
-//        return;
-//    //弹出确认是否删除的对话框
-//    ConfirmationDialog *dialog = new ConfirmationDialog;
-//    dialog->setTitle("Delete selected?");
-//    if (items.count() == 1)
-//    {
-//        dialog->setMessage("You cannot undo this action.\n\nAre you sure to delete this?");
-//    }
-//    else
-//    {
-//        dialog->setMessage("You cannot undo this action.\n\nAre you sure to delete these "
-//                           + QString::number(items.count()) + " items?");
-//    }
-//    if (dialog->exec())
-//    {
-//        //真正开始删除
-//        for (int i = 0; i < items.count(); i++)
-//        {
-//            QListWidgetItem* item = items.at(i);
-//            FileInfo *fileInfo = mMap.value(item);
-//            QString path = mFolderPath + "/" + fileInfo->mFileName;
-//            if (fileInfo->mFileType == FileType::dir)
-//            {
-//                //删除文件夹
-//                QDir *dir = new QDir(path);
-//                if (dir->removeRecursively())
-//                {
-//                    //删除对应的meta文件夹
-//                    dir = new QDir(getMetaFilePath(path));
-//                    dir->removeRecursively();
-//                    //文件夹树中相应结点删去
-//                    deleteItemInProjectTree(path);
-//                    //刷新材质文件的映射 被删除的材质文件的映射不再占用内存
-//                    Material::updateMap();
-//                }
-//                else
-//                {
-//                    return;
-//                }
-//            }
-//            else
-//            {
-//                //删除文件
-//                if (QFile::remove(path))
-//                {
-//                    //有些文件需要删除对应meta
-//                    if (fileInfo->mFileType == FileType::mesh)
-//                    {
-//                        QString metaFilePath = getMetaFilePath(path);
-//                        //修改后缀为jpg
-//                        int index = metaFilePath.lastIndexOf('.');
-//                        metaFilePath = metaFilePath.mid(0, index) + ".jpg";
-//                        QFile::remove(metaFilePath);
-//                    }
-//                    //材质文件 需要删除材质对象
-//                    else if (fileInfo->mFileType == FileType::material)
-//                    {
-//                        Material::deleteOne(path);
-//                    }
-//                }
-//                else
-//                {
-//                    return;
-//                }
-//            }
-//            //该项如果在剪贴板里 从剪贴板中移除
-//            if (clipBoardPaths.contains(path))
-//            {
-//                clipBoardPaths.removeOne(path);
-//            }
-//            //删除映射
-//            mMap.remove(item);
-//            delete fileInfo;
-//            //删除列表中的item
-//            delete item;
-//        }
-//        setCurrentItem(NULL);
-//        //清空属性栏 包括场景 层级视图选中
-//        cancelHierarchyTreeSelectedItems();
-//        itemClickedSlot(NULL);
-//    }
-//}
-
-//void FileList::deleteItem()
-//{
-//    QList<QListWidgetItem*> items = selectedItems();
-//    for (int i = 0; i < items.count(); i++)
-//    {
-//        QListWidgetItem *item = items.at(i);
-//        FileInfo *fileInfo = mMap.value(item);
-//        //删除映射
-//        mMap.remove(item);
-//        delete fileInfo;
-//        //删除列表中的item
-//        delete item;
-//    }
 //}
 
 //void FileList::newMaterial()

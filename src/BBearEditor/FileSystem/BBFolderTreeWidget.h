@@ -26,8 +26,10 @@ private slots:
     void newFolder();
     void addItem(const QString &parentPath, const QString &name);
     void updateItem(const QString &oldName, const QString &newName);
+    void deleteItem(const QString &folderPath);
     void showInFolder();
     void finishRename() override;
+    void deleteAction() override;
 
 signals:
     void showFolderContent(const QString &folderPath);
@@ -36,10 +38,11 @@ private:
     QString getAbsolutePath(const QString &relativePath);
     QString getAbsolutePath(QTreeWidgetItem *pItem);
     QTreeWidgetItem* getItemByPath(const QString &absolutePath);
+    void updateCorrespondingWidget(QTreeWidgetItem *pItem);
 
     void setMenu() override;
     QWidgetAction* createWidgetAction(QMenu *pParent, const QString &iconPath, const QString &name);
-    void updateCorrespondingWidget(QTreeWidgetItem *pItem);
+    void deleteOne(QTreeWidgetItem *pItem) override;
 
     QTreeWidgetItem *m_pCurrentShowFolderContentItem;
 };
@@ -62,15 +65,10 @@ private:
 //    void cancelHierarchyTreeSelectedItems();
 //    void clearPropertyWidget();
 
-//public slots:
+//private slots:
 //    void copyAction() override;
 //    void pasteAction() override;
-
-//private slots:
-//    void deleteAction() override;
 //    void updateCurrentShowFolderContentItem(QString path);
-//    void addFolderItemInTree(QString parentPath, QString name);
-//    void deleteFolderItemInTree(QString path);
 //    void moveFolderItemInTree(QString prePath, QString newPath);
 //    void copyByFileList(QList<QString> filePaths);
 //    void pasteItemWithoutPasteFile(QList<QString> clipBoardTranscriptFolderNames);
@@ -80,7 +78,6 @@ private:
 //    void dragMoveEvent(QDragMoveEvent *event) override;
 //    bool dragDropItem() override;
 //    bool moveItemFromFileList(const QMimeData *mimeData) override;
-//    void deleteOne(QTreeWidgetItem *item) override;
 //    void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript) override;
 //    void pasteEnd() override;
 //    void loadMaterial(QString filePath);
