@@ -9,7 +9,11 @@
 #include <QDesktopWidget>
 #include <QDesktopServices>
 #include <QUrl>
-#include <Window/BBConfirmationDialog.h>
+#include "Window/BBConfirmationDialog.h"
+#include <QMimeData>
+#include <QScrollBar>
+#include <QQueue>
+#include <QDrag>
 
 
 //---------------------------------------------------------------------------------------------------
@@ -67,6 +71,7 @@ BBFileListWidget::BBFileListWidget(QWidget *pParent)
     m_ItemSize = m_StandardItemSize;
     m_pEditingItem = NULL;
     m_pRenameEditor = NULL;
+    m_pIndicatorItem = NULL;
 
     // icon is at the top, and text is at the bottom
     setViewMode(QListView::IconMode);
@@ -621,6 +626,312 @@ QColor BBFileListWidget::getFileLogoColor(const BBFileType &eFileType)
     }
 }
 
+void BBFileListWidget::startDrag(Qt::DropActions supportedActions)
+{
+    Q_UNUSED(supportedActions);
+    QListWidgetItem *pCenterItem = currentItem();
+    QRect centerItemRect = visualItemRect(pCenterItem);
+    // Used to calculate the absolute position of each item that needs to be dragged
+    int hPos = horizontalScrollBar()->sliderPosition();
+    int vPos = verticalScrollBar()->sliderPosition();
+    // step of each item
+    int hStep = centerItemRect.width() + spacing();
+    int vStep = centerItemRect.height() + spacing();
+    // The size of a single icon
+    static int nSize = iconSize().width() * devicePixelRatio();
+    // Record the row and column value and icon of the selected item
+    struct Info
+    {
+        int nRow;
+        int nColumn;
+        QPixmap icon;
+    };
+    QList<Info> infos;
+    // Used for the size of final icon
+    int nMaxRow = 0;
+    int nMaxColumn = 0;
+    int nMinRow = INT_MAX;
+    int nMinColumn = INT_MAX;
+    // drag all selected items
+    QList<QListWidgetItem*> items = selectedItems();
+    for (int i = 0; i < items.count(); i++)
+    {
+        Info info;
+        QListWidgetItem *pItem = items.at(i);
+        QRect rect = visualItemRect(pItem);
+        // rect is relative to the position of the scroll bar
+        // translate and make it relative to 0
+        rect.translate(hPos - spacing(), vPos - spacing());
+        // Calculate the row and column value of the item based on the step
+        info.nColumn = rect.left() / hStep;
+        info.nRow = rect.top() / vStep;
+        if (info.nColumn > nMaxColumn)
+        {
+            nMaxColumn = info.nColumn;
+        }
+        if (info.nColumn < nMinColumn)
+        {
+            nMinColumn = info.nColumn;
+        }
+        if (info.nRow > nMaxRow)
+        {
+            nMaxRow = info.nRow;
+        }
+        if (info.nRow < nMinRow)
+        {
+            nMinRow = info.nRow;
+        }
+        info.icon = pItem->icon().pixmap(nSize);
+        info.icon.setDevicePixelRatio(devicePixelRatio());
+        info.icon = info.icon.scaled(nSize, nSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        infos.append(info);
+    }
+    QPoint hotSpot;
+    // final icon
+    QPixmap pixmap((nSize + 6) * (nMaxColumn - nMinColumn + 1), (nSize + 6) * (nMaxRow - nMinRow + 1));
+    pixmap.setDevicePixelRatio(devicePixelRatio());
+    pixmap.fill(Qt::transparent);
+    QPainter painter(&pixmap);
+    // paint the icon of each item to the final icon according to the row and column value of each item
+    for (int i = 0; i < infos.count(); i++)
+    {
+        int x = (infos.at(i).nColumn - nMinColumn) * (nSize + 6) / devicePixelRatio();
+        int y = (infos.at(i).nRow - nMinRow) * (nSize + 6) / devicePixelRatio();
+        painter.drawPixmap(x, y, infos.at(i).icon);
+        if (items.at(i) == pCenterItem)
+        {
+            // Take the center of pCenterItem as the mouse position
+            hotSpot.setX(x + nSize / devicePixelRatio() / 2);
+            hotSpot.setY(y + nSize / devicePixelRatio() / 2);
+        }
+    }
+    painter.end();
+    // Pack relevant data
+    QByteArray itemData;
+    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
+    // The pCenterItem is written in the first one, used for the situation that you just can read one item
+    QString filePath = m_FolderPath + "/" + m_Map.value(pCenterItem)->m_FileName;
+    dataStream << filePath;
+    // all selected items is written, used for the situation that you can read all selected items
+    for (int i = 0; i < items.count(); i++)
+    {
+        filePath = m_FolderPath + "/" + m_Map.value(items.at(i))->m_FileName;
+        dataStream << filePath;
+    }
+    QMimeData *pMimeData = new QMimeData;
+    // Give this data a unique identifying name
+    pMimeData->setData(getMimeType(), itemData);
+    QDrag drag(this);
+    drag.setMimeData(pMimeData);
+    drag.setHotSpot(hotSpot);
+    drag.setPixmap(pixmap);
+    drag.exec(Qt::MoveAction);
+}
+
+bool BBFileListWidget::moveItem()
+{
+
+}
+
+bool BBFileListWidget::moveItemFromFolderTree(const QMimeData *pMimeData)
+{
+
+}
+
+void BBFileListWidget::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (!event->mimeData()->urls().isEmpty())
+    {
+        // the outside of the editor
+        event->accept();
+    }
+    else if (event->mimeData()->hasFormat(getMimeType()))
+    {
+        // internal drag
+        event->accept();
+    }
+    else if (event->mimeData()->hasFormat(BB_MIMETYPE_FOLDERTREEWIDGET))
+    {
+        event->accept();
+    }
+    else
+    {
+        event->ignore();
+    }
+}
+
+void BBFileListWidget::dragMoveEvent(QDragMoveEvent *event)
+{
+    event->accept();
+    // Scroll up and down when the mouse is at the top or bottom
+    // QListWidget::dragMoveEvent(event); invalidates dropEvent
+    int y = event->pos().y();
+    if (y < 10)
+    {
+        verticalScrollBar()->setSliderPosition(verticalScrollBar()->sliderPosition() - 10);
+    }
+    else if (y >= height() - 10)
+    {
+        verticalScrollBar()->setSliderPosition(verticalScrollBar()->sliderPosition() + 10);
+    }
+    // Drop position indicator
+    QListWidgetItem *pItem = itemAt(event->pos());
+    // Clear the last indicator position painted
+    m_pIndicatorItem = NULL;
+    if (pItem)
+    {
+        // only folder can show drop indicator
+        BBFileInfo *pFileInfo = m_Map.value(pItem);
+        if (pFileInfo->m_eFileType == BBFileType::dir)
+        {
+            // When dragging internally, the drop position cannot be the folder being dragged
+            // It doesn't matter if it is dragged from the folder tree, since the item has been judged
+            if ((event->mimeData()->hasFormat(getMimeType()) && !selectedItems().contains(pItem))
+                    || event->mimeData()->hasFormat(BB_MIMETYPE_FOLDERTREEWIDGET))
+            {
+                m_pIndicatorItem = pItem;
+            }
+        }
+    }
+    repaint();
+}
+
+void BBFileListWidget::dragLeaveEvent(QDragLeaveEvent *event)
+{
+    Q_UNUSED(event);
+    // No need for indicator when dragLeave
+    m_pIndicatorItem = NULL;
+    repaint();
+}
+
+void BBFileListWidget::dropEvent(QDropEvent *event)
+{
+    if (!event->mimeData()->urls().isEmpty())
+    {
+        // from outside of the editor
+        event->accept();
+        importAsset(event->mimeData()->urls());
+    }
+    else if (event->mimeData()->hasFormat(getMimeType()))
+    {
+        if (m_pIndicatorItem)
+        {
+            // there is a drop spot
+            event->accept();
+            moveItem();
+        }
+        else
+        {
+            event->ignore();
+        }
+    }
+    else if (event->mimeData()->hasFormat(BB_MIMETYPE_FOLDERTREEWIDGET))
+    {
+        if (moveItemFromFolderTree(event->mimeData()))
+        {
+            event->accept();
+        }
+        else
+        {
+            event->ignore();
+        }
+    }
+    else
+    {
+        event->ignore();
+    }
+    // The indicator is no longer needed after drop
+    m_pIndicatorItem = NULL;
+    repaint();
+}
+
+void BBFileListWidget::importAsset(const QList<QUrl> &urls)
+{
+    QString folderPath = m_FolderPath;
+    if (m_pIndicatorItem)
+    {
+        // Drag to the folder in the file list and import the asset into this folder
+        folderPath += "/" + m_Map.value(m_pIndicatorItem)->m_FileName;
+    }
+    for (int i = 0; i < urls.length(); i++)
+    {
+        QString importedAssetPath = urls.at(i).toLocalFile();
+        // if it is the folder, you need to traverse the sub-files
+        // otherwise, directly operate
+        QFileInfo fileInfo(importedAssetPath);
+        if (fileInfo.isDir())
+        {
+            // create the folder
+            QString rootFolderName = BBUtils::getFileNameByPath(importedAssetPath);
+            QString rootFolderPath = BBUtils::getExclusiveFolderPath(folderPath, rootFolderName);
+
+            QDir dir;
+            BB_PROCESS_ERROR_RETURN(dir.mkpath(rootFolderPath));
+            // breadth-first traverse
+            QQueue<QString> queue;
+            queue.enqueue(importedAssetPath);
+            while (!queue.isEmpty())
+            {
+                QDir dir(queue.dequeue());
+                dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
+                // the folder exists, traverse sub-files
+                QFileInfoList fileInfoList = dir.entryInfoList();
+                foreach (QFileInfo fileInfo, fileInfoList)
+                {
+                    // Keep the path of the sub file relative to the root folder
+                    // and replace with the project file path in front
+                    // There is no duplicate name problem
+                    QString childPath = rootFolderPath + fileInfo.absoluteFilePath().mid(importedAssetPath.length());
+                    if (fileInfo.isDir())
+                    {
+                        // folder enqueue, waiting to traverse its sub-files
+                        queue.enqueue(fileInfo.absoluteFilePath());
+                        BB_PROCESS_ERROR_RETURN(dir.mkpath(childPath));
+                    }
+                    else
+                    {
+                        // handle the file
+                        importAsset(fileInfo, childPath);
+                    }
+                }
+            }
+        }
+        else
+        {
+            // handle the file
+            QFileInfo fileInfo(importedAssetPath);
+            importAsset(fileInfo, folderPath + "/" + fileInfo.fileName());
+        }
+    }
+    // Open the asset import management dialog
+    // BBAssetManager assetManager;
+    // assetManager.exec();
+    // there are new items, update file system
+    showFolderContent(m_FolderPath);
+    updateFolderTree();
+}
+
+void BBFileListWidget::importAsset(const QFileInfo &fileInfo, const QString &newPath)
+{
+    QString suffix = fileInfo.suffix();
+    if (m_TextureSuffixs.contains(suffix) || m_ScriptSuffixs.contains(suffix))
+    {
+        // import directly
+        QFile::copy(fileInfo.absoluteFilePath(), BBUtils::getExclusiveFilePath(newPath));
+    }
+    else if (m_MeshSuffixs.contains(suffix))
+    {
+        QString targetPath = BBUtils::getExclusiveFilePath(newPath);
+        QFile::copy(fileInfo.absoluteFilePath(), targetPath);
+        createMeshOverviewMap(targetPath);
+    }
+}
+
+void BBFileListWidget::createMeshOverviewMap(const QString &filePath)
+{
+
+}
+
 void BBFileListWidget::paintEvent(QPaintEvent *event)
 {
     QListWidget::paintEvent(event);
@@ -645,14 +956,28 @@ void BBFileListWidget::paintEvent(QPaintEvent *event)
             painter.drawLine(p1, p2);
         }
     }
-//    //绘制拖拽落下位置
-//    if (indicatorItem)
-//    {
-//        painter.setPen(QColor("#d6dfeb"));
-//        QRect rect = visualItemRect(indicatorItem);
-//        painter.drawRect(rect);
-//    }
+    // paint drop indicator
+    if (m_pIndicatorItem)
+    {
+        painter.setPen(QColor("#d6dfeb"));
+        QRect rect = visualItemRect(m_pIndicatorItem);
+        painter.drawRect(rect);
+    }
     painter.end();
+}
+
+void BBFileListWidget::mousePressEvent(QMouseEvent *event)
+{
+    QListWidget::mousePressEvent(event);
+    if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)
+    {
+        // There is no item at the mouse click position, remove the selection
+        QListWidgetItem *pItem = itemAt(event->pos());
+        if (!pItem)
+        {
+            setCurrentItem(NULL);
+        }
+    }
 }
 
 void BBFileListWidget::contextMenuEvent(QContextMenuEvent *event)
@@ -687,6 +1012,12 @@ void BBFileListWidget::keyPressEvent(QKeyEvent *event)
     {
         openRenameEditor();
     }
+}
+
+void BBFileListWidget::focusInEvent(QFocusEvent *event)
+{
+    // parent class, when the focus is obtained, the first item will show a blue box, which is ugly
+    Q_UNUSED(event);
 }
 
 //void FileList::updateFolderName(QString prePath, QString newPath)
@@ -992,188 +1323,6 @@ void BBFileListWidget::keyPressEvent(QKeyEvent *event)
 //    }
 //}
 
-//void FileList::dragEnterEvent(QDragEnterEvent *event)
-//{
-//    //必须接受 才能拖入
-//    if (!event->mimeData()->urls().isEmpty())
-//    {
-//        event->accept();
-//    }
-//    else if (event->mimeData()->hasFormat(getMimeType()))
-//    {
-//        //内部拖拽
-//        event->accept();
-//    }
-//    else if (event->mimeData()->hasFormat(getProjectTreeMimeType()))
-//    {
-//        //从文件夹树拖来的
-//        event->accept();
-//    }
-//    else
-//    {
-//        event->ignore();
-//    }
-//}
-
-//void FileList::dragMoveEvent(QDragMoveEvent *event)
-//{
-//    //必须接受 才能落下
-//    event->accept();
-//    //鼠标在顶部或底部时 上下滚动
-//    //QListWidget::dragMoveEvent(event);会使dropEvent失效
-//    int y = event->pos().y();
-//    if (y < 10)
-//    {
-//        verticalScrollBar()->setSliderPosition(verticalScrollBar()->sliderPosition() - 10);
-//    }
-//    else if (y >= height() - 10)
-//    {
-//        verticalScrollBar()->setSliderPosition(verticalScrollBar()->sliderPosition() + 10);
-//    }
-//    //落下位置的指示器
-//    QListWidgetItem *item = itemAt(event->pos());
-//    //清空上次显示的指示位置
-//    indicatorItem = NULL;
-//    if (item)
-//    {
-//        //只有文件夹才指示落下位置
-//        FileInfo *fileInfo = mMap.value(item);
-//        if (fileInfo->mFileType == FileType::dir)
-//        {
-//            //内部拖拽时 落下位置不能为正在拖拽的文件夹
-//            //如果是从文件夹树拖来的 则无所谓
-//            if ((event->mimeData()->hasFormat(getMimeType()) && !selectedItems().contains(item))
-//                    || event->mimeData()->hasFormat(getProjectTreeMimeType()))
-//            {
-//                //将要被放置的位置
-//                indicatorItem = item;
-//            }
-//        }
-//    }
-//    repaint();
-//}
-
-//void FileList::dragLeaveEvent(QDragLeaveEvent *event)
-//{
-//    Q_UNUSED(event);
-//    //拖拽出去不再需要指示框
-//    indicatorItem = NULL;
-//    repaint();
-//}
-
-//void FileList::dropEvent(QDropEvent *event)
-//{
-//    if (!event->mimeData()->urls().isEmpty())
-//    {
-//        //接受外界拖入的文件
-//        event->accept();
-//        dropExternalAsset(event->mimeData()->urls());
-//    }
-//    else if (event->mimeData()->hasFormat(getMimeType()))
-//    {
-//        //内部拖拽
-//        if (indicatorItem)
-//        {
-//            //有落脚点
-//            event->accept();
-//            moveItems();
-//        }
-//        else
-//        {
-//            event->ignore();
-//        }
-//    }
-//    else if (event->mimeData()->hasFormat(getProjectTreeMimeType()))
-//    {
-//        //从文件夹树拖过来
-//        if (moveItemFromProjectTree(event->mimeData()))
-//        {
-//            event->accept();
-//        }
-//        else
-//        {
-//            event->ignore();
-//        }
-//    }
-//    else
-//    {
-//        event->ignore();
-//    }
-//    //拖拽完毕后不再需要指示框
-//    indicatorItem = NULL;
-//    repaint();
-//}
-
-//QString FileList::getProjectTreeMimeType()
-//{
-//    return "ProjectTree";
-//}
-
-//void FileList::dropExternalAsset(QList<QUrl> urls)
-//{
-//    QString folderPath = mFolderPath;
-//    if (indicatorItem)
-//    {
-//        //拖到列表中的文件夹上 资源导入到该文件夹下
-//        folderPath += "/" + mMap.value(indicatorItem)->mFileName;
-//    }
-//    for (int i = 0; i < urls.length(); i++)
-//    {
-//        QString path = urls.at(i).toLocalFile();
-//        //最后一个字符是/表示文件夹 需要遍历子文件 否则直接操作
-//        if (path.at(path.length() - 1) == '/')
-//        {
-//            //文件夹去掉尾部/
-//            path = path.mid(0, path.length() - 1);
-//            //在拖拽放下的路径下创建该文件夹
-//            QString rootFolderPath = checkFolderDuplicateName(folderPath + path.mid(path.lastIndexOf('/')));
-//            QDir dir;
-//            dir.mkpath(rootFolderPath);
-//            //广度优先遍历
-//            QQueue<QString> queueFolder;
-//            //加入待遍历子文件的队列中
-//            queueFolder.enqueue(path);
-//            while (!queueFolder.isEmpty())
-//            {
-//                //出队一个文件夹
-//                QDir dir(queueFolder.dequeue());
-//                dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
-//                //该文件夹肯定存在 遍历其子文件
-//                QFileInfoList fileInfoList = dir.entryInfoList();
-//                foreach (QFileInfo fileInfo, fileInfoList)
-//                {
-//                    //将子文件相对于根文件夹的路径保留 前面换成工程文件路径
-//                    //子文件在新创建的根文件夹下 不可能遇到重名问题
-//                    QString childPath = rootFolderPath + fileInfo.absoluteFilePath().mid(path.length());
-//                    if (fileInfo.isDir())
-//                    {
-//                        //是文件夹 入队 等待遍历其子文件
-//                        queueFolder.enqueue(fileInfo.absoluteFilePath());
-//                        //在根目录下创建该文件夹
-//                        dir.mkpath(childPath);
-//                    }
-//                    else
-//                    {
-//                        //是文件 处理该文件
-//                        importAsset(fileInfo, childPath);
-//                    }
-//                }
-//            }
-//        }
-//        else
-//        {
-//            //处理该文件
-//            QFileInfo fileInfo(path);
-//            importAsset(fileInfo, folderPath + "/" + fileInfo.fileName());
-//        }
-//    }
-//    //打开资源导入管理对话框
-//    //AssetManager assetManager;
-//    //assetManager.exec();
-//    //有新增项 刷新文件系统的视图
-//    showFolderContent(mFolderPath);
-//    updateProjectTree();
-//}
 
 //void FileList::moveItems()
 //{
@@ -1294,25 +1443,6 @@ void BBFileListWidget::keyPressEvent(QKeyEvent *event)
 //    return true;
 //}
 
-
-//void FileList::importAsset(QFileInfo fileInfo, QString newPath)
-//{
-//    QString suffix = fileInfo.suffix();
-//    if (textureSuffixs.contains(suffix) || scriptSuffixs.contains(suffix))
-//    {
-//        //资源直接导入工程
-//        QFile::copy(fileInfo.absoluteFilePath(), checkFileDuplicateName(newPath));
-//    }
-//    else if (meshSuffixs.contains(suffix))
-//    {
-//        //导入资源
-//        newPath = checkFileDuplicateName(newPath);
-//        QFile::copy(fileInfo.absoluteFilePath(), newPath);
-//        //创建模型预览图
-//        createMeshMetaFile(newPath);
-//    }
-//}
-
 //QString FileList::getMetaFilePath(QString sourcePath)
 //{
 //    sourcePath = sourcePath.mid((projectPath + contentsFolderName).length());
@@ -1354,158 +1484,6 @@ void BBFileListWidget::keyPressEvent(QKeyEvent *event)
 //    baseName = baseName.mid(0, baseName.lastIndexOf('.'));
 //    pix.save(metaPath + "/" + baseName + ".jpg");
 //    openglWidget->close();
-//}
-
-////拖出
-//void FileList::startDrag(Qt::DropActions supportedActions)
-//{
-//    Q_UNUSED(supportedActions);
-//    QListWidgetItem *centerItem = currentItem();
-//    QRect centerItemRect = visualItemRect(centerItem);
-//    //记录下水平垂直滚动条的位置 用于计算每个item的绝对位置
-//    int hPos = horizontalScrollBar()->sliderPosition();
-//    int vPos = verticalScrollBar()->sliderPosition();
-//    //每项水平垂直的步长 宽+spacing
-//    int hStep = centerItemRect.width() + spacing();
-//    int vStep = centerItemRect.height() + spacing();
-//    //单个图标的size
-//    static int size = iconSize().width() * devicePixelRatio();
-//    //记录被选中项的行列值 图标
-//    struct Info
-//    {
-//        int row;
-//        int column;
-//        QPixmap icon;
-//    };
-//    QList<Info> infos;
-//    //记录最大最小行列值 用于初始化最终图标的大小
-//    int maxRow = 0;
-//    int maxColumn = 0;
-//    int minRow = INT_MAX;
-//    int minColumn = INT_MAX;
-//    //所有被选中的都被拖起来
-//    QList<QListWidgetItem*> items = selectedItems();
-//    for (int i = 0; i < items.count(); i++)
-//    {
-//        Info info;
-//        QListWidgetItem *item = items.at(i);
-//        //计算该项的相对位置
-//        QRect rect = visualItemRect(item);
-//        //rect是相对于滚动条位置的 平移 使之相对于0
-//        rect.translate(hPos - spacing(), vPos - spacing());
-//        //根据步长算出该项的行列
-//        info.column = rect.left() / hStep;
-//        info.row = rect.top() / vStep;
-//        if (info.column > maxColumn)
-//        {
-//            maxColumn = info.column;
-//        }
-//        if (info.column < minColumn)
-//        {
-//            minColumn = info.column;
-//        }
-//        if (info.row > maxRow)
-//        {
-//            maxRow = info.row;
-//        }
-//        if (info.row < minRow)
-//        {
-//            minRow = info.row;
-//        }
-//        //该项的图标
-//        info.icon = item->icon().pixmap(size);
-//        info.icon.setDevicePixelRatio(devicePixelRatio());
-//        info.icon = info.icon.scaled(size, size, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-//        infos.append(info);
-//    }
-//    QPoint hotSpot;
-//    //最终图标
-//    QPixmap pixmap((size + 6) * (maxColumn - minColumn + 1), (size + 6) * (maxRow - minRow + 1));
-//    pixmap.setDevicePixelRatio(devicePixelRatio());
-//    pixmap.fill(Qt::transparent);
-//    QPainter painter(&pixmap);
-//    //根据每项的行列值 绘制每项的图标到最终图标上
-//    for (int i = 0; i < infos.count(); i++)
-//    {
-//        int x = (infos.at(i).column - minColumn) * (size + 6) / devicePixelRatio();
-//        int y = (infos.at(i).row - minRow) * (size + 6) / devicePixelRatio();
-//        painter.drawPixmap(x, y, infos.at(i).icon);
-//        if (items.at(i) == centerItem)
-//        {
-//            //以centerItem的中心为鼠标位置
-//            hotSpot.setX(x + size / devicePixelRatio() / 2);
-//            hotSpot.setY(y + size / devicePixelRatio() / 2);
-//        }
-//    }
-//    //结束绘制
-//    painter.end();
-//    //当前拖的项打包成数据 用于拖到别处
-//    QByteArray itemData;
-//    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-//    //中心项写在第一个 用于只读一项的时候
-//    QString filePath = mFolderPath + "/" + mMap.value(centerItem)->mFileName;
-//    dataStream << filePath;
-//    //之后写所有选中项 用于可读取所有选中项时
-//    for (int i = 0; i < items.count(); i++)
-//    {
-//        filePath = mFolderPath + "/" + mMap.value(items.at(i))->mFileName;
-//        dataStream << filePath;
-//    }
-//    QMimeData *mimeData = new QMimeData;
-//    //给这个数据取一个唯一的标识名称
-//    mimeData->setData(getMimeType(), itemData);
-//    //拖拽项
-//    QDrag *drag = new QDrag(this);
-//    drag->setMimeData(mimeData);
-//    drag->setHotSpot(hotSpot);
-//    drag->setPixmap(pixmap);
-//    //执行移动操作
-//    drag->exec(Qt::MoveAction);
-//}
-
-//void FileList::mousePressEvent(QMouseEvent *event)
-//{
-//    QListWidget::mousePressEvent(event);
-//    if (event->buttons() & Qt::LeftButton)
-//    {
-//        //鼠标点击的位置没有item 去除选中项
-//        QListWidgetItem *item = itemAt(event->pos());
-//        if (!item)
-//        {
-//            setCurrentItem(NULL);
-//        }
-//    }
-//}
-
-
-
-//void FileList::keyPressEvent(QKeyEvent *event)
-//{
-//    //处理菜单快捷键事件
-//#if defined(Q_OS_WIN32)
-//    if (event->key() == Qt::Key_F2)
-//    {
-//        openEditor();
-//    }
-//#elif defined(Q_OS_MAC)
-//    if (event->key() == Qt::Key_Return)
-//    {
-//        openEditor();
-//    }
-//#endif
-//}
-
-//void FileList::focusInEvent(QFocusEvent *event)
-//{
-//    //父类 当获得焦点时 第一项会有蓝框 很丑
-//    Q_UNUSED(event);
-//}
-
-//void FileList::mouseMoveEvent(QMouseEvent *event)
-//{
-//    //不需要移动框选多个目标的功能
-//    if (currentItem())
-//        QListWidget::mouseMoveEvent(event);
 //}
 
 //void FileList::changeItemSize(int factor)

@@ -17,7 +17,8 @@ public:
     explicit BBFolderTreeWidget(QWidget *pParent = nullptr);
     QString getMimeType() { return BB_MIMETYPE_FOLDERTREEWIDGET; }
 
-    loadProject();
+public slots:
+    void loadProject();
 
 private slots:
     void pressRootButton();

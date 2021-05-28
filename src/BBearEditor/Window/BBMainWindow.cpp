@@ -160,11 +160,13 @@ void BBMainWindow::setConnect()
     // delete folder in file list, and delete corresponding item in folder tree
     QObject::connect(m_pUi->listFile, SIGNAL(deleteItemInFolderTree(QString)),
                      m_pUi->treeFolder, SLOT(deleteItem(QString)));
+    // rebuild folder tree
+    QObject::connect(m_pUi->listFile, SIGNAL(updateFolderTree()),
+                     m_pUi->treeFolder, SLOT(loadProject()));
 
 //    //对整个项目操作的菜单事件
 //    QObject::connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(save()));
-//    //文件视图改变 需要刷新文件夹树
-//    QObject::connect(ui->listFile, SIGNAL(updateProjectTree()), ui->treeProject, SLOT(loadProject()));
+
 
 
 //    //在文件列表中移动文件夹 文件夹树相应项移动

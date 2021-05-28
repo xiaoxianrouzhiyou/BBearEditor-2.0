@@ -75,6 +75,7 @@ signals:
     void addItemInFolderTree(const QString &parentPath, const QString &name);
     void updateItemInFolderTree(const QString &oldName, const QString &newName);
     void deleteItemInFolderTree(const QString &folderPath);
+    void updateFolderTree();
 
 private:
     void setMenu();
@@ -86,9 +87,21 @@ private:
     QIcon getTextureIcon(const QString &path);
     QColor getFileLogoColor(const BBFileType &eFileType);
 
+    void startDrag(Qt::DropActions supportedActions) override;
+    bool moveItem();
+    bool moveItemFromFolderTree(const QMimeData *pMimeData);
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dragMoveEvent(QDragMoveEvent *event) override;
+    void dragLeaveEvent(QDragLeaveEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
+    void importAsset(const QList<QUrl> &urls);
+    void importAsset(const QFileInfo &fileInfo, const QString &newPath);
+    void createMeshOverviewMap(const QString &filePath);
     void paintEvent(QPaintEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
     void contextMenuEvent(QContextMenuEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
+    void focusInEvent(QFocusEvent *event) override;
 
     static QSize m_StandardIconSize;
     static QSize m_StandardItemSize;
@@ -109,6 +122,7 @@ private:
     QString m_FolderPath;
     QListWidgetItem *m_pEditingItem;
     BBPlainTextEdit *m_pRenameEditor;
+    QListWidgetItem *m_pIndicatorItem;
 };
 
 #endif // BBFILELISTWIDGET_H
@@ -146,9 +160,7 @@ private:
 //    void updateMaterialFileIcon(QString filePath);
 
 //signals:
-//    void updateProjectTree();
 //    void updateCurrentShowFolderContentItem(QString path);
-//    void moveItemInProjectTree(QString prePath, QString newPath);
 //    void copyToProjectTree(QList<QString> filePaths);
 //    void pasteItemInProjectTree(QList<QString> clipBoardTranscriptFolderNames);
 //    void removeRenameItemInTreeClipBoard(QString path);
@@ -158,22 +170,7 @@ private:
 //    void clearPropertyWidget();
 
 //private:
-//    void dragEnterEvent(QDragEnterEvent *event) override;
-//    void dragMoveEvent(QDragMoveEvent *event) override;
-//    void dragLeaveEvent(QDragLeaveEvent *event) override;
-//    void dropEvent(QDropEvent *event) override;
-//    static QString getProjectTreeMimeType();
-//    void dropExternalAsset(QList<QUrl> urls);
-//    void moveItems();
-//    bool moveItemFromProjectTree(const QMimeData *mimeData);
-//    void importAsset(QFileInfo fileInfo, QString newPath);
 //    void createMeshMetaFile(QString sourcePath);
-//    void startDrag(Qt::DropActions supportedActions) override;
-//    void mousePressEvent(QMouseEvent *event) override;
-//    QWidgetAction *createWidgetAction(QString iconPath, QString name);
-//    void keyPressEvent(QKeyEvent *event) override;
-//    void focusInEvent(QFocusEvent *event) override;
-//    void mouseMoveEvent(QMouseEvent *event) override;
 //    void selectPasteItem(QList<QString> itemNames);
 
 

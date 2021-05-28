@@ -94,6 +94,29 @@ QString BBUtils::getExclusiveFilePath(const QString &parentPath, QString &fileNa
     }
 }
 
+QString BBUtils::getExclusiveFilePath(const QString &filePath)
+{
+    QFile file;
+    if (file.exists(filePath))
+    {
+        QString fileName = getFileNameByPath(filePath);
+        QString suffix = getFileSuffix(fileName);
+        // remove suffix
+        QString newPath = filePath.mid(0, filePath.lastIndexOf('.'));
+        newPath += " ";
+        int i = 2;
+        while (file.exists(newPath + QString::number(i) + "." + suffix))
+        {
+            i++;
+        }
+        return newPath + QString::number(i) + "." + suffix;
+    }
+    else
+    {
+        return filePath;
+    }
+}
+
 QString BBUtils::getFileSuffix(const QFileInfo &fileInfo)
 {
     return fileInfo.fileName().mid(fileInfo.fileName().lastIndexOf('.') + 1);
@@ -107,4 +130,9 @@ QString BBUtils::getFileSuffix(const QString &name)
 QString BBUtils::getBaseName(const QString &name)
 {
     return name.mid(0, name.lastIndexOf('.'));
+}
+
+QString BBUtils::getFileNameByPath(const QString &filePath)
+{
+    return filePath.mid(filePath.lastIndexOf('/'));
 }

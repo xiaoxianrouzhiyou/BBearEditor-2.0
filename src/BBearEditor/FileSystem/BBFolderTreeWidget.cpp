@@ -20,14 +20,16 @@ BBFolderTreeWidget::BBFolderTreeWidget(QWidget *pParent)
                      this, SLOT(clickItem(QTreeWidgetItem*, int)));
 }
 
-BBFolderTreeWidget::loadProject()
+void BBFolderTreeWidget::loadProject()
 {
-//    //currentShowFolderContentItem将被清空 记录下对应路径 树重建完成后找到新的currentShowFolderContentItem
-//    QString currentShowFolderContentPath;
-//    if (currentShowFolderContentItem)
-//    {
-//        currentShowFolderContentPath = getFilePath(getLevelPath(currentShowFolderContentItem));
-//    }
+    // it is also invoked when the tree needs to be rebuilt
+    // m_pCurrentShowFolderContentItem will be cleared, record corresponding path
+    // find new m_pCurrentShowFolderContentItem, after rebuilding
+    QString currentShowFolderContentPath;
+    if (m_pCurrentShowFolderContentItem)
+    {
+        currentShowFolderContentPath = getAbsolutePath(m_pCurrentShowFolderContentItem);
+    }
     // clear tree, and create new tree
     clear();
     QDir dir(BBConstant::BB_PATH_PROJECT_USER);
@@ -108,12 +110,11 @@ BBFolderTreeWidget::loadProject()
 
     sortItems(0, Qt::AscendingOrder);
 
-//    //树重建完成后找到新的currentShowFolderContentItem
-//    if (currentShowFolderContentItem)
-//    {
-//        currentShowFolderContentPath = currentShowFolderContentPath.mid(0, currentShowFolderContentPath.length() - 1);
-//        currentShowFolderContentItem = getItemByPath(currentShowFolderContentPath);
-//    }
+    // find new m_pCurrentShowFolderContentItem, after rebuilding
+    if (m_pCurrentShowFolderContentItem)
+    {
+        m_pCurrentShowFolderContentItem = getItemByPath(currentShowFolderContentPath);
+    }
 
     showFolderContent(BBConstant::BB_PATH_PROJECT_USER);
 //    //之后重新加载工程时 无需加载材质
@@ -139,6 +140,7 @@ void BBFolderTreeWidget::setCurrentItemByPath(const QString &folderPath)
     QTreeWidgetItem *pItem = getItemByPath(folderPath);
     setCurrentItem(pItem);
     setItemExpanded(pItem, true);
+    updateCorrespondingWidget(pItem);
 }
 
 void BBFolderTreeWidget::newFolder()

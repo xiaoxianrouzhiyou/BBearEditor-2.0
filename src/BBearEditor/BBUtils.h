@@ -54,9 +54,11 @@ public:
     static char *loadFileContent(const char *filePath, int &nFileSize);
     static QString getExclusiveFolderPath(const QString &parentPath, QString &fileName);
     static QString getExclusiveFilePath(const QString &parentPath, QString &fileName);
+    static QString getExclusiveFilePath(const QString &filePath);
     static QString getFileSuffix(const QFileInfo &fileInfo);
     static QString getFileSuffix(const QString &name);
     static QString getBaseName(const QString &name);
+    static QString getFileNameByPath(const QString &filePath);
 };
 
 #endif // BBUTILS_H
