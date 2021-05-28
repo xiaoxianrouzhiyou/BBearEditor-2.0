@@ -16,8 +16,8 @@ BBFolderTreeWidget::BBFolderTreeWidget(QWidget *pParent)
 
     setMenu();
 
-    QObject::connect(this, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-                     this, SLOT(changeCurrentItem(QTreeWidgetItem*, QTreeWidgetItem*)));
+    QObject::connect(this, SIGNAL(itemClicked(QTreeWidgetItem*, int)),
+                     this, SLOT(clickItem(QTreeWidgetItem*, int)));
 }
 
 BBFolderTreeWidget::loadProject()
@@ -129,10 +129,9 @@ void BBFolderTreeWidget::pressRootButton()
     m_pCurrentShowFolderContentItem = NULL;
 }
 
-void BBFolderTreeWidget::changeCurrentItem(QTreeWidgetItem *pCurrent, QTreeWidgetItem *pPrevious)
+void BBFolderTreeWidget::clickItem(QTreeWidgetItem *pItem, int nColumn)
 {
-    Q_UNUSED(pPrevious);
-    updateCorrespondingWidget(pCurrent);
+    updateCorrespondingWidget(pItem);
 }
 
 void BBFolderTreeWidget::setCurrentItemByPath(const QString &folderPath)
@@ -166,6 +165,7 @@ void BBFolderTreeWidget::newFolder()
         addTopLevelItem(pItem);
     }
     setCurrentItem(pItem);
+    updateCorrespondingWidget(m_pCurrentShowFolderContentItem);
     // Open the edit box to let the user set name
     openRenameEditor();
 }

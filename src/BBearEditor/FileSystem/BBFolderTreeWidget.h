@@ -21,7 +21,7 @@ public:
 
 private slots:
     void pressRootButton();
-    void changeCurrentItem(QTreeWidgetItem *pCurrent, QTreeWidgetItem *pPrevious);
+    void clickItem(QTreeWidgetItem *pItem, int nColumn);
     void setCurrentItemByPath(const QString &folderPath);
     void newFolder();
     void addItem(const QString &parentPath, const QString &name);
