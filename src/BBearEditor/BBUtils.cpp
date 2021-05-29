@@ -139,6 +139,11 @@ QString BBUtils::getFileNameByPath(const QString &filePath)
     return filePath.mid(filePath.lastIndexOf('/') + 1);
 }
 
+QString BBUtils::getParentPath(const QString &filePath)
+{
+    return filePath.mid(0, filePath.lastIndexOf('/'));
+}
+
 QString BBUtils::getEngineAuxiliaryFolderPath(const QString &sourcePath)
 {
     // the path relative to the engine folder is the same as the path relative to the contents folder
@@ -181,4 +186,41 @@ bool BBUtils::showInFolder(const QString &filePath)
     QString cmd = QString("explorer.exe /select,%1").arg(legalPath);
     qDebug() << cmd;
     return process.startDetached(cmd);
+}
+
+bool BBUtils::copyFolder(const QString &fromDir, const QString &toDir)
+{
+    QDir sourceDir(fromDir);
+    QDir targetDir(toDir);
+    if (!targetDir.exists())
+    {
+        // if it does not exist, create it
+        BB_PROCESS_ERROR_RETURN_FALSE(targetDir.mkpath(targetDir.absolutePath()));
+    }
+
+    QFileInfoList fileInfoList = sourceDir.entryInfoList();
+    foreach (QFileInfo fileInfo, fileInfoList)
+    {
+        // fileInfo.filePath() has /./
+        if (fileInfo.fileName() == "." || fileInfo.fileName() == "..")
+            continue;
+
+        if (fileInfo.isDir())
+        {
+            // recursive
+            BB_PROCESS_ERROR_RETURN_FALSE(copyFolder(fileInfo.filePath(), targetDir.filePath(fileInfo.fileName())));
+        }
+        else
+        {
+            // copy files
+            BB_PROCESS_ERROR_RETURN_FALSE(QFile::copy(fileInfo.filePath(), targetDir.filePath(fileInfo.fileName())));
+//            //材质文件需要新建材质对象
+//            QString suffix = fileInfo.fileName().mid(fileInfo.fileName().lastIndexOf('.') + 1);
+//            if (suffix == "mtl")
+//            {
+//                new Material(fileInfo.absoluteFilePath());
+//            }
+        }
+    }
+    return true;
 }

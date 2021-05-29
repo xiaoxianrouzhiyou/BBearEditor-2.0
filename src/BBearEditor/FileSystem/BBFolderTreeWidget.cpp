@@ -258,12 +258,16 @@ void BBFolderTreeWidget::finishRename()
     {
         // previous path
         QString previous = getAbsolutePath(m_pEditingItem);
-        QString parentPath = previous.mid(0, previous.lastIndexOf('/'));
+        QString parentPath = BBUtils::getParentPath(previous);
         // Check if there are the same names
         QString current = BBUtils::getExclusiveFolderPath(parentPath, name);
 
-        QFile::rename(previous, current);
+        BB_PROCESS_ERROR_RETURN(QFile::rename(previous, current));
         m_pEditingItem->setText(0, name);
+
+        // handle corresponding folder in the engine folder
+        QFile::rename(BBUtils::getEngineAuxiliaryFolderPath(previous),
+                      BBUtils::getEngineAuxiliaryFolderPath(current));
 
         // After renaming, remove it from the clipboard
         if (m_ClipBoardItems.contains(m_pEditingItem))
@@ -439,30 +443,53 @@ void BBFolderTreeWidget::deleteOne(QTreeWidgetItem *pItem)
     BBTreeWidget::deleteOne(pItem);
 }
 
+bool BBFolderTreeWidget::moveItem()
+{
+    QList<QTreeWidgetItem*> items = selectedItems();
+    // Calculate the original hierarchical position of the selected items for moving or undoing the move
+    // save the last data into queue of undoing (to do ...)
+    QList<QString> originalItemLocations;
+    for (int i = 0; i < items.count(); i++)
+    {
+        originalItemLocations.append(getLevelPath(items.at(i)));
+    }
+
+    BB_PROCESS_ERROR_RETURN_FALSE(BBTreeWidget::moveItem());
+
+    for (int i = 0; i < originalItemLocations.count(); i++)
+    {
+        QString oldPath = getAbsolutePath(originalItemLocations.at(i));
+        QString newPath = getAbsolutePath(items.at(i));
+        // The path is not changed
+        // it just changes the order among the siblings, no need to perform follow-up operation
+        if (oldPath == newPath)
+            continue;
+        // check duplication of name
+        QString newName = BBUtils::getFileNameByPath(newPath);
+        newPath = BBUtils::getExclusiveFolderPath(BBUtils::getParentPath(newPath), newName);
+        // corresponding item in the tree needs to rename
+        items.at(i)->setText(0, newName);
+        // copy folder
+        BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::copyFolder(oldPath, newPath));
+        // delete original folder
+        QDir dir(oldPath);
+        BB_PROCESS_ERROR_RETURN_FALSE(dir.removeRecursively());
+        // corresponding folder in the engine folder also needs to move
+        QString oldAuxiliaryFolderPath = BBUtils::getEngineAuxiliaryFolderPath(oldPath);
+        BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::copyFolder(oldAuxiliaryFolderPath,
+                                                          BBUtils::getEngineAuxiliaryFolderPath(newPath)));
+        dir = QDir(oldAuxiliaryFolderPath);
+        BB_PROCESS_ERROR_RETURN_FALSE(dir.removeRecursively());
+    }
+    sortItems(0, Qt::AscendingOrder);
+    // show m_pCurrentShowFolderContentItem
+    // it may be moved, path needs to be computed again
+    QString updatePath = getAbsolutePath(m_pCurrentShowFolderContentItem);
+    showFolderContent(updatePath);
+    return true;
+}
 
 
-//void ProjectTree::updateCurrentShowFolderContentItem(QString path)
-//{
-//    currentShowFolderContentItem = getItemByPath(path);
-//}
-
-//void ProjectTree::addFolderItemInTree(QString parentPath, QString name)
-//{
-//    QTreeWidgetItem *parent = getItemByPath(parentPath);
-//    QTreeWidgetItem *item = new QTreeWidgetItem({name});
-//    item->setIcon(0, QIcon(":/icon/resources/icons/folder5.png"));
-//    if (parent)
-//    {
-//        parent->addChild(item);
-//    }
-//    else
-//    {
-//        //是top结点
-//        addTopLevelItem(item);
-//    }
-//    //添加好新的结点后 排序
-//    sortItems(0, Qt::AscendingOrder);
-//}
 
 //void ProjectTree::moveFolderItemInTree(QString prePath, QString newPath)
 //{
@@ -637,73 +664,6 @@ void BBFolderTreeWidget::deleteOne(QTreeWidgetItem *pItem)
 //    BaseTree::dragMoveEvent(event);
 //}
 
-//bool ProjectTree::dragDropItem()
-//{
-//    //拖拽的结点 已经在startDrag中进行过过滤了
-//    QList<QTreeWidgetItem*> dragItems = selectedItems();
-//    //落下前计算出拖拽之前的选中项的层级位置 便于移动或者撤销移动
-//    //清空上一次的dragItemLocations （或者保存到撤销队列中）
-//    QList<QString> dragItemLocations;
-//    for (int i = 0; i < dragItems.count(); i++)
-//    {
-//        dragItemLocations.append(getLevelPath(dragItems.at(i)));
-//    }
-//    //落下
-//    if (BaseTree::dragDropItem())
-//    {
-//        for (int i = 0; i < dragItemLocations.count(); i++)
-//        {
-//            //落下前保存的拖动项dragItems 之前的路径
-//            QString oldPath = getFilePath(dragItemLocations.at(i));
-//            //落下后 计算现在的拖动项路径
-//            QString newPath = getFilePath(getLevelPath(dragItems.at(i)));
-//            //路径没有改变 兄弟之间换了顺序 无需后续操作
-//            if (oldPath == newPath)
-//                continue;
-//            //去掉路径最后的斜杠
-//            oldPath = oldPath.mid(0, oldPath.length() - 1);
-//            newPath = newPath.mid(0, newPath.length() - 1);
-//            //目标路径有重名文件夹 该文件夹名字后加(2)或(3) 类推
-//            QDir *dir = new QDir();
-//            if (dir->exists(newPath))
-//            {
-//                int j = 2;
-//                while (dir->exists(newPath + "(" + QString::number(j) + ")"))
-//                {
-//                    j++;
-//                }
-//                newPath = newPath + "(" + QString::number(j) + ")";
-//                //树中对应项也要修改名字
-//                dragItems.at(i)->setText(0, dragItems.at(i)->text(0) + "(" + QString::number(j) + ")");
-//            }
-//            //文件夹拷贝
-//            copyDirectoryFiles(oldPath, newPath);
-//            //删除原来的文件夹
-//            dir = new QDir(oldPath);
-//            dir->removeRecursively();
-//            //对应的meta文件夹也要移动
-//            QString newMetaFolderPath = newPath.mid((projectPath + contentsFolderName).length());
-//            newMetaFolderPath = projectEngineFolderPath + contentMetaFolderName + newMetaFolderPath;
-//            QString oldMetaFolderPath = oldPath.mid((projectPath + contentsFolderName).length());
-//            oldMetaFolderPath = projectEngineFolderPath + contentMetaFolderName + oldMetaFolderPath;
-//            copyDirectoryFiles(oldMetaFolderPath, newMetaFolderPath);
-//            dir = new QDir(oldMetaFolderPath);
-//            dir->removeRecursively();
-//        }
-//        //树各项按名称排序
-//        sortItems(0, Qt::AscendingOrder);
-//        //如果当前显示的文件夹是移动的文件夹 需要更新路径 如果移入了当前显示的文件夹 列表增加项
-//        //刷新右侧 显示currentShowFolderContentItem对应的文件夹 这个item可能被移动 路径发生了变化
-//        QString updatePath = getFilePath(getLevelPath(currentShowFolderContentItem));
-//        showFolderContent(updatePath.mid(0, updatePath.length() - 1));
-//        return true;
-//    }
-//    else
-//    {
-//        return false;
-//    }
-//}
-
 //bool ProjectTree::moveItemFromFileList(const QMimeData *mimeData)
 //{
 //    if (indicatorItem)
@@ -802,56 +762,6 @@ void BBFolderTreeWidget::deleteOne(QTreeWidgetItem *pItem)
 //    {
 //        return false;
 //    }
-//}
-
-
-//bool ProjectTree::copyDirectoryFiles(QString fromDir, QString toDir)
-//{
-//    //拷贝文件夹
-//    QDir sourceDir(fromDir);
-//    QDir targetDir(toDir);
-//    if (!targetDir.exists())
-//    {
-//        //如果目标目录不存在，则进行创建
-//        //mkdir在已有路径上创建文件夹 mkpath可以在没有的路径上创建多级文件夹
-//        if (!targetDir.mkpath(targetDir.absolutePath()))
-//        {
-//            return false;
-//        }
-//    }
-//    //遍历源文件夹
-//    QFileInfoList fileInfoList = sourceDir.entryInfoList();
-//    foreach (QFileInfo fileInfo, fileInfoList)
-//    {
-//        //fileInfo.filePath()会出现/./
-//        if (fileInfo.fileName() == "." || fileInfo.fileName() == "..")
-//            continue;
-
-//        if (fileInfo.isDir())
-//        {
-//            //当为目录时，递归的进行copy
-//            if (!copyDirectoryFiles(fileInfo.filePath(), targetDir.filePath(fileInfo.fileName())))
-//                return false;
-//        }
-//        else
-//        {
-//            //进行文件copy
-//            if (!QFile::copy(fileInfo.filePath(), targetDir.filePath(fileInfo.fileName())))
-//            {
-//                return false;
-//            }
-//            else
-//            {
-//                //材质文件需要新建材质对象
-//                QString suffix = fileInfo.fileName().mid(fileInfo.fileName().lastIndexOf('.') + 1);
-//                if (suffix == "mtl")
-//                {
-//                    new Material(fileInfo.absoluteFilePath());
-//                }
-//            }
-//        }
-//    }
-//    return true;
 //}
 
 

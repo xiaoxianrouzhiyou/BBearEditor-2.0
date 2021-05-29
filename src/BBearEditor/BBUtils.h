@@ -61,9 +61,11 @@ public:
     static QString getFileSuffix(const QString &name);
     static QString getBaseName(const QString &name);
     static QString getFileNameByPath(const QString &filePath);
+    static QString getParentPath(const QString &filePath);
     static QString getEngineAuxiliaryFolderPath(const QString &sourcePath);
     static QString getOverviewMapPath(const QString &sourcePath);
     static bool showInFolder(const QString &filePath);
+    static bool copyFolder(const QString &fromDir, const QString &toDir);
 };
 
 #endif // BBUTILS_H

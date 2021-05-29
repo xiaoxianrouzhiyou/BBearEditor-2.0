@@ -45,6 +45,8 @@ private:
     QWidgetAction* createWidgetAction(QMenu *pParent, const QString &iconPath, const QString &name);
     void deleteOne(QTreeWidgetItem *pItem) override;
 
+    bool moveItem() override;
+
     QTreeWidgetItem *m_pCurrentShowFolderContentItem;
 };
 
@@ -55,11 +57,8 @@ private:
 
 
 
-//public:
-//    static bool copyDirectoryFiles(QString fromDir, QString toDir);
 
 //signals:
-//    void updateFolderName(QString prePath, QString newPath);
 //    void deleteFileItemInList();
 //    void copyToFileList(QList<QString> folderPaths);
 //    void pasteFile(QList<QString> filePaths, QString destPath, QList<QString> pastedFolderNames);
