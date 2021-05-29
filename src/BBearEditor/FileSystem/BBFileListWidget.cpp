@@ -902,7 +902,6 @@ void BBFileListWidget::importAsset(const QList<QUrl> &urls)
     // BBAssetManager assetManager;
     // assetManager.exec();
     // there are new items, update file system
-    showFolderContent(m_FolderPath);
     updateFolderTree();
 }
 

@@ -30,6 +30,10 @@ void BBFolderTreeWidget::loadProject()
     {
         currentShowFolderContentPath = getAbsolutePath(m_pCurrentShowFolderContentItem);
     }
+    else
+    {
+        currentShowFolderContentPath = BBConstant::BB_PATH_PROJECT_USER;
+    }
     // clear tree, and create new tree
     clear();
     QDir dir(BBConstant::BB_PATH_PROJECT_USER);
@@ -114,9 +118,10 @@ void BBFolderTreeWidget::loadProject()
     if (m_pCurrentShowFolderContentItem)
     {
         m_pCurrentShowFolderContentItem = getItemByPath(currentShowFolderContentPath);
+        setItemExpanded(m_pCurrentShowFolderContentItem, true);
     }
-
-    showFolderContent(BBConstant::BB_PATH_PROJECT_USER);
+    setCurrentItem(m_pCurrentShowFolderContentItem);
+    showFolderContent(currentShowFolderContentPath);
 //    //之后重新加载工程时 无需加载材质
 //    isLoadMaterial = false;
 }
