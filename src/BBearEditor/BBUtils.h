@@ -59,6 +59,7 @@ public:
     static QString getFileSuffix(const QString &name);
     static QString getBaseName(const QString &name);
     static QString getFileNameByPath(const QString &filePath);
+    static QString getOverviewMapPath(const QString &sourcePath);
 };
 
 #endif // BBUTILS_H

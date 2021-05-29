@@ -2,6 +2,10 @@
 #include "ui_BBMainWindow.h"
 #include "BBUtils.h"
 #include <QKeyEvent>
+#include "BBOpenGLWidget.h"
+#include "BBScene.h"
+#include <QDir>
+#include "BBModel.h"
 
 
 BBMainWindow::BBMainWindow(QWidget *parent)
@@ -9,6 +13,12 @@ BBMainWindow::BBMainWindow(QWidget *parent)
       m_pUi(new Ui::BBMainWindow)
 {
     m_pUi->setupUi(this);
+
+    m_pPreviewOpenGLWidget = new BBOpenGLWidget;
+    m_pPreviewOpenGLWidget->resize(256, 256);
+    m_pPreviewOpenGLWidget->show();
+    // m_pPreviewOpenGLWidget->hide();
+
     setWindowLayout();
     setGameObjectDockWidget();
     setConnect();
@@ -17,6 +27,7 @@ BBMainWindow::BBMainWindow(QWidget *parent)
 BBMainWindow::~BBMainWindow()
 {
     BB_SAFE_DELETE(m_pUi);
+    BB_SAFE_DELETE(m_pPreviewOpenGLWidget);
 }
 
 void BBMainWindow::createProject()
@@ -39,6 +50,24 @@ void BBMainWindow::openProject()
     m_pUi->treeFolder->loadProject();
 //    //在文件列表中 显示contents里的文件
 //    ui->listFile->showFolderContent(projectPath + contentsFolderName);
+}
+
+void BBMainWindow::createMeshOverviewMap(const QString &sourcePath, const QString &overviewMapPath)
+{
+    // set default skybox
+    // m_pPreviewOpenGLWidget->getScene()->setSkyBox(QString(BB_PATH_RESOURCE) + "skyboxs/3/");
+    // preview of mesh
+    BBGameObject *pModel = m_pPreviewOpenGLWidget->getScene()->createModelForPreview(sourcePath);
+    // Take a screenshot of the overview map as an icon
+    QPixmap pix = m_pPreviewOpenGLWidget->grab(m_pPreviewOpenGLWidget->rect());
+    // Check whether the folder that the overviewMapPath belongs to exists and create it if it does not exist
+    QString parentPath = QFileInfo(overviewMapPath).absolutePath();
+    QDir dir(parentPath);
+    if (!dir.exists())
+        dir.mkpath(parentPath);
+    pix.save(overviewMapPath);
+    // remove the mesh
+    m_pPreviewOpenGLWidget->getScene()->deleteGameObject(pModel);
 }
 
 void BBMainWindow::setWindowLayout()
@@ -163,6 +192,9 @@ void BBMainWindow::setConnect()
     // rebuild folder tree
     QObject::connect(m_pUi->listFile, SIGNAL(updateFolderTree()),
                      m_pUi->treeFolder, SLOT(loadProject()));
+    // create mesh overview map
+    QObject::connect(m_pUi->listFile, SIGNAL(createMeshOverviewMap(QString, QString)),
+                     this, SLOT(createMeshOverviewMap(QString, QString)));
 
 //    //对整个项目操作的菜单事件
 //    QObject::connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(save()));

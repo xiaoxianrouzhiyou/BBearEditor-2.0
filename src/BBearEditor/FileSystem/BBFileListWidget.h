@@ -60,6 +60,12 @@ public:
 
     QString getMimeType() { return BB_MIMETYPE_FILELISTWIDGET; }
 
+    static QList<QString> m_MeshSuffixs;
+    static QList<QString> m_TextureSuffixs;
+    static QList<QString> m_AudioSuffixs;
+    static QList<QString> m_ScriptSuffixs;
+    static QList<QString> m_MaterialSuffixs;
+
 private slots:
     void showFolderContent(const QString &folderPath);
     void doubleClickItem(QListWidgetItem *pItem);
@@ -76,6 +82,7 @@ signals:
     void updateItemInFolderTree(const QString &oldName, const QString &newName);
     void deleteItemInFolderTree(const QString &folderPath);
     void updateFolderTree();
+    void createMeshOverviewMap(const QString &sourcePath, const QString &overviewMapPath);
 
 private:
     void setMenu();
@@ -96,7 +103,7 @@ private:
     void dropEvent(QDropEvent *event) override;
     void importAsset(const QList<QUrl> &urls);
     void importAsset(const QFileInfo &fileInfo, const QString &newPath);
-    void createMeshOverviewMap(const QString &filePath);
+    QIcon getMeshOverviewMap(const QString &sourcePath);
     void paintEvent(QPaintEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void contextMenuEvent(QContextMenuEvent *event) override;
@@ -105,11 +112,6 @@ private:
 
     static QSize m_StandardIconSize;
     static QSize m_StandardItemSize;
-
-    static QList<QString> m_MeshSuffixs;
-    static QList<QString> m_TextureSuffixs;
-    static QList<QString> m_AudioSuffixs;
-    static QList<QString> m_ScriptSuffixs;
 
     static QString m_MeshFileLogoColor;
     static QString m_TextureFileLogoColor;
@@ -140,11 +142,6 @@ private:
 //class FileList : public QListWidget
 //{
 //    Q_OBJECT
-
-//public:
-//    static QString getMetaFilePath(QString sourcePath);
-//    static QString getMetaJpgFilePath(QString sourcePath);
-
 
 //public slots:
 //    void newMaterial();

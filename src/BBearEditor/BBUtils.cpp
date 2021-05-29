@@ -1,5 +1,6 @@
 #include "BBUtils.h"
 #include <QDir>
+#include "FileSystem/BBFileListWidget.h"
 
 
 QString BBConstant::BB_NAME_PROJECT = "";
@@ -134,5 +135,29 @@ QString BBUtils::getBaseName(const QString &name)
 
 QString BBUtils::getFileNameByPath(const QString &filePath)
 {
-    return filePath.mid(filePath.lastIndexOf('/'));
+    return filePath.mid(filePath.lastIndexOf('/') + 1);
+}
+
+QString BBUtils::getOverviewMapPath(const QString &sourcePath)
+{
+    QString fileName = getFileNameByPath(sourcePath);
+    QString suffix = getFileSuffix(fileName);
+    QString baseName = getBaseName(fileName);
+    if (BBFileListWidget::m_MeshSuffixs.contains(suffix))
+    {
+        fileName = "mesh_" + baseName + ".jpg";
+    }
+    else if (BBFileListWidget::m_MaterialSuffixs.contains(suffix))
+    {
+        fileName = "material_" + baseName + ".jpg";
+    }
+
+    // remove the name of sourcePath, there is a '/' at the end for the convenience of calculation
+    QString relativePath = sourcePath.mid(0, sourcePath.lastIndexOf('/') + 1);
+    // the path relative to the engine folder is the same as the path relative to the contents folder
+    relativePath = relativePath.mid(BBConstant::BB_PATH_PROJECT_USER.length() + 1);
+
+    relativePath = relativePath + fileName;
+
+    return BBConstant::BB_PATH_PROJECT_ENGINE + "/" + BBConstant::BB_NAME_FILE_SYSTEM_USER + "/" + relativePath;
 }

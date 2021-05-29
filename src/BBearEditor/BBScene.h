@@ -27,10 +27,12 @@ public:
     inline BBCamera* getCamera() { return m_pCamera; }
     inline BBTransformCoordinateSystem* getTransformCoordinateSystem() { return m_pTransformCoordinateSystem; }
 
-    BBModel* createModel(const QString &filePath, int x, int y, bool bSelect = true);
+    void setSkyBox(const QString &path);
+
+    BBModel* createModel(const QString &filePath, int x, int y);
     BBModel* createModel(const QString &filePath,
-                         const QVector3D &position = QVector3D(0, 0, 0),
-                         bool bSelect = true);
+                         const QVector3D &position = QVector3D(0, 0, 0));
+    BBModel* createModelForPreview(const QString &filePath, float fDistFactor = 2.0f);
 //    BBModel* pickModel(int x, int y);
     BBGameObject* pickObject(const BBRay &ray, bool bSelect = true);
     void lookAtGameObject(BBGameObject *pGameObject);
@@ -79,8 +81,6 @@ private:
 
 
 //    void renderShadowMap();
-//    void changeSkybox(QString path);
-//    Model *createModelForPreview(QString filePath, float distFactor = 2);
 //    GameObject *createLight(QString fileName, int x, int y, bool isSelect = true);
 //    GameObject *createLight(QString fileName, QVector3D position = QVector3D(0, 0, 0), bool isSelect = true);
 //    Audio *createAudio(QString filePath, int x, int y, bool isSelect = true);

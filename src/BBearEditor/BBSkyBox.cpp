@@ -28,6 +28,11 @@ void BBSkyBoxSide::render(BBCamera *pCamera)
     BBRenderableObject::render(modelMatrix, pCamera);
 }
 
+void BBSkyBoxSide::change(const QString &path)
+{
+    setTexture(path);
+}
+
 void BBSkyBoxSide::draw()
 {
     glDisable(GL_DEPTH_TEST);
@@ -88,6 +93,16 @@ void BBSkyBox::resize(float fWidth, float fHeight)
     m_pRight->resize(fWidth, fHeight);
     m_pTop->resize(fWidth, fHeight);
     m_pBottom->resize(fWidth, fHeight);
+}
+
+void BBSkyBox::change(const QString &path)
+{
+    m_pFront->change(path + "front");
+    m_pBack->change(path + "back");
+    m_pLeft->change(path + "left");
+    m_pRight->change(path + "right");
+    m_pTop->change(path + "top");
+    m_pBottom->change(path + "bottom");
 }
 
 void BBSkyBox::initFront()
@@ -173,18 +188,3 @@ void BBSkyBox::initBottom()
     pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
     m_pBottom = new BBSkyBoxSide(pVertexBuffer);
 }
-
-//void SkyElement::change(QString path)
-//{
-//    setTexture(path);
-//}
-
-//void Skybox::change(QString path)
-//{
-//    front->change(path + "front");
-//    back->change(path + "back");
-//    left->change(path + "left");
-//    right->change(path + "right");
-//    top->change(path + "top");
-//    bottom->change(path + "bottom");
-//}

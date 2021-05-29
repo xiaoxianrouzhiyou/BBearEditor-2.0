@@ -25,6 +25,7 @@ public:
     BBRay createRayFromScreen(int x, int y);
 
     inline QVector3D getPosition() { return m_Position; }
+    inline QVector3D getViewCenter() { return m_ViewCenter; }
     inline QMatrix4x4 getViewMatrix() { return m_ViewMatrix; }
     inline int getViewportWidth() { return m_iViewportWidth; }
     inline int getViewportHeight() { return m_iViewportHeight; }

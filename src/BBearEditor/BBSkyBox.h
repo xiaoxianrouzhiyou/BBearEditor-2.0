@@ -11,7 +11,7 @@ public:
 
     void init(const QString &path) override;
     void render(BBCamera *pCamera) override;
-//    void change(QString path);
+    void change(const QString &path);
 
 private:
     void draw() override;
@@ -27,7 +27,7 @@ public:
     void init(const QString &path) override;
     void render(BBCamera *pCamera) override;
     void resize(float fWidth, float fHeight) override;
-//    void change(QString path);
+    void change(const QString &path);
 
 private:
     BBSkyBoxSide *m_pFront;

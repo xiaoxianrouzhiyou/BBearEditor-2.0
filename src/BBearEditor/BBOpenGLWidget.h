@@ -14,6 +14,8 @@ public:
     explicit BBOpenGLWidget(QWidget *parent = 0);
     virtual ~BBOpenGLWidget();
 
+    inline BBScene* getScene() { return m_pScene; }
+
 protected:
     void initializeGL() override;
     void resizeGL(int width, int height) override;

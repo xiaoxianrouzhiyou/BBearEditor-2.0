@@ -150,15 +150,20 @@ void BBScene::resize(float width, float height)
 //    mFBO->finish();
 }
 
-BBModel* BBScene::createModel(const QString &filePath, int x, int y, bool bSelect)
+void BBScene::setSkyBox(const QString &path)
+{
+    m_pSkyBox->change(path);
+}
+
+BBModel* BBScene::createModel(const QString &filePath, int x, int y)
 {
     BBRay ray = m_pCamera->createRayFromScreen(x, y);
     // ground y=0
     QVector3D hit = ray.computeIntersectWithXOZPlane(0);
-    return createModel(filePath, hit, bSelect);
+    return createModel(filePath, hit);
 }
 
-BBModel* BBScene::createModel(const QString &filePath, const QVector3D &position, bool bSelect)
+BBModel* BBScene::createModel(const QString &filePath, const QVector3D &position)
 {
     BBModel *pModel = NULL;
     if (filePath == "terrain")
@@ -174,11 +179,6 @@ BBModel* BBScene::createModel(const QString &filePath, const QVector3D &position
     pModel->resize(m_pCamera->getViewportWidth(), m_pCamera->getViewportHeight());
     m_Models.append(pModel);
 
-//    //创建后坐标系操作当前对象
-//    if (isSelect)
-//    {
-//        transformCoordinate->setSelectedObject(model);
-//    }
 //    //给该模型添加灯光效果
 //    QVector3D count = QVector3D(directionLights.count(), pointLights.count(), spotLights.count());
 //    model->updateDirectionLightPosition(directionLightPosition, count);
@@ -196,6 +196,15 @@ BBModel* BBScene::createModel(const QString &filePath, const QVector3D &position
 //    model->setFogOption(fogStart, fogEnd, fogDensity, fogPower);
 //    model->setFogMode(fogMode);
 
+    return pModel;
+}
+
+BBModel* BBScene::createModelForPreview(const QString &filePath, float fDistFactor)
+{
+    BBModel *pModel = createModel(filePath);
+    QVector3D position = m_pCamera->getPosition();
+    QVector3D viewCenter = m_pCamera->getViewCenter();
+    pModel->showCloseUp(position, viewCenter, fDistFactor);
     return pModel;
 }
 
@@ -356,11 +365,6 @@ QList<BBGameObject*> BBScene::getSelectedObjects(QPoint start, QPoint end)
 }
 
 
-//void Scene::changeSkybox(QString path)
-//{
-//    skybox->change(path);
-//}
-
 //void Scene::renderShadowMap()
 //{
 //    //离屏渲染
@@ -392,19 +396,6 @@ QList<BBGameObject*> BBScene::getSelectedObjects(QPoint start, QPoint end)
 //    }
 //    glDisable(GL_CULL_FACE);
 //    mFBO->unbind();
-//}
-
-//Model *Scene::createModelForPreview(QString filePath, float distFactor)
-//{
-//    Model *model = new Model;
-//    model->setBaseAttributes(QFileInfo(filePath).baseName(), ModelClassName, "model");
-//    model->init(filePath);
-//    model->resize(camera.viewportWidth, camera.viewportHeight);
-//    models.append(model);
-//    model->lookAtSelf(camera.pos, camera.viewCenter, distFactor);
-//    //不显示包围盒
-//    model->setVisible(false);
-//    return model;
 //}
 
 

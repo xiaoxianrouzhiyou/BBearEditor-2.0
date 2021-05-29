@@ -49,15 +49,16 @@ void BBPlainTextEdit::keyPressEvent(QKeyEvent *event)
 //  BBFileListWidget
 //---------------------------------------------------------------------------------------------------
 
-QSize BBFileListWidget::m_StandardIconSize = QSize(43, 43);
-QSize BBFileListWidget::m_StandardItemSize = QSize(45, 90);
-//QSize BBFileListWidget::m_StandardIconSize = QSize(53, 53);
-//QSize BBFileListWidget::m_StandardItemSize = QSize(55, 100);
-
 QList<QString> BBFileListWidget::m_MeshSuffixs = {"obj", "fbx"};
 QList<QString> BBFileListWidget::m_TextureSuffixs = {"png", "jpg", "jpeg", "bmp", "ico", "dds"};
 QList<QString> BBFileListWidget::m_AudioSuffixs = {"mp3", "wav"};
 QList<QString> BBFileListWidget::m_ScriptSuffixs = {"lua"};
+QList<QString> BBFileListWidget::m_MaterialSuffixs = {"mtl"};
+
+QSize BBFileListWidget::m_StandardIconSize = QSize(43, 43);
+QSize BBFileListWidget::m_StandardItemSize = QSize(45, 90);
+//QSize BBFileListWidget::m_StandardIconSize = QSize(53, 53);
+//QSize BBFileListWidget::m_StandardItemSize = QSize(55, 100);
 
 QString BBFileListWidget::m_MeshFileLogoColor = "#e85655";
 QString BBFileListWidget::m_TextureFileLogoColor = "#e49831";
@@ -139,36 +140,25 @@ void BBFileListWidget::showFolderContent(const QString &folderPath)
                 // is file
                 pItem->setText(lineFeed(fileInfo.baseName()));
                 QString suffix = fileInfo.suffix();
-                if (m_TextureSuffixs.contains(suffix))
+                if (m_MeshSuffixs.contains(suffix))
+                {
+                    QString sourcePath = fileInfo.absoluteFilePath();
+                    QIcon icon = getMeshOverviewMap(sourcePath);
+                    pItem->setIcon(icon);
+                    m_Map.insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::mesh));
+                }
+                else if (m_TextureSuffixs.contains(suffix))
                 {
                     // Picture files use themselves as icons
                     pItem->setIcon(getTextureIcon(fileInfo.absoluteFilePath()));
                     // save map
                     m_Map.insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::texture));
                 }
+
 //                else if (audioSuffixs.contains(suffix))
 //                {
 //                    item->setIcon(getIcon(":/icon/resources/pictures/audio.jpg"));
 //                    mMap.insert(item, new FileInfo(fileInfo.fileName(), FileType::audio));
-//                }
-//                else if (meshSuffixs.contains(suffix))
-//                {
-//                    //读取meta文件作为图标
-//                    QString sourcePath = fileInfo.absoluteFilePath();
-//                    QString metaFilePath = projectEngineFolderPath + contentMetaFolderName
-//                            + sourcePath.mid((projectPath + contentsFolderName).length());
-//                    //将mesh文件的后缀换成jpg
-//                    QFileInfo *metaFileInfo = new QFileInfo(metaFilePath);
-//                    metaFilePath = metaFileInfo->absolutePath() + "/" + metaFileInfo->baseName() + ".jpg";
-//                    //检测meta文件是否存在 不存在就重新创建预览图
-//                    QFile *file = new QFile(metaFilePath);
-//                    if (!file->exists())
-//                    {
-//                        createMeshMetaFile(sourcePath);
-//                    }
-
-//                    item->setIcon(getIcon(metaFilePath));
-//                    mMap.insert(item, new FileInfo(fileInfo.fileName(), FileType::mesh));
 //                }
 //                else if (suffix == "mtl")
 //                {
@@ -577,11 +567,18 @@ QIcon BBFileListWidget::getIcon(const QString &path)
 {
     // Cut into a square
     QPixmap pix(path);
-    int h = pix.height();
-    int w = pix.width();
-    int size = h < w ? h : w;
-    pix = pix.copy((w - size) / 2, (h - size) / 2, size, size);
-    return QIcon(pix);
+    if (pix.isNull())
+    {
+        return QIcon(QString(BB_PATH_RESOURCE_ICON) + "empty2");
+    }
+    else
+    {
+        int h = pix.height();
+        int w = pix.width();
+        int size = h < w ? h : w;
+        pix = pix.copy((w - size) / 2, (h - size) / 2, size, size);
+        return QIcon(pix);
+    }
 }
 
 QIcon BBFileListWidget::getTextureIcon(const QString &path)
@@ -923,13 +920,21 @@ void BBFileListWidget::importAsset(const QFileInfo &fileInfo, const QString &new
     {
         QString targetPath = BBUtils::getExclusiveFilePath(newPath);
         QFile::copy(fileInfo.absoluteFilePath(), targetPath);
-        createMeshOverviewMap(targetPath);
+        createMeshOverviewMap(targetPath, BBUtils::getOverviewMapPath(targetPath));
     }
 }
 
-void BBFileListWidget::createMeshOverviewMap(const QString &filePath)
+QIcon BBFileListWidget::getMeshOverviewMap(const QString &sourcePath)
 {
-
+    // read icon from engine folder if it is created before
+    // if it does not exist, create
+    QString overviewMapPath = BBUtils::getOverviewMapPath(sourcePath);
+    QFile file(overviewMapPath);
+    if (!file.exists())
+    {
+        createMeshOverviewMap(sourcePath, overviewMapPath);
+    }
+    return getIcon(overviewMapPath);
 }
 
 void BBFileListWidget::paintEvent(QPaintEvent *event)
@@ -1441,49 +1446,6 @@ void BBFileListWidget::focusInEvent(QFocusEvent *event)
 //    //刷新列表
 //    showFolderContent(mFolderPath);
 //    return true;
-//}
-
-//QString FileList::getMetaFilePath(QString sourcePath)
-//{
-//    sourcePath = sourcePath.mid((projectPath + contentsFolderName).length());
-//    return projectEngineFolderPath + contentMetaFolderName + sourcePath;
-//}
-
-//QString FileList::getMetaJpgFilePath(QString sourcePath)
-//{
-//    QString mateFilePath = getMetaFilePath(sourcePath);
-//    //修改后缀为jpg
-//    return mateFilePath.mid(0, mateFilePath.lastIndexOf('.')) + ".jpg";
-//}
-
-//void FileList::createMeshMetaFile(QString sourcePath)
-//{
-//    //模型的预览图
-//    BaseOpenGLWidget *openglWidget = new BaseOpenGLWidget;
-//    openglWidget->resize(256, 256);
-//    //没有这一句要报错
-//    openglWidget->show();
-//    openglWidget->hide();
-//    //设置天空盒背景
-//    //openglWidget->scene.changeSkybox(engineResourcesPath + "skyboxs/2/");
-//    //预览模型
-//    openglWidget->scene.createModelForPreview(sourcePath);
-//    //截下浏览图作为图标
-//    QPixmap pix = QPixmap::grabWidget(openglWidget);
-//    //存在../engine/contents meta/文件夹下 文件的相对路径与在contents文件夹下的相同
-//    //将文件夹路径从contents下换成contents meta下
-//    QString metaFilePath = getMetaFilePath(sourcePath);
-//    QFileInfo *metaFileInfo = new QFileInfo(metaFilePath);
-//    //检测meta文件所在的文件夹是否存在 不存在就创建
-//    QString metaPath = metaFileInfo->absolutePath();
-//    QDir *dir = new QDir(metaPath);
-//    if (!dir->exists())
-//        dir->mkpath(metaPath);
-//    //与资源文件相对路径相同的位置创建对应的meta文件 名字一样 后缀不同
-//    QString baseName = metaFilePath.mid(metaFilePath.lastIndexOf('/') + 1);
-//    baseName = baseName.mid(0, baseName.lastIndexOf('.'));
-//    pix.save(metaPath + "/" + baseName + ".jpg");
-//    openglWidget->close();
 //}
 
 //void FileList::changeItemSize(int factor)

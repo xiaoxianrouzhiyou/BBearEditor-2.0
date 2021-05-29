@@ -131,6 +131,18 @@ bool BBModel::belongToSelectionRegion(const QVector3D &left1, const QVector3D &l
                                                    bottom1, bottom2, bottom3);
 }
 
+void BBModel::showCloseUp(QVector3D &outPosition, QVector3D &outViewCenter, float fDistFactor)
+{
+    BBGameObject::showCloseUp(outPosition, outViewCenter, fDistFactor);
+//    //原始包围盒以零点为中心 需要变换
+//    viewCenter = mModelMatrix * boundingBox->getCenter();
+//    QVector3D boxRadius = boundingBox->getRadius() * mScale;
+//    //取包围盒的最大半径 变为一个正方形包围盒
+//    float size = max(abs(boxRadius.x()), abs(boxRadius.y()));
+//    size = max(size, abs(boxRadius.z()));
+//    pos = viewCenter + distFactor * size * QVector3D(1, 1, 1);
+}
+
 //void Model::renderBuffer(QMatrix4x4 viewMatrix, QMatrix4x4 projectionMatrix, QVector3D cameraPos)
 //{
 //    mMesh->renderBuffer(viewMatrix, projectionMatrix, cameraPos);
@@ -142,20 +154,6 @@ bool BBModel::belongToSelectionRegion(const QVector3D &left1, const QVector3D &l
 //{
 //    mMesh->setDiffuseMaterial(r, g, b, a);
 //}
-
-
-//void Model::lookAtSelf(QVector3D &pos, QVector3D &viewCenter, float distFactor)
-//{
-//    //原始包围盒以零点为中心 需要变换
-//    viewCenter = mModelMatrix * boundingBox->getCenter();
-//    QVector3D boxRadius = boundingBox->getRadius() * mScale;
-//    //取包围盒的最大半径 变为一个正方形包围盒
-//    float size = max(abs(boxRadius.x()), abs(boxRadius.y()));
-//    size = max(size, abs(boxRadius.z()));
-//    pos = viewCenter + distFactor * size * QVector3D(1, 1, 1);
-//}
-
-
 
 //void Model::setMaterial(Material *material)
 //{
