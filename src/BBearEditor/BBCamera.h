@@ -24,7 +24,9 @@ public:
     void lookAt(BBGameObject *pGameObject);
     BBRay createRayFromScreen(int x, int y);
 
+    inline void setPosition(const QVector3D &position) { m_Position = position; }
     inline QVector3D getPosition() { return m_Position; }
+    inline void setViewCenter(const QVector3D &viewCenter) { m_ViewCenter = viewCenter; }
     inline QVector3D getViewCenter() { return m_ViewCenter; }
     inline QMatrix4x4 getViewMatrix() { return m_ViewMatrix; }
     inline int getViewportWidth() { return m_iViewportWidth; }

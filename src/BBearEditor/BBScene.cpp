@@ -202,9 +202,13 @@ BBModel* BBScene::createModel(const QString &filePath, const QVector3D &position
 BBModel* BBScene::createModelForPreview(const QString &filePath, float fDistFactor)
 {
     BBModel *pModel = createModel(filePath);
-    QVector3D position = m_pCamera->getPosition();
-    QVector3D viewCenter = m_pCamera->getViewCenter();
+    QVector3D position;
+    QVector3D viewCenter;
     pModel->showCloseUp(position, viewCenter, fDistFactor);
+    m_pCamera->setPosition(position);
+    m_pCamera->setViewCenter(viewCenter);
+    // do not show bounding box
+    pModel->setVisibility(false);
     return pModel;
 }
 

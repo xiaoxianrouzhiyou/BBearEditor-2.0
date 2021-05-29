@@ -97,7 +97,7 @@ public:
                                  const QVector3D &right1, const QVector3D &right2, const QVector3D &right3,
                                  const QVector3D &bottom1, const QVector3D &bottom2, const QVector3D &bottom3) override;
 
-//    QVector3D getHalfLength();
+    QVector3D getHalfLength();
 
 protected:
     void draw() override;

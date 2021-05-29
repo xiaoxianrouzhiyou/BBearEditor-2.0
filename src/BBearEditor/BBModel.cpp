@@ -2,6 +2,10 @@
 #include "BBStaticMesh.h"
 #include "BBUtils.h"
 #include "BBBoundingBox.h"
+#include <cfloat>
+
+
+using namespace std;
 
 BBModel::BBModel(BBMeshType eType)
     : BBModel(0, 0, 0, 0, 0, 0, 1, 1, 1, eType)
@@ -133,14 +137,13 @@ bool BBModel::belongToSelectionRegion(const QVector3D &left1, const QVector3D &l
 
 void BBModel::showCloseUp(QVector3D &outPosition, QVector3D &outViewCenter, float fDistFactor)
 {
-    BBGameObject::showCloseUp(outPosition, outViewCenter, fDistFactor);
-//    //原始包围盒以零点为中心 需要变换
-//    viewCenter = mModelMatrix * boundingBox->getCenter();
-//    QVector3D boxRadius = boundingBox->getRadius() * mScale;
-//    //取包围盒的最大半径 变为一个正方形包围盒
-//    float size = max(abs(boxRadius.x()), abs(boxRadius.y()));
-//    size = max(size, abs(boxRadius.z()));
-//    pos = viewCenter + distFactor * size * QVector3D(1, 1, 1);
+    // The original bounding box is centered at the zero point and needs to be transformed
+    outViewCenter = m_ModelMatrix * m_pBoundingBox->getCenter();
+    QVector3D boxHalfLength = m_pBoundingBox->getHalfLength() * m_Scale;
+    // Use the maximum half-length of the bounding box to become a cube bounding box
+    float nSize = max(abs(boxHalfLength.x()), abs(boxHalfLength.y()));
+    nSize = max(nSize, abs(boxHalfLength.z()));
+    outPosition = outViewCenter + fDistFactor * nSize * QVector3D(1, 1, 1);
 }
 
 //void Model::renderBuffer(QMatrix4x4 viewMatrix, QMatrix4x4 projectionMatrix, QVector3D cameraPos)

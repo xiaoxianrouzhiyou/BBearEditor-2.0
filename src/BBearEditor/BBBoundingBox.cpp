@@ -367,6 +367,11 @@ bool BBBoundingBox3D::belongToSelectionRegion(const QVector3D &left1, const QVec
     return true;
 }
 
+QVector3D BBBoundingBox3D::getHalfLength()
+{
+    return QVector3D(m_HalfLength[0], m_HalfLength[1], m_HalfLength[2]);
+}
+
 void BBBoundingBox3D::draw()
 {
     glEnable(GL_DEPTH_TEST);
@@ -452,20 +457,6 @@ void BBAABBBoundingBox3D::computeBoxVertexes(const QList<QVector4D> &vertexes)
     BBBoundingBox3D::computeBoxVertexes(vertexes);
 }
 
-
-
-
-
-///****************
-// * BoundingBox3D
-// *
-// *****************/
-
-
-//QVector3D BoundingBox3D::getRadius()
-//{
-//    return QVector3D(radius[0], radius[1], radius[2]);
-//}
 
 
 

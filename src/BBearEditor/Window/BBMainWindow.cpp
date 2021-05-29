@@ -60,7 +60,7 @@ void BBMainWindow::createMeshOverviewMap(const QString &sourcePath, const QStrin
     // preview of mesh
     BBGameObject *pModel = m_pPreviewOpenGLWidget->getScene()->createModelForPreview(sourcePath);
     // Take a screenshot of the overview map as an icon
-    QPixmap pix = m_pPreviewOpenGLWidget->grab(m_pPreviewOpenGLWidget->rect());
+    QPixmap pix = m_pPreviewOpenGLWidget->grab();
     // Check whether the folder that the overviewMapPath belongs to exists and create it if it does not exist
     QString parentPath = QFileInfo(overviewMapPath).absolutePath();
     QDir dir(parentPath);
