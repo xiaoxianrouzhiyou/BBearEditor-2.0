@@ -138,6 +138,14 @@ QString BBUtils::getFileNameByPath(const QString &filePath)
     return filePath.mid(filePath.lastIndexOf('/') + 1);
 }
 
+QString BBUtils::getEngineAuxiliaryFolderPath(const QString &sourcePath)
+{
+    // the path relative to the engine folder is the same as the path relative to the contents folder
+    QString relativePath = sourcePath.mid(BBConstant::BB_PATH_PROJECT_USER.length());
+
+    return BBConstant::BB_PATH_PROJECT_ENGINE + "/" + BBConstant::BB_NAME_FILE_SYSTEM_USER + relativePath;
+}
+
 QString BBUtils::getOverviewMapPath(const QString &sourcePath)
 {
     QString fileName = getFileNameByPath(sourcePath);

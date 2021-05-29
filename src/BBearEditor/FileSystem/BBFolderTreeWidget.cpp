@@ -420,18 +420,15 @@ void BBFolderTreeWidget::deleteOne(QTreeWidgetItem *pItem)
     QDir dir(path);
     BB_PROCESS_ERROR_RETURN(dir.removeRecursively());
 
-//    //删除对应meta文件夹
-//    QString metaFolderPath = path.mid((projectPath + contentsFolderName).length());
-//    metaFolderPath = projectEngineFolderPath + contentMetaFolderName + metaFolderPath;
-//    dir = new QDir(metaFolderPath);
-//    dir->removeRecursively();
+    // delete corresponding folder in the engine folder
+    dir = QDir(BBUtils::getEngineAuxiliaryFolderPath(path));
+    BB_PROCESS_ERROR_RETURN(dir.removeRecursively());
 
     // if showing its content, clear, and show root folder
     if (pItem == m_pCurrentShowFolderContentItem)
     {
         m_pCurrentShowFolderContentItem = NULL;
     }
-
 
     BBTreeWidget::deleteOne(pItem);
 }

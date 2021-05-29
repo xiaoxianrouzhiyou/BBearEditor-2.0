@@ -113,10 +113,6 @@ void BBFileListWidget::showFolderContent(const QString &folderPath)
     clear();
 
     m_FolderPath = folderPath;
-//    //向显示当前路径的控件发送路径
-//    showFolderPath(mFolderPath);
-//    //向文件夹树发送信号 修改当前正在显示的文件夹对应的树节点
-//    updateCurrentShowFolderContentItem(mFolderPath);
 
     QDir dir(folderPath);
     if (dir.exists())
@@ -308,10 +304,9 @@ void BBFileListWidget::finishRename()
                     newBaseName = BBUtils::getBaseName(newName);
                     pFileInfo->m_FileName = newName;
                     m_pEditingItem->setText(lineFeed(newBaseName));
-//                    //修改对应meta文件夹
-//                    QString oldMetaFolderPath = getMetaFilePath(oldPath);
-//                    QString newMetaFolderPath = getMetaFilePath(newPath);
-//                    QFile::rename(oldMetaFolderPath, newMetaFolderPath);
+                    // rename corresponding folder in the engine folder
+                    QFile::rename(BBUtils::getEngineAuxiliaryFolderPath(oldPath),
+                                  BBUtils::getEngineAuxiliaryFolderPath(newPath));
                     // update corresponding item in the folder tree
                     updateItemInFolderTree(oldName, newName);
                 }
@@ -335,15 +330,9 @@ void BBFileListWidget::finishRename()
 
                     if (pFileInfo->m_eFileType == BBFileType::mesh)
                     {
-//                        //有些文件需要对相应meta修改名字
-//                        QString oldMetaFilePath = getMetaFilePath(oldPath);
-//                        QString newMetaFilePath = getMetaFilePath(newPath);
-//                        //修改后缀为jpg
-//                        int index = oldMetaFilePath.lastIndexOf('.');
-//                        oldMetaFilePath = oldMetaFilePath.mid(0, index) + ".jpg";
-//                        index = newMetaFilePath.lastIndexOf('.');
-//                        newMetaFilePath = newMetaFilePath.mid(0, index) + ".jpg";
-//                        QFile::rename(oldMetaFilePath, newMetaFilePath);
+                        // rename overview map
+                        BB_PROCESS_ERROR_RETURN(QFile::rename(BBUtils::getOverviewMapPath(oldPath),
+                                                              BBUtils::getOverviewMapPath(newPath)));
                     }
                     else if (pFileInfo->m_eFileType == BBFileType::material)
                     {
@@ -396,9 +385,9 @@ void BBFileListWidget::deleteAction()
             {
                 QDir dir(path);
                 BB_PROCESS_ERROR_RETURN(dir.removeRecursively());
-//                //删除对应的meta文件夹
-//                dir = new QDir(getMetaFilePath(path));
-//                dir->removeRecursively();
+                // delete corresponding folder in the engine folder
+                dir = QDir(BBUtils::getEngineAuxiliaryFolderPath(path));
+                BB_PROCESS_ERROR_RETURN(dir.removeRecursively());
                 // delete the corresponding item in the folder tree
                 deleteItemInFolderTree(path);
 //                //刷新材质文件的映射 被删除的材质文件的映射不再占用内存
@@ -407,15 +396,12 @@ void BBFileListWidget::deleteAction()
             else
             {
                 BB_PROCESS_ERROR_RETURN(QFile::remove(path));
-//                //有些文件需要删除对应meta
-//                if (fileInfo->mFileType == FileType::mesh)
-//                {
-//                    QString metaFilePath = getMetaFilePath(path);
-//                    //修改后缀为jpg
-//                    int index = metaFilePath.lastIndexOf('.');
-//                    metaFilePath = metaFilePath.mid(0, index) + ".jpg";
-//                    QFile::remove(metaFilePath);
-//                }
+
+                if (pFileInfo->m_eFileType == BBFileType::mesh)
+                {
+                    // remove overview map
+                    BB_PROCESS_ERROR_RETURN(QFile::remove(BBUtils::getOverviewMapPath(path)));
+                }
 //                //材质文件 需要删除材质对象
 //                else if (fileInfo->mFileType == FileType::material)
 //                {

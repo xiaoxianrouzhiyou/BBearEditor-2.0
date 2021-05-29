@@ -141,7 +141,6 @@ private:
 
 //class FileList : public QListWidget
 //{
-//    Q_OBJECT
 
 //public slots:
 //    void newMaterial();
@@ -157,7 +156,6 @@ private:
 //    void updateMaterialFileIcon(QString filePath);
 
 //signals:
-//    void updateCurrentShowFolderContentItem(QString path);
 //    void copyToProjectTree(QList<QString> filePaths);
 //    void pasteItemInProjectTree(QList<QString> clipBoardTranscriptFolderNames);
 //    void removeRenameItemInTreeClipBoard(QString path);
@@ -167,11 +165,7 @@ private:
 //    void clearPropertyWidget();
 
 //private:
-//    void createMeshMetaFile(QString sourcePath);
 //    void selectPasteItem(QList<QString> itemNames);
-
-
-
 
 //    QListWidgetItem *indicatorItem;
 //    QList<QString> clipBoardPaths;
