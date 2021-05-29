@@ -16,8 +16,9 @@ BBMainWindow::BBMainWindow(QWidget *parent)
 
     m_pPreviewOpenGLWidget = new BBOpenGLWidget;
     m_pPreviewOpenGLWidget->resize(256, 256);
+    // Cannot be used without a context shared with the toplevel.
     m_pPreviewOpenGLWidget->show();
-    // m_pPreviewOpenGLWidget->hide();
+    m_pPreviewOpenGLWidget->hide();
 
     setWindowLayout();
     setGameObjectDockWidget();

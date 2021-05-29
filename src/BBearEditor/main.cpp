@@ -13,6 +13,9 @@
 
 int main(int argc, char *argv[])
 {
+    // otherwise, there is context conflict when there are several opengl
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+
     QApplication a(argc, argv);
 
     // main interface
