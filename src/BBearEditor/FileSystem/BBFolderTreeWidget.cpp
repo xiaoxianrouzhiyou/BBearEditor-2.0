@@ -237,7 +237,8 @@ void BBFolderTreeWidget::showInFolder()
 {
     QTreeWidgetItem *pItem = currentItem();
     QString filePath = getAbsolutePath(pItem);
-    // to do
+
+    BB_PROCESS_ERROR_RETURN(BBUtils::showInFolder(filePath));
 }
 
 void BBFolderTreeWidget::finishRename()

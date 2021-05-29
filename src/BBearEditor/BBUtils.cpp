@@ -1,6 +1,7 @@
 #include "BBUtils.h"
 #include <QDir>
 #include "FileSystem/BBFileListWidget.h"
+#include <QProcess>
 
 
 QString BBConstant::BB_NAME_PROJECT = "";
@@ -168,4 +169,16 @@ QString BBUtils::getOverviewMapPath(const QString &sourcePath)
     relativePath = relativePath + fileName;
 
     return BBConstant::BB_PATH_PROJECT_ENGINE + "/" + BBConstant::BB_NAME_FILE_SYSTEM_USER + "/" + relativePath;
+}
+
+bool BBUtils::showInFolder(const QString &filePath)
+{
+    BB_PROCESS_ERROR_RETURN_FALSE(!filePath.isEmpty());
+    QProcess process;
+    // just identify "\\"
+    QString legalPath = filePath;
+    legalPath.replace("/", "\\");
+    QString cmd = QString("explorer.exe /select,%1").arg(legalPath);
+    qDebug() << cmd;
+    return process.startDetached(cmd);
 }

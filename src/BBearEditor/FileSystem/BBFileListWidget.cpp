@@ -231,6 +231,17 @@ void BBFileListWidget::newFolder()
     openRenameEditor();
 }
 
+void BBFileListWidget::showInFolder()
+{
+    QString filePath = m_FolderPath;
+    QListWidgetItem *pItem = currentItem();
+    if (pItem)
+    {
+        filePath += "/" + m_Map.value(pItem)->m_FileName;
+    }
+    BB_PROCESS_ERROR_RETURN(BBUtils::showInFolder(filePath));
+}
+
 void BBFileListWidget::copyAction()
 {
 
@@ -497,6 +508,7 @@ void BBFileListWidget::setMenu()
     QObject::connect(pActionNewFolder, SIGNAL(triggered()), this, SLOT(newFolder()));
     QObject::connect(pActionNewMaterial, SIGNAL(triggered()), this, SLOT(newMaterial()));
     QObject::connect(pActionNewScript, SIGNAL(triggered()), this, SLOT(newScript()));
+    QObject::connect(pActionShowInFolder, SIGNAL(triggered()), this, SLOT(showInFolder()));
     QObject::connect(pActionCopy, SIGNAL(triggered()), this, SLOT(copyAction()));
     QObject::connect(pActionPaste, SIGNAL(triggered()), this, SLOT(pasteAction()));
     QObject::connect(pActionRename, SIGNAL(triggered()), this, SLOT(openRenameEditor()));

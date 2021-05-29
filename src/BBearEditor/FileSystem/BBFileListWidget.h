@@ -70,6 +70,7 @@ private slots:
     void showFolderContent(const QString &folderPath);
     void doubleClickItem(QListWidgetItem *pItem);
     void newFolder();
+    void showInFolder();
     void copyAction();
     void pasteAction();
     void openRenameEditor();

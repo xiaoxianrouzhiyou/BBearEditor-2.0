@@ -32,6 +32,8 @@
 
 #include <QString>
 #include <QVector3D>
+#include <QDebug>
+
 
 class QFileInfo;
 
@@ -61,6 +63,7 @@ public:
     static QString getFileNameByPath(const QString &filePath);
     static QString getEngineAuxiliaryFolderPath(const QString &sourcePath);
     static QString getOverviewMapPath(const QString &sourcePath);
+    static bool showInFolder(const QString &filePath);
 };
 
 #endif // BBUTILS_H
