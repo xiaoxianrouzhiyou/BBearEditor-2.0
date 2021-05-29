@@ -73,6 +73,26 @@ QString BBUtils::getExclusiveFolderPath(const QString &parentPath, QString &file
     }
 }
 
+QString BBUtils::getExclusiveFolderPath(const QString &filePath)
+{
+    QDir dir;
+    if (dir.exists(filePath))
+    {
+        // if exist, number that is at the end will increase
+        int i = 2;
+        while (dir.exists(filePath + " " + QString::number(i)))
+        {
+            i++;
+        }
+        return filePath + " " + QString::number(i);
+    }
+    else
+    {
+        // there is no the same name
+        return filePath;
+    }
+}
+
 QString BBUtils::getExclusiveFilePath(const QString &parentPath, QString &fileName)
 {
     QFile file;

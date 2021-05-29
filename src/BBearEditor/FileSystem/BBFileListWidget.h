@@ -149,7 +149,6 @@ private:
 //    void cancelSelectedItems();
 
 //private slots:
-//    void updateFolderName(QString prePath, QString newPath);
 //    void copyByProjectTree(QList<QString> folderPaths);
 //    void pasteFileFromProjectTree(QList<QString> filePaths, QString destPath, QList<QString> pastedFolderNames);
 //    void changeItemSize(int factor);

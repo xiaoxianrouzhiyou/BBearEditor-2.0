@@ -55,6 +55,7 @@ class BBUtils
 public:
     static char *loadFileContent(const char *filePath, int &nFileSize);
     static QString getExclusiveFolderPath(const QString &parentPath, QString &fileName);
+    static QString getExclusiveFolderPath(const QString &filePath);
     static QString getExclusiveFilePath(const QString &parentPath, QString &fileName);
     static QString getExclusiveFilePath(const QString &filePath);
     static QString getFileSuffix(const QFileInfo &fileInfo);

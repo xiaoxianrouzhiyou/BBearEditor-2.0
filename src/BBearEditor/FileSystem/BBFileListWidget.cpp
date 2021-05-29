@@ -725,7 +725,55 @@ void BBFileListWidget::startDrag(Qt::DropActions supportedActions)
 
 bool BBFileListWidget::moveItem()
 {
+    // move selected items into m_pIndicatorItem
+    QList<QListWidgetItem*> items = selectedItems();
+    for (int i = 0; i < items.count(); i++)
+    {
+        QListWidgetItem *pItem = items.at(i);
+        BBFileInfo *pFileInfo = m_Map.value(pItem);
+        QString oldPath = m_FolderPath + "/" + pFileInfo->m_FileName;
+        QString parentPath = m_FolderPath + "/" + m_Map.value(m_pIndicatorItem)->m_FileName;
+        QString newPath = parentPath + "/" + pFileInfo->m_FileName;
 
+        if (pFileInfo->m_eFileType == BBFileType::dir)
+        {
+            newPath = BBUtils::getExclusiveFolderPath(newPath);
+            BBUtils::copyFolder(oldPath, newPath);
+            // delete folder in the original position
+            QDir dir(oldPath);
+            BB_PROCESS_ERROR_RETURN_FALSE(dir.removeRecursively());
+            // handle corresponding folder in the engine folder
+            QString oldAuxiliaryFolderPath = BBUtils::getEngineAuxiliaryFolderPath(oldPath);
+            BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::copyFolder(oldAuxiliaryFolderPath,
+                                                              BBUtils::getEngineAuxiliaryFolderPath(newPath)));
+            dir = QDir(oldAuxiliaryFolderPath);
+            BB_PROCESS_ERROR_RETURN_FALSE(dir.removeRecursively());
+        }
+        else
+        {
+            newPath = BBUtils::getExclusiveFilePath(newPath);
+            BB_PROCESS_ERROR_RETURN_FALSE(QFile::copy(oldPath, newPath));
+            // delete file in the original position
+            BB_PROCESS_ERROR_RETURN_FALSE(QFile::remove(oldPath));
+            // move corresponding files in the engine folder
+            if (pFileInfo->m_eFileType == BBFileType::mesh)
+            {
+                QString oldOverviewMapPath = BBUtils::getOverviewMapPath(oldPath);
+                QString newOverviewMapPath = BBUtils::getOverviewMapPath(newPath);
+                BB_PROCESS_ERROR_RETURN_FALSE(QFile::copy(oldOverviewMapPath, newOverviewMapPath));
+                BB_PROCESS_ERROR_RETURN_FALSE(QFile::remove(oldOverviewMapPath));
+            }
+//            //材质文件需要新建材质对象
+//            else if (fileInfo->mFileType == FileType::material)
+//            {
+//                new Material(newPath);
+//            }
+        }
+
+        m_Map.remove(pItem);
+        BB_SAFE_DELETE(pFileInfo);
+        BB_SAFE_DELETE(pItem);
+    }
 }
 
 bool BBFileListWidget::moveItemFromFolderTree(const QMimeData *pMimeData)
@@ -835,6 +883,12 @@ void BBFileListWidget::dropEvent(QDropEvent *event)
     {
         event->ignore();
     }
+
+    if (event->isAccepted())
+    {
+        // there are new items, update file system
+        updateFolderTree();
+    }
     // The indicator is no longer needed after drop
     m_pIndicatorItem = NULL;
     repaint();
@@ -901,8 +955,6 @@ void BBFileListWidget::importAsset(const QList<QUrl> &urls)
     // Open the asset import management dialog
     // BBAssetManager assetManager;
     // assetManager.exec();
-    // there are new items, update file system
-    updateFolderTree();
 }
 
 void BBFileListWidget::importAsset(const QFileInfo &fileInfo, const QString &newPath)
@@ -1022,48 +1074,7 @@ void BBFileListWidget::focusInEvent(QFocusEvent *event)
     Q_UNUSED(event);
 }
 
-//void FileList::updateFolderName(QString prePath, QString newPath)
-//{
-//    //修改meta文件夹内对应文件夹的名字
-//    QString newMetaFolderPath = newPath.mid((projectPath + contentsFolderName).length());
-//    newMetaFolderPath = projectEngineFolderPath + contentMetaFolderName + newMetaFolderPath;
-//    QString preMetaFolderPath = newMetaFolderPath.mid(0, newMetaFolderPath.lastIndexOf('/'));
-//    int index = prePath.lastIndexOf('/');
-//    QString preName = prePath.mid(index);
-//    QString preOnlyPath = prePath.mid(0, index);
-//    preMetaFolderPath += preName;
-//    QFile::rename(preMetaFolderPath, newMetaFolderPath);
 
-//    //如果修改名字的文件夹就是当前显示的文件夹
-//    if (prePath == mFolderPath)
-//    {
-//        //用于list item的事件
-//        mFolderPath = newPath;
-//        //向显示当前路径的控件发送路径
-//        showFolderPath(mFolderPath);
-//    }
-//    //如果当前显示的是修改名字文件夹的上一级
-//    else if (preOnlyPath == mFolderPath)
-//    {
-//        //列表对应文件夹需要改变名字
-//        QMap<QListWidgetItem*, FileInfo*>::Iterator itr;
-//        for (itr = mMap.begin(); itr != mMap.end(); itr++)
-//        {
-//            FileInfo *fileInfo = itr.value();
-//            if (fileInfo->mFileName == preName.mid(1))
-//            {
-//                QListWidgetItem *item = itr.key();
-//                QString name = newPath.mid(newPath.lastIndexOf('/') + 1);
-//                item->setText(lineFeed(name));
-//                //映射里的文件名也要改
-//                fileInfo->mFileName = name;
-//                break;
-//            }
-//        }
-//        sortItems();
-//    }
-
-//}
 
 //void FileList::newMaterial()
 //{
@@ -1322,72 +1333,6 @@ void BBFileListWidget::focusInEvent(QFocusEvent *event)
 //        {
 //            setItemSelected(itr.key(), true);
 //        }
-//    }
-//}
-
-
-//void FileList::moveItems()
-//{
-//    QString newOnlyPath = mFolderPath + "/" + mMap.value(indicatorItem)->mFileName;
-//    //选中项移入indicatorItem中
-//    QList<QListWidgetItem*> items = selectedItems();
-//    for (int i = 0; i < items.count(); i++)
-//    {
-//        QListWidgetItem *item = items.at(i);
-//        FileInfo *fileInfo = mMap.value(item);
-//        QString oldPath = mFolderPath + "/" + fileInfo->mFileName;
-//        QString newPath = newOnlyPath + "/" + fileInfo->mFileName;
-//        if (fileInfo->mFileType == FileType::dir)
-//        {
-//            //copy文件夹到indicatorItem里
-//            newPath = checkFolderDuplicateName(newPath);
-//            ProjectTree::copyDirectoryFiles(oldPath, newPath);
-//            //删除原来位置的文件夹
-//            QDir *dir = new QDir(oldPath);
-//            dir->removeRecursively();
-//            //对应的meta文件夹也要移动
-//            QString oldMetaFolderPath = getMetaFilePath(oldPath);
-//            ProjectTree::copyDirectoryFiles(oldMetaFolderPath, getMetaFilePath(newPath));
-//            dir = new QDir(oldMetaFolderPath);
-//            dir->removeRecursively();
-//            //文件夹树对应文件夹结点移动
-//            //newPath名字可能被重命名了
-//            moveItemInProjectTree(oldPath, newPath);
-//        }
-//        else
-//        {
-//            //copy文件到indicatorItem里
-//            newPath = checkFileDuplicateName(newPath);
-//            QFile::copy(oldPath, newPath);
-//            //删除原来位置的文件
-//            //删除文件
-//            if (QFile::remove(oldPath))
-//            {
-//                //有些文件对应的meta文件夹也要移动
-//                if (fileInfo->mFileType == FileType::mesh)
-//                {
-//                    QString oldMetaFilePath = getMetaFilePath(oldPath);
-//                    QString newMetaFilePath = getMetaFilePath(newPath);
-//                    //修改后缀为jpg
-//                    int index = oldMetaFilePath.lastIndexOf('.');
-//                    oldMetaFilePath = oldMetaFilePath.mid(0, index) + ".jpg";
-//                    index = newMetaFilePath.lastIndexOf('.');
-//                    newMetaFilePath = newMetaFilePath.mid(0, index) + ".jpg";
-//                    QFile::copy(oldMetaFilePath, newMetaFilePath);
-//                    QFile::remove(oldMetaFilePath);
-//                }
-//                //材质文件需要新建材质对象
-//                else if (fileInfo->mFileType == FileType::material)
-//                {
-//                    new Material(newPath);
-//                }
-//            }
-//        }
-//        //删去项对应的映射
-//        mMap.remove(item);
-//        delete fileInfo;
-//        //删去列表移走项
-//        delete item;
 //    }
 //}
 
