@@ -10,18 +10,6 @@
 class QWidgetAction;
 
 
-enum BBFileType
-{
-    dir = 0,
-    mesh = 1,
-    audio = 2,
-    texture = 3,
-    material = 4,
-    script = 5,
-    other = 6
-};
-
-
 struct BBFileInfo
 {
     QString m_FileName;
@@ -80,7 +68,8 @@ private slots:
 signals:
     void clickFolderTreeItem(const QString &folderPath);
     void addItemInFolderTree(const QString &parentPath, const QString &name);
-    void updateItemInFolderTree(const QString &oldName, const QString &newName);
+    void renameItemInFolderTree(const QString &oldName, const QString &newName);
+    void moveItemInFolderTree(const QString &oldPath, const QString &newPath);
     void deleteItemInFolderTree(const QString &folderPath);
     void updateFolderTree();
     void createMeshOverviewMap(const QString &sourcePath, const QString &overviewMapPath);

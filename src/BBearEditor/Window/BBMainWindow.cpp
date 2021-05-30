@@ -185,9 +185,12 @@ void BBMainWindow::setConnect()
     QObject::connect(m_pUi->listFile, SIGNAL(addItemInFolderTree(QString, QString)),
                      m_pUi->treeFolder, SLOT(addItem(QString, QString)));
     // rename folder name in the file list, and update the name of corresponding item in the folder tree
-    QObject::connect(m_pUi->listFile, SIGNAL(updateItemInFolderTree(QString, QString)),
-                     m_pUi->treeFolder, SLOT(updateItem(QString, QString)));
-    // delete folder in file list, and delete corresponding item in folder tree
+    QObject::connect(m_pUi->listFile, SIGNAL(renameItemInFolderTree(QString, QString)),
+                     m_pUi->treeFolder, SLOT(renameItem(QString, QString)));
+    // move item in the file list, and move corresponding item in the folder tree
+    QObject::connect(m_pUi->listFile, SIGNAL(moveItemInFolderTree(QString, QString)),
+                     m_pUi->treeFolder, SLOT(moveItem(QString, QString)));
+    // delete folder in the file list, and delete corresponding item in the folder tree
     QObject::connect(m_pUi->listFile, SIGNAL(deleteItemInFolderTree(QString)),
                      m_pUi->treeFolder, SLOT(deleteItem(QString)));
     // rebuild folder tree

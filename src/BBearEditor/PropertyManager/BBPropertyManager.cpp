@@ -8,6 +8,7 @@ BBPropertyManager::BBPropertyManager(QWidget *pParent)
     : QWidget(pParent)
 {
     m_pBaseInformationManager = NULL;
+    m_pSetBaseInformationManager = NULL;
     m_pTransformGroupManager = NULL;
     m_pCurrentGameObject = NULL;
     setWidgetStyle();

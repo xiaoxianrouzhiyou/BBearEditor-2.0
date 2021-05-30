@@ -517,6 +517,8 @@ QString BBTreeWidget::getLevelPath(QTreeWidgetItem *pItem)
     {
         location = pParent->text(0) + "/" + location;
     }
+    // remove "/" at the end
+    location = location.mid(0, location.length() - 1);
     return location;
 }
 

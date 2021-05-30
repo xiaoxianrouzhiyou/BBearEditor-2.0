@@ -319,7 +319,7 @@ void BBFileListWidget::finishRename()
                     QFile::rename(BBUtils::getEngineAuxiliaryFolderPath(oldPath),
                                   BBUtils::getEngineAuxiliaryFolderPath(newPath));
                     // update corresponding item in the folder tree
-                    updateItemInFolderTree(oldName, newName);
+                    renameItemInFolderTree(oldName, newName);
                 }
 //                //如果该文件夹在剪贴板中 则也在文件夹树的剪贴板中 自己和树的剪贴板都要移除
 //                if (clipBoardPaths.contains(oldPath))
@@ -738,31 +738,13 @@ bool BBFileListWidget::moveItem()
         if (pFileInfo->m_eFileType == BBFileType::dir)
         {
             newPath = BBUtils::getExclusiveFolderPath(newPath);
-            BBUtils::copyFolder(oldPath, newPath);
-            // delete folder in the original position
-            QDir dir(oldPath);
-            BB_PROCESS_ERROR_RETURN_FALSE(dir.removeRecursively());
-            // handle corresponding folder in the engine folder
-            QString oldAuxiliaryFolderPath = BBUtils::getEngineAuxiliaryFolderPath(oldPath);
-            BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::copyFolder(oldAuxiliaryFolderPath,
-                                                              BBUtils::getEngineAuxiliaryFolderPath(newPath)));
-            dir = QDir(oldAuxiliaryFolderPath);
-            BB_PROCESS_ERROR_RETURN_FALSE(dir.removeRecursively());
+            BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFolder(oldPath, newPath, false));
         }
         else
         {
             newPath = BBUtils::getExclusiveFilePath(newPath);
-            BB_PROCESS_ERROR_RETURN_FALSE(QFile::copy(oldPath, newPath));
-            // delete file in the original position
-            BB_PROCESS_ERROR_RETURN_FALSE(QFile::remove(oldPath));
-            // move corresponding files in the engine folder
-            if (pFileInfo->m_eFileType == BBFileType::mesh)
-            {
-                QString oldOverviewMapPath = BBUtils::getOverviewMapPath(oldPath);
-                QString newOverviewMapPath = BBUtils::getOverviewMapPath(newPath);
-                BB_PROCESS_ERROR_RETURN_FALSE(QFile::copy(oldOverviewMapPath, newOverviewMapPath));
-                BB_PROCESS_ERROR_RETURN_FALSE(QFile::remove(oldOverviewMapPath));
-            }
+            BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFile(oldPath, newPath, pFileInfo->m_eFileType, false));
+
 //            //材质文件需要新建材质对象
 //            else if (fileInfo->mFileType == FileType::material)
 //            {
@@ -773,12 +755,48 @@ bool BBFileListWidget::moveItem()
         m_Map.remove(pItem);
         BB_SAFE_DELETE(pFileInfo);
         BB_SAFE_DELETE(pItem);
+
+        // move folder tree items at the same time
+        moveItemInFolderTree(oldPath, newPath);
     }
 }
 
 bool BBFileListWidget::moveItemFromFolderTree(const QMimeData *pMimeData)
 {
+    QString destPath = m_FolderPath;
+    if (m_pIndicatorItem)
+    {
+        // Drag to the folder in the file list and import the asset into this folder
+        destPath += "/" + m_Map.value(m_pIndicatorItem)->m_FileName;
+    }
 
+    QList<QString> sourceFilePaths;
+    QByteArray data = pMimeData->data(BB_MIMETYPE_FOLDERTREEWIDGET);
+    QDataStream dataStream(&data, QIODevice::ReadOnly);
+    QString levelPath;
+    dataStream >> levelPath;
+    while (!levelPath.isEmpty())
+    {
+        QString sourceFilePath = BBConstant::BB_PATH_PROJECT_USER + "/" + levelPath;
+        sourceFilePaths.append(sourceFilePath);
+        // Folders can’t be moved into oneself, nor can they be moved into their own subfolders
+        BB_PROCESS_ERROR_RETURN_FALSE(!(destPath.mid(0, sourceFilePath.length()) == sourceFilePath));
+        // It can’t become its own brother and move into its own parent folder
+        BB_PROCESS_ERROR_RETURN_FALSE(!(BBUtils::getParentPath(sourceFilePath) == destPath));
+        dataStream >> levelPath;
+    }
+    // when the movement is legal, move all folders into destPath
+    for (int i = 0; i < sourceFilePaths.count(); i++)
+    {
+        QString oldPath = sourceFilePaths.at(i);
+        QString fileName = BBUtils::getFileNameByPath(oldPath);
+        QString newPath = BBUtils::getExclusiveFolderPath(destPath, fileName);
+        BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFolder(oldPath, newPath, false));
+
+        // move folder tree items at the same time
+        moveItemInFolderTree(oldPath, newPath);
+    }
+    return true;
 }
 
 void BBFileListWidget::dragEnterEvent(QDragEnterEvent *event)
@@ -854,14 +872,25 @@ void BBFileListWidget::dropEvent(QDropEvent *event)
         // from outside of the editor
         event->accept();
         importAsset(event->mimeData()->urls());
+        // there are new items, update file system
+        // after updateFolderTree(), also update file list
+        updateFolderTree();
     }
     else if (event->mimeData()->hasFormat(getMimeType()))
     {
         if (m_pIndicatorItem)
         {
             // there is a drop spot
-            event->accept();
-            moveItem();
+            if (moveItem())
+            {
+                event->accept();
+                // update file list
+                showFolderContent(m_FolderPath);
+            }
+            else
+            {
+                event->ignore();
+            }
         }
         else
         {
@@ -873,6 +902,8 @@ void BBFileListWidget::dropEvent(QDropEvent *event)
         if (moveItemFromFolderTree(event->mimeData()))
         {
             event->accept();
+            // update file list
+            showFolderContent(m_FolderPath);
         }
         else
         {
@@ -884,11 +915,6 @@ void BBFileListWidget::dropEvent(QDropEvent *event)
         event->ignore();
     }
 
-    if (event->isAccepted())
-    {
-        // there are new items, update file system
-        updateFolderTree();
-    }
     // The indicator is no longer needed after drop
     m_pIndicatorItem = NULL;
     repaint();
@@ -1334,60 +1360,6 @@ void BBFileListWidget::focusInEvent(QFocusEvent *event)
 //            setItemSelected(itr.key(), true);
 //        }
 //    }
-//}
-
-//bool FileList::moveItemFromProjectTree(const QMimeData *mimeData)
-//{
-//    //拖到的目标路径 成为destPath的子文件夹
-//    QString destPath = mFolderPath;
-//    if (indicatorItem)
-//    {
-//        destPath += "/" + mMap.value(indicatorItem)->mFileName;
-//    }
-//    //拖来的数据
-//    QList<QString> sourceFilePaths;
-//    QByteArray data = mimeData->data(getProjectTreeMimeType());
-//    QDataStream dataStream(&data, QIODevice::ReadOnly);
-//    QString levelPath;
-//    dataStream >> levelPath;
-//    while (!levelPath.isEmpty())
-//    {
-//        QString sourceFilePath = projectPath + "contents/" + levelPath.mid(0, levelPath.length() - 1);
-//        sourceFilePaths.append(sourceFilePath);
-//        //文件夹不能移到自己里面 也不能移到自己的子文件夹里面
-//        if (destPath.mid(0, sourceFilePath.length()) == sourceFilePath)
-//        {
-//            return false;
-//        }
-//        //也不能自己成为自己的兄弟 移到自己的父文件夹里
-//        if (sourceFilePath.mid(0, sourceFilePath.lastIndexOf('/')) == destPath)
-//        {
-//            return false;
-//        }
-//        dataStream >> levelPath;
-//    }
-//    //移动合法 将所有文件夹移到destPath里面
-//    for (int i = 0; i < sourceFilePaths.count(); i++)
-//    {
-//        QString prePath = sourceFilePaths.at(i);
-//        QString fileName = prePath.mid(prePath.lastIndexOf('/') + 1);
-//        QString newPath = checkFolderDuplicateName(destPath + "/" + fileName);
-//        //移动文件夹
-//        ProjectTree::copyDirectoryFiles(prePath, newPath);
-//        //删除原来位置的文件夹
-//        QDir *dir = new QDir(prePath);
-//        dir->removeRecursively();
-//        //对应的meta文件夹也要移动
-//        QString oldMetaFolderPath = getMetaFilePath(prePath);
-//        ProjectTree::copyDirectoryFiles(oldMetaFolderPath, getMetaFilePath(newPath));
-//        dir = new QDir(oldMetaFolderPath);
-//        dir->removeRecursively();
-//        //文件夹树的结点也要移动
-//        moveItemInProjectTree(prePath, newPath);
-//    }
-//    //刷新列表
-//    showFolderContent(mFolderPath);
-//    return true;
 //}
 
 //void FileList::changeItemSize(int factor)

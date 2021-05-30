@@ -1,7 +1,7 @@
 #include "BBUtils.h"
 #include <QDir>
-#include "FileSystem/BBFileListWidget.h"
 #include <QProcess>
+#include "FileSystem/BBFileListWidget.h"
 
 
 QString BBConstant::BB_NAME_PROJECT = "";
@@ -243,4 +243,47 @@ bool BBUtils::copyFolder(const QString &fromDir, const QString &toDir)
         }
     }
     return true;
+}
+
+bool BBUtils::moveFolder(const QString &oldPath, const QString &newPath, bool bCopy)
+{
+    // newPath has been checked for duplicate name problem
+    // copy folder
+    BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::copyFolder(oldPath, newPath));
+    // handle corresponding folder in the engine folder
+    QString oldAuxiliaryFolderPath = BBUtils::getEngineAuxiliaryFolderPath(oldPath);
+    QString newAuxiliaryFolderPath = BBUtils::getEngineAuxiliaryFolderPath(newPath);
+    BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::copyFolder(oldAuxiliaryFolderPath, newAuxiliaryFolderPath));
+
+    if (!bCopy)
+    {
+        // delete original folder
+        QDir dir(oldPath);
+        BB_PROCESS_ERROR_RETURN_FALSE(dir.removeRecursively());
+        dir = QDir(oldAuxiliaryFolderPath);
+        BB_PROCESS_ERROR_RETURN_FALSE(dir.removeRecursively());
+    }
+}
+
+bool BBUtils::moveFile(const QString &oldPath, const QString &newPath, BBFileType eFileType, bool bCopy)
+{
+    // newPath has been checked for duplicate name problem
+    // copy file
+    BB_PROCESS_ERROR_RETURN_FALSE(QFile::copy(oldPath, newPath));
+    // handle corresponding folder in the engine folder
+    QString oldOverviewMapPath;
+    QString newOverviewMapPath;
+    if (eFileType == BBFileType::mesh)
+    {
+        oldOverviewMapPath = BBUtils::getOverviewMapPath(oldPath);
+        newOverviewMapPath = BBUtils::getOverviewMapPath(newPath);
+        BB_PROCESS_ERROR_RETURN_FALSE(QFile::copy(oldOverviewMapPath, newOverviewMapPath));
+    }
+
+    if (!bCopy)
+    {
+        // delete original file
+        BB_PROCESS_ERROR_RETURN_FALSE(QFile::remove(oldPath));
+        BB_PROCESS_ERROR_RETURN_FALSE(QFile::remove(oldOverviewMapPath));
+    }
 }

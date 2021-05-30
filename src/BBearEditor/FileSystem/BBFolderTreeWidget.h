@@ -26,7 +26,8 @@ private slots:
     void setCurrentItemByPath(const QString &folderPath);
     void newFolder();
     void addItem(const QString &parentPath, const QString &name);
-    void updateItem(const QString &oldName, const QString &newName);
+    void renameItem(const QString &oldName, const QString &newName);
+    void moveItem(const QString &oldPath, const QString &newPath);
     void deleteItem(const QString &folderPath);
     void showInFolder();
     void finishRename() override;
@@ -45,6 +46,7 @@ private:
     QWidgetAction* createWidgetAction(QMenu *pParent, const QString &iconPath, const QString &name);
     void deleteOne(QTreeWidgetItem *pItem) override;
 
+    void dragMoveEvent(QDragMoveEvent *event) override;
     bool moveItem() override;
 
     QTreeWidgetItem *m_pCurrentShowFolderContentItem;
@@ -69,14 +71,11 @@ private:
 //    void copyAction() override;
 //    void pasteAction() override;
 //    void updateCurrentShowFolderContentItem(QString path);
-//    void moveFolderItemInTree(QString prePath, QString newPath);
 //    void copyByFileList(QList<QString> filePaths);
 //    void pasteItemWithoutPasteFile(QList<QString> clipBoardTranscriptFolderNames);
 //    void removeClipBoardRenameItem(QString path);
 
 //private:
-//    void dragMoveEvent(QDragMoveEvent *event) override;
-//    bool dragDropItem() override;
 //    bool moveItemFromFileList(const QMimeData *mimeData) override;
 //    void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript) override;
 //    void pasteEnd() override;
