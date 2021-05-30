@@ -15,40 +15,39 @@ class BBFolderTreeWidget : public BBTreeWidget
 
 public:
     explicit BBFolderTreeWidget(QWidget *pParent = nullptr);
+
     QString getMimeType() { return BB_MIMETYPE_FOLDERTREEWIDGET; }
+    void loadTopLevelItems(const QList<QTreeWidgetItem*> &items);
 
-public slots:
-    void loadProject();
+//private slots:
+//    void pressRootButton();
+//    void clickItem(QTreeWidgetItem *pItem, int nColumn);
+//    void setCurrentItemByPath(const QString &folderPath);
+//    void newFolder();
+//    void addItem(const QString &parentPath, const QString &name);
+//    void renameItem(const QString &oldName, const QString &newName);
+//    void moveItem(const QString &oldPath, const QString &newPath);
+//    void deleteItem(const QString &folderPath);
+//    void showInFolder();
+//    void finishRename() override;
+//    void deleteAction() override;
 
-private slots:
-    void pressRootButton();
-    void clickItem(QTreeWidgetItem *pItem, int nColumn);
-    void setCurrentItemByPath(const QString &folderPath);
-    void newFolder();
-    void addItem(const QString &parentPath, const QString &name);
-    void renameItem(const QString &oldName, const QString &newName);
-    void moveItem(const QString &oldPath, const QString &newPath);
-    void deleteItem(const QString &folderPath);
-    void showInFolder();
-    void finishRename() override;
-    void deleteAction() override;
-
-signals:
-    void showFolderContent(const QString &folderPath);
+//signals:
+//    void showFolderContent(const QString &folderPath);
 
 private:
-    QString getAbsolutePath(const QString &relativePath);
-    QString getAbsolutePath(QTreeWidgetItem *pItem);
-    QTreeWidgetItem* getItemByPath(const QString &absolutePath);
-    void updateCorrespondingWidget(QTreeWidgetItem *pItem);
+//    QString getAbsolutePath(const QString &relativePath);
+//    QString getAbsolutePath(QTreeWidgetItem *pItem);
+//    QTreeWidgetItem* getItemByPath(const QString &absolutePath);
+//    void updateCorrespondingWidget(QTreeWidgetItem *pItem);
 
     void setMenu() override;
     QWidgetAction* createWidgetAction(QMenu *pParent, const QString &iconPath, const QString &name);
-    void deleteOne(QTreeWidgetItem *pItem) override;
+//    void deleteOne(QTreeWidgetItem *pItem) override;
 
-    void dragMoveEvent(QDragMoveEvent *event) override;
-    bool moveItem() override;
-    bool moveItemFromFileList(const QMimeData *pMimeData) override;
+//    void dragMoveEvent(QDragMoveEvent *event) override;
+//    bool moveItem() override;
+//    bool moveItemFromFileList(const QMimeData *pMimeData) override;
 
     QTreeWidgetItem *m_pCurrentShowFolderContentItem;
 };

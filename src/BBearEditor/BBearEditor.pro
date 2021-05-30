@@ -61,7 +61,8 @@ SOURCES += \
     Window/BBProjectDialog.cpp \
     FileSystem/BBFileListWidget.cpp \
     FileSystem/BBFilePathBarWidget.cpp \
-    FileSystem/BBFileSystemDockWidget.cpp
+    FileSystem/BBFileSystemDockWidget.cpp \
+    FileSystem/BBFileSystemData.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
@@ -100,7 +101,8 @@ HEADERS += \
     Window/BBProjectDialog.h \
     FileSystem/BBFileListWidget.h \
     FileSystem/BBFilePathBarWidget.h \
-    FileSystem/BBFileSystemDockWidget.h
+    FileSystem/BBFileSystemDockWidget.h \
+    FileSystem/BBFileSystemData.h
 
 FORMS += \
     Window/BBConfirmationDialog.ui \

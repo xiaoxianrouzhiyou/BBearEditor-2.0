@@ -1,12 +1,16 @@
 #include "BBFileSystemDockWidget.h"
 #include "ui_BBFileSystemDockWidget.h"
 #include "BBUtils.h"
+#include "BBFileSystemData.h"
+
 
 BBFileSystemDockWidget::BBFileSystemDockWidget(QWidget *pParent)
     : QDockWidget(pParent),
       m_pUi(new Ui::BBFileSystemDockWidget)
 {
     m_pUi->setupUi(this);
+
+    m_pData = new BBFileSystemData();
 
     m_pUi->dockProjectContents->updateSizeHint(QSize(300, 250));
 
@@ -17,6 +21,7 @@ BBFileSystemDockWidget::BBFileSystemDockWidget(QWidget *pParent)
 BBFileSystemDockWidget::~BBFileSystemDockWidget()
 {
     BB_SAFE_DELETE(m_pUi);
+    BB_SAFE_DELETE(m_pData);
 }
 
 void BBFileSystemDockWidget::createProject()
@@ -31,12 +36,9 @@ void BBFileSystemDockWidget::createProject()
 
 void BBFileSystemDockWidget::openProject()
 {
-//    //显示指定场景 或者新场景
-//    createProject();
-//    //加载层级视图 以及结点对应的场景对象
-
-     // load file system
-    m_pUi->treeFolder->loadProject();
+    // load file system
+    m_pData->load();
+    m_pUi->treeFolder->loadTopLevelItems(m_pData->getFolderTreeWidgetTopLevelItems());
 //    //在文件列表中 显示contents里的文件
 //    ui->listFile->showFolderContent(projectPath + contentsFolderName);
 }

@@ -35,17 +35,6 @@
 #include <QDebug>
 
 
-enum BBFileType
-{
-    dir = 0,
-    mesh = 1,
-    audio = 2,
-    texture = 3,
-    material = 4,
-    script = 5,
-    other = 6
-};
-
 
 class QFileInfo;
 
@@ -75,13 +64,13 @@ public:
     static QString getBaseName(const QString &name);
     static QString getFileNameByPath(const QString &filePath);
     static QString getParentPath(const QString &filePath);
-    static QString getEngineAuxiliaryFolderPath(const QString &sourcePath);
-    static QString getOverviewMapPath(const QString &sourcePath);
-    static bool showInFolder(const QString &filePath);
-    static bool copyFolder(const QString &fromDir, const QString &toDir);
-    static bool isMovablePath(const QString &sourcePath, const QString &destParentPath);
-    static bool moveFolder(const QString &oldPath, const QString &newPath, bool bCopy = false);
-    static bool moveFile(const QString &oldPath, const QString &newPath, BBFileType eFileType, bool bCopy = false);
+//    static QString getEngineAuxiliaryFolderPath(const QString &sourcePath);
+//    static QString getOverviewMapPath(const QString &sourcePath);
+//    static bool showInFolder(const QString &filePath);
+//    static bool copyFolder(const QString &fromDir, const QString &toDir);
+//    static bool isMovablePath(const QString &sourcePath, const QString &destParentPath);
+//    static bool moveFolder(const QString &oldPath, const QString &newPath, bool bCopy = false);
+//    static bool moveFile(const QString &oldPath, const QString &newPath, BBFileType eFileType, bool bCopy = false);
 };
 
 #endif // BBUTILS_H

@@ -3,6 +3,10 @@
 
 #include <QDockWidget>
 
+
+class BBFileSystemData;
+
+
 namespace Ui {
 class BBFileSystemDockWidget;
 }
@@ -19,6 +23,8 @@ public:
     void openProject();
 
 private:
+    BBFileSystemData *m_pData;
+
     Ui::BBFileSystemDockWidget *m_pUi;
 };
 

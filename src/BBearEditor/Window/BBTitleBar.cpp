@@ -18,7 +18,6 @@ BBTitleBar::BBTitleBar(QWidget *parent) :
 BBTitleBar::~BBTitleBar()
 {
     BB_SAFE_DELETE(m_pUi);
-    BB_SAFE_DELETE(m_pParent);
 }
 
 void BBTitleBar::closeWindow()

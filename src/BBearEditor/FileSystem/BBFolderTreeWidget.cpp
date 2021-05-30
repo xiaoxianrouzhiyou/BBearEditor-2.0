@@ -22,370 +22,307 @@ BBFolderTreeWidget::BBFolderTreeWidget(QWidget *pParent)
                      this, SLOT(clickItem(QTreeWidgetItem*, int)));
 }
 
-void BBFolderTreeWidget::loadProject()
+void BBFolderTreeWidget::loadTopLevelItems(const QList<QTreeWidgetItem*> &items)
 {
-    // it is also invoked when the tree needs to be rebuilt
-    // m_pCurrentShowFolderContentItem will be cleared, record corresponding path
-    // find new m_pCurrentShowFolderContentItem, after rebuilding
-    QString currentShowFolderContentPath;
-    if (m_pCurrentShowFolderContentItem)
-    {
-        currentShowFolderContentPath = getAbsolutePath(m_pCurrentShowFolderContentItem);
-    }
-    else
-    {
-        currentShowFolderContentPath = BBConstant::BB_PATH_PROJECT_USER;
-    }
-    // clear tree, and create new tree
-    clear();
-    QDir dir(BBConstant::BB_PATH_PROJECT_USER);
-    if (dir.exists())
-    {
-        dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
-        // The path is used to traverse the subfolders
-        // The item is used to insert
-        struct Node
-        {
-            QString path;
-            QTreeWidgetItem *pItem;
-            Node(QString path, QTreeWidgetItem *pItem)
-            {
-                this->path = path;
-                this->pItem = pItem;
-            }
-        };
-        // The queue of the parent node of the node to be created
-        QQueue<Node> queue;
-        // Traverse the contents folder
-        QFileInfoList fileInfoList = dir.entryInfoList();
-        foreach (QFileInfo fileInfo, fileInfoList)
-        {
-            // is folder
-            if (fileInfo.isDir())
-            {
-                // add item at the top level
-                QTreeWidgetItem *pItem = new QTreeWidgetItem({fileInfo.fileName()});
-                pItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
-                addTopLevelItem(pItem);
-                // push queue, used for adding child item
-                queue.enqueue(Node(fileInfo.absoluteFilePath(), pItem));
-            }
-            else
-            {
-                QString suffix = BBUtils::getFileSuffix(fileInfo);
-                if (suffix == "mtl")
-                {
-//                    loadMaterial(fileInfo.absoluteFilePath());
-                }
-            }
-        }
-        // breadth-first traverse subfolders
-        while (!queue.isEmpty())
-        {
-            Node node = queue.dequeue();
-            dir = QDir(node.path);
-            dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
-            fileInfoList = dir.entryInfoList();
-            foreach (QFileInfo fileInfo, fileInfoList)
-            {
-                // is folder
-                if (fileInfo.isDir())
-                {
-                    // is not at the top level
-                    QTreeWidgetItem *pItem = new QTreeWidgetItem({fileInfo.fileName()});
-                    pItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
-                    node.pItem->addChild(pItem);
-                    // push queue, used for adding child item
-                    queue.enqueue(Node(fileInfo.absoluteFilePath(), pItem));
-                }
-                else
-                {
-                    QString suffix = BBUtils::getFileSuffix(fileInfo);
-                    if (suffix == "mtl")
-                    {
-//                        loadMaterial(fileInfo.absoluteFilePath());
-                    }
-                }
-            }
-        }
-    }
-    else
-    {
-        dir.mkpath(dir.absolutePath());
-    }
-
-    sortItems(0, Qt::AscendingOrder);
-
-    // find new m_pCurrentShowFolderContentItem, after rebuilding
-    if (m_pCurrentShowFolderContentItem)
-    {
-        m_pCurrentShowFolderContentItem = getItemByPath(currentShowFolderContentPath);
-        setItemExpanded(m_pCurrentShowFolderContentItem, true);
-    }
-    setCurrentItem(m_pCurrentShowFolderContentItem);
-    showFolderContent(currentShowFolderContentPath);
-//    //之后重新加载工程时 无需加载材质
-//    isLoadMaterial = false;
+    addTopLevelItems(items);
 }
 
-void BBFolderTreeWidget::pressRootButton()
-{
-    setCurrentItem(NULL);
-    // show the files in the root dir in the file list on the right
-    showFolderContent(BBConstant::BB_PATH_PROJECT_USER);
-    // use NULL to indicate root item
-    m_pCurrentShowFolderContentItem = NULL;
-}
 
-void BBFolderTreeWidget::clickItem(QTreeWidgetItem *pItem, int nColumn)
-{
-    updateCorrespondingWidget(pItem);
-}
 
-void BBFolderTreeWidget::setCurrentItemByPath(const QString &folderPath)
-{
-    QTreeWidgetItem *pItem = getItemByPath(folderPath);
-    setCurrentItem(pItem);
-    setItemExpanded(pItem, true);
-    updateCorrespondingWidget(pItem);
-}
 
-void BBFolderTreeWidget::newFolder()
-{
-    QTreeWidgetItem *pParent = currentItem();
-    QString parentPath = getAbsolutePath(pParent);
-    QString fileName = "new folder";
-    QString filePath = BBUtils::getExclusiveFolderPath(parentPath, fileName);
 
-    QDir dir;
-    BB_PROCESS_ERROR_RETURN(dir.mkdir(filePath));
 
-    // create tree item
-    QTreeWidgetItem *pItem = new QTreeWidgetItem({fileName});
-    pItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
 
-    if (pParent)
-    {
-        pParent->addChild(pItem);
-        setItemExpanded(pParent, true);
-    }
-    else
-    {
-        addTopLevelItem(pItem);
-    }
-    setCurrentItem(pItem);
-    updateCorrespondingWidget(m_pCurrentShowFolderContentItem);
-    // Open the edit box to let the user set name
-    openRenameEditor();
-}
-
-void BBFolderTreeWidget::addItem(const QString &parentPath, const QString &name)
-{
-    QTreeWidgetItem *pParent = getItemByPath(parentPath);
-
-    QTreeWidgetItem *pItem = new QTreeWidgetItem({name});
-    pItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
-
-    if (pParent)
-    {
-        pParent->addChild(pItem);
-        setItemExpanded(pParent, true);
-    }
-    else
-    {
-        addTopLevelItem(pItem);
-    }
-    sortItems(0, Qt::AscendingOrder);
-}
-
-void BBFolderTreeWidget::renameItem(const QString &oldName, const QString &newName)
-{
-    // the name of child of m_pCurrentShowFolderContentItem is changed
-    if (m_pCurrentShowFolderContentItem)
-    {
-        for (int i = 0; i < m_pCurrentShowFolderContentItem->childCount(); i++)
-        {
-            QTreeWidgetItem *pItem = m_pCurrentShowFolderContentItem->child(i);
-            if (pItem->text(0) == oldName)
-            {
-                pItem->setText(0, newName);
-                break;
-            }
-        }
-    }
-    else
-    {
-        // at the top level
-        for (int i = 0; i < topLevelItemCount(); i++)
-        {
-            QTreeWidgetItem *pItem = topLevelItem(i);
-            if (pItem->text(0) == oldName)
-            {
-                pItem->setText(0, newName);
-                break;
-            }
-        }
-    }
-    sortItems(0, Qt::AscendingOrder);
-}
-
-void BBFolderTreeWidget::moveItem(const QString &oldPath, const QString &newPath)
-{
-    // source item
-    QTreeWidgetItem *pItem = getItemByPath(oldPath);
-    // parent of new position
-    QString parentPath = BBUtils::getParentPath(newPath);
-    QTreeWidgetItem *pParent = getItemByPath(parentPath);
-    QString fileName = BBUtils::getFileNameByPath(newPath);
-    // remove child items of old parent
-    if (pItem->parent())
-    {
-        pItem->parent()->removeChild(pItem);
-    }
-    else
-    {
-        takeTopLevelItem(indexOfTopLevelItem(pItem));
-    }
-    // insert to new parent
-    if (pParent)
-    {
-        pParent->addChild(pItem);
-    }
-    else
-    {
-        addTopLevelItem(pItem);
-    }
-    // rename
-    pItem->setText(0, fileName);
-    sortItems(0, Qt::AscendingOrder);
-}
-
-void BBFolderTreeWidget::deleteItem(const QString &folderPath)
-{
-    QTreeWidgetItem *pItem = getItemByPath(folderPath);
-    // remove from clipBoard
-//    if (clipBoardItems.contains(pItem))
+//void BBFolderTreeWidget::loadProject()
+//{
+//    // it is also invoked when the tree needs to be rebuilt
+//    // m_pCurrentShowFolderContentItem will be cleared, record corresponding path
+//    // find new m_pCurrentShowFolderContentItem, after rebuilding
+//    QString currentShowFolderContentPath;
+//    if (m_pCurrentShowFolderContentItem)
 //    {
-//        clipBoardItems.removeOne(pItem);
+//        currentShowFolderContentPath = getAbsolutePath(m_pCurrentShowFolderContentItem);
 //    }
-    BB_SAFE_DELETE(pItem);
-}
+//    else
+//    {
+//        currentShowFolderContentPath = BBConstant::BB_PATH_PROJECT_USER;
+//    }
+//    // clear tree, and create new tree
+//    clear();
 
-void BBFolderTreeWidget::showInFolder()
-{
-    QTreeWidgetItem *pItem = currentItem();
-    QString filePath = getAbsolutePath(pItem);
+//....................................................................
+//    sortItems(0, Qt::AscendingOrder);
 
-    BB_PROCESS_ERROR_RETURN(BBUtils::showInFolder(filePath));
-}
+//    // find new m_pCurrentShowFolderContentItem, after rebuilding
+//    if (m_pCurrentShowFolderContentItem)
+//    {
+//        m_pCurrentShowFolderContentItem = getItemByPath(currentShowFolderContentPath);
+//        setItemExpanded(m_pCurrentShowFolderContentItem, true);
+//    }
+//    setCurrentItem(m_pCurrentShowFolderContentItem);
+//    showFolderContent(currentShowFolderContentPath);
+////    //之后重新加载工程时 无需加载材质
+////    isLoadMaterial = false;
+//}
 
-void BBFolderTreeWidget::finishRename()
-{
-    BB_PROCESS_ERROR_RETURN(m_pEditingItem);
+//void BBFolderTreeWidget::pressRootButton()
+//{
+//    setCurrentItem(NULL);
+//    // show the files in the root dir in the file list on the right
+//    showFolderContent(BBConstant::BB_PATH_PROJECT_USER);
+//    // use NULL to indicate root item
+//    m_pCurrentShowFolderContentItem = NULL;
+//}
 
-    // whether name is changed
-    // new name cannot be null
-    QString name = m_pRenameEditor->text();
-    QString preName = m_pEditingItem->text(0);
-    if (preName != name && !name.isEmpty())
-    {
-        // previous path
-        QString previous = getAbsolutePath(m_pEditingItem);
-        QString parentPath = BBUtils::getParentPath(previous);
-        // Check if there are the same names
-        QString current = BBUtils::getExclusiveFolderPath(parentPath, name);
+//void BBFolderTreeWidget::clickItem(QTreeWidgetItem *pItem, int nColumn)
+//{
+//    updateCorrespondingWidget(pItem);
+//}
 
-        BB_PROCESS_ERROR_RETURN(QFile::rename(previous, current));
-        m_pEditingItem->setText(0, name);
+//void BBFolderTreeWidget::setCurrentItemByPath(const QString &folderPath)
+//{
+//    QTreeWidgetItem *pItem = getItemByPath(folderPath);
+//    setCurrentItem(pItem);
+//    setItemExpanded(pItem, true);
+//    updateCorrespondingWidget(pItem);
+//}
 
-        // handle corresponding folder in the engine folder
-        QFile::rename(BBUtils::getEngineAuxiliaryFolderPath(previous),
-                      BBUtils::getEngineAuxiliaryFolderPath(current));
+//void BBFolderTreeWidget::newFolder()
+//{
+//    QTreeWidgetItem *pParent = currentItem();
+//    QString parentPath = getAbsolutePath(pParent);
+//    QString fileName = "new folder";
+//    QString filePath = BBUtils::getExclusiveFolderPath(parentPath, fileName);
 
-        // After renaming, remove it from the clipboard
-        if (m_ClipBoardItems.contains(m_pEditingItem))
-        {
-            m_ClipBoardItems.removeOne(m_pEditingItem);
-        }
-        // After renaming, sort
-        sortItems(0, Qt::AscendingOrder);
+//    QDir dir;
+//    BB_PROCESS_ERROR_RETURN(dir.mkdir(filePath));
 
-        updateCorrespondingWidget(m_pEditingItem);
-    }
-    BBTreeWidget::finishRename();
-}
+//    // create tree item
+//    QTreeWidgetItem *pItem = new QTreeWidgetItem({fileName});
+//    pItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
 
-void BBFolderTreeWidget::deleteAction()
-{
-    BBTreeWidget::deleteAction();
+//    if (pParent)
+//    {
+//        pParent->addChild(pItem);
+//        setItemExpanded(pParent, true);
+//    }
+//    else
+//    {
+//        addTopLevelItem(pItem);
+//    }
+//    setCurrentItem(pItem);
+//    updateCorrespondingWidget(m_pCurrentShowFolderContentItem);
+//    // Open the edit box to let the user set name
+//    openRenameEditor();
+//}
 
-    updateCorrespondingWidget(m_pCurrentShowFolderContentItem);
+//void BBFolderTreeWidget::addItem(const QString &parentPath, const QString &name)
+//{
+//    QTreeWidgetItem *pParent = getItemByPath(parentPath);
 
-//    //刷新材质文件的映射 被删除的材质文件的映射不再占用内存
-//    Material::updateMap();
-//    //清空属性栏 包括场景 层级视图选中
-//    cancelHierarchyTreeSelectedItems();
-//    clearPropertyWidget();
-}
+//    QTreeWidgetItem *pItem = new QTreeWidgetItem({name});
+//    pItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
 
-QString BBFolderTreeWidget::getAbsolutePath(const QString &relativePath)
-{
-    return BBConstant::BB_PATH_PROJECT_USER + "/" + relativePath;
-}
+//    if (pParent)
+//    {
+//        pParent->addChild(pItem);
+//        setItemExpanded(pParent, true);
+//    }
+//    else
+//    {
+//        addTopLevelItem(pItem);
+//    }
+//    sortItems(0, Qt::AscendingOrder);
+//}
 
-QString BBFolderTreeWidget::getAbsolutePath(QTreeWidgetItem *pItem)
-{
-    return getAbsolutePath(getLevelPath(pItem));
-}
+//void BBFolderTreeWidget::renameItem(const QString &oldName, const QString &newName)
+//{
+//    // the name of child of m_pCurrentShowFolderContentItem is changed
+//    if (m_pCurrentShowFolderContentItem)
+//    {
+//        for (int i = 0; i < m_pCurrentShowFolderContentItem->childCount(); i++)
+//        {
+//            QTreeWidgetItem *pItem = m_pCurrentShowFolderContentItem->child(i);
+//            if (pItem->text(0) == oldName)
+//            {
+//                pItem->setText(0, newName);
+//                break;
+//            }
+//        }
+//    }
+//    else
+//    {
+//        // at the top level
+//        for (int i = 0; i < topLevelItemCount(); i++)
+//        {
+//            QTreeWidgetItem *pItem = topLevelItem(i);
+//            if (pItem->text(0) == oldName)
+//            {
+//                pItem->setText(0, newName);
+//                break;
+//            }
+//        }
+//    }
+//    sortItems(0, Qt::AscendingOrder);
+//}
 
-QTreeWidgetItem* BBFolderTreeWidget::getItemByPath(const QString &absolutePath)
-{
-    // Find the corresponding tree item according to the path
-    QString path = absolutePath.mid(BBConstant::BB_PATH_PROJECT_USER.length());
-    if (path.length() == 0)
-    {
-        // "contents" folder
-        return NULL;
-    }
-    else
-    {
-        QTreeWidgetItem *pItem = NULL;
-        // remove "/" at the beginning
-        path = path.mid(1);
-        QStringList list = path.split('/');
-        // Find the item that is at the top level corresponds to item 0 in the list
-        // Folders at the same level cannot have the same name
-        for (int i = 0; i < topLevelItemCount(); i++)
-        {
-            if (topLevelItem(i)->text(0) == list.at(0))
-            {
-                pItem = topLevelItem(i);
-                break;
-            }
-        }
-        // Start from item 1 to find non-top items
-        for (int i = 1; i < list.count(); i++)
-        {
-            for (int j = 0; j < pItem->childCount(); j++)
-            {
-                QTreeWidgetItem *pChild = pItem->child(j);
-                if (list.at(i) == pChild->text(0))
-                {
-                    pItem = pChild;
-                    break;
-                }
-            }
-        }
-        return pItem;
-    }
-}
+//void BBFolderTreeWidget::moveItem(const QString &oldPath, const QString &newPath)
+//{
+//    // source item
+//    QTreeWidgetItem *pItem = getItemByPath(oldPath);
+//    // parent of new position
+//    QString parentPath = BBUtils::getParentPath(newPath);
+//    QTreeWidgetItem *pParent = getItemByPath(parentPath);
+//    QString fileName = BBUtils::getFileNameByPath(newPath);
+//    // remove child items of old parent
+//    if (pItem->parent())
+//    {
+//        pItem->parent()->removeChild(pItem);
+//    }
+//    else
+//    {
+//        takeTopLevelItem(indexOfTopLevelItem(pItem));
+//    }
+//    // insert to new parent
+//    if (pParent)
+//    {
+//        pParent->addChild(pItem);
+//    }
+//    else
+//    {
+//        addTopLevelItem(pItem);
+//    }
+//    // rename
+//    pItem->setText(0, fileName);
+//    sortItems(0, Qt::AscendingOrder);
+//}
 
-void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
-{
-    QString folderPath = getAbsolutePath(pItem);
-    showFolderContent(folderPath);
-    m_pCurrentShowFolderContentItem = pItem;
-}
+//void BBFolderTreeWidget::deleteItem(const QString &folderPath)
+//{
+//    QTreeWidgetItem *pItem = getItemByPath(folderPath);
+//    // remove from clipBoard
+////    if (clipBoardItems.contains(pItem))
+////    {
+////        clipBoardItems.removeOne(pItem);
+////    }
+//    BB_SAFE_DELETE(pItem);
+//}
+
+//void BBFolderTreeWidget::showInFolder()
+//{
+//    QTreeWidgetItem *pItem = currentItem();
+//    QString filePath = getAbsolutePath(pItem);
+
+//    BB_PROCESS_ERROR_RETURN(BBUtils::showInFolder(filePath));
+//}
+
+//void BBFolderTreeWidget::finishRename()
+//{
+//    BB_PROCESS_ERROR_RETURN(m_pEditingItem);
+
+//    // whether name is changed
+//    // new name cannot be null
+//    QString name = m_pRenameEditor->text();
+//    QString preName = m_pEditingItem->text(0);
+//    if (preName != name && !name.isEmpty())
+//    {
+//        // previous path
+//        QString previous = getAbsolutePath(m_pEditingItem);
+//        QString parentPath = BBUtils::getParentPath(previous);
+//        // Check if there are the same names
+//        QString current = BBUtils::getExclusiveFolderPath(parentPath, name);
+
+//        BB_PROCESS_ERROR_RETURN(QFile::rename(previous, current));
+//        m_pEditingItem->setText(0, name);
+
+//        // handle corresponding folder in the engine folder
+//        QFile::rename(BBUtils::getEngineAuxiliaryFolderPath(previous),
+//                      BBUtils::getEngineAuxiliaryFolderPath(current));
+
+//        // After renaming, remove it from the clipboard
+//        if (m_ClipBoardItems.contains(m_pEditingItem))
+//        {
+//            m_ClipBoardItems.removeOne(m_pEditingItem);
+//        }
+//        // After renaming, sort
+//        sortItems(0, Qt::AscendingOrder);
+
+//        updateCorrespondingWidget(m_pEditingItem);
+//    }
+//    BBTreeWidget::finishRename();
+//}
+
+//void BBFolderTreeWidget::deleteAction()
+//{
+//    BBTreeWidget::deleteAction();
+
+//    updateCorrespondingWidget(m_pCurrentShowFolderContentItem);
+
+////    //刷新材质文件的映射 被删除的材质文件的映射不再占用内存
+////    Material::updateMap();
+////    //清空属性栏 包括场景 层级视图选中
+////    cancelHierarchyTreeSelectedItems();
+////    clearPropertyWidget();
+//}
+
+//QString BBFolderTreeWidget::getAbsolutePath(const QString &relativePath)
+//{
+//    return BBConstant::BB_PATH_PROJECT_USER + "/" + relativePath;
+//}
+
+//QString BBFolderTreeWidget::getAbsolutePath(QTreeWidgetItem *pItem)
+//{
+//    return getAbsolutePath(getLevelPath(pItem));
+//}
+
+//QTreeWidgetItem* BBFolderTreeWidget::getItemByPath(const QString &absolutePath)
+//{
+//    // Find the corresponding tree item according to the path
+//    QString path = absolutePath.mid(BBConstant::BB_PATH_PROJECT_USER.length());
+//    if (path.length() == 0)
+//    {
+//        // "contents" folder
+//        return NULL;
+//    }
+//    else
+//    {
+//        QTreeWidgetItem *pItem = NULL;
+//        // remove "/" at the beginning
+//        path = path.mid(1);
+//        QStringList list = path.split('/');
+//        // Find the item that is at the top level corresponds to item 0 in the list
+//        // Folders at the same level cannot have the same name
+//        for (int i = 0; i < topLevelItemCount(); i++)
+//        {
+//            if (topLevelItem(i)->text(0) == list.at(0))
+//            {
+//                pItem = topLevelItem(i);
+//                break;
+//            }
+//        }
+//        // Start from item 1 to find non-top items
+//        for (int i = 1; i < list.count(); i++)
+//        {
+//            for (int j = 0; j < pItem->childCount(); j++)
+//            {
+//                QTreeWidgetItem *pChild = pItem->child(j);
+//                if (list.at(i) == pChild->text(0))
+//                {
+//                    pItem = pChild;
+//                    break;
+//                }
+//            }
+//        }
+//        return pItem;
+//    }
+//}
+
+//void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
+//{
+//    QString folderPath = getAbsolutePath(pItem);
+//    showFolderContent(folderPath);
+//    m_pCurrentShowFolderContentItem = pItem;
+//}
 
 void BBFolderTreeWidget::setMenu()
 {
@@ -453,127 +390,140 @@ QWidgetAction* BBFolderTreeWidget::createWidgetAction(QMenu *pParent, const QStr
     return pAction;
 }
 
-void BBFolderTreeWidget::deleteOne(QTreeWidgetItem *pItem)
-{
-    // delete folder
-    QString path = getAbsolutePath(pItem);
-    QDir dir(path);
-    BB_PROCESS_ERROR_RETURN(dir.removeRecursively());
+//void BBFolderTreeWidget::deleteOne(QTreeWidgetItem *pItem)
+//{
+//    // delete folder
+//    QString path = getAbsolutePath(pItem);
+//    QDir dir(path);
+//    BB_PROCESS_ERROR_RETURN(dir.removeRecursively());
 
-    // delete corresponding folder in the engine folder
-    dir = QDir(BBUtils::getEngineAuxiliaryFolderPath(path));
-    BB_PROCESS_ERROR_RETURN(dir.removeRecursively());
+//    // delete corresponding folder in the engine folder
+//    dir = QDir(BBUtils::getEngineAuxiliaryFolderPath(path));
+//    BB_PROCESS_ERROR_RETURN(dir.removeRecursively());
 
-    // if showing its content, clear, and show root folder
-    if (pItem == m_pCurrentShowFolderContentItem)
-    {
-        m_pCurrentShowFolderContentItem = NULL;
-    }
+//    // if showing its content, clear, and show root folder
+//    if (pItem == m_pCurrentShowFolderContentItem)
+//    {
+//        m_pCurrentShowFolderContentItem = NULL;
+//    }
 
-    BBTreeWidget::deleteOne(pItem);
-}
+//    BBTreeWidget::deleteOne(pItem);
+//}
 
-void BBFolderTreeWidget::dragMoveEvent(QDragMoveEvent *event)
-{
-    if (!event->mimeData()->hasFormat(getMimeType()) && !event->mimeData()->hasFormat(BB_MIMETYPE_FILELISTWIDGET))
-    {
-        event->ignore();
-        return;
-    }
-    BBTreeWidget::dragMoveEvent(event);
-}
+//void BBFolderTreeWidget::dragMoveEvent(QDragMoveEvent *event)
+//{
+//    if (!event->mimeData()->hasFormat(getMimeType()) && !event->mimeData()->hasFormat(BB_MIMETYPE_FILELISTWIDGET))
+//    {
+//        event->ignore();
+//        return;
+//    }
+//    BBTreeWidget::dragMoveEvent(event);
+//}
 
-bool BBFolderTreeWidget::moveItem()
-{
-    QList<QTreeWidgetItem*> items = selectedItems();
-    // Calculate the original hierarchical position of the selected items for moving or undoing the move
-    // save the last data into queue of undoing (to do ...)
-    QList<QString> originalItemLocations;
-    for (int i = 0; i < items.count(); i++)
-    {
-        originalItemLocations.append(getLevelPath(items.at(i)));
-    }
+//bool BBFolderTreeWidget::moveItem()
+//{
+//    QList<QTreeWidgetItem*> items = selectedItems();
+//    // Calculate the original hierarchical position of the selected items for moving or undoing the move
+//    // save the last data into queue of undoing (to do ...)
+//    QList<QString> originalItemLocations;
+//    for (int i = 0; i < items.count(); i++)
+//    {
+//        originalItemLocations.append(getLevelPath(items.at(i)));
+//    }
 
-    BB_PROCESS_ERROR_RETURN_FALSE(BBTreeWidget::moveItem());
+//    BB_PROCESS_ERROR_RETURN_FALSE(BBTreeWidget::moveItem());
 
-    for (int i = 0; i < originalItemLocations.count(); i++)
-    {
-        QString oldPath = getAbsolutePath(originalItemLocations.at(i));
-        QString newPath = getAbsolutePath(items.at(i));
-        // The path is not changed
-        // it just changes the order among the siblings, no need to perform follow-up operation
-        if (oldPath == newPath)
-            continue;
-        // check duplication of name
-        QString newName = BBUtils::getFileNameByPath(newPath);
-        newPath = BBUtils::getExclusiveFolderPath(BBUtils::getParentPath(newPath), newName);
-        // corresponding item in the tree needs to rename
-        items.at(i)->setText(0, newName);
+//    for (int i = 0; i < originalItemLocations.count(); i++)
+//    {
+//        QString oldPath = getAbsolutePath(originalItemLocations.at(i));
+//        QString newPath = getAbsolutePath(items.at(i));
+//        // The path is not changed
+//        // it just changes the order among the siblings, no need to perform follow-up operation
+//        if (oldPath == newPath)
+//            continue;
+//        // check duplication of name
+//        QString newName = BBUtils::getFileNameByPath(newPath);
+//        newPath = BBUtils::getExclusiveFolderPath(BBUtils::getParentPath(newPath), newName);
+//        // corresponding item in the tree needs to rename
+//        items.at(i)->setText(0, newName);
 
-        BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFolder(oldPath, newPath, false));
-    }
-    sortItems(0, Qt::AscendingOrder);
-    // show m_pCurrentShowFolderContentItem
-    // it may be moved, path needs to be computed again
-    QString updatePath = getAbsolutePath(m_pCurrentShowFolderContentItem);
-    showFolderContent(updatePath);
-    return true;
-}
+//        BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFolder(oldPath, newPath, false));
+//    }
+//    sortItems(0, Qt::AscendingOrder);
+//    // show m_pCurrentShowFolderContentItem
+//    // it may be moved, path needs to be computed again
+//    QString updatePath = getAbsolutePath(m_pCurrentShowFolderContentItem);
+//    showFolderContent(updatePath);
+//    return true;
+//}
 
 
-bool BBFolderTreeWidget::moveItemFromFileList(const QMimeData *pMimeData)
-{
-    BB_PROCESS_ERROR_RETURN_FALSE(m_pIndicatorItem);
-    // new parent path
-    QString destPath;
-    if (m_eIndicatorPos == BBIndicatorPos::CENTER)
-    {
-        // become the children of m_pIndicatorItem
-        destPath = getAbsolutePath(m_pIndicatorItem);
-    }
-    else
-    {
-        // become the siblings of m_pIndicatorItem
-        destPath = getAbsolutePath(m_pIndicatorItem->parent());
-    }
-    // get all file paths from drag
-    QList<QString> sourceFilePaths;
-    QByteArray data = pMimeData->data(BB_MIMETYPE_FILELISTWIDGET);
-    QDataStream dataStream(&data, QIODevice::ReadOnly);
-    QString sourceFilePath;
-    // the first is the path of current item, which we do not need
-    // we need the paths of selected items which are saved behind
-    dataStream >> sourceFilePath;
-    dataStream >> sourceFilePath;
-    while (!sourceFilePath.isEmpty())
-    {
-        sourceFilePaths.append(sourceFilePath);
-        // check whether the movement is legal
-        BBUtils::isMovablePath(sourceFilePath, destPath);
-        dataStream >> sourceFilePath;
-    }
-    // when the movement is legal, move all files into destPath
-    for (int i = 0; i < sourceFilePaths.count(); i++)
-    {
-        QString oldPath = sourceFilePaths.at(i);
-        QString fileName = BBUtils::getFileNameByPath(oldPath);
-        if (QFileInfo(oldPath).isDir())
-        {
-            QString newPath = BBUtils::getExclusiveFolderPath(destPath, fileName);
-            BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFolder(oldPath, newPath, false));
+//bool BBFolderTreeWidget::moveItemFromFileList(const QMimeData *pMimeData)
+//{
+//    BB_PROCESS_ERROR_RETURN_FALSE(m_pIndicatorItem);
+//    // new parent path
+//    QString destPath;
+//    if (m_eIndicatorPos == BBIndicatorPos::CENTER)
+//    {
+//        // become the children of m_pIndicatorItem
+//        destPath = getAbsolutePath(m_pIndicatorItem);
+//    }
+//    else
+//    {
+//        // become the siblings of m_pIndicatorItem
+//        destPath = getAbsolutePath(m_pIndicatorItem->parent());
+//    }
+//    // get all file paths from drag
+//    QList<QString> sourceFilePaths;
+//    QByteArray data = pMimeData->data(BB_MIMETYPE_FILELISTWIDGET);
+//    QDataStream dataStream(&data, QIODevice::ReadOnly);
+//    QString sourceFilePath;
+//    // the first is the path of current item, which we do not need
+//    // we need the paths of selected items which are saved behind
+//    dataStream >> sourceFilePath;
+//    dataStream >> sourceFilePath;
+//    while (!sourceFilePath.isEmpty())
+//    {
+//        sourceFilePaths.append(sourceFilePath);
+//        // check whether the movement is legal
+//        BBUtils::isMovablePath(sourceFilePath, destPath);
+//        dataStream >> sourceFilePath;
+//    }
+//    // when the movement is legal, move all files into destPath
+//    for (int i = 0; i < sourceFilePaths.count(); i++)
+//    {
+//        QString oldPath = sourceFilePaths.at(i);
+//        QString fileName = BBUtils::getFileNameByPath(oldPath);
+//        if (QFileInfo(oldPath).isDir())
+//        {
+//            QString newPath = BBUtils::getExclusiveFolderPath(destPath, fileName);
+//            BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFolder(oldPath, newPath, false));
 
-            // move folder tree items at the same time
-            moveItem(oldPath, newPath);
-        }
-        else
-        {
-//            QString newPath = BBUtils::getExclusiveFilePath(destPath, fileName);
-//            BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFile(oldPath, newPath, pFileInfo->m_eFileType, false));
-        }
-    }
-    updateCorrespondingWidget(m_pCurrentShowFolderContentItem);
-    return true;
-}
+//            // move folder tree items at the same time
+//            moveItem(oldPath, newPath);
+//        }
+//        else
+//        {
+////            QString newPath = BBUtils::getExclusiveFilePath(destPath, fileName);
+////            BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFile(oldPath, newPath, pFileInfo->m_eFileType, false));
+//        }
+//    }
+//    updateCorrespondingWidget(m_pCurrentShowFolderContentItem);
+//    return true;
+//}
+
+
+
+
+
+
+
+
+
+
+
+//-------------------------------------------
+
 
 
 
