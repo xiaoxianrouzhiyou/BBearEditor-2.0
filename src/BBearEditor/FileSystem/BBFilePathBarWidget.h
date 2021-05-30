@@ -1,5 +1,5 @@
-#ifndef BBFILEPATHBAR_H
-#define BBFILEPATHBAR_H
+#ifndef BBFILEPATHBARWIDGET_H
+#define BBFILEPATHBARWIDGET_H
 
 
 #include <QWidget>
@@ -23,12 +23,12 @@ private:
 };
 
 
-class BBFilePathBar : public QWidget
+class BBFilePathBarWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    BBFilePathBar(QWidget *pParent = nullptr);
+    BBFilePathBarWidget(QWidget *pParent = nullptr);
 
 private slots:
     void showCurrentFolderPath(const QString &path);
@@ -41,7 +41,7 @@ private:
     QStringList m_HierarchyDirs;
 };
 
-#endif // BBFILEPATHBAR_H
+#endif // BBFILEPATHBARWIDGET_H
 
 
 

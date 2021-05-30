@@ -60,7 +60,8 @@ SOURCES += \
     FileSystem/BBFolderTreeWidget.cpp \
     Window/BBProjectDialog.cpp \
     FileSystem/BBFileListWidget.cpp \
-    FileSystem/BBFilePathBar.cpp
+    FileSystem/BBFilePathBarWidget.cpp \
+    FileSystem/BBFileSystemDockWidget.cpp
 
 HEADERS += \
     NcFramelessHelper.h \
@@ -98,13 +99,15 @@ HEADERS += \
     FileSystem/BBFolderTreeWidget.h \
     Window/BBProjectDialog.h \
     FileSystem/BBFileListWidget.h \
-    FileSystem/BBFilePathBar.h
+    FileSystem/BBFilePathBarWidget.h \
+    FileSystem/BBFileSystemDockWidget.h
 
 FORMS += \
     Window/BBConfirmationDialog.ui \
     Window/BBMainWindow.ui \
     Window/BBTitleBar.ui \
-    Window/BBProjectDialog.ui
+    Window/BBProjectDialog.ui \
+    FileSystem/BBFileSystemDockWidget.ui
 
 RESOURCES += \
     ../../resources/BBBasicResource.qrc

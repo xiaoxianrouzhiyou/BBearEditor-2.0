@@ -1,4 +1,4 @@
-#include "BBFilePathBar.h"
+#include "BBFilePathBarWidget.h"
 #include "BBUtils.h"
 #include <QHBoxLayout>
 #include <QButtonGroup>
@@ -39,10 +39,10 @@ void BBFilePathBarScrollArea::scroll(int nStep)
 
 
 //---------------------------------------------------------------------------------------------------
-//  BBFilePathBar
+//  BBFilePathBarWidget
 //---------------------------------------------------------------------------------------------------
 
-BBFilePathBar::BBFilePathBar(QWidget *pParent)
+BBFilePathBarWidget::BBFilePathBarWidget(QWidget *pParent)
     : QWidget(pParent)
 {
     QHBoxLayout *pLayout = new QHBoxLayout(this);
@@ -54,7 +54,7 @@ BBFilePathBar::BBFilePathBar(QWidget *pParent)
                   "QLabel {color: rgb(60, 64, 75);}");
 }
 
-void BBFilePathBar::showCurrentFolderPath(const QString &path)
+void BBFilePathBarWidget::showCurrentFolderPath(const QString &path)
 {
     // Clear the last showed path
     while (QLayoutItem *pChild = layout()->takeAt(0))
@@ -83,7 +83,7 @@ void BBFilePathBar::showCurrentFolderPath(const QString &path)
     QObject::connect(pGroup, SIGNAL(buttonClicked(int)), this, SLOT(accessFolder(int)));
 }
 
-void BBFilePathBar::accessFolder(int id)
+void BBFilePathBarWidget::accessFolder(int id)
 {
     QString path = BBConstant::BB_PATH_PROJECT;
     for (int i = 0; i < id; i++)
