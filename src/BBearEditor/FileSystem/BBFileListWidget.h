@@ -83,6 +83,7 @@ private:
     QIcon getIcon(const QString &path);
     QIcon getTextureIcon(const QString &path);
     QColor getFileLogoColor(const BBFileType &eFileType);
+    bool moveFile(const QString &oldPath, QString &newPath, BBFileType eFileType, bool bCopy);
 
     void startDrag(Qt::DropActions supportedActions) override;
     bool moveItem();

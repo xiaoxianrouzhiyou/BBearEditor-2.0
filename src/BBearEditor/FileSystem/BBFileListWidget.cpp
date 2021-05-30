@@ -621,6 +621,24 @@ QColor BBFileListWidget::getFileLogoColor(const BBFileType &eFileType)
     }
 }
 
+bool BBFileListWidget::moveFile(const QString &oldPath, QString &newPath, BBFileType eFileType, bool bCopy)
+{
+    // the "File" in the function name indicates file or folder
+    if (eFileType == BBFileType::dir)
+    {
+        newPath = BBUtils::getExclusiveFolderPath(newPath);
+        BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFolder(oldPath, newPath, bCopy));
+
+        // move folder tree items at the same time
+        moveItemInFolderTree(oldPath, newPath);
+    }
+    else
+    {
+        newPath = BBUtils::getExclusiveFilePath(newPath);
+        BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFile(oldPath, newPath, eFileType, bCopy));
+    }
+}
+
 void BBFileListWidget::startDrag(Qt::DropActions supportedActions)
 {
     Q_UNUSED(supportedActions);
@@ -735,29 +753,11 @@ bool BBFileListWidget::moveItem()
         QString parentPath = m_FolderPath + "/" + m_Map.value(m_pIndicatorItem)->m_FileName;
         QString newPath = parentPath + "/" + pFileInfo->m_FileName;
 
-        if (pFileInfo->m_eFileType == BBFileType::dir)
-        {
-            newPath = BBUtils::getExclusiveFolderPath(newPath);
-            BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFolder(oldPath, newPath, false));
-        }
-        else
-        {
-            newPath = BBUtils::getExclusiveFilePath(newPath);
-            BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFile(oldPath, newPath, pFileInfo->m_eFileType, false));
-
-//            //材质文件需要新建材质对象
-//            else if (fileInfo->mFileType == FileType::material)
-//            {
-//                new Material(newPath);
-//            }
-        }
+        moveFile(oldPath, newPath, pFileInfo->m_eFileType, false);
 
         m_Map.remove(pItem);
         BB_SAFE_DELETE(pFileInfo);
         BB_SAFE_DELETE(pItem);
-
-        // move folder tree items at the same time
-        moveItemInFolderTree(oldPath, newPath);
     }
 }
 
@@ -779,10 +779,8 @@ bool BBFileListWidget::moveItemFromFolderTree(const QMimeData *pMimeData)
     {
         QString sourceFilePath = BBConstant::BB_PATH_PROJECT_USER + "/" + levelPath;
         sourceFilePaths.append(sourceFilePath);
-        // Folders can’t be moved into oneself, nor can they be moved into their own subfolders
-        BB_PROCESS_ERROR_RETURN_FALSE(!(destPath.mid(0, sourceFilePath.length()) == sourceFilePath));
-        // It can’t become its own brother and move into its own parent folder
-        BB_PROCESS_ERROR_RETURN_FALSE(!(BBUtils::getParentPath(sourceFilePath) == destPath));
+        // check whether the movement is legal
+        BBUtils::isMovablePath(sourceFilePath, destPath);
         dataStream >> levelPath;
     }
     // when the movement is legal, move all folders into destPath
@@ -790,11 +788,9 @@ bool BBFileListWidget::moveItemFromFolderTree(const QMimeData *pMimeData)
     {
         QString oldPath = sourceFilePaths.at(i);
         QString fileName = BBUtils::getFileNameByPath(oldPath);
-        QString newPath = BBUtils::getExclusiveFolderPath(destPath, fileName);
-        BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFolder(oldPath, newPath, false));
+        QString newPath = destPath + fileName;
 
-        // move folder tree items at the same time
-        moveItemInFolderTree(oldPath, newPath);
+        moveFile(oldPath, newPath, BBFileType::dir, false);
     }
     return true;
 }
@@ -884,8 +880,6 @@ void BBFileListWidget::dropEvent(QDropEvent *event)
             if (moveItem())
             {
                 event->accept();
-                // update file list
-                showFolderContent(m_FolderPath);
             }
             else
             {
@@ -902,8 +896,6 @@ void BBFileListWidget::dropEvent(QDropEvent *event)
         if (moveItemFromFolderTree(event->mimeData()))
         {
             event->accept();
-            // update file list
-            showFolderContent(m_FolderPath);
         }
         else
         {

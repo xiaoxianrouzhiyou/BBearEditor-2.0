@@ -245,6 +245,15 @@ bool BBUtils::copyFolder(const QString &fromDir, const QString &toDir)
     return true;
 }
 
+bool BBUtils::isMovablePath(const QString &sourcePath, const QString &destParentPath)
+{
+    // Folders can’t be moved into oneself, nor can they be moved into their own subfolders
+    BB_PROCESS_ERROR_RETURN_FALSE(!(destParentPath.mid(0, sourcePath.length()) == sourcePath));
+    // It can’t become its own brother and move into its own parent folder
+    BB_PROCESS_ERROR_RETURN_FALSE(!(BBUtils::getParentPath(sourcePath) == destParentPath));
+    return true;
+}
+
 bool BBUtils::moveFolder(const QString &oldPath, const QString &newPath, bool bCopy)
 {
     // newPath has been checked for duplicate name problem
@@ -279,6 +288,11 @@ bool BBUtils::moveFile(const QString &oldPath, const QString &newPath, BBFileTyp
         newOverviewMapPath = BBUtils::getOverviewMapPath(newPath);
         BB_PROCESS_ERROR_RETURN_FALSE(QFile::copy(oldOverviewMapPath, newOverviewMapPath));
     }
+//    //材质文件需要新建材质对象
+//    else if (fileInfo->mFileType == FileType::material)
+//    {
+//        new Material(newPath);
+//    }
 
     if (!bCopy)
     {

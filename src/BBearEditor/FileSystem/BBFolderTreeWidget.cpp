@@ -521,6 +521,60 @@ bool BBFolderTreeWidget::moveItem()
 }
 
 
+bool BBFolderTreeWidget::moveItemFromFileList(const QMimeData *pMimeData)
+{
+    BB_PROCESS_ERROR_RETURN_FALSE(m_pIndicatorItem);
+    // new parent path
+    QString destPath;
+    if (m_eIndicatorPos == BBIndicatorPos::CENTER)
+    {
+        // become the children of m_pIndicatorItem
+        destPath = getAbsolutePath(m_pIndicatorItem);
+    }
+    else
+    {
+        // become the siblings of m_pIndicatorItem
+        destPath = getAbsolutePath(m_pIndicatorItem->parent());
+    }
+    // get all file paths from drag
+    QList<QString> sourceFilePaths;
+    QByteArray data = pMimeData->data(BB_MIMETYPE_FILELISTWIDGET);
+    QDataStream dataStream(&data, QIODevice::ReadOnly);
+    QString sourceFilePath;
+    // the first is the path of current item, which we do not need
+    // we need the paths of selected items which are saved behind
+    dataStream >> sourceFilePath;
+    dataStream >> sourceFilePath;
+    while (!sourceFilePath.isEmpty())
+    {
+        sourceFilePaths.append(sourceFilePath);
+        // check whether the movement is legal
+        BBUtils::isMovablePath(sourceFilePath, destPath);
+        dataStream >> sourceFilePath;
+    }
+    // when the movement is legal, move all files into destPath
+    for (int i = 0; i < sourceFilePaths.count(); i++)
+    {
+        QString oldPath = sourceFilePaths.at(i);
+        QString fileName = BBUtils::getFileNameByPath(oldPath);
+        if (QFileInfo(oldPath).isDir())
+        {
+            QString newPath = BBUtils::getExclusiveFolderPath(destPath, fileName);
+            BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFolder(oldPath, newPath, false));
+
+            // move folder tree items at the same time
+            moveItem(oldPath, newPath);
+        }
+        else
+        {
+//            QString newPath = BBUtils::getExclusiveFilePath(destPath, fileName);
+//            BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFile(oldPath, newPath, pFileInfo->m_eFileType, false));
+        }
+    }
+    updateCorrespondingWidget(m_pCurrentShowFolderContentItem);
+    return true;
+}
+
 
 
 //void ProjectTree::copyAction()
@@ -651,107 +705,6 @@ bool BBFolderTreeWidget::moveItem()
 //}
 
 
-
-
-//bool ProjectTree::moveItemFromFileList(const QMimeData *mimeData)
-//{
-//    if (indicatorItem)
-//    {
-//        //拖拽的新路径 只含路径 不带自己的名字
-//        QString destPath;
-//        if (indicatorPos == IndicatorPos::RECT)
-//        {
-//            //成为indicatorItem的孩子
-//            destPath = getFilePath(getLevelPath(indicatorItem));
-//        }
-//        else
-//        {
-//            //成为indicatorItem的兄弟
-//            destPath = getFilePath(getLevelPath(indicatorItem->parent()));
-//        }
-//        //得到所有拖动文件的路径
-//        QList<QString> sourceFilePaths;
-//        QByteArray data = mimeData->data(FileList::getMimeType());
-//        QDataStream dataStream(&data, QIODevice::ReadOnly);
-//        QString sourceFilePath;
-//        //第一个存的是current项对应路径 不需要 需要之后selected对应的路径
-//        dataStream >> sourceFilePath;
-//        dataStream >> sourceFilePath;
-//        while (!sourceFilePath.isEmpty())
-//        {
-//            sourceFilePaths.append(sourceFilePath);
-//            //文件夹不能移到自己里面 也不能移到自己的子文件夹里面
-//            if (destPath.mid(0, sourceFilePath.length()) == sourceFilePath)
-//            {
-//                return false;
-//            }
-//            //也不能自己成为自己的兄弟 移到自己的父文件夹里
-//            if (sourceFilePath.mid(0, sourceFilePath.lastIndexOf('/') + 1) == destPath)
-//            {
-//                return false;
-//            }
-//            dataStream >> sourceFilePath;
-//        }
-//        //移动合法 将所有文件夹移到destPath里面
-//        for (int i = 0; i < sourceFilePaths.count(); i++)
-//        {
-//            QString prePath = sourceFilePaths.at(i);
-//            QString fileName = prePath.mid(prePath.lastIndexOf('/') + 1);
-//            if (QFileInfo(prePath).isDir())
-//            {
-//                QString newPath = FileList::checkFolderDuplicateName(destPath + fileName);
-//                //移动文件夹
-//                copyDirectoryFiles(prePath, newPath);
-//                //删除原来位置的文件夹
-//                QDir *dir = new QDir(prePath);
-//                dir->removeRecursively();
-//                //对应的meta文件夹也要移动
-//                QString oldMetaFolderPath = FileList::getMetaFilePath(prePath);
-//                ProjectTree::copyDirectoryFiles(oldMetaFolderPath, FileList::getMetaFilePath(newPath));
-//                dir = new QDir(oldMetaFolderPath);
-//                dir->removeRecursively();
-//                //文件夹树的结点也要移动
-//                moveFolderItemInTree(prePath, newPath);
-//            }
-//            else
-//            {
-//                QString newPath = FileList::checkFileDuplicateName(destPath + fileName);
-//                QFile::copy(prePath, newPath);
-//                //删除原来位置的文件
-//                //删除文件
-//                if (QFile::remove(prePath))
-//                {
-//                    QString suffix = newPath.mid(newPath.lastIndexOf('.') + 1);
-//                    //有些文件对应的meta文件夹也要移动
-//                    if (suffix == "obj")
-//                    {
-//                        QString oldMetaFilePath = FileList::getMetaFilePath(prePath);
-//                        QString newMetaFilePath = FileList::getMetaFilePath(newPath);
-//                        //修改后缀为jpg
-//                        int index = oldMetaFilePath.lastIndexOf('.');
-//                        oldMetaFilePath = oldMetaFilePath.mid(0, index) + ".jpg";
-//                        index = newMetaFilePath.lastIndexOf('.');
-//                        newMetaFilePath = newMetaFilePath.mid(0, index) + ".jpg";
-//                        QFile::copy(oldMetaFilePath, newMetaFilePath);
-//                        QFile::remove(oldMetaFilePath);
-//                    }
-//                    //材质文件需要新建材质对象
-//                    else if (suffix == "mtl")
-//                    {
-//                        new Material(newPath);
-//                    }
-//                }
-//            }
-//        }
-//        //刷新列表 删去移走的项和映射
-//        deleteFileItemInList();
-//        return true;
-//    }
-//    else
-//    {
-//        return false;
-//    }
-//}
 
 
 //void ProjectTree::loadMaterial(QString filePath)

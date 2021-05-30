@@ -48,6 +48,7 @@ private:
 
     void dragMoveEvent(QDragMoveEvent *event) override;
     bool moveItem() override;
+    bool moveItemFromFileList(const QMimeData *pMimeData) override;
 
     QTreeWidgetItem *m_pCurrentShowFolderContentItem;
 };
