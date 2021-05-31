@@ -105,6 +105,12 @@ void BBFileListWidget::loadItems(const QString &folderPath, const QList<QListWid
     m_FolderPath = folderPath;
 }
 
+void BBFileListWidget::doubleClickItem(QListWidgetItem *pItem)
+{
+    QString filePath = m_FolderPath + "/" + pItem->text();
+    openFile(filePath);
+}
+
 void BBFileListWidget::setMenu()
 {
     // first level menu
@@ -209,25 +215,7 @@ QWidgetAction* BBFileListWidget::createWidgetAction(const QString &iconPath, con
 
 
 
-//void BBFileListWidget::doubleClickItem(QListWidgetItem *pItem)
-//{
-//    // pItem->text() is text after line feed, is not real name
-//    BBFileInfo *pInfo = m_Map.value(pItem);
-//    QString filePath = m_FolderPath + "/" + pInfo->m_FileName;
-//    QFileInfo fileInfo(filePath);
-//    if (fileInfo.isDir())
-//    {
-//        clickFolderTreeItem(filePath);
-//    }
-//    else
-//    {
-//        if (pInfo->m_eFileType == BBFileType::script)
-//        {
-//            // open file
-//            QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
-//        }
-//    }
-//}
+
 
 //void BBFileListWidget::newFolder()
 //{

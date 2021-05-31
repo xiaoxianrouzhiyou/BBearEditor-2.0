@@ -43,7 +43,7 @@ public:
     static QSize m_ItemSize;
 
 private slots:
-//    void doubleClickItem(QListWidgetItem *pItem);
+    void doubleClickItem(QListWidgetItem *pItem);
 //    void newFolder();
 //    void showInFolder();
 //    void copyAction();
@@ -53,6 +53,7 @@ private slots:
 //    void deleteAction();
 
 signals:
+    void openFile(const QString &filePath);
 
 private:
     void setMenu();

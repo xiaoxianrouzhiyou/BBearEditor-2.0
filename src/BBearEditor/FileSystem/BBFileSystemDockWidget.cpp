@@ -51,23 +51,28 @@ void BBFileSystemDockWidget::openProject()
     // load file system
     m_pData->load();
     updateFolderTree();
-    updateFileList(NULL);
+    updateFileList(BBConstant::BB_PATH_PROJECT_USER);
     updateFolderPathBar(BBConstant::BB_PATH_PROJECT_USER);
 }
 
-void BBFileSystemDockWidget::accessFolderInFolderTree(QTreeWidgetItem *pItem, const QString &filePath)
+void BBFileSystemDockWidget::clickItemInFolderTree(QTreeWidgetItem *pItem, const QString &filePath)
 {
     updateFileList(filePath, pItem);
     updateFolderPathBar(filePath);
 }
 
-void BBFileSystemDockWidget::accessFolderInFileList(const QString &filePath)
+void BBFileSystemDockWidget::doubleClickItemInFileList(const QString &filePath)
 {
-    updateFolderTree(filePath);
-    updateFolderPathBar(filePath);
+    if (!m_pData->openFile(filePath))
+    {
+        // when this is a folder, need to update and access new folder
+        updateFolderTree(filePath);
+        updateFileList(filePath);
+        updateFolderPathBar(filePath);
+    }
 }
 
-void BBFileSystemDockWidget::accessFolderInFolderPathBar(const QString &filePath)
+void BBFileSystemDockWidget::clickItemInFolderPathBar(const QString &filePath)
 {
     updateFolderTree(filePath);
     updateFileList(filePath);
@@ -77,11 +82,11 @@ void BBFileSystemDockWidget::setConnect()
 {
     // update selected folder
     QObject::connect(m_pUi->treeFolder, SIGNAL(accessFolder(QTreeWidgetItem*, QString)),
-                     this, SLOT(accessFolderInFolderTree(QTreeWidgetItem*, QString)));
-    QObject::connect(m_pUi->listFile, SIGNAL(accessFolder(QString)),
-                     this, SLOT(accessFolderInFileList(QString)));
+                     this, SLOT(clickItemInFolderTree(QTreeWidgetItem*, QString)));
+    QObject::connect(m_pUi->listFile, SIGNAL(openFile(QString)),
+                     this, SLOT(doubleClickItemInFileList(QString)));
     QObject::connect(m_pUi->barFilePath, SIGNAL(accessFolder(QString)),
-                     this, SLOT(accessFolderInFolderPathBar(QString)));
+                     this, SLOT(clickItemInFolderPathBar(QString)));
     // click buttons in the file system
     QObject::connect(m_pUi->buttonRootProject, SIGNAL(clicked()),
                      m_pUi->treeFolder, SLOT(pressRootButton()));

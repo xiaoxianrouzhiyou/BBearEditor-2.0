@@ -67,6 +67,7 @@ public:
     QList<QTreeWidgetItem*> getFolderTreeWidgetTopLevelItems();
     QList<QListWidgetItem*> getFileListWidgetItems(QTreeWidgetItem *pItem);
     QTreeWidgetItem* getItemByPath(const QString &absolutePath);
+    bool openFile(const QString &filePath);
 
 public:
     static QString getExclusiveFolderPath(const QString &parentPath, QString &fileName);
@@ -102,6 +103,7 @@ private:
     QIcon getMeshOverviewMap(const QString &sourcePath);
     void createMeshOverviewMap(const QString &sourcePath, const QString &overviewMapPath);
     QColor getFileLogoColor(const BBFileType &eFileType);
+    BBFileType getFileType(const QString &filePath);
 
     BBOpenGLWidget *m_pPreviewOpenGLWidget;
     BBFILE m_RootFileData;

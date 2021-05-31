@@ -157,6 +157,28 @@ QTreeWidgetItem* BBFileSystemData::getItemByPath(const QString &absolutePath)
     }
 }
 
+/**
+ * @brief BBFileSystemData::openFile
+ * @param filePath
+ * @return                              returning false means that this is a folder
+ */
+bool BBFileSystemData::openFile(const QString &filePath)
+{
+    QFileInfo fileInfo(filePath);
+    if (fileInfo.isDir())
+    {
+        return false;
+    }
+    else
+    {
+        if (getFileType(filePath) == BBFileType::Script)
+        {
+            // open file
+            QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
+        }
+    }
+}
+
 QString BBFileSystemData::getExclusiveFolderPath(const QString &parentPath, QString &fileName)
 {
     QDir dir;
@@ -492,4 +514,11 @@ QColor BBFileSystemData::getFileLogoColor(const BBFileType &eFileType)
     {
         return nullptr;
     }
+}
+
+BBFileType BBFileSystemData::getFileType(const QString &filePath)
+{
+    QTreeWidgetItem *pItem = getItemByPath(filePath);
+    // to do ... m_RootFileData  m_TopLevelFileData  m_FileData
+    return BBFileType::Other;
 }

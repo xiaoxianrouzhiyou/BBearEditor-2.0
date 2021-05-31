@@ -25,9 +25,9 @@ public:
     void openProject();
 
 private slots:
-    void accessFolderInFolderTree(QTreeWidgetItem *pItem, const QString &filePath);
-    void accessFolderInFileList(const QString &filePath);
-    void accessFolderInFolderPathBar(const QString &filePath);
+    void clickItemInFolderTree(QTreeWidgetItem *pItem, const QString &filePath);
+    void doubleClickItemInFileList(const QString &filePath);
+    void clickItemInFolderPathBar(const QString &filePath);
 
 private:
     void setConnect();
