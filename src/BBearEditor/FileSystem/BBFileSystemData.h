@@ -60,11 +60,19 @@ public:
 
     void load();
     QList<QTreeWidgetItem*> getFolderTreeWidgetTopLevelItems();
+    QList<QListWidgetItem*> getFileListWidgetItems(QTreeWidgetItem *pItem);
+
+    static QList<QString> m_MeshSuffixs;
+    static QList<QString> m_TextureSuffixs;
+    static QList<QString> m_AudioSuffixs;
+    static QList<QString> m_ScriptSuffixs;
+    static QList<QString> m_MaterialSuffixs;
 
 private:
     void buildFileData(QQueue<BBFOLDER> &queue);
     BBFILE getFolderContent(const QString &parentPath);
 
+    BBFILE m_RootFileData;
     QMap<QTreeWidgetItem*, BBFILE> m_TopLevelFileData;
     QMap<QTreeWidgetItem*, BBFILE> m_FileData;
 };

@@ -415,20 +415,7 @@ void BBTreeWidget::mousePressEvent(QMouseEvent *event)
 void BBTreeWidget::contextMenuEvent(QContextMenuEvent *event)
 {
     Q_UNUSED(event);
-    m_pMenu->show();
-    QPoint pos = cursor().pos();
-    // default: showed in bottom-right of cursor
-    // when exceed screen in horizon, the right side of the menu and the right side of the screen are aligned
-    if (pos.x() + m_pMenu->width() > QApplication::desktop()->width())
-    {
-        pos.setX(QApplication::desktop()->width() - m_pMenu->width());
-    }
-    // when exceed screen in vertical, showed in top-right, 4 is margin
-    if (pos.y() + m_pMenu->height() > QApplication::desktop()->height() - 4)
-    {
-        pos.setY(pos.y() - m_pMenu->height());
-    }
-    m_pMenu->move(pos);
+    m_pMenu->exec(cursor().pos());
 }
 
 void BBTreeWidget::keyPressEvent(QKeyEvent *event)
@@ -511,15 +498,22 @@ QTreeWidgetItem* BBTreeWidget::getParentOfMovingItem(int &nIndex)
 
 QString BBTreeWidget::getLevelPath(QTreeWidgetItem *pItem)
 {
-    // Hierarchical path of item
-    QString location;
-    for (QTreeWidgetItem *pParent = pItem; pParent; pParent = pParent->parent())
+    if (pItem == NULL)
     {
-        location = pParent->text(0) + "/" + location;
+        return "";
     }
-    // remove "/" at the end
-    location = location.mid(0, location.length() - 1);
-    return location;
+    else
+    {
+        // Hierarchical path of item
+        QString location;
+        for (QTreeWidgetItem *pParent = pItem; pParent; pParent = pParent->parent())
+        {
+            location = pParent->text(0) + "/" + location;
+        }
+        // remove "/" at the end
+        location = location.mid(0, location.length() - 1);
+        return location;
+    }
 }
 
 void BBTreeWidget::pasteOne(QTreeWidgetItem *pSource, QTreeWidgetItem* pTranscript)

@@ -49,12 +49,6 @@ void BBPlainTextEdit::keyPressEvent(QKeyEvent *event)
 //  BBFileListWidget
 //---------------------------------------------------------------------------------------------------
 
-QList<QString> BBFileListWidget::m_MeshSuffixs = {"obj", "fbx"};
-QList<QString> BBFileListWidget::m_TextureSuffixs = {"png", "jpg", "jpeg", "bmp", "ico", "dds"};
-QList<QString> BBFileListWidget::m_AudioSuffixs = {"mp3", "wav"};
-QList<QString> BBFileListWidget::m_ScriptSuffixs = {"lua"};
-QList<QString> BBFileListWidget::m_MaterialSuffixs = {"mtl"};
-
 QSize BBFileListWidget::m_StandardIconSize = QSize(43, 43);
 QSize BBFileListWidget::m_StandardItemSize = QSize(45, 90);
 //QSize BBFileListWidget::m_StandardIconSize = QSize(53, 53);
@@ -99,6 +93,116 @@ BBFileListWidget::BBFileListWidget(QWidget *pParent)
 BBFileListWidget::~BBFileListWidget()
 {
     BB_SAFE_DELETE(m_pMenu);
+}
+
+void BBFileListWidget::loadItems(const QList<QListWidgetItem*> &items)
+{
+    for (int i = 0; i < items.count(); i++)
+    {
+        addItem(items.at(i));
+    }
+}
+
+void BBFileListWidget::setMenu()
+{
+    // first level menu
+    m_pMenu = new QMenu(this);
+    QAction *pActionNewFolder = new QAction(tr("New Folder"));
+    QAction *pLabelNewAsset = new QAction(tr("New Asset ..."));
+    // As the title of a column, not clickable
+    pLabelNewAsset->setEnabled(false);
+
+    QWidgetAction *pActionNewMaterial = createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "material.png", tr("Material"));
+    QWidgetAction *pActionNewScript = createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "script.png", tr("Script"));
+
+    QAction *pActionShowInFolder = new QAction(tr("Show In Folder"));
+    QAction *pActionCopy = new QAction(tr("Copy"));
+    pActionCopy->setShortcut(QKeySequence(tr("Ctrl+C")));
+    QAction *pActionPaste = new QAction(tr("Paste"));
+    pActionPaste->setShortcut(QKeySequence(tr("Ctrl+V")));
+    QAction *pActionRename = new QAction(tr("Rename"));
+#if defined(Q_OS_WIN32)
+    pActionRename->setShortcut(Qt::Key_F2);
+#elif defined(Q_OS_MAC)
+    pActionRename->setShortcut(Qt::Key_Return);
+#endif
+    QAction *pActionDelete = new QAction(tr("Delete"));
+    // second level menu
+    QMenu *pMenuSort = new QMenu(tr("Sort By"), m_pMenu);
+    QAction *pActionNameSort = new QAction(tr("Name"));
+    QAction *pActionTypeSort = new QAction(tr("Type"));
+    QAction *pActionCreateDateSort = new QAction(tr("Create Date"));
+    QAction *pActionModifyDateSort = new QAction(tr("Modify Date"));
+    pMenuSort->addAction(pActionNameSort);
+    pMenuSort->addAction(pActionTypeSort);
+    pMenuSort->addAction(pActionCreateDateSort);
+    pMenuSort->addAction(pActionModifyDateSort);
+    // slider
+    QWidgetAction *pActionSlider = new QWidgetAction(m_pMenu);
+    QWidget *pWidget = new QWidget(this);
+    QHBoxLayout *pLayout = new QHBoxLayout(pWidget);
+    pLayout->setContentsMargins(6, 1, 6, 1);
+    QLabel *pLabel = new QLabel("Size", pWidget);
+    pLabel->setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\";");
+    pLayout->addWidget(pLabel);
+    QSlider *pSlider = new QSlider(Qt::Horizontal, pWidget);
+    pSlider->setRange(-2, 2);
+    pSlider->setValue(0);
+    QObject::connect(pSlider, SIGNAL(valueChanged(int)), this, SLOT(changeItemSize(int)));
+    pLayout->addWidget(pSlider);
+    pActionSlider->setDefaultWidget(pWidget);
+
+    m_pMenu->addAction(pActionNewFolder);
+    m_pMenu->addSeparator();
+    m_pMenu->addAction(pLabelNewAsset);
+    m_pMenu->addAction(createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "scene.png", tr("Scene")));
+    m_pMenu->addAction(pActionNewMaterial);
+    m_pMenu->addAction(createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "animation.png", tr("Animation")));
+    m_pMenu->addAction(createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "particle.png", tr("Particle")));
+    m_pMenu->addAction(pActionNewScript);
+    m_pMenu->addSeparator();
+    m_pMenu->addAction(pActionShowInFolder);
+    m_pMenu->addSeparator();
+    m_pMenu->addAction(pActionCopy);
+    m_pMenu->addAction(pActionPaste);
+    m_pMenu->addSeparator();
+    m_pMenu->addAction(pActionRename);
+    m_pMenu->addAction(pActionDelete);
+    m_pMenu->addSeparator();
+    m_pMenu->addMenu(pMenuSort);
+    m_pMenu->addSeparator();
+    m_pMenu->addAction(pActionSlider);
+
+    QObject::connect(pActionNewFolder, SIGNAL(triggered()), this, SLOT(newFolder()));
+    QObject::connect(pActionNewMaterial, SIGNAL(triggered()), this, SLOT(newMaterial()));
+    QObject::connect(pActionNewScript, SIGNAL(triggered()), this, SLOT(newScript()));
+    QObject::connect(pActionShowInFolder, SIGNAL(triggered()), this, SLOT(showInFolder()));
+    QObject::connect(pActionCopy, SIGNAL(triggered()), this, SLOT(copyAction()));
+    QObject::connect(pActionPaste, SIGNAL(triggered()), this, SLOT(pasteAction()));
+    QObject::connect(pActionRename, SIGNAL(triggered()), this, SLOT(openRenameEditor()));
+    QObject::connect(pActionDelete, SIGNAL(triggered()), this, SLOT(deleteAction()));
+}
+
+QWidgetAction* BBFileListWidget::createWidgetAction(const QString &iconPath, const QString &name)
+{
+    QWidgetAction *pAction = new QWidgetAction(m_pMenu);
+    QWidget *pWidget = new QWidget(this);
+    pWidget->setObjectName("widgetAction");
+    pWidget->setStyleSheet("#widgetAction:hover {background: #0ebf9c;}");
+    QHBoxLayout *pLayout = new QHBoxLayout(pWidget);
+    pLayout->setContentsMargins(6, 2, 6, 2);
+    QLabel *pIcon = new QLabel(pWidget);
+    QPixmap pix(iconPath);
+    pix.setDevicePixelRatio(devicePixelRatio());
+    pix = pix.scaled(13 * devicePixelRatio(), 13 * devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    pIcon->setPixmap(pix);
+    pLayout->addWidget(pIcon);
+    QLabel *pText = new QLabel(pWidget);
+    pText->setText(name);
+    pText->setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\";");
+    pLayout->addWidget(pText, Qt::AlignLeft);
+    pAction->setDefaultWidget(pWidget);
+    return pAction;
 }
 
 //void BBFileListWidget::showFolderContent(const QString &folderPath)
@@ -435,107 +539,7 @@ BBFileListWidget::~BBFileListWidget()
 //    }
 //}
 
-void BBFileListWidget::setMenu()
-{
-    // first level menu
-    m_pMenu = new QMenu(this);
-    QAction *pActionNewFolder = new QAction(tr("New Folder"));
-    QAction *pLabelNewAsset = new QAction(tr("New Asset ..."));
-    // As the title of a column, not clickable
-    pLabelNewAsset->setEnabled(false);
 
-    QWidgetAction *pActionNewMaterial = createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "material.png", tr("Material"));
-    QWidgetAction *pActionNewScript = createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "script.png", tr("Script"));
-
-    QAction *pActionShowInFolder = new QAction(tr("Show In Folder"));
-    QAction *pActionCopy = new QAction(tr("Copy"));
-    pActionCopy->setShortcut(QKeySequence(tr("Ctrl+C")));
-    QAction *pActionPaste = new QAction(tr("Paste"));
-    pActionPaste->setShortcut(QKeySequence(tr("Ctrl+V")));
-    QAction *pActionRename = new QAction(tr("Rename"));
-#if defined(Q_OS_WIN32)
-    pActionRename->setShortcut(Qt::Key_F2);
-#elif defined(Q_OS_MAC)
-    pActionRename->setShortcut(Qt::Key_Return);
-#endif
-    QAction *pActionDelete = new QAction(tr("Delete"));
-    // second level menu
-    QMenu *pMenuSort = new QMenu(tr("Sort By"), m_pMenu);
-    QAction *pActionNameSort = new QAction(tr("Name"));
-    QAction *pActionTypeSort = new QAction(tr("Type"));
-    QAction *pActionCreateDateSort = new QAction(tr("Create Date"));
-    QAction *pActionModifyDateSort = new QAction(tr("Modify Date"));
-    pMenuSort->addAction(pActionNameSort);
-    pMenuSort->addAction(pActionTypeSort);
-    pMenuSort->addAction(pActionCreateDateSort);
-    pMenuSort->addAction(pActionModifyDateSort);
-    // slider
-    QWidgetAction *pActionSlider = new QWidgetAction(m_pMenu);
-    QWidget *pWidget = new QWidget(this);
-    QHBoxLayout *pLayout = new QHBoxLayout(pWidget);
-    pLayout->setContentsMargins(6, 1, 6, 1);
-    QLabel *pLabel = new QLabel("Size", pWidget);
-    pLabel->setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\";");
-    pLayout->addWidget(pLabel);
-    QSlider *pSlider = new QSlider(Qt::Horizontal, pWidget);
-    pSlider->setRange(-2, 2);
-    pSlider->setValue(0);
-    QObject::connect(pSlider, SIGNAL(valueChanged(int)), this, SLOT(changeItemSize(int)));
-    pLayout->addWidget(pSlider);
-    pActionSlider->setDefaultWidget(pWidget);
-
-    m_pMenu->addAction(pActionNewFolder);
-    m_pMenu->addSeparator();
-    m_pMenu->addAction(pLabelNewAsset);
-    m_pMenu->addAction(createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "scene.png", tr("Scene")));
-    m_pMenu->addAction(pActionNewMaterial);
-    m_pMenu->addAction(createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "animation.png", tr("Animation")));
-    m_pMenu->addAction(createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "particle.png", tr("Particle")));
-    m_pMenu->addAction(pActionNewScript);
-    m_pMenu->addSeparator();
-    m_pMenu->addAction(pActionShowInFolder);
-    m_pMenu->addSeparator();
-    m_pMenu->addAction(pActionCopy);
-    m_pMenu->addAction(pActionPaste);
-    m_pMenu->addSeparator();
-    m_pMenu->addAction(pActionRename);
-    m_pMenu->addAction(pActionDelete);
-    m_pMenu->addSeparator();
-    m_pMenu->addMenu(pMenuSort);
-    m_pMenu->addSeparator();
-    m_pMenu->addAction(pActionSlider);
-
-    QObject::connect(pActionNewFolder, SIGNAL(triggered()), this, SLOT(newFolder()));
-    QObject::connect(pActionNewMaterial, SIGNAL(triggered()), this, SLOT(newMaterial()));
-    QObject::connect(pActionNewScript, SIGNAL(triggered()), this, SLOT(newScript()));
-    QObject::connect(pActionShowInFolder, SIGNAL(triggered()), this, SLOT(showInFolder()));
-    QObject::connect(pActionCopy, SIGNAL(triggered()), this, SLOT(copyAction()));
-    QObject::connect(pActionPaste, SIGNAL(triggered()), this, SLOT(pasteAction()));
-    QObject::connect(pActionRename, SIGNAL(triggered()), this, SLOT(openRenameEditor()));
-    QObject::connect(pActionDelete, SIGNAL(triggered()), this, SLOT(deleteAction()));
-}
-
-QWidgetAction* BBFileListWidget::createWidgetAction(const QString &iconPath, const QString &name)
-{
-    QWidgetAction *pAction = new QWidgetAction(m_pMenu);
-    QWidget *pWidget = new QWidget(this);
-    pWidget->setObjectName("widgetAction");
-    pWidget->setStyleSheet("#widgetAction:hover {background: #0ebf9c;}");
-    QHBoxLayout *pLayout = new QHBoxLayout(pWidget);
-    pLayout->setContentsMargins(6, 2, 6, 2);
-    QLabel *pIcon = new QLabel(pWidget);
-    QPixmap pix(iconPath);
-    pix.setDevicePixelRatio(devicePixelRatio());
-    pix = pix.scaled(13 * devicePixelRatio(), 13 * devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    pIcon->setPixmap(pix);
-    pLayout->addWidget(pIcon);
-    QLabel *pText = new QLabel(pWidget);
-    pText->setText(name);
-    pText->setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\";");
-    pLayout->addWidget(pText, Qt::AlignLeft);
-    pAction->setDefaultWidget(pWidget);
-    return pAction;
-}
 
 //QString BBFileListWidget::lineFeed(QString originalText)
 //{
@@ -1052,24 +1056,11 @@ QWidgetAction* BBFileListWidget::createWidgetAction(const QString &iconPath, con
 //    }
 //}
 
-//void BBFileListWidget::contextMenuEvent(QContextMenuEvent *event)
-//{
-//    Q_UNUSED(event);
-//    m_pMenu->show();
-//    QPoint pos = cursor().pos();
-//    // default: showed in bottom-right of cursor
-//    // when exceed screen in horizon, the right side of the menu and the right side of the screen are aligned
-//    if (pos.x() + m_pMenu->width() > QApplication::desktop()->width())
-//    {
-//        pos.setX(QApplication::desktop()->width() - m_pMenu->width());
-//    }
-//    // when exceed screen in vertical, showed in top-right, 4 is margin
-//    if (pos.y() + m_pMenu->height() > QApplication::desktop()->height() - 4)
-//    {
-//        pos.setY(pos.y() - m_pMenu->height());
-//    }
-//    m_pMenu->move(pos);
-//}
+void BBFileListWidget::contextMenuEvent(QContextMenuEvent *event)
+{
+    Q_UNUSED(event);
+    m_pMenu->exec(cursor().pos());
+}
 
 //void BBFileListWidget::keyPressEvent(QKeyEvent *event)
 //{

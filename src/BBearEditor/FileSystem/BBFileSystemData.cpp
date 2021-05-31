@@ -6,6 +6,13 @@
 #include <QListWidgetItem>
 
 
+QList<QString> BBFileSystemData::m_MeshSuffixs = {"obj", "fbx"};
+QList<QString> BBFileSystemData::m_TextureSuffixs = {"png", "jpg", "jpeg", "bmp", "ico", "dds"};
+QList<QString> BBFileSystemData::m_AudioSuffixs = {"mp3", "wav"};
+QList<QString> BBFileSystemData::m_ScriptSuffixs = {"lua"};
+QList<QString> BBFileSystemData::m_MaterialSuffixs = {"mtl"};
+
+
 BBFileSystemData::BBFileSystemData()
 {
 
@@ -65,6 +72,29 @@ QList<QTreeWidgetItem*> BBFileSystemData::getFolderTreeWidgetTopLevelItems()
         items.append(it.key());
     }
 
+    return items;
+}
+
+QList<QListWidgetItem*> BBFileSystemData::getFileListWidgetItems(QTreeWidgetItem *pItem)
+{
+    QList<QListWidgetItem*> items;
+    BBFILE file;
+    if (pItem == NULL)
+    {
+        file = m_RootFileData;
+    }
+    else if (pItem->parent())
+    {
+        file = m_FileData.value(pItem);
+    }
+    else
+    {
+        file = m_TopLevelFileData.value(pItem);
+    }
+    for (BBFILE::Iterator it = file.begin(); it != file.end(); it++)
+    {
+        items.append(it.key());
+    }
     return items;
 }
 

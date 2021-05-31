@@ -27,9 +27,164 @@ void BBFolderTreeWidget::loadTopLevelItems(const QList<QTreeWidgetItem*> &items)
     addTopLevelItems(items);
 }
 
+void BBFolderTreeWidget::setCurrentItemByPath(const QString &folderPath)
+{
+    QTreeWidgetItem *pItem = getItemByPath(folderPath);
+    setCurrentItem(pItem);
+    setItemExpanded(pItem, true);
+}
 
+QTreeWidgetItem* BBFolderTreeWidget::getItemByPath(const QString &absolutePath)
+{
+    // Find the corresponding tree item according to the path
+    QString path = absolutePath.mid(BBConstant::BB_PATH_PROJECT_USER.length());
+    if (path.length() == 0)
+    {
+        // "contents" folder
+        return NULL;
+    }
+    else
+    {
+        QTreeWidgetItem *pItem = NULL;
+        // remove "/" at the beginning
+        path = path.mid(1);
+        QStringList list = path.split('/');
+        // Find the item that is at the top level corresponds to item 0 in the list
+        // Folders at the same level cannot have the same name
+        for (int i = 0; i < topLevelItemCount(); i++)
+        {
+            if (topLevelItem(i)->text(0) == list.at(0))
+            {
+                pItem = topLevelItem(i);
+                break;
+            }
+        }
+        // Start from item 1 to find non-top items
+        for (int i = 1; i < list.count(); i++)
+        {
+            for (int j = 0; j < pItem->childCount(); j++)
+            {
+                QTreeWidgetItem *pChild = pItem->child(j);
+                if (list.at(i) == pChild->text(0))
+                {
+                    pItem = pChild;
+                    break;
+                }
+            }
+        }
+        return pItem;
+    }
+}
 
+void BBFolderTreeWidget::pressRootButton()
+{
+    setCurrentItem(NULL);
+    // show the files in the root dir in the file list on the right
+    // use NULL to indicate root item
+    updateCorrespondingWidget(NULL);
+}
 
+void BBFolderTreeWidget::pressSettingButton()
+{
+    setCurrentItem(NULL);
+    m_pMenu->exec(cursor().pos());
+}
+
+void BBFolderTreeWidget::clickItem(QTreeWidgetItem *pItem, int nColumn)
+{
+    Q_UNUSED(nColumn);
+    updateCorrespondingWidget(pItem);
+}
+
+void BBFolderTreeWidget::setMenu()
+{
+    // first level menu
+    m_pMenu = new QMenu(this);
+    QAction *pActionNewFolder = new QAction(tr("New Folder"));
+    QAction *pActionShowInFolder = new QAction(tr("Show In Folder"));
+    QAction *pActionCopy = new QAction(tr("Copy"));
+    pActionCopy->setShortcut(QKeySequence(tr("Ctrl+C")));
+    QAction *pActionPaste = new QAction(tr("Paste"));
+    pActionPaste->setShortcut(QKeySequence(tr("Ctrl+V")));
+    QAction *pActionRename = new QAction(tr("Rename"));
+#if defined(Q_OS_WIN32)
+    pActionRename->setShortcut(Qt::Key_F2);
+#elif defined(Q_OS_MAC)
+    pActionRename->setShortcut(Qt::Key_Return);
+#endif
+    QAction *pActionDelete = new QAction(tr("Delete"));
+    // second level menu
+    QMenu *pMenuNewAsset = new QMenu(tr("New Asset"), m_pMenu);
+    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "scene.png", tr("Scene")));
+    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "material.png", tr("Material")));
+    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "animation.png", tr("Animation")));
+    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "particle.png", tr("Particle")));
+    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "script.png", tr("Script")));
+    // first level menu
+    m_pMenu->addAction(pActionNewFolder);
+    m_pMenu->addMenu(pMenuNewAsset);
+    m_pMenu->addSeparator();
+    m_pMenu->addAction(pActionShowInFolder);
+    m_pMenu->addSeparator();
+    m_pMenu->addAction(pActionCopy);
+    m_pMenu->addAction(pActionPaste);
+    m_pMenu->addSeparator();
+    m_pMenu->addAction(pActionRename);
+    m_pMenu->addAction(pActionDelete);
+
+    QObject::connect(pActionNewFolder, SIGNAL(triggered()), this, SLOT(newFolder()));
+    QObject::connect(pActionShowInFolder, SIGNAL(triggered()), this, SLOT(showInFolder()));
+    QObject::connect(pActionCopy, SIGNAL(triggered()), this, SLOT(copyAction()));
+    QObject::connect(pActionPaste, SIGNAL(triggered()), this, SLOT(pasteAction()));
+    QObject::connect(pActionRename, SIGNAL(triggered()), this, SLOT(openRenameEditor()));
+    QObject::connect(pActionDelete, SIGNAL(triggered()), this, SLOT(deleteAction()));
+}
+
+QWidgetAction* BBFolderTreeWidget::createWidgetAction(QMenu *pParent, const QString &iconPath, const QString &name)
+{
+    QWidgetAction *pAction = new QWidgetAction(pParent);
+    QWidget *pWidget = new QWidget(this);
+    pWidget->setObjectName("widgetAction");
+    pWidget->setStyleSheet("#widgetAction:hover {background: #0ebf9c;}");
+    QHBoxLayout *pLayout = new QHBoxLayout(pWidget);
+    pLayout->setContentsMargins(6, 2, 6, 2);
+    QLabel *pIcon = new QLabel(pWidget);
+    QPixmap pix(iconPath);
+    pix.setDevicePixelRatio(devicePixelRatio());
+    pix = pix.scaled(13 * devicePixelRatio(), 13 * devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    pIcon->setPixmap(pix);
+    pLayout->addWidget(pIcon);
+    QLabel *pText = new QLabel(pWidget);
+    pText->setText(name);
+    pText->setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\";");
+    pLayout->addWidget(pText, Qt::AlignLeft);
+    pAction->setDefaultWidget(pWidget);
+    return pAction;
+}
+
+void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
+{
+    QString folderPath = getAbsolutePath(pItem);
+    accessFolder(pItem, folderPath);
+    m_pCurrentShowFolderContentItem = pItem;
+}
+
+QString BBFolderTreeWidget::getAbsolutePath(const QString &relativePath)
+{
+    if (relativePath.isEmpty())
+    {
+        return BBConstant::BB_PATH_PROJECT_USER;
+    }
+    else
+    {
+        return BBConstant::BB_PATH_PROJECT_USER + "/" + relativePath;
+    }
+}
+
+QString BBFolderTreeWidget::getAbsolutePath(QTreeWidgetItem *pItem)
+{
+    return getAbsolutePath(getLevelPath(pItem));
+}
 
 
 
@@ -65,27 +220,9 @@ void BBFolderTreeWidget::loadTopLevelItems(const QList<QTreeWidgetItem*> &items)
 ////    isLoadMaterial = false;
 //}
 
-//void BBFolderTreeWidget::pressRootButton()
-//{
-//    setCurrentItem(NULL);
-//    // show the files in the root dir in the file list on the right
-//    showFolderContent(BBConstant::BB_PATH_PROJECT_USER);
-//    // use NULL to indicate root item
-//    m_pCurrentShowFolderContentItem = NULL;
-//}
 
-//void BBFolderTreeWidget::clickItem(QTreeWidgetItem *pItem, int nColumn)
-//{
-//    updateCorrespondingWidget(pItem);
-//}
 
-//void BBFolderTreeWidget::setCurrentItemByPath(const QString &folderPath)
-//{
-//    QTreeWidgetItem *pItem = getItemByPath(folderPath);
-//    setCurrentItem(pItem);
-//    setItemExpanded(pItem, true);
-//    updateCorrespondingWidget(pItem);
-//}
+
 
 //void BBFolderTreeWidget::newFolder()
 //{
@@ -265,130 +402,11 @@ void BBFolderTreeWidget::loadTopLevelItems(const QList<QTreeWidgetItem*> &items)
 ////    clearPropertyWidget();
 //}
 
-//QString BBFolderTreeWidget::getAbsolutePath(const QString &relativePath)
-//{
-//    return BBConstant::BB_PATH_PROJECT_USER + "/" + relativePath;
-//}
 
-//QString BBFolderTreeWidget::getAbsolutePath(QTreeWidgetItem *pItem)
-//{
-//    return getAbsolutePath(getLevelPath(pItem));
-//}
 
-//QTreeWidgetItem* BBFolderTreeWidget::getItemByPath(const QString &absolutePath)
-//{
-//    // Find the corresponding tree item according to the path
-//    QString path = absolutePath.mid(BBConstant::BB_PATH_PROJECT_USER.length());
-//    if (path.length() == 0)
-//    {
-//        // "contents" folder
-//        return NULL;
-//    }
-//    else
-//    {
-//        QTreeWidgetItem *pItem = NULL;
-//        // remove "/" at the beginning
-//        path = path.mid(1);
-//        QStringList list = path.split('/');
-//        // Find the item that is at the top level corresponds to item 0 in the list
-//        // Folders at the same level cannot have the same name
-//        for (int i = 0; i < topLevelItemCount(); i++)
-//        {
-//            if (topLevelItem(i)->text(0) == list.at(0))
-//            {
-//                pItem = topLevelItem(i);
-//                break;
-//            }
-//        }
-//        // Start from item 1 to find non-top items
-//        for (int i = 1; i < list.count(); i++)
-//        {
-//            for (int j = 0; j < pItem->childCount(); j++)
-//            {
-//                QTreeWidgetItem *pChild = pItem->child(j);
-//                if (list.at(i) == pChild->text(0))
-//                {
-//                    pItem = pChild;
-//                    break;
-//                }
-//            }
-//        }
-//        return pItem;
-//    }
-//}
 
-//void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
-//{
-//    QString folderPath = getAbsolutePath(pItem);
-//    showFolderContent(folderPath);
-//    m_pCurrentShowFolderContentItem = pItem;
-//}
 
-void BBFolderTreeWidget::setMenu()
-{
-    // first level menu
-    m_pMenu = new QMenu(this);
-    QAction *pActionNewFolder = new QAction(tr("New Folder"));
-    QAction *pActionShowInFolder = new QAction(tr("Show In Folder"));
-    QAction *pActionCopy = new QAction(tr("Copy"));
-    pActionCopy->setShortcut(QKeySequence(tr("Ctrl+C")));
-    QAction *pActionPaste = new QAction(tr("Paste"));
-    pActionPaste->setShortcut(QKeySequence(tr("Ctrl+V")));
-    QAction *pActionRename = new QAction(tr("Rename"));
-#if defined(Q_OS_WIN32)
-    pActionRename->setShortcut(Qt::Key_F2);
-#elif defined(Q_OS_MAC)
-    pActionRename->setShortcut(Qt::Key_Return);
-#endif
-    QAction *pActionDelete = new QAction(tr("Delete"));
-    // second level menu
-    QMenu *pMenuNewAsset = new QMenu(tr("New Asset"), m_pMenu);
-    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "scene.png", tr("Scene")));
-    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "material.png", tr("Material")));
-    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "animation.png", tr("Animation")));
-    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "particle.png", tr("Particle")));
-    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "script.png", tr("Script")));
-    // first level menu
-    m_pMenu->addAction(pActionNewFolder);
-    m_pMenu->addMenu(pMenuNewAsset);
-    m_pMenu->addSeparator();
-    m_pMenu->addAction(pActionShowInFolder);
-    m_pMenu->addSeparator();
-    m_pMenu->addAction(pActionCopy);
-    m_pMenu->addAction(pActionPaste);
-    m_pMenu->addSeparator();
-    m_pMenu->addAction(pActionRename);
-    m_pMenu->addAction(pActionDelete);
 
-    QObject::connect(pActionNewFolder, SIGNAL(triggered()), this, SLOT(newFolder()));
-    QObject::connect(pActionShowInFolder, SIGNAL(triggered()), this, SLOT(showInFolder()));
-    QObject::connect(pActionCopy, SIGNAL(triggered()), this, SLOT(copyAction()));
-    QObject::connect(pActionPaste, SIGNAL(triggered()), this, SLOT(pasteAction()));
-    QObject::connect(pActionRename, SIGNAL(triggered()), this, SLOT(openRenameEditor()));
-    QObject::connect(pActionDelete, SIGNAL(triggered()), this, SLOT(deleteAction()));
-}
-
-QWidgetAction* BBFolderTreeWidget::createWidgetAction(QMenu *pParent, const QString &iconPath, const QString &name)
-{
-    QWidgetAction *pAction = new QWidgetAction(pParent);
-    QWidget *pWidget = new QWidget(this);
-    pWidget->setObjectName("widgetAction");
-    pWidget->setStyleSheet("#widgetAction:hover {background: #0ebf9c;}");
-    QHBoxLayout *pLayout = new QHBoxLayout(pWidget);
-    pLayout->setContentsMargins(6, 2, 6, 2);
-    QLabel *pIcon = new QLabel(pWidget);
-    QPixmap pix(iconPath);
-    pix.setDevicePixelRatio(devicePixelRatio());
-    pix = pix.scaled(13 * devicePixelRatio(), 13 * devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    pIcon->setPixmap(pix);
-    pLayout->addWidget(pIcon);
-    QLabel *pText = new QLabel(pWidget);
-    pText->setText(name);
-    pText->setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\";");
-    pLayout->addWidget(pText, Qt::AlignLeft);
-    pAction->setDefaultWidget(pWidget);
-    return pAction;
-}
 
 //void BBFolderTreeWidget::deleteOne(QTreeWidgetItem *pItem)
 //{
@@ -645,15 +663,6 @@ QWidgetAction* BBFolderTreeWidget::createWidgetAction(QMenu *pParent, const QStr
 //{
 //    clipBoardItems.removeOne(getItemByPath(path));
 //}
-
-//void ProjectTree::pressSettingButton()
-//{
-//    //去除树的选中项
-//    setCurrentItem(NULL);
-//    //弹出菜单
-//    menu->exec(cursor().pos());
-//}
-
 
 
 

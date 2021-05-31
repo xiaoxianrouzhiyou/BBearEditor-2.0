@@ -30,12 +30,13 @@ class BBFilePathBarWidget : public QWidget
 public:
     BBFilePathBarWidget(QWidget *pParent = nullptr);
 
+    void showFolderPath(const QString &path);
+
 private slots:
-    void showCurrentFolderPath(const QString &path);
     void accessFolder(int id);
 
 signals:
-    void showFolderContent(const QString &folderPath);
+    void accessFolder(const QString &folderPath);
 
 private:
     QStringList m_HierarchyDirs;

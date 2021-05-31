@@ -17,12 +17,16 @@ public:
     explicit BBFolderTreeWidget(QWidget *pParent = nullptr);
 
     QString getMimeType() { return BB_MIMETYPE_FOLDERTREEWIDGET; }
-    void loadTopLevelItems(const QList<QTreeWidgetItem*> &items);
 
-//private slots:
-//    void pressRootButton();
-//    void clickItem(QTreeWidgetItem *pItem, int nColumn);
-//    void setCurrentItemByPath(const QString &folderPath);
+    void loadTopLevelItems(const QList<QTreeWidgetItem*> &items);
+    void setCurrentItemByPath(const QString &folderPath);
+    QTreeWidgetItem* getItemByPath(const QString &absolutePath);
+
+private slots:
+    void pressRootButton();
+    void pressSettingButton();
+    void clickItem(QTreeWidgetItem *pItem, int nColumn);
+
 //    void newFolder();
 //    void addItem(const QString &parentPath, const QString &name);
 //    void renameItem(const QString &oldName, const QString &newName);
@@ -32,17 +36,20 @@ public:
 //    void finishRename() override;
 //    void deleteAction() override;
 
-//signals:
-//    void showFolderContent(const QString &folderPath);
+signals:
+    void accessFolder(QTreeWidgetItem *pItem, const QString &filePath);
 
 private:
-//    QString getAbsolutePath(const QString &relativePath);
-//    QString getAbsolutePath(QTreeWidgetItem *pItem);
-//    QTreeWidgetItem* getItemByPath(const QString &absolutePath);
-//    void updateCorrespondingWidget(QTreeWidgetItem *pItem);
-
     void setMenu() override;
     QWidgetAction* createWidgetAction(QMenu *pParent, const QString &iconPath, const QString &name);
+
+    void updateCorrespondingWidget(QTreeWidgetItem *pItem);
+    QString getAbsolutePath(const QString &relativePath);
+    QString getAbsolutePath(QTreeWidgetItem *pItem);
+
+
+
+
 //    void deleteOne(QTreeWidgetItem *pItem) override;
 
 //    void dragMoveEvent(QDragMoveEvent *event) override;

@@ -15,7 +15,10 @@ BBFileSystemDockWidget::BBFileSystemDockWidget(QWidget *pParent)
     m_pUi->dockProjectContents->updateSizeHint(QSize(300, 250));
 
     // Stretch the width of the file list
-    m_pUi->splitterProject->setStretchFactor(1, 1);
+    m_pUi->splitterProject->setStretchFactor(0, 1);
+    m_pUi->splitterProject->setStretchFactor(1, 2);
+
+    setConnect();
 }
 
 BBFileSystemDockWidget::~BBFileSystemDockWidget()
@@ -38,28 +41,87 @@ void BBFileSystemDockWidget::openProject()
 {
     // load file system
     m_pData->load();
+    updateFolderTree();
+    updateFileList(NULL);
+    updateFolderPathBar(BBConstant::BB_PATH_PROJECT_USER);
+}
+
+void BBFileSystemDockWidget::accessFolderInFolderTree(QTreeWidgetItem *pItem, const QString &filePath)
+{
+    updateFileList(pItem);
+    updateFolderPathBar(filePath);
+}
+
+void BBFileSystemDockWidget::accessFolderInFileList(const QString &filePath)
+{
+    updateFolderTree(filePath);
+    updateFolderPathBar(filePath);
+}
+
+void BBFileSystemDockWidget::accessFolderInFolderPathBar(const QString &filePath)
+{
+    updateFolderTree(filePath);
+    updateFileList(filePath);
+}
+
+void BBFileSystemDockWidget::setConnect()
+{
+    // update selected folder
+    QObject::connect(m_pUi->treeFolder, SIGNAL(accessFolder(QTreeWidgetItem*, QString)),
+                     this, SLOT(accessFolderInFolderTree(QTreeWidgetItem*, QString)));
+    QObject::connect(m_pUi->listFile, SIGNAL(accessFolder(QString)),
+                     this, SLOT(accessFolderInFileList(QString)));
+    QObject::connect(m_pUi->barFilePath, SIGNAL(accessFolder(QString)),
+                     this, SLOT(accessFolderInFolderPathBar(QString)));
+    // click buttons in the file system
+    QObject::connect(m_pUi->buttonRootProject, SIGNAL(clicked()),
+                     m_pUi->treeFolder, SLOT(pressRootButton()));
+    QObject::connect(m_pUi->buttonMoreProject, SIGNAL(clicked()),
+                     m_pUi->treeFolder, SLOT(pressSettingButton()));
+    // scroll folder path bar
+    QObject::connect(m_pUi->buttonMovePathLeft, SIGNAL(pressed()),
+                     m_pUi->scrollAreaFilePath, SLOT(moveToLeft()));
+    QObject::connect(m_pUi->buttonMovePathRight, SIGNAL(pressed()),
+                     m_pUi->scrollAreaFilePath, SLOT(moveToRight()));
+}
+
+/**
+ * @brief BBFileSystemDockWidget::updateFolderTree      load entire tree
+ */
+void BBFileSystemDockWidget::updateFolderTree()
+{
     m_pUi->treeFolder->loadTopLevelItems(m_pData->getFolderTreeWidgetTopLevelItems());
-//    //在文件列表中 显示contents里的文件
-//    ui->listFile->showFolderContent(projectPath + contentsFolderName);
+}
+
+/**
+ * @brief BBFileSystemDockWidget::updateFolderTree      set current item of the tree
+ * @param filePath
+ */
+void BBFileSystemDockWidget::updateFolderTree(const QString &filePath)
+{
+    m_pUi->treeFolder->setCurrentItemByPath(filePath);
+}
+
+void BBFileSystemDockWidget::updateFileList(QTreeWidgetItem *pItem)
+{
+    m_pUi->listFile->loadItems(m_pData->getFileListWidgetItems(pItem));
+}
+
+void BBFileSystemDockWidget::updateFileList(const QString &filePath)
+{
+    QTreeWidgetItem *pItem = m_pUi->treeFolder->getItemByPath(filePath);
+    updateFileList(pItem);
+}
+
+void BBFileSystemDockWidget::updateFolderPathBar(const QString &filePath)
+{
+    m_pUi->barFilePath->showFolderPath(filePath);
 }
 
 
 
-//    // click item in folder tree, show contents in file list
-//    QObject::connect(m_pUi->treeFolder, SIGNAL(showFolderContent(QString)),
-//                     m_pUi->listFile, SLOT(showFolderContent(QString)));
-//    // click buttons in the file system
-//    QObject::connect(m_pUi->buttonRootProject, SIGNAL(clicked()),
-//                     m_pUi->treeFolder, SLOT(pressRootButton()));
-//    QObject::connect(m_pUi->buttonMoreProject, SIGNAL(clicked()),
-//                     m_pUi->treeFolder, SLOT(pressSettingButton()));
-//    // show folder path in the bar
-//    QObject::connect(m_pUi->treeFolder, SIGNAL(showFolderContent(QString)),
-//                     m_pUi->barFilePath, SLOT(showCurrentFolderPath(QString)));
-//    QObject::connect(m_pUi->buttonMovePathLeft, SIGNAL(pressed()),
-//                     m_pUi->scrollAreaFilePath, SLOT(moveToLeft()));
-//    QObject::connect(m_pUi->buttonMovePathRight, SIGNAL(pressed()),
-//                     m_pUi->scrollAreaFilePath, SLOT(moveToRight()));
+
+
 //    // click an item in the file path bar or file list, and change selected item in the folder tree
 //    QObject::connect(m_pUi->barFilePath, SIGNAL(showFolderContent(QString)),
 //                     m_pUi->treeFolder, SLOT(setCurrentItemByPath(QString)));

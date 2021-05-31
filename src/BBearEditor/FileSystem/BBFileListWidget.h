@@ -7,6 +7,7 @@
 #include <BBUtils.h>
 
 
+class QTreeWidgetItem;
 class QWidgetAction;
 
 
@@ -35,14 +36,9 @@ public:
 
     QString getMimeType() { return BB_MIMETYPE_FILELISTWIDGET; }
 
-    static QList<QString> m_MeshSuffixs;
-    static QList<QString> m_TextureSuffixs;
-    static QList<QString> m_AudioSuffixs;
-    static QList<QString> m_ScriptSuffixs;
-    static QList<QString> m_MaterialSuffixs;
+    void loadItems(const QList<QListWidgetItem*> &items);
 
-//private slots:
-//    void showFolderContent(const QString &folderPath);
+private slots:
 //    void doubleClickItem(QListWidgetItem *pItem);
 //    void newFolder();
 //    void showInFolder();
@@ -52,7 +48,7 @@ public:
 //    void finishRename();
 //    void deleteAction();
 
-//signals:
+signals:
 //    void clickFolderTreeItem(const QString &folderPath);
 //    void addItemInFolderTree(const QString &parentPath, const QString &name);
 //    void renameItemInFolderTree(const QString &oldName, const QString &newName);
@@ -84,7 +80,7 @@ private:
 //    QIcon getMeshOverviewMap(const QString &sourcePath);
 //    void paintEvent(QPaintEvent *event) override;
 //    void mousePressEvent(QMouseEvent *event) override;
-//    void contextMenuEvent(QContextMenuEvent *event) override;
+    void contextMenuEvent(QContextMenuEvent *event) override;
 //    void keyPressEvent(QKeyEvent *event) override;
 //    void focusInEvent(QFocusEvent *event) override;
 
@@ -97,7 +93,6 @@ private:
     static QString m_MaterialFileLogoColor;
 
     QMenu *m_pMenu;
-//    QMap<QListWidgetItem*, BBFileInfo*> m_Map;
     QSize m_ItemSize;
     QString m_FolderPath;
     QListWidgetItem *m_pEditingItem;
