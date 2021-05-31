@@ -66,6 +66,7 @@ public:
     void load();
     QList<QTreeWidgetItem*> getFolderTreeWidgetTopLevelItems();
     QList<QListWidgetItem*> getFileListWidgetItems(QTreeWidgetItem *pItem);
+    QTreeWidgetItem* getItemByPath(const QString &absolutePath);
 
 public:
     static QString getExclusiveFolderPath(const QString &parentPath, QString &fileName);

@@ -34,7 +34,7 @@ private:
 
     void updateFolderTree();
     void updateFolderTree(const QString &filePath);
-    void updateFileList(QTreeWidgetItem *pItem);
+    void updateFileList(const QString &filePath, QTreeWidgetItem *pItem);
     void updateFileList(const QString &filePath);
     void updateFolderPathBar(const QString &filePath);
 

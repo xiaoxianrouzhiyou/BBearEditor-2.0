@@ -250,6 +250,11 @@ BBObjectListWidget {
     border: none;
 }
 
+BBFileListWidget::item {
+    padding: 3px;
+    background: transparent;
+}
+
 BBObjectListWidget::item:selected:!active {
     background: #8193bc;
     color: #d6dfeb;

@@ -25,53 +25,11 @@ void BBFolderTreeWidget::loadTopLevelItems(const QList<QTreeWidgetItem*> &items)
     addTopLevelItems(items);
 }
 
-void BBFolderTreeWidget::setCurrentItemByPath(const QString &folderPath)
+void BBFolderTreeWidget::setCurrentShowFolderContentItem(QTreeWidgetItem *pItem)
 {
-    QTreeWidgetItem *pItem = getItemByPath(folderPath);
     setCurrentItem(pItem);
     setItemExpanded(pItem, true);
-}
-
-QTreeWidgetItem* BBFolderTreeWidget::getItemByPath(const QString &absolutePath)
-{
-    // Find the corresponding tree item according to the path
-    QString path = absolutePath.mid(BBConstant::BB_PATH_PROJECT_USER.length());
-    if (path.length() == 0)
-    {
-        // "contents" folder
-        return NULL;
-    }
-    else
-    {
-        QTreeWidgetItem *pItem = NULL;
-        // remove "/" at the beginning
-        path = path.mid(1);
-        QStringList list = path.split('/');
-        // Find the item that is at the top level corresponds to item 0 in the list
-        // Folders at the same level cannot have the same name
-        for (int i = 0; i < topLevelItemCount(); i++)
-        {
-            if (topLevelItem(i)->text(0) == list.at(0))
-            {
-                pItem = topLevelItem(i);
-                break;
-            }
-        }
-        // Start from item 1 to find non-top items
-        for (int i = 1; i < list.count(); i++)
-        {
-            for (int j = 0; j < pItem->childCount(); j++)
-            {
-                QTreeWidgetItem *pChild = pItem->child(j);
-                if (list.at(i) == pChild->text(0))
-                {
-                    pItem = pChild;
-                    break;
-                }
-            }
-        }
-        return pItem;
-    }
+    m_pCurrentShowFolderContentItem = pItem;
 }
 
 void BBFolderTreeWidget::pressRootButton()

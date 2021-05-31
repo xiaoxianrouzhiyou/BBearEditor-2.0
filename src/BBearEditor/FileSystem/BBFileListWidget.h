@@ -37,7 +37,7 @@ public:
 
     QString getMimeType() { return BB_MIMETYPE_FILELISTWIDGET; }
 
-    void loadItems(const QList<QListWidgetItem*> &items);
+    void loadItems(const QString &folderPath, const QList<QListWidgetItem*> &items);
 
 public:
     static QSize m_ItemSize;
@@ -53,12 +53,6 @@ private slots:
 //    void deleteAction();
 
 signals:
-//    void clickFolderTreeItem(const QString &folderPath);
-//    void addItemInFolderTree(const QString &parentPath, const QString &name);
-//    void renameItemInFolderTree(const QString &oldName, const QString &newName);
-//    void moveItemInFolderTree(const QString &oldPath, const QString &newPath);
-//    void deleteItemInFolderTree(const QString &folderPath);
-//    void updateFolderTree();
 
 private:
     void setMenu();

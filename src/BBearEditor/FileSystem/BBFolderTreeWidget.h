@@ -19,8 +19,7 @@ public:
     QString getMimeType() { return BB_MIMETYPE_FOLDERTREEWIDGET; }
 
     void loadTopLevelItems(const QList<QTreeWidgetItem*> &items);
-    void setCurrentItemByPath(const QString &folderPath);
-    QTreeWidgetItem* getItemByPath(const QString &absolutePath);
+    void setCurrentShowFolderContentItem(QTreeWidgetItem *pItem);
 
 private slots:
     void pressRootButton();

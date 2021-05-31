@@ -55,6 +55,8 @@ void BBFileSystemData::load()
     QDir dir(rootPath);
     if (dir.exists())
     {
+        // the content of root folder
+        m_RootFileData = loadFolderContent(rootPath);
         // The queue of the parent node of the node to be created
         QQueue<BBFOLDER> queue;
         // init
@@ -108,6 +110,52 @@ QList<QListWidgetItem*> BBFileSystemData::getFileListWidgetItems(QTreeWidgetItem
     return items;
 }
 
+/**
+ * @brief BBFileSystemData::getItemByPath       Find the corresponding tree item according to the path
+ * @param absolutePath
+ * @return
+ */
+QTreeWidgetItem* BBFileSystemData::getItemByPath(const QString &absolutePath)
+{
+    QString path = absolutePath.mid(BBConstant::BB_PATH_PROJECT_USER.length());
+    if (path.length() == 0)
+    {
+        // "contents" folder
+        return NULL;
+    }
+    else
+    {
+        QTreeWidgetItem *pItem = NULL;
+        // remove "/" at the beginning
+        path = path.mid(1);
+        QStringList list = path.split('/');
+        // Find the item that is at the top level corresponds to item 0 in the list
+        // Folders at the same level cannot have the same name
+        for (QMap<QTreeWidgetItem*, BBFILE>::Iterator it = m_TopLevelFileData.begin(); it != m_TopLevelFileData.end(); it++)
+        {
+            QString name = ((QTreeWidgetItem*) it.key())->text(0);
+            if (name == list.at(0))
+            {
+                pItem = it.key();
+                break;
+            }
+        }
+        // Start from item 1 to find non-top items
+        for (int i = 1; i < list.count(); i++)
+        {
+            for (int j = 0; j < pItem->childCount(); j++)
+            {
+                QTreeWidgetItem *pChild = pItem->child(j);
+                if (list.at(i) == pChild->text(0))
+                {
+                    pItem = pChild;
+                    break;
+                }
+            }
+        }
+        return pItem;
+    }
+}
 
 QString BBFileSystemData::getExclusiveFolderPath(const QString &parentPath, QString &fileName)
 {

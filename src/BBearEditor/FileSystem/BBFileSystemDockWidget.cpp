@@ -57,7 +57,7 @@ void BBFileSystemDockWidget::openProject()
 
 void BBFileSystemDockWidget::accessFolderInFolderTree(QTreeWidgetItem *pItem, const QString &filePath)
 {
-    updateFileList(pItem);
+    updateFileList(filePath, pItem);
     updateFolderPathBar(filePath);
 }
 
@@ -108,18 +108,19 @@ void BBFileSystemDockWidget::updateFolderTree()
  */
 void BBFileSystemDockWidget::updateFolderTree(const QString &filePath)
 {
-    m_pUi->treeFolder->setCurrentItemByPath(filePath);
+    QTreeWidgetItem *pItem = m_pData->getItemByPath(filePath);
+    m_pUi->treeFolder->setCurrentShowFolderContentItem(pItem);
 }
 
-void BBFileSystemDockWidget::updateFileList(QTreeWidgetItem *pItem)
+void BBFileSystemDockWidget::updateFileList(const QString &filePath, QTreeWidgetItem *pItem)
 {
-    m_pUi->listFile->loadItems(m_pData->getFileListWidgetItems(pItem));
+    m_pUi->listFile->loadItems(filePath, m_pData->getFileListWidgetItems(pItem));
 }
 
 void BBFileSystemDockWidget::updateFileList(const QString &filePath)
 {
-    QTreeWidgetItem *pItem = m_pUi->treeFolder->getItemByPath(filePath);
-    updateFileList(pItem);
+    QTreeWidgetItem *pItem = m_pData->getItemByPath(filePath);
+    updateFileList(filePath, pItem);
 }
 
 void BBFileSystemDockWidget::updateFolderPathBar(const QString &filePath)

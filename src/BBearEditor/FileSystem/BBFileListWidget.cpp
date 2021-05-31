@@ -49,7 +49,7 @@ void BBPlainTextEdit::keyPressEvent(QKeyEvent *event)
 QSize BBFileListWidget::m_ItemSize = m_StandardItemSize;
 
 QSize BBFileListWidget::m_StandardIconSize = QSize(43, 43);
-QSize BBFileListWidget::m_StandardItemSize = QSize(45, 90);
+QSize BBFileListWidget::m_StandardItemSize = QSize(180, 45);
 //QSize BBFileListWidget::m_StandardIconSize = QSize(53, 53);
 //QSize BBFileListWidget::m_StandardItemSize = QSize(55, 100);
 
@@ -61,15 +61,17 @@ BBFileListWidget::BBFileListWidget(QWidget *pParent)
     m_pRenameEditor = NULL;
     m_pIndicatorItem = NULL;
 
+    setFlow(QListView::LeftToRight);
     // icon is at the top, and text is at the bottom
-    setViewMode(QListView::IconMode);
+    // setViewMode(QListView::IconMode);
     // Dynamically adjust the layout position according to the size of the list container
     // From left to right and from top to bottom
     setResizeMode(QListView::Adjust);
     setIconSize(m_StandardIconSize);
-    setSpacing(10);
+    setSpacing(2);
     // Text can be showed in multiple lines
     setWordWrap(true);
+    setWrapping(true);
     setAcceptDrops(true);
     setDragEnabled(true);
     // You can press shift and cmd to select multiple
@@ -88,7 +90,7 @@ BBFileListWidget::~BBFileListWidget()
     BB_SAFE_DELETE(m_pMenu);
 }
 
-void BBFileListWidget::loadItems(const QList<QListWidgetItem*> &items)
+void BBFileListWidget::loadItems(const QString &folderPath, const QList<QListWidgetItem*> &items)
 {
     // show the contents of the newly selected folder, the original list is cleared
     // just remove from the list, cannot delete the items, so cannot use clear();
@@ -100,7 +102,7 @@ void BBFileListWidget::loadItems(const QList<QListWidgetItem*> &items)
     {
         addItem(items.at(i));
     }
-//    m_FolderPath = folderPath;
+    m_FolderPath = folderPath;
 }
 
 void BBFileListWidget::setMenu()
