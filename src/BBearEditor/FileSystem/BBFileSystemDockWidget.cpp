@@ -2,6 +2,7 @@
 #include "ui_BBFileSystemDockWidget.h"
 #include "BBUtils.h"
 #include "BBFileSystemData.h"
+#include "BBOpenGLWidget.h"
 
 
 BBFileSystemDockWidget::BBFileSystemDockWidget(QWidget *pParent)
@@ -10,7 +11,14 @@ BBFileSystemDockWidget::BBFileSystemDockWidget(QWidget *pParent)
 {
     m_pUi->setupUi(this);
 
+    m_pPreviewOpenGLWidget = new BBOpenGLWidget;
+    m_pPreviewOpenGLWidget->resize(256, 256);
+    // Cannot be used without a context shared with the toplevel.
+    m_pPreviewOpenGLWidget->show();
+    m_pPreviewOpenGLWidget->hide();
+
     m_pData = new BBFileSystemData();
+    m_pData->bindPreviewOpenGLWidget(m_pPreviewOpenGLWidget);
 
     m_pUi->dockProjectContents->updateSizeHint(QSize(300, 250));
 
@@ -24,6 +32,7 @@ BBFileSystemDockWidget::BBFileSystemDockWidget(QWidget *pParent)
 BBFileSystemDockWidget::~BBFileSystemDockWidget()
 {
     BB_SAFE_DELETE(m_pUi);
+    BB_SAFE_DELETE(m_pPreviewOpenGLWidget);
     BB_SAFE_DELETE(m_pData);
 }
 

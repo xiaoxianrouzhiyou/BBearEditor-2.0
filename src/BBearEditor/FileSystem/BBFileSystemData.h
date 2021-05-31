@@ -3,10 +3,14 @@
 
 
 #include <QMap>
+#include <QIcon>
+#include <QColor>
 
 
 class QTreeWidgetItem;
 class QListWidgetItem;
+class QFileInfo;
+class BBOpenGLWidget;
 
 
 enum BBFileType
@@ -58,9 +62,22 @@ public:
     BBFileSystemData();
     ~BBFileSystemData();
 
+    void bindPreviewOpenGLWidget(BBOpenGLWidget *pPreviewOpenGLWidget) { m_pPreviewOpenGLWidget = pPreviewOpenGLWidget; }
     void load();
     QList<QTreeWidgetItem*> getFolderTreeWidgetTopLevelItems();
     QList<QListWidgetItem*> getFileListWidgetItems(QTreeWidgetItem *pItem);
+
+public:
+    static QString getExclusiveFolderPath(const QString &parentPath, QString &fileName);
+    static QString getExclusiveFolderPath(const QString &filePath);
+    static QString getExclusiveFilePath(const QString &parentPath, QString &fileName);
+    static QString getExclusiveFilePath(const QString &filePath);
+    static QString getFileSuffix(const QFileInfo &fileInfo);
+    static QString getFileSuffix(const QString &name);
+    static QString getBaseName(const QString &name);
+    static QString getFileNameByPath(const QString &filePath);
+    static QString getParentPath(const QString &filePath);
+    static QString getOverviewMapPath(const QString &sourcePath);
 
     static QList<QString> m_MeshSuffixs;
     static QList<QString> m_TextureSuffixs;
@@ -68,10 +85,24 @@ public:
     static QList<QString> m_ScriptSuffixs;
     static QList<QString> m_MaterialSuffixs;
 
+    static QString m_MeshFileLogoColor;
+    static QString m_TextureFileLogoColor;
+    static QString m_AudioFileLogoColor;
+    static QString m_MaterialFileLogoColor;
+
+
 private:
     void buildFileData(QQueue<BBFOLDER> &queue);
-    BBFILE getFolderContent(const QString &parentPath);
+    BBFILE loadFolderContent(const QString &parentPath);
 
+    QString getEngineAuxiliaryFolderPath(const QString &sourcePath);
+    QIcon getIcon(const QString &path);
+    QIcon getTextureIcon(const QString &path);
+    QIcon getMeshOverviewMap(const QString &sourcePath);
+    void createMeshOverviewMap(const QString &sourcePath, const QString &overviewMapPath);
+    QColor getFileLogoColor(const BBFileType &eFileType);
+
+    BBOpenGLWidget *m_pPreviewOpenGLWidget;
     BBFILE m_RootFileData;
     QMap<QTreeWidgetItem*, BBFILE> m_TopLevelFileData;
     QMap<QTreeWidgetItem*, BBFILE> m_FileData;

@@ -4,7 +4,6 @@
 #include <QMainWindow>
 
 
-class BBOpenGLWidget;
 namespace Ui {
 class BBMainWindow;
 }
@@ -20,7 +19,6 @@ public:
 private slots:
     void createProject();
     void openProject();
-    void createMeshOverviewMap(const QString &sourcePath, const QString &overviewMapPath);
 
 signals:
     void pressMultipleSelectionKey(bool);
@@ -29,13 +27,11 @@ private:
     void setWindowLayout();
     void setGameObjectDockWidget();
     void setConnect();
-    void initPreviewOpenGLWidget();
 
     void keyPressEvent(QKeyEvent *e) override;
     void keyReleaseEvent(QKeyEvent *e) override;
 
     Ui::BBMainWindow *m_pUi;
-    BBOpenGLWidget *m_pPreviewOpenGLWidget;
 };
 
 #endif // BBUIMAINWINDOW_H

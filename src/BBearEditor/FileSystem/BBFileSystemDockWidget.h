@@ -5,6 +5,7 @@
 
 
 class QTreeWidgetItem;
+class BBOpenGLWidget;
 class BBFileSystemData;
 
 
@@ -37,9 +38,9 @@ private:
     void updateFileList(const QString &filePath);
     void updateFolderPathBar(const QString &filePath);
 
-    BBFileSystemData *m_pData;
-
     Ui::BBFileSystemDockWidget *m_pUi;
+    BBOpenGLWidget *m_pPreviewOpenGLWidget;
+    BBFileSystemData *m_pData; 
 };
 
 #endif // BBFILESYSTEMDOCKWIDGET_H

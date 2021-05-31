@@ -35,9 +35,6 @@
 #include <QDebug>
 
 
-
-class QFileInfo;
-
 class BBConstant
 {
 public:
@@ -55,17 +52,8 @@ class BBUtils
 {
 public:
     static char *loadFileContent(const char *filePath, int &nFileSize);
-    static QString getExclusiveFolderPath(const QString &parentPath, QString &fileName);
-    static QString getExclusiveFolderPath(const QString &filePath);
-    static QString getExclusiveFilePath(const QString &parentPath, QString &fileName);
-    static QString getExclusiveFilePath(const QString &filePath);
-    static QString getFileSuffix(const QFileInfo &fileInfo);
-    static QString getFileSuffix(const QString &name);
-    static QString getBaseName(const QString &name);
-    static QString getFileNameByPath(const QString &filePath);
-    static QString getParentPath(const QString &filePath);
-//    static QString getEngineAuxiliaryFolderPath(const QString &sourcePath);
-//    static QString getOverviewMapPath(const QString &sourcePath);
+
+
 //    static bool showInFolder(const QString &filePath);
 //    static bool copyFolder(const QString &fromDir, const QString &toDir);
 //    static bool isMovablePath(const QString &sourcePath, const QString &destParentPath);

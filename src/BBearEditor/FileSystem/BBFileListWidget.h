@@ -5,6 +5,7 @@
 #include <QListWidget>
 #include <QPlainTextEdit>
 #include <BBUtils.h>
+#include "BBFileSystemData.h"
 
 
 class QTreeWidgetItem;
@@ -38,6 +39,9 @@ public:
 
     void loadItems(const QList<QListWidgetItem*> &items);
 
+public:
+    static QSize m_ItemSize;
+
 private slots:
 //    void doubleClickItem(QListWidgetItem *pItem);
 //    void newFolder();
@@ -55,46 +59,37 @@ signals:
 //    void moveItemInFolderTree(const QString &oldPath, const QString &newPath);
 //    void deleteItemInFolderTree(const QString &folderPath);
 //    void updateFolderTree();
-//    void createMeshOverviewMap(const QString &sourcePath, const QString &overviewMapPath);
 
 private:
     void setMenu();
     QWidgetAction* createWidgetAction(const QString &iconPath, const QString &name);
+
+
 //    void deleteOne(QListWidgetItem *pItem);
 
-//    QString lineFeed(QString originalText);
-//    QIcon getIcon(const QString &path);
-//    QIcon getTextureIcon(const QString &path);
-//    QColor getFileLogoColor(const BBFileType &eFileType);
 //    bool moveFile(const QString &oldPath, QString &newPath, BBFileType eFileType, bool bCopy);
 
 //    void startDrag(Qt::DropActions supportedActions) override;
-//    bool moveItem();
-//    bool moveItemFromFolderTree(const QMimeData *pMimeData);
-//    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dragEnterEvent(QDragEnterEvent *event) override;
 //    void dragMoveEvent(QDragMoveEvent *event) override;
-//    void dragLeaveEvent(QDragLeaveEvent *event) override;
+    void dragLeaveEvent(QDragLeaveEvent *event) override;
 //    void dropEvent(QDropEvent *event) override;
 //    void importAsset(const QList<QUrl> &urls);
 //    void importAsset(const QFileInfo &fileInfo, const QString &newPath);
-//    QIcon getMeshOverviewMap(const QString &sourcePath);
+//    bool moveItem();
+//    bool moveItemFromFolderTree(const QMimeData *pMimeData);
 //    void paintEvent(QPaintEvent *event) override;
-//    void mousePressEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
     void contextMenuEvent(QContextMenuEvent *event) override;
 //    void keyPressEvent(QKeyEvent *event) override;
-//    void focusInEvent(QFocusEvent *event) override;
+    void focusInEvent(QFocusEvent *event) override;
 
     static QSize m_StandardIconSize;
     static QSize m_StandardItemSize;
 
-    static QString m_MeshFileLogoColor;
-    static QString m_TextureFileLogoColor;
-    static QString m_AudioFileLogoColor;
-    static QString m_MaterialFileLogoColor;
-
     QMenu *m_pMenu;
-    QSize m_ItemSize;
     QString m_FolderPath;
+    BBFILE m_FileData;
     QListWidgetItem *m_pEditingItem;
     BBPlainTextEdit *m_pRenameEditor;
     QListWidgetItem *m_pIndicatorItem;

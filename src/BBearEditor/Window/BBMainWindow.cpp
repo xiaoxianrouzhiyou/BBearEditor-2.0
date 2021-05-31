@@ -2,10 +2,6 @@
 #include "ui_BBMainWindow.h"
 #include "BBUtils.h"
 #include <QKeyEvent>
-#include "BBOpenGLWidget.h"
-#include "BBScene.h"
-#include <QDir>
-#include "BBModel.h"
 
 
 BBMainWindow::BBMainWindow(QWidget *parent)
@@ -13,12 +9,6 @@ BBMainWindow::BBMainWindow(QWidget *parent)
       m_pUi(new Ui::BBMainWindow)
 {
     m_pUi->setupUi(this);
-
-    m_pPreviewOpenGLWidget = new BBOpenGLWidget;
-    m_pPreviewOpenGLWidget->resize(256, 256);
-    // Cannot be used without a context shared with the toplevel.
-    m_pPreviewOpenGLWidget->show();
-    m_pPreviewOpenGLWidget->hide();
 
     setWindowLayout();
     setGameObjectDockWidget();
@@ -28,7 +18,6 @@ BBMainWindow::BBMainWindow(QWidget *parent)
 BBMainWindow::~BBMainWindow()
 {
     BB_SAFE_DELETE(m_pUi);
-    BB_SAFE_DELETE(m_pPreviewOpenGLWidget);
 }
 
 void BBMainWindow::createProject()
@@ -39,24 +28,6 @@ void BBMainWindow::createProject()
 void BBMainWindow::openProject()
 {
     m_pUi->dockProject->openProject();
-}
-
-void BBMainWindow::createMeshOverviewMap(const QString &sourcePath, const QString &overviewMapPath)
-{
-    // set default skybox
-    // m_pPreviewOpenGLWidget->getScene()->setSkyBox(QString(BB_PATH_RESOURCE) + "skyboxs/3/");
-    // preview of mesh
-    BBGameObject *pModel = m_pPreviewOpenGLWidget->getScene()->createModelForPreview(sourcePath);
-    // Take a screenshot of the overview map as an icon
-    QPixmap pix = m_pPreviewOpenGLWidget->grab();
-    // Check whether the folder that the overviewMapPath belongs to exists and create it if it does not exist
-    QString parentPath = QFileInfo(overviewMapPath).absolutePath();
-    QDir dir(parentPath);
-    if (!dir.exists())
-        dir.mkpath(parentPath);
-    pix.save(overviewMapPath);
-    // remove the mesh
-    m_pPreviewOpenGLWidget->getScene()->deleteGameObject(pModel);
 }
 
 void BBMainWindow::setWindowLayout()

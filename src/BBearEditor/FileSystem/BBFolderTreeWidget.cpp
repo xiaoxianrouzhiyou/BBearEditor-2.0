@@ -1,6 +1,4 @@
 #include "BBFolderTreeWidget.h"
-#include <QDir>
-#include <QQueue>
 #include <QMenu>
 #include <QWidgetAction>
 #include <QHBoxLayout>

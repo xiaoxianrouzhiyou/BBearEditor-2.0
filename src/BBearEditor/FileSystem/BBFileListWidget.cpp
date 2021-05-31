@@ -1,6 +1,4 @@
 #include "BBFileListWidget.h"
-#include <QDir>
-#include <QPainter>
 #include <QWidgetAction>
 #include <QMenu>
 #include <QHBoxLayout>
@@ -12,7 +10,6 @@
 #include "Window/BBConfirmationDialog.h"
 #include <QMimeData>
 #include <QScrollBar>
-#include <QQueue>
 #include <QDrag>
 
 
@@ -49,21 +46,17 @@ void BBPlainTextEdit::keyPressEvent(QKeyEvent *event)
 //  BBFileListWidget
 //---------------------------------------------------------------------------------------------------
 
+QSize BBFileListWidget::m_ItemSize = m_StandardItemSize;
+
 QSize BBFileListWidget::m_StandardIconSize = QSize(43, 43);
 QSize BBFileListWidget::m_StandardItemSize = QSize(45, 90);
 //QSize BBFileListWidget::m_StandardIconSize = QSize(53, 53);
 //QSize BBFileListWidget::m_StandardItemSize = QSize(55, 100);
 
-QString BBFileListWidget::m_MeshFileLogoColor = "#e85655";
-QString BBFileListWidget::m_TextureFileLogoColor = "#e49831";
-QString BBFileListWidget::m_AudioFileLogoColor = "#64abe4";
-QString BBFileListWidget::m_MaterialFileLogoColor = "#fab8b7";
-
 
 BBFileListWidget::BBFileListWidget(QWidget *pParent)
     : QListWidget(pParent)
 {
-    m_ItemSize = m_StandardItemSize;
     m_pEditingItem = NULL;
     m_pRenameEditor = NULL;
     m_pIndicatorItem = NULL;
@@ -97,10 +90,17 @@ BBFileListWidget::~BBFileListWidget()
 
 void BBFileListWidget::loadItems(const QList<QListWidgetItem*> &items)
 {
+    // show the contents of the newly selected folder, the original list is cleared
+    // just remove from the list, cannot delete the items, so cannot use clear();
+    while (count() > 0)
+    {
+        takeItem(0);
+    }
     for (int i = 0; i < items.count(); i++)
     {
         addItem(items.at(i));
     }
+//    m_FolderPath = folderPath;
 }
 
 void BBFileListWidget::setMenu()
@@ -205,85 +205,7 @@ QWidgetAction* BBFileListWidget::createWidgetAction(const QString &iconPath, con
     return pAction;
 }
 
-//void BBFileListWidget::showFolderContent(const QString &folderPath)
-//{
-//    // clear map, and delete BBFileInfo
-//    while (!m_Map.isEmpty())
-//    {
-//        BB_SAFE_DELETE(m_Map.first());
-//        m_Map.remove(m_Map.firstKey());
-//    }
-//    // show the contents of the newly selected folder, the original list is cleared
-//    clear();
 
-//    m_FolderPath = folderPath;
-
-//    QDir dir(folderPath);
-//    if (dir.exists())
-//    {
-//        dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
-//        QFileInfoList fileInfoList = dir.entryInfoList();
-//        foreach (QFileInfo fileInfo, fileInfoList)
-//        {
-//            QListWidgetItem *pItem = new QListWidgetItem(this);
-//            pItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
-//            pItem->setSizeHint(m_ItemSize);
-//            if (fileInfo.isDir())
-//            {
-//                // is folder
-//                pItem->setText(lineFeed(fileInfo.fileName()));
-//                pItem->setIcon(getIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
-//                m_Map.insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::dir));
-//            }
-//            else
-//            {
-//                // is file
-//                pItem->setText(lineFeed(fileInfo.baseName()));
-//                QString suffix = fileInfo.suffix();
-//                if (m_MeshSuffixs.contains(suffix))
-//                {
-//                    QString sourcePath = fileInfo.absoluteFilePath();
-//                    QIcon icon = getMeshOverviewMap(sourcePath);
-//                    pItem->setIcon(icon);
-//                    m_Map.insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::mesh));
-//                }
-//                else if (m_TextureSuffixs.contains(suffix))
-//                {
-//                    // Picture files use themselves as icons
-//                    pItem->setIcon(getTextureIcon(fileInfo.absoluteFilePath()));
-//                    // save map
-//                    m_Map.insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::texture));
-//                }
-
-////                else if (audioSuffixs.contains(suffix))
-////                {
-////                    item->setIcon(getIcon(":/icon/resources/pictures/audio.jpg"));
-////                    mMap.insert(item, new FileInfo(fileInfo.fileName(), FileType::audio));
-////                }
-////                else if (suffix == "mtl")
-////                {
-////                    Material *material = Material::mtlMap.value(fileInfo.absoluteFilePath());
-////                    item->setIcon(QIcon(material->getPreview()));
-////                    mMap.insert(item, new FileInfo(fileInfo.fileName(), FileType::material));
-////                }
-////                else if (scriptSuffixs.contains(suffix))
-////                {
-////                    item->setIcon(getIcon(":/icon/resources/icons/lua.png"));
-////                    mMap.insert(item, new FileInfo(fileInfo.fileName(), FileType::script));
-////                }
-////                else
-////                {
-////                    mMap.insert(item, new FileInfo(fileInfo.fileName(), FileType::other));
-////                }
-//            }
-//        }
-//    }
-//    else
-//    {
-//        dir.mkpath(dir.absolutePath());
-//    }
-//    sortItems();
-//}
 
 //void BBFileListWidget::doubleClickItem(QListWidgetItem *pItem)
 //{
@@ -540,91 +462,6 @@ QWidgetAction* BBFileListWidget::createWidgetAction(const QString &iconPath, con
 //}
 
 
-
-//QString BBFileListWidget::lineFeed(QString originalText)
-//{
-//    // 40 corresponds to QSize(45, 90)
-//    QFontMetrics fm = fontMetrics();
-//    QString lineFeedText;
-//    int nHeadIndex = 0;
-//    for (int i = 0; i < originalText.length(); i++)
-//    {
-//        if (fm.width(originalText.mid(nHeadIndex, i + 1 - nHeadIndex)) < m_ItemSize.width() - 5)
-//        {
-//            // The width does not exceed 40, no need to line feed
-//            lineFeedText += originalText.at(i);
-//        }
-//        else
-//        {
-//            // Line feed
-//            // The index of the first character is set to the index of the first character of the next line
-//            lineFeedText += "\n" + originalText[i];
-//            nHeadIndex = i;
-//        }
-//    }
-//    return lineFeedText;
-//}
-
-//QIcon BBFileListWidget::getIcon(const QString &path)
-//{
-//    // Cut into a square
-//    QPixmap pix(path);
-//    if (pix.isNull())
-//    {
-//        return QIcon(QString(BB_PATH_RESOURCE_ICON) + "empty2");
-//    }
-//    else
-//    {
-//        int h = pix.height();
-//        int w = pix.width();
-//        int size = h < w ? h : w;
-//        pix = pix.copy((w - size) / 2, (h - size) / 2, size, size);
-//        return QIcon(pix);
-//    }
-//}
-
-//QIcon BBFileListWidget::getTextureIcon(const QString &path)
-//{
-//    QPixmap pix(path);
-//    int h = pix.height();
-//    int w = pix.width();
-//    int size = h < w ? h : w;
-//    pix = pix.copy((w - size) / 2, (h - size) / 2, size, size);
-//    // Transparent pictures need to add background
-//    // When the image is smaller than the icon size, use the icon size. The image is showed in the center
-//    int nBackgroundSize = size > iconSize().width() ? size : iconSize().width();
-//    QPixmap background(nBackgroundSize, nBackgroundSize);
-//    background.fill(QColor("#d6dfeb"));
-//    QPainter painter(&background);
-//    painter.drawPixmap((nBackgroundSize - size) / 2, (nBackgroundSize - size) / 2, pix);
-//    painter.end();
-//    return QIcon(background);
-//}
-
-//QColor BBFileListWidget::getFileLogoColor(const BBFileType &eFileType)
-//{
-//    if (eFileType == BBFileType::mesh)
-//    {
-//        return QColor(m_MeshFileLogoColor);
-//    }
-//    else if (eFileType == BBFileType::texture)
-//    {
-//        return QColor(m_TextureFileLogoColor);
-//    }
-//    else if (eFileType == BBFileType::audio)
-//    {
-//        return QColor(m_AudioFileLogoColor);
-//    }
-//    else if (eFileType == BBFileType::material)
-//    {
-//        return QColor(m_MaterialFileLogoColor);
-//    }
-//    else
-//    {
-//        return nullptr;
-//    }
-//}
-
 //bool BBFileListWidget::moveFile(const QString &oldPath, QString &newPath, BBFileType eFileType, bool bCopy)
 //{
 //    // the "File" in the function name indicates file or folder
@@ -745,81 +582,27 @@ QWidgetAction* BBFileListWidget::createWidgetAction(const QString &iconPath, con
 //    drag.exec(Qt::MoveAction);
 //}
 
-//bool BBFileListWidget::moveItem()
-//{
-//    // move selected items into m_pIndicatorItem
-//    QList<QListWidgetItem*> items = selectedItems();
-//    for (int i = 0; i < items.count(); i++)
-//    {
-//        QListWidgetItem *pItem = items.at(i);
-//        BBFileInfo *pFileInfo = m_Map.value(pItem);
-//        QString oldPath = m_FolderPath + "/" + pFileInfo->m_FileName;
-//        QString parentPath = m_FolderPath + "/" + m_Map.value(m_pIndicatorItem)->m_FileName;
-//        QString newPath = parentPath + "/" + pFileInfo->m_FileName;
-
-//        moveFile(oldPath, newPath, pFileInfo->m_eFileType, false);
-
-//        m_Map.remove(pItem);
-//        BB_SAFE_DELETE(pFileInfo);
-//        BB_SAFE_DELETE(pItem);
-//    }
-//}
-
-//bool BBFileListWidget::moveItemFromFolderTree(const QMimeData *pMimeData)
-//{
-//    QString destPath = m_FolderPath;
-//    if (m_pIndicatorItem)
-//    {
-//        // Drag to the folder in the file list and import the asset into this folder
-//        destPath += "/" + m_Map.value(m_pIndicatorItem)->m_FileName;
-//    }
-
-//    QList<QString> sourceFilePaths;
-//    QByteArray data = pMimeData->data(BB_MIMETYPE_FOLDERTREEWIDGET);
-//    QDataStream dataStream(&data, QIODevice::ReadOnly);
-//    QString levelPath;
-//    dataStream >> levelPath;
-//    while (!levelPath.isEmpty())
-//    {
-//        QString sourceFilePath = BBConstant::BB_PATH_PROJECT_USER + "/" + levelPath;
-//        sourceFilePaths.append(sourceFilePath);
-//        // check whether the movement is legal
-//        BBUtils::isMovablePath(sourceFilePath, destPath);
-//        dataStream >> levelPath;
-//    }
-//    // when the movement is legal, move all folders into destPath
-//    for (int i = 0; i < sourceFilePaths.count(); i++)
-//    {
-//        QString oldPath = sourceFilePaths.at(i);
-//        QString fileName = BBUtils::getFileNameByPath(oldPath);
-//        QString newPath = destPath + fileName;
-
-//        moveFile(oldPath, newPath, BBFileType::dir, false);
-//    }
-//    return true;
-//}
-
-//void BBFileListWidget::dragEnterEvent(QDragEnterEvent *event)
-//{
-//    if (!event->mimeData()->urls().isEmpty())
-//    {
-//        // the outside of the editor
-//        event->accept();
-//    }
-//    else if (event->mimeData()->hasFormat(getMimeType()))
-//    {
-//        // internal drag
-//        event->accept();
-//    }
-//    else if (event->mimeData()->hasFormat(BB_MIMETYPE_FOLDERTREEWIDGET))
-//    {
-//        event->accept();
-//    }
-//    else
-//    {
-//        event->ignore();
-//    }
-//}
+void BBFileListWidget::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (!event->mimeData()->urls().isEmpty())
+    {
+        // the outside of the editor
+        event->accept();
+    }
+    else if (event->mimeData()->hasFormat(getMimeType()))
+    {
+        // internal drag
+        event->accept();
+    }
+    else if (event->mimeData()->hasFormat(BB_MIMETYPE_FOLDERTREEWIDGET))
+    {
+        event->accept();
+    }
+    else
+    {
+        event->ignore();
+    }
+}
 
 //void BBFileListWidget::dragMoveEvent(QDragMoveEvent *event)
 //{
@@ -857,13 +640,13 @@ QWidgetAction* BBFileListWidget::createWidgetAction(const QString &iconPath, con
 //    repaint();
 //}
 
-//void BBFileListWidget::dragLeaveEvent(QDragLeaveEvent *event)
-//{
-//    Q_UNUSED(event);
-//    // No need for indicator when dragLeave
-//    m_pIndicatorItem = NULL;
-//    repaint();
-//}
+void BBFileListWidget::dragLeaveEvent(QDragLeaveEvent *event)
+{
+    Q_UNUSED(event);
+    // No need for indicator when dragLeave
+    m_pIndicatorItem = NULL;
+    repaint();
+}
 
 //void BBFileListWidget::dropEvent(QDropEvent *event)
 //{
@@ -995,17 +778,60 @@ QWidgetAction* BBFileListWidget::createWidgetAction(const QString &iconPath, con
 //    }
 //}
 
-//QIcon BBFileListWidget::getMeshOverviewMap(const QString &sourcePath)
+
+
+//bool BBFileListWidget::moveItem()
 //{
-//    // read icon from engine folder if it is created before
-//    // if it does not exist, create
-//    QString overviewMapPath = BBUtils::getOverviewMapPath(sourcePath);
-//    QFile file(overviewMapPath);
-//    if (!file.exists())
+//    // move selected items into m_pIndicatorItem
+//    QList<QListWidgetItem*> items = selectedItems();
+//    for (int i = 0; i < items.count(); i++)
 //    {
-//        createMeshOverviewMap(sourcePath, overviewMapPath);
+//        QListWidgetItem *pItem = items.at(i);
+//        BBFileInfo *pFileInfo = m_Map.value(pItem);
+//        QString oldPath = m_FolderPath + "/" + pFileInfo->m_FileName;
+//        QString parentPath = m_FolderPath + "/" + m_Map.value(m_pIndicatorItem)->m_FileName;
+//        QString newPath = parentPath + "/" + pFileInfo->m_FileName;
+
+//        moveFile(oldPath, newPath, pFileInfo->m_eFileType, false);
+
+//        m_Map.remove(pItem);
+//        BB_SAFE_DELETE(pFileInfo);
+//        BB_SAFE_DELETE(pItem);
 //    }
-//    return getIcon(overviewMapPath);
+//}
+
+//bool BBFileListWidget::moveItemFromFolderTree(const QMimeData *pMimeData)
+//{
+//    QString destPath = m_FolderPath;
+//    if (m_pIndicatorItem)
+//    {
+//        // Drag to the folder in the file list and import the asset into this folder
+//        destPath += "/" + m_Map.value(m_pIndicatorItem)->m_FileName;
+//    }
+
+//    QList<QString> sourceFilePaths;
+//    QByteArray data = pMimeData->data(BB_MIMETYPE_FOLDERTREEWIDGET);
+//    QDataStream dataStream(&data, QIODevice::ReadOnly);
+//    QString levelPath;
+//    dataStream >> levelPath;
+//    while (!levelPath.isEmpty())
+//    {
+//        QString sourceFilePath = BBConstant::BB_PATH_PROJECT_USER + "/" + levelPath;
+//        sourceFilePaths.append(sourceFilePath);
+//        // check whether the movement is legal
+//        BBUtils::isMovablePath(sourceFilePath, destPath);
+//        dataStream >> levelPath;
+//    }
+//    // when the movement is legal, move all folders into destPath
+//    for (int i = 0; i < sourceFilePaths.count(); i++)
+//    {
+//        QString oldPath = sourceFilePaths.at(i);
+//        QString fileName = BBUtils::getFileNameByPath(oldPath);
+//        QString newPath = destPath + fileName;
+
+//        moveFile(oldPath, newPath, BBFileType::dir, false);
+//    }
+//    return true;
 //}
 
 //void BBFileListWidget::paintEvent(QPaintEvent *event)
@@ -1042,19 +868,19 @@ QWidgetAction* BBFileListWidget::createWidgetAction(const QString &iconPath, con
 //    painter.end();
 //}
 
-//void BBFileListWidget::mousePressEvent(QMouseEvent *event)
-//{
-//    QListWidget::mousePressEvent(event);
-//    if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)
-//    {
-//        // There is no item at the mouse click position, remove the selection
-//        QListWidgetItem *pItem = itemAt(event->pos());
-//        if (!pItem)
-//        {
-//            setCurrentItem(NULL);
-//        }
-//    }
-//}
+void BBFileListWidget::mousePressEvent(QMouseEvent *event)
+{
+    QListWidget::mousePressEvent(event);
+    if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)
+    {
+        // There is no item at the mouse click position, remove the selection
+        QListWidgetItem *pItem = itemAt(event->pos());
+        if (!pItem)
+        {
+            setCurrentItem(NULL);
+        }
+    }
+}
 
 void BBFileListWidget::contextMenuEvent(QContextMenuEvent *event)
 {
@@ -1077,11 +903,11 @@ void BBFileListWidget::contextMenuEvent(QContextMenuEvent *event)
 //    }
 //}
 
-//void BBFileListWidget::focusInEvent(QFocusEvent *event)
-//{
-//    // parent class, when the focus is obtained, the first item will show a blue box, which is ugly
-//    Q_UNUSED(event);
-//}
+void BBFileListWidget::focusInEvent(QFocusEvent *event)
+{
+    // parent class, when the focus is obtained, the first item will show a blue box, which is ugly
+    Q_UNUSED(event);
+}
 
 
 
