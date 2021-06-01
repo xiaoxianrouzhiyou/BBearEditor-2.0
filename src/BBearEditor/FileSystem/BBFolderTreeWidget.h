@@ -4,6 +4,7 @@
 #include "BBTreeWidget.h"
 #include "BBUtils.h"
 #include <QFileInfo>
+#include "BBFileSystemDockWidget.h"
 
 
 class QWidgetAction;
@@ -25,8 +26,7 @@ private slots:
     void pressRootButton();
     void pressSettingButton();
     void clickItem(QTreeWidgetItem *pItem, int nColumn);
-
-//    void newFolder();
+    void newFolder();
 //    void addItem(const QString &parentPath, const QString &name);
 //    void renameItem(const QString &oldName, const QString &newName);
 //    void moveItem(const QString &oldPath, const QString &newPath);
@@ -37,6 +37,8 @@ private slots:
 
 signals:
     void accessFolder(const QString &filePath, QTreeWidgetItem *pItem);
+    void newFolder(const QString &parentPath, const BBSignalSender &eSender);
+    void showInFolder(const QString &filePath);
 
 private:
     void setMenu() override;
@@ -46,7 +48,7 @@ private:
     QString getAbsolutePath(const QString &relativePath);
     QString getAbsolutePath(QTreeWidgetItem *pItem);
 
-
+    const BBSignalSender m_eSenderTag;
 
 
 //    void deleteOne(QTreeWidgetItem *pItem) override;

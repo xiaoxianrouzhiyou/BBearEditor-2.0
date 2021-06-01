@@ -193,11 +193,12 @@ bool BBFileSystemData::newFolder(const QString &parentPath, QTreeWidgetItem *&pF
     {
         // the map has nothing, since this is a new folder
         m_FileData.insert(pFolderItem, new BBFILE());
+        pParent->addChild(pFolderItem);
     }
     else
     {
         m_TopLevelFileData.insert(pFolderItem, new BBFILE());
-    }
+    }    
 
     // add file list item at the beginning of list of its parent
     pFileItem = new QListWidgetItem({fileName});
@@ -208,6 +209,7 @@ bool BBFileSystemData::newFolder(const QString &parentPath, QTreeWidgetItem *&pF
     // find the BBFILE corresponding the tree item of its parent
     BBFILE *pParentContent = getFolderContent(pParent);
     pParentContent->insert(pFileItem, pInfo);
+    return true;
 }
 
 QString BBFileSystemData::getExclusiveFolderPath(const QString &parentPath, QString &fileName)

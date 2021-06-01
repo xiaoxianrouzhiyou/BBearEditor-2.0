@@ -5,8 +5,16 @@
 
 
 class QTreeWidgetItem;
+class QListWidgetItem;
 class BBOpenGLWidget;
 class BBFileSystemData;
+
+
+enum BBSignalSender
+{
+    FolderTree = 0,
+    FileList = 1
+};
 
 
 namespace Ui {
@@ -29,15 +37,15 @@ private slots:
     void doubleClickItemInFileList(const QString &filePath);
     void clickItemInFolderPathBar(const QString &filePath);
 
-    void newFolder(const QString &parentPath);
+    void newFolder(const QString &parentPath, const BBSignalSender &eSender);
 
 private:
     void setConnect();
 
     void updateFolderTree();
     void updateFolderTree(const QString &filePath);
-    void updateFileList(const QString &filePath, QTreeWidgetItem *pItem);
-    void updateFileList(const QString &filePath);
+    void updateFileList(const QString &parentPath, QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pCurrentItem = 0);
+    void updateFileList(const QString &parentPath, QListWidgetItem *pCurrentItem = 0);
     void updateFolderPathBar(const QString &filePath);
 
     Ui::BBFileSystemDockWidget *m_pUi;

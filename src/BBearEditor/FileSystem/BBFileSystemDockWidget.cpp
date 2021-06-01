@@ -79,13 +79,19 @@ void BBFileSystemDockWidget::clickItemInFolderPathBar(const QString &filePath)
     updateFolderPathBar(filePath);
 }
 
-void BBFileSystemDockWidget::newFolder(const QString &parentPath)
+void BBFileSystemDockWidget::newFolder(const QString &parentPath, const BBSignalSender &eSender)
 {
     QTreeWidgetItem *pFolderItem = NULL;
     QListWidgetItem *pFileItem = NULL;
-    m_pData->newFolder(parentPath, pFolderItem, pFileItem);
-    updateFolderTree();
-    updateFileList(parentPath);
+    if (m_pData->newFolder(parentPath, pFolderItem, pFileItem))
+    {
+        updateFolderTree();
+        updateFileList(parentPath, pFileItem);
+        if (eSender == BBSignalSender::FolderTree)
+        {
+            m_pUi->treeFolder->setCurrentItem(pFolderItem);
+        }
+    }
 }
 
 void BBFileSystemDockWidget::setConnect()
@@ -108,10 +114,10 @@ void BBFileSystemDockWidget::setConnect()
     QObject::connect(m_pUi->buttonMovePathRight, SIGNAL(pressed()),
                      m_pUi->scrollAreaFilePath, SLOT(moveToRight()));
     // new folder
-    QObject::connect(m_pUi->treeFolder, SIGNAL(newFolder(QString)),
-                     this, SLOT(newFolder(QString)));
-    QObject::connect(m_pUi->listFile, SIGNAL(newFolder(QString)),
-                     this, SLOT(newFolder(QString)));
+    QObject::connect(m_pUi->treeFolder, SIGNAL(newFolder(QString, BBSignalSender)),
+                     this, SLOT(newFolder(QString, BBSignalSender)));
+    QObject::connect(m_pUi->listFile, SIGNAL(newFolder(QString, BBSignalSender)),
+                     this, SLOT(newFolder(QString, BBSignalSender)));
 }
 
 /**
@@ -132,15 +138,17 @@ void BBFileSystemDockWidget::updateFolderTree(const QString &filePath)
     m_pUi->treeFolder->setCurrentShowFolderContentItem(pItem);
 }
 
-void BBFileSystemDockWidget::updateFileList(const QString &filePath, QTreeWidgetItem *pItem)
+void BBFileSystemDockWidget::updateFileList(const QString &parentPath,
+                                            QTreeWidgetItem *pParentFolderItem,
+                                            QListWidgetItem *pCurrentItem)
 {
-    m_pUi->listFile->loadItems(filePath, m_pData->getFileListWidgetItems(pItem));
+    m_pUi->listFile->loadItems(parentPath, m_pData->getFileListWidgetItems(pParentFolderItem), pCurrentItem);
 }
 
-void BBFileSystemDockWidget::updateFileList(const QString &filePath)
+void BBFileSystemDockWidget::updateFileList(const QString &parentPath, QListWidgetItem *pCurrentItem)
 {
-    QTreeWidgetItem *pItem = m_pData->getItemByPath(filePath);
-    updateFileList(filePath, pItem);
+    QTreeWidgetItem *pParentFolderItem = m_pData->getItemByPath(parentPath);
+    updateFileList(parentPath, pParentFolderItem, pCurrentItem);
 }
 
 void BBFileSystemDockWidget::updateFolderPathBar(const QString &filePath)

@@ -8,7 +8,7 @@
 
 
 BBFolderTreeWidget::BBFolderTreeWidget(QWidget *pParent)
-    : BBTreeWidget(pParent)
+    : BBTreeWidget(pParent), m_eSenderTag(BBSignalSender::FolderTree)
 {
     m_pCurrentShowFolderContentItem = NULL;
 //    //初始时 需要加载材质
@@ -22,7 +22,13 @@ BBFolderTreeWidget::BBFolderTreeWidget(QWidget *pParent)
 
 void BBFolderTreeWidget::loadTopLevelItems(const QList<QTreeWidgetItem*> &items)
 {
+    // just remove from the tree, cannot delete the items, so cannot use clear();
+    while (topLevelItemCount() > 0)
+    {
+        takeTopLevelItem(0);
+    }
     addTopLevelItems(items);
+    setCurrentShowFolderContentItem(m_pCurrentShowFolderContentItem);
 }
 
 void BBFolderTreeWidget::setCurrentShowFolderContentItem(QTreeWidgetItem *pItem)
@@ -50,6 +56,15 @@ void BBFolderTreeWidget::clickItem(QTreeWidgetItem *pItem, int nColumn)
 {
     Q_UNUSED(nColumn);
     updateCorrespondingWidget(pItem);
+}
+
+void BBFolderTreeWidget::newFolder()
+{
+    QTreeWidgetItem *pParent = currentItem();
+    QString parentPath = getAbsolutePath(pParent);
+    emit newFolder(parentPath, m_eSenderTag);
+    // Open the edit box to let the user set name
+    // openRenameEditor();
 }
 
 void BBFolderTreeWidget::setMenu()
@@ -144,70 +159,12 @@ QString BBFolderTreeWidget::getAbsolutePath(QTreeWidgetItem *pItem)
 
 
 
-//void BBFolderTreeWidget::loadProject()
-//{
-//    // it is also invoked when the tree needs to be rebuilt
-//    // m_pCurrentShowFolderContentItem will be cleared, record corresponding path
-//    // find new m_pCurrentShowFolderContentItem, after rebuilding
-//    QString currentShowFolderContentPath;
-//    if (m_pCurrentShowFolderContentItem)
-//    {
-//        currentShowFolderContentPath = getAbsolutePath(m_pCurrentShowFolderContentItem);
-//    }
-//    else
-//    {
-//        currentShowFolderContentPath = BBConstant::BB_PATH_PROJECT_USER;
-//    }
-//    // clear tree, and create new tree
-//    clear();
-
-//....................................................................
-//    sortItems(0, Qt::AscendingOrder);
-
-//    // find new m_pCurrentShowFolderContentItem, after rebuilding
-//    if (m_pCurrentShowFolderContentItem)
-//    {
-//        m_pCurrentShowFolderContentItem = getItemByPath(currentShowFolderContentPath);
-//        setItemExpanded(m_pCurrentShowFolderContentItem, true);
-//    }
-//    setCurrentItem(m_pCurrentShowFolderContentItem);
-//    showFolderContent(currentShowFolderContentPath);
-////    //之后重新加载工程时 无需加载材质
-////    isLoadMaterial = false;
-//}
 
 
 
 
 
-//void BBFolderTreeWidget::newFolder()
-//{
-//    QTreeWidgetItem *pParent = currentItem();
-//    QString parentPath = getAbsolutePath(pParent);
-//    QString fileName = "new folder";
-//    QString filePath = BBUtils::getExclusiveFolderPath(parentPath, fileName);
 
-//    QDir dir;
-//    BB_PROCESS_ERROR_RETURN(dir.mkdir(filePath));
-
-//    // create tree item
-//    QTreeWidgetItem *pItem = new QTreeWidgetItem({fileName});
-//    pItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
-
-//    if (pParent)
-//    {
-//        pParent->addChild(pItem);
-//        setItemExpanded(pParent, true);
-//    }
-//    else
-//    {
-//        addTopLevelItem(pItem);
-//    }
-//    setCurrentItem(pItem);
-//    updateCorrespondingWidget(m_pCurrentShowFolderContentItem);
-//    // Open the edit box to let the user set name
-//    openRenameEditor();
-//}
 
 //void BBFolderTreeWidget::addItem(const QString &parentPath, const QString &name)
 //{

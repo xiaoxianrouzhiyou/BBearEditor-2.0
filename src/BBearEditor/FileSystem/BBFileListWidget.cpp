@@ -55,7 +55,7 @@ QSize BBFileListWidget::m_StandardItemSize = QSize(180, 45);
 
 
 BBFileListWidget::BBFileListWidget(QWidget *pParent)
-    : QListWidget(pParent)
+    : QListWidget(pParent), m_eSenderTag(BBSignalSender::FileList)
 {
     m_pEditingItem = NULL;
     m_pRenameEditor = NULL;
@@ -90,7 +90,7 @@ BBFileListWidget::~BBFileListWidget()
     BB_SAFE_DELETE(m_pMenu);
 }
 
-void BBFileListWidget::loadItems(const QString &folderPath, const QList<QListWidgetItem*> &items)
+void BBFileListWidget::loadItems(const QString &folderPath, const QList<QListWidgetItem*> &items, QListWidgetItem *pCurrentItem)
 {
     // show the contents of the newly selected folder, the original list is cleared
     // just remove from the list, cannot delete the items, so cannot use clear();
@@ -105,7 +105,7 @@ void BBFileListWidget::loadItems(const QString &folderPath, const QList<QListWid
 
     m_FolderPath = folderPath;
     sortItems();
-//    setCurrentItem(pItem);
+    setCurrentItem(pCurrentItem);
 }
 
 void BBFileListWidget::doubleClickItem(QListWidgetItem *pItem)
@@ -121,7 +121,7 @@ void BBFileListWidget::newFolder()
     {
         setItemSelected(items.at(i), false);
     }
-    emit newFolder(m_FolderPath);
+    emit newFolder(m_FolderPath, m_eSenderTag);
     openRenameEditor();
 }
 void BBFileListWidget::showInFolder()

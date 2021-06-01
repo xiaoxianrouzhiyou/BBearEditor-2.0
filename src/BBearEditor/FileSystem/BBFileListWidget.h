@@ -6,6 +6,7 @@
 #include <QPlainTextEdit>
 #include <BBUtils.h>
 #include "BBFileSystemData.h"
+#include "BBFileSystemDockWidget.h"
 
 
 class QTreeWidgetItem;
@@ -37,7 +38,7 @@ public:
 
     QString getMimeType() { return BB_MIMETYPE_FILELISTWIDGET; }
 
-    void loadItems(const QString &folderPath, const QList<QListWidgetItem*> &items);
+    void loadItems(const QString &folderPath, const QList<QListWidgetItem*> &items, QListWidgetItem *pCurrentItem);
 
 public:
     static QSize m_ItemSize;
@@ -54,7 +55,7 @@ private slots:
 
 signals:
     void openFile(const QString &filePath);
-    void newFolder(const QString &parentPath);
+    void newFolder(const QString &parentPath, const BBSignalSender &eSender);
     void showInFolder(const QString &filePath);
 
 private:
@@ -63,6 +64,7 @@ private:
 
     QString getItemFilePath(QListWidgetItem *pItem);
 
+    const BBSignalSender m_eSenderTag;
 
 
 
