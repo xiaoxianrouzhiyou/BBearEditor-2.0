@@ -228,6 +228,60 @@ bool BBFileSystemData::showInFolder(const QString &filePath)
     return process.startDetached(cmd);
 }
 
+bool BBFileSystemData::rename(QListWidgetItem *pFileItem, const QString &oldPath, const QString &newPath)
+{
+    QString newName;
+    QString legalNewPath;
+    // find parent folder item of pFileItem
+    // cannot use getItemByPath(oldPath) and ->parent(), since oldPath may be a file but not a folder
+    QTreeWidgetItem *pParentFolderItem = getItemByPath(getParentPath(oldPath));
+    BBFILE *pFolderContent = getFolderContent(pParentFolderItem);
+    BBFileInfo *pFileInfo = pFolderContent->value(pFileItem);
+    if (pFileInfo->m_eFileType == BBFileType::Dir)
+    {
+        QTreeWidgetItem *pFolderItem = getItemByPath(oldPath);
+        BB_PROCESS_ERROR_RETURN_FALSE(pFolderItem);
+
+        legalNewPath = getExclusiveFolderPath(newPath);
+        BB_PROCESS_ERROR_RETURN_FALSE(QFile::rename(oldPath, legalNewPath));
+
+        // rename corresponding folder in the engine folder
+        QFile::rename(getEngineAuxiliaryFolderPath(oldPath), getEngineAuxiliaryFolderPath(legalNewPath));
+
+        // need to rename folder tree item
+        newName = getFileNameByPath(legalNewPath);
+        pFolderItem->setText(0, newName);
+    }
+    else
+    {
+        legalNewPath = getExclusiveFilePath(newPath);
+        newName = getFileNameByPath(legalNewPath);
+        BB_PROCESS_ERROR_RETURN_FALSE(QFile::rename(oldPath, legalNewPath));
+        if (pFileInfo->m_eFileType == BBFileType::Mesh)
+        {
+            // rename overview map
+            QFile::rename(getOverviewMapPath(oldPath), getOverviewMapPath(legalNewPath));
+        }
+        else if (pFileInfo->m_eFileType == BBFileType::Material)
+        {
+//            //材质文件 需要修改文件路径与材质对象的映射
+//            Material::rename(oldPath, newPath);
+        }
+
+    }
+
+    // handle list item
+    pFileInfo->m_FileName = newName;
+    pFileItem->setText(getBaseName(newName));
+
+//    //如果该文件在剪贴板中 移除
+//    if (clipBoardPaths.contains(oldPath))
+//    {
+//        clipBoardPaths.removeOne(oldPath);
+//    }
+    return true;
+}
+
 QString BBFileSystemData::getExclusiveFolderPath(const QString &parentPath, QString &fileName)
 {
     QDir dir;
@@ -324,7 +378,15 @@ QString BBFileSystemData::getFileSuffix(const QFileInfo &fileInfo)
 
 QString BBFileSystemData::getFileSuffix(const QString &name)
 {
-    return name.mid(name.lastIndexOf('.') + 1);
+    int nIndex = name.lastIndexOf('.');
+    if (nIndex < 0)
+    {
+        return "";
+    }
+    else
+    {
+        return name.mid(nIndex + 1);
+    }
 }
 
 QString BBFileSystemData::getBaseName(const QString &name)

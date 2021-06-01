@@ -70,6 +70,7 @@ public:
     bool openFile(const QString &filePath);
     bool newFolder(const QString &parentPath, QTreeWidgetItem *&pFolderItem, QListWidgetItem *&pFileItem);
     bool showInFolder(const QString &filePath);
+    bool rename(QListWidgetItem *pFileItem, const QString &oldPath, const QString &newPath);
 
 public:
     static QString getExclusiveFolderPath(const QString &parentPath, QString &fileName);

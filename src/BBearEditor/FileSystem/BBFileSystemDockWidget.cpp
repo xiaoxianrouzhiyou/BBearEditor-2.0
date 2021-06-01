@@ -86,7 +86,11 @@ void BBFileSystemDockWidget::newFolder(const QString &parentPath, const BBSignal
     if (m_pData->newFolder(parentPath, pFolderItem, pFileItem))
     {
         updateFolderTree();
-        updateFileList(parentPath, pFileItem);
+        // if list is showing parentPath
+        if (m_pUi->listFile->getCurrentParentPath() == parentPath)
+        {
+            updateFileList(parentPath, pFileItem);
+        }
         if (eSender == BBSignalSender::FolderTree)
         {
             m_pUi->treeFolder->setCurrentItem(pFolderItem);
@@ -99,6 +103,23 @@ void BBFileSystemDockWidget::showInFolder(const QString &filePath)
     m_pData->showInFolder(filePath);
 }
 
+void BBFileSystemDockWidget::renameInFileList(QListWidgetItem *pFileItem, const QString &oldPath, const QString &newPath)
+{
+    if (m_pData->rename(pFileItem, oldPath, newPath))
+    {
+        // update
+        updateFolderTree();
+        QString parentPath = m_pUi->listFile->getCurrentParentPath();
+        if (parentPath == BBFileSystemData::getParentPath(oldPath))
+        {
+            updateFileList(parentPath, pFileItem);
+        }
+        updateFolderPathBar();
+//        //重新显示属性栏的属性 名字更新
+//        itemClicked(editingItem);
+    }
+}
+
 void BBFileSystemDockWidget::setConnect()
 {
     // update selected folder
@@ -108,6 +129,11 @@ void BBFileSystemDockWidget::setConnect()
                      this, SLOT(doubleClickItemInFileList(QString)));
     QObject::connect(m_pUi->barFilePath, SIGNAL(accessFolder(QString)),
                      this, SLOT(clickItemInFolderPathBar(QString)));
+    // update folder path bar
+    QObject::connect(this, SIGNAL(updateFolderPathBar()),
+                     m_pUi->barFilePath, SLOT(update()));
+    QObject::connect(this, SIGNAL(updateFolderPathBar(QString)),
+                     m_pUi->barFilePath, SLOT(showFolderPath(QString)));
     // click buttons in the file system
     QObject::connect(m_pUi->buttonRootProject, SIGNAL(clicked()),
                      m_pUi->treeFolder, SLOT(pressRootButton()));
@@ -127,7 +153,10 @@ void BBFileSystemDockWidget::setConnect()
     QObject::connect(m_pUi->treeFolder, SIGNAL(showInFolder(QString)),
                      this, SLOT(showInFolder(QString)));
     QObject::connect(m_pUi->listFile, SIGNAL(showInFolder(QString)),
-                     this, SLOT(showInFolder(QString)));;
+                     this, SLOT(showInFolder(QString)));
+    // rename
+    QObject::connect(m_pUi->listFile, SIGNAL(rename(QListWidgetItem*, QString, QString)),
+                     this, SLOT(renameInFileList(QListWidgetItem*, QString, QString)));
 }
 
 /**
@@ -163,12 +192,6 @@ void BBFileSystemDockWidget::updateFileList(const QString &parentPath, QListWidg
     QTreeWidgetItem *pParentFolderItem = m_pData->getItemByPath(parentPath);
     updateFileList(parentPath, pParentFolderItem, pCurrentItem);
 }
-
-void BBFileSystemDockWidget::updateFolderPathBar(const QString &filePath)
-{
-    m_pUi->barFilePath->showFolderPath(filePath);
-}
-
 
 
 

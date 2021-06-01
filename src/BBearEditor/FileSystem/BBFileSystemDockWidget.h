@@ -38,7 +38,14 @@ private slots:
     void clickItemInFolderPathBar(const QString &filePath);
 
     void newFolder(const QString &parentPath, const BBSignalSender &eSender);
+
     void showInFolder(const QString &filePath);
+
+    void renameInFileList(QListWidgetItem *pFileItem, const QString &oldPath, const QString &newPath);
+
+signals:
+    void updateFolderPathBar();
+    void updateFolderPathBar(const QString &filePath);
 
 private:
     void setConnect();
@@ -47,7 +54,6 @@ private:
     void updateFolderTree(const QString &filePath);
     void updateFileList(const QString &parentPath, QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pCurrentItem = 0);
     void updateFileList(const QString &parentPath, QListWidgetItem *pCurrentItem = 0);
-    void updateFolderPathBar(const QString &filePath);
 
     Ui::BBFileSystemDockWidget *m_pUi;
     BBOpenGLWidget *m_pPreviewOpenGLWidget;

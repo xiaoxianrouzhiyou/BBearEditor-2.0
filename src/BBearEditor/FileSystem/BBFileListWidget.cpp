@@ -101,6 +101,7 @@ void BBFileListWidget::loadItems(const QString &parentPath, QTreeWidgetItem *pPa
     {
         takeItem(0);
     }
+    m_FileNames.clear();
     for (int i = 0; i < items.count(); i++)
     {
         QListWidgetItem *pItem = items.at(i);
@@ -147,12 +148,50 @@ void BBFileListWidget::pasteAction()
 
 void BBFileListWidget::openRenameEditor()
 {
-
+    QList<QListWidgetItem*> items = selectedItems();
+    if (items.count() == 1)
+    {
+        m_pEditingItem = items.first();
+        QWidget *pWidget = new QWidget(this);
+        QVBoxLayout *pLayout = new QVBoxLayout(pWidget);
+        pLayout->setContentsMargins(1, 2, 1, 2);
+        pLayout->setSpacing(3);
+        m_pRenameEditor = new BBPlainTextEdit(pWidget);
+        m_pRenameEditor->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        // margin: 47px 1px 2px 1px;
+        m_pRenameEditor->setStyleSheet("border: none; background: #d6dfeb; color: #191f28;"
+                                       "selection-color: #d6dfeb; selection-background-color: #8193bc;"
+                                       "font: 9pt \"Arial\"; padding: -2px;");
+        m_pRenameEditor->setPlainText(m_pEditingItem->text());
+        m_pRenameEditor->selectAll();
+        QObject::connect(m_pRenameEditor, SIGNAL(editFinished()), this, SLOT(finishRename()));
+        pLayout->addWidget(m_pRenameEditor, 1);
+        setItemWidget(m_pEditingItem, pWidget);
+        m_pRenameEditor->setFocus();
+    }
 }
 
 void BBFileListWidget::finishRename()
 {
-
+    BB_PROCESS_ERROR_RETURN(m_pEditingItem);
+    // without suffix
+    QString newBaseName = m_pRenameEditor->toPlainText();
+    QString oldName = m_FileNames.value(m_pEditingItem);
+    QString suffix = BBFileSystemData::getFileSuffix(oldName);
+    QString newName = newBaseName;
+    if (suffix.count() > 0)
+    {
+        newName += "." + suffix;
+    }
+    if (oldName != newName)
+    {
+        emit rename(m_pEditingItem, m_ParentPath + "/" + oldName, m_ParentPath + "/" + newName);
+    }
+    removeItemWidget(m_pEditingItem);
+    m_pEditingItem = NULL;
+    // Otherwise, the list has no focus and no longer triggers key events
+    setFocus();
+    sortItems();
 }
 
 void BBFileListWidget::deleteAction()
@@ -278,133 +317,7 @@ QString BBFileListWidget::getItemFilePath(QListWidgetItem *pItem)
 
 
 
-//void BBFileListWidget::showInFolder()
-//{
-//    QString filePath = m_FolderPath;
-//    QListWidgetItem *pItem = currentItem();
-//    if (pItem)
-//    {
-//        filePath += "/" + m_Map.value(pItem)->m_FileName;
-//    }
-//    BB_PROCESS_ERROR_RETURN(BBUtils::showInFolder(filePath));
-//}
 
-//void BBFileListWidget::openRenameEditor()
-//{
-//    QList<QListWidgetItem*> items = selectedItems();
-//    if (items.count() == 1)
-//    {
-//        m_pEditingItem = items.first();
-//        QWidget *pWidget = new QWidget(this);
-//        QVBoxLayout *pLayout = new QVBoxLayout(pWidget);
-//        pLayout->setContentsMargins(1, 2, 1, 2);
-//        pLayout->setSpacing(3);
-//        m_pRenameEditor = new BBPlainTextEdit(pWidget);
-//        m_pRenameEditor->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//        // margin: 47px 1px 2px 1px;
-//        m_pRenameEditor->setStyleSheet("border: none; background: #d6dfeb; color: #191f28;"
-//                                       "selection-color: #d6dfeb; selection-background-color: #8193bc;"
-//                                       "font: 9pt \"Arial\"; padding: -2px;");
-//        BBFileInfo *pFileInfo = m_Map.value(m_pEditingItem);
-//        QString fileName = pFileInfo->m_FileName;
-//        if (pFileInfo->m_eFileType != BBFileType::dir)
-//        {
-//            // remove suffix
-//            fileName = fileName.mid(0, fileName.lastIndexOf('.'));
-//        }
-//        m_pRenameEditor->setPlainText(fileName);
-//        m_pRenameEditor->selectAll();
-//        QObject::connect(m_pRenameEditor, SIGNAL(editFinished()), this, SLOT(finishRename()));
-//        pLayout->addWidget(m_pRenameEditor, 1);
-//        setItemWidget(m_pEditingItem, pWidget);
-//        m_pRenameEditor->setFocus();
-//    }
-//}
-
-//void BBFileListWidget::finishRename()
-//{
-//    BB_PROCESS_ERROR_RETURN(m_pEditingItem);
-
-//    // without suffix
-//    QString newBaseName = m_pRenameEditor->toPlainText();
-//    if (!newBaseName.isEmpty())
-//    {
-//        QString newName = newBaseName;
-//        BBFileInfo *pFileInfo = m_Map.value(m_pEditingItem);
-//        QString oldName = pFileInfo->m_FileName;
-//        QString oldBaseName = oldName;
-//        if (pFileInfo->m_eFileType != BBFileType::dir)
-//        {
-//            // add suffix
-//            QString suffix = BBUtils::getFileSuffix(oldName);
-//            newName = newBaseName + "." + suffix;
-//            oldBaseName = BBUtils::getBaseName(oldName);
-//        }
-//        if (oldName != newName)
-//        {
-//            QString oldPath = m_FolderPath + "/" + oldName;
-//            QString newPath;
-//            if (pFileInfo->m_eFileType == BBFileType::dir)
-//            {
-//                newPath = BBUtils::getExclusiveFolderPath(m_FolderPath, newName);
-//                if (QFile::rename(oldPath, newPath))
-//                {
-//                    newBaseName = BBUtils::getBaseName(newName);
-//                    pFileInfo->m_FileName = newName;
-//                    m_pEditingItem->setText(lineFeed(newBaseName));
-//                    // rename corresponding folder in the engine folder
-//                    QFile::rename(BBUtils::getEngineAuxiliaryFolderPath(oldPath),
-//                                  BBUtils::getEngineAuxiliaryFolderPath(newPath));
-//                    // update corresponding item in the folder tree
-//                    renameItemInFolderTree(oldName, newName);
-//                }
-////                //如果该文件夹在剪贴板中 则也在文件夹树的剪贴板中 自己和树的剪贴板都要移除
-////                if (clipBoardPaths.contains(oldPath))
-////                {
-////                    clipBoardPaths.removeOne(oldPath);
-////                    //树结点的名字已经改了 需要使用新路径找对应结点
-////                    removeRenameItemInTreeClipBoard(newPath);
-////                }
-//            }
-//            else
-//            {
-//                // file
-//                newPath = BBUtils::getExclusiveFilePath(m_FolderPath, newName);
-//                if (QFile::rename(oldPath, newPath))
-//                {
-//                    newBaseName = BBUtils::getBaseName(newName);
-//                    pFileInfo->m_FileName = newName;
-//                    m_pEditingItem->setText(lineFeed(newBaseName));
-
-//                    if (pFileInfo->m_eFileType == BBFileType::mesh)
-//                    {
-//                        // rename overview map
-//                        BB_PROCESS_ERROR_RETURN(QFile::rename(BBUtils::getOverviewMapPath(oldPath),
-//                                                              BBUtils::getOverviewMapPath(newPath)));
-//                    }
-//                    else if (pFileInfo->m_eFileType == BBFileType::material)
-//                    {
-////                        //材质文件 需要修改文件路径与材质对象的映射
-////                        Material::rename(oldPath, newPath);
-//                    }
-//                }
-////                //重命名后 如果在剪贴板中 移除掉
-////                if (clipBoardPaths.contains(oldPath))
-////                {
-////                    clipBoardPaths.removeOne(oldPath);
-////                }
-//            }
-//            sortItems();
-//        }
-//    }
-
-//    removeItemWidget(m_pEditingItem);
-//    m_pEditingItem = NULL;
-//    // Otherwise, the list has no focus and no longer triggers key events
-//    setFocus();
-////    //重新显示属性栏的属性 名字更新
-////    itemClicked(editingItem);
-//}
 
 //void BBFileListWidget::deleteAction()
 //{
@@ -899,20 +812,20 @@ void BBFileListWidget::contextMenuEvent(QContextMenuEvent *event)
     m_pMenu->exec(cursor().pos());
 }
 
-//void BBFileListWidget::keyPressEvent(QKeyEvent *event)
-//{
-//    // Handling menu shortcut events
-//    int key;
-//#if defined(Q_OS_WIN32)
-//    key = Qt::Key_F2;
-//#elif defined(Q_OS_MAC)
-//    key = Qt::Key_Return;
-//#endif
-//    if (event->key() == key)
-//    {
-//        openRenameEditor();
-//    }
-//}
+void BBFileListWidget::keyPressEvent(QKeyEvent *event)
+{
+    // Handling menu shortcut events
+    int key;
+#if defined(Q_OS_WIN32)
+    key = Qt::Key_F2;
+#elif defined(Q_OS_MAC)
+    key = Qt::Key_Return;
+#endif
+    if (event->key() == key)
+    {
+        openRenameEditor();
+    }
+}
 
 void BBFileListWidget::focusInEvent(QFocusEvent *event)
 {

@@ -54,8 +54,14 @@ BBFilePathBarWidget::BBFilePathBarWidget(QWidget *pParent)
                   "QLabel {color: rgb(60, 64, 75);}");
 }
 
+void BBFilePathBarWidget::update()
+{
+    showFolderPath(m_CurrentPath);
+}
+
 void BBFilePathBarWidget::showFolderPath(const QString &path)
 {
+    m_CurrentPath = path;
     // Clear the last showed path
     while (QLayoutItem *pChild = layout()->takeAt(0))
     {

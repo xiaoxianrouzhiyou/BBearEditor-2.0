@@ -30,7 +30,6 @@ private slots:
     void showInFolder();
     void copyAction() override;
     void pasteAction() override;
-    void openRenameEditor();
     void finishRename() override;
     void deleteAction() override;
 
@@ -71,7 +70,6 @@ private:
 
 
 //signals:
-//    void deleteFileItemInList();
 //    void copyToFileList(QList<QString> folderPaths);
 //    void pasteFile(QList<QString> filePaths, QString destPath, QList<QString> pastedFolderNames);
 //    void cancelHierarchyTreeSelectedItems();
@@ -83,7 +81,6 @@ private:
 //    void removeClipBoardRenameItem(QString path);
 
 //private:
-//    bool moveItemFromFileList(const QMimeData *mimeData) override;
 //    void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript) override;
 //    void pasteEnd() override;
 //    void loadMaterial(QString filePath);

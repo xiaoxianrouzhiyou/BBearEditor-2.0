@@ -31,6 +31,7 @@ void BBFolderTreeWidget::loadTopLevelItems(const QList<QTreeWidgetItem*> &items)
     addTopLevelItems(items);
     resumeItemExpansionState();
     setCurrentShowFolderContentItem(m_pCurrentShowFolderContentItem);
+    sortItems(0, Qt::AscendingOrder);
 }
 
 void BBFolderTreeWidget::setCurrentShowFolderContentItem(QTreeWidgetItem *pItem)
@@ -66,7 +67,7 @@ void BBFolderTreeWidget::newFolder()
     QString parentPath = getAbsolutePath(pParent);
     emit newFolder(parentPath, m_eSenderTag);
     // Open the edit box to let the user set name
-    // openRenameEditor();
+     openRenameEditor();
 }
 
 void BBFolderTreeWidget::showInFolder()
@@ -82,11 +83,6 @@ void BBFolderTreeWidget::copyAction()
 }
 
 void BBFolderTreeWidget::pasteAction()
-{
-
-}
-
-void BBFolderTreeWidget::openRenameEditor()
 {
 
 }

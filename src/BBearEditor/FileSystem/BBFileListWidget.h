@@ -36,7 +36,8 @@ public:
     explicit BBFileListWidget(QWidget *pParent = nullptr);
     ~BBFileListWidget();
 
-    QString getMimeType() { return BB_MIMETYPE_FILELISTWIDGET; }
+    inline QString getMimeType() { return BB_MIMETYPE_FILELISTWIDGET; }
+    inline QString getCurrentParentPath() { return m_ParentPath; }
 
     void loadItems(const QString &parentPath, QTreeWidgetItem *pParentItem,
                    const QList<QListWidgetItem*> &items, const QList<QString> &fileNames,
@@ -59,6 +60,7 @@ signals:
     void openFile(const QString &filePath);
     void newFolder(const QString &parentPath, const BBSignalSender &eSender);
     void showInFolder(const QString &filePath);
+    void rename(QListWidgetItem *pFileItem, const QString &oldPath, const QString &newPath);
 
 private:
     void setMenu();
@@ -101,7 +103,7 @@ private:
 //    void paintEvent(QPaintEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void contextMenuEvent(QContextMenuEvent *event) override;
-//    void keyPressEvent(QKeyEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
     void focusInEvent(QFocusEvent *event) override;
 
     static QSize m_StandardIconSize;
