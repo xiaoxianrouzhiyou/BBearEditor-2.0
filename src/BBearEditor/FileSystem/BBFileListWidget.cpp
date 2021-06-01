@@ -102,13 +102,56 @@ void BBFileListWidget::loadItems(const QString &folderPath, const QList<QListWid
     {
         addItem(items.at(i));
     }
+
     m_FolderPath = folderPath;
+    sortItems();
+//    setCurrentItem(pItem);
 }
 
 void BBFileListWidget::doubleClickItem(QListWidgetItem *pItem)
 {
-    QString filePath = m_FolderPath + "/" + pItem->text();
-    openFile(filePath);
+    emit openFile(getItemFilePath(pItem));
+}
+
+void BBFileListWidget::newFolder()
+{
+    // Otherwise, after creating, several items will be selected
+    QList<QListWidgetItem*> items = selectedItems();
+    for (int i = 0; i < items.count(); i++)
+    {
+        setItemSelected(items.at(i), false);
+    }
+    emit newFolder(m_FolderPath);
+    openRenameEditor();
+}
+void BBFileListWidget::showInFolder()
+{
+    emit showInFolder(getItemFilePath(currentItem()));
+}
+
+void BBFileListWidget::copyAction()
+{
+
+}
+
+void BBFileListWidget::pasteAction()
+{
+
+}
+
+void BBFileListWidget::openRenameEditor()
+{
+
+}
+
+void BBFileListWidget::finishRename()
+{
+
+}
+
+void BBFileListWidget::deleteAction()
+{
+
 }
 
 void BBFileListWidget::setMenu()
@@ -213,39 +256,14 @@ QWidgetAction* BBFileListWidget::createWidgetAction(const QString &iconPath, con
     return pAction;
 }
 
+QString BBFileListWidget::getItemFilePath(QListWidgetItem *pItem)
+{
+    return m_FolderPath + "/" + pItem->text();
+}
 
 
 
 
-//void BBFileListWidget::newFolder()
-//{
-//    // Otherwise, after creating, several items will be selected
-//    QList<QListWidgetItem*> items = selectedItems();
-//    for (int i = 0; i < items.count(); i++)
-//    {
-//        setItemSelected(items.at(i), false);
-//    }
-
-//    QString fileName = "new folder";
-//    QString filePath = BBUtils::getExclusiveFolderPath(m_FolderPath, fileName);
-
-//    QDir dir;
-//    BB_PROCESS_ERROR_RETURN(dir.mkdir(filePath));
-
-//    // add item at the beginning
-//    QListWidgetItem *pItem = new QListWidgetItem(this);
-//    pItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
-//    pItem->setSizeHint(m_ItemSize);
-//    pItem->setText(lineFeed(fileName));
-//    pItem->setIcon(getIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
-
-//    m_Map.insert(pItem, new BBFileInfo(fileName, BBFileType::dir));
-
-//    sortItems();
-//    addItemInFolderTree(m_FolderPath, fileName);
-//    setCurrentItem(pItem);
-//    openRenameEditor();
-//}
 
 //void BBFileListWidget::showInFolder()
 //{
@@ -256,16 +274,6 @@ QWidgetAction* BBFileListWidget::createWidgetAction(const QString &iconPath, con
 //        filePath += "/" + m_Map.value(pItem)->m_FileName;
 //    }
 //    BB_PROCESS_ERROR_RETURN(BBUtils::showInFolder(filePath));
-//}
-
-//void BBFileListWidget::copyAction()
-//{
-
-//}
-
-//void BBFileListWidget::pasteAction()
-//{
-
 //}
 
 //void BBFileListWidget::openRenameEditor()

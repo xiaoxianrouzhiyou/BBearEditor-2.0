@@ -121,7 +121,7 @@ QWidgetAction* BBFolderTreeWidget::createWidgetAction(QMenu *pParent, const QStr
 void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
 {
     QString folderPath = getAbsolutePath(pItem);
-    accessFolder(pItem, folderPath);
+    emit accessFolder(folderPath, pItem);
     m_pCurrentShowFolderContentItem = pItem;
 }
 

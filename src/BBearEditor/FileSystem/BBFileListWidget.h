@@ -44,20 +44,41 @@ public:
 
 private slots:
     void doubleClickItem(QListWidgetItem *pItem);
-//    void newFolder();
-//    void showInFolder();
-//    void copyAction();
-//    void pasteAction();
-//    void openRenameEditor();
-//    void finishRename();
-//    void deleteAction();
+    void newFolder();
+    void showInFolder();
+    void copyAction();
+    void pasteAction();
+    void openRenameEditor();
+    void finishRename();
+    void deleteAction();
 
 signals:
     void openFile(const QString &filePath);
+    void newFolder(const QString &parentPath);
+    void showInFolder(const QString &filePath);
 
 private:
     void setMenu();
     QWidgetAction* createWidgetAction(const QString &iconPath, const QString &name);
+
+    QString getItemFilePath(QListWidgetItem *pItem);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //    void deleteOne(QListWidgetItem *pItem);

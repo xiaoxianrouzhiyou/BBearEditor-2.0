@@ -68,6 +68,7 @@ public:
     QList<QListWidgetItem*> getFileListWidgetItems(QTreeWidgetItem *pItem);
     QTreeWidgetItem* getItemByPath(const QString &absolutePath);
     bool openFile(const QString &filePath);
+    bool newFolder(const QString &parentPath, QTreeWidgetItem *&pFolderItem, QListWidgetItem *&pFileItem);
 
 public:
     static QString getExclusiveFolderPath(const QString &parentPath, QString &fileName);
@@ -95,7 +96,7 @@ public:
 
 private:
     void buildFileData(QQueue<BBFOLDER> &queue);
-    BBFILE loadFolderContent(const QString &parentPath);
+    BBFILE* loadFolderContent(const QString &parentPath);
 
     QString getEngineAuxiliaryFolderPath(const QString &sourcePath);
     QIcon getIcon(const QString &path);
@@ -104,11 +105,12 @@ private:
     void createMeshOverviewMap(const QString &sourcePath, const QString &overviewMapPath);
     QColor getFileLogoColor(const BBFileType &eFileType);
     BBFileType getFileType(const QString &filePath);
+    BBFILE* getFolderContent(QTreeWidgetItem *pItem);
 
     BBOpenGLWidget *m_pPreviewOpenGLWidget;
-    BBFILE m_RootFileData;
-    QMap<QTreeWidgetItem*, BBFILE> m_TopLevelFileData;
-    QMap<QTreeWidgetItem*, BBFILE> m_FileData;
+    BBFILE *m_pRootFileData;
+    QMap<QTreeWidgetItem*, BBFILE*> m_TopLevelFileData;
+    QMap<QTreeWidgetItem*, BBFILE*> m_FileData;
 };
 
 #endif // BBFILESYSTEMDATA_H

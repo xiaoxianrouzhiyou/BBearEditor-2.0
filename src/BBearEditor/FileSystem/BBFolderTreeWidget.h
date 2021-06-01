@@ -36,7 +36,7 @@ private slots:
 //    void deleteAction() override;
 
 signals:
-    void accessFolder(QTreeWidgetItem *pItem, const QString &filePath);
+    void accessFolder(const QString &filePath, QTreeWidgetItem *pItem);
 
 private:
     void setMenu() override;

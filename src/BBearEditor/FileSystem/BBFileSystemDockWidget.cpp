@@ -55,7 +55,7 @@ void BBFileSystemDockWidget::openProject()
     updateFolderPathBar(BBConstant::BB_PATH_PROJECT_USER);
 }
 
-void BBFileSystemDockWidget::clickItemInFolderTree(QTreeWidgetItem *pItem, const QString &filePath)
+void BBFileSystemDockWidget::clickItemInFolderTree(const QString &filePath, QTreeWidgetItem *pItem)
 {
     updateFileList(filePath, pItem);
     updateFolderPathBar(filePath);
@@ -76,13 +76,23 @@ void BBFileSystemDockWidget::clickItemInFolderPathBar(const QString &filePath)
 {
     updateFolderTree(filePath);
     updateFileList(filePath);
+    updateFolderPathBar(filePath);
+}
+
+void BBFileSystemDockWidget::newFolder(const QString &parentPath)
+{
+    QTreeWidgetItem *pFolderItem = NULL;
+    QListWidgetItem *pFileItem = NULL;
+    m_pData->newFolder(parentPath, pFolderItem, pFileItem);
+    updateFolderTree();
+    updateFileList(parentPath);
 }
 
 void BBFileSystemDockWidget::setConnect()
 {
     // update selected folder
-    QObject::connect(m_pUi->treeFolder, SIGNAL(accessFolder(QTreeWidgetItem*, QString)),
-                     this, SLOT(clickItemInFolderTree(QTreeWidgetItem*, QString)));
+    QObject::connect(m_pUi->treeFolder, SIGNAL(accessFolder(QString, QTreeWidgetItem*)),
+                     this, SLOT(clickItemInFolderTree(QString, QTreeWidgetItem*)));
     QObject::connect(m_pUi->listFile, SIGNAL(openFile(QString)),
                      this, SLOT(doubleClickItemInFileList(QString)));
     QObject::connect(m_pUi->barFilePath, SIGNAL(accessFolder(QString)),
@@ -97,6 +107,11 @@ void BBFileSystemDockWidget::setConnect()
                      m_pUi->scrollAreaFilePath, SLOT(moveToLeft()));
     QObject::connect(m_pUi->buttonMovePathRight, SIGNAL(pressed()),
                      m_pUi->scrollAreaFilePath, SLOT(moveToRight()));
+    // new folder
+    QObject::connect(m_pUi->treeFolder, SIGNAL(newFolder(QString)),
+                     this, SLOT(newFolder(QString)));
+    QObject::connect(m_pUi->listFile, SIGNAL(newFolder(QString)),
+                     this, SLOT(newFolder(QString)));
 }
 
 /**
@@ -137,14 +152,8 @@ void BBFileSystemDockWidget::updateFolderPathBar(const QString &filePath)
 
 
 
-//    // click an item in the file path bar or file list, and change selected item in the folder tree
-//    QObject::connect(m_pUi->barFilePath, SIGNAL(showFolderContent(QString)),
-//                     m_pUi->treeFolder, SLOT(setCurrentItemByPath(QString)));
-//    QObject::connect(m_pUi->listFile, SIGNAL(clickFolderTreeItem(QString)),
-//                     m_pUi->treeFolder, SLOT(setCurrentItemByPath(QString)));
-//    // new folder in file list, and add corresponding item in folder tree
-//    QObject::connect(m_pUi->listFile, SIGNAL(addItemInFolderTree(QString, QString)),
-//                     m_pUi->treeFolder, SLOT(addItem(QString, QString)));
+
+
 //    // rename folder name in the file list, and update the name of corresponding item in the folder tree
 //    QObject::connect(m_pUi->listFile, SIGNAL(renameItemInFolderTree(QString, QString)),
 //                     m_pUi->treeFolder, SLOT(renameItem(QString, QString)));

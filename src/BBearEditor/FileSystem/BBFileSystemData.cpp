@@ -30,14 +30,16 @@ BBFileSystemData::BBFileSystemData()
 
 BBFileSystemData::~BBFileSystemData()
 {
-    for (QMap<QTreeWidgetItem*, BBFILE>::Iterator it = m_TopLevelFileData.begin(); it != m_TopLevelFileData.end(); it++)
+    for (QMap<QTreeWidgetItem*, BBFILE*>::Iterator it = m_TopLevelFileData.begin(); it != m_TopLevelFileData.end(); it++)
     {
-        qDeleteAll(it.value());
+        qDeleteAll(*it.value());
+        delete it.value();
         delete it.key();
     }
-    for (QMap<QTreeWidgetItem*, BBFILE>::Iterator it = m_FileData.begin(); it != m_FileData.end(); it++)
+    for (QMap<QTreeWidgetItem*, BBFILE*>::Iterator it = m_FileData.begin(); it != m_FileData.end(); it++)
     {
-        qDeleteAll(it.value());
+        qDeleteAll(*it.value());
+        delete it.value();
         // it.key() is child item
         // when delete top item of m_TopLevelFileData, their child items had been deleted
         // delete it.key();
@@ -56,7 +58,7 @@ void BBFileSystemData::load()
     if (dir.exists())
     {
         // the content of root folder
-        m_RootFileData = loadFolderContent(rootPath);
+        m_pRootFileData = loadFolderContent(rootPath);
         // The queue of the parent node of the node to be created
         QQueue<BBFOLDER> queue;
         // init
@@ -79,7 +81,7 @@ QList<QTreeWidgetItem*> BBFileSystemData::getFolderTreeWidgetTopLevelItems()
 {
     QList<QTreeWidgetItem*> items;
 
-    for (QMap<QTreeWidgetItem*, BBFILE>::Iterator it = m_TopLevelFileData.begin(); it != m_TopLevelFileData.end(); it++)
+    for (QMap<QTreeWidgetItem*, BBFILE*>::Iterator it = m_TopLevelFileData.begin(); it != m_TopLevelFileData.end(); it++)
     {
         items.append(it.key());
     }
@@ -90,20 +92,8 @@ QList<QTreeWidgetItem*> BBFileSystemData::getFolderTreeWidgetTopLevelItems()
 QList<QListWidgetItem*> BBFileSystemData::getFileListWidgetItems(QTreeWidgetItem *pItem)
 {
     QList<QListWidgetItem*> items;
-    BBFILE file;
-    if (pItem == NULL)
-    {
-        file = m_RootFileData;
-    }
-    else if (pItem->parent())
-    {
-        file = m_FileData.value(pItem);
-    }
-    else
-    {
-        file = m_TopLevelFileData.value(pItem);
-    }
-    for (BBFILE::Iterator it = file.begin(); it != file.end(); it++)
+    BBFILE *pFolderContent = getFolderContent(pItem);
+    for (BBFILE::Iterator it = pFolderContent->begin(); it != pFolderContent->end(); it++)
     {
         items.append(it.key());
     }
@@ -131,7 +121,7 @@ QTreeWidgetItem* BBFileSystemData::getItemByPath(const QString &absolutePath)
         QStringList list = path.split('/');
         // Find the item that is at the top level corresponds to item 0 in the list
         // Folders at the same level cannot have the same name
-        for (QMap<QTreeWidgetItem*, BBFILE>::Iterator it = m_TopLevelFileData.begin(); it != m_TopLevelFileData.end(); it++)
+        for (QMap<QTreeWidgetItem*, BBFILE*>::Iterator it = m_TopLevelFileData.begin(); it != m_TopLevelFileData.end(); it++)
         {
             QString name = ((QTreeWidgetItem*) it.key())->text(0);
             if (name == list.at(0))
@@ -177,6 +167,47 @@ bool BBFileSystemData::openFile(const QString &filePath)
             QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
         }
     }
+}
+
+/**
+ * @brief BBFileSystemData::newFolder
+ * @param parentPath
+ * @param pFolderItem                           current item in the folder tree after creating new folder
+ * @param pFileList                             current item in the file list after creating new folder
+ * @return
+ */
+bool BBFileSystemData::newFolder(const QString &parentPath, QTreeWidgetItem *&pFolderItem, QListWidgetItem *&pFileItem)
+{
+    QString fileName = "new folder";
+    QString filePath = getExclusiveFolderPath(parentPath, fileName);
+
+    QDir dir;
+    BB_PROCESS_ERROR_RETURN_FALSE(dir.mkdir(filePath));
+
+    // add its own folder tree item
+    pFolderItem = new QTreeWidgetItem({fileName});
+    pFolderItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
+    // find the tree item of its parent
+    QTreeWidgetItem *pParent = getItemByPath(parentPath);
+    if (pParent)
+    {
+        // the map has nothing, since this is a new folder
+        m_FileData.insert(pFolderItem, new BBFILE());
+    }
+    else
+    {
+        m_TopLevelFileData.insert(pFolderItem, new BBFILE());
+    }
+
+    // add file list item at the beginning of list of its parent
+    pFileItem = new QListWidgetItem({fileName});
+    pFileItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
+    pFileItem->setSizeHint(BBFileListWidget::m_ItemSize);
+    pFileItem->setIcon(getIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
+    BBFileInfo *pInfo = new BBFileInfo(fileName, BBFileType::Dir);
+    // find the BBFILE corresponding the tree item of its parent
+    BBFILE *pParentContent = getFolderContent(pParent);
+    pParentContent->insert(pFileItem, pInfo);
 }
 
 QString BBFileSystemData::getExclusiveFolderPath(const QString &parentPath, QString &fileName)
@@ -330,17 +361,17 @@ void BBFileSystemData::buildFileData(QQueue<BBFOLDER> &queue)
         {
             QTreeWidgetItem *pItem = new QTreeWidgetItem({fileInfo.fileName()});
             pItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
-            BBFILE folderContent = loadFolderContent(fileInfo.absoluteFilePath());
+            BBFILE *pFolderContent = loadFolderContent(fileInfo.absoluteFilePath());
             if (folder.pItem)
             {
                 // is not at the top level
                 folder.pItem->addChild(pItem);
-                m_FileData.insert(pItem, folderContent);
+                m_FileData.insert(pItem, pFolderContent);
             }
             else
             {
                 // add it at the top level
-                m_TopLevelFileData.insert(pItem, folderContent);
+                m_TopLevelFileData.insert(pItem, pFolderContent);
             }
             // push queue, used for adding child item
             queue.enqueue(BBFOLDER(fileInfo.absoluteFilePath(), pItem));
@@ -356,9 +387,9 @@ void BBFileSystemData::buildFileData(QQueue<BBFOLDER> &queue)
     }
 }
 
-BBFILE BBFileSystemData::loadFolderContent(const QString &parentPath)
+BBFILE* BBFileSystemData::loadFolderContent(const QString &parentPath)
 {
-    BBFILE folderContent;
+    BBFILE *pFolderContent = new  BBFILE();
     QDir dir(parentPath);
     dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
     QFileInfoList fileInfoList = dir.entryInfoList();
@@ -372,7 +403,7 @@ BBFILE BBFileSystemData::loadFolderContent(const QString &parentPath)
             // is folder
             pItem->setText(fileInfo.fileName());
             pItem->setIcon(getIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
-            folderContent.insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Dir));
+            pFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Dir));
         }
         else
         {
@@ -384,37 +415,37 @@ BBFILE BBFileSystemData::loadFolderContent(const QString &parentPath)
                 QString sourcePath = fileInfo.absoluteFilePath();
                 QIcon icon = getMeshOverviewMap(sourcePath);
                 pItem->setIcon(icon);
-                folderContent.insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Mesh));
+                pFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Mesh));
             }
             else if (m_TextureSuffixs.contains(suffix))
             {
                 // Picture files use themselves as icons
                 pItem->setIcon(getTextureIcon(fileInfo.absoluteFilePath()));
-                folderContent.insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Texture));
+                pFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Texture));
             }
             else if (m_AudioSuffixs.contains(suffix))
             {
                 pItem->setIcon(getIcon(BBConstant::BB_PATH_RESOURCE_PICTURE + "audio.jpg"));
-                folderContent.insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Audio));
+                pFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Audio));
             }
             else if (m_ScriptSuffixs.contains(suffix))
             {
                 pItem->setIcon(getIcon(QString(BB_PATH_RESOURCE_ICON) + "lua.png"));
-                folderContent.insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Script));
+                pFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Script));
             }
             else if (m_MaterialSuffixs.contains(suffix))
             {
 //                Material* material = Material::mtlMap.value(fileInfo.absoluteFilePath());
 //                item->setIcon(QIcon(material->getPreview()));
-//                folderContent.insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Material));
+//                pFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Material));
             }
             else
             {
-                folderContent.insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Other));
+                pFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Other));
             }
         }
     }
-    return folderContent;
+    return pFolderContent;
 }
 
 QString BBFileSystemData::getEngineAuxiliaryFolderPath(const QString &sourcePath)
@@ -521,4 +552,22 @@ BBFileType BBFileSystemData::getFileType(const QString &filePath)
     QTreeWidgetItem *pItem = getItemByPath(filePath);
     // to do ... m_RootFileData  m_TopLevelFileData  m_FileData
     return BBFileType::Other;
+}
+
+BBFILE* BBFileSystemData::getFolderContent(QTreeWidgetItem *pItem)
+{
+    BBFILE *pFolderContent;
+    if (pItem == NULL)
+    {
+        pFolderContent = m_pRootFileData;
+    }
+    else if (pItem->parent())
+    {
+        pFolderContent = m_FileData.value(pItem);
+    }
+    else
+    {
+        pFolderContent = m_TopLevelFileData.value(pItem);
+    }
+    return pFolderContent;
 }
