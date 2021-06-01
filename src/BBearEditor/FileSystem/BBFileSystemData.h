@@ -65,10 +65,11 @@ public:
     void bindPreviewOpenGLWidget(BBOpenGLWidget *pPreviewOpenGLWidget) { m_pPreviewOpenGLWidget = pPreviewOpenGLWidget; }
     void load();
     QList<QTreeWidgetItem*> getFolderTreeWidgetTopLevelItems();
-    QList<QListWidgetItem*> getFileListWidgetItems(QTreeWidgetItem *pItem);
+    bool getFileListWidgetItems(QTreeWidgetItem *pItem, QList<QListWidgetItem*> &outItems, QList<QString> &outFileNames);
     QTreeWidgetItem* getItemByPath(const QString &absolutePath);
     bool openFile(const QString &filePath);
     bool newFolder(const QString &parentPath, QTreeWidgetItem *&pFolderItem, QListWidgetItem *&pFileItem);
+    bool showInFolder(const QString &filePath);
 
 public:
     static QString getExclusiveFolderPath(const QString &parentPath, QString &fileName);

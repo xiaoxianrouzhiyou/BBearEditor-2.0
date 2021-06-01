@@ -38,7 +38,9 @@ public:
 
     QString getMimeType() { return BB_MIMETYPE_FILELISTWIDGET; }
 
-    void loadItems(const QString &folderPath, const QList<QListWidgetItem*> &items, QListWidgetItem *pCurrentItem);
+    void loadItems(const QString &parentPath, QTreeWidgetItem *pParentItem,
+                   const QList<QListWidgetItem*> &items, const QList<QString> &fileNames,
+                   QListWidgetItem *pCurrentItem);
 
 public:
     static QSize m_ItemSize;
@@ -106,8 +108,9 @@ private:
     static QSize m_StandardItemSize;
 
     QMenu *m_pMenu;
-    QString m_FolderPath;
-    BBFILE m_FileData;
+    QString m_ParentPath;
+    QTreeWidgetItem *m_pParentItem;
+    QMap<QListWidgetItem*, QString> m_FileNames;
     QListWidgetItem *m_pEditingItem;
     BBPlainTextEdit *m_pRenameEditor;
     QListWidgetItem *m_pIndicatorItem;

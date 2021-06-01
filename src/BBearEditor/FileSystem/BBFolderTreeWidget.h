@@ -27,13 +27,12 @@ private slots:
     void pressSettingButton();
     void clickItem(QTreeWidgetItem *pItem, int nColumn);
     void newFolder();
-//    void addItem(const QString &parentPath, const QString &name);
-//    void renameItem(const QString &oldName, const QString &newName);
-//    void moveItem(const QString &oldPath, const QString &newPath);
-//    void deleteItem(const QString &folderPath);
-//    void showInFolder();
-//    void finishRename() override;
-//    void deleteAction() override;
+    void showInFolder();
+    void copyAction() override;
+    void pasteAction() override;
+    void openRenameEditor();
+    void finishRename() override;
+    void deleteAction() override;
 
 signals:
     void accessFolder(const QString &filePath, QTreeWidgetItem *pItem);
@@ -76,9 +75,6 @@ private:
 //    void clearPropertyWidget();
 
 //private slots:
-//    void copyAction() override;
-//    void pasteAction() override;
-//    void updateCurrentShowFolderContentItem(QString path);
 //    void copyByFileList(QList<QString> filePaths);
 //    void pasteItemWithoutPasteFile(QList<QString> clipBoardTranscriptFolderNames);
 //    void removeClipBoardRenameItem(QString path);

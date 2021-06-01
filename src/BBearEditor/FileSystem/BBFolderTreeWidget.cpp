@@ -67,6 +67,38 @@ void BBFolderTreeWidget::newFolder()
     // openRenameEditor();
 }
 
+void BBFolderTreeWidget::showInFolder()
+{
+    QTreeWidgetItem *pItem = currentItem();
+    QString filePath = getAbsolutePath(pItem);
+    emit showInFolder(filePath);
+}
+
+void BBFolderTreeWidget::copyAction()
+{
+
+}
+
+void BBFolderTreeWidget::pasteAction()
+{
+
+}
+
+void BBFolderTreeWidget::openRenameEditor()
+{
+
+}
+
+void BBFolderTreeWidget::finishRename()
+{
+
+}
+
+void BBFolderTreeWidget::deleteAction()
+{
+
+}
+
 void BBFolderTreeWidget::setMenu()
 {
     // first level menu
@@ -166,24 +198,7 @@ QString BBFolderTreeWidget::getAbsolutePath(QTreeWidgetItem *pItem)
 
 
 
-//void BBFolderTreeWidget::addItem(const QString &parentPath, const QString &name)
-//{
-//    QTreeWidgetItem *pParent = getItemByPath(parentPath);
 
-//    QTreeWidgetItem *pItem = new QTreeWidgetItem({name});
-//    pItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
-
-//    if (pParent)
-//    {
-//        pParent->addChild(pItem);
-//        setItemExpanded(pParent, true);
-//    }
-//    else
-//    {
-//        addTopLevelItem(pItem);
-//    }
-//    sortItems(0, Qt::AscendingOrder);
-//}
 
 //void BBFolderTreeWidget::renameItem(const QString &oldName, const QString &newName)
 //{
@@ -256,14 +271,6 @@ QString BBFolderTreeWidget::getAbsolutePath(QTreeWidgetItem *pItem)
 ////        clipBoardItems.removeOne(pItem);
 ////    }
 //    BB_SAFE_DELETE(pItem);
-//}
-
-//void BBFolderTreeWidget::showInFolder()
-//{
-//    QTreeWidgetItem *pItem = currentItem();
-//    QString filePath = getAbsolutePath(pItem);
-
-//    BB_PROCESS_ERROR_RETURN(BBUtils::showInFolder(filePath));
 //}
 
 //void BBFolderTreeWidget::finishRename()

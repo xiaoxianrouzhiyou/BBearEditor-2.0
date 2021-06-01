@@ -53,17 +53,7 @@ char *BBUtils::loadFileContent(const char *filePath, int &nFileSize)
 
 
 
-//bool BBUtils::showInFolder(const QString &filePath)
-//{
-//    BB_PROCESS_ERROR_RETURN_FALSE(!filePath.isEmpty());
-//    QProcess process;
-//    // just identify "\\"
-//    QString legalPath = filePath;
-//    legalPath.replace("/", "\\");
-//    QString cmd = QString("explorer.exe /select,%1").arg(legalPath);
-//    qDebug() << cmd;
-//    return process.startDetached(cmd);
-//}
+
 
 //bool BBUtils::copyFolder(const QString &fromDir, const QString &toDir)
 //{

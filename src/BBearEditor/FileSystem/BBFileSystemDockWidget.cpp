@@ -94,6 +94,11 @@ void BBFileSystemDockWidget::newFolder(const QString &parentPath, const BBSignal
     }
 }
 
+void BBFileSystemDockWidget::showInFolder(const QString &filePath)
+{
+    m_pData->showInFolder(filePath);
+}
+
 void BBFileSystemDockWidget::setConnect()
 {
     // update selected folder
@@ -118,6 +123,11 @@ void BBFileSystemDockWidget::setConnect()
                      this, SLOT(newFolder(QString, BBSignalSender)));
     QObject::connect(m_pUi->listFile, SIGNAL(newFolder(QString, BBSignalSender)),
                      this, SLOT(newFolder(QString, BBSignalSender)));
+    // show in folder
+    QObject::connect(m_pUi->treeFolder, SIGNAL(showInFolder(QString)),
+                     this, SLOT(showInFolder(QString)));
+    QObject::connect(m_pUi->listFile, SIGNAL(showInFolder(QString)),
+                     this, SLOT(showInFolder(QString)));;
 }
 
 /**
@@ -142,7 +152,10 @@ void BBFileSystemDockWidget::updateFileList(const QString &parentPath,
                                             QTreeWidgetItem *pParentFolderItem,
                                             QListWidgetItem *pCurrentItem)
 {
-    m_pUi->listFile->loadItems(parentPath, m_pData->getFileListWidgetItems(pParentFolderItem), pCurrentItem);
+    QList<QListWidgetItem*> items;
+    QList<QString> fileNames;
+    m_pData->getFileListWidgetItems(pParentFolderItem, items, fileNames);
+    m_pUi->listFile->loadItems(parentPath, pParentFolderItem, items, fileNames, pCurrentItem);
 }
 
 void BBFileSystemDockWidget::updateFileList(const QString &parentPath, QListWidgetItem *pCurrentItem)

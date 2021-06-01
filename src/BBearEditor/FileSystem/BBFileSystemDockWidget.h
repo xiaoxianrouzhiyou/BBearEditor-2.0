@@ -38,6 +38,7 @@ private slots:
     void clickItemInFolderPathBar(const QString &filePath);
 
     void newFolder(const QString &parentPath, const BBSignalSender &eSender);
+    void showInFolder(const QString &filePath);
 
 private:
     void setConnect();

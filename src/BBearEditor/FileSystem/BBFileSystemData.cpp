@@ -89,15 +89,19 @@ QList<QTreeWidgetItem*> BBFileSystemData::getFolderTreeWidgetTopLevelItems()
     return items;
 }
 
-QList<QListWidgetItem*> BBFileSystemData::getFileListWidgetItems(QTreeWidgetItem *pItem)
+bool BBFileSystemData::getFileListWidgetItems(QTreeWidgetItem *pItem,
+                                              QList<QListWidgetItem*> &outItems,
+                                              QList<QString> &outFileNames)
 {
-    QList<QListWidgetItem*> items;
     BBFILE *pFolderContent = getFolderContent(pItem);
     for (BBFILE::Iterator it = pFolderContent->begin(); it != pFolderContent->end(); it++)
     {
-        items.append(it.key());
+        QListWidgetItem *pItem = it.key();
+        outItems.append(pItem);
+        BBFileInfo *pInfo = pFolderContent->value(pItem);
+        outFileNames.append(pInfo->m_FileName);
     }
-    return items;
+    return true;
 }
 
 /**
@@ -210,6 +214,18 @@ bool BBFileSystemData::newFolder(const QString &parentPath, QTreeWidgetItem *&pF
     BBFILE *pParentContent = getFolderContent(pParent);
     pParentContent->insert(pFileItem, pInfo);
     return true;
+}
+
+bool BBFileSystemData::showInFolder(const QString &filePath)
+{
+    BB_PROCESS_ERROR_RETURN_FALSE(!filePath.isEmpty());
+    QProcess process;
+    // just identify "\\"
+    QString legalPath = filePath;
+    legalPath.replace("/", "\\");
+    QString cmd = QString("explorer.exe /select,%1").arg(legalPath);
+    qDebug() << cmd;
+    return process.startDetached(cmd);
 }
 
 QString BBFileSystemData::getExclusiveFolderPath(const QString &parentPath, QString &fileName)
@@ -573,3 +589,4 @@ BBFILE* BBFileSystemData::getFolderContent(QTreeWidgetItem *pItem)
     }
     return pFolderContent;
 }
+

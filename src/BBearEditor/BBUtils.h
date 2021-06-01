@@ -54,7 +54,6 @@ public:
     static char *loadFileContent(const char *filePath, int &nFileSize);
 
 
-//    static bool showInFolder(const QString &filePath);
 //    static bool copyFolder(const QString &fromDir, const QString &toDir);
 //    static bool isMovablePath(const QString &sourcePath, const QString &destParentPath);
 //    static bool moveFolder(const QString &oldPath, const QString &newPath, bool bCopy = false);
