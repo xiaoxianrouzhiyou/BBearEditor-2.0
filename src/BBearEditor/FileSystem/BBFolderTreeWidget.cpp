@@ -22,12 +22,14 @@ BBFolderTreeWidget::BBFolderTreeWidget(QWidget *pParent)
 
 void BBFolderTreeWidget::loadTopLevelItems(const QList<QTreeWidgetItem*> &items)
 {
+    recordItemExpansionState();
     // just remove from the tree, cannot delete the items, so cannot use clear();
     while (topLevelItemCount() > 0)
     {
         takeTopLevelItem(0);
     }
     addTopLevelItems(items);
+    resumeItemExpansionState();
     setCurrentShowFolderContentItem(m_pCurrentShowFolderContentItem);
 }
 
@@ -189,7 +191,33 @@ QString BBFolderTreeWidget::getAbsolutePath(QTreeWidgetItem *pItem)
     return getAbsolutePath(getLevelPath(pItem));
 }
 
+/**
+ * @brief BBFolderTreeWidget::recordItemExpansionState      record expansion state of items before reconstructing the tree
+ */
+void BBFolderTreeWidget::recordItemExpansionState()
+{
+    // clear the last
+    m_ExpandedItems.clear();
+    QTreeWidgetItemIterator it(this);
+    for (; *it; it++)
+    {
+        if ((*it)->isExpanded())
+        {
+            m_ExpandedItems.append(*it);
+        }
+    }
+}
 
+/**
+ * @brief BBFolderTreeWidget::setItemExpansionState         set expansion state of all items for new tree reconstructed
+ */
+void BBFolderTreeWidget::resumeItemExpansionState()
+{
+    for(int i = 0; i < m_ExpandedItems.count(); i++)
+    {
+        m_ExpandedItems.at(i)->setExpanded(true);
+    }
+}
 
 
 

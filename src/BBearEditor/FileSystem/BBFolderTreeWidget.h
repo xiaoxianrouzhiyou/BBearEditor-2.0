@@ -46,8 +46,11 @@ private:
     void updateCorrespondingWidget(QTreeWidgetItem *pItem);
     QString getAbsolutePath(const QString &relativePath);
     QString getAbsolutePath(QTreeWidgetItem *pItem);
+    void recordItemExpansionState();
+    void resumeItemExpansionState();
 
     const BBSignalSender m_eSenderTag;
+    QList<QTreeWidgetItem*> m_ExpandedItems;
 
 
 //    void deleteOne(QTreeWidgetItem *pItem) override;
