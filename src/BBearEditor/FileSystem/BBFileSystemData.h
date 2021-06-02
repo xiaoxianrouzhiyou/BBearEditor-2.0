@@ -62,17 +62,23 @@ public:
     BBFileSystemData();
     ~BBFileSystemData();
 
+public:
     void bindPreviewOpenGLWidget(BBOpenGLWidget *pPreviewOpenGLWidget) { m_pPreviewOpenGLWidget = pPreviewOpenGLWidget; }
     void load();
     QList<QTreeWidgetItem*> getFolderTreeWidgetTopLevelItems();
     bool getFileListWidgetItems(QTreeWidgetItem *pItem, QList<QListWidgetItem*> &outItems, QList<QString> &outFileNames);
     QTreeWidgetItem* getItemByPath(const QString &absolutePath);
+    QTreeWidgetItem* getParentFolderItem(const QString &filePath);
+    QListWidgetItem* getFileItem(QTreeWidgetItem *pParentFolderItem, const QString &filePath);
     bool openFile(const QString &filePath);
     bool newFolder(const QString &parentPath, QTreeWidgetItem *&pFolderItem, QListWidgetItem *&pFileItem);
     bool showInFolder(const QString &filePath);
-    bool rename(QListWidgetItem *pFileItem, const QString &oldPath, const QString &newPath);
+    bool rename(QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pFileItem,
+                const QString &oldPath, const QString &newPath);
 
 public:
+    static QString getAbsolutePath(const QString &relativePath);
+    static QString getAbsolutePath(QTreeWidgetItem *pItem);
     static QString getExclusiveFolderPath(const QString &parentPath, QString &fileName);
     static QString getExclusiveFolderPath(const QString &filePath);
     static QString getExclusiveFilePath(const QString &parentPath, QString &fileName);

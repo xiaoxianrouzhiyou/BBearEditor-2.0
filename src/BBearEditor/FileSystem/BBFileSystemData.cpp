@@ -9,6 +9,7 @@
 #include "BBOpenGLWidget.h"
 #include "BBScene.h"
 #include "BBModel.h"
+#include "BBTreeWidget.h"
 
 
 QList<QString> BBFileSystemData::m_MeshSuffixs = {"obj", "fbx"};
@@ -151,6 +152,27 @@ QTreeWidgetItem* BBFileSystemData::getItemByPath(const QString &absolutePath)
     }
 }
 
+QTreeWidgetItem* BBFileSystemData::getParentFolderItem(const QString &filePath)
+{
+    // cannot use getItemByPath(filePath) and ->parent(), since filePath may be a file but not a folder
+    return getItemByPath(getParentPath(filePath));
+}
+
+QListWidgetItem* BBFileSystemData::getFileItem(QTreeWidgetItem *pParentFolderItem, const QString &filePath)
+{
+    BBFILE *pFolderContent = getFolderContent(pParentFolderItem);
+    QString fileName = getFileNameByPath(filePath);
+    for (BBFILE::Iterator it = pFolderContent->begin(); it != pFolderContent->end(); it++)
+    {
+        BBFileInfo *pFileInfo = it.value();
+        if (pFileInfo->m_FileName == fileName)
+        {
+            return it.key();
+        }
+    }
+    return NULL;
+}
+
 /**
  * @brief BBFileSystemData::openFile
  * @param filePath
@@ -228,13 +250,12 @@ bool BBFileSystemData::showInFolder(const QString &filePath)
     return process.startDetached(cmd);
 }
 
-bool BBFileSystemData::rename(QListWidgetItem *pFileItem, const QString &oldPath, const QString &newPath)
+bool BBFileSystemData::rename(QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pFileItem,
+                              const QString &oldPath, const QString &newPath)
 {
     QString newName;
     QString legalNewPath;
     // find parent folder item of pFileItem
-    // cannot use getItemByPath(oldPath) and ->parent(), since oldPath may be a file but not a folder
-    QTreeWidgetItem *pParentFolderItem = getItemByPath(getParentPath(oldPath));
     BBFILE *pFolderContent = getFolderContent(pParentFolderItem);
     BBFileInfo *pFileInfo = pFolderContent->value(pFileItem);
     if (pFileInfo->m_eFileType == BBFileType::Dir)
@@ -280,6 +301,23 @@ bool BBFileSystemData::rename(QListWidgetItem *pFileItem, const QString &oldPath
 //        clipBoardPaths.removeOne(oldPath);
 //    }
     return true;
+}
+
+QString BBFileSystemData::getAbsolutePath(const QString &relativePath)
+{
+    if (relativePath.isEmpty())
+    {
+        return BBConstant::BB_PATH_PROJECT_USER;
+    }
+    else
+    {
+        return BBConstant::BB_PATH_PROJECT_USER + "/" + relativePath;
+    }
+}
+
+QString BBFileSystemData::getAbsolutePath(QTreeWidgetItem *pItem)
+{
+    return getAbsolutePath(BBTreeWidget::getLevelPath(pItem));
 }
 
 QString BBFileSystemData::getExclusiveFolderPath(const QString &parentPath, QString &fileName)
@@ -651,4 +689,5 @@ BBFILE* BBFileSystemData::getFolderContent(QTreeWidgetItem *pItem)
     }
     return pFolderContent;
 }
+
 

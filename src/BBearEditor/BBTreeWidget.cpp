@@ -66,6 +66,26 @@ BBTreeWidget::~BBTreeWidget()
     BB_SAFE_DELETE(m_pMenu);
 }
 
+QString BBTreeWidget::getLevelPath(QTreeWidgetItem *pItem)
+{
+    if (pItem == NULL)
+    {
+        return "";
+    }
+    else
+    {
+        // Hierarchical path of item
+        QString location;
+        for (QTreeWidgetItem *pParent = pItem; pParent; pParent = pParent->parent())
+        {
+            location = pParent->text(0) + "/" + location;
+        }
+        // remove "/" at the end
+        location = location.mid(0, location.length() - 1);
+        return location;
+    }
+}
+
 void BBTreeWidget::startDrag(Qt::DropActions supportedActions)
 {
     Q_UNUSED(supportedActions);
@@ -494,26 +514,6 @@ QTreeWidgetItem* BBTreeWidget::getParentOfMovingItem(int &nIndex)
             nIndex = indexOfTopLevelItem(m_pIndicatorItem) + 1;
     }
     return pParent;
-}
-
-QString BBTreeWidget::getLevelPath(QTreeWidgetItem *pItem)
-{
-    if (pItem == NULL)
-    {
-        return "";
-    }
-    else
-    {
-        // Hierarchical path of item
-        QString location;
-        for (QTreeWidgetItem *pParent = pItem; pParent; pParent = pParent->parent())
-        {
-            location = pParent->text(0) + "/" + location;
-        }
-        // remove "/" at the end
-        location = location.mid(0, location.length() - 1);
-        return location;
-    }
 }
 
 void BBTreeWidget::pasteOne(QTreeWidgetItem *pSource, QTreeWidgetItem* pTranscript)

@@ -188,6 +188,7 @@ void BBFileListWidget::finishRename()
         emit rename(m_pEditingItem, m_ParentPath + "/" + oldName, m_ParentPath + "/" + newName);
     }
     removeItemWidget(m_pEditingItem);
+    BB_SAFE_DELETE(m_pRenameEditor);
     m_pEditingItem = NULL;
     // Otherwise, the list has no focus and no longer triggers key events
     setFocus();

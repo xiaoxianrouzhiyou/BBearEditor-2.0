@@ -43,6 +43,9 @@ public:
     explicit BBTreeWidget(QWidget *parent = 0);
     virtual ~BBTreeWidget();
 
+public:
+    static QString getLevelPath(QTreeWidgetItem *pItem);
+
 protected:
     void startDrag(Qt::DropActions supportedActions) override;
     virtual bool moveItem();
@@ -67,14 +70,12 @@ protected:
     QTreeWidgetItem *m_pEditingItem;
     BBLineEdit *m_pRenameEditor;
 
-
 protected:
     virtual void setMenu() = 0;
     void filterSelectedItems();
     QTreeWidgetItem* getParentOfMovingItem(int &nIndex);
     // drag, Which column of icons to use
     virtual int getDragIconColumnIndex() { return 0; }
-    QString getLevelPath(QTreeWidgetItem *pItem);
     virtual void pasteOne(QTreeWidgetItem *pSource, QTreeWidgetItem* pTranscript);
     virtual void pasteEnd();
     void deleteAction(QTreeWidgetItem *pItem);

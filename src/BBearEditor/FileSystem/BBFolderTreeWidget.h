@@ -37,14 +37,13 @@ signals:
     void accessFolder(const QString &filePath, QTreeWidgetItem *pItem);
     void newFolder(const QString &parentPath, const BBSignalSender &eSender);
     void showInFolder(const QString &filePath);
+    void rename(QTreeWidgetItem *pParentFolderItem, const QString &oldPath, const QString &newPath);
 
 private:
     void setMenu() override;
     QWidgetAction* createWidgetAction(QMenu *pParent, const QString &iconPath, const QString &name);
 
     void updateCorrespondingWidget(QTreeWidgetItem *pItem);
-    QString getAbsolutePath(const QString &relativePath);
-    QString getAbsolutePath(QTreeWidgetItem *pItem);
     void recordItemExpansionState();
     void resumeItemExpansionState();
 
@@ -84,7 +83,6 @@ private:
 //    void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript) override;
 //    void pasteEnd() override;
 //    void loadMaterial(QString filePath);
-//    QList<QString> clipBoardFilePaths;
 //    //用于存粘贴的副本文件夹名字 用于高亮显示
 //    QList<QString> pastedFolderNames;
 //    //有时候加载工程 却无需加载材质

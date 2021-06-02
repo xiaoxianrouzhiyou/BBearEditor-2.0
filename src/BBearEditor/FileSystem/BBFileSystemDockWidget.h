@@ -41,7 +41,10 @@ private slots:
 
     void showInFolder(const QString &filePath);
 
+    void renameInFolderTree(QTreeWidgetItem *pParentFolderItem, const QString &oldPath, const QString &newPath);
     void renameInFileList(QListWidgetItem *pFileItem, const QString &oldPath, const QString &newPath);
+    void rename(QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pFileItem,
+                const QString &oldPath, const QString &newPath);
 
 signals:
     void updateFolderPathBar();

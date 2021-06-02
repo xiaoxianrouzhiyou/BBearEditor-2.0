@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QDragMoveEvent>
 #include <QMimeData>
+#include "BBFileSystemData.h"
 
 
 BBFolderTreeWidget::BBFolderTreeWidget(QWidget *pParent)
@@ -24,6 +25,7 @@ void BBFolderTreeWidget::loadTopLevelItems(const QList<QTreeWidgetItem*> &items)
 {
     recordItemExpansionState();
     // just remove from the tree, cannot delete the items, so cannot use clear();
+    // qDebug() << topLevelItemCount();
     while (topLevelItemCount() > 0)
     {
         takeTopLevelItem(0);
@@ -64,7 +66,7 @@ void BBFolderTreeWidget::clickItem(QTreeWidgetItem *pItem, int nColumn)
 void BBFolderTreeWidget::newFolder()
 {
     QTreeWidgetItem *pParent = currentItem();
-    QString parentPath = getAbsolutePath(pParent);
+    QString parentPath = BBFileSystemData::getAbsolutePath(pParent);
     emit newFolder(parentPath, m_eSenderTag);
     // Open the edit box to let the user set name
      openRenameEditor();
@@ -73,7 +75,7 @@ void BBFolderTreeWidget::newFolder()
 void BBFolderTreeWidget::showInFolder()
 {
     QTreeWidgetItem *pItem = currentItem();
-    QString filePath = getAbsolutePath(pItem);
+    QString filePath = BBFileSystemData::getAbsolutePath(pItem);
     emit showInFolder(filePath);
 }
 
@@ -89,7 +91,25 @@ void BBFolderTreeWidget::pasteAction()
 
 void BBFolderTreeWidget::finishRename()
 {
+    BB_PROCESS_ERROR_RETURN(m_pEditingItem);
 
+    // whether name is changed
+    // new name cannot be null
+    QString oldname = m_pEditingItem->text(0);
+    QString newName = m_pRenameEditor->text();
+    if (oldname != newName && !newName.isEmpty())
+    {
+        QTreeWidgetItem *pParentFolderItem = m_pEditingItem->parent();
+        QString parentPath = BBFileSystemData::getAbsolutePath(pParentFolderItem);
+        BBTreeWidget::finishRename();
+
+        emit rename(pParentFolderItem, parentPath + "/" + oldname, parentPath + "/" + newName);
+        sortItems(0, Qt::AscendingOrder);
+    }
+    else
+    {
+        BBTreeWidget::finishRename();
+    }
 }
 
 void BBFolderTreeWidget::deleteAction()
@@ -165,26 +185,9 @@ QWidgetAction* BBFolderTreeWidget::createWidgetAction(QMenu *pParent, const QStr
 
 void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
 {
-    QString folderPath = getAbsolutePath(pItem);
+    QString folderPath = BBFileSystemData::getAbsolutePath(pItem);
     emit accessFolder(folderPath, pItem);
     m_pCurrentShowFolderContentItem = pItem;
-}
-
-QString BBFolderTreeWidget::getAbsolutePath(const QString &relativePath)
-{
-    if (relativePath.isEmpty())
-    {
-        return BBConstant::BB_PATH_PROJECT_USER;
-    }
-    else
-    {
-        return BBConstant::BB_PATH_PROJECT_USER + "/" + relativePath;
-    }
-}
-
-QString BBFolderTreeWidget::getAbsolutePath(QTreeWidgetItem *pItem)
-{
-    return getAbsolutePath(getLevelPath(pItem));
 }
 
 /**
@@ -221,39 +224,6 @@ void BBFolderTreeWidget::resumeItemExpansionState()
 
 
 
-
-
-
-//void BBFolderTreeWidget::renameItem(const QString &oldName, const QString &newName)
-//{
-//    // the name of child of m_pCurrentShowFolderContentItem is changed
-//    if (m_pCurrentShowFolderContentItem)
-//    {
-//        for (int i = 0; i < m_pCurrentShowFolderContentItem->childCount(); i++)
-//        {
-//            QTreeWidgetItem *pItem = m_pCurrentShowFolderContentItem->child(i);
-//            if (pItem->text(0) == oldName)
-//            {
-//                pItem->setText(0, newName);
-//                break;
-//            }
-//        }
-//    }
-//    else
-//    {
-//        // at the top level
-//        for (int i = 0; i < topLevelItemCount(); i++)
-//        {
-//            QTreeWidgetItem *pItem = topLevelItem(i);
-//            if (pItem->text(0) == oldName)
-//            {
-//                pItem->setText(0, newName);
-//                break;
-//            }
-//        }
-//    }
-//    sortItems(0, Qt::AscendingOrder);
-//}
 
 //void BBFolderTreeWidget::moveItem(const QString &oldPath, const QString &newPath)
 //{
@@ -295,42 +265,6 @@ void BBFolderTreeWidget::resumeItemExpansionState()
 ////        clipBoardItems.removeOne(pItem);
 ////    }
 //    BB_SAFE_DELETE(pItem);
-//}
-
-//void BBFolderTreeWidget::finishRename()
-//{
-//    BB_PROCESS_ERROR_RETURN(m_pEditingItem);
-
-//    // whether name is changed
-//    // new name cannot be null
-//    QString name = m_pRenameEditor->text();
-//    QString preName = m_pEditingItem->text(0);
-//    if (preName != name && !name.isEmpty())
-//    {
-//        // previous path
-//        QString previous = getAbsolutePath(m_pEditingItem);
-//        QString parentPath = BBUtils::getParentPath(previous);
-//        // Check if there are the same names
-//        QString current = BBUtils::getExclusiveFolderPath(parentPath, name);
-
-//        BB_PROCESS_ERROR_RETURN(QFile::rename(previous, current));
-//        m_pEditingItem->setText(0, name);
-
-//        // handle corresponding folder in the engine folder
-//        QFile::rename(BBUtils::getEngineAuxiliaryFolderPath(previous),
-//                      BBUtils::getEngineAuxiliaryFolderPath(current));
-
-//        // After renaming, remove it from the clipboard
-//        if (m_ClipBoardItems.contains(m_pEditingItem))
-//        {
-//            m_ClipBoardItems.removeOne(m_pEditingItem);
-//        }
-//        // After renaming, sort
-//        sortItems(0, Qt::AscendingOrder);
-
-//        updateCorrespondingWidget(m_pEditingItem);
-//    }
-//    BBTreeWidget::finishRename();
 //}
 
 //void BBFolderTreeWidget::deleteAction()

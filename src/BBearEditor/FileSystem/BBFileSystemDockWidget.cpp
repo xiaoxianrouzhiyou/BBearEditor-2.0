@@ -103,18 +103,30 @@ void BBFileSystemDockWidget::showInFolder(const QString &filePath)
     m_pData->showInFolder(filePath);
 }
 
+void BBFileSystemDockWidget::renameInFolderTree(QTreeWidgetItem *pParentFolderItem, const QString &oldPath, const QString &newPath)
+{
+    QListWidgetItem *pFileItem = m_pData->getFileItem(pParentFolderItem, oldPath);
+    BB_PROCESS_ERROR_RETURN(pFileItem);
+    rename(pParentFolderItem, pFileItem, oldPath, newPath);
+}
+
 void BBFileSystemDockWidget::renameInFileList(QListWidgetItem *pFileItem, const QString &oldPath, const QString &newPath)
 {
-    if (m_pData->rename(pFileItem, oldPath, newPath))
+    QTreeWidgetItem *pParentFolderItem = m_pData->getParentFolderItem(oldPath);
+    rename(pParentFolderItem, pFileItem, oldPath, newPath);
+}
+
+void BBFileSystemDockWidget::rename(QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pFileItem,
+                                    const QString &oldPath, const QString &newPath)
+{
+    if (m_pData->rename(pParentFolderItem, pFileItem, oldPath, newPath))
     {
         // update
-        updateFolderTree();
-        QString parentPath = m_pUi->listFile->getCurrentParentPath();
-        if (parentPath == BBFileSystemData::getParentPath(oldPath))
-        {
-            updateFileList(parentPath, pFileItem);
-        }
-        updateFolderPathBar();
+        updateFolderTree(); 
+        // cannot use m_pUi->listFile->getCurrentParentPath(), which is an old path
+        QString parentPath = BBFileSystemData::getAbsolutePath(m_pUi->listFile->getCurrentParentItem());
+        updateFileList(parentPath, pFileItem);
+        updateFolderPathBar(parentPath);
 //        //重新显示属性栏的属性 名字更新
 //        itemClicked(editingItem);
     }
@@ -130,8 +142,6 @@ void BBFileSystemDockWidget::setConnect()
     QObject::connect(m_pUi->barFilePath, SIGNAL(accessFolder(QString)),
                      this, SLOT(clickItemInFolderPathBar(QString)));
     // update folder path bar
-    QObject::connect(this, SIGNAL(updateFolderPathBar()),
-                     m_pUi->barFilePath, SLOT(update()));
     QObject::connect(this, SIGNAL(updateFolderPathBar(QString)),
                      m_pUi->barFilePath, SLOT(showFolderPath(QString)));
     // click buttons in the file system
@@ -155,6 +165,8 @@ void BBFileSystemDockWidget::setConnect()
     QObject::connect(m_pUi->listFile, SIGNAL(showInFolder(QString)),
                      this, SLOT(showInFolder(QString)));
     // rename
+    QObject::connect(m_pUi->treeFolder, SIGNAL(rename(QTreeWidgetItem*, QString, QString)),
+                     this, SLOT(renameInFolderTree(QTreeWidgetItem*, QString, QString)));
     QObject::connect(m_pUi->listFile, SIGNAL(rename(QListWidgetItem*, QString, QString)),
                      this, SLOT(renameInFileList(QListWidgetItem*, QString, QString)));
 }

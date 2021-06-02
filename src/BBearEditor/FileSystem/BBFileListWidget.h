@@ -38,6 +38,7 @@ public:
 
     inline QString getMimeType() { return BB_MIMETYPE_FILELISTWIDGET; }
     inline QString getCurrentParentPath() { return m_ParentPath; }
+    inline QTreeWidgetItem* getCurrentParentItem() { return m_pParentItem; }
 
     void loadItems(const QString &parentPath, QTreeWidgetItem *pParentItem,
                    const QList<QListWidgetItem*> &items, const QList<QString> &fileNames,
