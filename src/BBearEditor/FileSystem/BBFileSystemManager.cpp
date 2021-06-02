@@ -112,6 +112,17 @@ void BBFileSystemManager::renameInFileList(QListWidgetItem *pFileItem, const QSt
     rename(pParentFolderItem, pFileItem, oldPath, newPath);
 }
 
+void BBFileSystemManager::deleteFilesInFileList(QTreeWidgetItem *pParentItem,
+                                                const QString &parentPath,
+                                                const QList<QListWidgetItem*> &items)
+{
+    if (m_pDataManager->deleteFiles(pParentItem, parentPath, items))
+    {
+        updateFolderTree();
+        updateFileList(parentPath, pParentItem, NULL);
+    }
+}
+
 /**
  * @brief BBFileSystemManager::updateFolderTree     load entire tree
  */

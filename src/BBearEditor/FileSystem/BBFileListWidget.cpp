@@ -198,7 +198,29 @@ void BBFileListWidget::finishRename()
 
 void BBFileListWidget::deleteAction()
 {
+    QList<QListWidgetItem*> items = selectedItems();
+    BB_PROCESS_ERROR_RETURN(items.count() > 0);
 
+    BBConfirmationDialog dialog;
+    dialog.setTitle("Delete selected?");
+    if (items.count() == 1)
+    {
+        dialog.setMessage("You cannot undo this action.\n\nAre you sure to delete this?");
+    }
+    else
+    {
+        dialog.setMessage("You cannot undo this action.\n\nAre you sure to delete these "
+                          + QString::number(items.count()) + " items?");
+    }
+    if (dialog.exec())
+    {
+        emit deleteFiles(m_pParentItem, m_ParentPath, items);
+
+        setCurrentItem(NULL);
+//        //清空属性栏 包括场景 层级视图选中
+//        cancelHierarchyTreeSelectedItems();
+//        itemClickedSlot(NULL);
+    }
 }
 
 void BBFileListWidget::setMenu()
@@ -318,74 +340,6 @@ QString BBFileListWidget::getItemFilePath(QListWidgetItem *pItem)
 
 
 
-
-
-
-//void BBFileListWidget::deleteAction()
-//{
-//    QList<QListWidgetItem*> items = selectedItems();
-//    BB_PROCESS_ERROR_RETURN(items.count() > 0);
-
-//    BBConfirmationDialog dialog;
-//    dialog.setTitle("Delete selected?");
-//    if (items.count() == 1)
-//    {
-//        dialog.setMessage("You cannot undo this action.\n\nAre you sure to delete this?");
-//    }
-//    else
-//    {
-//        dialog.setMessage("You cannot undo this action.\n\nAre you sure to delete these "
-//                          + QString::number(items.count()) + " items?");
-//    }
-//    if (dialog.exec())
-//    {
-//        for (int i = 0; i < items.count(); i++)
-//        {
-//            QListWidgetItem* pItem = items.at(i);
-//            BBFileInfo *pFileInfo = m_Map.value(pItem);
-//            QString path = m_FolderPath + "/" + pFileInfo->m_FileName;
-//            if (pFileInfo->m_eFileType == BBFileType::dir)
-//            {
-//                QDir dir(path);
-//                BB_PROCESS_ERROR_RETURN(dir.removeRecursively());
-//                // delete corresponding folder in the engine folder
-//                dir = QDir(BBUtils::getEngineAuxiliaryFolderPath(path));
-//                BB_PROCESS_ERROR_RETURN(dir.removeRecursively());
-//                // delete the corresponding item in the folder tree
-//                deleteItemInFolderTree(path);
-////                //刷新材质文件的映射 被删除的材质文件的映射不再占用内存
-////                Material::updateMap();
-//            }
-//            else
-//            {
-//                BB_PROCESS_ERROR_RETURN(QFile::remove(path));
-
-//                if (pFileInfo->m_eFileType == BBFileType::mesh)
-//                {
-//                    // remove overview map
-//                    BB_PROCESS_ERROR_RETURN(QFile::remove(BBUtils::getOverviewMapPath(path)));
-//                }
-////                //材质文件 需要删除材质对象
-////                else if (fileInfo->mFileType == FileType::material)
-////                {
-////                    Material::deleteOne(path);
-////                }
-//            }
-//            // remove from clipboard
-////            if (clipBoardPaths.contains(path))
-////            {
-////                clipBoardPaths.removeOne(path);
-////            }
-//            m_Map.remove(pItem);
-//            BB_SAFE_DELETE(pFileInfo);
-//            BB_SAFE_DELETE(pItem);
-//        }
-//        setCurrentItem(NULL);
-////        //清空属性栏 包括场景 层级视图选中
-////        cancelHierarchyTreeSelectedItems();
-////        itemClickedSlot(NULL);
-//    }
-//}
 
 
 //bool BBFileListWidget::moveFile(const QString &oldPath, QString &newPath, BBFileType eFileType, bool bCopy)

@@ -40,6 +40,8 @@ private slots:
     void renameInFolderTree(QTreeWidgetItem *pParentFolderItem, const QString &oldPath, const QString &newPath);
     void renameInFileList(QListWidgetItem *pFileItem, const QString &oldPath, const QString &newPath);
 
+    void deleteFilesInFileList(QTreeWidgetItem *pParentItem, const QString &parentPath, const QList<QListWidgetItem*> &items);
+
 signals:
     void updateFolderPathBar();
     void updateFolderPathBar(const QString &filePath);

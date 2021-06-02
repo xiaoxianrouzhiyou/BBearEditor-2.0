@@ -302,6 +302,63 @@ bool BBFileSystemDataManager::rename(QTreeWidgetItem *pParentFolderItem, QListWi
     return true;
 }
 
+bool BBFileSystemDataManager::deleteFiles(QTreeWidgetItem *pParentItem,
+                                          const QString &parentPath,
+                                          const QList<QListWidgetItem*> &items)
+{
+    for (int i = 0; i < items.count(); i++)
+    {
+        QListWidgetItem* pItem = items.at(i);
+        BBFILE *pFolderContent = getFolderContent(pParentItem);
+        BBFileInfo *pFileInfo = pFolderContent->value(pItem);
+        QString path = parentPath + "/" + pFileInfo->m_FileName;
+        if (pFileInfo->m_eFileType == BBFileType::Dir)
+        {
+            QTreeWidgetItem *pFolderItem = getItemByPath(path);
+            BB_PROCESS_ERROR_RETURN_FALSE(pFolderItem);
+
+            QDir dir(path);
+            BB_PROCESS_ERROR_RETURN_FALSE(dir.removeRecursively());
+            // delete corresponding folder in the engine folder
+            dir = QDir(getEngineAuxiliaryFolderPath(path));
+            dir.removeRecursively();
+//            //刷新材质文件的映射 被删除的材质文件的映射不再占用内存
+//            Material::updateMap();
+
+            // delete folder tree item
+            deleteFolderItem(pFolderItem);
+        }
+        else
+        {
+            BB_PROCESS_ERROR_RETURN_FALSE(QFile::remove(path));
+
+            if (pFileInfo->m_eFileType == BBFileType::Mesh)
+            {
+                // remove overview map
+                QFile::remove(getOverviewMapPath(path));
+            }
+//            //材质文件 需要删除材质对象
+//            else if (pFileInfo->m_eFileType == BBFileType::Material)
+//            {
+//                Material::deleteOne(path);
+//            }
+        }
+
+        // handle list item
+        pFolderContent->remove(pItem);
+        BB_SAFE_DELETE(pFileInfo);
+        BB_SAFE_DELETE(pItem);
+
+        // remove from clipboard
+//        if (clipBoardPaths.contains(path))
+//        {
+//            clipBoardPaths.removeOne(path);
+//        }
+    }
+
+    return true;
+}
+
 QString BBFileSystemDataManager::getAbsolutePath(const QString &relativePath)
 {
     if (relativePath.isEmpty())
@@ -689,4 +746,12 @@ BBFILE* BBFileSystemDataManager::getFolderContent(QTreeWidgetItem *pItem)
     return pFolderContent;
 }
 
+bool BBFileSystemDataManager::deleteFolderItem(QTreeWidgetItem *pItem)
+{
+    // release BBFILE corresponding the pItem
+    BBFILE *pFolderContent = getFolderContent(pItem);
+    qDeleteAll(*pFolderContent);
+    delete pFolderContent;
+    delete pItem;
+}
 

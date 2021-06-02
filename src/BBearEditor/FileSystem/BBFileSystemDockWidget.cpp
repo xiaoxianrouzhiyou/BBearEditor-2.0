@@ -70,6 +70,11 @@ void BBFileSystemDockWidget::renameInFileList(QListWidgetItem *pFileItem, const 
     m_pFileSystemManager->renameInFileList(pFileItem, oldPath, newPath);
 }
 
+void BBFileSystemDockWidget::deleteFilesInFileList(QTreeWidgetItem *pParentItem, const QString &parentPath, const QList<QListWidgetItem*> &items)
+{
+    m_pFileSystemManager->deleteFilesInFileList(pParentItem, parentPath, items);
+}
+
 void BBFileSystemDockWidget::setConnect()
 {
     // update selected folder
@@ -104,6 +109,9 @@ void BBFileSystemDockWidget::setConnect()
                      this, SLOT(renameInFolderTree(QTreeWidgetItem*, QString, QString)));
     QObject::connect(m_pUi->listFile, SIGNAL(rename(QListWidgetItem*, QString, QString)),
                      this, SLOT(renameInFileList(QListWidgetItem*, QString, QString)));
+    // delete files
+    QObject::connect(m_pUi->listFile, SIGNAL(deleteFiles(QTreeWidgetItem*, QString, QList<QListWidgetItem*>)),
+                     this, SLOT(deleteFilesInFileList(QTreeWidgetItem*, QString, QList<QListWidgetItem*>)));
 }
 
 

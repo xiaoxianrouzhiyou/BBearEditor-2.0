@@ -67,6 +67,7 @@ public:
     bool showInFolder(const QString &filePath);
     bool rename(QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pFileItem,
                 const QString &oldPath, const QString &newPath);
+    bool deleteFiles(QTreeWidgetItem *pParentItem, const QString &parentPath, const QList<QListWidgetItem*> &items);
 
 public:
     static QString getAbsolutePath(const QString &relativePath);
@@ -106,6 +107,7 @@ private:
     QColor getFileLogoColor(const BBFileType &eFileType);
     BBFileType getFileType(const QString &filePath);
     BBFILE* getFolderContent(QTreeWidgetItem *pItem);
+    bool deleteFolderItem(QTreeWidgetItem *pItem);
 
     BBOpenGLWidget *m_pPreviewOpenGLWidget;
     BBFILE *m_pRootFileData;

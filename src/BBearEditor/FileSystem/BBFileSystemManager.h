@@ -40,6 +40,8 @@ public:
     void renameInFolderTree(QTreeWidgetItem *pParentFolderItem, const QString &oldPath, const QString &newPath);
     void renameInFileList(QListWidgetItem *pFileItem, const QString &oldPath, const QString &newPath);
 
+    void deleteFilesInFileList(QTreeWidgetItem *pParentItem, const QString &parentPath, const QList<QListWidgetItem*> &items);
+
 private:
     void updateFolderTree();
     void updateFolderTree(const QString &filePath);

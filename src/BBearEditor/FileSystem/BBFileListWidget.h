@@ -63,6 +63,7 @@ signals:
     void newFolder(const QString &parentPath, const BBSignalSender &eSender);
     void showInFolder(const QString &filePath);
     void rename(QListWidgetItem *pFileItem, const QString &oldPath, const QString &newPath);
+    void deleteFiles(QTreeWidgetItem *pParentItem, const QString &parentPath, const QList<QListWidgetItem*> &items);
 
 private:
     void setMenu();
@@ -85,11 +86,6 @@ private:
 
 
 
-
-
-
-
-//    void deleteOne(QListWidgetItem *pItem);
 
 //    bool moveFile(const QString &oldPath, QString &newPath, BBFileType eFileType, bool bCopy);
 
