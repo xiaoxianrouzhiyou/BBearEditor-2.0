@@ -70,9 +70,19 @@ void BBFileSystemDockWidget::renameInFileList(QListWidgetItem *pFileItem, const 
     m_pFileSystemManager->renameInFileList(pFileItem, oldPath, newPath);
 }
 
+void BBFileSystemDockWidget::deleteFolderInFolderTree(QTreeWidgetItem *pItem)
+{
+    m_pFileSystemManager->deleteFolderInFolderTree(pItem);
+}
+
 void BBFileSystemDockWidget::deleteFilesInFileList(QTreeWidgetItem *pParentItem, const QString &parentPath, const QList<QListWidgetItem*> &items)
 {
     m_pFileSystemManager->deleteFilesInFileList(pParentItem, parentPath, items);
+}
+
+void BBFileSystemDockWidget::updateAll()
+{
+    m_pFileSystemManager->updateAll();
 }
 
 void BBFileSystemDockWidget::setConnect()
@@ -110,8 +120,13 @@ void BBFileSystemDockWidget::setConnect()
     QObject::connect(m_pUi->listFile, SIGNAL(rename(QListWidgetItem*, QString, QString)),
                      this, SLOT(renameInFileList(QListWidgetItem*, QString, QString)));
     // delete files
+    QObject::connect(m_pUi->treeFolder, SIGNAL(deleteFolder(QTreeWidgetItem*)),
+                     this, SLOT(deleteFolderInFolderTree(QTreeWidgetItem*)));
+    QObject::connect(m_pUi->treeFolder, SIGNAL(finishDeleteAction()),
+                     this, SLOT(updateAll()));
     QObject::connect(m_pUi->listFile, SIGNAL(deleteFiles(QTreeWidgetItem*, QString, QList<QListWidgetItem*>)),
                      this, SLOT(deleteFilesInFileList(QTreeWidgetItem*, QString, QList<QListWidgetItem*>)));
+
 }
 
 

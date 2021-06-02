@@ -114,7 +114,8 @@ void BBFolderTreeWidget::finishRename()
 
 void BBFolderTreeWidget::deleteAction()
 {
-
+    BBTreeWidget::deleteAction();
+    emit finishDeleteAction();
 }
 
 void BBFolderTreeWidget::setMenu()
@@ -181,6 +182,19 @@ QWidgetAction* BBFolderTreeWidget::createWidgetAction(QMenu *pParent, const QStr
     pLayout->addWidget(pText, Qt::AlignLeft);
     pAction->setDefaultWidget(pWidget);
     return pAction;
+}
+
+void BBFolderTreeWidget::deleteOne(QTreeWidgetItem *pItem)
+{
+    emit deleteFolder(pItem);
+
+    // if showing its content, clear, and show root folder
+    if (pItem == m_pCurrentShowFolderContentItem)
+    {
+        m_pCurrentShowFolderContentItem = NULL;
+    }
+
+    BBTreeWidget::deleteOne(pItem);
 }
 
 void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
@@ -256,55 +270,10 @@ void BBFolderTreeWidget::resumeItemExpansionState()
 //    sortItems(0, Qt::AscendingOrder);
 //}
 
-//void BBFolderTreeWidget::deleteItem(const QString &folderPath)
-//{
-//    QTreeWidgetItem *pItem = getItemByPath(folderPath);
-//    // remove from clipBoard
-////    if (clipBoardItems.contains(pItem))
-////    {
-////        clipBoardItems.removeOne(pItem);
-////    }
-//    BB_SAFE_DELETE(pItem);
-//}
-
-//void BBFolderTreeWidget::deleteAction()
-//{
-//    BBTreeWidget::deleteAction();
-
-//    updateCorrespondingWidget(m_pCurrentShowFolderContentItem);
-
-////    //刷新材质文件的映射 被删除的材质文件的映射不再占用内存
-////    Material::updateMap();
-////    //清空属性栏 包括场景 层级视图选中
-////    cancelHierarchyTreeSelectedItems();
-////    clearPropertyWidget();
-//}
 
 
 
 
-
-
-
-//void BBFolderTreeWidget::deleteOne(QTreeWidgetItem *pItem)
-//{
-//    // delete folder
-//    QString path = getAbsolutePath(pItem);
-//    QDir dir(path);
-//    BB_PROCESS_ERROR_RETURN(dir.removeRecursively());
-
-//    // delete corresponding folder in the engine folder
-//    dir = QDir(BBUtils::getEngineAuxiliaryFolderPath(path));
-//    BB_PROCESS_ERROR_RETURN(dir.removeRecursively());
-
-//    // if showing its content, clear, and show root folder
-//    if (pItem == m_pCurrentShowFolderContentItem)
-//    {
-//        m_pCurrentShowFolderContentItem = NULL;
-//    }
-
-//    BBTreeWidget::deleteOne(pItem);
-//}
 
 //void BBFolderTreeWidget::dragMoveEvent(QDragMoveEvent *event)
 //{

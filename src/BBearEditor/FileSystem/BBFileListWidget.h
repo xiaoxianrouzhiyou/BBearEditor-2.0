@@ -44,6 +44,7 @@ public:
     void loadItems(const QString &parentPath, QTreeWidgetItem *pParentItem,
                    const QList<QListWidgetItem*> &items, const QList<QString> &fileNames,
                    QListWidgetItem *pCurrentItem);
+    void updateCurrentInfos(QTreeWidgetItem *pDeletedItem);
 
 public:
     static QSize m_ItemSize;

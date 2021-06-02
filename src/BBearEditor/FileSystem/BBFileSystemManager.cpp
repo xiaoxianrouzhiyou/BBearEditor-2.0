@@ -112,6 +112,15 @@ void BBFileSystemManager::renameInFileList(QListWidgetItem *pFileItem, const QSt
     rename(pParentFolderItem, pFileItem, oldPath, newPath);
 }
 
+void BBFileSystemManager::deleteFolderInFolderTree(QTreeWidgetItem *pItem)
+{
+    BB_PROCESS_ERROR_RETURN(m_pDataManager->deleteFolder(pItem));
+    m_pFileListWidget->updateCurrentInfos(pItem);
+
+    // no need to update, since this is to handle single item
+    // when delete action is over, we will update
+}
+
 void BBFileSystemManager::deleteFilesInFileList(QTreeWidgetItem *pParentItem,
                                                 const QString &parentPath,
                                                 const QList<QListWidgetItem*> &items)
@@ -121,6 +130,13 @@ void BBFileSystemManager::deleteFilesInFileList(QTreeWidgetItem *pParentItem,
         updateFolderTree();
         updateFileList(parentPath, pParentItem, NULL);
     }
+}
+
+void BBFileSystemManager::updateAll()
+{
+    updateFolderTree();
+    updateFileList(m_pFileListWidget->getCurrentParentPath(), m_pFileListWidget->currentItem());
+    updateFolderPathBar(m_pFileListWidget->getCurrentParentPath());
 }
 
 /**

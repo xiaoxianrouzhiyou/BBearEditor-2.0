@@ -157,6 +157,18 @@ QTreeWidgetItem* BBFileSystemDataManager::getParentFolderItem(const QString &fil
     return getItemByPath(getParentPath(filePath));
 }
 
+/**
+ * @brief BBFileSystemDataManager::getFileItem          find list item corresponding it in its parent
+ * @param pFolderItem
+ * @return
+ */
+QListWidgetItem* BBFileSystemDataManager::getFileItem(QTreeWidgetItem *pFolderItem)
+{
+    QTreeWidgetItem *pParentFolderItem = pFolderItem->parent();
+    QString filePath = getAbsolutePath(pFolderItem);
+    return getFileItem(pParentFolderItem, filePath);
+}
+
 QListWidgetItem* BBFileSystemDataManager::getFileItem(QTreeWidgetItem *pParentFolderItem, const QString &filePath)
 {
     BBFILE *pFolderContent = getFolderContent(pParentFolderItem);
@@ -300,6 +312,20 @@ bool BBFileSystemDataManager::rename(QTreeWidgetItem *pParentFolderItem, QListWi
 //        clipBoardPaths.removeOne(oldPath);
 //    }
     return true;
+}
+
+bool BBFileSystemDataManager::deleteFolder(QTreeWidgetItem *pItem)
+{
+    BB_PROCESS_ERROR_RETURN_FALSE(pItem);
+    // find list item corresponding it in its parent
+    QTreeWidgetItem *pParentFolderItem = pItem->parent();
+    QString filePath = getAbsolutePath(pItem);
+    QString parentPath = getParentPath(filePath);
+    QListWidgetItem *pFileItem = getFileItem(pParentFolderItem, filePath);
+    QList<QListWidgetItem*> items;
+    items.append(pFileItem);
+
+    return deleteFiles(pParentFolderItem, parentPath, items);
 }
 
 bool BBFileSystemDataManager::deleteFiles(QTreeWidgetItem *pParentItem,

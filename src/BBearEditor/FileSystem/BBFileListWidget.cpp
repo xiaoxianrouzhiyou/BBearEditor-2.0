@@ -116,6 +116,19 @@ void BBFileListWidget::loadItems(const QString &parentPath, QTreeWidgetItem *pPa
     setCurrentItem(pCurrentItem);
 }
 
+/**
+ * @brief BBFileListWidget::updateCurrentInfos          the folder being showed has been deleted
+ * @param pDeletedItem
+ */
+void BBFileListWidget::updateCurrentInfos(QTreeWidgetItem *pDeletedItem)
+{
+    if (m_pParentItem == pDeletedItem)
+    {
+        m_ParentPath = BBConstant::BB_PATH_PROJECT_USER;
+        m_pParentItem = NULL;
+    }
+}
+
 void BBFileListWidget::doubleClickItem(QListWidgetItem *pItem)
 {
     emit openFile(getItemFilePath(pItem));

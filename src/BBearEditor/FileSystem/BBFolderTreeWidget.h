@@ -39,10 +39,13 @@ signals:
     void newFolder(const QString &parentPath, const BBSignalSender &eSender);
     void showInFolder(const QString &filePath);
     void rename(QTreeWidgetItem *pParentFolderItem, const QString &oldPath, const QString &newPath);
+    void deleteFolder(QTreeWidgetItem *pItem);
+    void finishDeleteAction();
 
 private:
     void setMenu() override;
     QWidgetAction* createWidgetAction(QMenu *pParent, const QString &iconPath, const QString &name);
+    void deleteOne(QTreeWidgetItem *pItem) override;
 
     void updateCorrespondingWidget(QTreeWidgetItem *pItem);
     void recordItemExpansionState();
@@ -52,7 +55,7 @@ private:
     QList<QTreeWidgetItem*> m_ExpandedItems;
 
 
-//    void deleteOne(QTreeWidgetItem *pItem) override;
+
 
 //    void dragMoveEvent(QDragMoveEvent *event) override;
 //    bool moveItem() override;
