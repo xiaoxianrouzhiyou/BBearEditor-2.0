@@ -3,8 +3,9 @@
 
 #include "BBTreeWidget.h"
 #include "BBUtils.h"
-#include <QFileInfo>
-#include "BBFileSystemDockWidget.h"
+
+
+using namespace BBFileSystem;
 
 
 class QWidgetAction;

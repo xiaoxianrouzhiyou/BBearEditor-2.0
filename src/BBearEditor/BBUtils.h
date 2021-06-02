@@ -35,6 +35,27 @@
 #include <QDebug>
 
 
+namespace BBFileSystem
+{
+    enum BBSignalSender
+    {
+        FolderTree = 0,
+        FileList = 1
+    };
+
+    enum BBFileType
+    {
+        Dir = 0,
+        Mesh = 1,
+        Audio = 2,
+        Texture = 3,
+        Material = 4,
+        Script = 5,
+        Other = 6
+    };
+}
+
+
 class BBConstant
 {
 public:

@@ -11,6 +11,7 @@
 #include <QMimeData>
 #include <QScrollBar>
 #include <QDrag>
+#include "BBFileSystemDataManager.h"
 
 
 //---------------------------------------------------------------------------------------------------
@@ -177,7 +178,7 @@ void BBFileListWidget::finishRename()
     // without suffix
     QString newBaseName = m_pRenameEditor->toPlainText();
     QString oldName = m_FileNames.value(m_pEditingItem);
-    QString suffix = BBFileSystemData::getFileSuffix(oldName);
+    QString suffix = BBFileSystemDataManager::getFileSuffix(oldName);
     QString newName = newBaseName;
     if (suffix.count() > 0)
     {

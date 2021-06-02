@@ -1,28 +1,20 @@
-#ifndef BBFILESYSTEMDATA_H
-#define BBFILESYSTEMDATA_H
+#ifndef BBFILESYSTEMDATAMANAGER_H
+#define BBFILESYSTEMDATAMANAGER_H
 
 
 #include <QMap>
 #include <QIcon>
 #include <QColor>
+#include "BBUtils.h"
+
+
+using namespace BBFileSystem;
 
 
 class QTreeWidgetItem;
 class QListWidgetItem;
 class QFileInfo;
 class BBOpenGLWidget;
-
-
-enum BBFileType
-{
-    Dir = 0,
-    Mesh = 1,
-    Audio = 2,
-    Texture = 3,
-    Material = 4,
-    Script = 5,
-    Other = 6
-};
 
 
 struct BBFileInfo
@@ -56,11 +48,11 @@ struct BBFOLDER
 };
 
 
-class BBFileSystemData
+class BBFileSystemDataManager
 {
 public:
-    BBFileSystemData();
-    ~BBFileSystemData();
+    BBFileSystemDataManager();
+    ~BBFileSystemDataManager();
 
 public:
     void bindPreviewOpenGLWidget(BBOpenGLWidget *pPreviewOpenGLWidget) { m_pPreviewOpenGLWidget = pPreviewOpenGLWidget; }
@@ -121,4 +113,4 @@ private:
     QMap<QTreeWidgetItem*, BBFILE*> m_FileData;
 };
 
-#endif // BBFILESYSTEMDATA_H
+#endif // BBFILESYSTEMDATAMANAGER_H

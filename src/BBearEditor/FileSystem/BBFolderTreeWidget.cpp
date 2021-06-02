@@ -5,7 +5,7 @@
 #include <QLabel>
 #include <QDragMoveEvent>
 #include <QMimeData>
-#include "BBFileSystemData.h"
+#include "BBFileSystemDataManager.h"
 
 
 BBFolderTreeWidget::BBFolderTreeWidget(QWidget *pParent)
@@ -66,7 +66,7 @@ void BBFolderTreeWidget::clickItem(QTreeWidgetItem *pItem, int nColumn)
 void BBFolderTreeWidget::newFolder()
 {
     QTreeWidgetItem *pParent = currentItem();
-    QString parentPath = BBFileSystemData::getAbsolutePath(pParent);
+    QString parentPath = BBFileSystemDataManager::getAbsolutePath(pParent);
     emit newFolder(parentPath, m_eSenderTag);
     // Open the edit box to let the user set name
      openRenameEditor();
@@ -75,7 +75,7 @@ void BBFolderTreeWidget::newFolder()
 void BBFolderTreeWidget::showInFolder()
 {
     QTreeWidgetItem *pItem = currentItem();
-    QString filePath = BBFileSystemData::getAbsolutePath(pItem);
+    QString filePath = BBFileSystemDataManager::getAbsolutePath(pItem);
     emit showInFolder(filePath);
 }
 
@@ -100,7 +100,7 @@ void BBFolderTreeWidget::finishRename()
     if (oldname != newName && !newName.isEmpty())
     {
         QTreeWidgetItem *pParentFolderItem = m_pEditingItem->parent();
-        QString parentPath = BBFileSystemData::getAbsolutePath(pParentFolderItem);
+        QString parentPath = BBFileSystemDataManager::getAbsolutePath(pParentFolderItem);
         BBTreeWidget::finishRename();
 
         emit rename(pParentFolderItem, parentPath + "/" + oldname, parentPath + "/" + newName);
@@ -185,7 +185,7 @@ QWidgetAction* BBFolderTreeWidget::createWidgetAction(QMenu *pParent, const QStr
 
 void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
 {
-    QString folderPath = BBFileSystemData::getAbsolutePath(pItem);
+    QString folderPath = BBFileSystemDataManager::getAbsolutePath(pItem);
     emit accessFolder(folderPath, pItem);
     m_pCurrentShowFolderContentItem = pItem;
 }

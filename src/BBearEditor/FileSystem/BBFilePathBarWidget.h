@@ -30,8 +30,9 @@ class BBFilePathBarWidget : public QWidget
 public:
     BBFilePathBarWidget(QWidget *pParent = nullptr);
 
-private slots:
     void showFolderPath(const QString &path);
+
+private slots:
     void accessFolder(int id);
 
 signals:

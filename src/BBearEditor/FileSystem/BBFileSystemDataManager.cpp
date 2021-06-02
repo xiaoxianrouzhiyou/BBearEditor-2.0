@@ -1,5 +1,4 @@
-#include "BBFileSystemData.h"
-#include "BBUtils.h"
+#include "BBFileSystemDataManager.h"
 #include <QDir>
 #include <QQueue>
 #include <QTreeWidgetItem>
@@ -12,24 +11,24 @@
 #include "BBTreeWidget.h"
 
 
-QList<QString> BBFileSystemData::m_MeshSuffixs = {"obj", "fbx"};
-QList<QString> BBFileSystemData::m_TextureSuffixs = {"png", "jpg", "jpeg", "bmp", "ico", "dds"};
-QList<QString> BBFileSystemData::m_AudioSuffixs = {"mp3", "wav"};
-QList<QString> BBFileSystemData::m_ScriptSuffixs = {"lua"};
-QList<QString> BBFileSystemData::m_MaterialSuffixs = {"mtl"};
+QList<QString> BBFileSystemDataManager::m_MeshSuffixs = {"obj", "fbx"};
+QList<QString> BBFileSystemDataManager::m_TextureSuffixs = {"png", "jpg", "jpeg", "bmp", "ico", "dds"};
+QList<QString> BBFileSystemDataManager::m_AudioSuffixs = {"mp3", "wav"};
+QList<QString> BBFileSystemDataManager::m_ScriptSuffixs = {"lua"};
+QList<QString> BBFileSystemDataManager::m_MaterialSuffixs = {"mtl"};
 
-QString BBFileSystemData::m_MeshFileLogoColor = "#e85655";
-QString BBFileSystemData::m_TextureFileLogoColor = "#e49831";
-QString BBFileSystemData::m_AudioFileLogoColor = "#64abe4";
-QString BBFileSystemData::m_MaterialFileLogoColor = "#fab8b7";
+QString BBFileSystemDataManager::m_MeshFileLogoColor = "#e85655";
+QString BBFileSystemDataManager::m_TextureFileLogoColor = "#e49831";
+QString BBFileSystemDataManager::m_AudioFileLogoColor = "#64abe4";
+QString BBFileSystemDataManager::m_MaterialFileLogoColor = "#fab8b7";
 
 
-BBFileSystemData::BBFileSystemData()
+BBFileSystemDataManager::BBFileSystemDataManager()
 {
 
 }
 
-BBFileSystemData::~BBFileSystemData()
+BBFileSystemDataManager::~BBFileSystemDataManager()
 {
     for (QMap<QTreeWidgetItem*, BBFILE*>::Iterator it = m_TopLevelFileData.begin(); it != m_TopLevelFileData.end(); it++)
     {
@@ -49,10 +48,10 @@ BBFileSystemData::~BBFileSystemData()
 
 
 /**
- * @brief BBFileSystemData::loadProject read all files and build a tree
+ * @brief BBFileSystemDataManager::loadProject read all files and build a tree
  */
 
-void BBFileSystemData::load()
+void BBFileSystemDataManager::load()
 {
     QString rootPath = BBConstant::BB_PATH_PROJECT_USER;
     QDir dir(rootPath);
@@ -78,7 +77,7 @@ void BBFileSystemData::load()
     }
 }
 
-QList<QTreeWidgetItem*> BBFileSystemData::getFolderTreeWidgetTopLevelItems()
+QList<QTreeWidgetItem*> BBFileSystemDataManager::getFolderTreeWidgetTopLevelItems()
 {
     QList<QTreeWidgetItem*> items;
 
@@ -90,7 +89,7 @@ QList<QTreeWidgetItem*> BBFileSystemData::getFolderTreeWidgetTopLevelItems()
     return items;
 }
 
-bool BBFileSystemData::getFileListWidgetItems(QTreeWidgetItem *pItem,
+bool BBFileSystemDataManager::getFileListWidgetItems(QTreeWidgetItem *pItem,
                                               QList<QListWidgetItem*> &outItems,
                                               QList<QString> &outFileNames)
 {
@@ -106,11 +105,11 @@ bool BBFileSystemData::getFileListWidgetItems(QTreeWidgetItem *pItem,
 }
 
 /**
- * @brief BBFileSystemData::getItemByPath       Find the corresponding tree item according to the path
+ * @brief BBFileSystemDataManager::getItemByPath       Find the corresponding tree item according to the path
  * @param absolutePath
  * @return
  */
-QTreeWidgetItem* BBFileSystemData::getItemByPath(const QString &absolutePath)
+QTreeWidgetItem* BBFileSystemDataManager::getItemByPath(const QString &absolutePath)
 {
     QString path = absolutePath.mid(BBConstant::BB_PATH_PROJECT_USER.length());
     if (path.length() == 0)
@@ -152,13 +151,13 @@ QTreeWidgetItem* BBFileSystemData::getItemByPath(const QString &absolutePath)
     }
 }
 
-QTreeWidgetItem* BBFileSystemData::getParentFolderItem(const QString &filePath)
+QTreeWidgetItem* BBFileSystemDataManager::getParentFolderItem(const QString &filePath)
 {
     // cannot use getItemByPath(filePath) and ->parent(), since filePath may be a file but not a folder
     return getItemByPath(getParentPath(filePath));
 }
 
-QListWidgetItem* BBFileSystemData::getFileItem(QTreeWidgetItem *pParentFolderItem, const QString &filePath)
+QListWidgetItem* BBFileSystemDataManager::getFileItem(QTreeWidgetItem *pParentFolderItem, const QString &filePath)
 {
     BBFILE *pFolderContent = getFolderContent(pParentFolderItem);
     QString fileName = getFileNameByPath(filePath);
@@ -174,11 +173,11 @@ QListWidgetItem* BBFileSystemData::getFileItem(QTreeWidgetItem *pParentFolderIte
 }
 
 /**
- * @brief BBFileSystemData::openFile
+ * @brief BBFileSystemDataManager::openFile
  * @param filePath
  * @return                              returning false means that this is a folder
  */
-bool BBFileSystemData::openFile(const QString &filePath)
+bool BBFileSystemDataManager::openFile(const QString &filePath)
 {
     QFileInfo fileInfo(filePath);
     if (fileInfo.isDir())
@@ -196,13 +195,13 @@ bool BBFileSystemData::openFile(const QString &filePath)
 }
 
 /**
- * @brief BBFileSystemData::newFolder
+ * @brief BBFileSystemDataManager::newFolder
  * @param parentPath
  * @param pFolderItem                           current item in the folder tree after creating new folder
  * @param pFileList                             current item in the file list after creating new folder
  * @return
  */
-bool BBFileSystemData::newFolder(const QString &parentPath, QTreeWidgetItem *&pFolderItem, QListWidgetItem *&pFileItem)
+bool BBFileSystemDataManager::newFolder(const QString &parentPath, QTreeWidgetItem *&pFolderItem, QListWidgetItem *&pFileItem)
 {
     QString fileName = "new folder";
     QString filePath = getExclusiveFolderPath(parentPath, fileName);
@@ -238,7 +237,7 @@ bool BBFileSystemData::newFolder(const QString &parentPath, QTreeWidgetItem *&pF
     return true;
 }
 
-bool BBFileSystemData::showInFolder(const QString &filePath)
+bool BBFileSystemDataManager::showInFolder(const QString &filePath)
 {
     BB_PROCESS_ERROR_RETURN_FALSE(!filePath.isEmpty());
     QProcess process;
@@ -250,7 +249,7 @@ bool BBFileSystemData::showInFolder(const QString &filePath)
     return process.startDetached(cmd);
 }
 
-bool BBFileSystemData::rename(QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pFileItem,
+bool BBFileSystemDataManager::rename(QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pFileItem,
                               const QString &oldPath, const QString &newPath)
 {
     QString newName;
@@ -303,7 +302,7 @@ bool BBFileSystemData::rename(QTreeWidgetItem *pParentFolderItem, QListWidgetIte
     return true;
 }
 
-QString BBFileSystemData::getAbsolutePath(const QString &relativePath)
+QString BBFileSystemDataManager::getAbsolutePath(const QString &relativePath)
 {
     if (relativePath.isEmpty())
     {
@@ -315,12 +314,12 @@ QString BBFileSystemData::getAbsolutePath(const QString &relativePath)
     }
 }
 
-QString BBFileSystemData::getAbsolutePath(QTreeWidgetItem *pItem)
+QString BBFileSystemDataManager::getAbsolutePath(QTreeWidgetItem *pItem)
 {
     return getAbsolutePath(BBTreeWidget::getLevelPath(pItem));
 }
 
-QString BBFileSystemData::getExclusiveFolderPath(const QString &parentPath, QString &fileName)
+QString BBFileSystemDataManager::getExclusiveFolderPath(const QString &parentPath, QString &fileName)
 {
     QDir dir;
     QString filePath = parentPath + "/" + fileName;
@@ -343,7 +342,7 @@ QString BBFileSystemData::getExclusiveFolderPath(const QString &parentPath, QStr
     }
 }
 
-QString BBFileSystemData::getExclusiveFolderPath(const QString &filePath)
+QString BBFileSystemDataManager::getExclusiveFolderPath(const QString &filePath)
 {
     QDir dir;
     if (dir.exists(filePath))
@@ -363,7 +362,7 @@ QString BBFileSystemData::getExclusiveFolderPath(const QString &filePath)
     }
 }
 
-QString BBFileSystemData::getExclusiveFilePath(const QString &parentPath, QString &fileName)
+QString BBFileSystemDataManager::getExclusiveFilePath(const QString &parentPath, QString &fileName)
 {
     QFile file;
     QString filePath = parentPath + "/" + fileName;
@@ -386,7 +385,7 @@ QString BBFileSystemData::getExclusiveFilePath(const QString &parentPath, QStrin
     }
 }
 
-QString BBFileSystemData::getExclusiveFilePath(const QString &filePath)
+QString BBFileSystemDataManager::getExclusiveFilePath(const QString &filePath)
 {
     QFile file;
     if (file.exists(filePath))
@@ -409,12 +408,12 @@ QString BBFileSystemData::getExclusiveFilePath(const QString &filePath)
     }
 }
 
-QString BBFileSystemData::getFileSuffix(const QFileInfo &fileInfo)
+QString BBFileSystemDataManager::getFileSuffix(const QFileInfo &fileInfo)
 {
     return fileInfo.fileName().mid(fileInfo.fileName().lastIndexOf('.') + 1);
 }
 
-QString BBFileSystemData::getFileSuffix(const QString &name)
+QString BBFileSystemDataManager::getFileSuffix(const QString &name)
 {
     int nIndex = name.lastIndexOf('.');
     if (nIndex < 0)
@@ -427,22 +426,22 @@ QString BBFileSystemData::getFileSuffix(const QString &name)
     }
 }
 
-QString BBFileSystemData::getBaseName(const QString &name)
+QString BBFileSystemDataManager::getBaseName(const QString &name)
 {
     return name.mid(0, name.lastIndexOf('.'));
 }
 
-QString BBFileSystemData::getFileNameByPath(const QString &filePath)
+QString BBFileSystemDataManager::getFileNameByPath(const QString &filePath)
 {
     return filePath.mid(filePath.lastIndexOf('/') + 1);
 }
 
-QString BBFileSystemData::getParentPath(const QString &filePath)
+QString BBFileSystemDataManager::getParentPath(const QString &filePath)
 {
     return filePath.mid(0, filePath.lastIndexOf('/'));
 }
 
-QString BBFileSystemData::getOverviewMapPath(const QString &sourcePath)
+QString BBFileSystemDataManager::getOverviewMapPath(const QString &sourcePath)
 {
     QString fileName = getFileNameByPath(sourcePath);
     QString suffix = getFileSuffix(fileName);
@@ -466,7 +465,7 @@ QString BBFileSystemData::getOverviewMapPath(const QString &sourcePath)
     return BBConstant::BB_PATH_PROJECT_ENGINE + "/" + BBConstant::BB_NAME_FILE_SYSTEM_USER + "/" + relativePath;
 }
 
-void BBFileSystemData::buildFileData(QQueue<BBFOLDER> &queue)
+void BBFileSystemDataManager::buildFileData(QQueue<BBFOLDER> &queue)
 {
     BBFOLDER folder = queue.dequeue();
     QDir dir(folder.path);
@@ -505,7 +504,7 @@ void BBFileSystemData::buildFileData(QQueue<BBFOLDER> &queue)
     }
 }
 
-BBFILE* BBFileSystemData::loadFolderContent(const QString &parentPath)
+BBFILE* BBFileSystemDataManager::loadFolderContent(const QString &parentPath)
 {
     BBFILE *pFolderContent = new  BBFILE();
     QDir dir(parentPath);
@@ -566,7 +565,7 @@ BBFILE* BBFileSystemData::loadFolderContent(const QString &parentPath)
     return pFolderContent;
 }
 
-QString BBFileSystemData::getEngineAuxiliaryFolderPath(const QString &sourcePath)
+QString BBFileSystemDataManager::getEngineAuxiliaryFolderPath(const QString &sourcePath)
 {
     // the path relative to the engine folder is the same as the path relative to the contents folder
     QString relativePath = sourcePath.mid(BBConstant::BB_PATH_PROJECT_USER.length());
@@ -574,7 +573,7 @@ QString BBFileSystemData::getEngineAuxiliaryFolderPath(const QString &sourcePath
     return BBConstant::BB_PATH_PROJECT_ENGINE + "/" + BBConstant::BB_NAME_FILE_SYSTEM_USER + relativePath;
 }
 
-QIcon BBFileSystemData::getIcon(const QString &path)
+QIcon BBFileSystemDataManager::getIcon(const QString &path)
 {
     // Cut into a square
     QPixmap pix(path);
@@ -592,7 +591,7 @@ QIcon BBFileSystemData::getIcon(const QString &path)
     }
 }
 
-QIcon BBFileSystemData::getTextureIcon(const QString &path)
+QIcon BBFileSystemDataManager::getTextureIcon(const QString &path)
 {
     QPixmap pix(path);
     int h = pix.height();
@@ -610,11 +609,11 @@ QIcon BBFileSystemData::getTextureIcon(const QString &path)
     return QIcon(background);
 }
 
-QIcon BBFileSystemData::getMeshOverviewMap(const QString &sourcePath)
+QIcon BBFileSystemDataManager::getMeshOverviewMap(const QString &sourcePath)
 {
     // read icon from engine folder if it is created before
     // if it does not exist, create
-    QString overviewMapPath = BBFileSystemData::getOverviewMapPath(sourcePath);
+    QString overviewMapPath = BBFileSystemDataManager::getOverviewMapPath(sourcePath);
     QFile file(overviewMapPath);
     if (!file.exists())
     {
@@ -623,7 +622,7 @@ QIcon BBFileSystemData::getMeshOverviewMap(const QString &sourcePath)
     return getIcon(overviewMapPath);
 }
 
-void BBFileSystemData::createMeshOverviewMap(const QString &sourcePath, const QString &overviewMapPath)
+void BBFileSystemDataManager::createMeshOverviewMap(const QString &sourcePath, const QString &overviewMapPath)
 {
     // set default skybox
     // m_pPreviewOpenGLWidget->getScene()->setSkyBox(QString(BB_PATH_RESOURCE) + "skyboxs/3/");
@@ -641,7 +640,7 @@ void BBFileSystemData::createMeshOverviewMap(const QString &sourcePath, const QS
     m_pPreviewOpenGLWidget->getScene()->deleteGameObject(pModel);
 }
 
-QColor BBFileSystemData::getFileLogoColor(const BBFileType &eFileType)
+QColor BBFileSystemDataManager::getFileLogoColor(const BBFileType &eFileType)
 {
     if (eFileType == BBFileType::Mesh)
     {
@@ -665,14 +664,14 @@ QColor BBFileSystemData::getFileLogoColor(const BBFileType &eFileType)
     }
 }
 
-BBFileType BBFileSystemData::getFileType(const QString &filePath)
+BBFileType BBFileSystemDataManager::getFileType(const QString &filePath)
 {
     QTreeWidgetItem *pItem = getItemByPath(filePath);
     // to do ... m_RootFileData  m_TopLevelFileData  m_FileData
     return BBFileType::Other;
 }
 
-BBFILE* BBFileSystemData::getFolderContent(QTreeWidgetItem *pItem)
+BBFILE* BBFileSystemDataManager::getFolderContent(QTreeWidgetItem *pItem)
 {
     BBFILE *pFolderContent;
     if (pItem == NULL)

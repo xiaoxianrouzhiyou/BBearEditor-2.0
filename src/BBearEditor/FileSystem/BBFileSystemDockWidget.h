@@ -2,19 +2,15 @@
 #define BBFILESYSTEMDOCKWIDGET_H
 
 #include <QDockWidget>
+#include "BBUtils.h"
+
+
+using namespace BBFileSystem;
 
 
 class QTreeWidgetItem;
 class QListWidgetItem;
-class BBOpenGLWidget;
-class BBFileSystemData;
-
-
-enum BBSignalSender
-{
-    FolderTree = 0,
-    FileList = 1
-};
+class BBFileSystemManager;
 
 
 namespace Ui {
@@ -43,8 +39,6 @@ private slots:
 
     void renameInFolderTree(QTreeWidgetItem *pParentFolderItem, const QString &oldPath, const QString &newPath);
     void renameInFileList(QListWidgetItem *pFileItem, const QString &oldPath, const QString &newPath);
-    void rename(QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pFileItem,
-                const QString &oldPath, const QString &newPath);
 
 signals:
     void updateFolderPathBar();
@@ -53,14 +47,8 @@ signals:
 private:
     void setConnect();
 
-    void updateFolderTree();
-    void updateFolderTree(const QString &filePath);
-    void updateFileList(const QString &parentPath, QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pCurrentItem = 0);
-    void updateFileList(const QString &parentPath, QListWidgetItem *pCurrentItem = 0);
-
     Ui::BBFileSystemDockWidget *m_pUi;
-    BBOpenGLWidget *m_pPreviewOpenGLWidget;
-    BBFileSystemData *m_pData; 
+    BBFileSystemManager *m_pFileSystemManager;
 };
 
 #endif // BBFILESYSTEMDOCKWIDGET_H

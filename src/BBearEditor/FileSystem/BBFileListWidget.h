@@ -5,8 +5,9 @@
 #include <QListWidget>
 #include <QPlainTextEdit>
 #include <BBUtils.h>
-#include "BBFileSystemData.h"
-#include "BBFileSystemDockWidget.h"
+
+
+using namespace BBFileSystem;
 
 
 class QTreeWidgetItem;
