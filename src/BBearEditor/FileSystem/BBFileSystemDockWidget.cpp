@@ -75,9 +75,14 @@ void BBFileSystemDockWidget::deleteFolderInFolderTree(QTreeWidgetItem *pItem)
     m_pFileSystemManager->deleteFolderInFolderTree(pItem);
 }
 
-void BBFileSystemDockWidget::deleteFilesInFileList(QTreeWidgetItem *pParentItem, const QString &parentPath, const QList<QListWidgetItem*> &items)
+void BBFileSystemDockWidget::deleteFilesInFileList(const QList<QListWidgetItem*> &items)
 {
-    m_pFileSystemManager->deleteFilesInFileList(pParentItem, parentPath, items);
+    m_pFileSystemManager->deleteFilesInFileList(items);
+}
+
+void BBFileSystemDockWidget::importAsset(const QString &parentPath, const QList<QUrl> &urls)
+{
+    m_pFileSystemManager->importAsset(parentPath, urls);
 }
 
 void BBFileSystemDockWidget::updateAll()
@@ -124,26 +129,10 @@ void BBFileSystemDockWidget::setConnect()
                      this, SLOT(deleteFolderInFolderTree(QTreeWidgetItem*)));
     QObject::connect(m_pUi->treeFolder, SIGNAL(finishDeleteAction()),
                      this, SLOT(updateAll()));
-    QObject::connect(m_pUi->listFile, SIGNAL(deleteFiles(QTreeWidgetItem*, QString, QList<QListWidgetItem*>)),
-                     this, SLOT(deleteFilesInFileList(QTreeWidgetItem*, QString, QList<QListWidgetItem*>)));
-
+    QObject::connect(m_pUi->listFile, SIGNAL(deleteFiles(QList<QListWidgetItem*>)),
+                     this, SLOT(deleteFilesInFileList(QList<QListWidgetItem*>)));
+    // import external assets
+    QObject::connect(m_pUi->listFile, SIGNAL(importAsset(QString, QList<QUrl>)),
+                     this, SLOT(importAsset(QString, QList<QUrl>)));
 }
 
-
-
-
-//    // rename folder name in the file list, and update the name of corresponding item in the folder tree
-//    QObject::connect(m_pUi->listFile, SIGNAL(renameItemInFolderTree(QString, QString)),
-//                     m_pUi->treeFolder, SLOT(renameItem(QString, QString)));
-//    // move item in the file list, and move corresponding item in the folder tree
-//    QObject::connect(m_pUi->listFile, SIGNAL(moveItemInFolderTree(QString, QString)),
-//                     m_pUi->treeFolder, SLOT(moveItem(QString, QString)));
-//    // delete folder in the file list, and delete corresponding item in the folder tree
-//    QObject::connect(m_pUi->listFile, SIGNAL(deleteItemInFolderTree(QString)),
-//                     m_pUi->treeFolder, SLOT(deleteItem(QString)));
-//    // rebuild folder tree
-//    QObject::connect(m_pUi->listFile, SIGNAL(updateFolderTree()),
-//                     m_pUi->treeFolder, SLOT(loadProject()));
-//    // create mesh overview map
-//    QObject::connect(m_pUi->listFile, SIGNAL(createMeshOverviewMap(QString, QString)),
-//                     this, SLOT(createMeshOverviewMap(QString, QString)));

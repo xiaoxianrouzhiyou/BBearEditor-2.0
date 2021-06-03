@@ -37,6 +37,7 @@ public:
                 const QString &oldPath, const QString &newPath);
     bool deleteFolder(QTreeWidgetItem *pItem);
     bool deleteFiles(QTreeWidgetItem *pParentItem, const QString &parentPath, const QList<QListWidgetItem*> &items);
+    bool importAsset(const QString &parentPath, const QList<QUrl> &urls);
 
 public:
     static QString getAbsolutePath(const QString &relativePath);
@@ -66,7 +67,9 @@ public:
 
 
 private:
-    void buildFileData(QQueue<BBFOLDER> &queue);
+    void buildFileData(const QString &rootPath, QTreeWidgetItem *pRootItem,
+                       const QList<QString> &nameFilter = QList<QString>());
+    void buildFileData(QQueue<BBFOLDER> &queue, const QList<QString> &nameFilter = QList<QString>());
     BBFILE* loadFolderContent(const QString &parentPath);
 
     QString getEngineAuxiliaryFolderPath(const QString &sourcePath);
@@ -77,6 +80,8 @@ private:
     BBFileType getFileType(const QString &filePath);
     BBFILE* getFolderContent(QTreeWidgetItem *pItem);
     bool deleteFolderItem(QTreeWidgetItem *pItem);
+    bool importAsset(const QFileInfo &fileInfo, const QString &newPath);
+    bool loadImportedAsset(const QString &parentPath);
 
     BBOpenGLWidget *m_pPreviewOpenGLWidget;
     BBFILE *m_pRootFileData;

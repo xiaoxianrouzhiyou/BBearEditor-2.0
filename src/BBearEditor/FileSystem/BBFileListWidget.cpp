@@ -3,10 +3,6 @@
 #include <QMenu>
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QApplication>
-#include <QDesktopWidget>
-#include <QDesktopServices>
-#include <QUrl>
 #include "Window/BBConfirmationDialog.h"
 #include <QMimeData>
 #include <QScrollBar>
@@ -229,7 +225,7 @@ void BBFileListWidget::deleteAction()
     }
     if (dialog.exec())
     {
-        emit deleteFiles(m_pParentItem, m_ParentPath, items);
+        emit deleteFiles(items);
 
         setCurrentItem(NULL);
 //        //清空属性栏 包括场景 层级视图选中
@@ -514,7 +510,17 @@ void BBFileListWidget::dropEvent(QDropEvent *event)
     {
         // from outside of the editor
         event->accept();
-        emit importAsset(event->mimeData()->urls());
+
+        QString parentPath = m_ParentPath;
+        if (m_pIndicatorItem)
+        {
+            // Drag to the folder in the file list and import the asset into this folder
+            parentPath += "/" + m_pFileData->value(m_pIndicatorItem)->m_FileName;
+        }
+        emit importAsset(parentPath, event->mimeData()->urls());
+        // Open the asset import management dialog
+        // BBAssetManager assetManager;
+        // assetManager.exec();
     }
     else if (event->mimeData()->hasFormat(getMimeType()))
     {
@@ -675,88 +681,6 @@ QString BBFileListWidget::getPathByItem(QListWidgetItem *pItem)
 //        BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFile(oldPath, newPath, eFileType, bCopy));
 //    }
 //}
-
-
-
-//void BBFileListWidget::importAsset(const QList<QUrl> &urls)
-//{
-//    QString folderPath = m_FolderPath;
-//    if (m_pIndicatorItem)
-//    {
-//        // Drag to the folder in the file list and import the asset into this folder
-//        folderPath += "/" + m_Map.value(m_pIndicatorItem)->m_FileName;
-//    }
-//    for (int i = 0; i < urls.length(); i++)
-//    {
-//        QString importedAssetPath = urls.at(i).toLocalFile();
-//        // if it is the folder, you need to traverse the sub-files
-//        // otherwise, directly operate
-//        QFileInfo fileInfo(importedAssetPath);
-//        if (fileInfo.isDir())
-//        {
-//            // create the folder
-//            QString rootFolderName = BBUtils::getFileNameByPath(importedAssetPath);
-//            QString rootFolderPath = BBUtils::getExclusiveFolderPath(folderPath, rootFolderName);
-
-//            QDir dir;
-//            BB_PROCESS_ERROR_RETURN(dir.mkpath(rootFolderPath));
-//            // breadth-first traverse
-//            QQueue<QString> queue;
-//            queue.enqueue(importedAssetPath);
-//            while (!queue.isEmpty())
-//            {
-//                QDir dir(queue.dequeue());
-//                dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
-//                // the folder exists, traverse sub-files
-//                QFileInfoList fileInfoList = dir.entryInfoList();
-//                foreach (QFileInfo fileInfo, fileInfoList)
-//                {
-//                    // Keep the path of the sub file relative to the root folder
-//                    // and replace with the project file path in front
-//                    // There is no duplicate name problem
-//                    QString childPath = rootFolderPath + fileInfo.absoluteFilePath().mid(importedAssetPath.length());
-//                    if (fileInfo.isDir())
-//                    {
-//                        // folder enqueue, waiting to traverse its sub-files
-//                        queue.enqueue(fileInfo.absoluteFilePath());
-//                        BB_PROCESS_ERROR_RETURN(dir.mkpath(childPath));
-//                    }
-//                    else
-//                    {
-//                        // handle the file
-//                        importAsset(fileInfo, childPath);
-//                    }
-//                }
-//            }
-//        }
-//        else
-//        {
-//            // handle the file
-//            QFileInfo fileInfo(importedAssetPath);
-//            importAsset(fileInfo, folderPath + "/" + fileInfo.fileName());
-//        }
-//    }
-//    // Open the asset import management dialog
-//    // BBAssetManager assetManager;
-//    // assetManager.exec();
-//}
-
-//void BBFileListWidget::importAsset(const QFileInfo &fileInfo, const QString &newPath)
-//{
-//    QString suffix = fileInfo.suffix();
-//    if (m_TextureSuffixs.contains(suffix) || m_ScriptSuffixs.contains(suffix))
-//    {
-//        // import directly
-//        QFile::copy(fileInfo.absoluteFilePath(), BBUtils::getExclusiveFilePath(newPath));
-//    }
-//    else if (m_MeshSuffixs.contains(suffix))
-//    {
-//        QString targetPath = BBUtils::getExclusiveFilePath(newPath);
-//        QFile::copy(fileInfo.absoluteFilePath(), targetPath);
-//        createMeshOverviewMap(targetPath, BBUtils::getOverviewMapPath(targetPath));
-//    }
-//}
-
 
 
 //bool BBFileListWidget::moveItem()

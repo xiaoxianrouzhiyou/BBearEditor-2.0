@@ -62,8 +62,8 @@ signals:
     void newFolder(const QString &parentPath, const BBSignalSender &eSender);
     void showInFolder(const QString &filePath);
     void rename(QListWidgetItem *pFileItem, const QString &oldPath, const QString &newPath);
-    void deleteFiles(QTreeWidgetItem *pParentItem, const QString &parentPath, const QList<QListWidgetItem*> &items);
-    void importAsset(const QList<QUrl> &urls);
+    void deleteFiles(const QList<QListWidgetItem*> &items);
+    void importAsset(const QString &parentPath, const QList<QUrl> &urls);
     bool moveFile(const QString &oldPath, const QString &newPath, const BBFileType &eFileType, bool bCopy);
 
 private:

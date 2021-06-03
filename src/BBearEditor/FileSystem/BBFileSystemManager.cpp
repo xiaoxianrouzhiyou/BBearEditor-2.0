@@ -121,14 +121,23 @@ void BBFileSystemManager::deleteFolderInFolderTree(QTreeWidgetItem *pItem)
     // when delete action is over, we will update
 }
 
-void BBFileSystemManager::deleteFilesInFileList(QTreeWidgetItem *pParentItem,
-                                                const QString &parentPath,
-                                                const QList<QListWidgetItem*> &items)
+void BBFileSystemManager::deleteFilesInFileList(const QList<QListWidgetItem*> &items)
 {
+    QTreeWidgetItem *pParentItem = m_pFileListWidget->getCurrentParentItem();
+    QString parentPath = m_pFileListWidget->getCurrentParentPath();
     if (m_pDataManager->deleteFiles(pParentItem, parentPath, items))
     {
         updateFolderTree();
         updateFileList(parentPath, pParentItem, NULL);
+    }
+}
+
+void BBFileSystemManager::importAsset(const QString &parentPath, const QList<QUrl> &urls)
+{
+    if (m_pDataManager->importAsset(parentPath, urls))
+    {
+        updateFolderTree();
+        updateFileList(m_pFileListWidget->getCurrentParentPath(), m_pFileListWidget->getCurrentParentItem(), NULL);
     }
 }
 

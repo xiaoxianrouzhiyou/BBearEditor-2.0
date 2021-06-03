@@ -59,17 +59,7 @@ void BBFileSystemDataManager::load()
     {
         // the content of root folder
         m_pRootFileData = loadFolderContent(rootPath);
-        // The queue of the parent node of the node to be created
-        QQueue<BBFOLDER> queue;
-        // init
-        queue.enqueue(BBFOLDER(rootPath, NULL));
-        // Traverse the root folder
-        buildFileData(queue);
-        // breadth-first traverse subfolders
-        while (!queue.isEmpty())
-        {
-            buildFileData(queue);
-        }
+        buildFileData(rootPath, NULL);
     }
     else
     {
@@ -195,6 +185,7 @@ bool BBFileSystemDataManager::openFile(const QString &filePath)
             QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
         }
     }
+    return true;
 }
 
 /**
@@ -374,6 +365,62 @@ bool BBFileSystemDataManager::deleteFiles(QTreeWidgetItem *pParentItem,
     }
 
     return true;
+}
+
+bool BBFileSystemDataManager::importAsset(const QString &parentPath, const QList<QUrl> &urls)
+{
+    for (int i = 0; i < urls.length(); i++)
+    {
+        QString importedAssetPath = urls.at(i).toLocalFile();
+        // if it is the folder, you need to traverse the sub-files
+        // otherwise, directly operate
+        QFileInfo fileInfo(importedAssetPath);
+        if (fileInfo.isDir())
+        {
+            // create the folder
+            QString rootFolderName = getFileNameByPath(importedAssetPath);
+            QString rootFolderPath = getExclusiveFolderPath(parentPath, rootFolderName);
+
+            QDir dir;
+            BB_PROCESS_ERROR_RETURN_FALSE(dir.mkpath(rootFolderPath));
+            // breadth-first traverse
+            QQueue<QString> queue;
+            queue.enqueue(importedAssetPath);
+            while (!queue.isEmpty())
+            {
+                QDir dir(queue.dequeue());
+                dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
+                // the folder exists, traverse sub-files
+                QFileInfoList fileInfoList = dir.entryInfoList();
+                foreach (QFileInfo fileInfo, fileInfoList)
+                {
+                    // Keep the path of the sub file relative to the root folder
+                    // and replace with the project file path in front
+                    // There is no duplicate name problem
+                    QString childPath = rootFolderPath + fileInfo.absoluteFilePath().mid(importedAssetPath.length());
+                    if (fileInfo.isDir())
+                    {
+                        // folder enqueue, waiting to traverse its sub-files
+                        queue.enqueue(fileInfo.absoluteFilePath());
+                        BB_PROCESS_ERROR_RETURN_FALSE(dir.mkpath(childPath));
+                    }
+                    else
+                    {
+                        // handle the file
+                        importAsset(fileInfo, childPath);
+                    }
+                }
+            }
+        }
+        else
+        {
+            // handle the file
+            QFileInfo fileInfo(importedAssetPath);
+            importAsset(fileInfo, parentPath + "/" + fileInfo.fileName());
+        }
+    }
+    // load new tree items and list items
+    return loadImportedAsset(parentPath);
 }
 
 QString BBFileSystemDataManager::getAbsolutePath(const QString &relativePath)
@@ -563,7 +610,34 @@ QColor BBFileSystemDataManager::getFileLogoColor(const BBFileType &eFileType)
     }
 }
 
-void BBFileSystemDataManager::buildFileData(QQueue<BBFOLDER> &queue)
+/**
+ * @brief BBFileSystemDataManager::buildFileData
+ * @param rootPath
+ * @param pRootItem
+ * @param nameFilter                                the file item whose name is included in the nameFilter will not be created
+ */
+void BBFileSystemDataManager::buildFileData(const QString &rootPath, QTreeWidgetItem *pRootItem,
+                                            const QList<QString> &nameFilter)
+{
+    // The queue of the parent node of the node to be created
+    QQueue<BBFOLDER> queue;
+    // init
+    queue.enqueue(BBFOLDER(rootPath, pRootItem));
+    // Traverse the root folder
+    buildFileData(queue, nameFilter);
+    // breadth-first traverse subfolders
+    while (!queue.isEmpty())
+    {
+        buildFileData(queue, nameFilter);
+    }
+}
+
+/**
+ * @brief BBFileSystemDataManager::buildFileData
+ * @param queue
+ * @param nameFilter
+ */
+void BBFileSystemDataManager::buildFileData(QQueue<BBFOLDER> &queue, const QList<QString> &nameFilter)
 {
     BBFOLDER folder = queue.dequeue();
     QDir dir(folder.path);
@@ -571,6 +645,10 @@ void BBFileSystemDataManager::buildFileData(QQueue<BBFOLDER> &queue)
     QFileInfoList fileInfoList = dir.entryInfoList();
     foreach (QFileInfo fileInfo, fileInfoList)
     {
+        if (nameFilter.contains(fileInfo.fileName()))
+        {
+            continue;
+        }
         // is folder
         if (fileInfo.isDir())
         {
@@ -604,7 +682,7 @@ void BBFileSystemDataManager::buildFileData(QQueue<BBFOLDER> &queue)
 
 BBFILE* BBFileSystemDataManager::loadFolderContent(const QString &parentPath)
 {
-    BBFILE *pFolderContent = new  BBFILE();
+    BBFILE *pFolderContent = new BBFILE();
     QDir dir(parentPath);
     dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
     QFileInfoList fileInfoList = dir.entryInfoList();
@@ -770,5 +848,44 @@ bool BBFileSystemDataManager::deleteFolderItem(QTreeWidgetItem *pItem)
     qDeleteAll(*pFolderContent);
     delete pFolderContent;
     delete pItem;
+    return true;
 }
 
+bool BBFileSystemDataManager::importAsset(const QFileInfo &fileInfo, const QString &newPath)
+{
+    QString suffix = fileInfo.suffix();
+    if (m_TextureSuffixs.contains(suffix) || m_ScriptSuffixs.contains(suffix))
+    {
+        // import directly
+        BB_PROCESS_ERROR_RETURN_FALSE(QFile::copy(fileInfo.absoluteFilePath(), getExclusiveFilePath(newPath)));
+    }
+    else if (m_MeshSuffixs.contains(suffix))
+    {
+        QString targetPath = getExclusiveFilePath(newPath);
+        BB_PROCESS_ERROR_RETURN_FALSE(QFile::copy(fileInfo.absoluteFilePath(), targetPath));
+        createMeshOverviewMap(targetPath, getOverviewMapPath(targetPath));
+    }
+    return true;
+}
+
+/**
+ * @brief BBFileSystemDataManager::loadImportedAsset
+ *        Traverse the child files of parentPath and construct corresponding items for the newly imported files
+ * @param parentPath
+ * @return
+ */
+bool BBFileSystemDataManager::loadImportedAsset(const QString &parentPath)
+{
+    QTreeWidgetItem *pParentFolderItem = getItemByPath(parentPath);
+    BBFILE *pFolderContent = getFolderContent(pParentFolderItem);
+    BB_PROCESS_ERROR_RETURN_FALSE(pFolderContent);
+    // the names of all sub files
+    QList<QString> names;
+    for (BBFILE::Iterator it = pFolderContent->begin(); it != pFolderContent->end(); it++)
+    {
+        names.append(it.value()->m_FileName);
+    }
+    buildFileData(parentPath, pParentFolderItem, names);
+
+    return true;
+}
