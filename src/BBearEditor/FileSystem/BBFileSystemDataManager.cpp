@@ -619,8 +619,17 @@ QColor BBFileSystemDataManager::getFileLogoColor(const BBFileType &eFileType)
 void BBFileSystemDataManager::buildFileData(const QString &rootPath, QTreeWidgetItem *pRootItem, BBFILE *&pRootFileData,
                                             const QList<QString> &nameFilter)
 {
+    QList<QListWidgetItem*> newItems;
     // the content of root folder
-    BBFILE *pRootFolderContent = loadFolderContent(rootPath, nameFilter);
+    BBFILE *pRootFolderContent = loadFolderContent(rootPath, newItems, nameFilter);
+
+    while (m_SelectedItems.count() > 0)
+    {
+        m_SelectedItems.takeFirst();
+    }
+    // record and then select these items newly created in the file list
+    m_SelectedItems.append(newItems);
+
     pRootFileData->unite(*pRootFolderContent);
     BB_SAFE_DELETE(pRootFolderContent);
     // The queue of the parent node of the node to be created
@@ -658,7 +667,8 @@ void BBFileSystemDataManager::buildFileData(QQueue<BBFOLDER> &queue, const QList
         {
             QTreeWidgetItem *pItem = new QTreeWidgetItem({fileInfo.fileName()});
             pItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
-            BBFILE *pFolderContent = loadFolderContent(fileInfo.absoluteFilePath());
+            QList<QListWidgetItem*> newItems;
+            BBFILE *pFolderContent = loadFolderContent(fileInfo.absoluteFilePath(), newItems);
             if (folder.pItem)
             {
                 // is not at the top level
@@ -684,7 +694,9 @@ void BBFileSystemDataManager::buildFileData(QQueue<BBFOLDER> &queue, const QList
     }
 }
 
-BBFILE* BBFileSystemDataManager::loadFolderContent(const QString &parentPath, const QList<QString> &nameFilter)
+BBFILE* BBFileSystemDataManager::loadFolderContent(const QString &parentPath,
+                                                   QList<QListWidgetItem*> &newItems,
+                                                   const QList<QString> &nameFilter)
 {
     BBFILE *pFolderContent = new BBFILE();
     QDir dir(parentPath);
@@ -698,6 +710,7 @@ BBFILE* BBFileSystemDataManager::loadFolderContent(const QString &parentPath, co
         }
 
         QListWidgetItem *pItem = new QListWidgetItem;
+        newItems.append(pItem);
         pItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
         pItem->setSizeHint(BBFileListWidget::m_ItemSize);
         if (fileInfo.isDir())

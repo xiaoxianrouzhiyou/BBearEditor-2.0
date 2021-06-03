@@ -30,6 +30,7 @@ public:
     QTreeWidgetItem* getParentFolderItem(const QString &filePath);
     QListWidgetItem* getFileItem(QTreeWidgetItem *pFolderItem);
     QListWidgetItem* getFileItem(QTreeWidgetItem *pParentFolderItem, const QString &filePath);
+    inline QList<QListWidgetItem*> getSelectedItems() { return m_SelectedItems; }
     bool openFile(const QString &filePath);
     bool newFolder(const QString &parentPath, QTreeWidgetItem *&pFolderItem, QListWidgetItem *&pOutFileItem);
     bool showInFolder(const QString &filePath);
@@ -70,7 +71,8 @@ private:
     void buildFileData(const QString &rootPath, QTreeWidgetItem *pRootItem, BBFILE *&pRootFileData,
                        const QList<QString> &nameFilter = QList<QString>());
     void buildFileData(QQueue<BBFOLDER> &queue, const QList<QString> &nameFilter = QList<QString>());
-    BBFILE* loadFolderContent(const QString &parentPath, const QList<QString> &nameFilter = QList<QString>());
+    BBFILE* loadFolderContent(const QString &parentPath, QList<QListWidgetItem*> &newItems,
+                              const QList<QString> &nameFilter = QList<QString>());
 
     QString getEngineAuxiliaryFolderPath(const QString &sourcePath);
     QIcon getIcon(const QString &path);
@@ -87,6 +89,7 @@ private:
     BBFILE *m_pRootFileData;
     QMap<QTreeWidgetItem*, BBFILE*> m_TopLevelFileData;
     QMap<QTreeWidgetItem*, BBFILE*> m_FileData;
+    QList<QListWidgetItem*> m_SelectedItems;
 };
 
 #endif // BBFILESYSTEMDATAMANAGER_H

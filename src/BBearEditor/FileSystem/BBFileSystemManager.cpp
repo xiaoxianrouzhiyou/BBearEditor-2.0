@@ -138,6 +138,7 @@ void BBFileSystemManager::importAsset(const QString &parentPath, const QList<QUr
     {
         updateFolderTree();
         updateFileList(m_pFileListWidget->getCurrentParentPath(), m_pFileListWidget->getCurrentParentItem(), NULL);
+        m_pFileListWidget->setSelectedItems(m_pDataManager->getSelectedItems());
     }
 }
 

@@ -126,6 +126,14 @@ void BBFileListWidget::updateCurrentInfos(QTreeWidgetItem *pDeletedItem)
     }
 }
 
+void BBFileListWidget::setSelectedItems(QList<QListWidgetItem*> items)
+{
+    for (int i = 0; i < items.count(); i++)
+    {
+        setItemSelected(items.at(i), true);
+    }
+}
+
 void BBFileListWidget::doubleClickItem(QListWidgetItem *pItem)
 {
     emit openFile(getPathByItem(pItem));
