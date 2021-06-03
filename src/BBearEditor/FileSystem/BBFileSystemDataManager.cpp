@@ -25,7 +25,7 @@ QString BBFileSystemDataManager::m_MaterialFileLogoColor = "#fab8b7";
 
 BBFileSystemDataManager::BBFileSystemDataManager()
 {
-
+    m_pRootFileData = new BBFILE();
 }
 
 BBFileSystemDataManager::~BBFileSystemDataManager()
@@ -44,6 +44,8 @@ BBFileSystemDataManager::~BBFileSystemDataManager()
         // when delete top item of m_TopLevelFileData, their child items had been deleted
         // delete it.key();
     }
+    qDeleteAll(*m_pRootFileData);
+    delete m_pRootFileData;
 }
 
 
@@ -57,9 +59,7 @@ void BBFileSystemDataManager::load()
     QDir dir(rootPath);
     if (dir.exists())
     {
-        // the content of root folder
-        m_pRootFileData = loadFolderContent(rootPath);
-        buildFileData(rootPath, NULL);
+        buildFileData(rootPath, NULL, m_pRootFileData);
     }
     else
     {
@@ -419,7 +419,7 @@ bool BBFileSystemDataManager::importAsset(const QString &parentPath, const QList
             importAsset(fileInfo, parentPath + "/" + fileInfo.fileName());
         }
     }
-    // load new tree items and list items
+    // load folders' tree items and corresponding list items
     return loadImportedAsset(parentPath);
 }
 
@@ -616,9 +616,13 @@ QColor BBFileSystemDataManager::getFileLogoColor(const BBFileType &eFileType)
  * @param pRootItem
  * @param nameFilter                                the file item whose name is included in the nameFilter will not be created
  */
-void BBFileSystemDataManager::buildFileData(const QString &rootPath, QTreeWidgetItem *pRootItem,
+void BBFileSystemDataManager::buildFileData(const QString &rootPath, QTreeWidgetItem *pRootItem, BBFILE *&pRootFileData,
                                             const QList<QString> &nameFilter)
 {
+    // the content of root folder
+    BBFILE *pRootFolderContent = loadFolderContent(rootPath, nameFilter);
+    pRootFileData->unite(*pRootFolderContent);
+    BB_SAFE_DELETE(pRootFolderContent);
     // The queue of the parent node of the node to be created
     QQueue<BBFOLDER> queue;
     // init
@@ -680,7 +684,7 @@ void BBFileSystemDataManager::buildFileData(QQueue<BBFOLDER> &queue, const QList
     }
 }
 
-BBFILE* BBFileSystemDataManager::loadFolderContent(const QString &parentPath)
+BBFILE* BBFileSystemDataManager::loadFolderContent(const QString &parentPath, const QList<QString> &nameFilter)
 {
     BBFILE *pFolderContent = new BBFILE();
     QDir dir(parentPath);
@@ -688,6 +692,11 @@ BBFILE* BBFileSystemDataManager::loadFolderContent(const QString &parentPath)
     QFileInfoList fileInfoList = dir.entryInfoList();
     foreach (QFileInfo fileInfo, fileInfoList)
     {
+        if (nameFilter.contains(fileInfo.fileName()))
+        {
+            continue;
+        }
+
         QListWidgetItem *pItem = new QListWidgetItem;
         pItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
         pItem->setSizeHint(BBFileListWidget::m_ItemSize);
@@ -885,7 +894,7 @@ bool BBFileSystemDataManager::loadImportedAsset(const QString &parentPath)
     {
         names.append(it.value()->m_FileName);
     }
-    buildFileData(parentPath, pParentFolderItem, names);
+    buildFileData(parentPath, pParentFolderItem, pFolderContent, names);
 
     return true;
 }

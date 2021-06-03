@@ -67,10 +67,10 @@ public:
 
 
 private:
-    void buildFileData(const QString &rootPath, QTreeWidgetItem *pRootItem,
+    void buildFileData(const QString &rootPath, QTreeWidgetItem *pRootItem, BBFILE *&pRootFileData,
                        const QList<QString> &nameFilter = QList<QString>());
     void buildFileData(QQueue<BBFOLDER> &queue, const QList<QString> &nameFilter = QList<QString>());
-    BBFILE* loadFolderContent(const QString &parentPath);
+    BBFILE* loadFolderContent(const QString &parentPath, const QList<QString> &nameFilter = QList<QString>());
 
     QString getEngineAuxiliaryFolderPath(const QString &sourcePath);
     QIcon getIcon(const QString &path);
