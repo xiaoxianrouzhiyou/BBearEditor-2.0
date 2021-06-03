@@ -48,8 +48,8 @@ public:
 private:
     void updateFolderTree();
     void updateFolderTree(const QString &filePath);
-    void updateFileList(const QString &parentPath, QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pCurrentItem = 0);
-    void updateFileList(const QString &parentPath, QListWidgetItem *pCurrentItem = 0);
+    void updateFileList(const QString &parentPath, QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pCurrentItem);
+    void updateFileList(const QString &parentPath, QListWidgetItem *pCurrentItem);
     void updateFolderPathBar(const QString &filePath);
 
     void rename(QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pFileItem,

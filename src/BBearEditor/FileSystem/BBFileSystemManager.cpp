@@ -45,13 +45,13 @@ void BBFileSystemManager::openProject()
     // load file system
     m_pDataManager->load();
     updateFolderTree();
-    updateFileList(BBConstant::BB_PATH_PROJECT_USER);
+    updateFileList(BBConstant::BB_PATH_PROJECT_USER, NULL, NULL);
     updateFolderPathBar(BBConstant::BB_PATH_PROJECT_USER);
 }
 
 void BBFileSystemManager::clickItemInFolderTree(const QString &filePath, QTreeWidgetItem *pItem)
 {
-    updateFileList(filePath, pItem);
+    updateFileList(filePath, pItem, NULL);
     updateFolderPathBar(filePath);
 }
 
@@ -61,7 +61,7 @@ void BBFileSystemManager::doubleClickItemInFileList(const QString &filePath)
     {
         // when this is a folder, need to update and access new folder
         updateFolderTree(filePath);
-        updateFileList(filePath);
+        updateFileList(filePath, NULL);
         updateFolderPathBar(filePath);
     }
 }
@@ -69,7 +69,7 @@ void BBFileSystemManager::doubleClickItemInFileList(const QString &filePath)
 void BBFileSystemManager::clickItemInFolderPathBar(const QString &filePath)
 {
     updateFolderTree(filePath);
-    updateFileList(filePath);
+    updateFileList(filePath, NULL);
     updateFolderPathBar(filePath);
 }
 

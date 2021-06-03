@@ -60,7 +60,7 @@ BBFileListWidget::BBFileListWidget(QWidget *pParent)
     m_pEditingItem = NULL;
     m_pRenameEditor = NULL;
     m_pIndicatorItem = NULL;
-    m_pFileData = new BBFILE();
+    m_pFileData = NULL;
 
     setFlow(QListView::LeftToRight);
     // icon is at the top, and text is at the bottom
@@ -89,7 +89,6 @@ BBFileListWidget::BBFileListWidget(QWidget *pParent)
 BBFileListWidget::~BBFileListWidget()
 {
     BB_SAFE_DELETE(m_pMenu);
-    BB_SAFE_DELETE(m_pFileData);
 }
 
 void BBFileListWidget::loadItems(const QString &parentPath, QTreeWidgetItem *pParentItem,
@@ -101,7 +100,7 @@ void BBFileListWidget::loadItems(const QString &parentPath, QTreeWidgetItem *pPa
     {
         takeItem(0);
     }
-    m_pFileData->clear();
+
     for (BBFILE::Iterator it = pFileData->begin(); it != pFileData->end(); it++)
     {
         addItem(it.key());
@@ -591,8 +590,8 @@ void BBFileListWidget::paintEvent(QPaintEvent *event)
         QRect rect = visualItemRect(item(i));
         for (int j = 8; j < 20; j++)
         {
-            QPoint p1 = rect.topLeft() + QPoint(1, 2 + j);
-            QPoint p2 = rect.topLeft() + QPoint(1 + j, 2);
+            QPoint p1 = rect.topLeft() + QPoint(4, -1 + j);
+            QPoint p2 = rect.topLeft() + QPoint(4 + j, -1);
             painter.drawLine(p1, p2);
         }
     }
