@@ -35,6 +35,10 @@
 #include <QDebug>
 
 
+class QTreeWidgetItem;
+class QListWidgetItem;
+
+
 namespace BBFileSystem
 {
     enum BBSignalSender
@@ -53,6 +57,37 @@ namespace BBFileSystem
         Script = 5,
         Other = 6
     };
+
+    struct BBFileInfo
+    {
+        QString m_FileName;
+        BBFileType m_eFileType;
+
+        BBFileInfo(const QString &fileName, const BBFileType &eType)
+        {
+            m_FileName = fileName;
+            m_eFileType = eType;
+        }
+    };
+
+
+    typedef QMap<QListWidgetItem*, BBFileInfo*> BBFILE;
+
+
+    struct BBFOLDER
+    {
+        // The path is used to traverse the subfolders
+        // The item is used to insert
+        QString path;
+        QTreeWidgetItem *pItem;
+
+        BBFOLDER(QString path, QTreeWidgetItem *pItem)
+        {
+            this->path = path;
+            this->pItem = pItem;
+        }
+    };
+
 }
 
 

@@ -9,8 +9,6 @@
 using namespace BBFileSystem;
 
 
-class QTreeWidgetItem;
-class QListWidgetItem;
 class BBOpenGLWidget;
 class BBFolderTreeWidget;
 class BBFileListWidget;

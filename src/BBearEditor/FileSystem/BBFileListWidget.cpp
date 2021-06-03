@@ -12,6 +12,8 @@
 #include <QScrollBar>
 #include <QDrag>
 #include "BBFileSystemDataManager.h"
+#include <QPainter>
+#include <QFileInfo>
 
 
 //---------------------------------------------------------------------------------------------------
@@ -62,6 +64,7 @@ BBFileListWidget::BBFileListWidget(QWidget *pParent)
     m_pEditingItem = NULL;
     m_pRenameEditor = NULL;
     m_pIndicatorItem = NULL;
+    m_pFileData = new BBFILE();
 
     setFlow(QListView::LeftToRight);
     // icon is at the top, and text is at the bottom
@@ -90,11 +93,11 @@ BBFileListWidget::BBFileListWidget(QWidget *pParent)
 BBFileListWidget::~BBFileListWidget()
 {
     BB_SAFE_DELETE(m_pMenu);
+    BB_SAFE_DELETE(m_pFileData);
 }
 
 void BBFileListWidget::loadItems(const QString &parentPath, QTreeWidgetItem *pParentItem,
-                                 const QList<QListWidgetItem*> &items, const QList<QString> &fileNames,
-                                 QListWidgetItem *pCurrentItem)
+                                 BBFILE *pFileData, QListWidgetItem *pCurrentItem)
 {
     // show the contents of the newly selected folder, the original list is cleared
     // just remove from the list, cannot delete the items, so cannot use clear();
@@ -102,13 +105,12 @@ void BBFileListWidget::loadItems(const QString &parentPath, QTreeWidgetItem *pPa
     {
         takeItem(0);
     }
-    m_FileNames.clear();
-    for (int i = 0; i < items.count(); i++)
+    m_pFileData->clear();
+    for (BBFILE::Iterator it = pFileData->begin(); it != pFileData->end(); it++)
     {
-        QListWidgetItem *pItem = items.at(i);
-        addItem(pItem);
-        m_FileNames.insert(pItem, fileNames.at(i));
+        addItem(it.key());
     }
+    m_pFileData = pFileData;
 
     m_ParentPath = parentPath;
     m_pParentItem = pParentItem;
@@ -131,7 +133,7 @@ void BBFileListWidget::updateCurrentInfos(QTreeWidgetItem *pDeletedItem)
 
 void BBFileListWidget::doubleClickItem(QListWidgetItem *pItem)
 {
-    emit openFile(getItemFilePath(pItem));
+    emit openFile(getPathByItem(pItem));
 }
 
 void BBFileListWidget::newFolder()
@@ -147,7 +149,7 @@ void BBFileListWidget::newFolder()
 }
 void BBFileListWidget::showInFolder()
 {
-    emit showInFolder(getItemFilePath(currentItem()));
+    emit showInFolder(getPathByItem(currentItem()));
 }
 
 void BBFileListWidget::copyAction()
@@ -190,7 +192,7 @@ void BBFileListWidget::finishRename()
     BB_PROCESS_ERROR_RETURN(m_pEditingItem);
     // without suffix
     QString newBaseName = m_pRenameEditor->toPlainText();
-    QString oldName = m_FileNames.value(m_pEditingItem);
+    QString oldName = m_pFileData->value(m_pEditingItem)->m_FileName;
     QString suffix = BBFileSystemDataManager::getFileSuffix(oldName);
     QString newName = newBaseName;
     if (suffix.count() > 0)
@@ -338,11 +340,312 @@ QWidgetAction* BBFileListWidget::createWidgetAction(const QString &iconPath, con
     return pAction;
 }
 
-QString BBFileListWidget::getItemFilePath(QListWidgetItem *pItem)
+void BBFileListWidget::startDrag(Qt::DropActions supportedActions)
+{
+    Q_UNUSED(supportedActions);
+    QListWidgetItem *pCenterItem = currentItem();
+    QRect centerItemRect = visualItemRect(pCenterItem);
+    // Used to calculate the absolute position of each item that needs to be dragged
+    int hPos = horizontalScrollBar()->sliderPosition();
+    int vPos = verticalScrollBar()->sliderPosition();
+    // step of each item
+    int hStep = centerItemRect.width() + spacing();
+    int vStep = centerItemRect.height() + spacing();
+    // The size of a single icon
+    static int nSize = iconSize().width() * devicePixelRatio();
+    // Record the row and column value and icon of the selected item
+    struct Info
+    {
+        int nRow;
+        int nColumn;
+        QPixmap icon;
+    };
+    QList<Info> infos;
+    // Used for the size of final icon
+    int nMaxRow = 0;
+    int nMaxColumn = 0;
+    int nMinRow = INT_MAX;
+    int nMinColumn = INT_MAX;
+    // drag all selected items
+    QList<QListWidgetItem*> items = selectedItems();
+    for (int i = 0; i < items.count(); i++)
+    {
+        Info info;
+        QListWidgetItem *pItem = items.at(i);
+        QRect rect = visualItemRect(pItem);
+        // rect is relative to the position of the scroll bar
+        // translate and make it relative to 0
+        rect.translate(hPos - spacing(), vPos - spacing());
+        // Calculate the row and column value of the item based on the step
+        info.nColumn = rect.left() / hStep;
+        info.nRow = rect.top() / vStep;
+        if (info.nColumn > nMaxColumn)
+        {
+            nMaxColumn = info.nColumn;
+        }
+        if (info.nColumn < nMinColumn)
+        {
+            nMinColumn = info.nColumn;
+        }
+        if (info.nRow > nMaxRow)
+        {
+            nMaxRow = info.nRow;
+        }
+        if (info.nRow < nMinRow)
+        {
+            nMinRow = info.nRow;
+        }
+        info.icon = pItem->icon().pixmap(nSize);
+        info.icon.setDevicePixelRatio(devicePixelRatio());
+        info.icon = info.icon.scaled(nSize, nSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        infos.append(info);
+    }
+    QPoint hotSpot;
+    // final icon
+    QPixmap pixmap((nSize + 6) * (nMaxColumn - nMinColumn + 1), (nSize + 6) * (nMaxRow - nMinRow + 1));
+    pixmap.setDevicePixelRatio(devicePixelRatio());
+    pixmap.fill(Qt::transparent);
+    QPainter painter(&pixmap);
+    // paint the icon of each item to the final icon according to the row and column value of each item
+    for (int i = 0; i < infos.count(); i++)
+    {
+        int x = (infos.at(i).nColumn - nMinColumn) * (nSize + 6) / devicePixelRatio();
+        int y = (infos.at(i).nRow - nMinRow) * (nSize + 6) / devicePixelRatio();
+        painter.drawPixmap(x, y, infos.at(i).icon);
+        if (items.at(i) == pCenterItem)
+        {
+            // Take the center of pCenterItem as the mouse position
+            hotSpot.setX(x + nSize / devicePixelRatio() / 2);
+            hotSpot.setY(y + nSize / devicePixelRatio() / 2);
+        }
+    }
+    painter.end();
+    // Pack relevant data
+    QByteArray itemData;
+    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
+    // The pCenterItem is written in the first one, used for the situation that you just can read one item
+    QString filePath = getPathByItem(pCenterItem);
+    dataStream << filePath;
+    // all selected items is written, used for the situation that you can read all selected items
+    for (int i = 0; i < items.count(); i++)
+    {
+        filePath = getPathByItem(items.at(i));
+        dataStream << filePath;
+    }
+    QMimeData *pMimeData = new QMimeData;
+    // Give this data a unique identifying name
+    pMimeData->setData(getMimeType(), itemData);
+    QDrag drag(this);
+    drag.setMimeData(pMimeData);
+    drag.setHotSpot(hotSpot);
+    drag.setPixmap(pixmap);
+    drag.exec(Qt::MoveAction);
+}
+
+void BBFileListWidget::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (!event->mimeData()->urls().isEmpty())
+    {
+        // the outside of the editor
+        event->accept();
+    }
+    else if (event->mimeData()->hasFormat(getMimeType()))
+    {
+        // internal drag
+        event->accept();
+    }
+    else if (event->mimeData()->hasFormat(BB_MIMETYPE_FOLDERTREEWIDGET))
+    {
+        event->accept();
+    }
+    else
+    {
+        event->ignore();
+    }
+}
+
+void BBFileListWidget::dragMoveEvent(QDragMoveEvent *event)
+{
+    event->accept();
+    // Scroll up and down when the mouse is at the top or bottom
+    // QListWidget::dragMoveEvent(event); invalidates dropEvent
+    int y = event->pos().y();
+    if (y < 10)
+    {
+        verticalScrollBar()->setSliderPosition(verticalScrollBar()->sliderPosition() - 10);
+    }
+    else if (y >= height() - 10)
+    {
+        verticalScrollBar()->setSliderPosition(verticalScrollBar()->sliderPosition() + 10);
+    }
+    // Drop position indicator
+    QListWidgetItem *pItem = itemAt(event->pos());
+    // Clear the last indicator position painted
+    m_pIndicatorItem = NULL;
+    if (pItem)
+    {
+        // only folder can show drop indicator
+        QFileInfo fileInfo(getPathByItem(pItem));
+        if (fileInfo.isDir())
+        {
+            // When dragging internally, the drop position cannot be the folder being dragged
+            // It doesn't matter if it is dragged from the folder tree, since the item has been judged
+            if ((event->mimeData()->hasFormat(getMimeType()) && !selectedItems().contains(pItem))
+                    || event->mimeData()->hasFormat(BB_MIMETYPE_FOLDERTREEWIDGET))
+            {
+                m_pIndicatorItem = pItem;
+            }
+        }
+    }
+    repaint();
+}
+
+void BBFileListWidget::dragLeaveEvent(QDragLeaveEvent *event)
+{
+    Q_UNUSED(event);
+    // No need for indicator when dragLeave
+    m_pIndicatorItem = NULL;
+    repaint();
+}
+
+void BBFileListWidget::dropEvent(QDropEvent *event)
+{
+    if (!event->mimeData()->urls().isEmpty())
+    {
+        // from outside of the editor
+        event->accept();
+        emit importAsset(event->mimeData()->urls());
+    }
+    else if (event->mimeData()->hasFormat(getMimeType()))
+    {
+        if (m_pIndicatorItem)
+        {
+            // there is a drop spot
+            if (moveItem())
+            {
+                event->accept();
+            }
+            else
+            {
+                event->ignore();
+            }
+        }
+        else
+        {
+            event->ignore();
+        }
+    }
+    else if (event->mimeData()->hasFormat(BB_MIMETYPE_FOLDERTREEWIDGET))
+    {
+        if (moveItemFromFolderTree(event->mimeData()))
+        {
+            event->accept();
+        }
+        else
+        {
+            event->ignore();
+        }
+    }
+    else
+    {
+        event->ignore();
+    }
+
+    // The indicator is no longer needed after drop
+    m_pIndicatorItem = NULL;
+    repaint();
+}
+
+bool BBFileListWidget::moveItem()
+{
+
+}
+
+bool BBFileListWidget::moveItemFromFolderTree(const QMimeData *pMimeData)
+{
+
+}
+
+void BBFileListWidget::paintEvent(QPaintEvent *event)
+{
+    QListWidget::paintEvent(event);
+
+    // using "this" is wrong
+    QPainter painter(viewport());
+    // The file type logo color is painted in the top left corner
+    for (int i = 0; i < count(); i++)
+    {
+        // Get the logo color of the corresponding file type of the item
+        QColor color = BBFileSystemDataManager::getFileLogoColor(m_pFileData->value(item(i))->m_eFileType);
+        if (color == nullptr)
+            continue;
+        QPen pen(color);
+        painter.setPen(pen);
+        // item position
+        QRect rect = visualItemRect(item(i));
+        for (int j = 8; j < 20; j++)
+        {
+            QPoint p1 = rect.topLeft() + QPoint(1, 2 + j);
+            QPoint p2 = rect.topLeft() + QPoint(1 + j, 2);
+            painter.drawLine(p1, p2);
+        }
+    }
+    // paint drop indicator
+    if (m_pIndicatorItem)
+    {
+        painter.setPen(QColor("#d6dfeb"));
+        QRect rect = visualItemRect(m_pIndicatorItem);
+        painter.drawRect(rect);
+    }
+    painter.end();
+}
+
+void BBFileListWidget::mousePressEvent(QMouseEvent *event)
+{
+    QListWidget::mousePressEvent(event);
+    if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)
+    {
+        // There is no item at the mouse click position, remove the selection
+        QListWidgetItem *pItem = itemAt(event->pos());
+        if (!pItem)
+        {
+            setCurrentItem(NULL);
+        }
+    }
+}
+
+void BBFileListWidget::contextMenuEvent(QContextMenuEvent *event)
+{
+    Q_UNUSED(event);
+    m_pMenu->exec(cursor().pos());
+}
+
+void BBFileListWidget::keyPressEvent(QKeyEvent *event)
+{
+    // Handling menu shortcut events
+    int key;
+#if defined(Q_OS_WIN32)
+    key = Qt::Key_F2;
+#elif defined(Q_OS_MAC)
+    key = Qt::Key_Return;
+#endif
+    if (event->key() == key)
+    {
+        openRenameEditor();
+    }
+}
+
+void BBFileListWidget::focusInEvent(QFocusEvent *event)
+{
+    // parent class, when the focus is obtained, the first item will show a blue box, which is ugly
+    Q_UNUSED(event);
+}
+
+QString BBFileListWidget::getPathByItem(QListWidgetItem *pItem)
 {
     if (pItem)
     {
-        return m_ParentPath + "/" + m_FileNames.value(pItem);
+        return m_ParentPath + "/" + m_pFileData->value(pItem)->m_FileName;
     }
     else
     {
@@ -373,224 +676,7 @@ QString BBFileListWidget::getItemFilePath(QListWidgetItem *pItem)
 //    }
 //}
 
-//void BBFileListWidget::startDrag(Qt::DropActions supportedActions)
-//{
-//    Q_UNUSED(supportedActions);
-//    QListWidgetItem *pCenterItem = currentItem();
-//    QRect centerItemRect = visualItemRect(pCenterItem);
-//    // Used to calculate the absolute position of each item that needs to be dragged
-//    int hPos = horizontalScrollBar()->sliderPosition();
-//    int vPos = verticalScrollBar()->sliderPosition();
-//    // step of each item
-//    int hStep = centerItemRect.width() + spacing();
-//    int vStep = centerItemRect.height() + spacing();
-//    // The size of a single icon
-//    static int nSize = iconSize().width() * devicePixelRatio();
-//    // Record the row and column value and icon of the selected item
-//    struct Info
-//    {
-//        int nRow;
-//        int nColumn;
-//        QPixmap icon;
-//    };
-//    QList<Info> infos;
-//    // Used for the size of final icon
-//    int nMaxRow = 0;
-//    int nMaxColumn = 0;
-//    int nMinRow = INT_MAX;
-//    int nMinColumn = INT_MAX;
-//    // drag all selected items
-//    QList<QListWidgetItem*> items = selectedItems();
-//    for (int i = 0; i < items.count(); i++)
-//    {
-//        Info info;
-//        QListWidgetItem *pItem = items.at(i);
-//        QRect rect = visualItemRect(pItem);
-//        // rect is relative to the position of the scroll bar
-//        // translate and make it relative to 0
-//        rect.translate(hPos - spacing(), vPos - spacing());
-//        // Calculate the row and column value of the item based on the step
-//        info.nColumn = rect.left() / hStep;
-//        info.nRow = rect.top() / vStep;
-//        if (info.nColumn > nMaxColumn)
-//        {
-//            nMaxColumn = info.nColumn;
-//        }
-//        if (info.nColumn < nMinColumn)
-//        {
-//            nMinColumn = info.nColumn;
-//        }
-//        if (info.nRow > nMaxRow)
-//        {
-//            nMaxRow = info.nRow;
-//        }
-//        if (info.nRow < nMinRow)
-//        {
-//            nMinRow = info.nRow;
-//        }
-//        info.icon = pItem->icon().pixmap(nSize);
-//        info.icon.setDevicePixelRatio(devicePixelRatio());
-//        info.icon = info.icon.scaled(nSize, nSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-//        infos.append(info);
-//    }
-//    QPoint hotSpot;
-//    // final icon
-//    QPixmap pixmap((nSize + 6) * (nMaxColumn - nMinColumn + 1), (nSize + 6) * (nMaxRow - nMinRow + 1));
-//    pixmap.setDevicePixelRatio(devicePixelRatio());
-//    pixmap.fill(Qt::transparent);
-//    QPainter painter(&pixmap);
-//    // paint the icon of each item to the final icon according to the row and column value of each item
-//    for (int i = 0; i < infos.count(); i++)
-//    {
-//        int x = (infos.at(i).nColumn - nMinColumn) * (nSize + 6) / devicePixelRatio();
-//        int y = (infos.at(i).nRow - nMinRow) * (nSize + 6) / devicePixelRatio();
-//        painter.drawPixmap(x, y, infos.at(i).icon);
-//        if (items.at(i) == pCenterItem)
-//        {
-//            // Take the center of pCenterItem as the mouse position
-//            hotSpot.setX(x + nSize / devicePixelRatio() / 2);
-//            hotSpot.setY(y + nSize / devicePixelRatio() / 2);
-//        }
-//    }
-//    painter.end();
-//    // Pack relevant data
-//    QByteArray itemData;
-//    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-//    // The pCenterItem is written in the first one, used for the situation that you just can read one item
-//    QString filePath = m_FolderPath + "/" + m_Map.value(pCenterItem)->m_FileName;
-//    dataStream << filePath;
-//    // all selected items is written, used for the situation that you can read all selected items
-//    for (int i = 0; i < items.count(); i++)
-//    {
-//        filePath = m_FolderPath + "/" + m_Map.value(items.at(i))->m_FileName;
-//        dataStream << filePath;
-//    }
-//    QMimeData *pMimeData = new QMimeData;
-//    // Give this data a unique identifying name
-//    pMimeData->setData(getMimeType(), itemData);
-//    QDrag drag(this);
-//    drag.setMimeData(pMimeData);
-//    drag.setHotSpot(hotSpot);
-//    drag.setPixmap(pixmap);
-//    drag.exec(Qt::MoveAction);
-//}
 
-void BBFileListWidget::dragEnterEvent(QDragEnterEvent *event)
-{
-    if (!event->mimeData()->urls().isEmpty())
-    {
-        // the outside of the editor
-        event->accept();
-    }
-    else if (event->mimeData()->hasFormat(getMimeType()))
-    {
-        // internal drag
-        event->accept();
-    }
-    else if (event->mimeData()->hasFormat(BB_MIMETYPE_FOLDERTREEWIDGET))
-    {
-        event->accept();
-    }
-    else
-    {
-        event->ignore();
-    }
-}
-
-//void BBFileListWidget::dragMoveEvent(QDragMoveEvent *event)
-//{
-//    event->accept();
-//    // Scroll up and down when the mouse is at the top or bottom
-//    // QListWidget::dragMoveEvent(event); invalidates dropEvent
-//    int y = event->pos().y();
-//    if (y < 10)
-//    {
-//        verticalScrollBar()->setSliderPosition(verticalScrollBar()->sliderPosition() - 10);
-//    }
-//    else if (y >= height() - 10)
-//    {
-//        verticalScrollBar()->setSliderPosition(verticalScrollBar()->sliderPosition() + 10);
-//    }
-//    // Drop position indicator
-//    QListWidgetItem *pItem = itemAt(event->pos());
-//    // Clear the last indicator position painted
-//    m_pIndicatorItem = NULL;
-//    if (pItem)
-//    {
-//        // only folder can show drop indicator
-//        BBFileInfo *pFileInfo = m_Map.value(pItem);
-//        if (pFileInfo->m_eFileType == BBFileType::dir)
-//        {
-//            // When dragging internally, the drop position cannot be the folder being dragged
-//            // It doesn't matter if it is dragged from the folder tree, since the item has been judged
-//            if ((event->mimeData()->hasFormat(getMimeType()) && !selectedItems().contains(pItem))
-//                    || event->mimeData()->hasFormat(BB_MIMETYPE_FOLDERTREEWIDGET))
-//            {
-//                m_pIndicatorItem = pItem;
-//            }
-//        }
-//    }
-//    repaint();
-//}
-
-void BBFileListWidget::dragLeaveEvent(QDragLeaveEvent *event)
-{
-    Q_UNUSED(event);
-    // No need for indicator when dragLeave
-    m_pIndicatorItem = NULL;
-    repaint();
-}
-
-//void BBFileListWidget::dropEvent(QDropEvent *event)
-//{
-//    if (!event->mimeData()->urls().isEmpty())
-//    {
-//        // from outside of the editor
-//        event->accept();
-//        importAsset(event->mimeData()->urls());
-//        // there are new items, update file system
-//        // after updateFolderTree(), also update file list
-//        updateFolderTree();
-//    }
-//    else if (event->mimeData()->hasFormat(getMimeType()))
-//    {
-//        if (m_pIndicatorItem)
-//        {
-//            // there is a drop spot
-//            if (moveItem())
-//            {
-//                event->accept();
-//            }
-//            else
-//            {
-//                event->ignore();
-//            }
-//        }
-//        else
-//        {
-//            event->ignore();
-//        }
-//    }
-//    else if (event->mimeData()->hasFormat(BB_MIMETYPE_FOLDERTREEWIDGET))
-//    {
-//        if (moveItemFromFolderTree(event->mimeData()))
-//        {
-//            event->accept();
-//        }
-//        else
-//        {
-//            event->ignore();
-//        }
-//    }
-//    else
-//    {
-//        event->ignore();
-//    }
-
-//    // The indicator is no longer needed after drop
-//    m_pIndicatorItem = NULL;
-//    repaint();
-//}
 
 //void BBFileListWidget::importAsset(const QList<QUrl> &urls)
 //{
@@ -727,80 +813,6 @@ void BBFileListWidget::dragLeaveEvent(QDragLeaveEvent *event)
 //    return true;
 //}
 
-//void BBFileListWidget::paintEvent(QPaintEvent *event)
-//{
-//    QListWidget::paintEvent(event);
-
-//    // using "this" is wrong
-//    QPainter painter(viewport());
-//    // The file type logo color is painted in the top left corner
-//    for (int i = 0; i < count(); i++)
-//    {
-//        // Get the logo color of the corresponding file type of the item
-//        QColor color = getFileLogoColor(m_Map.value(item(i))->m_eFileType);
-//        if (color == nullptr)
-//            continue;
-//        QPen pen(color);
-//        painter.setPen(pen);
-//        // item position
-//        QRect rect = visualItemRect(item(i));
-//        for (int j = 8; j < 20; j++)
-//        {
-//            QPoint p1 = rect.topLeft() + QPoint(1, 2 + j);
-//            QPoint p2 = rect.topLeft() + QPoint(1 + j, 2);
-//            painter.drawLine(p1, p2);
-//        }
-//    }
-//    // paint drop indicator
-//    if (m_pIndicatorItem)
-//    {
-//        painter.setPen(QColor("#d6dfeb"));
-//        QRect rect = visualItemRect(m_pIndicatorItem);
-//        painter.drawRect(rect);
-//    }
-//    painter.end();
-//}
-
-void BBFileListWidget::mousePressEvent(QMouseEvent *event)
-{
-    QListWidget::mousePressEvent(event);
-    if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)
-    {
-        // There is no item at the mouse click position, remove the selection
-        QListWidgetItem *pItem = itemAt(event->pos());
-        if (!pItem)
-        {
-            setCurrentItem(NULL);
-        }
-    }
-}
-
-void BBFileListWidget::contextMenuEvent(QContextMenuEvent *event)
-{
-    Q_UNUSED(event);
-    m_pMenu->exec(cursor().pos());
-}
-
-void BBFileListWidget::keyPressEvent(QKeyEvent *event)
-{
-    // Handling menu shortcut events
-    int key;
-#if defined(Q_OS_WIN32)
-    key = Qt::Key_F2;
-#elif defined(Q_OS_MAC)
-    key = Qt::Key_Return;
-#endif
-    if (event->key() == key)
-    {
-        openRenameEditor();
-    }
-}
-
-void BBFileListWidget::focusInEvent(QFocusEvent *event)
-{
-    // parent class, when the focus is obtained, the first item will show a blue box, which is ugly
-    Q_UNUSED(event);
-}
 
 
 

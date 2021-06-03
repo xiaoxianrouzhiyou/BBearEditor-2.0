@@ -47,6 +47,8 @@ private:
     QWidgetAction* createWidgetAction(QMenu *pParent, const QString &iconPath, const QString &name);
     void deleteOne(QTreeWidgetItem *pItem) override;
 
+    void dragMoveEvent(QDragMoveEvent *event) override;
+
     void updateCorrespondingWidget(QTreeWidgetItem *pItem);
     void recordItemExpansionState();
     void resumeItemExpansionState();
@@ -57,7 +59,7 @@ private:
 
 
 
-//    void dragMoveEvent(QDragMoveEvent *event) override;
+
 //    bool moveItem() override;
 //    bool moveItemFromFileList(const QMimeData *pMimeData) override;
 

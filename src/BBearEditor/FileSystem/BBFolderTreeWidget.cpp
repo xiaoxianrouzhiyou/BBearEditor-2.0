@@ -197,6 +197,16 @@ void BBFolderTreeWidget::deleteOne(QTreeWidgetItem *pItem)
     BBTreeWidget::deleteOne(pItem);
 }
 
+void BBFolderTreeWidget::dragMoveEvent(QDragMoveEvent *event)
+{
+    if (!event->mimeData()->hasFormat(getMimeType()) && !event->mimeData()->hasFormat(BB_MIMETYPE_FILELISTWIDGET))
+    {
+        event->ignore();
+        return;
+    }
+    BBTreeWidget::dragMoveEvent(event);
+}
+
 void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
 {
     QString folderPath = BBFileSystemDataManager::getAbsolutePath(pItem);
@@ -275,15 +285,7 @@ void BBFolderTreeWidget::resumeItemExpansionState()
 
 
 
-//void BBFolderTreeWidget::dragMoveEvent(QDragMoveEvent *event)
-//{
-//    if (!event->mimeData()->hasFormat(getMimeType()) && !event->mimeData()->hasFormat(BB_MIMETYPE_FILELISTWIDGET))
-//    {
-//        event->ignore();
-//        return;
-//    }
-//    BBTreeWidget::dragMoveEvent(event);
-//}
+
 
 //bool BBFolderTreeWidget::moveItem()
 //{

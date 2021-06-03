@@ -161,10 +161,9 @@ void BBFileSystemManager::updateFileList(const QString &parentPath,
                                          QTreeWidgetItem *pParentFolderItem,
                                          QListWidgetItem *pCurrentItem)
 {
-    QList<QListWidgetItem*> items;
-    QList<QString> fileNames;
-    m_pDataManager->getFileListWidgetItems(pParentFolderItem, items, fileNames);
-    m_pFileListWidget->loadItems(parentPath, pParentFolderItem, items, fileNames, pCurrentItem);
+    BBFILE *pFolderContent = NULL;
+    m_pDataManager->getFileListWidgetItems(pParentFolderItem, pFolderContent);
+    m_pFileListWidget->loadItems(parentPath, pParentFolderItem, pFolderContent, pCurrentItem);
 }
 void BBFileSystemManager::updateFileList(const QString &parentPath, QListWidgetItem *pCurrentItem)
 {

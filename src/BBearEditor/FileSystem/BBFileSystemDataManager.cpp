@@ -89,18 +89,9 @@ QList<QTreeWidgetItem*> BBFileSystemDataManager::getFolderTreeWidgetTopLevelItem
     return items;
 }
 
-bool BBFileSystemDataManager::getFileListWidgetItems(QTreeWidgetItem *pItem,
-                                              QList<QListWidgetItem*> &outItems,
-                                              QList<QString> &outFileNames)
+bool BBFileSystemDataManager::getFileListWidgetItems(QTreeWidgetItem *pItem, BBFILE *&pOutFolderContent)
 {
-    BBFILE *pFolderContent = getFolderContent(pItem);
-    for (BBFILE::Iterator it = pFolderContent->begin(); it != pFolderContent->end(); it++)
-    {
-        QListWidgetItem *pItem = it.key();
-        outItems.append(pItem);
-        BBFileInfo *pInfo = pFolderContent->value(pItem);
-        outFileNames.append(pInfo->m_FileName);
-    }
+    pOutFolderContent = getFolderContent(pItem);
     return true;
 }
 
@@ -213,7 +204,7 @@ bool BBFileSystemDataManager::openFile(const QString &filePath)
  * @param pFileList                             current item in the file list after creating new folder
  * @return
  */
-bool BBFileSystemDataManager::newFolder(const QString &parentPath, QTreeWidgetItem *&pFolderItem, QListWidgetItem *&pFileItem)
+bool BBFileSystemDataManager::newFolder(const QString &parentPath, QTreeWidgetItem *&pFolderItem, QListWidgetItem *&pOutFileItem)
 {
     QString fileName = "new folder";
     QString filePath = getExclusiveFolderPath(parentPath, fileName);
@@ -238,14 +229,14 @@ bool BBFileSystemDataManager::newFolder(const QString &parentPath, QTreeWidgetIt
     }    
 
     // add file list item at the beginning of list of its parent
-    pFileItem = new QListWidgetItem({fileName});
-    pFileItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
-    pFileItem->setSizeHint(BBFileListWidget::m_ItemSize);
-    pFileItem->setIcon(getIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
+    pOutFileItem = new QListWidgetItem({fileName});
+    pOutFileItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
+    pOutFileItem->setSizeHint(BBFileListWidget::m_ItemSize);
+    pOutFileItem->setIcon(getIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
     BBFileInfo *pInfo = new BBFileInfo(fileName, BBFileType::Dir);
     // find the BBFILE corresponding the tree item of its parent
     BBFILE *pParentContent = getFolderContent(pParent);
-    pParentContent->insert(pFileItem, pInfo);
+    pParentContent->insert(pOutFileItem, pInfo);
     return true;
 }
 
@@ -548,6 +539,30 @@ QString BBFileSystemDataManager::getOverviewMapPath(const QString &sourcePath)
     return BBConstant::BB_PATH_PROJECT_ENGINE + "/" + BBConstant::BB_NAME_FILE_SYSTEM_USER + "/" + relativePath;
 }
 
+QColor BBFileSystemDataManager::getFileLogoColor(const BBFileType &eFileType)
+{
+    if (eFileType == BBFileType::Mesh)
+    {
+        return QColor(m_MeshFileLogoColor);
+    }
+    else if (eFileType == BBFileType::Texture)
+    {
+        return QColor(m_TextureFileLogoColor);
+    }
+    else if (eFileType == BBFileType::Audio)
+    {
+        return QColor(m_AudioFileLogoColor);
+    }
+    else if (eFileType == BBFileType::Material)
+    {
+        return QColor(m_MaterialFileLogoColor);
+    }
+    else
+    {
+        return nullptr;
+    }
+}
+
 void BBFileSystemDataManager::buildFileData(QQueue<BBFOLDER> &queue)
 {
     BBFOLDER folder = queue.dequeue();
@@ -721,30 +736,6 @@ void BBFileSystemDataManager::createMeshOverviewMap(const QString &sourcePath, c
     pix.save(overviewMapPath);
     // remove the mesh
     m_pPreviewOpenGLWidget->getScene()->deleteGameObject(pModel);
-}
-
-QColor BBFileSystemDataManager::getFileLogoColor(const BBFileType &eFileType)
-{
-    if (eFileType == BBFileType::Mesh)
-    {
-        return QColor(m_MeshFileLogoColor);
-    }
-    else if (eFileType == BBFileType::Texture)
-    {
-        return QColor(m_TextureFileLogoColor);
-    }
-    else if (eFileType == BBFileType::Audio)
-    {
-        return QColor(m_AudioFileLogoColor);
-    }
-    else if (eFileType == BBFileType::Material)
-    {
-        return QColor(m_MaterialFileLogoColor);
-    }
-    else
-    {
-        return nullptr;
-    }
 }
 
 BBFileType BBFileSystemDataManager::getFileType(const QString &filePath)

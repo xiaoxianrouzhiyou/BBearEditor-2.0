@@ -8,8 +8,6 @@
 using namespace BBFileSystem;
 
 
-class QTreeWidgetItem;
-class QListWidgetItem;
 class BBFileSystemManager;
 
 

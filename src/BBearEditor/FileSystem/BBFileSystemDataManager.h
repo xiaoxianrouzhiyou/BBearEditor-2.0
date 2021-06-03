@@ -11,41 +11,8 @@
 using namespace BBFileSystem;
 
 
-class QTreeWidgetItem;
-class QListWidgetItem;
 class QFileInfo;
 class BBOpenGLWidget;
-
-
-struct BBFileInfo
-{
-    QString m_FileName;
-    BBFileType m_eFileType;
-
-    BBFileInfo(const QString &fileName, const BBFileType &eType)
-    {
-        m_FileName = fileName;
-        m_eFileType = eType;
-    }
-};
-
-
-typedef QMap<QListWidgetItem*, BBFileInfo*> BBFILE;
-
-
-struct BBFOLDER
-{
-    // The path is used to traverse the subfolders
-    // The item is used to insert
-    QString path;
-    QTreeWidgetItem *pItem;
-
-    BBFOLDER(QString path, QTreeWidgetItem *pItem)
-    {
-        this->path = path;
-        this->pItem = pItem;
-    }
-};
 
 
 class BBFileSystemDataManager
@@ -58,13 +25,13 @@ public:
     void bindPreviewOpenGLWidget(BBOpenGLWidget *pPreviewOpenGLWidget) { m_pPreviewOpenGLWidget = pPreviewOpenGLWidget; }
     void load();
     QList<QTreeWidgetItem*> getFolderTreeWidgetTopLevelItems();
-    bool getFileListWidgetItems(QTreeWidgetItem *pItem, QList<QListWidgetItem*> &outItems, QList<QString> &outFileNames);
+    bool getFileListWidgetItems(QTreeWidgetItem *pItem, BBFILE *&pOutFolderContent);
     QTreeWidgetItem* getItemByPath(const QString &absolutePath);
     QTreeWidgetItem* getParentFolderItem(const QString &filePath);
     QListWidgetItem* getFileItem(QTreeWidgetItem *pFolderItem);
     QListWidgetItem* getFileItem(QTreeWidgetItem *pParentFolderItem, const QString &filePath);
     bool openFile(const QString &filePath);
-    bool newFolder(const QString &parentPath, QTreeWidgetItem *&pFolderItem, QListWidgetItem *&pFileItem);
+    bool newFolder(const QString &parentPath, QTreeWidgetItem *&pFolderItem, QListWidgetItem *&pOutFileItem);
     bool showInFolder(const QString &filePath);
     bool rename(QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pFileItem,
                 const QString &oldPath, const QString &newPath);
@@ -84,6 +51,7 @@ public:
     static QString getFileNameByPath(const QString &filePath);
     static QString getParentPath(const QString &filePath);
     static QString getOverviewMapPath(const QString &sourcePath);
+    static QColor getFileLogoColor(const BBFileType &eFileType);
 
     static QList<QString> m_MeshSuffixs;
     static QList<QString> m_TextureSuffixs;
@@ -106,7 +74,6 @@ private:
     QIcon getTextureIcon(const QString &path);
     QIcon getMeshOverviewMap(const QString &sourcePath);
     void createMeshOverviewMap(const QString &sourcePath, const QString &overviewMapPath);
-    QColor getFileLogoColor(const BBFileType &eFileType);
     BBFileType getFileType(const QString &filePath);
     BBFILE* getFolderContent(QTreeWidgetItem *pItem);
     bool deleteFolderItem(QTreeWidgetItem *pItem);
