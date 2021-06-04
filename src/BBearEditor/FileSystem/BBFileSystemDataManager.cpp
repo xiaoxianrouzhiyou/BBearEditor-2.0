@@ -90,7 +90,7 @@ bool BBFileSystemDataManager::getFileListWidgetItems(QTreeWidgetItem *pItem, BBF
  * @param absolutePath
  * @return
  */
-QTreeWidgetItem* BBFileSystemDataManager::getItemByPath(const QString &absolutePath)
+QTreeWidgetItem* BBFileSystemDataManager::getFolderItemByPath(const QString &absolutePath)
 {
     QString path = absolutePath.mid(BBConstant::BB_PATH_PROJECT_USER.length());
     if (path.length() == 0)
@@ -135,7 +135,7 @@ QTreeWidgetItem* BBFileSystemDataManager::getItemByPath(const QString &absoluteP
 QTreeWidgetItem* BBFileSystemDataManager::getParentFolderItem(const QString &filePath)
 {
     // cannot use getItemByPath(filePath) and ->parent(), since filePath may be a file but not a folder
-    return getItemByPath(getParentPath(filePath));
+    return getFolderItemByPath(getParentPath(filePath));
 }
 
 /**
@@ -207,7 +207,7 @@ bool BBFileSystemDataManager::newFolder(const QString &parentPath, QTreeWidgetIt
     pFolderItem = new QTreeWidgetItem({fileName});
     pFolderItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
     // find the tree item of its parent
-    QTreeWidgetItem *pParent = getItemByPath(parentPath);
+    QTreeWidgetItem *pParent = getFolderItemByPath(parentPath);
     if (pParent)
     {
         // the map has nothing, since this is a new folder
@@ -253,7 +253,7 @@ bool BBFileSystemDataManager::rename(QTreeWidgetItem *pParentFolderItem, QListWi
     BBFileInfo *pFileInfo = pFolderContent->value(pFileItem);
     if (pFileInfo->m_eFileType == BBFileType::Dir)
     {
-        QTreeWidgetItem *pFolderItem = getItemByPath(oldPath);
+        QTreeWidgetItem *pFolderItem = getFolderItemByPath(oldPath);
         BB_PROCESS_ERROR_RETURN_FALSE(pFolderItem);
 
         legalNewPath = getExclusiveFolderPath(newPath);
@@ -322,7 +322,7 @@ bool BBFileSystemDataManager::deleteFiles(QTreeWidgetItem *pParentItem,
         QString path = parentPath + "/" + pFileInfo->m_FileName;
         if (pFileInfo->m_eFileType == BBFileType::Dir)
         {
-            QTreeWidgetItem *pFolderItem = getItemByPath(path);
+            QTreeWidgetItem *pFolderItem = getFolderItemByPath(path);
             BB_PROCESS_ERROR_RETURN_FALSE(pFolderItem);
 
             QDir dir(path);
@@ -367,7 +367,7 @@ bool BBFileSystemDataManager::deleteFiles(QTreeWidgetItem *pParentItem,
     return true;
 }
 
-bool BBFileSystemDataManager::importAsset(const QString &parentPath, const QList<QUrl> &urls)
+bool BBFileSystemDataManager::importFiles(const QString &parentPath, const QList<QUrl> &urls)
 {
     for (int i = 0; i < urls.length(); i++)
     {
@@ -407,7 +407,7 @@ bool BBFileSystemDataManager::importAsset(const QString &parentPath, const QList
                     else
                     {
                         // handle the file
-                        importAsset(fileInfo, childPath);
+                        importFiles(fileInfo, childPath);
                     }
                 }
             }
@@ -416,11 +416,69 @@ bool BBFileSystemDataManager::importAsset(const QString &parentPath, const QList
         {
             // handle the file
             QFileInfo fileInfo(importedAssetPath);
-            importAsset(fileInfo, parentPath + "/" + fileInfo.fileName());
+            importFiles(fileInfo, parentPath + "/" + fileInfo.fileName());
         }
     }
     // load folders' tree items and corresponding list items
-    return loadImportedAsset(parentPath);
+    return loadImportedData(parentPath);
+}
+
+bool BBFileSystemDataManager::moveFiles(QList<QListWidgetItem*> items, const QString &oldParentPath,
+                                        const QString &newParentPath, bool bCopy)
+{
+    QTreeWidgetItem *pOldParentItem = getFolderItemByPath(oldParentPath);
+    return moveFiles(pOldParentItem, items, oldParentPath, newParentPath, bCopy);
+}
+
+/**
+ * @brief BBFileSystemDataManager::moveFiles    move or copy items from old path into new path
+ * @param items
+ * @param pOldParentItem
+ * @param oldParentPath
+ * @param pNewParentItem
+ * @param newParentPath
+ * @param bCopy
+ * @return
+ */
+bool BBFileSystemDataManager::moveFiles(QTreeWidgetItem *pOldParentItem, QList<QListWidgetItem*> items,
+                                        const QString &oldParentPath, const QString &newParentPath, bool bCopy)
+{
+    // move or copy BBFILE from pOldParentFolderContent into pNewParentFolderContent
+    BBFILE *pOldParentFolderContent = getFolderContent(pOldParentItem);
+    for (int i = 0; i < items.count(); i++)
+    {
+        QListWidgetItem *pFileItem = items.at(i);
+        BBFileInfo *pFileInfo = pOldParentFolderContent->value(pFileItem);
+        QString oldPath = oldParentPath + "/" + pFileInfo->m_FileName;
+        QString newPath = newParentPath + "/" + pFileInfo->m_FileName;
+
+        if (pFileInfo->m_eFileType == BBFileType::Dir)
+        {
+            // can only invoke getFolderItemByPath before deleting
+            QTreeWidgetItem *pFolderItem = getFolderItemByPath(oldPath);
+            newPath = getExclusiveFolderPath(newPath);
+            BB_PROCESS_ERROR_RETURN_FALSE(moveFolder(oldPath, newPath, bCopy));
+            // need to remove corresponding tree item
+            deleteFolderItem(pFolderItem);
+        }
+        else
+        {
+            newPath = getExclusiveFilePath(newPath);
+            BB_PROCESS_ERROR_RETURN_FALSE(moveFile(oldPath, newPath, pFileInfo->m_eFileType, bCopy));
+        }
+
+        if (!bCopy)
+        {
+            // remove those that is in the old path
+            pOldParentFolderContent->remove(pFileItem);
+            BB_SAFE_DELETE(pFileInfo);
+            BB_SAFE_DELETE(pFileItem);
+        }
+    }
+
+    // load new
+    BB_PROCESS_ERROR_RETURN_FALSE(loadImportedData(newParentPath));
+    return true;
 }
 
 QString BBFileSystemDataManager::getAbsolutePath(const QString &relativePath)
@@ -610,6 +668,146 @@ QColor BBFileSystemDataManager::getFileLogoColor(const BBFileType &eFileType)
     }
 }
 
+QString BBFileSystemDataManager::getEngineAuxiliaryFolderPath(const QString &sourcePath)
+{
+    // the path relative to the engine folder is the same as the path relative to the contents folder
+    QString relativePath = sourcePath.mid(BBConstant::BB_PATH_PROJECT_USER.length());
+
+    return BBConstant::BB_PATH_PROJECT_ENGINE + "/" + BBConstant::BB_NAME_FILE_SYSTEM_USER + relativePath;
+}
+
+QIcon BBFileSystemDataManager::getIcon(const QString &path)
+{
+    // Cut into a square
+    QPixmap pix(path);
+    if (pix.isNull())
+    {
+        return QIcon(QString(BB_PATH_RESOURCE_ICON) + "empty2");
+    }
+    else
+    {
+        int h = pix.height();
+        int w = pix.width();
+        int size = h < w ? h : w;
+        pix = pix.copy((w - size) / 2, (h - size) / 2, size, size);
+        return QIcon(pix);
+    }
+}
+
+QIcon BBFileSystemDataManager::getTextureIcon(const QString &path)
+{
+    QPixmap pix(path);
+    int h = pix.height();
+    int w = pix.width();
+    int size = h < w ? h : w;
+    pix = pix.copy((w - size) / 2, (h - size) / 2, size, size);
+    // Transparent pictures need to add background
+    // When the image is smaller than the icon size, use the icon size. The image is showed in the center
+    int nBackgroundSize = size > BBFileListWidget::m_ItemSize.width() ? size : BBFileListWidget::m_ItemSize.width();
+    QPixmap background(nBackgroundSize, nBackgroundSize);
+    background.fill(QColor("#d6dfeb"));
+    QPainter painter(&background);
+    painter.drawPixmap((nBackgroundSize - size) / 2, (nBackgroundSize - size) / 2, pix);
+    painter.end();
+    return QIcon(background);
+}
+
+bool BBFileSystemDataManager::copyFolder(const QString &fromDir, const QString &toDir)
+{
+    QDir sourceDir(fromDir);
+    QDir targetDir(toDir);
+    if (!targetDir.exists())
+    {
+        // if it does not exist, create it
+        BB_PROCESS_ERROR_RETURN_FALSE(targetDir.mkpath(targetDir.absolutePath()));
+    }
+
+    QFileInfoList fileInfoList = sourceDir.entryInfoList();
+    foreach (QFileInfo fileInfo, fileInfoList)
+    {
+        // fileInfo.filePath() has /./
+        if (fileInfo.fileName() == "." || fileInfo.fileName() == "..")
+            continue;
+
+        if (fileInfo.isDir())
+        {
+            // recursive
+            BB_PROCESS_ERROR_RETURN_FALSE(copyFolder(fileInfo.filePath(), targetDir.filePath(fileInfo.fileName())));
+        }
+        else
+        {
+            // copy files
+            BB_PROCESS_ERROR_RETURN_FALSE(QFile::copy(fileInfo.filePath(), targetDir.filePath(fileInfo.fileName())));
+//            //材质文件需要新建材质对象
+//            QString suffix = fileInfo.fileName().mid(fileInfo.fileName().lastIndexOf('.') + 1);
+//            if (suffix == "mtl")
+//            {
+//                new Material(fileInfo.absoluteFilePath());
+//            }
+        }
+    }
+    return true;
+}
+
+bool BBFileSystemDataManager::isMovablePath(const QString &sourcePath, const QString &destParentPath)
+{
+    // Folders can’t be moved into oneself, nor can they be moved into their own subfolders
+    BB_PROCESS_ERROR_RETURN_FALSE(!(destParentPath.mid(0, sourcePath.length()) == sourcePath));
+    // It can’t become its own brother and move into its own parent folder
+    BB_PROCESS_ERROR_RETURN_FALSE(!(getParentPath(sourcePath) == destParentPath));
+    return true;
+}
+
+bool BBFileSystemDataManager::moveFolder(const QString &oldPath, const QString &newPath, bool bCopy)
+{
+    // newPath has been checked for duplicate name problem
+    // copy folder
+    BB_PROCESS_ERROR_RETURN_FALSE(copyFolder(oldPath, newPath));
+    // handle corresponding folder in the engine folder
+    QString oldAuxiliaryFolderPath = getEngineAuxiliaryFolderPath(oldPath);
+    QString newAuxiliaryFolderPath = getEngineAuxiliaryFolderPath(newPath);
+    copyFolder(oldAuxiliaryFolderPath, newAuxiliaryFolderPath);
+
+    if (!bCopy)
+    {
+        // delete original folder
+        QDir dir(oldPath);
+        BB_PROCESS_ERROR_RETURN_FALSE(dir.removeRecursively());
+        dir = QDir(oldAuxiliaryFolderPath);
+        dir.removeRecursively();
+    }
+    return true;
+}
+
+bool BBFileSystemDataManager::moveFile(const QString &oldPath, const QString &newPath, BBFileType eFileType, bool bCopy)
+{
+    // newPath has been checked for duplicate name problem
+    // copy file
+    BB_PROCESS_ERROR_RETURN_FALSE(QFile::copy(oldPath, newPath));
+    // handle corresponding folder in the engine folder
+    QString oldOverviewMapPath;
+    QString newOverviewMapPath;
+    if (eFileType == BBFileType::Mesh)
+    {
+        oldOverviewMapPath = getOverviewMapPath(oldPath);
+        newOverviewMapPath = getOverviewMapPath(newPath);
+        QFile::copy(oldOverviewMapPath, newOverviewMapPath);
+    }
+//    //材质文件需要新建材质对象
+//    else if (fileInfo->mFileType == FileType::material)
+//    {
+//        new Material(newPath);
+//    }
+
+    if (!bCopy)
+    {
+        // delete original file
+        BB_PROCESS_ERROR_RETURN_FALSE(QFile::remove(oldPath));
+        QFile::remove(oldOverviewMapPath);
+    }
+    return true;
+}
+
 /**
  * @brief BBFileSystemDataManager::buildFileData
  * @param rootPath
@@ -763,55 +961,11 @@ BBFILE* BBFileSystemDataManager::loadFolderContent(const QString &parentPath,
     return pFolderContent;
 }
 
-QString BBFileSystemDataManager::getEngineAuxiliaryFolderPath(const QString &sourcePath)
-{
-    // the path relative to the engine folder is the same as the path relative to the contents folder
-    QString relativePath = sourcePath.mid(BBConstant::BB_PATH_PROJECT_USER.length());
-
-    return BBConstant::BB_PATH_PROJECT_ENGINE + "/" + BBConstant::BB_NAME_FILE_SYSTEM_USER + relativePath;
-}
-
-QIcon BBFileSystemDataManager::getIcon(const QString &path)
-{
-    // Cut into a square
-    QPixmap pix(path);
-    if (pix.isNull())
-    {
-        return QIcon(QString(BB_PATH_RESOURCE_ICON) + "empty2");
-    }
-    else
-    {
-        int h = pix.height();
-        int w = pix.width();
-        int size = h < w ? h : w;
-        pix = pix.copy((w - size) / 2, (h - size) / 2, size, size);
-        return QIcon(pix);
-    }
-}
-
-QIcon BBFileSystemDataManager::getTextureIcon(const QString &path)
-{
-    QPixmap pix(path);
-    int h = pix.height();
-    int w = pix.width();
-    int size = h < w ? h : w;
-    pix = pix.copy((w - size) / 2, (h - size) / 2, size, size);
-    // Transparent pictures need to add background
-    // When the image is smaller than the icon size, use the icon size. The image is showed in the center
-    int nBackgroundSize = size > BBFileListWidget::m_ItemSize.width() ? size : BBFileListWidget::m_ItemSize.width();
-    QPixmap background(nBackgroundSize, nBackgroundSize);
-    background.fill(QColor("#d6dfeb"));
-    QPainter painter(&background);
-    painter.drawPixmap((nBackgroundSize - size) / 2, (nBackgroundSize - size) / 2, pix);
-    painter.end();
-    return QIcon(background);
-}
-
 QIcon BBFileSystemDataManager::getMeshOverviewMap(const QString &sourcePath)
 {
     // read icon from engine folder if it is created before
     // if it does not exist, create
-    QString overviewMapPath = BBFileSystemDataManager::getOverviewMapPath(sourcePath);
+    QString overviewMapPath = getOverviewMapPath(sourcePath);
     QFile file(overviewMapPath);
     if (!file.exists())
     {
@@ -840,7 +994,7 @@ void BBFileSystemDataManager::createMeshOverviewMap(const QString &sourcePath, c
 
 BBFileType BBFileSystemDataManager::getFileType(const QString &filePath)
 {
-    QTreeWidgetItem *pItem = getItemByPath(filePath);
+    QTreeWidgetItem *pItem = getFolderItemByPath(filePath);
     // to do ... m_RootFileData  m_TopLevelFileData  m_FileData
     return BBFileType::Other;
 }
@@ -868,12 +1022,26 @@ bool BBFileSystemDataManager::deleteFolderItem(QTreeWidgetItem *pItem)
     // release BBFILE corresponding the pItem
     BBFILE *pFolderContent = getFolderContent(pItem);
     qDeleteAll(*pFolderContent);
-    delete pFolderContent;
-    delete pItem;
+
+    if (pItem)
+    {
+        if (pItem->parent())
+        {
+            m_FileData.remove(pItem);
+        }
+        else
+        {
+            m_TopLevelFileData.remove(pItem);
+        }
+    }
+
+
+    BB_SAFE_DELETE(pFolderContent);
+    BB_SAFE_DELETE(pItem);
     return true;
 }
 
-bool BBFileSystemDataManager::importAsset(const QFileInfo &fileInfo, const QString &newPath)
+bool BBFileSystemDataManager::importFiles(const QFileInfo &fileInfo, const QString &newPath)
 {
     QString suffix = fileInfo.suffix();
     if (m_TextureSuffixs.contains(suffix) || m_ScriptSuffixs.contains(suffix))
@@ -896,9 +1064,9 @@ bool BBFileSystemDataManager::importAsset(const QFileInfo &fileInfo, const QStri
  * @param parentPath
  * @return
  */
-bool BBFileSystemDataManager::loadImportedAsset(const QString &parentPath)
+bool BBFileSystemDataManager::loadImportedData(const QString &parentPath)
 {
-    QTreeWidgetItem *pParentFolderItem = getItemByPath(parentPath);
+    QTreeWidgetItem *pParentFolderItem = getFolderItemByPath(parentPath);
     BBFILE *pFolderContent = getFolderContent(pParentFolderItem);
     BB_PROCESS_ERROR_RETURN_FALSE(pFolderContent);
     // the names of all sub files

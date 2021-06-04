@@ -85,6 +85,12 @@ void BBFileSystemDockWidget::importAsset(const QString &parentPath, const QList<
     m_pFileSystemManager->importAsset(parentPath, urls);
 }
 
+void BBFileSystemDockWidget::moveFiles(QList<QListWidgetItem*> items, const QString &oldParentPath,
+                                       const QString &newParentPath, bool bCopy)
+{
+    m_pFileSystemManager->moveFiles(items, oldParentPath, newParentPath, bCopy);
+}
+
 void BBFileSystemDockWidget::updateAll()
 {
     m_pFileSystemManager->updateAll();
@@ -134,5 +140,8 @@ void BBFileSystemDockWidget::setConnect()
     // import external assets
     QObject::connect(m_pUi->listFile, SIGNAL(importAsset(QString, QList<QUrl>)),
                      this, SLOT(importAsset(QString, QList<QUrl>)));
+    // move list items to list
+    QObject::connect(m_pUi->listFile, SIGNAL(moveFiles(QList<QListWidgetItem*>, QString, QString, bool)),
+                     this, SLOT(moveFiles(QList<QListWidgetItem*>, QString, QString, bool)));
 }
 

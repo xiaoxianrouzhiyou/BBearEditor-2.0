@@ -65,7 +65,8 @@ signals:
     void rename(QListWidgetItem *pFileItem, const QString &oldPath, const QString &newPath);
     void deleteFiles(const QList<QListWidgetItem*> &items);
     void importAsset(const QString &parentPath, const QList<QUrl> &urls);
-    bool moveFile(const QString &oldPath, const QString &newPath, const BBFileType &eFileType, bool bCopy);
+    void moveFiles(QList<QListWidgetItem*> items, const QString &oldParentPath,
+                   const QString &newParentPath, bool bCopy);
 
 private:
     void setMenu();

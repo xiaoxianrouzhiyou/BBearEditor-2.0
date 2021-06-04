@@ -108,12 +108,6 @@ class BBUtils
 {
 public:
     static char *loadFileContent(const char *filePath, int &nFileSize);
-
-
-//    static bool copyFolder(const QString &fromDir, const QString &toDir);
-//    static bool isMovablePath(const QString &sourcePath, const QString &destParentPath);
-//    static bool moveFolder(const QString &oldPath, const QString &newPath, bool bCopy = false);
-//    static bool moveFile(const QString &oldPath, const QString &newPath, BBFileType eFileType, bool bCopy = false);
 };
 
 #endif // BBUTILS_H

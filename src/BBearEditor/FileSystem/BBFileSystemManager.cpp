@@ -134,11 +134,20 @@ void BBFileSystemManager::deleteFilesInFileList(const QList<QListWidgetItem*> &i
 
 void BBFileSystemManager::importAsset(const QString &parentPath, const QList<QUrl> &urls)
 {
-    if (m_pDataManager->importAsset(parentPath, urls))
+    if (m_pDataManager->importFiles(parentPath, urls))
     {
         updateFolderTree();
         updateFileList(m_pFileListWidget->getCurrentParentPath(), m_pFileListWidget->getCurrentParentItem(), NULL);
         m_pFileListWidget->setSelectedItems(m_pDataManager->getSelectedItems());
+    }
+}
+
+void BBFileSystemManager::moveFiles(QList<QListWidgetItem*> items, const QString &oldParentPath,
+                                    const QString &newParentPath, bool bCopy)
+{
+    if (m_pDataManager->moveFiles(items, oldParentPath, newParentPath, bCopy))
+    {
+
     }
 }
 
@@ -163,7 +172,7 @@ void BBFileSystemManager::updateFolderTree()
  */
 void BBFileSystemManager::updateFolderTree(const QString &filePath)
 {
-    QTreeWidgetItem *pItem = m_pDataManager->getItemByPath(filePath);
+    QTreeWidgetItem *pItem = m_pDataManager->getFolderItemByPath(filePath);
     m_pFolderTreeWidget->setCurrentShowFolderContentItem(pItem);
 }
 
@@ -177,7 +186,7 @@ void BBFileSystemManager::updateFileList(const QString &parentPath,
 }
 void BBFileSystemManager::updateFileList(const QString &parentPath, QListWidgetItem *pCurrentItem)
 {
-    QTreeWidgetItem *pParentFolderItem = m_pDataManager->getItemByPath(parentPath);
+    QTreeWidgetItem *pParentFolderItem = m_pDataManager->getFolderItemByPath(parentPath);
     updateFileList(parentPath, pParentFolderItem, pCurrentItem);
 }
 

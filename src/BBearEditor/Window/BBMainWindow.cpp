@@ -72,7 +72,6 @@ void BBMainWindow::setConnect()
     QObject::connect(m_pUi->dockEditview, SIGNAL(pressTransform(char)),
                      m_pUi->openGLWidget, SLOT(pressTransform(char)));
     QObject::connect(m_pUi->dockEditview, SIGNAL(pressESC()), m_pUi->openGLWidget, SLOT(pressESC()));
-    QObject::connect(m_pUi->dockEditview, SIGNAL(keyPress(QKeyEvent*)), m_pUi->openGLWidget, SLOT(onKeyPress(QKeyEvent*)));
     // Drag into the model, and add item in the Hierarchy tree
     QObject::connect(m_pUi->openGLWidget, SIGNAL(addGameObject(BBGameObject*)),
                      m_pUi->treeHierarchy, SLOT(addGameObject(BBGameObject*)));

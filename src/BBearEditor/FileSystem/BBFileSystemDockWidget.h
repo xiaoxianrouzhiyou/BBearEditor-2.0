@@ -44,6 +44,9 @@ private slots:
 
     void importAsset(const QString &parentPath, const QList<QUrl> &urls);
 
+    void moveFiles(QList<QListWidgetItem*> items, const QString &oldParentPath,
+                   const QString &newParentPath, bool bCopy);
+
     void updateAll();
 
 signals:

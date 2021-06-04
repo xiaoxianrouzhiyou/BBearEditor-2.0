@@ -571,7 +571,9 @@ void BBFileListWidget::dropEvent(QDropEvent *event)
 
 bool BBFileListWidget::moveItem()
 {
-
+    // move selected items into m_pIndicatorItem
+    QList<QListWidgetItem*> items = selectedItems();
+    emit moveFiles(items, m_ParentPath, m_ParentPath + "/" + m_pFileData->value(m_pIndicatorItem)->m_FileName, false);
 }
 
 bool BBFileListWidget::moveItemFromFolderTree(const QMimeData *pMimeData)
@@ -671,44 +673,7 @@ QString BBFileListWidget::getPathByItem(QListWidgetItem *pItem)
 
 
 
-//bool BBFileListWidget::moveFile(const QString &oldPath, QString &newPath, BBFileType eFileType, bool bCopy)
-//{
-//    // the "File" in the function name indicates file or folder
-//    if (eFileType == BBFileType::dir)
-//    {
-//        newPath = BBUtils::getExclusiveFolderPath(newPath);
-//        BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFolder(oldPath, newPath, bCopy));
 
-//        // move folder tree items at the same time
-//        moveItemInFolderTree(oldPath, newPath);
-//    }
-//    else
-//    {
-//        newPath = BBUtils::getExclusiveFilePath(newPath);
-//        BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFile(oldPath, newPath, eFileType, bCopy));
-//    }
-//}
-
-
-//bool BBFileListWidget::moveItem()
-//{
-//    // move selected items into m_pIndicatorItem
-//    QList<QListWidgetItem*> items = selectedItems();
-//    for (int i = 0; i < items.count(); i++)
-//    {
-//        QListWidgetItem *pItem = items.at(i);
-//        BBFileInfo *pFileInfo = m_Map.value(pItem);
-//        QString oldPath = m_FolderPath + "/" + pFileInfo->m_FileName;
-//        QString parentPath = m_FolderPath + "/" + m_Map.value(m_pIndicatorItem)->m_FileName;
-//        QString newPath = parentPath + "/" + pFileInfo->m_FileName;
-
-//        moveFile(oldPath, newPath, pFileInfo->m_eFileType, false);
-
-//        m_Map.remove(pItem);
-//        BB_SAFE_DELETE(pFileInfo);
-//        BB_SAFE_DELETE(pItem);
-//    }
-//}
 
 //bool BBFileListWidget::moveItemFromFolderTree(const QMimeData *pMimeData)
 //{
