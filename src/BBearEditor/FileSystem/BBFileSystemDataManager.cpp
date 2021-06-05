@@ -431,9 +431,8 @@ bool BBFileSystemDataManager::importFiles(const QString &parentPath, const QList
     return loadImportedData(parentPath);
 }
 
-bool BBFileSystemDataManager::moveFolders(const QList<QTreeWidgetItem*> &items,
-                                          QTreeWidgetItem *pNewParentItem,
-                                          bool bCopy)
+bool BBFileSystemDataManager::moveFolders(const QList<QTreeWidgetItem*> &items, QTreeWidgetItem *pNewParentItem,
+                                          bool bCopy, QList<QListWidgetItem*> &outSelectedItems)
 {
     // record map between item and its parent
     // the items that have the same parent can be handled at the same time
@@ -464,9 +463,25 @@ bool BBFileSystemDataManager::moveFolders(const QList<QTreeWidgetItem*> &items,
                                                 getAbsolutePath(pOldParentItem), pOldParentItem,
                                                 getAbsolutePath(pNewParentItem), pNewParentItem,
                                                 bCopy));
+        outSelectedItems.append(fileItems);
     }
 
     return true;
+}
+
+bool BBFileSystemDataManager::moveFolders(const QList<QString> &oldFilePaths, const QString &newParentPath, bool bCopy,
+                                          QList<QListWidgetItem*> &outSelectedItems)
+{
+    QList<QTreeWidgetItem*> items;
+    for (int i = 0; i < oldFilePaths.count(); i++)
+    {
+        QString filePath = oldFilePaths.at(i);
+        // check whether the movement is legal
+        BB_PROCESS_ERROR_RETURN_FALSE(isMovablePath(filePath, newParentPath));
+
+        items.append(getFolderItemByPath(filePath));
+    }
+    moveFolders(items, getFolderItemByPath(newParentPath), bCopy, outSelectedItems);
 }
 
 bool BBFileSystemDataManager::moveFiles(const QList<QString> &oldFilePaths, QTreeWidgetItem *pNewParentItem, bool bCopy,

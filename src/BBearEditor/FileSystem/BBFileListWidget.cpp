@@ -562,7 +562,28 @@ bool BBFileListWidget::moveItem()
 
 bool BBFileListWidget::moveItemFromFolderTree(const QMimeData *pMimeData)
 {
+    QString newParentPath = m_ParentPath;
+    if (m_pIndicatorItem)
+    {
+        // Drag to the folder in the file list and move the asset into this folder
+        newParentPath += "/" + m_pFileData->value(m_pIndicatorItem)->m_FileName;
+    }
 
+    QList<QString> oldFilePaths;
+    QByteArray data = pMimeData->data(BB_MIMETYPE_FOLDERTREEWIDGET);
+    QDataStream dataStream(&data, QIODevice::ReadOnly);
+    QString levelPath;
+    dataStream >> levelPath;
+    while (!levelPath.isEmpty())
+    {
+        QString oldFilePath = BBConstant::BB_PATH_PROJECT_USER + "/" + levelPath;
+        oldFilePaths.append(oldFilePath);
+        dataStream >> levelPath;
+    }
+
+    emit moveFolders(oldFilePaths, newParentPath, false);
+
+    return true;
 }
 
 void BBFileListWidget::paintEvent(QPaintEvent *event)
@@ -651,49 +672,6 @@ QString BBFileListWidget::getPathByItem(QListWidgetItem *pItem)
         return m_ParentPath;
     }
 }
-
-
-
-
-
-
-
-
-//bool BBFileListWidget::moveItemFromFolderTree(const QMimeData *pMimeData)
-//{
-//    QString destPath = m_FolderPath;
-//    if (m_pIndicatorItem)
-//    {
-//        // Drag to the folder in the file list and import the asset into this folder
-//        destPath += "/" + m_Map.value(m_pIndicatorItem)->m_FileName;
-//    }
-
-//    QList<QString> sourceFilePaths;
-//    QByteArray data = pMimeData->data(BB_MIMETYPE_FOLDERTREEWIDGET);
-//    QDataStream dataStream(&data, QIODevice::ReadOnly);
-//    QString levelPath;
-//    dataStream >> levelPath;
-//    while (!levelPath.isEmpty())
-//    {
-//        QString sourceFilePath = BBConstant::BB_PATH_PROJECT_USER + "/" + levelPath;
-//        sourceFilePaths.append(sourceFilePath);
-//        // check whether the movement is legal
-//        BBUtils::isMovablePath(sourceFilePath, destPath);
-//        dataStream >> levelPath;
-//    }
-//    // when the movement is legal, move all folders into destPath
-//    for (int i = 0; i < sourceFilePaths.count(); i++)
-//    {
-//        QString oldPath = sourceFilePaths.at(i);
-//        QString fileName = BBUtils::getFileNameByPath(oldPath);
-//        QString newPath = destPath + fileName;
-
-//        moveFile(oldPath, newPath, BBFileType::dir, false);
-//    }
-//    return true;
-//}
-
-
 
 
 
