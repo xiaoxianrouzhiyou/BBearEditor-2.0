@@ -301,11 +301,6 @@ void BBFolderTreeWidget::resumeItemExpansionState()
 
 
 
-//-------------------------------------------
-
-
-
-
 //void ProjectTree::copyAction()
 //{
 //    //重置剪贴板

@@ -46,8 +46,12 @@ public:
     static QSize m_ItemSize;
 
 private slots:
+    void clickItem(QListWidgetItem *pItem);
     void doubleClickItem(QListWidgetItem *pItem);
+    void changeItemSize(int factor);
     void newFolder();
+    void newMaterial();
+    void newScript();
     void showInFolder();
     void copyAction();
     void pasteAction();
@@ -105,23 +109,8 @@ private:
 
 
 
-
-
-
-
-
-//class FileList : public QListWidget
-//{
-
-//public slots:
-//    void newMaterial();
-//    void newScript();
-//    void cancelSelectedItems();
-
 //private slots:
 //    void pasteFileFromProjectTree(QList<QString> filePaths, QString destPath, QList<QString> pastedFolderNames);
-//    void changeItemSize(int factor);
-//    void itemClickedSlot(QListWidgetItem* item);
 //    void updateMaterialFileIcon(QString filePath);
 
 //signals:
@@ -129,7 +118,3 @@ private:
 //    void showFbxProperty(QString filePath);
 //    void clearPropertyWidget();
 
-//private:
-//    void selectPasteItem(QList<QString> itemNames);
-
-//};

@@ -79,10 +79,10 @@ BBFileListWidget::BBFileListWidget(QWidget *pParent)
 
     setMenu();
 
+    QObject::connect(this, SIGNAL(itemClicked(QListWidgetItem*)),
+                     this, SLOT(clickItem(QListWidgetItem*)));
     QObject::connect(this, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
                      this, SLOT(doubleClickItem(QListWidgetItem*)));
-//    QObject::connect(this, SIGNAL(itemClicked(QListWidgetItem*)),
-//                     this, SLOT(itemClickedSlot(QListWidgetItem*)));
 }
 
 BBFileListWidget::~BBFileListWidget()
@@ -118,9 +118,19 @@ void BBFileListWidget::setSelectedItems(const QList<QListWidgetItem*> &items)
     }
 }
 
+void BBFileListWidget::clickItem(QListWidgetItem *pItem)
+{
+
+}
+
 void BBFileListWidget::doubleClickItem(QListWidgetItem *pItem)
 {
     emit openFile(getPathByItem(pItem));
+}
+
+void BBFileListWidget::changeItemSize(int factor)
+{
+
 }
 
 void BBFileListWidget::newFolder()
@@ -134,6 +144,17 @@ void BBFileListWidget::newFolder()
     emit newFolder(m_ParentPath, m_eSenderTag);
     openRenameEditor();
 }
+
+void BBFileListWidget::newMaterial()
+{
+
+}
+
+void BBFileListWidget::newScript()
+{
+
+}
+
 void BBFileListWidget::showInFolder()
 {
     emit showInFolder(getPathByItem(currentItem()));
@@ -679,7 +700,7 @@ QString BBFileListWidget::getPathByItem(QListWidgetItem *pItem)
 
 
 
-//-------------------------------------------
+
 
 
 //void FileList::newMaterial()
@@ -772,16 +793,6 @@ QString BBFileListWidget::getPathByItem(QListWidgetItem *pItem)
 //    copyToProjectTree(clipBoardPaths);
 //}
 
-//void FileList::copyByProjectTree(QList<QString> folderPaths)
-//{
-//    //清空上一次剪贴板存下的复制内容
-//    clipBoardPaths.clear();
-//    int count = folderPaths.count();
-//    for (int i = 0; i < count; i++)
-//    {
-//        clipBoardPaths.append(folderPaths.at(i));
-//    }
-//}
 
 //void FileList::pasteAction()
 //{
@@ -928,19 +939,6 @@ QString BBFileListWidget::getPathByItem(QListWidgetItem *pItem)
 //    }
 //}
 
-//void FileList::selectPasteItem(QList<QString> itemNames)
-//{
-//    //遍历列表每项的名字 如果在粘贴项名字里
-//    QMap<QListWidgetItem*, FileInfo*>::Iterator itr;
-//    for (itr = mMap.begin(); itr != mMap.end(); itr++)
-//    {
-//        FileInfo *fileInfo = itr.value();
-//        if (itemNames.contains(fileInfo->mFileName))
-//        {
-//            setItemSelected(itr.key(), true);
-//        }
-//    }
-//}
 
 //void FileList::changeItemSize(int factor)
 //{
@@ -951,11 +949,6 @@ QString BBFileListWidget::getPathByItem(QListWidgetItem *pItem)
 //    showFolderContent(mFolderPath);*/
 //}
 
-//void FileList::cancelSelectedItems()
-//{
-//    //取消选中
-//    setCurrentItem(NULL);
-//}
 
 //void FileList::itemClickedSlot(QListWidgetItem* item)
 //{
