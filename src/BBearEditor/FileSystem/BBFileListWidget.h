@@ -38,11 +38,8 @@ public:
 
     inline QString getMimeType() { return BB_MIMETYPE_FILELISTWIDGET; }
     inline QString getCurrentParentPath() { return m_ParentPath; }
-    inline QTreeWidgetItem* getCurrentParentItem() { return m_pParentItem; }
 
-    void loadItems(const QString &parentPath, QTreeWidgetItem *pParentItem,
-                   BBFILE *pFileData, QListWidgetItem *pCurrentItem);
-    void updateCurrentInfos(QTreeWidgetItem *pDeletedItem);
+    void loadItems(const QString &parentPath, BBFILE *pFileData, QListWidgetItem *pCurrentItem);
     void setSelectedItems(const QList<QListWidgetItem*> &items);
 
 public:
@@ -94,7 +91,6 @@ private:
 
     QMenu *m_pMenu;
     QString m_ParentPath;
-    QTreeWidgetItem *m_pParentItem;
     BBFILE *m_pFileData;
     QListWidgetItem *m_pEditingItem;
     BBPlainTextEdit *m_pRenameEditor;

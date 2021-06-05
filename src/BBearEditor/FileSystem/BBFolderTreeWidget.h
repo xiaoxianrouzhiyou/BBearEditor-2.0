@@ -60,7 +60,6 @@ private:
 
     const BBSignalSender m_eSenderTag;
     QList<QTreeWidgetItem*> m_ExpandedItems;
-    QTreeWidgetItem *m_pCurrentViewedItem;
 };
 
 #endif // BBFOLDERTREEWIDGET_H

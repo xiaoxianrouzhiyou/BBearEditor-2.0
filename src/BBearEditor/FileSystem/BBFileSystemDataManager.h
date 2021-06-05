@@ -23,6 +23,8 @@ public:
 
 public:
     void bindPreviewOpenGLWidget(BBOpenGLWidget *pPreviewOpenGLWidget) { m_pPreviewOpenGLWidget = pPreviewOpenGLWidget; }
+    inline void setCurrentViewedItem(QTreeWidgetItem *pItem) { m_pCurrentViewedItem = pItem; }
+    inline QTreeWidgetItem* getCurrentViewedItem() { return m_pCurrentViewedItem; }
     void load();
     QList<QTreeWidgetItem*> getFolderTreeWidgetTopLevelItems();
     bool getFileListWidgetItems(QTreeWidgetItem *pItem, BBFILE *&pOutFolderContent);
@@ -30,7 +32,6 @@ public:
     QTreeWidgetItem* getParentFolderItem(const QString &filePath);
     QListWidgetItem* getFileItem(QTreeWidgetItem *pFolderItem);
     QListWidgetItem* getFileItem(QTreeWidgetItem *pParentFolderItem, const QString &filePath);
-    inline QList<QTreeWidgetItem*> getSelectedFolderItems() { return m_SelectedFolderItems; }
     inline QList<QListWidgetItem*> getSelectedFileItems() { return m_SelectedFileItems; }
     bool openFile(const QString &filePath);
     bool newFolder(const QString &parentPath, QTreeWidgetItem *&pFolderItem, QListWidgetItem *&pOutFileItem);
@@ -106,7 +107,7 @@ private:
     QMap<QTreeWidgetItem*, BBFILE*> m_TopLevelFileData;
     QMap<QTreeWidgetItem*, BBFILE*> m_FileData;
 
-    QList<QTreeWidgetItem*> m_SelectedFolderItems;
+    QTreeWidgetItem *m_pCurrentViewedItem;
     QList<QListWidgetItem*> m_SelectedFileItems;
 };
 

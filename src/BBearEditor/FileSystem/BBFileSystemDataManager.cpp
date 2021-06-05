@@ -25,6 +25,7 @@ QString BBFileSystemDataManager::m_MaterialFileLogoColor = "#fab8b7";
 
 BBFileSystemDataManager::BBFileSystemDataManager()
 {
+    m_pCurrentViewedItem = NULL;
     m_pRootFileData = new BBFILE();
 }
 
@@ -299,6 +300,13 @@ bool BBFileSystemDataManager::rename(QTreeWidgetItem *pParentFolderItem, QListWi
 bool BBFileSystemDataManager::deleteFolder(QTreeWidgetItem *pItem)
 {
     BB_PROCESS_ERROR_RETURN_FALSE(pItem);
+
+    // if showing its content, clear, and show root folder
+    if (pItem == m_pCurrentViewedItem)
+    {
+        m_pCurrentViewedItem = NULL;
+    }
+
     // find list item corresponding it in its parent
     QTreeWidgetItem *pParentFolderItem = pItem->parent();
     QString filePath = getAbsolutePath(pItem);
@@ -427,10 +435,6 @@ bool BBFileSystemDataManager::moveFolders(const QList<QTreeWidgetItem*> &items,
                                           QTreeWidgetItem *pNewParentItem,
                                           bool bCopy)
 {
-    while (m_SelectedFolderItems.count() > 0)
-    {
-        m_SelectedFolderItems.takeFirst();
-    }
     // record map between item and its parent
     // the items that have the same parent can be handled at the same time
     QMap<QTreeWidgetItem*, QTreeWidgetItem*> map;

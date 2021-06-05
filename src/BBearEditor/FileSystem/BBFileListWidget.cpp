@@ -56,7 +56,6 @@ QSize BBFileListWidget::m_StandardItemSize = QSize(180, 45);
 BBFileListWidget::BBFileListWidget(QWidget *pParent)
     : QListWidget(pParent), m_eSenderTag(BBSignalSender::FileList)
 {
-    m_pParentItem = NULL;
     m_pEditingItem = NULL;
     m_pRenameEditor = NULL;
     m_pIndicatorItem = NULL;
@@ -91,8 +90,7 @@ BBFileListWidget::~BBFileListWidget()
     BB_SAFE_DELETE(m_pMenu);
 }
 
-void BBFileListWidget::loadItems(const QString &parentPath, QTreeWidgetItem *pParentItem,
-                                 BBFILE *pFileData, QListWidgetItem *pCurrentItem)
+void BBFileListWidget::loadItems(const QString &parentPath, BBFILE *pFileData, QListWidgetItem *pCurrentItem)
 {
     // show the contents of the newly selected folder, the original list is cleared
     // just remove from the list, cannot delete the items, so cannot use clear();
@@ -108,22 +106,8 @@ void BBFileListWidget::loadItems(const QString &parentPath, QTreeWidgetItem *pPa
     m_pFileData = pFileData;
 
     m_ParentPath = parentPath;
-    m_pParentItem = pParentItem;
     sortItems();
     setCurrentItem(pCurrentItem);
-}
-
-/**
- * @brief BBFileListWidget::updateCurrentInfos          the folder being showed has been deleted
- * @param pDeletedItem
- */
-void BBFileListWidget::updateCurrentInfos(QTreeWidgetItem *pDeletedItem)
-{
-    if (m_pParentItem == pDeletedItem)
-    {
-        m_ParentPath = BBConstant::BB_PATH_PROJECT_USER;
-        m_pParentItem = NULL;
-    }
 }
 
 void BBFileListWidget::setSelectedItems(const QList<QListWidgetItem*> &items)

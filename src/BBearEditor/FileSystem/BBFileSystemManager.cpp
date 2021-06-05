@@ -51,6 +51,7 @@ void BBFileSystemManager::openProject()
 
 void BBFileSystemManager::clickItemInFolderTree(const QString &filePath, QTreeWidgetItem *pItem)
 {
+    m_pDataManager->setCurrentViewedItem(pItem);
     updateFileList(filePath, pItem, NULL);
     updateFolderPathBar(filePath);
 }
@@ -116,8 +117,6 @@ void BBFileSystemManager::renameInFileList(QListWidgetItem *pFileItem, const QSt
 void BBFileSystemManager::deleteFolderInFolderTree(QTreeWidgetItem *pItem)
 {
     BB_PROCESS_ERROR_RETURN(m_pDataManager->deleteFolder(pItem));
-    m_pFileListWidget->updateCurrentInfos(pItem);
-
     // no need to update, since this is to handle single item
     // when delete action is over, we will update
 }
@@ -125,7 +124,7 @@ void BBFileSystemManager::deleteFolderInFolderTree(QTreeWidgetItem *pItem)
 void BBFileSystemManager::deleteFilesInFileList(const QList<QListWidgetItem*> &items)
 {
     clearFolderTree();
-    QTreeWidgetItem *pParentItem = m_pFileListWidget->getCurrentParentItem();
+    QTreeWidgetItem *pParentItem = m_pDataManager->getCurrentViewedItem();
     QString parentPath = m_pFileListWidget->getCurrentParentPath();
     if (m_pDataManager->deleteFiles(pParentItem, parentPath, items))
     {
@@ -140,7 +139,7 @@ void BBFileSystemManager::importAsset(const QString &parentPath, const QList<QUr
     if (m_pDataManager->importFiles(parentPath, urls))
     {
         setFolderTree();
-        updateFileList(m_pFileListWidget->getCurrentParentPath(), m_pFileListWidget->getCurrentParentItem(), NULL);
+        updateFileList(m_pFileListWidget->getCurrentParentPath(), m_pDataManager->getCurrentViewedItem(), NULL);
         m_pFileListWidget->setSelectedItems(m_pDataManager->getSelectedFileItems());
     }
 }
@@ -151,7 +150,9 @@ void BBFileSystemManager::moveFolders(const QList<QTreeWidgetItem*> &items, QTre
     if (m_pDataManager->moveFolders(items, pNewParentItem, bCopy))
     {
         setFolderTree();
-        updateFileList(m_pFileListWidget->getCurrentParentPath(), NULL);
+        m_pFolderTreeWidget->setSelectedItems(items);
+        QString parentPath = m_pDataManager->getAbsolutePath(m_pDataManager->getCurrentViewedItem());
+        updateFileList(parentPath, NULL);
         updateFolderPathBar(m_pFileListWidget->getCurrentParentPath());
     }
 }
@@ -164,7 +165,7 @@ void BBFileSystemManager::moveFiles(const QList<QListWidgetItem*> &items, const 
     if (m_pDataManager->moveFiles(items, oldParentPath, newParentPath, bCopy))
     {
         setFolderTree();
-        updateFileList(m_pFileListWidget->getCurrentParentPath(), m_pFileListWidget->getCurrentParentItem(), NULL);
+        updateFileList(m_pFileListWidget->getCurrentParentPath(), m_pDataManager->getCurrentViewedItem(), NULL);
     }
 }
 
@@ -172,7 +173,8 @@ void BBFileSystemManager::updateAll()
 {
     clearFolderTree();
     setFolderTree();
-    updateFileList(m_pFileListWidget->getCurrentParentPath(), m_pFileListWidget->currentItem());
+    QString parentPath = m_pDataManager->getAbsolutePath(m_pDataManager->getCurrentViewedItem());
+    updateFileList(parentPath, m_pFileListWidget->currentItem());
     updateFolderPathBar(m_pFileListWidget->getCurrentParentPath());
 }
 
@@ -205,7 +207,7 @@ void BBFileSystemManager::updateFileList(const QString &parentPath,
 {
     BBFILE *pFolderContent = NULL;
     m_pDataManager->getFileListWidgetItems(pParentFolderItem, pFolderContent);
-    m_pFileListWidget->loadItems(parentPath, pParentFolderItem, pFolderContent, pCurrentItem);
+    m_pFileListWidget->loadItems(parentPath, pFolderContent, pCurrentItem);
 }
 void BBFileSystemManager::updateFileList(const QString &parentPath, QListWidgetItem *pCurrentItem)
 {
@@ -227,7 +229,7 @@ void BBFileSystemManager::rename(QTreeWidgetItem *pParentFolderItem, QListWidget
         // update
         setFolderTree();
         // cannot use m_pFileListWidget->getCurrentParentPath(), which is an old path
-        QString parentPath = BBFileSystemDataManager::getAbsolutePath(m_pFileListWidget->getCurrentParentItem());
+        QString parentPath = m_pDataManager->getAbsolutePath(m_pDataManager->getCurrentViewedItem());
         updateFileList(parentPath, pFileItem);
         updateFolderPathBar(parentPath);
 //        //重新显示属性栏的属性 名字更新
