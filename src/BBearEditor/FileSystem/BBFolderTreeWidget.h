@@ -22,7 +22,7 @@ public:
 
     void removeTopLevelItems();
     void loadTopLevelItems(const QList<QTreeWidgetItem*> &items);
-    void setCurrentShowFolderContentItem(QTreeWidgetItem *pItem);
+    void expandCurrentViewedItem(QTreeWidgetItem *pItem);
 
 private slots:
     void pressRootButton();
@@ -64,7 +64,7 @@ private:
 //    bool moveItem() override;
 //    bool moveItemFromFileList(const QMimeData *pMimeData) override;
 
-    QTreeWidgetItem *m_pCurrentShowFolderContentItem;
+    QTreeWidgetItem *m_pCurrentViewedItem;
 };
 
 #endif // BBFOLDERTREEWIDGET_H

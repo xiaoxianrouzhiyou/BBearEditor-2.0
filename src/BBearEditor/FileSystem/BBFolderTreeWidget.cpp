@@ -11,7 +11,7 @@
 BBFolderTreeWidget::BBFolderTreeWidget(QWidget *pParent)
     : BBTreeWidget(pParent), m_eSenderTag(BBSignalSender::FolderTree)
 {
-    m_pCurrentShowFolderContentItem = NULL;
+    m_pCurrentViewedItem = NULL;
 //    //初始时 需要加载材质
 //    isLoadMaterial = true;
 
@@ -34,15 +34,15 @@ void BBFolderTreeWidget::loadTopLevelItems(const QList<QTreeWidgetItem*> &items)
 {
     addTopLevelItems(items);
     resumeItemExpansionState();
-    setCurrentShowFolderContentItem(m_pCurrentShowFolderContentItem);
+    expandCurrentViewedItem(m_pCurrentViewedItem);
     sortItems(0, Qt::AscendingOrder);
 }
 
-void BBFolderTreeWidget::setCurrentShowFolderContentItem(QTreeWidgetItem *pItem)
+void BBFolderTreeWidget::expandCurrentViewedItem(QTreeWidgetItem *pItem)
 {
     setCurrentItem(pItem);
     setItemExpanded(pItem, true);
-    m_pCurrentShowFolderContentItem = pItem;
+    m_pCurrentViewedItem = pItem;
 }
 
 void BBFolderTreeWidget::pressRootButton()
@@ -191,9 +191,9 @@ void BBFolderTreeWidget::deleteOne(QTreeWidgetItem *pItem)
     emit deleteFolder(pItem);
 
     // if showing its content, clear, and show root folder
-    if (pItem == m_pCurrentShowFolderContentItem)
+    if (pItem == m_pCurrentViewedItem)
     {
-        m_pCurrentShowFolderContentItem = NULL;
+        m_pCurrentViewedItem = NULL;
     }
 
     BBTreeWidget::deleteOne(pItem);
@@ -213,7 +213,7 @@ void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
 {
     QString folderPath = BBFileSystemDataManager::getAbsolutePath(pItem);
     emit accessFolder(folderPath, pItem);
-    m_pCurrentShowFolderContentItem = pItem;
+    m_pCurrentViewedItem = pItem;
 }
 
 /**

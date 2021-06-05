@@ -60,7 +60,7 @@ void BBFileSystemManager::doubleClickItemInFileList(const QString &filePath)
     if (!m_pDataManager->openFile(filePath))
     {
         // when this is a folder, need to update and access new folder
-        updateFolderTree(filePath);
+        setFolderTreeCurrentItem(filePath);
         updateFileList(filePath, NULL);
         updateFolderPathBar(filePath);
     }
@@ -68,7 +68,7 @@ void BBFileSystemManager::doubleClickItemInFileList(const QString &filePath)
 
 void BBFileSystemManager::clickItemInFolderPathBar(const QString &filePath)
 {
-    updateFolderTree(filePath);
+    setFolderTreeCurrentItem(filePath);
     updateFileList(filePath, NULL);
     updateFolderPathBar(filePath);
 }
@@ -182,10 +182,10 @@ void BBFileSystemManager::setFolderTree()
  * @brief BBFileSystemManager::updateFolderTree     set current item of the tree
  * @param filePath
  */
-void BBFileSystemManager::updateFolderTree(const QString &filePath)
+void BBFileSystemManager::setFolderTreeCurrentItem(const QString &filePath)
 {
     QTreeWidgetItem *pItem = m_pDataManager->getFolderItemByPath(filePath);
-    m_pFolderTreeWidget->setCurrentShowFolderContentItem(pItem);
+    m_pFolderTreeWidget->expandCurrentViewedItem(pItem);
 }
 
 void BBFileSystemManager::updateFileList(const QString &parentPath,
