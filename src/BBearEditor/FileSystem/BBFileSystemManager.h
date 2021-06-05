@@ -49,7 +49,8 @@ public:
     void updateAll();
 
 private:
-    void updateFolderTree();
+    void clearFolderTree();
+    void setFolderTree();
     void updateFolderTree(const QString &filePath);
     void updateFileList(const QString &parentPath, QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pCurrentItem);
     void updateFileList(const QString &parentPath, QListWidgetItem *pCurrentItem);

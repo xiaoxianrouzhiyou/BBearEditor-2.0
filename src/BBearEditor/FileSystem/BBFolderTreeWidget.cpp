@@ -21,15 +21,17 @@ BBFolderTreeWidget::BBFolderTreeWidget(QWidget *pParent)
                      this, SLOT(clickItem(QTreeWidgetItem*, int)));
 }
 
-void BBFolderTreeWidget::loadTopLevelItems(const QList<QTreeWidgetItem*> &items)
+void BBFolderTreeWidget::removeTopLevelItems()
 {
     recordItemExpansionState();
-    // just remove from the tree, cannot delete the items, so cannot use clear();
-    // qDebug() << topLevelItemCount();
     while (topLevelItemCount() > 0)
     {
         takeTopLevelItem(0);
     }
+}
+
+void BBFolderTreeWidget::loadTopLevelItems(const QList<QTreeWidgetItem*> &items)
+{
     addTopLevelItems(items);
     resumeItemExpansionState();
     setCurrentShowFolderContentItem(m_pCurrentShowFolderContentItem);
@@ -220,7 +222,11 @@ void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
 void BBFolderTreeWidget::recordItemExpansionState()
 {
     // clear the last
-    m_ExpandedItems.clear();
+    while (m_ExpandedItems.count() > 0)
+    {
+        m_ExpandedItems.takeFirst();
+    }
+
     QTreeWidgetItemIterator it(this);
     for (; *it; it++)
     {

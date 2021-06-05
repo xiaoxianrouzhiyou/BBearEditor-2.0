@@ -44,7 +44,7 @@ void BBFileSystemManager::openProject()
 {
     // load file system
     m_pDataManager->load();
-    updateFolderTree();
+    setFolderTree();
     updateFileList(BBConstant::BB_PATH_PROJECT_USER, NULL, NULL);
     updateFolderPathBar(BBConstant::BB_PATH_PROJECT_USER);
 }
@@ -75,11 +75,12 @@ void BBFileSystemManager::clickItemInFolderPathBar(const QString &filePath)
 
 void BBFileSystemManager::newFolder(const QString &parentPath, const BBSignalSender &eSender)
 {
+    clearFolderTree();
     QTreeWidgetItem *pFolderItem = NULL;
     QListWidgetItem *pFileItem = NULL;
     if (m_pDataManager->newFolder(parentPath, pFolderItem, pFileItem))
     {
-        updateFolderTree();
+        setFolderTree();
         // if list is showing parentPath
         if (m_pFileListWidget->getCurrentParentPath() == parentPath)
         {
@@ -123,20 +124,22 @@ void BBFileSystemManager::deleteFolderInFolderTree(QTreeWidgetItem *pItem)
 
 void BBFileSystemManager::deleteFilesInFileList(const QList<QListWidgetItem*> &items)
 {
+    clearFolderTree();
     QTreeWidgetItem *pParentItem = m_pFileListWidget->getCurrentParentItem();
     QString parentPath = m_pFileListWidget->getCurrentParentPath();
     if (m_pDataManager->deleteFiles(pParentItem, parentPath, items))
     {
-        updateFolderTree();
+        setFolderTree();
         updateFileList(parentPath, pParentItem, NULL);
     }
 }
 
 void BBFileSystemManager::importAsset(const QString &parentPath, const QList<QUrl> &urls)
 {
+    clearFolderTree();
     if (m_pDataManager->importFiles(parentPath, urls))
     {
-        updateFolderTree();
+        setFolderTree();
         updateFileList(m_pFileListWidget->getCurrentParentPath(), m_pFileListWidget->getCurrentParentItem(), NULL);
         m_pFileListWidget->setSelectedItems(m_pDataManager->getSelectedItems());
     }
@@ -145,23 +148,32 @@ void BBFileSystemManager::importAsset(const QString &parentPath, const QList<QUr
 void BBFileSystemManager::moveFiles(QList<QListWidgetItem*> items, const QString &oldParentPath,
                                     const QString &newParentPath, bool bCopy)
 {
+    // otherwise, item that is in the top level cannot be moved into other items
+    clearFolderTree();
     if (m_pDataManager->moveFiles(items, oldParentPath, newParentPath, bCopy))
     {
-
+        setFolderTree();
+        updateFileList(m_pFileListWidget->getCurrentParentPath(), m_pFileListWidget->getCurrentParentItem(), NULL);
     }
 }
 
 void BBFileSystemManager::updateAll()
 {
-    updateFolderTree();
+    clearFolderTree();
+    setFolderTree();
     updateFileList(m_pFileListWidget->getCurrentParentPath(), m_pFileListWidget->currentItem());
     updateFolderPathBar(m_pFileListWidget->getCurrentParentPath());
 }
 
+void BBFileSystemManager::clearFolderTree()
+{
+    m_pFolderTreeWidget->removeTopLevelItems();
+}
+
 /**
- * @brief BBFileSystemManager::updateFolderTree     load entire tree
+ * @brief BBFileSystemManager::setFolderTree        set entire tree
  */
-void BBFileSystemManager::updateFolderTree()
+void BBFileSystemManager::setFolderTree()
 {
     m_pFolderTreeWidget->loadTopLevelItems(m_pDataManager->getFolderTreeWidgetTopLevelItems());
 }
@@ -198,10 +210,11 @@ void BBFileSystemManager::updateFolderPathBar(const QString &filePath)
 void BBFileSystemManager::rename(QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pFileItem,
                                  const QString &oldPath, const QString &newPath)
 {
+    clearFolderTree();
     if (m_pDataManager->rename(pParentFolderItem, pFileItem, oldPath, newPath))
     {
         // update
-        updateFolderTree();
+        setFolderTree();
         // cannot use m_pFileListWidget->getCurrentParentPath(), which is an old path
         QString parentPath = BBFileSystemDataManager::getAbsolutePath(m_pFileListWidget->getCurrentParentItem());
         updateFileList(parentPath, pFileItem);

@@ -423,11 +423,14 @@ bool BBFileSystemDataManager::importFiles(const QString &parentPath, const QList
     return loadImportedData(parentPath);
 }
 
-bool BBFileSystemDataManager::moveFiles(QList<QListWidgetItem*> items, const QString &oldParentPath,
-                                        const QString &newParentPath, bool bCopy)
+bool BBFileSystemDataManager::moveFiles(QList<QListWidgetItem*> items,
+                                        const QString &oldParentPath,
+                                        const QString &newParentPath,
+                                        bool bCopy)
 {
     QTreeWidgetItem *pOldParentItem = getFolderItemByPath(oldParentPath);
-    return moveFiles(pOldParentItem, items, oldParentPath, newParentPath, bCopy);
+    QTreeWidgetItem *pNewParentItem = getFolderItemByPath(newParentPath);
+    return moveFiles(items, oldParentPath, pOldParentItem, newParentPath, pNewParentItem, bCopy);
 }
 
 /**
@@ -440,8 +443,10 @@ bool BBFileSystemDataManager::moveFiles(QList<QListWidgetItem*> items, const QSt
  * @param bCopy
  * @return
  */
-bool BBFileSystemDataManager::moveFiles(QTreeWidgetItem *pOldParentItem, QList<QListWidgetItem*> items,
-                                        const QString &oldParentPath, const QString &newParentPath, bool bCopy)
+bool BBFileSystemDataManager::moveFiles(QList<QListWidgetItem*> items,
+                                        const QString &oldParentPath, QTreeWidgetItem *pOldParentItem,
+                                        const QString &newParentPath, QTreeWidgetItem *pNewParentItem,
+                                        bool bCopy)
 {
     // move or copy BBFILE from pOldParentFolderContent into pNewParentFolderContent
     BBFILE *pOldParentFolderContent = getFolderContent(pOldParentItem);
@@ -454,12 +459,11 @@ bool BBFileSystemDataManager::moveFiles(QTreeWidgetItem *pOldParentItem, QList<Q
 
         if (pFileInfo->m_eFileType == BBFileType::Dir)
         {
-            // can only invoke getFolderItemByPath before deleting
-            QTreeWidgetItem *pFolderItem = getFolderItemByPath(oldPath);
             newPath = getExclusiveFolderPath(newPath);
             BB_PROCESS_ERROR_RETURN_FALSE(moveFolder(oldPath, newPath, bCopy));
-            // need to remove corresponding tree item
-            deleteFolderItem(pFolderItem);
+            // need to move corresponding tree item
+            QTreeWidgetItem *pFolderItem = getFolderItemByPath(oldPath);
+            moveFolderItem(pFolderItem, pOldParentItem, pNewParentItem);
         }
         else
         {
@@ -467,17 +471,13 @@ bool BBFileSystemDataManager::moveFiles(QTreeWidgetItem *pOldParentItem, QList<Q
             BB_PROCESS_ERROR_RETURN_FALSE(moveFile(oldPath, newPath, pFileInfo->m_eFileType, bCopy));
         }
 
-        if (!bCopy)
+        if (bCopy)
         {
-            // remove those that is in the old path
-            pOldParentFolderContent->remove(pFileItem);
-            BB_SAFE_DELETE(pFileInfo);
-            BB_SAFE_DELETE(pFileItem);
+            // new those that is in the old path
+
         }
     }
 
-    // load new
-    BB_PROCESS_ERROR_RETURN_FALSE(loadImportedData(newParentPath));
     return true;
 }
 
@@ -1035,10 +1035,56 @@ bool BBFileSystemDataManager::deleteFolderItem(QTreeWidgetItem *pItem)
         }
     }
 
-
     BB_SAFE_DELETE(pFolderContent);
     BB_SAFE_DELETE(pItem);
     return true;
+}
+
+bool BBFileSystemDataManager::moveFolderItem(QTreeWidgetItem *pFolderItem,
+                                             QTreeWidgetItem *pOldParentItem, QTreeWidgetItem *pNewParentItem)
+{
+    // also need to move corresponding list item
+    // must perform it before changing the parent of pFolderItem
+    QListWidgetItem *pFileItem = getFileItem(pFolderItem);
+    BBFILE *pOldParentFolderContent = getFolderContent(pOldParentItem);
+    BBFILE *pNewParentFolderContent = getFolderContent(pNewParentItem);
+    BBFileInfo *pFileInfo = pOldParentFolderContent->take(pFileItem);
+    pNewParentFolderContent->insert(pFileItem, pFileInfo);
+
+    if (pOldParentItem)
+    {
+        if (pNewParentItem)
+        {
+            // pItem was not in the top level before
+            // pItem is not in the top level now
+            pOldParentItem->removeChild(pFolderItem);
+            pNewParentItem->addChild(pFolderItem);
+        }
+        else
+        {
+            // pItem was not in the top level before
+            // pItem is in the top level now
+            pOldParentItem->removeChild(pFolderItem);
+            BBFILE *pFolderContent = m_FileData.take(pFolderItem);
+            m_TopLevelFileData.insert(pFolderItem, pFolderContent);
+        }
+    }
+    else
+    {
+        if (pNewParentItem)
+        {
+            // pItem was in the top level before
+            // pItem is not in the top level now
+            pNewParentItem->addChild(pFolderItem);
+            BBFILE *pFolderContent = m_TopLevelFileData.take(pFolderItem);
+            m_FileData.insert(pFolderItem, pFolderContent);
+        }
+        // else
+        // {
+            // pItem was in the top level before
+            // pItem is in the top level now
+        // }
+    }
 }
 
 bool BBFileSystemDataManager::importFiles(const QFileInfo &fileInfo, const QString &newPath)

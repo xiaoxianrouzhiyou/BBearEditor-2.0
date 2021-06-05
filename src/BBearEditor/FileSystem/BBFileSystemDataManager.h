@@ -39,9 +39,14 @@ public:
     bool deleteFolder(QTreeWidgetItem *pItem);
     bool deleteFiles(QTreeWidgetItem *pParentItem, const QString &parentPath, const QList<QListWidgetItem*> &items);
     bool importFiles(const QString &parentPath, const QList<QUrl> &urls);
-    bool moveFiles(QList<QListWidgetItem*> items, const QString &oldParentPath, const QString &newParentPath, bool bCopy);
-    bool moveFiles(QTreeWidgetItem *pOldParentItem, QList<QListWidgetItem*> items,
-                   const QString &oldParentPath, const QString &newParentPath, bool bCopy);
+    bool moveFiles(QList<QListWidgetItem*> items,
+                   const QString &oldParentPath,
+                   const QString &newParentPath,
+                   bool bCopy);
+    bool moveFiles(QList<QListWidgetItem*> items,
+                   const QString &oldParentPath, QTreeWidgetItem *pOldParentItem,
+                   const QString &newParentPath, QTreeWidgetItem *pNewParentItem,
+                   bool bCopy);
 
 public:
     static QString getAbsolutePath(const QString &relativePath);
@@ -89,13 +94,16 @@ private:
     BBFileType getFileType(const QString &filePath);
     BBFILE* getFolderContent(QTreeWidgetItem *pItem);
     bool deleteFolderItem(QTreeWidgetItem *pItem);
+    bool moveFolderItem(QTreeWidgetItem *pFolderItem, QTreeWidgetItem *pOldParentItem, QTreeWidgetItem *pNewParentItem);
     bool importFiles(const QFileInfo &fileInfo, const QString &newPath);
     bool loadImportedData(const QString &parentPath);
 
     BBOpenGLWidget *m_pPreviewOpenGLWidget;
+
     BBFILE *m_pRootFileData;
     QMap<QTreeWidgetItem*, BBFILE*> m_TopLevelFileData;
     QMap<QTreeWidgetItem*, BBFILE*> m_FileData;
+
     QList<QListWidgetItem*> m_SelectedItems;
 };
 

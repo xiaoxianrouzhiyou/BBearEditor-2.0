@@ -20,6 +20,7 @@ public:
 
     QString getMimeType() { return BB_MIMETYPE_FOLDERTREEWIDGET; }
 
+    void removeTopLevelItems();
     void loadTopLevelItems(const QList<QTreeWidgetItem*> &items);
     void setCurrentShowFolderContentItem(QTreeWidgetItem *pItem);
 
