@@ -141,11 +141,22 @@ void BBFileSystemManager::importAsset(const QString &parentPath, const QList<QUr
     {
         setFolderTree();
         updateFileList(m_pFileListWidget->getCurrentParentPath(), m_pFileListWidget->getCurrentParentItem(), NULL);
-        m_pFileListWidget->setSelectedItems(m_pDataManager->getSelectedItems());
+        m_pFileListWidget->setSelectedItems(m_pDataManager->getSelectedFileItems());
     }
 }
 
-void BBFileSystemManager::moveFiles(QList<QListWidgetItem*> items, const QString &oldParentPath,
+void BBFileSystemManager::moveFolders(const QList<QTreeWidgetItem*> &items, QTreeWidgetItem *pNewParentItem, bool bCopy)
+{
+    clearFolderTree();
+    if (m_pDataManager->moveFolders(items, pNewParentItem, bCopy))
+    {
+        setFolderTree();
+        updateFileList(m_pFileListWidget->getCurrentParentPath(), NULL);
+        updateFolderPathBar(m_pFileListWidget->getCurrentParentPath());
+    }
+}
+
+void BBFileSystemManager::moveFiles(const QList<QListWidgetItem*> &items, const QString &oldParentPath,
                                     const QString &newParentPath, bool bCopy)
 {
     // otherwise, item that is in the top level cannot be moved into other items

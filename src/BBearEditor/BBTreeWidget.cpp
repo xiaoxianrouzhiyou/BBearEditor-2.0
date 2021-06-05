@@ -185,10 +185,7 @@ bool BBTreeWidget::moveItem()
         // parent and its ancestors cannot be included in items
         for (QTreeWidgetItem *pForeParent = pParent; pForeParent; pForeParent = pForeParent->parent())
         {
-            if (items.contains(pForeParent))
-            {
-                return false;
-            }
+            BB_PROCESS_ERROR_RETURN_FALSE(!items.contains(pForeParent));
         }
         for (int i = 0; i < items.count(); i++)
         {

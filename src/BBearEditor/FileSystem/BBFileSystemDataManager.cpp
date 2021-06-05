@@ -423,7 +423,49 @@ bool BBFileSystemDataManager::importFiles(const QString &parentPath, const QList
     return loadImportedData(parentPath);
 }
 
-bool BBFileSystemDataManager::moveFiles(QList<QListWidgetItem*> items,
+bool BBFileSystemDataManager::moveFolders(const QList<QTreeWidgetItem*> &items,
+                                          QTreeWidgetItem *pNewParentItem,
+                                          bool bCopy)
+{
+    while (m_SelectedFolderItems.count() > 0)
+    {
+        m_SelectedFolderItems.takeFirst();
+    }
+    // record map between item and its parent
+    // the items that have the same parent can be handled at the same time
+    QMap<QTreeWidgetItem*, QTreeWidgetItem*> map;
+    for (int i = 0; i < items.count(); i++)
+    {
+        QTreeWidgetItem *pItem = items.at(i);
+        QTreeWidgetItem *pOldParentItem = pItem->parent();
+        // it just changes the order among the siblings, no need to perform follow-up operation
+        if (pOldParentItem == pNewParentItem)
+        {
+            continue;
+        }
+        map.insertMulti(pOldParentItem, pItem);
+    }
+    QList<QTreeWidgetItem*> uniqueKeys = map.uniqueKeys();
+    for (int i = 0; i < uniqueKeys.count(); i++)
+    {
+        QTreeWidgetItem *pOldParentItem = uniqueKeys.at(i);
+        QList<QTreeWidgetItem*> sameDirItems = map.values(pOldParentItem);
+        QList<QListWidgetItem*> fileItems;
+        for (int j = 0; j < sameDirItems.count(); j++)
+        {
+            // find corresponding file item
+            fileItems.append(getFileItem(sameDirItems.at(j)));
+        }
+        BB_PROCESS_ERROR_RETURN_FALSE(moveFiles(fileItems,
+                                                getAbsolutePath(pOldParentItem), pOldParentItem,
+                                                getAbsolutePath(pNewParentItem), pNewParentItem,
+                                                bCopy));
+    }
+
+    return true;
+}
+
+bool BBFileSystemDataManager::moveFiles(const QList<QListWidgetItem*> &items,
                                         const QString &oldParentPath,
                                         const QString &newParentPath,
                                         bool bCopy)
@@ -443,7 +485,7 @@ bool BBFileSystemDataManager::moveFiles(QList<QListWidgetItem*> items,
  * @param bCopy
  * @return
  */
-bool BBFileSystemDataManager::moveFiles(QList<QListWidgetItem*> items,
+bool BBFileSystemDataManager::moveFiles(const QList<QListWidgetItem*> &items,
                                         const QString &oldParentPath, QTreeWidgetItem *pOldParentItem,
                                         const QString &newParentPath, QTreeWidgetItem *pNewParentItem,
                                         bool bCopy)
@@ -454,22 +496,36 @@ bool BBFileSystemDataManager::moveFiles(QList<QListWidgetItem*> items,
     {
         QListWidgetItem *pFileItem = items.at(i);
         BBFileInfo *pFileInfo = pOldParentFolderContent->value(pFileItem);
-        QString oldPath = oldParentPath + "/" + pFileInfo->m_FileName;
-        QString newPath = newParentPath + "/" + pFileInfo->m_FileName;
+        QString name = pFileInfo->m_FileName;
+        QString oldPath = oldParentPath + "/" + name;
+        QString newPath;
 
         if (pFileInfo->m_eFileType == BBFileType::Dir)
         {
-            newPath = getExclusiveFolderPath(newPath);
+            newPath = getExclusiveFolderPath(newParentPath, name);
             BB_PROCESS_ERROR_RETURN_FALSE(moveFolder(oldPath, newPath, bCopy));
             // need to move corresponding tree item
             QTreeWidgetItem *pFolderItem = getFolderItemByPath(oldPath);
             moveFolderItem(pFolderItem, pOldParentItem, pNewParentItem);
+
+            // need to rename folder tree item
+            pFolderItem->setText(0, name);
         }
         else
         {
-            newPath = getExclusiveFilePath(newPath);
+            newPath = getExclusiveFilePath(newParentPath, name);
             BB_PROCESS_ERROR_RETURN_FALSE(moveFile(oldPath, newPath, pFileInfo->m_eFileType, bCopy));
         }
+
+        // handle list item
+        pFileInfo->m_FileName = name;
+        pFileItem->setText(getBaseName(name));
+
+//        //如果该文件在剪贴板中 移除
+//        if (clipBoardPaths.contains(oldPath))
+//        {
+//            clipBoardPaths.removeOne(oldPath);
+//        }
 
         if (bCopy)
         {
@@ -821,12 +877,12 @@ void BBFileSystemDataManager::buildFileData(const QString &rootPath, QTreeWidget
     // the content of root folder
     BBFILE *pRootFolderContent = loadFolderContent(rootPath, newItems, nameFilter);
 
-    while (m_SelectedItems.count() > 0)
+    while (m_SelectedFileItems.count() > 0)
     {
-        m_SelectedItems.takeFirst();
+        m_SelectedFileItems.takeFirst();
     }
     // record and then select these items newly created in the file list
-    m_SelectedItems.append(newItems);
+    m_SelectedFileItems.append(newItems);
 
     pRootFileData->unite(*pRootFolderContent);
     BB_SAFE_DELETE(pRootFolderContent);

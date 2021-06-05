@@ -43,7 +43,7 @@ public:
     void loadItems(const QString &parentPath, QTreeWidgetItem *pParentItem,
                    BBFILE *pFileData, QListWidgetItem *pCurrentItem);
     void updateCurrentInfos(QTreeWidgetItem *pDeletedItem);
-    void setSelectedItems(QList<QListWidgetItem*> items);
+    void setSelectedItems(const QList<QListWidgetItem*> &items);
 
 public:
     static QSize m_ItemSize;
@@ -65,7 +65,7 @@ signals:
     void rename(QListWidgetItem *pFileItem, const QString &oldPath, const QString &newPath);
     void deleteFiles(const QList<QListWidgetItem*> &items);
     void importAsset(const QString &parentPath, const QList<QUrl> &urls);
-    void moveFiles(QList<QListWidgetItem*> items, const QString &oldParentPath,
+    void moveFiles(const QList<QListWidgetItem*> &items, const QString &oldParentPath,
                    const QString &newParentPath, bool bCopy);
 
 private:

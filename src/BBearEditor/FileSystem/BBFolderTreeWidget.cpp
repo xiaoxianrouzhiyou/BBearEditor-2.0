@@ -45,6 +45,16 @@ void BBFolderTreeWidget::expandCurrentViewedItem(QTreeWidgetItem *pItem)
     m_pCurrentViewedItem = pItem;
 }
 
+void BBFolderTreeWidget::setSelectedItems(const QList<QTreeWidgetItem*> &items)
+{
+    // the items share the same parent
+//    setItemExpanded(items.first()->parent(), true);
+    for (int i = 0; i < items.count(); i++)
+    {
+        setItemSelected(items.at(i), true);
+    }
+}
+
 void BBFolderTreeWidget::pressRootButton()
 {
     setCurrentItem(NULL);
@@ -195,8 +205,6 @@ void BBFolderTreeWidget::deleteOne(QTreeWidgetItem *pItem)
     {
         m_pCurrentViewedItem = NULL;
     }
-
-    BBTreeWidget::deleteOne(pItem);
 }
 
 void BBFolderTreeWidget::dragMoveEvent(QDragMoveEvent *event)
@@ -207,6 +215,34 @@ void BBFolderTreeWidget::dragMoveEvent(QDragMoveEvent *event)
         return;
     }
     BBTreeWidget::dragMoveEvent(event);
+}
+
+bool BBFolderTreeWidget::moveItem()
+{
+    BB_PROCESS_ERROR_RETURN_FALSE(m_pIndicatorItem);
+
+    // drop position of moving item
+    int index = -1;
+    QTreeWidgetItem *pParent = getParentOfMovingItem(index);
+    // The movable item has been filtered in startDrag
+    QList<QTreeWidgetItem*> items = selectedItems();
+    // Cannot move to an item that are moving and its descendants
+    // parent and its ancestors cannot be included in items
+    for (QTreeWidgetItem *pForeParent = pParent; pForeParent; pForeParent = pForeParent->parent())
+    {
+        BB_PROCESS_ERROR_RETURN_FALSE(!items.contains(pForeParent));
+    }
+
+    emit moveFolders(items, pParent, false);
+
+    expandCurrentViewedItem(pParent);
+    sortItems(0, Qt::AscendingOrder);
+    return true;
+}
+
+bool BBFolderTreeWidget::moveItemFromFileList(const QMimeData *pMimeData)
+{
+
 }
 
 void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
@@ -251,84 +287,6 @@ void BBFolderTreeWidget::resumeItemExpansionState()
 
 
 
-
-
-
-
-//void BBFolderTreeWidget::moveItem(const QString &oldPath, const QString &newPath)
-//{
-//    // source item
-//    QTreeWidgetItem *pItem = getItemByPath(oldPath);
-//    // parent of new position
-//    QString parentPath = BBUtils::getParentPath(newPath);
-//    QTreeWidgetItem *pParent = getItemByPath(parentPath);
-//    QString fileName = BBUtils::getFileNameByPath(newPath);
-//    // remove child items of old parent
-//    if (pItem->parent())
-//    {
-//        pItem->parent()->removeChild(pItem);
-//    }
-//    else
-//    {
-//        takeTopLevelItem(indexOfTopLevelItem(pItem));
-//    }
-//    // insert to new parent
-//    if (pParent)
-//    {
-//        pParent->addChild(pItem);
-//    }
-//    else
-//    {
-//        addTopLevelItem(pItem);
-//    }
-//    // rename
-//    pItem->setText(0, fileName);
-//    sortItems(0, Qt::AscendingOrder);
-//}
-
-
-
-
-
-
-
-
-//bool BBFolderTreeWidget::moveItem()
-//{
-//    QList<QTreeWidgetItem*> items = selectedItems();
-//    // Calculate the original hierarchical position of the selected items for moving or undoing the move
-//    // save the last data into queue of undoing (to do ...)
-//    QList<QString> originalItemLocations;
-//    for (int i = 0; i < items.count(); i++)
-//    {
-//        originalItemLocations.append(getLevelPath(items.at(i)));
-//    }
-
-//    BB_PROCESS_ERROR_RETURN_FALSE(BBTreeWidget::moveItem());
-
-//    for (int i = 0; i < originalItemLocations.count(); i++)
-//    {
-//        QString oldPath = getAbsolutePath(originalItemLocations.at(i));
-//        QString newPath = getAbsolutePath(items.at(i));
-//        // The path is not changed
-//        // it just changes the order among the siblings, no need to perform follow-up operation
-//        if (oldPath == newPath)
-//            continue;
-//        // check duplication of name
-//        QString newName = BBUtils::getFileNameByPath(newPath);
-//        newPath = BBUtils::getExclusiveFolderPath(BBUtils::getParentPath(newPath), newName);
-//        // corresponding item in the tree needs to rename
-//        items.at(i)->setText(0, newName);
-
-//        BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFolder(oldPath, newPath, false));
-//    }
-//    sortItems(0, Qt::AscendingOrder);
-//    // show m_pCurrentShowFolderContentItem
-//    // it may be moved, path needs to be computed again
-//    QString updatePath = getAbsolutePath(m_pCurrentShowFolderContentItem);
-//    showFolderContent(updatePath);
-//    return true;
-//}
 
 
 //bool BBFolderTreeWidget::moveItemFromFileList(const QMimeData *pMimeData)

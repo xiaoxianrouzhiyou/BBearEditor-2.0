@@ -30,7 +30,8 @@ public:
     QTreeWidgetItem* getParentFolderItem(const QString &filePath);
     QListWidgetItem* getFileItem(QTreeWidgetItem *pFolderItem);
     QListWidgetItem* getFileItem(QTreeWidgetItem *pParentFolderItem, const QString &filePath);
-    inline QList<QListWidgetItem*> getSelectedItems() { return m_SelectedItems; }
+    inline QList<QTreeWidgetItem*> getSelectedFolderItems() { return m_SelectedFolderItems; }
+    inline QList<QListWidgetItem*> getSelectedFileItems() { return m_SelectedFileItems; }
     bool openFile(const QString &filePath);
     bool newFolder(const QString &parentPath, QTreeWidgetItem *&pFolderItem, QListWidgetItem *&pOutFileItem);
     bool showInFolder(const QString &filePath);
@@ -39,11 +40,12 @@ public:
     bool deleteFolder(QTreeWidgetItem *pItem);
     bool deleteFiles(QTreeWidgetItem *pParentItem, const QString &parentPath, const QList<QListWidgetItem*> &items);
     bool importFiles(const QString &parentPath, const QList<QUrl> &urls);
-    bool moveFiles(QList<QListWidgetItem*> items,
+    bool moveFolders(const QList<QTreeWidgetItem*> &items, QTreeWidgetItem *pNewParentItem, bool bCopy);
+    bool moveFiles(const QList<QListWidgetItem*> &items,
                    const QString &oldParentPath,
                    const QString &newParentPath,
                    bool bCopy);
-    bool moveFiles(QList<QListWidgetItem*> items,
+    bool moveFiles(const QList<QListWidgetItem*> &items,
                    const QString &oldParentPath, QTreeWidgetItem *pOldParentItem,
                    const QString &newParentPath, QTreeWidgetItem *pNewParentItem,
                    bool bCopy);
@@ -104,7 +106,8 @@ private:
     QMap<QTreeWidgetItem*, BBFILE*> m_TopLevelFileData;
     QMap<QTreeWidgetItem*, BBFILE*> m_FileData;
 
-    QList<QListWidgetItem*> m_SelectedItems;
+    QList<QTreeWidgetItem*> m_SelectedFolderItems;
+    QList<QListWidgetItem*> m_SelectedFileItems;
 };
 
 #endif // BBFILESYSTEMDATAMANAGER_H

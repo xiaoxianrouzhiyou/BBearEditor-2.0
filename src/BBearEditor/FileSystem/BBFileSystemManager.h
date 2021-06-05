@@ -43,7 +43,8 @@ public:
 
     void importAsset(const QString &parentPath, const QList<QUrl> &urls);
 
-    void moveFiles(QList<QListWidgetItem*> items, const QString &oldParentPath,
+    void moveFolders(const QList<QTreeWidgetItem*> &items, QTreeWidgetItem *pNewParentItem, bool bCopy);
+    void moveFiles(const QList<QListWidgetItem*> &items, const QString &oldParentPath,
                    const QString &newParentPath, bool bCopy);
 
     void updateAll();

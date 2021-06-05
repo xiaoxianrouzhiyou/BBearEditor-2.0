@@ -126,7 +126,7 @@ void BBFileListWidget::updateCurrentInfos(QTreeWidgetItem *pDeletedItem)
     }
 }
 
-void BBFileListWidget::setSelectedItems(QList<QListWidgetItem*> items)
+void BBFileListWidget::setSelectedItems(const QList<QListWidgetItem*> &items)
 {
     for (int i = 0; i < items.count(); i++)
     {

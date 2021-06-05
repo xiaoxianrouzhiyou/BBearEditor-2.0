@@ -85,7 +85,12 @@ void BBFileSystemDockWidget::importAsset(const QString &parentPath, const QList<
     m_pFileSystemManager->importAsset(parentPath, urls);
 }
 
-void BBFileSystemDockWidget::moveFiles(QList<QListWidgetItem*> items, const QString &oldParentPath,
+void BBFileSystemDockWidget::moveFolders(const QList<QTreeWidgetItem*> &items, QTreeWidgetItem *pNewParentItem, bool bCopy)
+{
+    m_pFileSystemManager->moveFolders(items, pNewParentItem, bCopy);
+}
+
+void BBFileSystemDockWidget::moveFiles(const QList<QListWidgetItem*> &items, const QString &oldParentPath,
                                        const QString &newParentPath, bool bCopy)
 {
     m_pFileSystemManager->moveFiles(items, oldParentPath, newParentPath, bCopy);
@@ -140,7 +145,9 @@ void BBFileSystemDockWidget::setConnect()
     // import external assets
     QObject::connect(m_pUi->listFile, SIGNAL(importAsset(QString, QList<QUrl>)),
                      this, SLOT(importAsset(QString, QList<QUrl>)));
-    // move list items to list
+    // move items
+    QObject::connect(m_pUi->treeFolder, SIGNAL(moveFolders(QList<QTreeWidgetItem*>, QTreeWidgetItem*, bool)),
+                     this, SLOT(moveFolders(QList<QTreeWidgetItem*>, QTreeWidgetItem*, bool)));
     QObject::connect(m_pUi->listFile, SIGNAL(moveFiles(QList<QListWidgetItem*>, QString, QString, bool)),
                      this, SLOT(moveFiles(QList<QListWidgetItem*>, QString, QString, bool)));
 }

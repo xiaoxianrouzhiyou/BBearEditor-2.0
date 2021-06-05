@@ -23,6 +23,7 @@ public:
     void removeTopLevelItems();
     void loadTopLevelItems(const QList<QTreeWidgetItem*> &items);
     void expandCurrentViewedItem(QTreeWidgetItem *pItem);
+    void setSelectedItems(const QList<QTreeWidgetItem*> &items);
 
 private slots:
     void pressRootButton();
@@ -42,6 +43,7 @@ signals:
     void rename(QTreeWidgetItem *pParentFolderItem, const QString &oldPath, const QString &newPath);
     void deleteFolder(QTreeWidgetItem *pItem);
     void finishDeleteAction();
+    void moveFolders(const QList<QTreeWidgetItem*> &items, QTreeWidgetItem *pNewParentItem, bool bCopy);
 
 private:
     void setMenu() override;
@@ -49,6 +51,8 @@ private:
     void deleteOne(QTreeWidgetItem *pItem) override;
 
     void dragMoveEvent(QDragMoveEvent *event) override;
+    bool moveItem() override;
+    bool moveItemFromFileList(const QMimeData *pMimeData) override;
 
     void updateCorrespondingWidget(QTreeWidgetItem *pItem);
     void recordItemExpansionState();
@@ -56,14 +60,6 @@ private:
 
     const BBSignalSender m_eSenderTag;
     QList<QTreeWidgetItem*> m_ExpandedItems;
-
-
-
-
-
-//    bool moveItem() override;
-//    bool moveItemFromFileList(const QMimeData *pMimeData) override;
-
     QTreeWidgetItem *m_pCurrentViewedItem;
 };
 
