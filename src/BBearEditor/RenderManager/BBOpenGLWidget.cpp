@@ -1,31 +1,39 @@
 #include "BBOpenGLWidget.h"
-#include <QSurfaceFormat>
-#include "BBUtils.h"
-#include <QTimer>
 #include <QMatrix4x4>
 #include "BBScene.h"
+#include "BBUtils.h"
+#include "BBRenderThread.h"
+#include <QThread>
+
 
 BBOpenGLWidget::BBOpenGLWidget(QWidget *parent)
     : QOpenGLWidget(parent)
 {
-    m_pScene = new BBScene;
-
     QSurfaceFormat format;
     format.setSamples(16);
     setFormat(format);
 
-    // paint once per frame
-    m_pRenderTimer = new QTimer(this);
-    // update() perform paintGL()
-    QObject::connect(m_pRenderTimer, SIGNAL(timeout()), this, SLOT(update()));
-    m_pRenderTimer->setInterval(BB_CONSTANT_UPDATE_RATE);
-    m_pRenderTimer->start();
+    m_pScene = new BBScene;
+
+    setRenderThread();
 }
 
 BBOpenGLWidget::~BBOpenGLWidget()
 {
     BB_SAFE_DELETE(m_pScene);
-    BB_SAFE_DELETE(m_pRenderTimer);
+    BB_SAFE_DELETE(m_pRenderThread);
+}
+
+void BBOpenGLWidget::setRenderThread()
+{
+    m_pRenderThread = new BBRenderThread();
+    QThread *pThread = new QThread();
+    m_pRenderThread->moveToThread(pThread);
+    QObject::connect(pThread, SIGNAL(finished()), pThread, SLOT(deleteLater()));
+    QObject::connect(this, SIGNAL(startRender()), m_pRenderThread, SLOT(render()));
+    QObject::connect(m_pRenderThread, SIGNAL(updateOpenGLWidget()), this, SLOT(update()));
+    pThread->start();
+    emit startRender();
 }
 
 void BBOpenGLWidget::initializeGL()
@@ -69,3 +77,4 @@ void BBOpenGLWidget::paintGL()
     glEnable(GL_MULTISAMPLE);
     m_pScene->render();
 }
+

@@ -4,8 +4,10 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 
-class QTimer;
+
 class BBScene;
+class BBRenderThread;
+
 class BBOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT
@@ -16,13 +18,18 @@ public:
 
     inline BBScene* getScene() { return m_pScene; }
 
+signals:
+    void startRender();
+
 protected:
+    void setRenderThread();
+
     void initializeGL() override;
     void resizeGL(int width, int height) override;
     void paintGL() override;
 
     BBScene *m_pScene;
-    QTimer *m_pRenderTimer;
+    BBRenderThread *m_pRenderThread;
 };
 
 #endif // BBOPENGLWIDGET_H
