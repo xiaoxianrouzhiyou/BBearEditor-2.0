@@ -232,7 +232,31 @@ bool BBFolderTreeWidget::moveItem()
 
 bool BBFolderTreeWidget::moveItemFromFileList(const QMimeData *pMimeData)
 {
+    BB_PROCESS_ERROR_RETURN_FALSE(m_pIndicatorItem);
 
+    // drop position of moving item
+    int index = -1;
+    QTreeWidgetItem *pParent = getParentOfMovingItem(index);
+
+    // get all file paths from drag
+    QList<QString> oldFilePaths;
+    QByteArray data = pMimeData->data(BB_MIMETYPE_FILELISTWIDGET);
+    QDataStream dataStream(&data, QIODevice::ReadOnly);
+    QString oldFilePath;
+    // the first is the path of current item, which we do not need
+    // we need the paths of selected items which are saved behind
+    dataStream >> oldFilePath;
+    dataStream >> oldFilePath;
+    while (!oldFilePath.isEmpty())
+    {
+        oldFilePaths.append(oldFilePath);
+        dataStream >> oldFilePath;
+    }
+
+    emit moveFiles(oldFilePaths, pParent, false);
+
+    sortItems(0, Qt::AscendingOrder);
+    return true;
 }
 
 void BBFolderTreeWidget::updateCorrespondingWidget(QTreeWidgetItem *pItem)
@@ -272,71 +296,6 @@ void BBFolderTreeWidget::resumeItemExpansionState()
         m_ExpandedItems.at(i)->setExpanded(true);
     }
 }
-
-
-
-
-
-
-//bool BBFolderTreeWidget::moveItemFromFileList(const QMimeData *pMimeData)
-//{
-//    BB_PROCESS_ERROR_RETURN_FALSE(m_pIndicatorItem);
-//    // new parent path
-//    QString destPath;
-//    if (m_eIndicatorPos == BBIndicatorPos::CENTER)
-//    {
-//        // become the children of m_pIndicatorItem
-//        destPath = getAbsolutePath(m_pIndicatorItem);
-//    }
-//    else
-//    {
-//        // become the siblings of m_pIndicatorItem
-//        destPath = getAbsolutePath(m_pIndicatorItem->parent());
-//    }
-//    // get all file paths from drag
-//    QList<QString> sourceFilePaths;
-//    QByteArray data = pMimeData->data(BB_MIMETYPE_FILELISTWIDGET);
-//    QDataStream dataStream(&data, QIODevice::ReadOnly);
-//    QString sourceFilePath;
-//    // the first is the path of current item, which we do not need
-//    // we need the paths of selected items which are saved behind
-//    dataStream >> sourceFilePath;
-//    dataStream >> sourceFilePath;
-//    while (!sourceFilePath.isEmpty())
-//    {
-//        sourceFilePaths.append(sourceFilePath);
-//        // check whether the movement is legal
-//        BBUtils::isMovablePath(sourceFilePath, destPath);
-//        dataStream >> sourceFilePath;
-//    }
-//    // when the movement is legal, move all files into destPath
-//    for (int i = 0; i < sourceFilePaths.count(); i++)
-//    {
-//        QString oldPath = sourceFilePaths.at(i);
-//        QString fileName = BBUtils::getFileNameByPath(oldPath);
-//        if (QFileInfo(oldPath).isDir())
-//        {
-//            QString newPath = BBUtils::getExclusiveFolderPath(destPath, fileName);
-//            BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFolder(oldPath, newPath, false));
-
-//            // move folder tree items at the same time
-//            moveItem(oldPath, newPath);
-//        }
-//        else
-//        {
-////            QString newPath = BBUtils::getExclusiveFilePath(destPath, fileName);
-////            BB_PROCESS_ERROR_RETURN_FALSE(BBUtils::moveFile(oldPath, newPath, pFileInfo->m_eFileType, false));
-//        }
-//    }
-//    updateCorrespondingWidget(m_pCurrentShowFolderContentItem);
-//    return true;
-//}
-
-
-
-
-
-
 
 
 
@@ -459,19 +418,4 @@ void BBFolderTreeWidget::resumeItemExpansionState()
 //        setItemExpanded(currentShowFolderContentItem, true);
 //    //重新排序
 //    sortItems(0, Qt::AscendingOrder);
-//}
-
-//void ProjectTree::removeClipBoardRenameItem(QString path)
-//{
-//    clipBoardItems.removeOne(getItemByPath(path));
-//}
-
-
-
-//void ProjectTree::loadMaterial(QString filePath)
-//{
-//    if (isLoadMaterial)
-//    {
-//        new Material(filePath);
-//    }
 //}

@@ -469,6 +469,29 @@ bool BBFileSystemDataManager::moveFolders(const QList<QTreeWidgetItem*> &items,
     return true;
 }
 
+bool BBFileSystemDataManager::moveFiles(const QList<QString> &oldFilePaths, QTreeWidgetItem *pNewParentItem, bool bCopy,
+                                        QList<QTreeWidgetItem*> &outSelectedItems)
+{
+    // oldFilePaths share the same parent
+    QString oldParentPath = getParentPath(oldFilePaths.first());
+    QTreeWidgetItem *pOldParentItem = getFolderItemByPath(oldParentPath);
+    QString newParentPath = getAbsolutePath(pNewParentItem);
+    QList<QListWidgetItem*> fileItems;
+    for (int i = 0; i < oldFilePaths.count(); i++)
+    {
+        QString filePath = oldFilePaths.at(i);
+        // check whether the movement is legal
+        BB_PROCESS_ERROR_RETURN_FALSE(isMovablePath(filePath, newParentPath));
+
+        fileItems.append(getFileItem(pOldParentItem, filePath));
+        outSelectedItems.append(getFolderItemByPath(filePath));
+    }
+
+    BB_PROCESS_ERROR_RETURN_FALSE(moveFiles(fileItems, oldParentPath, pOldParentItem, newParentPath, pNewParentItem, bCopy));
+
+    return true;
+}
+
 bool BBFileSystemDataManager::moveFiles(const QList<QListWidgetItem*> &items,
                                         const QString &oldParentPath,
                                         const QString &newParentPath,

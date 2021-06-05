@@ -42,6 +42,8 @@ public:
     bool deleteFiles(QTreeWidgetItem *pParentItem, const QString &parentPath, const QList<QListWidgetItem*> &items);
     bool importFiles(const QString &parentPath, const QList<QUrl> &urls);
     bool moveFolders(const QList<QTreeWidgetItem*> &items, QTreeWidgetItem *pNewParentItem, bool bCopy);
+    bool moveFiles(const QList<QString> &oldFilePaths, QTreeWidgetItem *pNewParentItem, bool bCopy,
+                   QList<QTreeWidgetItem*> &outSelectedItems);
     bool moveFiles(const QList<QListWidgetItem*> &items,
                    const QString &oldParentPath,
                    const QString &newParentPath,

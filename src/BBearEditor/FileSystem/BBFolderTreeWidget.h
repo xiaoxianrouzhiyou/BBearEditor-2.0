@@ -44,6 +44,7 @@ signals:
     void deleteFolder(QTreeWidgetItem *pItem);
     void finishDeleteAction();
     void moveFolders(const QList<QTreeWidgetItem*> &items, QTreeWidgetItem *pNewParentItem, bool bCopy);
+    void moveFiles(const QList<QString> &oldFilePaths, QTreeWidgetItem *pNewParentItem, bool bCopy);
 
 private:
     void setMenu() override;
@@ -79,7 +80,6 @@ private:
 //private slots:
 //    void copyByFileList(QList<QString> filePaths);
 //    void pasteItemWithoutPasteFile(QList<QString> clipBoardTranscriptFolderNames);
-//    void removeClipBoardRenameItem(QString path);
 
 //private:
 //    void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript) override;
