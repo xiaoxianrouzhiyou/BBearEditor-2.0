@@ -33,11 +33,11 @@ SOURCES += \
     BBHierarchyTreeWidget.cpp \
     BBGameObject.cpp \
     Window/BBConfirmationDialog.cpp \
-    BBOpenGLWidget.cpp \
+    RenderManager/BBOpenGLWidget.cpp \
     BBScene.cpp \
     BBCamera.cpp \
-    BBEditViewDockWidget.cpp \
-    BBEditViewOpenGLWidget.cpp \
+    RenderManager/BBEditViewDockWidget.cpp \
+    RenderManager/BBEditViewOpenGLWidget.cpp \
     BBRenderableObject.cpp \
     BBGLShader.cpp \
     BBGLBuffers.cpp \
@@ -74,11 +74,11 @@ HEADERS += \
     BBHierarchyTreeWidget.h \
     BBGameObject.h \
     Window/BBConfirmationDialog.h \
-    BBOpenGLWidget.h \
+    RenderManager/BBOpenGLWidget.h \
     BBScene.h \
     BBCamera.h \
-    BBEditViewDockWidget.h \
-    BBEditViewOpenGLWidget.h \
+    RenderManager/BBEditViewDockWidget.h \
+    RenderManager/BBEditViewOpenGLWidget.h \
     BBRenderableObject.h \
     BBGLShader.h \
     BBGLBuffers.h \

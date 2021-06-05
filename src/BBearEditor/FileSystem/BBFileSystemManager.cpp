@@ -1,5 +1,5 @@
 #include "BBFileSystemManager.h"
-#include "BBOpenGLWidget.h"
+#include "RenderManager/BBOpenGLWidget.h"
 #include "BBFileSystemDataManager.h"
 #include "BBFolderTreeWidget.h"
 #include "BBFileListWidget.h"

@@ -1031,12 +1031,12 @@ BBFileListWidget::item:selected {
   <customwidget>
    <class>BBEditViewDockWidget</class>
    <extends>QDockWidget</extends>
-   <header>bbeditviewdockwidget.h</header>
+   <header>RenderManager/bbeditviewdockwidget.h</header>
   </customwidget>
   <customwidget>
    <class>BBEditViewOpenGLWidget</class>
    <extends>QOpenGLWidget</extends>
-   <header>bbeditviewopenglwidget.h</header>
+   <header>RenderManager/bbeditviewopenglwidget.h</header>
   </customwidget>
   <customwidget>
    <class>BBPropertyManager</class>

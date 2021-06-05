@@ -5,7 +5,7 @@
 #include <QListWidgetItem>
 #include "BBFileListWidget.h"
 #include <QPainter>
-#include "BBOpenGLWidget.h"
+#include "RenderManager/BBOpenGLWidget.h"
 #include "BBScene.h"
 #include "BBModel.h"
 #include "BBTreeWidget.h"
