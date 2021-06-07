@@ -1,8 +1,8 @@
 #include "BBBoundingBox.h"
 #include "BBUtils.h"
 #include <cfloat>
-#include "BBGLBuffers.h"
-#include "BBGLShader.h"
+#include "Render/BBGLBuffers.h"
+#include "Render/BBGLShader.h"
 #include <Eigen/Eigen>
 
 

@@ -1,8 +1,8 @@
 #include "BBStaticMesh.h"
 #include "BBUtils.h"
-#include "BBGLBuffers.h"
+#include "Render/BBGLBuffers.h"
 #include <sstream>
-#include "BBBoundingBox.h"
+#include "Math/BBBoundingBox.h"
 
 BBOBJMesh::BBOBJMesh()
     : BBOBJMesh(0, 0, 0, 0, 0, 0, 1, 1, 1)

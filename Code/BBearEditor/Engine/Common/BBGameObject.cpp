@@ -1,5 +1,5 @@
 #include "BBGameObject.h"
-#include "BBCamera.h"
+#include "Scene/BBCamera.h"
 #include "BBHierarchyTreeWidget.h"
 #include "BBGameObjectSet.h"
 

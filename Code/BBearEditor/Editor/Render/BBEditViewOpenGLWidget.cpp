@@ -1,13 +1,13 @@
 #include "BBEditViewOpenGLWidget.h"
-#include "BBScene.h"
-#include "BBCamera.h"
+#include "Scene/BBScene.h"
+#include "Scene/BBCamera.h"
 #include <QMouseEvent>
 #include "BBUtils.h"
 #include "BBGameObject.h"
 #include <QMimeData>
-#include "BBModel.h"
+#include "3D/BBModel.h"
 #include <QDrag>
-#include "BBRay.h"
+#include "Math/BBRay.h"
 #include "BBCoordinateSystem.h"
 #include <QTreeWidgetItem>
 

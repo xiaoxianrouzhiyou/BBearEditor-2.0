@@ -6,7 +6,7 @@
 #include <QVector3D>
 #include <QQuaternion>
 #include <QMatrix4x4>
-#include "BBRay.h"
+#include "Math/BBRay.h"
 
 
 class BBCamera;

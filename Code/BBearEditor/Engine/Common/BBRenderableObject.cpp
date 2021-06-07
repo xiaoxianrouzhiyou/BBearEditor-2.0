@@ -1,8 +1,8 @@
 #include "BBRenderableObject.h"
-#include "BBGLShader.h"
+#include "Render/BBGLShader.h"
 #include "BBUtils.h"
-#include "BBCamera.h"
-#include "BBGLBuffers.h"
+#include "Scene/BBCamera.h"
+#include "Render/BBGLBuffers.h"
 
 BBRenderableObject::BBRenderableObject()
     : BBRenderableObject(0, 0, 0, 0, 0, 0, 1, 1, 1)

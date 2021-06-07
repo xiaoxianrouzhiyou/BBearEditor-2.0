@@ -1,7 +1,7 @@
 #include "BBModel.h"
 #include "BBStaticMesh.h"
 #include "BBUtils.h"
-#include "BBBoundingBox.h"
+#include "Math/BBBoundingBox.h"
 #include <cfloat>
 
 

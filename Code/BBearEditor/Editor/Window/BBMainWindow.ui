@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>BBMainWindow</class>
- <widget class="QMainWindow" name="BBUIMainWindow">
+ <widget class="QMainWindow" name="BBMainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -1011,32 +1011,32 @@ BBFileListWidget::item:selected {
   <customwidget>
    <class>BBResizableWidget</class>
    <extends>QWidget</extends>
-   <header>bbresizablewidget.h</header>
+   <header>Common/bbresizablewidget.h</header>
   </customwidget>
   <customwidget>
    <class>BBObjectListWidget</class>
    <extends>QListWidget</extends>
-   <header>bbobjectlistwidget.h</header>
+   <header>Common/bbobjectlistwidget.h</header>
   </customwidget>
   <customwidget>
    <class>BBHierarchyTreeWidget</class>
    <extends>QTreeWidget</extends>
-   <header>bbhierarchytreewidget.h</header>
+   <header>Common/bbhierarchytreewidget.h</header>
   </customwidget>
   <customwidget>
    <class>BBTreeWidget</class>
    <extends>QTreeWidget</extends>
-   <header>bbtreewidget.h</header>
+   <header>Common/bbtreewidget.h</header>
   </customwidget>
   <customwidget>
    <class>BBEditViewDockWidget</class>
    <extends>QDockWidget</extends>
-   <header>RenderManager/bbeditviewdockwidget.h</header>
+   <header>Render/bbeditviewdockwidget.h</header>
   </customwidget>
   <customwidget>
    <class>BBEditViewOpenGLWidget</class>
    <extends>QOpenGLWidget</extends>
-   <header>RenderManager/bbeditviewopenglwidget.h</header>
+   <header>Render/bbeditviewopenglwidget.h</header>
   </customwidget>
   <customwidget>
    <class>BBPropertyManager</class>

@@ -1,9 +1,9 @@
 #include "BBCoordinateSystem.h"
-#include "BBGLBuffers.h"
-#include "BBGLShader.h"
+#include "Render/BBGLBuffers.h"
+#include "Render/BBGLShader.h"
 #include "BBUtils.h"
-#include "BBCamera.h"
-#include "BBBoundingBox.h"
+#include "Scene/BBCamera.h"
+#include "Math/BBBoundingBox.h"
 #include "BBGameObjectSet.h"
 
 

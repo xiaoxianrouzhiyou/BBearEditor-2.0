@@ -1,9 +1,9 @@
 #include "BBMesh.h"
-#include "BBGLShader.h"
+#include "Render/BBGLShader.h"
 #include "BBUtils.h"
-#include "BBBoundingBox.h"
+#include "Math/BBBoundingBox.h"
 #include <cfloat>
-#include "BBGLBuffers.h"
+#include "Render/BBGLBuffers.h"
 
 BBMesh::BBMesh()
     : BBMesh(0, 0, 0, 0, 0, 0, 1, 1, 1)
