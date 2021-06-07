@@ -18,9 +18,6 @@ public:
 
     inline BBScene* getScene() { return m_pScene; }
 
-signals:
-    void startRender();
-
 protected:
     void setRenderThread();
 
@@ -29,7 +26,8 @@ protected:
     void paintGL() override;
 
     BBScene *m_pScene;
-    BBRenderThread *m_pRenderThread;
+    QThread *m_pRenderThread;
+    QTimer *m_pRenderTimer;
 };
 
 #endif // BBOPENGLWIDGET_H

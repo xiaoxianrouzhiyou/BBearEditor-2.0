@@ -4,6 +4,7 @@
 #include "BBUtils.h"
 #include "BBRenderThread.h"
 #include <QThread>
+#include <QTimer>
 
 
 BBOpenGLWidget::BBOpenGLWidget(QWidget *parent)
@@ -20,20 +21,24 @@ BBOpenGLWidget::BBOpenGLWidget(QWidget *parent)
 
 BBOpenGLWidget::~BBOpenGLWidget()
 {
+    m_pRenderThread->quit();
+    m_pRenderThread->wait();
     BB_SAFE_DELETE(m_pScene);
     BB_SAFE_DELETE(m_pRenderThread);
 }
 
 void BBOpenGLWidget::setRenderThread()
 {
-    m_pRenderThread = new BBRenderThread();
-    QThread *pThread = new QThread();
-    m_pRenderThread->moveToThread(pThread);
-    QObject::connect(pThread, SIGNAL(finished()), pThread, SLOT(deleteLater()));
-    QObject::connect(this, SIGNAL(startRender()), m_pRenderThread, SLOT(render()));
-    QObject::connect(m_pRenderThread, SIGNAL(updateOpenGLWidget()), this, SLOT(update()));
-    pThread->start();
-    emit startRender();
+    m_pRenderThread = new QThread(this);
+    m_pRenderTimer = new QTimer();
+    m_pRenderTimer->setInterval(BB_CONSTANT_UPDATE_RATE);
+    m_pRenderTimer->moveToThread(m_pRenderThread);
+
+    QObject::connect(m_pRenderThread, SIGNAL(started()), m_pRenderTimer, SLOT(start()));
+    QObject::connect(m_pRenderTimer, SIGNAL(timeout()), this, SLOT(update()), Qt::DirectConnection);
+    QObject::connect(m_pRenderThread, SIGNAL(finished()), m_pRenderTimer, SLOT(deleteLater()));
+
+    m_pRenderThread->start();
 }
 
 void BBOpenGLWidget::initializeGL()

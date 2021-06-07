@@ -46,7 +46,6 @@ SOURCES += \
     Editor/Render/BBEditViewDockWidget.cpp \
     Editor/Render/BBEditViewOpenGLWidget.cpp \
     Editor/Render/BBOpenGLWidget.cpp \
-    Editor/Render/BBRenderThread.cpp \
     Editor/Common/NcFramelessHelper.cpp \
     Engine/3D/BBMesh.cpp \
     Engine/3D/BBModel.cpp \
@@ -88,7 +87,6 @@ HEADERS += \
     Editor/Render/BBEditViewDockWidget.h \
     Editor/Render/BBEditViewOpenGLWidget.h \
     Editor/Render/BBOpenGLWidget.h \
-    Editor/Render/BBRenderThread.h \
     Editor/Common/NcFramelessHelper.h \
     Engine/3D/BBMesh.h \
     Engine/3D/BBModel.h \
