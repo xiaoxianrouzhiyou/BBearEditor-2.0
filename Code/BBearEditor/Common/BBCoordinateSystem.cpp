@@ -3,7 +3,7 @@
 #include "Render/BBGLShader.h"
 #include "BBUtils.h"
 #include "Scene/BBCamera.h"
-#include "Math/BBBoundingBox.h"
+#include "Geometry/BBBoundingBox.h"
 #include "BBGameObjectSet.h"
 
 

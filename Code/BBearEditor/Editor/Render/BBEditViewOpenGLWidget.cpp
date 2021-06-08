@@ -7,7 +7,7 @@
 #include <QMimeData>
 #include "3D/BBModel.h"
 #include <QDrag>
-#include "Math/BBRay.h"
+#include "Geometry/BBRay.h"
 #include "BBCoordinateSystem.h"
 #include <QTreeWidgetItem>
 

@@ -5,7 +5,7 @@
 #include "BBHorizontalPlane.h"
 #include "BBGameObject.h"
 #include "3d/BBModel.h"
-#include "Math/BBRay.h"
+#include "Geometry/BBRay.h"
 #include "BBSelectionRegion.h"
 #include <cfloat>
 #include "BBCoordinateSystem.h"

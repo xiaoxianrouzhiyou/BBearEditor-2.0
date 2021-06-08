@@ -54,8 +54,8 @@ SOURCES += \
     Engine/Common/BBGameObject.cpp \
     Engine/Common/BBGameObjectSet.cpp \
     Engine/Common/BBRenderableObject.cpp \
-    Engine/Math/BBBoundingBox.cpp \
-    Engine/Math/BBRay.cpp \
+    Engine/Geometry/BBBoundingBox.cpp \
+    Engine/Geometry/BBRay.cpp \
     Engine/Render/BBGLBuffers.cpp \
     Engine/Render/BBGLShader.cpp \
     Engine/Scene/BBCamera.cpp \
@@ -98,8 +98,8 @@ HEADERS += \
     Engine/Common/BBGameObject.h \
     Engine/Common/BBGameObjectSet.h \
     Engine/Common/BBRenderableObject.h \
-    Engine/Math/BBBoundingBox.h \
-    Engine/Math/BBRay.h \
+    Engine/Geometry/BBBoundingBox.h \
+    Engine/Geometry/BBRay.h \
     Engine/Render/BBGLBuffers.h \
     Engine/Render/BBGLShader.h \
     Engine/Scene/BBCamera.h \

@@ -1,6 +1,6 @@
 #include "BBCamera.h"
 #include "math.h"
-#include "Math/BBRay.h"
+#include "Geometry/BBRay.h"
 #include "BBGameObject.h"
 
 

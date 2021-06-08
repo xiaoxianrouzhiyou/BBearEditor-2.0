@@ -2,7 +2,7 @@
 #include "BBUtils.h"
 #include "Render/BBGLBuffers.h"
 #include <sstream>
-#include "Math/BBBoundingBox.h"
+#include "Geometry/BBBoundingBox.h"
 
 BBOBJMesh::BBOBJMesh()
     : BBOBJMesh(0, 0, 0, 0, 0, 0, 1, 1, 1)

@@ -1,7 +1,7 @@
 #include "BBMesh.h"
 #include "Render/BBGLShader.h"
 #include "BBUtils.h"
-#include "Math/BBBoundingBox.h"
+#include "Geometry/BBBoundingBox.h"
 #include <cfloat>
 #include "Render/BBGLBuffers.h"
 

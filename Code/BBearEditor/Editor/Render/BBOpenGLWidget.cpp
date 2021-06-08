@@ -2,7 +2,6 @@
 #include <QMatrix4x4>
 #include "Scene/BBScene.h"
 #include "BBUtils.h"
-#include "BBRenderThread.h"
 #include <QThread>
 #include <QTimer>
 
