@@ -10,6 +10,7 @@
 #include <cfloat>
 #include "BBCoordinateSystem.h"
 
+
 BBScene::BBScene()
 {
     m_fUpdateRate = (float) BB_CONSTANT_UPDATE_RATE / 1000;

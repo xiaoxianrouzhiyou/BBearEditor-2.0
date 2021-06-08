@@ -63,7 +63,10 @@ SOURCES += \
     Common/BBCoordinateSystem.cpp \
     Common/BBHorizontalPlane.cpp \
     Common/BBSelectionRegion.cpp \
-    Common/BBUtils.cpp
+    Common/BBUtils.cpp \
+    Engine/Allocator/tlsf/tlsf.c \
+    Engine/Allocator/BBAllocator.cpp \
+    Engine/Profiler/BBProfiler.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -104,7 +107,12 @@ HEADERS += \
     Common/BBCoordinateSystem.h \
     Common/BBHorizontalPlane.h \
     Common/BBSelectionRegion.h \
-    Common/BBUtils.h
+    Common/BBUtils.h \
+    Engine/Allocator/tlsf/tlsf.h \
+    Engine/Allocator/tlsf/tlsfbits.h \
+    Engine/Allocator/BBAllocator.h \
+    Engine/Allocator/BBMemoryLabel.h \
+    Engine/Profiler/BBProfiler.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
