@@ -232,6 +232,12 @@ bool BBFileSystemDataManager::newFolder(const QString &parentPath, QTreeWidgetIt
     return true;
 }
 
+bool BBFileSystemDataManager::newScene(const QString &parentPath, QListWidgetItem *&pOutFileItem)
+{
+    QString fileName = "new scene.bbscene";
+    QString filePath = getExclusiveFilePath(parentPath, fileName);
+}
+
 bool BBFileSystemDataManager::showInFolder(const QString &filePath)
 {
     BB_PROCESS_ERROR_RETURN_FALSE(!filePath.isEmpty());

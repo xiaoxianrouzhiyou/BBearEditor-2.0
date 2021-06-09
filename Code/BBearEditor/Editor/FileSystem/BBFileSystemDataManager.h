@@ -35,6 +35,7 @@ public:
     inline QList<QListWidgetItem*> getSelectedFileItems() { return m_SelectedFileItems; }
     bool openFile(const QString &filePath);
     bool newFolder(const QString &parentPath, QTreeWidgetItem *&pFolderItem, QListWidgetItem *&pOutFileItem);
+    bool newScene(const QString &parentPath, QListWidgetItem *&pOutFileItem);
     bool showInFolder(const QString &filePath);
     bool rename(QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pFileItem,
                 const QString &oldPath, const QString &newPath);

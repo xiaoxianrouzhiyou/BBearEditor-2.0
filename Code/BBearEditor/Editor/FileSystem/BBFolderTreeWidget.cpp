@@ -81,6 +81,13 @@ void BBFolderTreeWidget::newFolder()
      openRenameEditor();
 }
 
+void BBFolderTreeWidget::newSceneAction()
+{
+    QTreeWidgetItem *pItem = currentItem();
+    QString parentPath = BBFileSystemDataManager::getAbsolutePath(pItem);
+    emit newScene(parentPath);
+}
+
 void BBFolderTreeWidget::showInFolder()
 {
     QTreeWidgetItem *pItem = currentItem();
@@ -132,6 +139,11 @@ void BBFolderTreeWidget::setMenu()
     // first level menu
     m_pMenu = new QMenu(this);
     QAction *pActionNewFolder = new QAction(tr("New Folder"));
+
+    // second level menu
+    QMenu *pMenuNewAsset = new QMenu(tr("New Asset"), m_pMenu);
+    QWidgetAction *pActionNewScene = createWidgetAction(pMenuNewAsset, BB_PATH_RESOURCE_ICON(scene.png), tr("Scene"));
+
     QAction *pActionShowInFolder = new QAction(tr("Show In Folder"));
     QAction *pActionCopy = new QAction(tr("Copy"));
     pActionCopy->setShortcut(QKeySequence(tr("Ctrl+C")));
@@ -144,13 +156,13 @@ void BBFolderTreeWidget::setMenu()
     pActionRename->setShortcut(Qt::Key_Return);
 #endif
     QAction *pActionDelete = new QAction(tr("Delete"));
-    // second level menu
-    QMenu *pMenuNewAsset = new QMenu(tr("New Asset"), m_pMenu);
-    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, BB_PATH_RESOURCE_ICON(scene.png), tr("Scene")));
+
+    pMenuNewAsset->addAction(pActionNewScene);
     pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, BB_PATH_RESOURCE_ICON(material.png), tr("Material")));
     pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, BB_PATH_RESOURCE_ICON(animation.png), tr("Animation")));
     pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, BB_PATH_RESOURCE_ICON(particle.png), tr("Particle")));
     pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, BB_PATH_RESOURCE_ICON(script.png), tr("Script")));
+
     // first level menu
     m_pMenu->addAction(pActionNewFolder);
     m_pMenu->addMenu(pMenuNewAsset);
@@ -164,6 +176,7 @@ void BBFolderTreeWidget::setMenu()
     m_pMenu->addAction(pActionDelete);
 
     QObject::connect(pActionNewFolder, SIGNAL(triggered()), this, SLOT(newFolder()));
+    QObject::connect(pActionNewScene, SIGNAL(triggered()), this, SLOT(newSceneAction()));
     QObject::connect(pActionShowInFolder, SIGNAL(triggered()), this, SLOT(showInFolder()));
     QObject::connect(pActionCopy, SIGNAL(triggered()), this, SLOT(copyAction()));
     QObject::connect(pActionPaste, SIGNAL(triggered()), this, SLOT(pasteAction()));

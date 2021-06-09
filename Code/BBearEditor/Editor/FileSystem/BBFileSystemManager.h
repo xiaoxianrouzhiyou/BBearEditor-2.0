@@ -33,6 +33,8 @@ public:
 
     void newFolder(const QString &parentPath, const BBSignalSender &eSender);
 
+    void newScene(const QString &parentPath);
+
     void showInFolder(const QString &filePath);
 
     void renameInFolderTree(QTreeWidgetItem *pParentFolderItem, const QString &oldPath, const QString &newPath);

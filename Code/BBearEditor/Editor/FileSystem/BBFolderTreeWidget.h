@@ -30,6 +30,7 @@ private slots:
     void pressSettingButton();
     void clickItem(QTreeWidgetItem *pItem, int nColumn);
     void newFolder();
+    void newSceneAction();
     void showInFolder();
     void copyAction() override;
     void pasteAction() override;
@@ -39,6 +40,7 @@ private slots:
 signals:
     void accessFolder(const QString &filePath, QTreeWidgetItem *pItem);
     void newFolder(const QString &parentPath, const BBSignalSender &eSender);
+    void newScene(const QString &parentPath);
     void showInFolder(const QString &filePath);
     void rename(QTreeWidgetItem *pParentFolderItem, const QString &oldPath, const QString &newPath);
     void deleteFolder(QTreeWidgetItem *pItem);

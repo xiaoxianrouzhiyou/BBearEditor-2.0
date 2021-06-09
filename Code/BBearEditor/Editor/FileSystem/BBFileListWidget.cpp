@@ -145,6 +145,11 @@ void BBFileListWidget::newFolder()
     openRenameEditor();
 }
 
+void BBFileListWidget::newSceneAction()
+{
+    emit newScene(m_ParentPath);
+}
+
 void BBFileListWidget::newMaterial()
 {
 
@@ -255,6 +260,7 @@ void BBFileListWidget::setMenu()
     // As the title of a column, not clickable
     pLabelNewAsset->setEnabled(false);
 
+    QWidgetAction *pActionNewScene = createWidgetAction(BB_PATH_RESOURCE_ICON(scene.png), tr("Scene"));
     QWidgetAction *pActionNewMaterial = createWidgetAction(BB_PATH_RESOURCE_ICON(material.png), tr("Material"));
     QWidgetAction *pActionNewScript = createWidgetAction(BB_PATH_RESOURCE_ICON(script.png), tr("Script"));
 
@@ -298,7 +304,7 @@ void BBFileListWidget::setMenu()
     m_pMenu->addAction(pActionNewFolder);
     m_pMenu->addSeparator();
     m_pMenu->addAction(pLabelNewAsset);
-    m_pMenu->addAction(createWidgetAction(BB_PATH_RESOURCE_ICON(scene.png), tr("Scene")));
+    m_pMenu->addAction(pActionNewScene);
     m_pMenu->addAction(pActionNewMaterial);
     m_pMenu->addAction(createWidgetAction(BB_PATH_RESOURCE_ICON(animation.png), tr("Animation")));
     m_pMenu->addAction(createWidgetAction(BB_PATH_RESOURCE_ICON(particle.png), tr("Particle")));
@@ -317,6 +323,7 @@ void BBFileListWidget::setMenu()
     m_pMenu->addAction(pActionSlider);
 
     QObject::connect(pActionNewFolder, SIGNAL(triggered()), this, SLOT(newFolder()));
+    QObject::connect(pActionNewScene, SIGNAL(triggered()), this, SLOT(newSceneAction()));
     QObject::connect(pActionNewMaterial, SIGNAL(triggered()), this, SLOT(newMaterial()));
     QObject::connect(pActionNewScript, SIGNAL(triggered()), this, SLOT(newScript()));
     QObject::connect(pActionShowInFolder, SIGNAL(triggered()), this, SLOT(showInFolder()));

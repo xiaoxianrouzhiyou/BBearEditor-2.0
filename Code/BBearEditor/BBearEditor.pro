@@ -66,7 +66,8 @@ SOURCES += \
     Common/BBUtils.cpp \
     Engine/Allocator/tlsf/tlsf.c \
     Engine/Allocator/BBAllocator.cpp \
-    Engine/Profiler/BBProfiler.cpp
+    Engine/Profiler/BBProfiler.cpp \
+    Engine/Serializer/BBSerializer.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -112,7 +113,8 @@ HEADERS += \
     Engine/Allocator/tlsf/tlsfbits.h \
     Engine/Allocator/BBAllocator.h \
     Engine/Allocator/BBMemoryLabel.h \
-    Engine/Profiler/BBProfiler.h
+    Engine/Profiler/BBProfiler.h \
+    Engine/Serializer/BBSerializer.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

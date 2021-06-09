@@ -94,6 +94,18 @@ void BBFileSystemManager::newFolder(const QString &parentPath, const BBSignalSen
     setFolderTree();
 }
 
+void BBFileSystemManager::newScene(const QString &parentPath)
+{
+    QListWidgetItem *pCurrentItem = NULL;
+    if (m_pDataManager->newScene(parentPath, pCurrentItem))
+    {
+        if (m_pFileListWidget->getCurrentParentPath() == parentPath)
+        {
+            updateFileList(parentPath, m_pDataManager->getCurrentViewedItem(), pCurrentItem);
+        }
+    }
+}
+
 void BBFileSystemManager::showInFolder(const QString &filePath)
 {
     m_pDataManager->showInFolder(filePath);

@@ -50,6 +50,7 @@ private slots:
     void doubleClickItem(QListWidgetItem *pItem);
     void changeItemSize(int factor);
     void newFolder();
+    void newSceneAction();
     void newMaterial();
     void newScript();
     void showInFolder();
@@ -62,6 +63,7 @@ private slots:
 signals:
     void openFile(const QString &filePath);
     void newFolder(const QString &parentPath, const BBSignalSender &eSender);
+    void newScene(const QString &parentPath);
     void showInFolder(const QString &filePath);
     void rename(QListWidgetItem *pFileItem, const QString &oldPath, const QString &newPath);
     void deleteFiles(const QList<QListWidgetItem*> &items);
