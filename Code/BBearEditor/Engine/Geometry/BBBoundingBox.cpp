@@ -313,8 +313,8 @@ void BBBoundingBox3D::init()
         m_pIndexes[i] = indexes[i];
     }
 
-    m_pShader->init(QString(BB_PATH_RESOURCE_SHADER) + "base.vert",
-                    QString(BB_PATH_RESOURCE_SHADER) + "base.frag",
+    m_pShader->init(BB_PATH_RESOURCE_SHADER(base.vert),
+                    BB_PATH_RESOURCE_SHADER(base.frag),
                     m_pIndexes,
                     m_nIndexCount);
 }

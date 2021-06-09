@@ -272,7 +272,7 @@ void BBEditViewOpenGLWidget::dragEnterEvent(QDragEnterEvent *event)
         {
             // Create a temporary object to show drag effect
             // no need to create the corresponding item in the hierarchical tree
-            m_pPreviewObject = m_pScene->createModel(BB_PATH_RESOURCE_MESH + fileName, event->pos().x(), event->pos().y());
+            m_pPreviewObject = m_pScene->createModel(BB_PATH_RESOURCE_MESH() + fileName, event->pos().x(), event->pos().y());
         }
         // Remove the selected state of the coordinate system
         setCoordinateSystemSelectedObject(NULL);

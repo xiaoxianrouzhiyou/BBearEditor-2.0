@@ -13,7 +13,7 @@ BBSliderLabel::BBSliderLabel(QWidget *pParent)
 
 void BBSliderLabel::mouseMoveEvent(QMouseEvent *event)
 {
-    QPixmap pix(QString(BB_PATH_RESOURCE_ICON) + "arrows_stretch_horizontal.png");
+    QPixmap pix(BB_PATH_RESOURCE_ICON(arrows_stretch_horizontal.png));
     pix.setDevicePixelRatio(devicePixelRatio());
     pix = pix.scaled(32 * devicePixelRatio(), 32 * devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     setCursor(QCursor(pix));

@@ -96,7 +96,7 @@ void BBProjectDialog::createNewProject()
     BBConstant::BB_PATH_PROJECT_USER = BBConstant::BB_PATH_PROJECT + BBConstant::BB_NAME_FILE_SYSTEM_USER;
     BBConstant::BB_PATH_PROJECT_ENGINE = BBConstant::BB_PATH_PROJECT + BBConstant::BB_NAME_FILE_SYSTEM_ENGINE;
     // Place a project overview map in the engine folder
-    BB_PROCESS_ERROR_RETURN(QFile::copy(BBConstant::BB_PATH_RESOURCE_PICTURE + BBConstant::BB_NAME_OVERVIEW_MAP,
+    BB_PROCESS_ERROR_RETURN(QFile::copy(BB_PATH_RESOURCE_PICTURE(BBConstant::BB_NAME_OVERVIEW_MAP),
                                         BBConstant::BB_PATH_PROJECT_ENGINE + "/" + BBConstant::BB_NAME_OVERVIEW_MAP));
     // save the project into QSettings
     QSettings settings(BB_USER_NAME, BB_USER_PROJECT_NAME);

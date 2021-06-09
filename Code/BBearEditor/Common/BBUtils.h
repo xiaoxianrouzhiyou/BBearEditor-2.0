@@ -18,10 +18,13 @@
 
 #define BB_PATH_BASEOBJECTLIST "../../../BBearEditor/resources/xmlfiles/baselist.xml"
 #define BB_PATH_RESOURCE "../../../BBearEditor/resources/"
-#define BB_PATH_RESOURCE_MESH "../../../BBearEditor/resources/meshes/"
-#define BB_PATH_RESOURCE_SHADER "../../../BBearEditor/resources/shaders/"
-#define BB_PATH_RESOURCE_ICON "../../../BBearEditor/resources/icons/"
+#define BB_PATH_RESOURCE_MESH(x) "../../../BBearEditor/resources/meshes/"#x
+#define BB_PATH_RESOURCE_SHADER(x) "../../../BBearEditor/resources/shaders/"#x
+#define BB_PATH_RESOURCE_ICON(x) "../../../BBearEditor/resources/icons/"#x
+#define BB_PATH_RESOURCE_PICTURE(x) "../../../BBearEditor/resources/pictures/"#x
 #define BB_PATH_TERRAIN "terrain"
+
+#define BB_STYLE_IMAGE(x) "image: url(" x ");"
 
 #define BB_CONSTANT_UPDATE_RATE 16
 
@@ -98,7 +101,6 @@ public:
     static QString BB_PATH_PROJECT;
     static QString BB_PATH_PROJECT_ENGINE;
     static QString BB_PATH_PROJECT_USER;
-    static QString BB_PATH_RESOURCE_PICTURE;
     static QString BB_NAME_FILE_SYSTEM_USER;
     static QString BB_NAME_FILE_SYSTEM_ENGINE;
     static QString BB_NAME_OVERVIEW_MAP;

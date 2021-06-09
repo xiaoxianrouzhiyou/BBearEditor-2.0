@@ -28,7 +28,7 @@ BBBaseInformationManager::BBBaseInformationManager(BBGameObject *pGameObject, QW
     // icon
     QLabel *pIcon = new QLabel(this);
     pIcon->setFocusPolicy(Qt::NoFocus);
-    QPixmap pixmap = QPixmap(BB_PATH_RESOURCE_ICON + pGameObject->getIconName() + ".png");
+    QPixmap pixmap = QPixmap(BB_PATH_RESOURCE_ICON() + pGameObject->getIconName() + ".png");
     pixmap.setDevicePixelRatio(devicePixelRatio());
     pixmap = pixmap.scaled(30 * devicePixelRatio(), 30 * devicePixelRatio(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     pIcon->setPixmap(pixmap);
@@ -81,11 +81,11 @@ void BBBaseInformationManager::changeVisibility()
 {
     if (m_pVisibilityButton->isChecked())
     {
-        m_pVisibilityButton->setStyleSheet("image: url(" + QString(BB_PATH_RESOURCE_ICON) + "visible2.png);");
+        m_pVisibilityButton->setStyleSheet(BB_STYLE_IMAGE(BB_PATH_RESOURCE_ICON(visible2.png)));
     }
     else
     {
-        m_pVisibilityButton->setStyleSheet("image: url(" + QString(BB_PATH_RESOURCE_ICON) + "invisible3.png);");
+        m_pVisibilityButton->setStyleSheet(BB_STYLE_IMAGE(BB_PATH_RESOURCE_ICON(invisible3.png)));
     }
     visibilityChanged(m_pCurrentGameObject, m_pVisibilityButton->isChecked());
 }
@@ -94,9 +94,9 @@ void BBBaseInformationManager::setVisibilityButtonChecked(bool bChecked)
 {
     m_pVisibilityButton->setChecked(bChecked);
     if (bChecked)
-        m_pVisibilityButton->setStyleSheet("image: url(" + QString(BB_PATH_RESOURCE_ICON) + "visible2.png);");
+        m_pVisibilityButton->setStyleSheet(BB_STYLE_IMAGE(BB_PATH_RESOURCE_ICON(visible2.png)));
     else
-        m_pVisibilityButton->setStyleSheet("image: url(" + QString(BB_PATH_RESOURCE_ICON) + "invisible3.png);");
+        m_pVisibilityButton->setStyleSheet(BB_STYLE_IMAGE(BB_PATH_RESOURCE_ICON(invisible3.png)));
 }
 
 
@@ -117,11 +117,11 @@ void BBSetBaseInformationManager::changeVisibility()
 {
     if (m_pVisibilityButton->isChecked())
     {
-        m_pVisibilityButton->setStyleSheet("image: url(" + QString(BB_PATH_RESOURCE_ICON) + "visible2.png);");
+        m_pVisibilityButton->setStyleSheet(BB_STYLE_IMAGE(BB_PATH_RESOURCE_ICON(visible2.png)));
     }
     else
     {
-        m_pVisibilityButton->setStyleSheet("image: url(" + QString(BB_PATH_RESOURCE_ICON) + "invisible3.png);");
+        m_pVisibilityButton->setStyleSheet(BB_STYLE_IMAGE(BB_PATH_RESOURCE_ICON(invisible3.png)));
     }
     visibilityChanged(m_CurrentGameObjectSet, m_pVisibilityButton->isChecked());
 }
@@ -222,7 +222,7 @@ void BBGroupManager::setContainerExpanded(bool bExpanded)
 //---------------------------------------------------------------------------------------------------
 
 BBTransformGroupManager::BBTransformGroupManager(BBGameObject *pGameObject, QWidget *pParent)
-    : BBGroupManager("Transform [Global]", QString(BB_PATH_RESOURCE_ICON) + "transform.png", pParent)
+    : BBGroupManager("Transform [Global]", BB_PATH_RESOURCE_ICON(transform.png), pParent)
 {
     m_pCurrentGameObject = pGameObject;
     // default is to show global coordinate

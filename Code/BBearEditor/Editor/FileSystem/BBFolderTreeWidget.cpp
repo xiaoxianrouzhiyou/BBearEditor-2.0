@@ -146,11 +146,11 @@ void BBFolderTreeWidget::setMenu()
     QAction *pActionDelete = new QAction(tr("Delete"));
     // second level menu
     QMenu *pMenuNewAsset = new QMenu(tr("New Asset"), m_pMenu);
-    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "scene.png", tr("Scene")));
-    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "material.png", tr("Material")));
-    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "animation.png", tr("Animation")));
-    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "particle.png", tr("Particle")));
-    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, QString(BB_PATH_RESOURCE_ICON) + "script.png", tr("Script")));
+    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, BB_PATH_RESOURCE_ICON(scene.png), tr("Scene")));
+    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, BB_PATH_RESOURCE_ICON(material.png), tr("Material")));
+    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, BB_PATH_RESOURCE_ICON(animation.png), tr("Animation")));
+    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, BB_PATH_RESOURCE_ICON(particle.png), tr("Particle")));
+    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, BB_PATH_RESOURCE_ICON(script.png), tr("Script")));
     // first level menu
     m_pMenu->addAction(pActionNewFolder);
     m_pMenu->addMenu(pMenuNewAsset);

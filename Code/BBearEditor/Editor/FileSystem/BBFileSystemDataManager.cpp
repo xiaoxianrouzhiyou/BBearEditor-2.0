@@ -206,7 +206,7 @@ bool BBFileSystemDataManager::newFolder(const QString &parentPath, QTreeWidgetIt
 
     // add its own folder tree item
     pFolderItem = new QTreeWidgetItem({fileName});
-    pFolderItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
+    pFolderItem->setIcon(0, QIcon(BB_PATH_RESOURCE_ICON(folder5.png)));
     // find the tree item of its parent
     QTreeWidgetItem *pParent = getFolderItemByPath(parentPath);
     if (pParent)
@@ -224,7 +224,7 @@ bool BBFileSystemDataManager::newFolder(const QString &parentPath, QTreeWidgetIt
     pOutFileItem = new QListWidgetItem({fileName});
     pOutFileItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
     pOutFileItem->setSizeHint(BBFileListWidget::m_ItemSize);
-    pOutFileItem->setIcon(getIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
+    pOutFileItem->setIcon(getIcon(BB_PATH_RESOURCE_ICON(folder5.png)));
     BBFileInfo *pInfo = new BBFileInfo(fileName, BBFileType::Dir);
     // find the BBFILE corresponding the tree item of its parent
     BBFILE *pParentContent = getFolderContent(pParent);
@@ -780,7 +780,7 @@ QIcon BBFileSystemDataManager::getIcon(const QString &path)
     QPixmap pix(path);
     if (pix.isNull())
     {
-        return QIcon(QString(BB_PATH_RESOURCE_ICON) + "empty2");
+        return QIcon(BB_PATH_RESOURCE_ICON(empty2));
     }
     else
     {
@@ -962,7 +962,7 @@ void BBFileSystemDataManager::buildFileData(QQueue<BBFOLDER> &queue, const QList
         if (fileInfo.isDir())
         {
             QTreeWidgetItem *pItem = new QTreeWidgetItem({fileInfo.fileName()});
-            pItem->setIcon(0, QIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
+            pItem->setIcon(0, QIcon(BB_PATH_RESOURCE_ICON(folder5.png)));
             QList<QListWidgetItem*> newItems;
             BBFILE *pFolderContent = loadFolderContent(fileInfo.absoluteFilePath(), newItems);
             if (folder.pItem)
@@ -1013,7 +1013,7 @@ BBFILE* BBFileSystemDataManager::loadFolderContent(const QString &parentPath,
         {
             // is folder
             pItem->setText(fileInfo.fileName());
-            pItem->setIcon(getIcon(QString(BB_PATH_RESOURCE_ICON) + "folder5.png"));
+            pItem->setIcon(getIcon(BB_PATH_RESOURCE_ICON(folder5.png)));
             pFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Dir));
         }
         else
@@ -1036,12 +1036,12 @@ BBFILE* BBFileSystemDataManager::loadFolderContent(const QString &parentPath,
             }
             else if (m_AudioSuffixs.contains(suffix))
             {
-                pItem->setIcon(getIcon(BBConstant::BB_PATH_RESOURCE_PICTURE + "audio.jpg"));
+                pItem->setIcon(getIcon(BB_PATH_RESOURCE_PICTURE(audio.jpg)));
                 pFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Audio));
             }
             else if (m_ScriptSuffixs.contains(suffix))
             {
-                pItem->setIcon(getIcon(QString(BB_PATH_RESOURCE_ICON) + "lua.png"));
+                pItem->setIcon(getIcon(BB_PATH_RESOURCE_ICON(lua.png)));
                 pFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Script));
             }
             else if (m_MaterialSuffixs.contains(suffix))

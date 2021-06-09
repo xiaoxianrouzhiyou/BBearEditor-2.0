@@ -16,8 +16,8 @@ BBSkyBoxSide::BBSkyBoxSide(BBGLVertexBuffer *pVertexBuffer)
 
 void BBSkyBoxSide::init(const QString &path)
 {
-    m_pShader->init(QString(BB_PATH_RESOURCE_SHADER) + "texture.vert",
-                    QString(BB_PATH_RESOURCE_SHADER) + "texture.frag");
+    m_pShader->init(BB_PATH_RESOURCE_SHADER(texture.vert),
+                    BB_PATH_RESOURCE_SHADER(texture.frag));
     setTexture(path);
 }
 

@@ -54,8 +54,8 @@ void BBHorizontalPlane::init()
         m_pIndexes[i * 4 + 3] = i + 164;
     }
 
-    m_pShader->init(QString(BB_PATH_RESOURCE_SHADER) + "base.vert",
-                    QString(BB_PATH_RESOURCE_SHADER) + "base.frag",
+    m_pShader->init(BB_PATH_RESOURCE_SHADER(base.vert),
+                    BB_PATH_RESOURCE_SHADER(base.frag),
                     m_pIndexes,
                     m_nIndexCount);
 }
@@ -65,11 +65,10 @@ void BBHorizontalPlane::render(BBCamera *pCamera)
     QMatrix4x4 modelMatrix;
     modelMatrix.translate(pCamera->getPosition().x(), 0, pCamera->getPosition().z());
 
-    //越高 网格分辨率越低 需要放大 放大倍数为1 10 100 由高度的位数决定
     // The higher, the lower the grid resolution
     // need to be enlarged, 1 10 100, determined by the digit number of height.
     int height = abs((int)pCamera->getPosition().y());
-    //求高度的位数
+    // compute the digit number of height
     int num = 1;
     int ratio;
     do

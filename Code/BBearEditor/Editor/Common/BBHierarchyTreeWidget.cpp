@@ -132,7 +132,7 @@ bool BBHierarchyTreeWidget::moveItemFromOthers(const QMimeData *pMimeData)
         }
         else
         {
-            filePath = BB_PATH_RESOURCE_MESH + filePath;
+            filePath = BB_PATH_RESOURCE_MESH() + filePath;
             createModel(filePath);
         }
     }
@@ -193,7 +193,7 @@ void BBHierarchyTreeWidget::moveItemToIndicator()
 
 QIcon BBHierarchyTreeWidget::getClassIcon(const QString &className)
 {
-    return QIcon(BB_PATH_RESOURCE_ICON + className + ".png");
+    return QIcon(BB_PATH_RESOURCE_ICON() + className + ".png");
 }
 
 void BBHierarchyTreeWidget::addGameObject(BBGameObject *pGameObject)

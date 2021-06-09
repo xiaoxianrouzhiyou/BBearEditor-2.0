@@ -255,8 +255,8 @@ void BBFileListWidget::setMenu()
     // As the title of a column, not clickable
     pLabelNewAsset->setEnabled(false);
 
-    QWidgetAction *pActionNewMaterial = createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "material.png", tr("Material"));
-    QWidgetAction *pActionNewScript = createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "script.png", tr("Script"));
+    QWidgetAction *pActionNewMaterial = createWidgetAction(BB_PATH_RESOURCE_ICON(material.png), tr("Material"));
+    QWidgetAction *pActionNewScript = createWidgetAction(BB_PATH_RESOURCE_ICON(script.png), tr("Script"));
 
     QAction *pActionShowInFolder = new QAction(tr("Show In Folder"));
     QAction *pActionCopy = new QAction(tr("Copy"));
@@ -298,10 +298,10 @@ void BBFileListWidget::setMenu()
     m_pMenu->addAction(pActionNewFolder);
     m_pMenu->addSeparator();
     m_pMenu->addAction(pLabelNewAsset);
-    m_pMenu->addAction(createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "scene.png", tr("Scene")));
+    m_pMenu->addAction(createWidgetAction(BB_PATH_RESOURCE_ICON(scene.png), tr("Scene")));
     m_pMenu->addAction(pActionNewMaterial);
-    m_pMenu->addAction(createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "animation.png", tr("Animation")));
-    m_pMenu->addAction(createWidgetAction(QString(BB_PATH_RESOURCE_ICON) + "particle.png", tr("Particle")));
+    m_pMenu->addAction(createWidgetAction(BB_PATH_RESOURCE_ICON(animation.png), tr("Animation")));
+    m_pMenu->addAction(createWidgetAction(BB_PATH_RESOURCE_ICON(particle.png), tr("Particle")));
     m_pMenu->addAction(pActionNewScript);
     m_pMenu->addSeparator();
     m_pMenu->addAction(pActionShowInFolder);
