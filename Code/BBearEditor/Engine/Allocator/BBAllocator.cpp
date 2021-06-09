@@ -40,7 +40,14 @@ static void* getMemory(std::size_t size)
 static void recycle(void *ptr)
 {
 #if BB_USE_POOL
-    tlsf_free(g_TLSF, ptr);
+    if (BBProfiler::deleteMemoryObject(ptr))
+    {
+        tlsf_free(g_TLSF, ptr);
+    }
+    else
+    {
+        free(ptr);
+    }
 #else
     free(ptr);
 #endif
