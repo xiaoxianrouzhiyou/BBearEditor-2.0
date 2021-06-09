@@ -51,9 +51,9 @@ SOURCES += \
     Engine/3D/BBModel.cpp \
     Engine/3D/BBSkyBox.cpp \
     Engine/3D/BBStaticMesh.cpp \
-    Engine/Common/BBGameObject.cpp \
-    Engine/Common/BBGameObjectSet.cpp \
-    Engine/Common/BBRenderableObject.cpp \
+    Engine/Base/BBGameObject.cpp \
+    Engine/Base/BBGameObjectSet.cpp \
+    Engine/Base/BBRenderableObject.cpp \
     Engine/Geometry/BBBoundingBox.cpp \
     Engine/Geometry/BBRay.cpp \
     Engine/Render/BBGLBuffers.cpp \
@@ -95,9 +95,9 @@ HEADERS += \
     Engine/3D/BBModel.h \
     Engine/3D/BBSkyBox.h \
     Engine/3D/BBStaticMesh.h \
-    Engine/Common/BBGameObject.h \
-    Engine/Common/BBGameObjectSet.h \
-    Engine/Common/BBRenderableObject.h \
+    Engine/Base/BBGameObject.h \
+    Engine/Base/BBGameObjectSet.h \
+    Engine/Base/BBRenderableObject.h \
     Engine/Geometry/BBBoundingBox.h \
     Engine/Geometry/BBRay.h \
     Engine/Render/BBGLBuffers.h \
@@ -129,7 +129,7 @@ INCLUDEPATH += \
     ../BBearEditor/Editor \
     ../BBearEditor/Editor/Common \
     ../BBearEditor/Engine \
-    ../BBearEditor/Engine/Common \
+    ../BBearEditor/Engine/Base \
     ../../External \
     ../../External/Eigen \
     ../../External/rapidxml \
