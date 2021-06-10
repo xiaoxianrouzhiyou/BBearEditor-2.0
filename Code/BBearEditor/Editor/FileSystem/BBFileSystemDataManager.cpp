@@ -9,11 +9,13 @@
 #include "Scene/BBScene.h"
 #include "3D/BBModel.h"
 #include "BBTreeWidget.h"
+#include "Serializer/BBSerializer.h"
 
 
 QList<QString> BBFileSystemDataManager::m_MeshSuffixs = {"obj", "fbx"};
 QList<QString> BBFileSystemDataManager::m_TextureSuffixs = {"png", "jpg", "jpeg", "bmp", "ico", "dds"};
 QList<QString> BBFileSystemDataManager::m_AudioSuffixs = {"mp3", "wav"};
+QList<QString> BBFileSystemDataManager::m_SceneSuffixs = {"bbscene"};
 QList<QString> BBFileSystemDataManager::m_ScriptSuffixs = {"lua"};
 QList<QString> BBFileSystemDataManager::m_MaterialSuffixs = {"mtl"};
 
@@ -196,7 +198,7 @@ bool BBFileSystemDataManager::openFile(const QString &filePath)
  * @param pFileList                             current item in the file list after creating new folder
  * @return
  */
-bool BBFileSystemDataManager::newFolder(const QString &parentPath, QTreeWidgetItem *&pFolderItem, QListWidgetItem *&pOutFileItem)
+bool BBFileSystemDataManager::newFolder(const QString &parentPath, QTreeWidgetItem *&pOutFolderItem, QListWidgetItem *&pOutFileItem)
 {
     QString fileName = "new folder";
     QString filePath = getExclusiveFolderPath(parentPath, fileName);
@@ -205,30 +207,26 @@ bool BBFileSystemDataManager::newFolder(const QString &parentPath, QTreeWidgetIt
     BB_PROCESS_ERROR_RETURN_FALSE(dir.mkdir(filePath));
 
     // add its own folder tree item
-    pFolderItem = new QTreeWidgetItem({fileName});
-    pFolderItem->setIcon(0, QIcon(BB_PATH_RESOURCE_ICON(folder5.png)));
+    pOutFolderItem = new QTreeWidgetItem({fileName});
+    pOutFolderItem->setIcon(0, QIcon(BB_PATH_RESOURCE_ICON(folder5.png)));
     // find the tree item of its parent
     QTreeWidgetItem *pParent = getFolderItemByPath(parentPath);
     if (pParent)
     {
         // the map has nothing, since this is a new folder
-        m_FileData.insert(pFolderItem, new BBFILE());
-        pParent->addChild(pFolderItem);
+        m_FileData.insert(pOutFolderItem, new BBFILE());
+        pParent->addChild(pOutFolderItem);
     }
     else
     {
-        m_TopLevelFileData.insert(pFolderItem, new BBFILE());
+        m_TopLevelFileData.insert(pOutFolderItem, new BBFILE());
     }    
 
-    // add file list item at the beginning of list of its parent
-    pOutFileItem = new QListWidgetItem({fileName});
-    pOutFileItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
-    pOutFileItem->setSizeHint(BBFileListWidget::m_ItemSize);
-    pOutFileItem->setIcon(getIcon(BB_PATH_RESOURCE_ICON(folder5.png)));
-    BBFileInfo *pInfo = new BBFileInfo(fileName, BBFileType::Dir);
     // find the BBFILE corresponding the tree item of its parent
     BBFILE *pParentContent = getFolderContent(pParent);
-    pParentContent->insert(pOutFileItem, pInfo);
+    // add file list item at the beginning of list of its parent
+    pOutFileItem = addFileItem(QFileInfo(filePath), pParentContent);
+
     return true;
 }
 
@@ -236,6 +234,10 @@ bool BBFileSystemDataManager::newScene(const QString &parentPath, QListWidgetIte
 {
     QString fileName = "new scene.bbscene";
     QString filePath = getExclusiveFilePath(parentPath, fileName);
+    BB_PROCESS_ERROR_RETURN_FALSE(BBSerializer::createEmptyFile(filePath.toStdString().c_str()));
+    BBFILE *pParentContent = getFolderContent(getFolderItemByPath(parentPath));
+    pOutFileItem = addFileItem(QFileInfo(filePath), pParentContent);
+    return true;
 }
 
 bool BBFileSystemDataManager::showInFolder(const QString &filePath)
@@ -1011,58 +1013,70 @@ BBFILE* BBFileSystemDataManager::loadFolderContent(const QString &parentPath,
             continue;
         }
 
-        QListWidgetItem *pItem = new QListWidgetItem;
+        QListWidgetItem *pItem = addFileItem(fileInfo, pFolderContent);
         newItems.append(pItem);
-        pItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
-        pItem->setSizeHint(BBFileListWidget::m_ItemSize);
-        if (fileInfo.isDir())
+    }
+    return pFolderContent;
+}
+
+QListWidgetItem* BBFileSystemDataManager::addFileItem(const QFileInfo &fileInfo, BBFILE *&pOutFolderContent)
+{
+    QListWidgetItem *pItem = new QListWidgetItem;
+    pItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
+    pItem->setSizeHint(BBFileListWidget::m_ItemSize);
+    if (fileInfo.isDir())
+    {
+        // is folder
+        pItem->setText(fileInfo.fileName());
+        pItem->setIcon(getIcon(BB_PATH_RESOURCE_ICON(folder5.png)));
+        pOutFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Dir));
+    }
+    else
+    {
+        // is file
+        pItem->setText(fileInfo.baseName());
+        QString suffix = fileInfo.suffix();
+        if (m_MeshSuffixs.contains(suffix))
         {
-            // is folder
-            pItem->setText(fileInfo.fileName());
-            pItem->setIcon(getIcon(BB_PATH_RESOURCE_ICON(folder5.png)));
-            pFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Dir));
+            QString sourcePath = fileInfo.absoluteFilePath();
+            QIcon icon = getMeshOverviewMap(sourcePath);
+            pItem->setIcon(icon);
+            pOutFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Mesh));
+        }
+        else if (m_TextureSuffixs.contains(suffix))
+        {
+            // Picture files use themselves as icons
+            pItem->setIcon(getTextureIcon(fileInfo.absoluteFilePath()));
+            pOutFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Texture));
+        }
+        else if (m_AudioSuffixs.contains(suffix))
+        {
+            pItem->setIcon(getIcon(BB_PATH_RESOURCE_PICTURE(audio.jpg)));
+            pOutFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Audio));
+        }
+        else if (m_SceneSuffixs.contains(suffix))
+        {
+            pItem->setIcon(getIcon(BB_PATH_RESOURCE_ICON(scene2.png)));
+            pOutFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Scene));
+        }
+        else if (m_ScriptSuffixs.contains(suffix))
+        {
+            pItem->setIcon(getIcon(BB_PATH_RESOURCE_ICON(lua.png)));
+            pOutFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Script));
+        }
+        else if (m_MaterialSuffixs.contains(suffix))
+        {
+//            Material* material = Material::mtlMap.value(fileInfo.absoluteFilePath());
+//            item->setIcon(QIcon(material->getPreview()));
+//            pOutFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Material));
         }
         else
         {
-            // is file
-            pItem->setText(fileInfo.baseName());
-            QString suffix = fileInfo.suffix();
-            if (m_MeshSuffixs.contains(suffix))
-            {
-                QString sourcePath = fileInfo.absoluteFilePath();
-                QIcon icon = getMeshOverviewMap(sourcePath);
-                pItem->setIcon(icon);
-                pFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Mesh));
-            }
-            else if (m_TextureSuffixs.contains(suffix))
-            {
-                // Picture files use themselves as icons
-                pItem->setIcon(getTextureIcon(fileInfo.absoluteFilePath()));
-                pFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Texture));
-            }
-            else if (m_AudioSuffixs.contains(suffix))
-            {
-                pItem->setIcon(getIcon(BB_PATH_RESOURCE_PICTURE(audio.jpg)));
-                pFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Audio));
-            }
-            else if (m_ScriptSuffixs.contains(suffix))
-            {
-                pItem->setIcon(getIcon(BB_PATH_RESOURCE_ICON(lua.png)));
-                pFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Script));
-            }
-            else if (m_MaterialSuffixs.contains(suffix))
-            {
-//                Material* material = Material::mtlMap.value(fileInfo.absoluteFilePath());
-//                item->setIcon(QIcon(material->getPreview()));
-//                pFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Material));
-            }
-            else
-            {
-                pFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Other));
-            }
+            pOutFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Other));
         }
     }
-    return pFolderContent;
+
+    return pItem;
 }
 
 QIcon BBFileSystemDataManager::getMeshOverviewMap(const QString &sourcePath)

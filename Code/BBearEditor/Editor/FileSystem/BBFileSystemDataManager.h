@@ -34,7 +34,7 @@ public:
     QListWidgetItem* getFileItem(QTreeWidgetItem *pParentFolderItem, const QString &filePath);
     inline QList<QListWidgetItem*> getSelectedFileItems() { return m_SelectedFileItems; }
     bool openFile(const QString &filePath);
-    bool newFolder(const QString &parentPath, QTreeWidgetItem *&pFolderItem, QListWidgetItem *&pOutFileItem);
+    bool newFolder(const QString &parentPath, QTreeWidgetItem *&pOutFolderItem, QListWidgetItem *&pOutFileItem);
     bool newScene(const QString &parentPath, QListWidgetItem *&pOutFileItem);
     bool showInFolder(const QString &filePath);
     bool rename(QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pFileItem,
@@ -82,6 +82,7 @@ public:
     static QList<QString> m_MeshSuffixs;
     static QList<QString> m_TextureSuffixs;
     static QList<QString> m_AudioSuffixs;
+    static QList<QString> m_SceneSuffixs;
     static QList<QString> m_ScriptSuffixs;
     static QList<QString> m_MaterialSuffixs;
 
@@ -97,6 +98,7 @@ private:
     void buildFileData(QQueue<BBFOLDER> &queue, const QList<QString> &nameFilter = QList<QString>());
     BBFILE* loadFolderContent(const QString &parentPath, QList<QListWidgetItem*> &newItems,
                               const QList<QString> &nameFilter = QList<QString>());
+    QListWidgetItem* addFileItem(const QFileInfo &fileInfo, BBFILE *&pOutFolderContent);
 
     QIcon getMeshOverviewMap(const QString &sourcePath);
     void createMeshOverviewMap(const QString &sourcePath, const QString &overviewMapPath);

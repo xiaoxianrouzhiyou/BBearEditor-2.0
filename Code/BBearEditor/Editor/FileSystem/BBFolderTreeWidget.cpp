@@ -86,6 +86,7 @@ void BBFolderTreeWidget::newSceneAction()
     QTreeWidgetItem *pItem = currentItem();
     QString parentPath = BBFileSystemDataManager::getAbsolutePath(pItem);
     emit newScene(parentPath);
+    openRenameEditor();
 }
 
 void BBFolderTreeWidget::showInFolder()

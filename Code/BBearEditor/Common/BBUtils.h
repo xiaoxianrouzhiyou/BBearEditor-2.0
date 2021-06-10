@@ -56,9 +56,10 @@ namespace BBFileSystem
         Mesh = 1,
         Audio = 2,
         Texture = 3,
-        Material = 4,
-        Script = 5,
-        Other = 6
+        Scene = 4,
+        Material = 5,
+        Script = 6,
+        Other = 7
     };
 
     struct BBFileInfo

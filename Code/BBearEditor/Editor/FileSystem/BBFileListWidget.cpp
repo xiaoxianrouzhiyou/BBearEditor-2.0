@@ -148,6 +148,7 @@ void BBFileListWidget::newFolder()
 void BBFileListWidget::newSceneAction()
 {
     emit newScene(m_ParentPath);
+    openRenameEditor();
 }
 
 void BBFileListWidget::newMaterial()

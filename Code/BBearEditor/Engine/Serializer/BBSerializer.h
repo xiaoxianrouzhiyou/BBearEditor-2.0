@@ -5,7 +5,8 @@
 class BBSerializer
 {
 public:
-    static void saveToFile(const char *pFilePath, void *pBuffer, int nSize);
+    static bool createEmptyFile(const char *pFilePath);
+    static bool saveToFile(const char *pFilePath, void *pBuffer, int nSize);
 };
 
 #endif // BBSERIALIZER_H
