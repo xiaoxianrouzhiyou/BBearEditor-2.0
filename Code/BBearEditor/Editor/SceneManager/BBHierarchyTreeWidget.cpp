@@ -3,9 +3,8 @@
 #include <QMenu>
 #include "BBGameObject.h"
 #include "BBGameObjectSet.h"
+#include "Scene/BBSceneManager.h"
 
-
-QMap<QTreeWidgetItem*, BBGameObject*> BBHierarchyTreeWidget::m_ObjectMap;
 
 BBHierarchyTreeWidget::BBHierarchyTreeWidget(QWidget *parent)
     : BBTreeWidget(parent)
@@ -67,7 +66,7 @@ void BBHierarchyTreeWidget::setMenu()
 void BBHierarchyTreeWidget::pasteOne(QTreeWidgetItem *pSource, QTreeWidgetItem* pTranscript)
 {
     // copy GameObject in the scene, and insert map
-    copyGameObject(m_ObjectMap.value(pSource), pTranscript);
+    copyGameObject(BBSceneManager::getGameObject(pSource), pTranscript);
     // handle children
     for (int i = 0; i < pSource->childCount(); i++)
     {
@@ -78,7 +77,7 @@ void BBHierarchyTreeWidget::pasteOne(QTreeWidgetItem *pSource, QTreeWidgetItem* 
 void BBHierarchyTreeWidget::deleteOne(QTreeWidgetItem *pItem)
 {
     // remove corresponding gameobject and map
-    BBGameObject *pGameObject = m_ObjectMap.value(pItem);
+    BBGameObject *pGameObject = BBSceneManager::getGameObject(pItem);
 
 //    //如果是模型对象 其使用的材质的使用者列表 需要除去该对象
 //    if (object->getClassName() == ModelClassName)
@@ -87,7 +86,7 @@ void BBHierarchyTreeWidget::deleteOne(QTreeWidgetItem *pItem)
 //        model->materialRemoveUser();
 //    }
 
-    m_ObjectMap.remove(pItem);
+    BBSceneManager::removeObjectMap(pItem);
     BBTreeWidget::deleteOne(pItem);
     // cannot delete pGameObject before deleting treeItem
     // because when treeitem changes, removing coordinate system will be triggered, which needs pGameObject
@@ -103,8 +102,8 @@ bool BBHierarchyTreeWidget::moveItem()
         for (int i = 0; i < items.count(); i++)
         {
             QTreeWidgetItem *pItem = items.at(i);
-            BBGameObject *pParent = m_ObjectMap.value(pItem->parent());
-            m_ObjectMap.value(pItem)->setLocalTransform(pParent);
+            BBGameObject *pParent = BBSceneManager::getGameObject(pItem->parent());
+            BBSceneManager::getGameObject(pItem)->setLocalTransform(pParent);
         }
         // update the property manager
         // otherwise, the local coordinates is the previous value that is relative to previous parent
@@ -166,10 +165,10 @@ void BBHierarchyTreeWidget::moveItemToIndicator()
         // remove item that needs to move
         takeTopLevelItem(topLevelItemCount() - 1);
         // change local coordinate
-        BBGameObject *pGameObject = m_ObjectMap.value(pItem);
+        BBGameObject *pGameObject = BBSceneManager::getGameObject(pItem);
         if (!pGameObject)
             return;
-        BBGameObject *pParentGameObject = m_ObjectMap.value(pParent);
+        BBGameObject *pParentGameObject = BBSceneManager::getGameObject(pParent);
         pGameObject->setLocalTransform(pParentGameObject);
         // add in the new position
         if (pParent)
@@ -211,7 +210,7 @@ void BBHierarchyTreeWidget::addGameObject(BBGameObject *pGameObject)
     pItem->setIcon(1, getClassIcon(pGameObject->getIconName()));
 
     addTopLevelItem(pItem);
-    m_ObjectMap.insert(pItem, pGameObject);
+    BBSceneManager::insertObjectMap(pItem, pGameObject);
     // parent = NULL, since pItem is in the top level
     pGameObject->setLocalTransform(NULL);
     // setCurrentItem needs to be placed in back of insert map
@@ -221,9 +220,9 @@ void BBHierarchyTreeWidget::addGameObject(BBGameObject *pGameObject)
 
 void BBHierarchyTreeWidget::addGameObject(BBGameObject *pGameObject, QTreeWidgetItem *pItem)
 {
-    m_ObjectMap.insert(pItem, pGameObject);
+    BBSceneManager::insertObjectMap(pItem, pGameObject);
 
-    BBGameObject *pParent = m_ObjectMap.value(pItem->parent());
+    BBGameObject *pParent = BBSceneManager::getGameObject(pItem->parent());
     pGameObject->setLocalTransform(pParent);
 
     // show property in inspector
@@ -240,32 +239,32 @@ void BBHierarchyTreeWidget::selectPickedItem(BBGameObject *pGameObject)
     }
     else
     {
-        setCurrentItem(m_ObjectMap.key(pGameObject));
+        setCurrentItem(BBSceneManager::getSceneTreeItem(pGameObject));
     }
 }
 
 void BBHierarchyTreeWidget::selectPickedItems(QList<BBGameObject*> gameObjects)
 {
-    QMap<QTreeWidgetItem*, BBGameObject*>::Iterator itr;
-    for (itr = m_ObjectMap.begin(); itr != m_ObjectMap.end(); itr++)
+    QList<QTreeWidgetItem*> items = BBSceneManager::getSceneTreeItems(gameObjects);
+    QTreeWidgetItemIterator it(this);
+    while (*it)
     {
-        QTreeWidgetItem *pItem = itr.key();
-        BBGameObject *pGameObject = itr.value();
-        if (gameObjects.contains(pGameObject))
+        if (items.contains(*it))
         {
-            pItem->setSelected(true);
+            (*it)->setSelected(true);
         }
         else
         {
-            pItem->setSelected(false);
+            (*it)->setSelected(false);
         }
+        it++;
     }
 }
 
 void BBHierarchyTreeWidget::updateMultipleSelectedItems(BBGameObject *pGameObject)
 {
     // get item corresponding object
-    QTreeWidgetItem *pItem = m_ObjectMap.key(pGameObject);
+    QTreeWidgetItem *pItem = BBSceneManager::getSceneTreeItem(pGameObject);
     if (pItem->isSelected())
     {
         // If it is already selected, uncheck it
@@ -308,7 +307,7 @@ void BBHierarchyTreeWidget::changeSelectedItems()
     else if (count == 1)
     {
         // single selection
-        BBGameObject *pGameObject = m_ObjectMap.value(items.first());
+        BBGameObject *pGameObject = BBSceneManager::getGameObject(items.first());
         // select corresponding object in OpenGL view
         setCoordinateSystemSelectedObject(pGameObject);
         // show properties in inspector
@@ -331,7 +330,7 @@ void BBHierarchyTreeWidget::changeSelectedItems()
             }
             if (parent == NULL)
             {
-                gameObjects.append(m_ObjectMap.value(items.at(i)));
+                gameObjects.append(BBSceneManager::getGameObject(items.at(i)));
             }
             // if there is parent, the item can be processed when its parent is processed
         }
@@ -369,7 +368,7 @@ void BBHierarchyTreeWidget::changeSelectedItems()
 void BBHierarchyTreeWidget::doubleClickItem(QTreeWidgetItem *pItem, int nColumn)
 {
     Q_UNUSED(nColumn);
-    lookAtGameObject(m_ObjectMap.value(pItem));
+    lookAtGameObject(BBSceneManager::getGameObject(pItem));
 }
 
 void BBHierarchyTreeWidget::deleteAction()

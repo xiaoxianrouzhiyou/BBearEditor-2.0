@@ -9,7 +9,7 @@
 #include <QTreeWidgetItem>
 #include "BBPropertyFactory.h"
 #include "BBGameObject.h"
-#include "SceneManager/BBHierarchyTreeWidget.h"
+#include "Scene/BBSceneManager.h"
 
 
 //---------------------------------------------------------------------------------------------------
@@ -259,7 +259,7 @@ BBTransformGroupManager::BBTransformGroupManager(BBGameObject *pGameObject, QWid
     QObject::connect(pActionLocal, SIGNAL(triggered()), this, SLOT(showLocalCoordinate()));
 
     // if the item corresponding pGameObject is not at the top level, show local coordinate
-    QTreeWidgetItem *pItem = BBHierarchyTreeWidget::m_ObjectMap.key(m_pCurrentGameObject);
+    QTreeWidgetItem *pItem = BBSceneManager::getSceneTreeItem(m_pCurrentGameObject);
     if (pItem)
     {
         pActionLocal->setEnabled(true);
@@ -326,10 +326,10 @@ void BBTransformGroupManager::changePosition(const QVector3D &value)
     }
     else
     {
-        QTreeWidgetItem *pParent = BBHierarchyTreeWidget::m_ObjectMap.key(m_pCurrentGameObject)->parent();
+        QTreeWidgetItem *pParent = BBSceneManager::getSceneTreeItem(m_pCurrentGameObject)->parent();
         if (pParent)
         {
-            BBGameObject *pParentObject = BBHierarchyTreeWidget::m_ObjectMap.value(pParent);
+            BBGameObject *pParentObject = BBSceneManager::getGameObject(pParent);
             // Convert local coordinates to global coordinates
             m_pCurrentGameObject->setPosition(pParentObject->getPosition() + value);
         }
@@ -351,10 +351,10 @@ void BBTransformGroupManager::changeRotation(const QVector3D &value)
     }
     else
     {
-        QTreeWidgetItem *pParent = BBHierarchyTreeWidget::m_ObjectMap.key(m_pCurrentGameObject)->parent();
+        QTreeWidgetItem *pParent = BBSceneManager::getSceneTreeItem(m_pCurrentGameObject)->parent();
         if (pParent)
         {
-            BBGameObject *pParentObject = BBHierarchyTreeWidget::m_ObjectMap.value(pParent);
+            BBGameObject *pParentObject = BBSceneManager::getGameObject(pParent);
 
             QQuaternion rot = QQuaternion::fromEulerAngles(value);
             // Convert local coordinates to global coordinates
@@ -377,10 +377,10 @@ void BBTransformGroupManager::changeScale(const QVector3D &value)
     }
     else
     {
-        QTreeWidgetItem *pParent = BBHierarchyTreeWidget::m_ObjectMap.key(m_pCurrentGameObject)->parent();
+        QTreeWidgetItem *pParent = BBSceneManager::getSceneTreeItem(m_pCurrentGameObject)->parent();
         if (pParent)
         {
-            BBGameObject *pParentObject = BBHierarchyTreeWidget::m_ObjectMap.value(pParent);
+            BBGameObject *pParentObject = BBSceneManager::getGameObject(pParent);
             // Convert local coordinates to global coordinates
             m_pCurrentGameObject->setScale(pParentObject->getScale() * value);
         }
@@ -422,10 +422,3 @@ void BBTransformGroupManager::showLocalCoordinate()
     updateRotationValue();
     updateScaleValue();
 }
-
-
-
-
-//---------------------------------------------------------------------------------------------------
-//
-//---------------------------------------------------------------------------------------------------

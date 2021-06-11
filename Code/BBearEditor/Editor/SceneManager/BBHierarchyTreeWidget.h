@@ -13,9 +13,6 @@ public:
     explicit BBHierarchyTreeWidget(QWidget *parent = 0);
     QString getMimeType() { return BB_MIMETYPE_HIERARCHYTREEWIDGET; }
 
-    // Save the mapping between each item and its corresponding GameObject
-    static QMap<QTreeWidgetItem*, BBGameObject*> m_ObjectMap;
-
 private:
     void setMenu() override;
     void pasteOne(QTreeWidgetItem *pSource, QTreeWidgetItem* pTranscript) override;
