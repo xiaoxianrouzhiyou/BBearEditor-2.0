@@ -1,6 +1,7 @@
 #include "BBEditViewDockWidget.h"
 #include <QKeyEvent>
 
+
 BBEditViewDockWidget::BBEditViewDockWidget(QWidget *pParent)
     : QDockWidget(pParent)
 {
@@ -43,6 +44,11 @@ void BBEditViewDockWidget::keyPressEvent(QKeyEvent *e)
         break;
     default:
         break;
+    }
+
+    if ((e->modifiers() == Qt::ControlModifier) && (e->key() == Qt::Key_S))
+    {
+
     }
 }
 

@@ -1,7 +1,7 @@
 #include "BBRenderableObject.h"
 #include "Render/BBGLShader.h"
 #include "BBUtils.h"
-#include "Scene/BBCamera.h"
+#include "Render/BBCamera.h"
 #include "Render/BBGLBuffers.h"
 
 BBRenderableObject::BBRenderableObject()

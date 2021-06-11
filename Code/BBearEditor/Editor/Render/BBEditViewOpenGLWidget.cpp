@@ -1,6 +1,6 @@
 #include "BBEditViewOpenGLWidget.h"
 #include "Scene/BBScene.h"
-#include "Scene/BBCamera.h"
+#include "Render/BBCamera.h"
 #include <QMouseEvent>
 #include "BBUtils.h"
 #include "BBGameObject.h"

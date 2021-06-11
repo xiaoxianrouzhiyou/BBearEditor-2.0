@@ -28,15 +28,15 @@ public:
 
     virtual void setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform = true);
     virtual void setRotation(const QVector3D &rotation, bool bUpdateLocalTransform = true);
-    QVector3D getRotation() { return m_Rotation; }
-    QVector3D getLocalRotation() { return m_LocalRotation; }
-    QQuaternion getQuaternion() { return m_Quaternion; }
-    QQuaternion getLocalQuaternion() { return m_LocalQuaternion; }
+    inline QVector3D getRotation() { return m_Rotation; }
+    inline QVector3D getLocalRotation() { return m_LocalRotation; }
+    inline QQuaternion getQuaternion() { return m_Quaternion; }
+    inline QQuaternion getLocalQuaternion() { return m_LocalQuaternion; }
 
     virtual void setScale(float scale, bool bUpdateLocalTransform = true);
     virtual void setScale(const QVector3D &scale, bool bUpdateLocalTransform = true);
-    QVector3D getScale() { return m_Scale; }
-    QVector3D getLocalScale() { return m_LocalScale; }
+    inline QVector3D getScale() { return m_Scale; }
+    inline QVector3D getLocalScale() { return m_LocalScale; }
 
     void setLocalTransform(BBGameObject* pParent);
 
@@ -44,11 +44,11 @@ public:
     inline bool getActivity() { return m_bActive; }
     virtual void setVisibility(bool bVisible);
 
-    void setName(const QString &name) { m_strName = name; }
+    inline void setName(const QString &name) { m_strName = name; }
     inline QString getName() { return m_strName; }
-    void setClassName(const QString &className) { m_strClassName = className; }
+    inline void setClassName(const QString &className) { m_strClassName = className; }
     inline QString getClassName()  { return m_strClassName; }
-    void setIconName(const QString &iconName) { m_strIconName = iconName; }
+    inline void setIconName(const QString &iconName) { m_strIconName = iconName; }
     inline QString getIconName()  { return m_strIconName; }
     void setBaseAttributes(const QString &name, const QString &className, const QString &iconName, bool bActive = true);
     inline QString getFilePath()  { return m_strFilePath; }

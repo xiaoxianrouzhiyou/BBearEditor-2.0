@@ -2,7 +2,7 @@
 #include "Render/BBGLBuffers.h"
 #include "Render/BBGLShader.h"
 #include "BBUtils.h"
-#include "Scene/BBCamera.h"
+#include "Render/BBCamera.h"
 
 BBHorizontalPlane::BBHorizontalPlane()
     : BBRenderableObject(0, 0, 0, 0, 0, 0, 1, 1, 1)

@@ -1,6 +1,6 @@
 #include "BBScene.h"
 #include "BBUtils.h"
-#include "BBCamera.h"
+#include "Render/BBCamera.h"
 #include "3D/BBSkyBox.h"
 #include "BBHorizontalPlane.h"
 #include "BBGameObject.h"

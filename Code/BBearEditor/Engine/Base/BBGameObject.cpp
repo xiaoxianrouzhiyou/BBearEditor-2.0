@@ -1,6 +1,6 @@
 #include "BBGameObject.h"
-#include "Scene/BBCamera.h"
-#include "BBHierarchyTreeWidget.h"
+#include "Render/BBCamera.h"
+#include "SceneManager/BBHierarchyTreeWidget.h"
 #include "BBGameObjectSet.h"
 
 
@@ -33,7 +33,6 @@ BBGameObject::BBGameObject(float px, float py, float pz,
     setModelMatrix(px, py, pz, m_Quaternion, sx, sy, sz);
     m_bActive = true;
 
-    // 零时
     m_strName = "name";
     m_strClassName = "class name";
     m_strIconName = "model";

@@ -2,7 +2,7 @@
 #include "Render/BBGLBuffers.h"
 #include "Render/BBGLShader.h"
 #include "BBUtils.h"
-#include "Scene/BBCamera.h"
+#include "Render/BBCamera.h"
 #include "Geometry/BBBoundingBox.h"
 #include "BBGameObjectSet.h"
 

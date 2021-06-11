@@ -1,6 +1,6 @@
 #include "BBSkyBox.h"
 #include "Render/BBGLBuffers.h"
-#include "Scene/BBCamera.h"
+#include "Render/BBCamera.h"
 #include "Render/BBGLShader.h"
 #include "BBUtils.h"
 

@@ -39,7 +39,7 @@ SOURCES += \
     Editor/Window/BBMainWindow.cpp \
     Editor/Window/BBProjectDialog.cpp \
     Editor/Window/BBTitleBar.cpp \
-    Editor/Common/BBHierarchyTreeWidget.cpp \
+    Editor/SceneManager/BBHierarchyTreeWidget.cpp \
     Editor/Common/BBObjectListWidget.cpp \
     Editor/Common/BBResizableWidget.cpp \
     Editor/Common/BBTreeWidget.cpp \
@@ -58,7 +58,7 @@ SOURCES += \
     Engine/Geometry/BBRay.cpp \
     Engine/Render/BBGLBuffers.cpp \
     Engine/Render/BBGLShader.cpp \
-    Engine/Scene/BBCamera.cpp \
+    Engine/Render/BBCamera.cpp \
     Engine/Scene/BBScene.cpp \
     Common/BBCoordinateSystem.cpp \
     Common/BBHorizontalPlane.cpp \
@@ -84,7 +84,7 @@ HEADERS += \
     Editor/Window/BBMainWindow.h \
     Editor/Window/BBProjectDialog.h \
     Editor/Window/BBTitleBar.h \
-    Editor/Common/BBHierarchyTreeWidget.h \
+    Editor/SceneManager/BBHierarchyTreeWidget.h \
     Editor/Common/BBObjectListWidget.h \
     Editor/Common/BBResizableWidget.h \
     Editor/Common/BBTreeWidget.h \
@@ -103,7 +103,7 @@ HEADERS += \
     Engine/Geometry/BBRay.h \
     Engine/Render/BBGLBuffers.h \
     Engine/Render/BBGLShader.h \
-    Engine/Scene/BBCamera.h \
+    Engine/Render/BBCamera.h \
     Engine/Scene/BBScene.h \
     Common/BBCoordinateSystem.h \
     Common/BBHorizontalPlane.h \

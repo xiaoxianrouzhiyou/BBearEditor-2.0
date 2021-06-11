@@ -9,7 +9,7 @@
 #include <QTreeWidgetItem>
 #include "BBPropertyFactory.h"
 #include "BBGameObject.h"
-#include "BBHierarchyTreeWidget.h"
+#include "SceneManager/BBHierarchyTreeWidget.h"
 
 
 //---------------------------------------------------------------------------------------------------
