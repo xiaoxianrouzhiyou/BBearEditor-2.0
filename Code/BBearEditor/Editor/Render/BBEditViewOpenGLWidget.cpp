@@ -362,6 +362,7 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
         // Set to empty for the next calculation
         m_pPreviewObject = NULL;
         event->accept();
+        setFocus();
     }
 //    else if ((data = event->mimeData()->data("light")) != nullptr)
 //    {

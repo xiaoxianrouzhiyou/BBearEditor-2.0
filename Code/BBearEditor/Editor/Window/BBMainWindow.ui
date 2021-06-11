@@ -1021,7 +1021,7 @@ BBFileListWidget::item:selected {
   <customwidget>
    <class>BBHierarchyTreeWidget</class>
    <extends>QTreeWidget</extends>
-   <header>Common/bbhierarchytreewidget.h</header>
+   <header>SceneManager/bbhierarchytreewidget.h</header>
   </customwidget>
   <customwidget>
    <class>BBTreeWidget</class>
