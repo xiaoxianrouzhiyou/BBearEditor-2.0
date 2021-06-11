@@ -645,28 +645,32 @@ void BBCoordinateSector::init()
 
 void BBCoordinateSector::render(BBCamera *pCamera)
 {
-    // unit = 1 degree, 1 triangle, 3 indexes
-    int nIndexCount = abs(m_nAngle) * 3;
-    unsigned short *pIndexes = new unsigned short[nIndexCount];
-
-    // if the angle is positive, show sector in front semicircle
-    if (m_nAngle > 0)
+    if (m_nAngle != 0)
     {
-        for (int i = 0; i < nIndexCount; i++)
+        // unit = 1 degree, 1 triangle, 3 indexes
+        int nIndexCount = abs(m_nAngle) * 3;
+        unsigned short *pIndexes = new unsigned short[nIndexCount];
+
+        // if the angle is positive, show sector in front semicircle
+        if (m_nAngle > 0)
         {
-            pIndexes[i] = m_pIndexes[i];
+            for (int i = 0; i < nIndexCount; i++)
+            {
+                pIndexes[i] = m_pIndexes[i];
+            }
         }
-    }
-    // if the angle is negative, show sector in back semicircle
-    else
-    {
-        for (int i = 0; i < nIndexCount; i++)
+        // if the angle is negative, show sector in back semicircle
+        else
         {
-            pIndexes[i] = m_pIndexes[m_nIndexCount - i - 1];
+            for (int i = 0; i < nIndexCount; i++)
+            {
+                pIndexes[i] = m_pIndexes[m_nIndexCount - i - 1];
+            }
         }
+
+        m_pShader->bindElementBufferObject(pIndexes, nIndexCount);
     }
 
-    m_pShader->bindElementBufferObject(pIndexes, nIndexCount);
     BBCoordinateComponent::render(pCamera);
 }
 
