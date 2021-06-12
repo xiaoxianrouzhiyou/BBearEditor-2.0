@@ -67,7 +67,6 @@ SOURCES += \
     Engine/Allocator/tlsf/tlsf.c \
     Engine/Allocator/BBAllocator.cpp \
     Engine/Profiler/BBProfiler.cpp \
-    Engine/Serializer/BBSerializer.cpp \
     Engine/Scene/BBSceneManager.cpp
 
 HEADERS += \
@@ -115,7 +114,6 @@ HEADERS += \
     Engine/Allocator/BBAllocator.h \
     Engine/Allocator/BBMemoryLabel.h \
     Engine/Profiler/BBProfiler.h \
-    Engine/Serializer/BBSerializer.h \
     Engine/Scene/BBSceneManager.h
 
 FORMS += \

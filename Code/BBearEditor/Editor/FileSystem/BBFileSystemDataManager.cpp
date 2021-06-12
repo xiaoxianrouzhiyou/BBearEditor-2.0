@@ -9,9 +9,9 @@
 #include "Scene/BBScene.h"
 #include "3D/BBModel.h"
 #include "BBTreeWidget.h"
-#include "Serializer/BBSerializer.h"
 #include "Scene/BBSceneManager.h"
 #include "Render/BBEditViewDockWidget.h"
+#include <fstream>
 
 
 QList<QString> BBFileSystemDataManager::m_MeshSuffixs = {"obj", "fbx"};
@@ -254,7 +254,8 @@ bool BBFileSystemDataManager::newFolder(const QString &parentPath, QTreeWidgetIt
 bool BBFileSystemDataManager::newScene(const QString &parentPath, QListWidgetItem *&pOutFileItem)
 {
     QString filePath = getExclusiveFilePath(parentPath, BBConstant::BB_NAME_DEFAULT_SCENE);
-    BB_PROCESS_ERROR_RETURN_FALSE(BBSerializer::createEmptyFile(filePath.toStdString().c_str()));
+    std::ofstream file(filePath.toStdString().c_str());
+    BB_PROCESS_ERROR_RETURN_FALSE(file);
     BBFILE *pParentContent = getFolderContent(getFolderItemByPath(parentPath));
     pOutFileItem = addFileItem(QFileInfo(filePath), pParentContent);
     return true;

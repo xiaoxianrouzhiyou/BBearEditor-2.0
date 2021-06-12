@@ -1,0 +1,9 @@
+package Serializer;
+option optimize_for = LITE_RUNTIME;
+
+message BBHierarchyTreeWidgetItem
+{
+    optional int32 index = 1;
+
+    repeated int32 children = 2;
+}

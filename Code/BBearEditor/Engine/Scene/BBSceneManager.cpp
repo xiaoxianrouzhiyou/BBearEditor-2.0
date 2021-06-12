@@ -1,5 +1,4 @@
 #include "BBSceneManager.h"
-#include "Serializer/BBSerializer.h"
 
 
 QMap<QTreeWidgetItem*, BBGameObject*> BBSceneManager::m_ObjectMap;
