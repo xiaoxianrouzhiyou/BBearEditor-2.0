@@ -67,7 +67,10 @@ SOURCES += \
     Engine/Allocator/tlsf/tlsf.c \
     Engine/Allocator/BBAllocator.cpp \
     Engine/Profiler/BBProfiler.cpp \
-    Engine/Scene/BBSceneManager.cpp
+    Engine/Scene/BBSceneManager.cpp \
+    Engine/Serializer/BBGameObject.serializer.cpp \
+    Engine/Serializer/BBHierarchyTreeWidgetItem.serializer.cpp \
+    Engine/Serializer/BBVector.serializer.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -114,7 +117,10 @@ HEADERS += \
     Engine/Allocator/BBAllocator.h \
     Engine/Allocator/BBMemoryLabel.h \
     Engine/Profiler/BBProfiler.h \
-    Engine/Scene/BBSceneManager.h
+    Engine/Scene/BBSceneManager.h \
+    Engine/Serializer/BBGameObject.serializer.h \
+    Engine/Serializer/BBHierarchyTreeWidgetItem.serializer.h \
+    Engine/Serializer/BBVector.serializer.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

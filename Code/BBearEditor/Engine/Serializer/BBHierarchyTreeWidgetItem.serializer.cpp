@@ -10,7 +10,7 @@
 #include "wire_format_lite_inl.h"
 // @@protoc_insertion_point(includes)
 
-namespace Serializer {
+namespace BBSerializer {
 
 void protobuf_ShutdownFile_BBHierarchyTreeWidgetItem_2eproto() {
   delete BBHierarchyTreeWidgetItem::default_instance_;
@@ -231,12 +231,12 @@ void BBHierarchyTreeWidgetItem::Swap(BBHierarchyTreeWidgetItem* other) {
 }
 
 ::std::string BBHierarchyTreeWidgetItem::GetTypeName() const {
-  return "Serializer.BBHierarchyTreeWidgetItem";
+  return "BBSerializer.BBHierarchyTreeWidgetItem";
 }
 
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace Serializer
+}  // namespace BBSerializer
 
 // @@protoc_insertion_point(global_scope)

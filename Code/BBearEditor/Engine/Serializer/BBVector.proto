@@ -1,4 +1,4 @@
-package Serializer;
+package BBSerializer;
 option optimize_for = LITE_RUNTIME;
 
 message BBVector2f

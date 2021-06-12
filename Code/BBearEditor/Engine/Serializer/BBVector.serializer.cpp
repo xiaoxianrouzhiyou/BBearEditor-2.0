@@ -10,7 +10,7 @@
 #include "wire_format_lite_inl.h"
 // @@protoc_insertion_point(includes)
 
-namespace Serializer {
+namespace BBSerializer {
 
 void protobuf_ShutdownFile_BBVector_2eproto() {
   delete BBVector2f::default_instance_;
@@ -242,7 +242,7 @@ void BBVector2f::Swap(BBVector2f* other) {
 }
 
 ::std::string BBVector2f::GetTypeName() const {
-  return "Serializer.BBVector2f";
+  return "BBSerializer.BBVector2f";
 }
 
 
@@ -436,7 +436,7 @@ void BBVector2i::Swap(BBVector2i* other) {
 }
 
 ::std::string BBVector2i::GetTypeName() const {
-  return "Serializer.BBVector2i";
+  return "BBSerializer.BBVector2i";
 }
 
 
@@ -659,7 +659,7 @@ void BBVector3f::Swap(BBVector3f* other) {
 }
 
 ::std::string BBVector3f::GetTypeName() const {
-  return "Serializer.BBVector3f";
+  return "BBSerializer.BBVector3f";
 }
 
 
@@ -888,7 +888,7 @@ void BBVector3i::Swap(BBVector3i* other) {
 }
 
 ::std::string BBVector3i::GetTypeName() const {
-  return "Serializer.BBVector3i";
+  return "BBSerializer.BBVector3i";
 }
 
 
@@ -1144,7 +1144,7 @@ void BBVector4f::Swap(BBVector4f* other) {
 }
 
 ::std::string BBVector4f::GetTypeName() const {
-  return "Serializer.BBVector4f";
+  return "BBSerializer.BBVector4f";
 }
 
 
@@ -1408,7 +1408,7 @@ void BBVector4i::Swap(BBVector4i* other) {
 }
 
 ::std::string BBVector4i::GetTypeName() const {
-  return "Serializer.BBVector4i";
+  return "BBSerializer.BBVector4i";
 }
 
 
@@ -1565,7 +1565,7 @@ void BBMatrix4f::Swap(BBMatrix4f* other) {
 }
 
 ::std::string BBMatrix4f::GetTypeName() const {
-  return "Serializer.BBMatrix4f";
+  return "BBSerializer.BBMatrix4f";
 }
 
 
@@ -1729,12 +1729,12 @@ void BBMatrix4fB::Swap(BBMatrix4fB* other) {
 }
 
 ::std::string BBMatrix4fB::GetTypeName() const {
-  return "Serializer.BBMatrix4fB";
+  return "BBSerializer.BBMatrix4fB";
 }
 
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace Serializer
+}  // namespace BBSerializer
 
 // @@protoc_insertion_point(global_scope)

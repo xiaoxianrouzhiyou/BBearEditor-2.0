@@ -24,7 +24,7 @@
 #include "extension_set.h"
 // @@protoc_insertion_point(includes)
 
-namespace Serializer {
+namespace BBSerializer {
 
 // Internal implementation detail -- do not call these.
 void  protobuf_AddDesc_BBVector_2eproto();
@@ -99,7 +99,7 @@ class BBVector2f : public ::google::protobuf::MessageLite {
   inline float y() const;
   inline void set_y(float value);
   
-  // @@protoc_insertion_point(class_scope:Serializer.BBVector2f)
+  // @@protoc_insertion_point(class_scope:BBSerializer.BBVector2f)
  private:
   inline void set_has_x();
   inline void clear_has_x();
@@ -178,7 +178,7 @@ class BBVector2i : public ::google::protobuf::MessageLite {
   inline ::google::protobuf::int32 y() const;
   inline void set_y(::google::protobuf::int32 value);
   
-  // @@protoc_insertion_point(class_scope:Serializer.BBVector2i)
+  // @@protoc_insertion_point(class_scope:BBSerializer.BBVector2i)
  private:
   inline void set_has_x();
   inline void clear_has_x();
@@ -264,7 +264,7 @@ class BBVector3f : public ::google::protobuf::MessageLite {
   inline float z() const;
   inline void set_z(float value);
   
-  // @@protoc_insertion_point(class_scope:Serializer.BBVector3f)
+  // @@protoc_insertion_point(class_scope:BBSerializer.BBVector3f)
  private:
   inline void set_has_x();
   inline void clear_has_x();
@@ -353,7 +353,7 @@ class BBVector3i : public ::google::protobuf::MessageLite {
   inline ::google::protobuf::int32 z() const;
   inline void set_z(::google::protobuf::int32 value);
   
-  // @@protoc_insertion_point(class_scope:Serializer.BBVector3i)
+  // @@protoc_insertion_point(class_scope:BBSerializer.BBVector3i)
  private:
   inline void set_has_x();
   inline void clear_has_x();
@@ -449,7 +449,7 @@ class BBVector4f : public ::google::protobuf::MessageLite {
   inline float w() const;
   inline void set_w(float value);
   
-  // @@protoc_insertion_point(class_scope:Serializer.BBVector4f)
+  // @@protoc_insertion_point(class_scope:BBSerializer.BBVector4f)
  private:
   inline void set_has_x();
   inline void clear_has_x();
@@ -548,7 +548,7 @@ class BBVector4i : public ::google::protobuf::MessageLite {
   inline ::google::protobuf::int32 w() const;
   inline void set_w(::google::protobuf::int32 value);
   
-  // @@protoc_insertion_point(class_scope:Serializer.BBVector4i)
+  // @@protoc_insertion_point(class_scope:BBSerializer.BBVector4i)
  private:
   inline void set_has_x();
   inline void clear_has_x();
@@ -631,7 +631,7 @@ class BBMatrix4f : public ::google::protobuf::MessageLite {
   inline ::google::protobuf::RepeatedField< float >*
       mutable_data();
   
-  // @@protoc_insertion_point(class_scope:Serializer.BBMatrix4f)
+  // @@protoc_insertion_point(class_scope:BBSerializer.BBMatrix4f)
  private:
   
   ::google::protobuf::RepeatedField< float > data_;
@@ -702,7 +702,7 @@ class BBMatrix4fB : public ::google::protobuf::MessageLite {
   inline ::std::string* mutable_data();
   inline ::std::string* release_data();
   
-  // @@protoc_insertion_point(class_scope:Serializer.BBMatrix4fB)
+  // @@protoc_insertion_point(class_scope:BBSerializer.BBMatrix4fB)
  private:
   inline void set_has_data();
   inline void clear_has_data();
@@ -1236,7 +1236,7 @@ inline ::std::string* BBMatrix4fB::release_data() {
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace Serializer
+}  // namespace BBSerializer
 
 // @@protoc_insertion_point(global_scope)
 

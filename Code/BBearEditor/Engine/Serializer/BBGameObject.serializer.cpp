@@ -10,7 +10,7 @@
 #include "wire_format_lite_inl.h"
 // @@protoc_insertion_point(includes)
 
-namespace Serializer {
+namespace BBSerializer {
 
 void protobuf_ShutdownFile_BBGameObject_2eproto() {
   delete BBGameObject::default_instance_;
@@ -22,7 +22,7 @@ void protobuf_AddDesc_BBGameObject_2eproto() {
   already_here = true;
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
-  ::Serializer::protobuf_AddDesc_BBVector_2eproto();
+  ::BBSerializer::protobuf_AddDesc_BBVector_2eproto();
   BBGameObject::default_instance_ = new BBGameObject();
   BBGameObject::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_BBGameObject_2eproto);
@@ -60,14 +60,14 @@ BBGameObject::BBGameObject()
 }
 
 void BBGameObject::InitAsDefaultInstance() {
-  position_ = const_cast< ::Serializer::BBVector3f*>(&::Serializer::BBVector3f::default_instance());
-  localposition_ = const_cast< ::Serializer::BBVector3f*>(&::Serializer::BBVector3f::default_instance());
-  rotation_ = const_cast< ::Serializer::BBVector3f*>(&::Serializer::BBVector3f::default_instance());
-  localrotation_ = const_cast< ::Serializer::BBVector3f*>(&::Serializer::BBVector3f::default_instance());
-  quaternion_ = const_cast< ::Serializer::BBVector4f*>(&::Serializer::BBVector4f::default_instance());
-  localquaternion_ = const_cast< ::Serializer::BBVector4f*>(&::Serializer::BBVector4f::default_instance());
-  scale_ = const_cast< ::Serializer::BBVector3f*>(&::Serializer::BBVector3f::default_instance());
-  localscale_ = const_cast< ::Serializer::BBVector3f*>(&::Serializer::BBVector3f::default_instance());
+  position_ = const_cast< ::BBSerializer::BBVector3f*>(&::BBSerializer::BBVector3f::default_instance());
+  localposition_ = const_cast< ::BBSerializer::BBVector3f*>(&::BBSerializer::BBVector3f::default_instance());
+  rotation_ = const_cast< ::BBSerializer::BBVector3f*>(&::BBSerializer::BBVector3f::default_instance());
+  localrotation_ = const_cast< ::BBSerializer::BBVector3f*>(&::BBSerializer::BBVector3f::default_instance());
+  quaternion_ = const_cast< ::BBSerializer::BBVector4f*>(&::BBSerializer::BBVector4f::default_instance());
+  localquaternion_ = const_cast< ::BBSerializer::BBVector4f*>(&::BBSerializer::BBVector4f::default_instance());
+  scale_ = const_cast< ::BBSerializer::BBVector3f*>(&::BBSerializer::BBVector3f::default_instance());
+  localscale_ = const_cast< ::BBSerializer::BBVector3f*>(&::BBSerializer::BBVector3f::default_instance());
 }
 
 BBGameObject::BBGameObject(const BBGameObject& from)
@@ -162,30 +162,30 @@ void BBGameObject::Clear() {
       }
     }
     if (has_position()) {
-      if (position_ != NULL) position_->::Serializer::BBVector3f::Clear();
+      if (position_ != NULL) position_->::BBSerializer::BBVector3f::Clear();
     }
     if (has_localposition()) {
-      if (localposition_ != NULL) localposition_->::Serializer::BBVector3f::Clear();
+      if (localposition_ != NULL) localposition_->::BBSerializer::BBVector3f::Clear();
     }
     if (has_rotation()) {
-      if (rotation_ != NULL) rotation_->::Serializer::BBVector3f::Clear();
+      if (rotation_ != NULL) rotation_->::BBSerializer::BBVector3f::Clear();
     }
   }
   if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     if (has_localrotation()) {
-      if (localrotation_ != NULL) localrotation_->::Serializer::BBVector3f::Clear();
+      if (localrotation_ != NULL) localrotation_->::BBSerializer::BBVector3f::Clear();
     }
     if (has_quaternion()) {
-      if (quaternion_ != NULL) quaternion_->::Serializer::BBVector4f::Clear();
+      if (quaternion_ != NULL) quaternion_->::BBSerializer::BBVector4f::Clear();
     }
     if (has_localquaternion()) {
-      if (localquaternion_ != NULL) localquaternion_->::Serializer::BBVector4f::Clear();
+      if (localquaternion_ != NULL) localquaternion_->::BBSerializer::BBVector4f::Clear();
     }
     if (has_scale()) {
-      if (scale_ != NULL) scale_->::Serializer::BBVector3f::Clear();
+      if (scale_ != NULL) scale_->::BBSerializer::BBVector3f::Clear();
     }
     if (has_localscale()) {
-      if (localscale_ != NULL) localscale_->::Serializer::BBVector3f::Clear();
+      if (localscale_ != NULL) localscale_->::BBSerializer::BBVector3f::Clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -268,7 +268,7 @@ bool BBGameObject::MergePartialFromCodedStream(
         break;
       }
       
-      // optional .Serializer.BBVector3f position = 6;
+      // optional .BBSerializer.BBVector3f position = 6;
       case 6: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -282,7 +282,7 @@ bool BBGameObject::MergePartialFromCodedStream(
         break;
       }
       
-      // optional .Serializer.BBVector3f localPosition = 7;
+      // optional .BBSerializer.BBVector3f localPosition = 7;
       case 7: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -296,7 +296,7 @@ bool BBGameObject::MergePartialFromCodedStream(
         break;
       }
       
-      // optional .Serializer.BBVector3f rotation = 8;
+      // optional .BBSerializer.BBVector3f rotation = 8;
       case 8: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -310,7 +310,7 @@ bool BBGameObject::MergePartialFromCodedStream(
         break;
       }
       
-      // optional .Serializer.BBVector3f localRotation = 9;
+      // optional .BBSerializer.BBVector3f localRotation = 9;
       case 9: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -324,7 +324,7 @@ bool BBGameObject::MergePartialFromCodedStream(
         break;
       }
       
-      // optional .Serializer.BBVector4f quaternion = 10;
+      // optional .BBSerializer.BBVector4f quaternion = 10;
       case 10: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -338,7 +338,7 @@ bool BBGameObject::MergePartialFromCodedStream(
         break;
       }
       
-      // optional .Serializer.BBVector4f localQuaternion = 11;
+      // optional .BBSerializer.BBVector4f localQuaternion = 11;
       case 11: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -352,7 +352,7 @@ bool BBGameObject::MergePartialFromCodedStream(
         break;
       }
       
-      // optional .Serializer.BBVector3f scale = 12;
+      // optional .BBSerializer.BBVector3f scale = 12;
       case 12: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -366,7 +366,7 @@ bool BBGameObject::MergePartialFromCodedStream(
         break;
       }
       
-      // optional .Serializer.BBVector3f localScale = 13;
+      // optional .BBSerializer.BBVector3f localScale = 13;
       case 13: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -426,49 +426,49 @@ void BBGameObject::SerializeWithCachedSizes(
       5, this->filepath(), output);
   }
   
-  // optional .Serializer.BBVector3f position = 6;
+  // optional .BBSerializer.BBVector3f position = 6;
   if (has_position()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessage(
       6, this->position(), output);
   }
   
-  // optional .Serializer.BBVector3f localPosition = 7;
+  // optional .BBSerializer.BBVector3f localPosition = 7;
   if (has_localposition()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessage(
       7, this->localposition(), output);
   }
   
-  // optional .Serializer.BBVector3f rotation = 8;
+  // optional .BBSerializer.BBVector3f rotation = 8;
   if (has_rotation()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessage(
       8, this->rotation(), output);
   }
   
-  // optional .Serializer.BBVector3f localRotation = 9;
+  // optional .BBSerializer.BBVector3f localRotation = 9;
   if (has_localrotation()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessage(
       9, this->localrotation(), output);
   }
   
-  // optional .Serializer.BBVector4f quaternion = 10;
+  // optional .BBSerializer.BBVector4f quaternion = 10;
   if (has_quaternion()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessage(
       10, this->quaternion(), output);
   }
   
-  // optional .Serializer.BBVector4f localQuaternion = 11;
+  // optional .BBSerializer.BBVector4f localQuaternion = 11;
   if (has_localquaternion()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessage(
       11, this->localquaternion(), output);
   }
   
-  // optional .Serializer.BBVector3f scale = 12;
+  // optional .BBSerializer.BBVector3f scale = 12;
   if (has_scale()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessage(
       12, this->scale(), output);
   }
   
-  // optional .Serializer.BBVector3f localScale = 13;
+  // optional .BBSerializer.BBVector3f localScale = 13;
   if (has_localscale()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessage(
       13, this->localscale(), output);
@@ -515,21 +515,21 @@ int BBGameObject::ByteSize() const {
           this->filepath());
     }
     
-    // optional .Serializer.BBVector3f position = 6;
+    // optional .BBSerializer.BBVector3f position = 6;
     if (has_position()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->position());
     }
     
-    // optional .Serializer.BBVector3f localPosition = 7;
+    // optional .BBSerializer.BBVector3f localPosition = 7;
     if (has_localposition()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->localposition());
     }
     
-    // optional .Serializer.BBVector3f rotation = 8;
+    // optional .BBSerializer.BBVector3f rotation = 8;
     if (has_rotation()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -538,35 +538,35 @@ int BBGameObject::ByteSize() const {
     
   }
   if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    // optional .Serializer.BBVector3f localRotation = 9;
+    // optional .BBSerializer.BBVector3f localRotation = 9;
     if (has_localrotation()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->localrotation());
     }
     
-    // optional .Serializer.BBVector4f quaternion = 10;
+    // optional .BBSerializer.BBVector4f quaternion = 10;
     if (has_quaternion()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->quaternion());
     }
     
-    // optional .Serializer.BBVector4f localQuaternion = 11;
+    // optional .BBSerializer.BBVector4f localQuaternion = 11;
     if (has_localquaternion()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->localquaternion());
     }
     
-    // optional .Serializer.BBVector3f scale = 12;
+    // optional .BBSerializer.BBVector3f scale = 12;
     if (has_scale()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->scale());
     }
     
-    // optional .Serializer.BBVector3f localScale = 13;
+    // optional .BBSerializer.BBVector3f localScale = 13;
     if (has_localscale()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -604,30 +604,30 @@ void BBGameObject::MergeFrom(const BBGameObject& from) {
       set_filepath(from.filepath());
     }
     if (from.has_position()) {
-      mutable_position()->::Serializer::BBVector3f::MergeFrom(from.position());
+      mutable_position()->::BBSerializer::BBVector3f::MergeFrom(from.position());
     }
     if (from.has_localposition()) {
-      mutable_localposition()->::Serializer::BBVector3f::MergeFrom(from.localposition());
+      mutable_localposition()->::BBSerializer::BBVector3f::MergeFrom(from.localposition());
     }
     if (from.has_rotation()) {
-      mutable_rotation()->::Serializer::BBVector3f::MergeFrom(from.rotation());
+      mutable_rotation()->::BBSerializer::BBVector3f::MergeFrom(from.rotation());
     }
   }
   if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     if (from.has_localrotation()) {
-      mutable_localrotation()->::Serializer::BBVector3f::MergeFrom(from.localrotation());
+      mutable_localrotation()->::BBSerializer::BBVector3f::MergeFrom(from.localrotation());
     }
     if (from.has_quaternion()) {
-      mutable_quaternion()->::Serializer::BBVector4f::MergeFrom(from.quaternion());
+      mutable_quaternion()->::BBSerializer::BBVector4f::MergeFrom(from.quaternion());
     }
     if (from.has_localquaternion()) {
-      mutable_localquaternion()->::Serializer::BBVector4f::MergeFrom(from.localquaternion());
+      mutable_localquaternion()->::BBSerializer::BBVector4f::MergeFrom(from.localquaternion());
     }
     if (from.has_scale()) {
-      mutable_scale()->::Serializer::BBVector3f::MergeFrom(from.scale());
+      mutable_scale()->::BBSerializer::BBVector3f::MergeFrom(from.scale());
     }
     if (from.has_localscale()) {
-      mutable_localscale()->::Serializer::BBVector3f::MergeFrom(from.localscale());
+      mutable_localscale()->::BBSerializer::BBVector3f::MergeFrom(from.localscale());
     }
   }
 }
@@ -688,12 +688,12 @@ void BBGameObject::Swap(BBGameObject* other) {
 }
 
 ::std::string BBGameObject::GetTypeName() const {
-  return "Serializer.BBGameObject";
+  return "BBSerializer.BBGameObject";
 }
 
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace Serializer
+}  // namespace BBSerializer
 
 // @@protoc_insertion_point(global_scope)

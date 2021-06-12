@@ -25,7 +25,7 @@
 #include "BBVector.serializer.h"
 // @@protoc_insertion_point(includes)
 
-namespace Serializer {
+namespace BBSerializer {
 
 // Internal implementation detail -- do not call these.
 void  protobuf_AddDesc_BBGameObject_2eproto();
@@ -130,71 +130,71 @@ class BBGameObject : public ::google::protobuf::MessageLite {
   inline ::std::string* mutable_filepath();
   inline ::std::string* release_filepath();
   
-  // optional .Serializer.BBVector3f position = 6;
+  // optional .BBSerializer.BBVector3f position = 6;
   inline bool has_position() const;
   inline void clear_position();
   static const int kPositionFieldNumber = 6;
-  inline const ::Serializer::BBVector3f& position() const;
-  inline ::Serializer::BBVector3f* mutable_position();
-  inline ::Serializer::BBVector3f* release_position();
+  inline const ::BBSerializer::BBVector3f& position() const;
+  inline ::BBSerializer::BBVector3f* mutable_position();
+  inline ::BBSerializer::BBVector3f* release_position();
   
-  // optional .Serializer.BBVector3f localPosition = 7;
+  // optional .BBSerializer.BBVector3f localPosition = 7;
   inline bool has_localposition() const;
   inline void clear_localposition();
   static const int kLocalPositionFieldNumber = 7;
-  inline const ::Serializer::BBVector3f& localposition() const;
-  inline ::Serializer::BBVector3f* mutable_localposition();
-  inline ::Serializer::BBVector3f* release_localposition();
+  inline const ::BBSerializer::BBVector3f& localposition() const;
+  inline ::BBSerializer::BBVector3f* mutable_localposition();
+  inline ::BBSerializer::BBVector3f* release_localposition();
   
-  // optional .Serializer.BBVector3f rotation = 8;
+  // optional .BBSerializer.BBVector3f rotation = 8;
   inline bool has_rotation() const;
   inline void clear_rotation();
   static const int kRotationFieldNumber = 8;
-  inline const ::Serializer::BBVector3f& rotation() const;
-  inline ::Serializer::BBVector3f* mutable_rotation();
-  inline ::Serializer::BBVector3f* release_rotation();
+  inline const ::BBSerializer::BBVector3f& rotation() const;
+  inline ::BBSerializer::BBVector3f* mutable_rotation();
+  inline ::BBSerializer::BBVector3f* release_rotation();
   
-  // optional .Serializer.BBVector3f localRotation = 9;
+  // optional .BBSerializer.BBVector3f localRotation = 9;
   inline bool has_localrotation() const;
   inline void clear_localrotation();
   static const int kLocalRotationFieldNumber = 9;
-  inline const ::Serializer::BBVector3f& localrotation() const;
-  inline ::Serializer::BBVector3f* mutable_localrotation();
-  inline ::Serializer::BBVector3f* release_localrotation();
+  inline const ::BBSerializer::BBVector3f& localrotation() const;
+  inline ::BBSerializer::BBVector3f* mutable_localrotation();
+  inline ::BBSerializer::BBVector3f* release_localrotation();
   
-  // optional .Serializer.BBVector4f quaternion = 10;
+  // optional .BBSerializer.BBVector4f quaternion = 10;
   inline bool has_quaternion() const;
   inline void clear_quaternion();
   static const int kQuaternionFieldNumber = 10;
-  inline const ::Serializer::BBVector4f& quaternion() const;
-  inline ::Serializer::BBVector4f* mutable_quaternion();
-  inline ::Serializer::BBVector4f* release_quaternion();
+  inline const ::BBSerializer::BBVector4f& quaternion() const;
+  inline ::BBSerializer::BBVector4f* mutable_quaternion();
+  inline ::BBSerializer::BBVector4f* release_quaternion();
   
-  // optional .Serializer.BBVector4f localQuaternion = 11;
+  // optional .BBSerializer.BBVector4f localQuaternion = 11;
   inline bool has_localquaternion() const;
   inline void clear_localquaternion();
   static const int kLocalQuaternionFieldNumber = 11;
-  inline const ::Serializer::BBVector4f& localquaternion() const;
-  inline ::Serializer::BBVector4f* mutable_localquaternion();
-  inline ::Serializer::BBVector4f* release_localquaternion();
+  inline const ::BBSerializer::BBVector4f& localquaternion() const;
+  inline ::BBSerializer::BBVector4f* mutable_localquaternion();
+  inline ::BBSerializer::BBVector4f* release_localquaternion();
   
-  // optional .Serializer.BBVector3f scale = 12;
+  // optional .BBSerializer.BBVector3f scale = 12;
   inline bool has_scale() const;
   inline void clear_scale();
   static const int kScaleFieldNumber = 12;
-  inline const ::Serializer::BBVector3f& scale() const;
-  inline ::Serializer::BBVector3f* mutable_scale();
-  inline ::Serializer::BBVector3f* release_scale();
+  inline const ::BBSerializer::BBVector3f& scale() const;
+  inline ::BBSerializer::BBVector3f* mutable_scale();
+  inline ::BBSerializer::BBVector3f* release_scale();
   
-  // optional .Serializer.BBVector3f localScale = 13;
+  // optional .BBSerializer.BBVector3f localScale = 13;
   inline bool has_localscale() const;
   inline void clear_localscale();
   static const int kLocalScaleFieldNumber = 13;
-  inline const ::Serializer::BBVector3f& localscale() const;
-  inline ::Serializer::BBVector3f* mutable_localscale();
-  inline ::Serializer::BBVector3f* release_localscale();
+  inline const ::BBSerializer::BBVector3f& localscale() const;
+  inline ::BBSerializer::BBVector3f* mutable_localscale();
+  inline ::BBSerializer::BBVector3f* release_localscale();
   
-  // @@protoc_insertion_point(class_scope:Serializer.BBGameObject)
+  // @@protoc_insertion_point(class_scope:BBSerializer.BBGameObject)
  private:
   inline void set_has_index();
   inline void clear_has_index();
@@ -227,14 +227,14 @@ class BBGameObject : public ::google::protobuf::MessageLite {
   ::std::string* classname_;
   ::std::string* iconname_;
   ::std::string* filepath_;
-  ::Serializer::BBVector3f* position_;
-  ::Serializer::BBVector3f* localposition_;
-  ::Serializer::BBVector3f* rotation_;
-  ::Serializer::BBVector3f* localrotation_;
-  ::Serializer::BBVector4f* quaternion_;
-  ::Serializer::BBVector4f* localquaternion_;
-  ::Serializer::BBVector3f* scale_;
-  ::Serializer::BBVector3f* localscale_;
+  ::BBSerializer::BBVector3f* position_;
+  ::BBSerializer::BBVector3f* localposition_;
+  ::BBSerializer::BBVector3f* rotation_;
+  ::BBSerializer::BBVector3f* localrotation_;
+  ::BBSerializer::BBVector4f* quaternion_;
+  ::BBSerializer::BBVector4f* localquaternion_;
+  ::BBSerializer::BBVector3f* scale_;
+  ::BBSerializer::BBVector3f* localscale_;
   ::google::protobuf::int32 index_;
   
   mutable int _cached_size_;
@@ -508,7 +508,7 @@ inline ::std::string* BBGameObject::release_filepath() {
   }
 }
 
-// optional .Serializer.BBVector3f position = 6;
+// optional .BBSerializer.BBVector3f position = 6;
 inline bool BBGameObject::has_position() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
@@ -519,25 +519,25 @@ inline void BBGameObject::clear_has_position() {
   _has_bits_[0] &= ~0x00000020u;
 }
 inline void BBGameObject::clear_position() {
-  if (position_ != NULL) position_->::Serializer::BBVector3f::Clear();
+  if (position_ != NULL) position_->::BBSerializer::BBVector3f::Clear();
   clear_has_position();
 }
-inline const ::Serializer::BBVector3f& BBGameObject::position() const {
+inline const ::BBSerializer::BBVector3f& BBGameObject::position() const {
   return position_ != NULL ? *position_ : *default_instance_->position_;
 }
-inline ::Serializer::BBVector3f* BBGameObject::mutable_position() {
+inline ::BBSerializer::BBVector3f* BBGameObject::mutable_position() {
   set_has_position();
-  if (position_ == NULL) position_ = new ::Serializer::BBVector3f;
+  if (position_ == NULL) position_ = new ::BBSerializer::BBVector3f;
   return position_;
 }
-inline ::Serializer::BBVector3f* BBGameObject::release_position() {
+inline ::BBSerializer::BBVector3f* BBGameObject::release_position() {
   clear_has_position();
-  ::Serializer::BBVector3f* temp = position_;
+  ::BBSerializer::BBVector3f* temp = position_;
   position_ = NULL;
   return temp;
 }
 
-// optional .Serializer.BBVector3f localPosition = 7;
+// optional .BBSerializer.BBVector3f localPosition = 7;
 inline bool BBGameObject::has_localposition() const {
   return (_has_bits_[0] & 0x00000040u) != 0;
 }
@@ -548,25 +548,25 @@ inline void BBGameObject::clear_has_localposition() {
   _has_bits_[0] &= ~0x00000040u;
 }
 inline void BBGameObject::clear_localposition() {
-  if (localposition_ != NULL) localposition_->::Serializer::BBVector3f::Clear();
+  if (localposition_ != NULL) localposition_->::BBSerializer::BBVector3f::Clear();
   clear_has_localposition();
 }
-inline const ::Serializer::BBVector3f& BBGameObject::localposition() const {
+inline const ::BBSerializer::BBVector3f& BBGameObject::localposition() const {
   return localposition_ != NULL ? *localposition_ : *default_instance_->localposition_;
 }
-inline ::Serializer::BBVector3f* BBGameObject::mutable_localposition() {
+inline ::BBSerializer::BBVector3f* BBGameObject::mutable_localposition() {
   set_has_localposition();
-  if (localposition_ == NULL) localposition_ = new ::Serializer::BBVector3f;
+  if (localposition_ == NULL) localposition_ = new ::BBSerializer::BBVector3f;
   return localposition_;
 }
-inline ::Serializer::BBVector3f* BBGameObject::release_localposition() {
+inline ::BBSerializer::BBVector3f* BBGameObject::release_localposition() {
   clear_has_localposition();
-  ::Serializer::BBVector3f* temp = localposition_;
+  ::BBSerializer::BBVector3f* temp = localposition_;
   localposition_ = NULL;
   return temp;
 }
 
-// optional .Serializer.BBVector3f rotation = 8;
+// optional .BBSerializer.BBVector3f rotation = 8;
 inline bool BBGameObject::has_rotation() const {
   return (_has_bits_[0] & 0x00000080u) != 0;
 }
@@ -577,25 +577,25 @@ inline void BBGameObject::clear_has_rotation() {
   _has_bits_[0] &= ~0x00000080u;
 }
 inline void BBGameObject::clear_rotation() {
-  if (rotation_ != NULL) rotation_->::Serializer::BBVector3f::Clear();
+  if (rotation_ != NULL) rotation_->::BBSerializer::BBVector3f::Clear();
   clear_has_rotation();
 }
-inline const ::Serializer::BBVector3f& BBGameObject::rotation() const {
+inline const ::BBSerializer::BBVector3f& BBGameObject::rotation() const {
   return rotation_ != NULL ? *rotation_ : *default_instance_->rotation_;
 }
-inline ::Serializer::BBVector3f* BBGameObject::mutable_rotation() {
+inline ::BBSerializer::BBVector3f* BBGameObject::mutable_rotation() {
   set_has_rotation();
-  if (rotation_ == NULL) rotation_ = new ::Serializer::BBVector3f;
+  if (rotation_ == NULL) rotation_ = new ::BBSerializer::BBVector3f;
   return rotation_;
 }
-inline ::Serializer::BBVector3f* BBGameObject::release_rotation() {
+inline ::BBSerializer::BBVector3f* BBGameObject::release_rotation() {
   clear_has_rotation();
-  ::Serializer::BBVector3f* temp = rotation_;
+  ::BBSerializer::BBVector3f* temp = rotation_;
   rotation_ = NULL;
   return temp;
 }
 
-// optional .Serializer.BBVector3f localRotation = 9;
+// optional .BBSerializer.BBVector3f localRotation = 9;
 inline bool BBGameObject::has_localrotation() const {
   return (_has_bits_[0] & 0x00000100u) != 0;
 }
@@ -606,25 +606,25 @@ inline void BBGameObject::clear_has_localrotation() {
   _has_bits_[0] &= ~0x00000100u;
 }
 inline void BBGameObject::clear_localrotation() {
-  if (localrotation_ != NULL) localrotation_->::Serializer::BBVector3f::Clear();
+  if (localrotation_ != NULL) localrotation_->::BBSerializer::BBVector3f::Clear();
   clear_has_localrotation();
 }
-inline const ::Serializer::BBVector3f& BBGameObject::localrotation() const {
+inline const ::BBSerializer::BBVector3f& BBGameObject::localrotation() const {
   return localrotation_ != NULL ? *localrotation_ : *default_instance_->localrotation_;
 }
-inline ::Serializer::BBVector3f* BBGameObject::mutable_localrotation() {
+inline ::BBSerializer::BBVector3f* BBGameObject::mutable_localrotation() {
   set_has_localrotation();
-  if (localrotation_ == NULL) localrotation_ = new ::Serializer::BBVector3f;
+  if (localrotation_ == NULL) localrotation_ = new ::BBSerializer::BBVector3f;
   return localrotation_;
 }
-inline ::Serializer::BBVector3f* BBGameObject::release_localrotation() {
+inline ::BBSerializer::BBVector3f* BBGameObject::release_localrotation() {
   clear_has_localrotation();
-  ::Serializer::BBVector3f* temp = localrotation_;
+  ::BBSerializer::BBVector3f* temp = localrotation_;
   localrotation_ = NULL;
   return temp;
 }
 
-// optional .Serializer.BBVector4f quaternion = 10;
+// optional .BBSerializer.BBVector4f quaternion = 10;
 inline bool BBGameObject::has_quaternion() const {
   return (_has_bits_[0] & 0x00000200u) != 0;
 }
@@ -635,25 +635,25 @@ inline void BBGameObject::clear_has_quaternion() {
   _has_bits_[0] &= ~0x00000200u;
 }
 inline void BBGameObject::clear_quaternion() {
-  if (quaternion_ != NULL) quaternion_->::Serializer::BBVector4f::Clear();
+  if (quaternion_ != NULL) quaternion_->::BBSerializer::BBVector4f::Clear();
   clear_has_quaternion();
 }
-inline const ::Serializer::BBVector4f& BBGameObject::quaternion() const {
+inline const ::BBSerializer::BBVector4f& BBGameObject::quaternion() const {
   return quaternion_ != NULL ? *quaternion_ : *default_instance_->quaternion_;
 }
-inline ::Serializer::BBVector4f* BBGameObject::mutable_quaternion() {
+inline ::BBSerializer::BBVector4f* BBGameObject::mutable_quaternion() {
   set_has_quaternion();
-  if (quaternion_ == NULL) quaternion_ = new ::Serializer::BBVector4f;
+  if (quaternion_ == NULL) quaternion_ = new ::BBSerializer::BBVector4f;
   return quaternion_;
 }
-inline ::Serializer::BBVector4f* BBGameObject::release_quaternion() {
+inline ::BBSerializer::BBVector4f* BBGameObject::release_quaternion() {
   clear_has_quaternion();
-  ::Serializer::BBVector4f* temp = quaternion_;
+  ::BBSerializer::BBVector4f* temp = quaternion_;
   quaternion_ = NULL;
   return temp;
 }
 
-// optional .Serializer.BBVector4f localQuaternion = 11;
+// optional .BBSerializer.BBVector4f localQuaternion = 11;
 inline bool BBGameObject::has_localquaternion() const {
   return (_has_bits_[0] & 0x00000400u) != 0;
 }
@@ -664,25 +664,25 @@ inline void BBGameObject::clear_has_localquaternion() {
   _has_bits_[0] &= ~0x00000400u;
 }
 inline void BBGameObject::clear_localquaternion() {
-  if (localquaternion_ != NULL) localquaternion_->::Serializer::BBVector4f::Clear();
+  if (localquaternion_ != NULL) localquaternion_->::BBSerializer::BBVector4f::Clear();
   clear_has_localquaternion();
 }
-inline const ::Serializer::BBVector4f& BBGameObject::localquaternion() const {
+inline const ::BBSerializer::BBVector4f& BBGameObject::localquaternion() const {
   return localquaternion_ != NULL ? *localquaternion_ : *default_instance_->localquaternion_;
 }
-inline ::Serializer::BBVector4f* BBGameObject::mutable_localquaternion() {
+inline ::BBSerializer::BBVector4f* BBGameObject::mutable_localquaternion() {
   set_has_localquaternion();
-  if (localquaternion_ == NULL) localquaternion_ = new ::Serializer::BBVector4f;
+  if (localquaternion_ == NULL) localquaternion_ = new ::BBSerializer::BBVector4f;
   return localquaternion_;
 }
-inline ::Serializer::BBVector4f* BBGameObject::release_localquaternion() {
+inline ::BBSerializer::BBVector4f* BBGameObject::release_localquaternion() {
   clear_has_localquaternion();
-  ::Serializer::BBVector4f* temp = localquaternion_;
+  ::BBSerializer::BBVector4f* temp = localquaternion_;
   localquaternion_ = NULL;
   return temp;
 }
 
-// optional .Serializer.BBVector3f scale = 12;
+// optional .BBSerializer.BBVector3f scale = 12;
 inline bool BBGameObject::has_scale() const {
   return (_has_bits_[0] & 0x00000800u) != 0;
 }
@@ -693,25 +693,25 @@ inline void BBGameObject::clear_has_scale() {
   _has_bits_[0] &= ~0x00000800u;
 }
 inline void BBGameObject::clear_scale() {
-  if (scale_ != NULL) scale_->::Serializer::BBVector3f::Clear();
+  if (scale_ != NULL) scale_->::BBSerializer::BBVector3f::Clear();
   clear_has_scale();
 }
-inline const ::Serializer::BBVector3f& BBGameObject::scale() const {
+inline const ::BBSerializer::BBVector3f& BBGameObject::scale() const {
   return scale_ != NULL ? *scale_ : *default_instance_->scale_;
 }
-inline ::Serializer::BBVector3f* BBGameObject::mutable_scale() {
+inline ::BBSerializer::BBVector3f* BBGameObject::mutable_scale() {
   set_has_scale();
-  if (scale_ == NULL) scale_ = new ::Serializer::BBVector3f;
+  if (scale_ == NULL) scale_ = new ::BBSerializer::BBVector3f;
   return scale_;
 }
-inline ::Serializer::BBVector3f* BBGameObject::release_scale() {
+inline ::BBSerializer::BBVector3f* BBGameObject::release_scale() {
   clear_has_scale();
-  ::Serializer::BBVector3f* temp = scale_;
+  ::BBSerializer::BBVector3f* temp = scale_;
   scale_ = NULL;
   return temp;
 }
 
-// optional .Serializer.BBVector3f localScale = 13;
+// optional .BBSerializer.BBVector3f localScale = 13;
 inline bool BBGameObject::has_localscale() const {
   return (_has_bits_[0] & 0x00001000u) != 0;
 }
@@ -722,20 +722,20 @@ inline void BBGameObject::clear_has_localscale() {
   _has_bits_[0] &= ~0x00001000u;
 }
 inline void BBGameObject::clear_localscale() {
-  if (localscale_ != NULL) localscale_->::Serializer::BBVector3f::Clear();
+  if (localscale_ != NULL) localscale_->::BBSerializer::BBVector3f::Clear();
   clear_has_localscale();
 }
-inline const ::Serializer::BBVector3f& BBGameObject::localscale() const {
+inline const ::BBSerializer::BBVector3f& BBGameObject::localscale() const {
   return localscale_ != NULL ? *localscale_ : *default_instance_->localscale_;
 }
-inline ::Serializer::BBVector3f* BBGameObject::mutable_localscale() {
+inline ::BBSerializer::BBVector3f* BBGameObject::mutable_localscale() {
   set_has_localscale();
-  if (localscale_ == NULL) localscale_ = new ::Serializer::BBVector3f;
+  if (localscale_ == NULL) localscale_ = new ::BBSerializer::BBVector3f;
   return localscale_;
 }
-inline ::Serializer::BBVector3f* BBGameObject::release_localscale() {
+inline ::BBSerializer::BBVector3f* BBGameObject::release_localscale() {
   clear_has_localscale();
-  ::Serializer::BBVector3f* temp = localscale_;
+  ::BBSerializer::BBVector3f* temp = localscale_;
   localscale_ = NULL;
   return temp;
 }
@@ -743,7 +743,7 @@ inline ::Serializer::BBVector3f* BBGameObject::release_localscale() {
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace Serializer
+}  // namespace BBSerializer
 
 // @@protoc_insertion_point(global_scope)
 

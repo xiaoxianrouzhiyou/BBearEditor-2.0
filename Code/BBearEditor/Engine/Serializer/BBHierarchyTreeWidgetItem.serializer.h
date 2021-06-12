@@ -24,7 +24,7 @@
 #include "extension_set.h"
 // @@protoc_insertion_point(includes)
 
-namespace Serializer {
+namespace BBSerializer {
 
 // Internal implementation detail -- do not call these.
 void  protobuf_AddDesc_BBHierarchyTreeWidgetItem_2eproto();
@@ -97,7 +97,7 @@ class BBHierarchyTreeWidgetItem : public ::google::protobuf::MessageLite {
   inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
       mutable_children();
   
-  // @@protoc_insertion_point(class_scope:Serializer.BBHierarchyTreeWidgetItem)
+  // @@protoc_insertion_point(class_scope:BBSerializer.BBHierarchyTreeWidgetItem)
  private:
   inline void set_has_index();
   inline void clear_has_index();
@@ -172,7 +172,7 @@ BBHierarchyTreeWidgetItem::mutable_children() {
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace Serializer
+}  // namespace BBSerializer
 
 // @@protoc_insertion_point(global_scope)
 
