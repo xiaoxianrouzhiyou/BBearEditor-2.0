@@ -1,0 +1,8 @@
+D:/workspace/output/CMakeFiles/list_install_components.dir
+D:/workspace/output/CMakeFiles/libprotobuf-lite.dir
+D:/workspace/output/CMakeFiles/libprotobuf.dir
+D:/workspace/output/CMakeFiles/install/local.dir
+D:/workspace/output/CMakeFiles/install.dir
+D:/workspace/output/CMakeFiles/edit_cache.dir
+D:/workspace/output/CMakeFiles/rebuild_cache.dir
+D:/workspace/output/CMakeFiles/install/strip.dir
