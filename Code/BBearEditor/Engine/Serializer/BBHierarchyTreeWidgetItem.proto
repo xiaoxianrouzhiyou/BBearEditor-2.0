@@ -1,5 +1,5 @@
+syntax = "proto3";
 package BBSerializer;
-option optimize_for = LITE_RUNTIME;
 
 message BBHierarchyTreeWidgetItem
 {

@@ -587,6 +587,7 @@ bool BBFileListWidget::moveItem()
     // move selected items into m_pIndicatorItem
     QList<QListWidgetItem*> items = selectedItems();
     emit moveFiles(items, m_ParentPath, m_ParentPath + "/" + m_pFileData->value(m_pIndicatorItem)->m_FileName, false);
+    return true;
 }
 
 bool BBFileListWidget::moveItemFromFolderTree(const QMimeData *pMimeData)

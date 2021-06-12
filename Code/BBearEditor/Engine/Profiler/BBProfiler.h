@@ -12,13 +12,14 @@
 class BBProfiler
 {
 public:
-    static void addMemoryObject(void *ptr, BBMemoryLabel eLabel, size_t size);
+    static void init();
+    static void addMemoryObject(void *ptr, const BBMemoryLabel &eLabel, size_t size);
     static bool deleteMemoryObject(void *ptr);
     static int getTotalUsedMemorySize();
 
-    static QMap<void*, BBMemoryLabel> m_MemoryObjects;
-    static QMap<void*, size_t> m_MemoryObjectsSize;
-    static QMap<BBMemoryLabel, int> m_UsedMemorySize;
+    static QMap<void*, BBMemoryLabel> *m_pMemoryObjects;
+    static QMap<void*, size_t> *m_pMemoryObjectsSize;
+    static QMap<BBMemoryLabel, int> *m_pUsedMemorySize;
     static int m_nTotalUsedMemorySize;
 };
 

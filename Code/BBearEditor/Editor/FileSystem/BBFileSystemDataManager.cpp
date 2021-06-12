@@ -1231,6 +1231,7 @@ bool BBFileSystemDataManager::moveFolderItem(QTreeWidgetItem *pFolderItem,
             // pItem is in the top level now
         // }
     }
+    return true;
 }
 
 bool BBFileSystemDataManager::importFiles(const QFileInfo &fileInfo, const QString &newPath)

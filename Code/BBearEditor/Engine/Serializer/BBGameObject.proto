@@ -1,11 +1,11 @@
+syntax = "proto3";
 package BBSerializer;
-option optimize_for = LITE_RUNTIME;
 
 import "BBVector.proto";
 
 message BBGameObject
 {
-    optional int32 index = 1;
+    int32 index = 1;
 
 	optional string name = 2;
 	optional string className = 3;

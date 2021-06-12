@@ -68,9 +68,9 @@ SOURCES += \
     Engine/Allocator/BBAllocator.cpp \
     Engine/Profiler/BBProfiler.cpp \
     Engine/Scene/BBSceneManager.cpp \
-    Engine/Serializer/BBGameObject.serializer.cpp \
-    Engine/Serializer/BBHierarchyTreeWidgetItem.serializer.cpp \
-    Engine/Serializer/BBVector.serializer.cpp
+    Engine/Serializer/BBGameObject.pb.cc \
+    Engine/Serializer/BBHierarchyTreeWidgetItem.pb.cc \
+    Engine/Serializer/BBVector.pb.cc
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -118,9 +118,9 @@ HEADERS += \
     Engine/Allocator/BBMemoryLabel.h \
     Engine/Profiler/BBProfiler.h \
     Engine/Scene/BBSceneManager.h \
-    Engine/Serializer/BBGameObject.serializer.h \
-    Engine/Serializer/BBHierarchyTreeWidgetItem.serializer.h \
-    Engine/Serializer/BBVector.serializer.h
+    Engine/Serializer/BBGameObject.pb.h \
+    Engine/Serializer/BBHierarchyTreeWidgetItem.pb.h \
+    Engine/Serializer/BBVector.pb.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
@@ -143,5 +143,7 @@ INCLUDEPATH += \
     ../../External/rapidxml \
     ../../External/fbxsdk \
     ../../External/lua \
+    ../../External/ProtoBuffer/src \
 
-LIBS += -lopengl32 -lglu32 -lglut
+LIBS += -lopengl32 -lglu32 -lglut \
+    -L../../External/ProtoBuffer/lib -lprotobuf

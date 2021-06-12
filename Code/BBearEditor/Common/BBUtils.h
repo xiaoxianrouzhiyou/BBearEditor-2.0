@@ -95,6 +95,23 @@ namespace BBFileSystem
 }
 
 
+/**
+ * @brief The BBStatic class        Ensure that static variables have been initialized before being used
+ */
+class BBStatic
+{
+public:
+    template<int N, class T>
+    static T& var()
+    {
+        static T instance;
+        return instance;
+    }
+
+    ~BBStatic() {}
+};
+
+
 class BBConstant
 {
 public:

@@ -4,12 +4,10 @@
 #include "Window/BBTitleBar.h"
 #include "Window/BBMainWindow.h"
 #include "Window/BBProjectDialog.h"
-
-
-//#include "boundingbox.h"
+#include "Profiler/BBProfiler.h"
 #include <QDesktopWidget>
-//#include "assetmanager.h"
 #include <QStyleFactory>
+
 
 int main(int argc, char *argv[])
 {
