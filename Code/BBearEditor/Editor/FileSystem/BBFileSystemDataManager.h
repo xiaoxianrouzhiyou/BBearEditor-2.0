@@ -32,6 +32,7 @@ public:
     QTreeWidgetItem* getParentFolderItem(const QString &filePath);
     QListWidgetItem* getFileItem(QTreeWidgetItem *pFolderItem);
     QListWidgetItem* getFileItem(QTreeWidgetItem *pParentFolderItem, const QString &filePath);
+    QListWidgetItem* getFileItem(QTreeWidgetItem *pParentFolderItem, const QString &filePath, BBFileInfo *&pOutFileInfo);
     inline QList<QListWidgetItem*> getSelectedFileItems() { return m_SelectedFileItems; }
     bool openFile(const QString &filePath);
     bool newFolder(const QString &parentPath, QTreeWidgetItem *&pOutFolderItem, QListWidgetItem *&pOutFileItem);

@@ -27,7 +27,7 @@ private:
 signals:
     void createModel(const QString &filePath);
     void setCoordinateSystemSelectedObject(BBGameObject *pGameObject);
-    void setCoordinateSystemSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet);
+    void setCoordinateSystemSelectedObjects(const QList<BBGameObject*> &gameObjects, BBGameObjectSet *pSet);
     void showGameObjectProperty(BBGameObject *pGameObject);
     void showGameObjectSetProperty(BBGameObject *pCenterGameObject,
                                    const QList<BBGameObject*> &gameObjectSet);
@@ -39,7 +39,7 @@ private slots:
     void addGameObject(BBGameObject *pGameObject);
     void addGameObject(BBGameObject *pGameObject, QTreeWidgetItem *pItem);
     void selectPickedItem(BBGameObject *pGameObject);
-    void selectPickedItems(QList<BBGameObject*> gameObjects);
+    void selectPickedItems(const QList<BBGameObject*> &gameObjects);
     void updateMultipleSelectedItems(BBGameObject *pGameObject);
     void changeSelectedItems();
     void doubleClickItem(QTreeWidgetItem *pItem, int nColumn);

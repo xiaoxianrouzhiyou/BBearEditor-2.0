@@ -14,6 +14,7 @@ QString BBConstant::BB_PATH_PROJECT_USER = "";
 QString BBConstant::BB_NAME_FILE_SYSTEM_USER = "contents";
 QString BBConstant::BB_NAME_FILE_SYSTEM_ENGINE = "engine";
 QString BBConstant::BB_NAME_OVERVIEW_MAP = "overview map.jpg";
+QString BBConstant::BB_NAME_DEFAULT_SCENE = "new scene.bbscene";
 
 
 char *BBUtils::loadFileContent(const char *filePath, int &nFileSize)

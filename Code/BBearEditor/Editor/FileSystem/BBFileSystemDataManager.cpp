@@ -10,6 +10,8 @@
 #include "3D/BBModel.h"
 #include "BBTreeWidget.h"
 #include "Serializer/BBSerializer.h"
+#include "Scene/BBSceneManager.h"
+#include "Render/BBEditViewDockWidget.h"
 
 
 QList<QString> BBFileSystemDataManager::m_MeshSuffixs = {"obj", "fbx"};
@@ -155,12 +157,19 @@ QListWidgetItem* BBFileSystemDataManager::getFileItem(QTreeWidgetItem *pFolderIt
 
 QListWidgetItem* BBFileSystemDataManager::getFileItem(QTreeWidgetItem *pParentFolderItem, const QString &filePath)
 {
+    BBFileInfo *pFileInfo = NULL;
+    return getFileItem(pParentFolderItem, filePath, pFileInfo);
+}
+
+QListWidgetItem* BBFileSystemDataManager::getFileItem(QTreeWidgetItem *pParentFolderItem, const QString &filePath,
+                                                      BBFileInfo *&pOutFileInfo)
+{
     BBFILE *pFolderContent = getFolderContent(pParentFolderItem);
     QString fileName = getFileNameByPath(filePath);
     for (BBFILE::Iterator it = pFolderContent->begin(); it != pFolderContent->end(); it++)
     {
-        BBFileInfo *pFileInfo = it.value();
-        if (pFileInfo->m_FileName == fileName)
+        pOutFileInfo = it.value();
+        if (pOutFileInfo->m_FileName == fileName)
         {
             return it.key();
         }
@@ -182,7 +191,19 @@ bool BBFileSystemDataManager::openFile(const QString &filePath)
     }
     else
     {
-        if (getFileType(filePath) == BBFileType::Script)
+        if (getFileType(filePath) == BBFileType::Scene)
+        {
+            if (BBSceneManager::isSceneSwitched(filePath))
+            {
+                // save current scene
+                if (BBEditViewDockWidget::saveScene(getAbsolutePath(m_pCurrentViewedItem)))
+                {
+                    // open selected scene
+                    BBSceneManager::openScene(filePath);
+                }
+            }
+        }
+        else if (getFileType(filePath) == BBFileType::Script)
         {
             // open file
             QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
@@ -232,8 +253,7 @@ bool BBFileSystemDataManager::newFolder(const QString &parentPath, QTreeWidgetIt
 
 bool BBFileSystemDataManager::newScene(const QString &parentPath, QListWidgetItem *&pOutFileItem)
 {
-    QString fileName = "new scene.bbscene";
-    QString filePath = getExclusiveFilePath(parentPath, fileName);
+    QString filePath = getExclusiveFilePath(parentPath, BBConstant::BB_NAME_DEFAULT_SCENE);
     BB_PROCESS_ERROR_RETURN_FALSE(BBSerializer::createEmptyFile(filePath.toStdString().c_str()));
     BBFILE *pParentContent = getFolderContent(getFolderItemByPath(parentPath));
     pOutFileItem = addFileItem(QFileInfo(filePath), pParentContent);
@@ -1112,9 +1132,16 @@ void BBFileSystemDataManager::createMeshOverviewMap(const QString &sourcePath, c
 
 BBFileType BBFileSystemDataManager::getFileType(const QString &filePath)
 {
-    QTreeWidgetItem *pItem = getFolderItemByPath(filePath);
-    // to do ... m_RootFileData  m_TopLevelFileData  m_FileData
-    return BBFileType::Other;
+    QTreeWidgetItem *pParentFolderItem = getFolderItemByPath(getParentPath(filePath));
+    BBFileInfo *pFileInfo = NULL;
+    if (getFileItem(pParentFolderItem, filePath, pFileInfo))
+    {
+        return pFileInfo->m_eFileType;
+    }
+    else
+    {
+        return BBFileType::Other;
+    }
 }
 
 BBFILE* BBFileSystemDataManager::getFolderContent(QTreeWidgetItem *pItem)

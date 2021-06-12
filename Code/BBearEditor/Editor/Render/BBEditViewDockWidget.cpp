@@ -1,11 +1,51 @@
 #include "BBEditViewDockWidget.h"
 #include <QKeyEvent>
+#include "Window/BBConfirmationDialog.h"
+#include "Scene/BBSceneManager.h"
+#include <QFileDialog>
+#include "FileSystem/BBFileSystemDataManager.h"
 
 
 BBEditViewDockWidget::BBEditViewDockWidget(QWidget *pParent)
     : QDockWidget(pParent)
 {
 
+}
+
+bool BBEditViewDockWidget::saveScene(const QString &defaultParentPath)
+{
+    // pop-up dialog
+    BBConfirmationDialog dialog;
+    dialog.setTitle("Unsaved changes!");
+
+    QString sceneFilePath = BBSceneManager::getCurrentSceneFilePath();
+    if (sceneFilePath.isEmpty())
+    {
+        dialog.setMessage("Do you want to save these changes?");
+        if (dialog.exec())
+        {
+            QString defaultFilePath = BBFileSystemDataManager::getExclusiveFilePath(defaultParentPath,
+                                                                                    BBConstant::BB_NAME_DEFAULT_SCENE);
+            // pop-up file dialog and select path for new file
+            QString filePath = QFileDialog::getSaveFileName(NULL, tr("Save Scene"), defaultFilePath, tr("Scene (*.bbscene)"));
+            if (!filePath.isEmpty())
+            {
+                BBSceneManager::saveScene(filePath);
+                return true;
+            }
+        }
+    }
+    else
+    {
+        dialog.setMessage("Do you want to save these changes into " + sceneFilePath + " ?");
+        if (dialog.exec())
+        {
+            BBSceneManager::saveScene();
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void BBEditViewDockWidget::keyPressEvent(QKeyEvent *e)

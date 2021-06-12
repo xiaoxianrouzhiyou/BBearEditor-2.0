@@ -11,6 +11,8 @@ class BBEditViewDockWidget : public QDockWidget
 public:
     explicit BBEditViewDockWidget(QWidget *pParent = 0);
 
+    static bool saveScene(const QString &defaultParentPath);
+
 signals:
     void pressMoveKey(char key);
     void releaseMoveKey(char key);

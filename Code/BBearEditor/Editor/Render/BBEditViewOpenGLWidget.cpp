@@ -73,7 +73,7 @@ void BBEditViewOpenGLWidget::setCoordinateSystemSelectedObject(BBGameObject *pGa
     m_pScene->getTransformCoordinateSystem()->setSelectedObject(pGameObject);
 }
 
-void BBEditViewOpenGLWidget::setCoordinateSystemSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet)
+void BBEditViewOpenGLWidget::setCoordinateSystemSelectedObjects(const QList<BBGameObject*> &gameObjects, BBGameObjectSet *pSet)
 {
     m_pScene->getTransformCoordinateSystem()->setSelectedObjects(gameObjects, pSet);
 }

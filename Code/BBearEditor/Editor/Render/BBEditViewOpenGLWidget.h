@@ -24,7 +24,7 @@ private slots:
     void releaseMoveKey(char key);
     void pressTransform(char key);
     void setCoordinateSystemSelectedObject(BBGameObject *pGameObject);
-    void setCoordinateSystemSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet);
+    void setCoordinateSystemSelectedObjects(const QList<BBGameObject*> &gameObjects, BBGameObjectSet *pSet);
     void pressMultipleSelectionKey(bool bPressed);
     void updateCoordinateSystem();
     void createModelAtOrigin(const QString &filePath);

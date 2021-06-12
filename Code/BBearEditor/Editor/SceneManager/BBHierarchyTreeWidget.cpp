@@ -243,7 +243,7 @@ void BBHierarchyTreeWidget::selectPickedItem(BBGameObject *pGameObject)
     }
 }
 
-void BBHierarchyTreeWidget::selectPickedItems(QList<BBGameObject*> gameObjects)
+void BBHierarchyTreeWidget::selectPickedItems(const QList<BBGameObject*> &gameObjects)
 {
     QList<QTreeWidgetItem*> items = BBSceneManager::getSceneTreeItems(gameObjects);
     QTreeWidgetItemIterator it(this);

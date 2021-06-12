@@ -1,7 +1,9 @@
 #include "BBSceneManager.h"
+#include "Serializer/BBSerializer.h"
 
 
 QMap<QTreeWidgetItem*, BBGameObject*> BBSceneManager::m_ObjectMap;
+QString BBSceneManager::m_CurrentSceneFilePath;
 
 BBSceneManager::BBSceneManager()
 {
@@ -28,7 +30,7 @@ QTreeWidgetItem* BBSceneManager::getSceneTreeItem(BBGameObject *pGameObject)
     return m_ObjectMap.key(pGameObject);
 }
 
-QList<QTreeWidgetItem*> BBSceneManager::getSceneTreeItems(QList<BBGameObject*> gameObjects)
+QList<QTreeWidgetItem*> BBSceneManager::getSceneTreeItems(const QList<BBGameObject*> &gameObjects)
 {
     QList<QTreeWidgetItem*> items;
 
@@ -49,4 +51,26 @@ QList<QTreeWidgetItem*> BBSceneManager::getSceneTreeItems(QList<BBGameObject*> g
 BBGameObject* BBSceneManager::getGameObject(QTreeWidgetItem *pItem)
 {
     return m_ObjectMap.value(pItem);
+}
+
+bool BBSceneManager::isSceneSwitched(const QString &filePath)
+{
+    if (m_CurrentSceneFilePath == filePath)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+void BBSceneManager::openScene(const QString &filePath)
+{
+    m_CurrentSceneFilePath = filePath;
+}
+
+void BBSceneManager::saveScene(const QString &filePath)
+{
+    m_CurrentSceneFilePath.clear();
 }
