@@ -71,7 +71,14 @@ void BBMainWindow::setConnect()
                      m_pUi->openGLWidget, SLOT(releaseMoveKey(char)));
     QObject::connect(m_pUi->dockEditview, SIGNAL(pressTransform(char)),
                      m_pUi->openGLWidget, SLOT(pressTransform(char)));
-    QObject::connect(m_pUi->dockEditview, SIGNAL(pressESC()), m_pUi->openGLWidget, SLOT(pressESC()));
+    QObject::connect(m_pUi->dockEditview, SIGNAL(pressESC()),
+                     m_pUi->openGLWidget, SLOT(pressESC()));
+    // update title when switching scene
+    QObject::connect(m_pUi->openGLWidget, SIGNAL(updateEditViewTitle()),
+                     m_pUi->dockEditview, SLOT(setTitleBarText()));
+    // save scene
+    QObject::connect(m_pUi->dockEditview, SIGNAL(saveCurrentScene()),
+                     m_pUi->dockProject, SLOT(saveScene()));
     // Drag into the model, and add item in the Hierarchy tree
     QObject::connect(m_pUi->openGLWidget, SIGNAL(addGameObject(BBGameObject*)),
                      m_pUi->treeHierarchy, SLOT(addGameObject(BBGameObject*)));

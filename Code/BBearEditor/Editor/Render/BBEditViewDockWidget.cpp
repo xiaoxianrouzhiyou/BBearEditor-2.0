@@ -3,12 +3,46 @@
 #include "Scene/BBSceneManager.h"
 #include <QFileDialog>
 #include "FileSystem/BBFileSystemDataManager.h"
+#include <QVBoxLayout>
+#include <QLabel>
 
 
 BBEditViewDockWidget::BBEditViewDockWidget(QWidget *pParent)
     : QDockWidget(pParent)
 {
-    setBarTitle();
+    setFeatures(QDockWidget::NoDockWidgetFeatures);
+    setTitleBar();
+}
+
+void BBEditViewDockWidget::setTitleBarText()
+{
+    QString fileName = BBFileSystemDataManager::getFileNameByPath(BBSceneManager::getCurrentSceneFilePath());
+    QString text = "Edit View [" + BBFileSystemDataManager::getBaseName(fileName);
+    if (BBSceneManager::isSceneChanged())
+    {
+        text += "*";
+    }
+    text += "]";
+    m_pWindowTitle->setText(text);
+}
+
+void BBEditViewDockWidget::setTitleBar()
+{
+    QWidget *pBar = titleBarWidget();
+    BB_SAFE_DELETE(pBar);
+
+    pBar = new QWidget(this);
+    pBar->setStyleSheet("background-color: #191f28; padding-top: 8px; padding-bottom: 8px; padding-left: 5px;");
+
+    QVBoxLayout *pLayout = new QVBoxLayout(pBar);
+    pLayout->setMargin(0);
+
+    m_pWindowTitle = new QLabel(pBar);
+    m_pWindowTitle->setStyleSheet("color: #d6dfeb; font: 75 9pt \"Arial\";");
+    pLayout->addWidget(m_pWindowTitle);
+    setTitleBarText();
+
+    setTitleBarWidget(pBar);
 }
 
 void BBEditViewDockWidget::keyPressEvent(QKeyEvent *e)
@@ -51,7 +85,7 @@ void BBEditViewDockWidget::keyPressEvent(QKeyEvent *e)
 
     if ((e->modifiers() == Qt::ControlModifier) && (e->key() == Qt::Key_S))
     {
-
+        emit saveCurrentScene();
     }
 }
 
@@ -87,8 +121,3 @@ void BBEditViewDockWidget::focusInEvent(QFocusEvent *event)
     cancelFileListSelectedItems();
 }
 
-void BBEditViewDockWidget::setBarTitle()
-{
-    QString fileName = BBFileSystemDataManager::getFileNameByPath(BBSceneManager::getCurrentSceneFilePath());
-    setWindowTitle("Edit View [" + fileName + "*]");
-}

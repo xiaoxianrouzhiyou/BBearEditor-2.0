@@ -34,6 +34,7 @@ public:
     void newFolder(const QString &parentPath, const BBSignalSender &eSender);
 
     void newScene(const QString &parentPath);
+    void saveScene();
 
     void showInFolder(const QString &filePath);
 

@@ -4,6 +4,7 @@
 #include "BBFolderTreeWidget.h"
 #include "BBFileListWidget.h"
 #include "BBFilePathBarWidget.h"
+#include "Scene/BBSceneManager.h"
 
 
 BBFileSystemManager::BBFileSystemManager(BBFolderTreeWidget *pFolderTreeWidget,
@@ -107,6 +108,11 @@ void BBFileSystemManager::newScene(const QString &parentPath)
             updateFileList(parentPath, m_pDataManager->getCurrentViewedItem(), pCurrentItem);
         }
     }
+}
+
+void BBFileSystemManager::saveScene()
+{
+    m_pDataManager->saveScene();
 }
 
 void BBFileSystemManager::showInFolder(const QString &filePath)

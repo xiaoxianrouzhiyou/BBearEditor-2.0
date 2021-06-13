@@ -36,6 +36,7 @@ private slots:
 //    void createLightDependParent(QString fileName);
 
 signals:
+    void updateEditViewTitle();
     // create QTreeWidgetItem
     void addGameObject(BBGameObject *pGameObject);
     // specified QTreeWidgetItem

@@ -24,7 +24,8 @@ public:
     inline bool isCanceled() { return m_bCanceled; }
 
 private slots:
-    void pressRejectionButton();
+    void pressCloseButton();
+    void pressNoButton();
 
 private:
     Ui::BBConfirmationDialog *m_pUi;

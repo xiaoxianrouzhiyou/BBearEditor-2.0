@@ -60,6 +60,11 @@ void BBFileSystemDockWidget::newScene(const QString &parentPath)
     m_pFileSystemManager->newScene(parentPath);
 }
 
+void BBFileSystemDockWidget::saveScene()
+{
+    m_pFileSystemManager->saveScene();
+}
+
 void BBFileSystemDockWidget::showInFolder(const QString &filePath)
 {
     m_pFileSystemManager->showInFolder(filePath);

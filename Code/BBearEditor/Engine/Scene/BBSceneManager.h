@@ -21,7 +21,8 @@ public:
     static BBGameObject* getGameObject(QTreeWidgetItem *pItem);
 
     static bool isSceneSwitched(const QString &filePath);
-    static bool isSceneChanged();
+    static void changeScene();
+    static bool isSceneChanged() { return m_bSceneChanged; }
     static void openScene(const QString &filePath);
     static void saveScene(const QString &filePath = m_CurrentSceneFilePath);
     static void removeScene();
@@ -31,6 +32,7 @@ private:
     static QMap<QTreeWidgetItem*, BBGameObject*> m_ObjectMap;
     static QString m_CurrentSceneFilePath;
     static BBEditViewOpenGLWidget *m_pEditViewOpenGLWidget;
+    static bool m_bSceneChanged;
 };
 
 #endif // BBSCENEMANAGER_H

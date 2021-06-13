@@ -252,6 +252,75 @@ bool BBFileSystemDataManager::newScene(const QString &parentPath, QListWidgetIte
     return true;
 }
 
+bool BBFileSystemDataManager::openScene(const QString &defaultSavedParentPath, const QString &openedPath)
+{
+    BB_PROCESS_ERROR_RETURN_FALSE(BBSceneManager::isSceneSwitched(openedPath));
+
+    // save current scene
+    if (saveScene(defaultSavedParentPath))
+    {
+        // open selected scene
+        BBSceneManager::openScene(openedPath);
+        return true;
+    }
+
+    return false;
+}
+
+bool BBFileSystemDataManager::saveScene(const QString &defaultParentPath)
+{
+    // pop-up dialog
+    BBConfirmationDialog dialog;
+    dialog.setTitle("Unsaved changes!");
+
+    QString sceneFilePath = BBSceneManager::getCurrentSceneFilePath();
+    if (sceneFilePath.isEmpty())
+    {
+        dialog.setMessage("Do you want to save these changes?");
+        if (dialog.exec())
+        {
+            QString defaultFilePath = BBFileSystemDataManager::getExclusiveFilePath(defaultParentPath,
+                                                                                    BBConstant::BB_NAME_DEFAULT_SCENE);
+            // pop-up file dialog and select path for new file
+            QString filePath = QFileDialog::getSaveFileName(NULL, "Save Scene", defaultFilePath, "Scene (*.bbscene)");
+            if (!filePath.isEmpty())
+            {
+                // create list item in the file list and empty file
+                QListWidgetItem *pFileItem = NULL;
+                newScene(getParentPath(filePath), pFileItem, getFileNameByPath(filePath));
+                // write file
+                BBSceneManager::saveScene(filePath);
+                return true;
+            }
+        }
+    }
+    else
+    {
+        dialog.setMessage("Do you want to save these changes into " + sceneFilePath + " ?");
+        if (dialog.exec())
+        {
+            BBSceneManager::saveScene();
+            return true;
+        }
+    }
+
+    if (!dialog.isCanceled())
+    {
+        // remove changes
+        BBSceneManager::removeScene();
+        // open new scene
+        return true;
+    }
+
+    return false;
+}
+
+bool BBFileSystemDataManager::saveScene()
+{
+    BBSceneManager::saveScene();
+    return true;
+}
+
 bool BBFileSystemDataManager::showInFolder(const QString &filePath)
 {
     BB_PROCESS_ERROR_RETURN_FALSE(!filePath.isEmpty());
@@ -1262,68 +1331,4 @@ bool BBFileSystemDataManager::loadImportedData(const QString &parentPath)
     buildFileData(parentPath, pParentFolderItem, pFolderContent, names);
 
     return true;
-}
-
-bool BBFileSystemDataManager::openScene(const QString &defaultSavedParentPath, const QString &openedPath)
-{
-    BB_PROCESS_ERROR_RETURN_FALSE(BBSceneManager::isSceneSwitched(openedPath));
-    BB_PROCESS_ERROR_RETURN_FALSE(BBSceneManager::isSceneChanged());
-
-    // save current scene
-    if (saveScene(defaultSavedParentPath))
-    {
-        // open selected scene
-        BBSceneManager::openScene(openedPath);
-        return true;
-    }
-
-    return false;
-}
-
-bool BBFileSystemDataManager::saveScene(const QString &defaultParentPath)
-{
-    // pop-up dialog
-    BBConfirmationDialog dialog;
-    dialog.setTitle("Unsaved changes!");
-
-    QString sceneFilePath = BBSceneManager::getCurrentSceneFilePath();
-    if (sceneFilePath.isEmpty())
-    {
-        dialog.setMessage("Do you want to save these changes?");
-        if (dialog.exec())
-        {
-            QString defaultFilePath = BBFileSystemDataManager::getExclusiveFilePath(defaultParentPath,
-                                                                                    BBConstant::BB_NAME_DEFAULT_SCENE);
-            // pop-up file dialog and select path for new file
-            QString filePath = QFileDialog::getSaveFileName(NULL, "Save Scene", defaultFilePath, "Scene (*.bbscene)");
-            if (!filePath.isEmpty())
-            {
-                // create list item in the file list and empty file
-                QListWidgetItem *pFileItem = NULL;
-                newScene(getParentPath(filePath), pFileItem, getFileNameByPath(filePath));
-                // write file
-                BBSceneManager::saveScene(filePath);
-                return true;
-            }
-        }
-    }
-    else
-    {
-        dialog.setMessage("Do you want to save these changes into " + sceneFilePath + " ?");
-        if (dialog.exec())
-        {
-            BBSceneManager::saveScene();
-            return true;
-        }
-    }
-
-    if (!dialog.isCanceled())
-    {
-        // remove changes
-        BBSceneManager::removeScene();
-        // open new scene
-        return true;
-    }
-
-    return false;
 }

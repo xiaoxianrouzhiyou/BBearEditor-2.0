@@ -3,7 +3,10 @@
 
 #include <QDockWidget>
 
+
 class QKeyEvent;
+class QLabel;
+
 class BBEditViewDockWidget : public QDockWidget
 {
     Q_OBJECT
@@ -18,13 +21,19 @@ signals:
     void pressESC();
     void cancelFileListSelectedItems();
     void keyPress(QKeyEvent *e);
+    void saveCurrentScene();
+
+private slots:
+    void setTitleBarText();
 
 private:
+    void setTitleBar();
+
     void keyPressEvent(QKeyEvent *e) override;
     void keyReleaseEvent(QKeyEvent *e) override;
     void focusInEvent(QFocusEvent *event) override;
 
-    void setBarTitle();
+    QLabel *m_pWindowTitle;
 };
 
 #endif // BBEDITVIEWDOCKWIDGET_H

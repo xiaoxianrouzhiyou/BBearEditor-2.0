@@ -22,8 +22,8 @@ BBConfirmationDialog::BBConfirmationDialog(QWidget *pParent)
     // Press Enter to invoke the click event of the yes button
     m_pUi->buttonYes->setDefault(true);
 
-    QObject::connect(m_pUi->buttonNo, SIGNAL(clicked(bool)), this, SLOT(pressRejectionButton()));
-    QObject::connect(m_pUi->buttonClose, SIGNAL(clicked(bool)), this, SLOT(pressRejectionButton()));
+    QObject::connect(m_pUi->buttonClose, SIGNAL(clicked(bool)), this, SLOT(pressCloseButton()));
+    QObject::connect(m_pUi->buttonNo, SIGNAL(clicked(bool)), this, SLOT(pressNoButton()));
 }
 
 BBConfirmationDialog::~BBConfirmationDialog()
@@ -41,14 +41,12 @@ void BBConfirmationDialog::setMessage(const QString &message)
     m_pUi->labelMessage->setText(message);
 }
 
-void BBConfirmationDialog::pressRejectionButton()
+void BBConfirmationDialog::pressCloseButton()
 {
-    if (m_pUi->buttonNo->isChecked())
-    {
-        m_bCanceled = false;
-    }
-    else
-    {
-        m_bCanceled = true;
-    }
+    m_bCanceled = true;
+}
+
+void BBConfirmationDialog::pressNoButton()
+{
+    m_bCanceled = false;
 }

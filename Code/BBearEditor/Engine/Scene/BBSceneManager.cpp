@@ -9,16 +9,19 @@
 QMap<QTreeWidgetItem*, BBGameObject*> BBSceneManager::m_ObjectMap;
 QString BBSceneManager::m_CurrentSceneFilePath;
 BBEditViewOpenGLWidget* BBSceneManager::m_pEditViewOpenGLWidget = NULL;
+bool BBSceneManager::m_bSceneChanged = true;
 
 
 void BBSceneManager::insertObjectMap(QTreeWidgetItem *pItem, BBGameObject *pGameObject)
 {
     m_ObjectMap.insert(pItem, pGameObject);
+    changeScene();
 }
 
 void BBSceneManager::removeObjectMap(QTreeWidgetItem *pItem)
 {
     m_ObjectMap.remove(pItem);
+    changeScene();
 }
 
 QTreeWidgetItem* BBSceneManager::getSceneTreeItem(BBGameObject *pGameObject)
@@ -61,10 +64,11 @@ bool BBSceneManager::isSceneSwitched(const QString &filePath)
     }
 }
 
-bool BBSceneManager::isSceneChanged()
+void BBSceneManager::changeScene()
 {
-    // to do
-    return true;
+    BB_PROCESS_ERROR_RETURN(!m_bSceneChanged);
+    m_bSceneChanged = true;
+    m_pEditViewOpenGLWidget->updateEditViewTitle();
 }
 
 void BBSceneManager::openScene(const QString &filePath)
@@ -90,6 +94,7 @@ void BBSceneManager::openScene(const QString &filePath)
     BB_SAFE_DELETE(pData);
 
     m_CurrentSceneFilePath = filePath;
+    m_pEditViewOpenGLWidget->updateEditViewTitle();
 }
 
 void BBSceneManager::saveScene(const QString &filePath)
@@ -126,7 +131,8 @@ void BBSceneManager::saveScene(const QString &filePath)
     scene.SerializeToArray(szBuffer, nLength);
     BBUtils::saveToFile(filePath.toStdString().c_str(), szBuffer, nLength);
 
-    m_CurrentSceneFilePath.clear();
+    m_bSceneChanged = false;
+    m_pEditViewOpenGLWidget->updateEditViewTitle();
 }
 
 void BBSceneManager::removeScene()
@@ -138,5 +144,7 @@ void BBSceneManager::removeScene()
         delete it.key();
     }
     m_ObjectMap.clear();
+
+    m_bSceneChanged = false;
     m_CurrentSceneFilePath.clear();
 }
