@@ -41,6 +41,8 @@ public:
     void setSelectionRegionVisibility(bool bVisible);
     QList<BBGameObject*> getSelectedObjects(QPoint start, QPoint end);
 
+    void clear();
+
 private:
     float m_fUpdateRate;
     BBCamera *m_pCamera;

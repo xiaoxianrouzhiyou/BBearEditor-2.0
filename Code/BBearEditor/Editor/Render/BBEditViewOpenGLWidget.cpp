@@ -10,11 +10,15 @@
 #include "Geometry/BBRay.h"
 #include "BBCoordinateSystem.h"
 #include <QTreeWidgetItem>
+#include "Scene/BBSceneManager.h"
 
 
 BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
     : BBOpenGLWidget(pParent)
 {
+    // no need to bind in the base class
+    BBSceneManager::bindCurrentScene(m_pScene);
+
     m_bRightPressed = false;
     m_pPreviewObject = NULL;
     setAcceptDrops(true);

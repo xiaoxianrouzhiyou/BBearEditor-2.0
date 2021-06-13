@@ -129,6 +129,7 @@ class BBUtils
 {
 public:
     static char *loadFileContent(const char *filePath, int &nFileSize);
+    static bool saveToFile(const char *pFilePath, void *pBuffer, int nSize);
 };
 
 #endif // BBUTILS_H

@@ -36,7 +36,8 @@ public:
     inline QList<QListWidgetItem*> getSelectedFileItems() { return m_SelectedFileItems; }
     bool openFile(const QString &filePath);
     bool newFolder(const QString &parentPath, QTreeWidgetItem *&pOutFolderItem, QListWidgetItem *&pOutFileItem);
-    bool newScene(const QString &parentPath, QListWidgetItem *&pOutFileItem);
+    bool newScene(const QString &parentPath, QListWidgetItem *&pOutFileItem,
+                  QString fileName = BBConstant::BB_NAME_DEFAULT_SCENE);
     bool showInFolder(const QString &filePath);
     bool rename(QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pFileItem,
                 const QString &oldPath, const QString &newPath);
@@ -109,6 +110,12 @@ private:
     bool moveFolderItem(QTreeWidgetItem *pFolderItem, QTreeWidgetItem *pOldParentItem, QTreeWidgetItem *pNewParentItem);
     bool importFiles(const QFileInfo &fileInfo, const QString &newPath);
     bool loadImportedData(const QString &parentPath);
+
+    /* Scene */
+    bool openScene(const QString &defaultSavedParentPath, const QString &openedPath);
+    bool saveScene(const QString &defaultParentPath);
+
+    /* Material */
 
     BBOpenGLWidget *m_pPreviewOpenGLWidget;
 

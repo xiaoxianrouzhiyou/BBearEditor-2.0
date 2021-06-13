@@ -1,0 +1,11 @@
+syntax = "proto3";
+package BBSerializer;
+
+import "BBHierarchyTreeWidgetItem.proto";
+import "BBGameObject.proto";
+
+message BBScene
+{
+    repeated BBHierarchyTreeWidgetItem item = 1;
+    repeated BBGameObject gameObject = 2;
+}

@@ -311,8 +311,6 @@ void BBScene::deleteGameObject(BBGameObject *pGameObject)
 //        audios.removeOne(object);
 //    }
 //    transformCoordinate->setSelectedObject(nullptr);
-
-    BB_SAFE_DELETE(pGameObject);
 }
 
 void BBScene::setSelectionRegionVisibility(bool bVisible)
@@ -368,6 +366,19 @@ QList<BBGameObject*> BBScene::getSelectedObjects(QPoint start, QPoint end)
     // return all objects in the selection region
     return result;
 }
+
+void BBScene::clear()
+{
+    QList<BBGameObject*> objects = m_Models;
+            //+ directionLights + pointLights + spotLights + audios;
+    for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
+    {
+        BBGameObject *pObject = *itr;
+        deleteGameObject(pObject);
+    }
+}
+
+
 
 
 //void Scene::renderShadowMap()

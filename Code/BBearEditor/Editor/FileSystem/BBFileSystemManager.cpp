@@ -58,13 +58,16 @@ void BBFileSystemManager::clickItemInFolderTree(const QString &filePath, QTreeWi
 
 void BBFileSystemManager::doubleClickItemInFileList(const QString &filePath)
 {
-    if (!m_pDataManager->openFile(filePath))
+    QString updatedPath = filePath;
+    if (m_pDataManager->openFile(filePath))
     {
-        // when this is a folder, need to update and access new folder
-        setFolderTreeCurrentItem(filePath);
-        updateFileList(filePath, NULL);
-        updateFolderPathBar(filePath);
+        updatedPath = BBFileSystemDataManager::getParentPath(filePath);
     }
+
+    // when this is a folder, need to update and access new folder
+    setFolderTreeCurrentItem(updatedPath);
+    updateFileList(updatedPath, NULL);
+    updateFolderPathBar(updatedPath);
 }
 
 void BBFileSystemManager::clickItemInFolderPathBar(const QString &filePath)

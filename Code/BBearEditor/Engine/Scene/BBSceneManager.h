@@ -6,6 +6,7 @@
 
 class QTreeWidgetItem;
 class BBGameObject;
+class BBScene;
 
 class BBSceneManager
 {
@@ -14,6 +15,7 @@ public:
     ~BBSceneManager();
 
     static QString getCurrentSceneFilePath() { return m_CurrentSceneFilePath; }
+    static void bindCurrentScene(BBScene *pScene) { m_pCurrentScene = pScene; }
 
     static void insertObjectMap(QTreeWidgetItem *pItem, BBGameObject *pGameObject);
     static void removeObjectMap(QTreeWidgetItem *pItem);
@@ -22,13 +24,16 @@ public:
     static BBGameObject* getGameObject(QTreeWidgetItem *pItem);
 
     static bool isSceneSwitched(const QString &filePath);
+    static bool isSceneChanged();
     static void openScene(const QString &filePath);
     static void saveScene(const QString &filePath = m_CurrentSceneFilePath);
+    static void removeScene();
 
 private:
     // Save the mapping between each scene tree item and its corresponding GameObject
     static QMap<QTreeWidgetItem*, BBGameObject*> m_ObjectMap;
     static QString m_CurrentSceneFilePath;
+    static BBScene *m_pCurrentScene;
 };
 
 #endif // BBSCENEMANAGER_H

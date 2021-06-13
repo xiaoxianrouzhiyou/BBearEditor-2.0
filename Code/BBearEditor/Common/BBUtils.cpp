@@ -50,7 +50,14 @@ char *BBUtils::loadFileContent(const char *filePath, int &nFileSize)
     return pData;
 }
 
-
+bool BBUtils::saveToFile(const char *pFilePath, void *pBuffer, int nSize)
+{
+    FILE *pFile = fopen(pFilePath, "wb");
+    BB_PROCESS_ERROR_RETURN_FALSE(pFile);
+    fwrite(pBuffer, sizeof(char), nSize, pFile);
+    fclose(pFile);
+    return true;
+}
 
 
 

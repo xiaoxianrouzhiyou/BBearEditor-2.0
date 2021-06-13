@@ -960,9 +960,6 @@ BBFileListWidget::item:selected {
    <property name="styleSheet">
     <string notr="true"/>
    </property>
-   <property name="features">
-    <set>QDockWidget::NoDockWidgetFeatures</set>
-   </property>
    <property name="windowTitle">
     <string>Edit View</string>
    </property>
@@ -990,14 +987,8 @@ BBFileListWidget::item:selected {
    </widget>
   </widget>
   <widget class="BBFileSystemDockWidget" name="dockProject">
-   <property name="focusPolicy">
-    <enum>Qt::StrongFocus</enum>
-   </property>
    <property name="styleSheet">
     <string notr="true"/>
-   </property>
-   <property name="features">
-    <set>QDockWidget::NoDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
     <string>Project</string>
