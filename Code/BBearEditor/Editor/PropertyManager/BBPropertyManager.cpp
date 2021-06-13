@@ -33,6 +33,9 @@ void BBPropertyManager::clear()
         delete pItem->widget();
         delete pItem;
     }
+    m_pBaseInformationManager = NULL;
+    m_pSetBaseInformationManager = NULL;
+    m_pTransformGroupManager = NULL;
 }
 
 void BBPropertyManager::showGameObjectProperty(BBGameObject *pGameObject)
