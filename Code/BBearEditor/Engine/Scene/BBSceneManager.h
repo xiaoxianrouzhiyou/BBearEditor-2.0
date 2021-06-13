@@ -3,6 +3,9 @@
 
 
 #include <QMap>
+#include <QVector3D>
+#include "Serializer/BBVector.pb.h"
+
 
 class QTreeWidgetItem;
 class BBGameObject;
@@ -28,6 +31,8 @@ public:
     static void removeScene();
 
 private:
+    static void setVector3f(const QVector3D &value, BBSerializer::BBVector3f *&pOutVector3f);
+
     // Save the mapping between each scene tree item and its corresponding GameObject
     static QMap<QTreeWidgetItem*, BBGameObject*> m_ObjectMap;
     static QString m_CurrentSceneFilePath;

@@ -213,6 +213,7 @@ BBModel* BBScene::createModel(const BBSerializer::BBGameObject &gameObject)
                                   QVector3D(rotation.x(), rotation.y(), rotation.z()),
                                   QVector3D(scale.x(), scale.y(), scale.z()));
     // load extra info from the scene file
+    pModel->setName(QString::fromStdString(gameObject.name()));
 
     return pModel;
 }

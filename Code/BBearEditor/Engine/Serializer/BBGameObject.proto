@@ -9,15 +9,12 @@ message BBGameObject
 
 	optional string name = 2;
 	optional string className = 3;
-	optional string iconName = 4;
-	optional string filePath = 5;
+	optional string filePath = 4;
 
-	optional BBVector3f position = 6;
-    optional BBVector3f localPosition = 7;
-    optional BBVector3f rotation = 8;
-    optional BBVector3f localRotation = 9;
-    optional BBVector4f quaternion = 10;
-    optional BBVector4f localQuaternion = 11;
-    optional BBVector3f scale = 12;
-    optional BBVector3f localScale = 13;
+	optional BBVector3f position = 5;
+    optional BBVector3f localPosition = 6;
+    optional BBVector3f rotation = 7;
+    optional BBVector3f localRotation = 8;
+    optional BBVector3f scale = 9;
+    optional BBVector3f localScale = 10;
 }

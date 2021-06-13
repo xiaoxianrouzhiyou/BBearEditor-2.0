@@ -270,6 +270,12 @@ bool BBFileSystemDataManager::openScene(const QString &defaultSavedParentPath, c
 
 bool BBFileSystemDataManager::saveScene(const QString &defaultParentPath, QListWidgetItem *&pOutFileItem)
 {
+    // no need to save when there is no change
+    if (!BBSceneManager::isSceneChanged())
+    {
+        return true;
+    }
+
     // pop-up dialog
     BBConfirmationDialog dialog;
     dialog.setTitle("Unsaved changes!");

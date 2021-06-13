@@ -175,16 +175,13 @@ class BBGameObject PROTOBUF_FINAL :
   enum : int {
     kNameFieldNumber = 2,
     kClassNameFieldNumber = 3,
-    kIconNameFieldNumber = 4,
-    kFilePathFieldNumber = 5,
-    kPositionFieldNumber = 6,
-    kLocalPositionFieldNumber = 7,
-    kRotationFieldNumber = 8,
-    kLocalRotationFieldNumber = 9,
-    kQuaternionFieldNumber = 10,
-    kLocalQuaternionFieldNumber = 11,
-    kScaleFieldNumber = 12,
-    kLocalScaleFieldNumber = 13,
+    kFilePathFieldNumber = 4,
+    kPositionFieldNumber = 5,
+    kLocalPositionFieldNumber = 6,
+    kRotationFieldNumber = 7,
+    kLocalRotationFieldNumber = 8,
+    kScaleFieldNumber = 9,
+    kLocalScaleFieldNumber = 10,
     kIndexFieldNumber = 1,
   };
   // string name = 2;
@@ -223,25 +220,7 @@ class BBGameObject PROTOBUF_FINAL :
   std::string* _internal_mutable_classname();
   public:
 
-  // string iconName = 4;
-  bool has_iconname() const;
-  private:
-  bool _internal_has_iconname() const;
-  public:
-  void clear_iconname();
-  const std::string& iconname() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_iconname(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_iconname();
-  std::string* release_iconname();
-  void set_allocated_iconname(std::string* iconname);
-  private:
-  const std::string& _internal_iconname() const;
-  void _internal_set_iconname(const std::string& value);
-  std::string* _internal_mutable_iconname();
-  public:
-
-  // string filePath = 5;
+  // string filePath = 4;
   bool has_filepath() const;
   private:
   bool _internal_has_filepath() const;
@@ -259,7 +238,7 @@ class BBGameObject PROTOBUF_FINAL :
   std::string* _internal_mutable_filepath();
   public:
 
-  // .BBSerializer.BBVector3f position = 6;
+  // .BBSerializer.BBVector3f position = 5;
   bool has_position() const;
   private:
   bool _internal_has_position() const;
@@ -277,7 +256,7 @@ class BBGameObject PROTOBUF_FINAL :
       ::BBSerializer::BBVector3f* position);
   ::BBSerializer::BBVector3f* unsafe_arena_release_position();
 
-  // .BBSerializer.BBVector3f localPosition = 7;
+  // .BBSerializer.BBVector3f localPosition = 6;
   bool has_localposition() const;
   private:
   bool _internal_has_localposition() const;
@@ -295,7 +274,7 @@ class BBGameObject PROTOBUF_FINAL :
       ::BBSerializer::BBVector3f* localposition);
   ::BBSerializer::BBVector3f* unsafe_arena_release_localposition();
 
-  // .BBSerializer.BBVector3f rotation = 8;
+  // .BBSerializer.BBVector3f rotation = 7;
   bool has_rotation() const;
   private:
   bool _internal_has_rotation() const;
@@ -313,7 +292,7 @@ class BBGameObject PROTOBUF_FINAL :
       ::BBSerializer::BBVector3f* rotation);
   ::BBSerializer::BBVector3f* unsafe_arena_release_rotation();
 
-  // .BBSerializer.BBVector3f localRotation = 9;
+  // .BBSerializer.BBVector3f localRotation = 8;
   bool has_localrotation() const;
   private:
   bool _internal_has_localrotation() const;
@@ -331,43 +310,7 @@ class BBGameObject PROTOBUF_FINAL :
       ::BBSerializer::BBVector3f* localrotation);
   ::BBSerializer::BBVector3f* unsafe_arena_release_localrotation();
 
-  // .BBSerializer.BBVector4f quaternion = 10;
-  bool has_quaternion() const;
-  private:
-  bool _internal_has_quaternion() const;
-  public:
-  void clear_quaternion();
-  const ::BBSerializer::BBVector4f& quaternion() const;
-  ::BBSerializer::BBVector4f* release_quaternion();
-  ::BBSerializer::BBVector4f* mutable_quaternion();
-  void set_allocated_quaternion(::BBSerializer::BBVector4f* quaternion);
-  private:
-  const ::BBSerializer::BBVector4f& _internal_quaternion() const;
-  ::BBSerializer::BBVector4f* _internal_mutable_quaternion();
-  public:
-  void unsafe_arena_set_allocated_quaternion(
-      ::BBSerializer::BBVector4f* quaternion);
-  ::BBSerializer::BBVector4f* unsafe_arena_release_quaternion();
-
-  // .BBSerializer.BBVector4f localQuaternion = 11;
-  bool has_localquaternion() const;
-  private:
-  bool _internal_has_localquaternion() const;
-  public:
-  void clear_localquaternion();
-  const ::BBSerializer::BBVector4f& localquaternion() const;
-  ::BBSerializer::BBVector4f* release_localquaternion();
-  ::BBSerializer::BBVector4f* mutable_localquaternion();
-  void set_allocated_localquaternion(::BBSerializer::BBVector4f* localquaternion);
-  private:
-  const ::BBSerializer::BBVector4f& _internal_localquaternion() const;
-  ::BBSerializer::BBVector4f* _internal_mutable_localquaternion();
-  public:
-  void unsafe_arena_set_allocated_localquaternion(
-      ::BBSerializer::BBVector4f* localquaternion);
-  ::BBSerializer::BBVector4f* unsafe_arena_release_localquaternion();
-
-  // .BBSerializer.BBVector3f scale = 12;
+  // .BBSerializer.BBVector3f scale = 9;
   bool has_scale() const;
   private:
   bool _internal_has_scale() const;
@@ -385,7 +328,7 @@ class BBGameObject PROTOBUF_FINAL :
       ::BBSerializer::BBVector3f* scale);
   ::BBSerializer::BBVector3f* unsafe_arena_release_scale();
 
-  // .BBSerializer.BBVector3f localScale = 13;
+  // .BBSerializer.BBVector3f localScale = 10;
   bool has_localscale() const;
   private:
   bool _internal_has_localscale() const;
@@ -423,14 +366,11 @@ class BBGameObject PROTOBUF_FINAL :
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr classname_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr iconname_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr filepath_;
   ::BBSerializer::BBVector3f* position_;
   ::BBSerializer::BBVector3f* localposition_;
   ::BBSerializer::BBVector3f* rotation_;
   ::BBSerializer::BBVector3f* localrotation_;
-  ::BBSerializer::BBVector4f* quaternion_;
-  ::BBSerializer::BBVector4f* localquaternion_;
   ::BBSerializer::BBVector3f* scale_;
   ::BBSerializer::BBVector3f* localscale_;
   ::PROTOBUF_NAMESPACE_ID::int32 index_;
@@ -581,66 +521,9 @@ inline void BBGameObject::set_allocated_classname(std::string* classname) {
   // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.className)
 }
 
-// string iconName = 4;
-inline bool BBGameObject::_internal_has_iconname() const {
-  bool value = (_has_bits_[0] & 0x00000004u) != 0;
-  return value;
-}
-inline bool BBGameObject::has_iconname() const {
-  return _internal_has_iconname();
-}
-inline void BBGameObject::clear_iconname() {
-  iconname_.ClearToEmpty();
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline const std::string& BBGameObject::iconname() const {
-  // @@protoc_insertion_point(field_get:BBSerializer.BBGameObject.iconName)
-  return _internal_iconname();
-}
-template <typename ArgT0, typename... ArgT>
-PROTOBUF_ALWAYS_INLINE
-inline void BBGameObject::set_iconname(ArgT0&& arg0, ArgT... args) {
- _has_bits_[0] |= 0x00000004u;
- iconname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
-  // @@protoc_insertion_point(field_set:BBSerializer.BBGameObject.iconName)
-}
-inline std::string* BBGameObject::mutable_iconname() {
-  // @@protoc_insertion_point(field_mutable:BBSerializer.BBGameObject.iconName)
-  return _internal_mutable_iconname();
-}
-inline const std::string& BBGameObject::_internal_iconname() const {
-  return iconname_.Get();
-}
-inline void BBGameObject::_internal_set_iconname(const std::string& value) {
-  _has_bits_[0] |= 0x00000004u;
-  iconname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
-}
-inline std::string* BBGameObject::_internal_mutable_iconname() {
-  _has_bits_[0] |= 0x00000004u;
-  return iconname_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
-}
-inline std::string* BBGameObject::release_iconname() {
-  // @@protoc_insertion_point(field_release:BBSerializer.BBGameObject.iconName)
-  if (!_internal_has_iconname()) {
-    return nullptr;
-  }
-  _has_bits_[0] &= ~0x00000004u;
-  return iconname_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-}
-inline void BBGameObject::set_allocated_iconname(std::string* iconname) {
-  if (iconname != nullptr) {
-    _has_bits_[0] |= 0x00000004u;
-  } else {
-    _has_bits_[0] &= ~0x00000004u;
-  }
-  iconname_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), iconname,
-      GetArena());
-  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.iconName)
-}
-
-// string filePath = 5;
+// string filePath = 4;
 inline bool BBGameObject::_internal_has_filepath() const {
-  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
   return value;
 }
 inline bool BBGameObject::has_filepath() const {
@@ -648,7 +531,7 @@ inline bool BBGameObject::has_filepath() const {
 }
 inline void BBGameObject::clear_filepath() {
   filepath_.ClearToEmpty();
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline const std::string& BBGameObject::filepath() const {
   // @@protoc_insertion_point(field_get:BBSerializer.BBGameObject.filePath)
@@ -657,7 +540,7 @@ inline const std::string& BBGameObject::filepath() const {
 template <typename ArgT0, typename... ArgT>
 PROTOBUF_ALWAYS_INLINE
 inline void BBGameObject::set_filepath(ArgT0&& arg0, ArgT... args) {
- _has_bits_[0] |= 0x00000008u;
+ _has_bits_[0] |= 0x00000004u;
  filepath_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
   // @@protoc_insertion_point(field_set:BBSerializer.BBGameObject.filePath)
 }
@@ -669,11 +552,11 @@ inline const std::string& BBGameObject::_internal_filepath() const {
   return filepath_.Get();
 }
 inline void BBGameObject::_internal_set_filepath(const std::string& value) {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000004u;
   filepath_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
 }
 inline std::string* BBGameObject::_internal_mutable_filepath() {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000004u;
   return filepath_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
 }
 inline std::string* BBGameObject::release_filepath() {
@@ -681,23 +564,23 @@ inline std::string* BBGameObject::release_filepath() {
   if (!_internal_has_filepath()) {
     return nullptr;
   }
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000004u;
   return filepath_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
 inline void BBGameObject::set_allocated_filepath(std::string* filepath) {
   if (filepath != nullptr) {
-    _has_bits_[0] |= 0x00000008u;
+    _has_bits_[0] |= 0x00000004u;
   } else {
-    _has_bits_[0] &= ~0x00000008u;
+    _has_bits_[0] &= ~0x00000004u;
   }
   filepath_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), filepath,
       GetArena());
   // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.filePath)
 }
 
-// .BBSerializer.BBVector3f position = 6;
+// .BBSerializer.BBVector3f position = 5;
 inline bool BBGameObject::_internal_has_position() const {
-  bool value = (_has_bits_[0] & 0x00000010u) != 0;
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
   PROTOBUF_ASSUME(!value || position_ != nullptr);
   return value;
 }
@@ -720,14 +603,14 @@ inline void BBGameObject::unsafe_arena_set_allocated_position(
   }
   position_ = position;
   if (position) {
-    _has_bits_[0] |= 0x00000010u;
+    _has_bits_[0] |= 0x00000008u;
   } else {
-    _has_bits_[0] &= ~0x00000010u;
+    _has_bits_[0] &= ~0x00000008u;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:BBSerializer.BBGameObject.position)
 }
 inline ::BBSerializer::BBVector3f* BBGameObject::release_position() {
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000008u;
   ::BBSerializer::BBVector3f* temp = position_;
   position_ = nullptr;
   if (GetArena() != nullptr) {
@@ -737,13 +620,13 @@ inline ::BBSerializer::BBVector3f* BBGameObject::release_position() {
 }
 inline ::BBSerializer::BBVector3f* BBGameObject::unsafe_arena_release_position() {
   // @@protoc_insertion_point(field_release:BBSerializer.BBGameObject.position)
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000008u;
   ::BBSerializer::BBVector3f* temp = position_;
   position_ = nullptr;
   return temp;
 }
 inline ::BBSerializer::BBVector3f* BBGameObject::_internal_mutable_position() {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000008u;
   if (position_ == nullptr) {
     auto* p = CreateMaybeMessage<::BBSerializer::BBVector3f>(GetArena());
     position_ = p;
@@ -766,17 +649,17 @@ inline void BBGameObject::set_allocated_position(::BBSerializer::BBVector3f* pos
       position = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, position, submessage_arena);
     }
-    _has_bits_[0] |= 0x00000010u;
+    _has_bits_[0] |= 0x00000008u;
   } else {
-    _has_bits_[0] &= ~0x00000010u;
+    _has_bits_[0] &= ~0x00000008u;
   }
   position_ = position;
   // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.position)
 }
 
-// .BBSerializer.BBVector3f localPosition = 7;
+// .BBSerializer.BBVector3f localPosition = 6;
 inline bool BBGameObject::_internal_has_localposition() const {
-  bool value = (_has_bits_[0] & 0x00000020u) != 0;
+  bool value = (_has_bits_[0] & 0x00000010u) != 0;
   PROTOBUF_ASSUME(!value || localposition_ != nullptr);
   return value;
 }
@@ -799,14 +682,14 @@ inline void BBGameObject::unsafe_arena_set_allocated_localposition(
   }
   localposition_ = localposition;
   if (localposition) {
-    _has_bits_[0] |= 0x00000020u;
+    _has_bits_[0] |= 0x00000010u;
   } else {
-    _has_bits_[0] &= ~0x00000020u;
+    _has_bits_[0] &= ~0x00000010u;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:BBSerializer.BBGameObject.localPosition)
 }
 inline ::BBSerializer::BBVector3f* BBGameObject::release_localposition() {
-  _has_bits_[0] &= ~0x00000020u;
+  _has_bits_[0] &= ~0x00000010u;
   ::BBSerializer::BBVector3f* temp = localposition_;
   localposition_ = nullptr;
   if (GetArena() != nullptr) {
@@ -816,13 +699,13 @@ inline ::BBSerializer::BBVector3f* BBGameObject::release_localposition() {
 }
 inline ::BBSerializer::BBVector3f* BBGameObject::unsafe_arena_release_localposition() {
   // @@protoc_insertion_point(field_release:BBSerializer.BBGameObject.localPosition)
-  _has_bits_[0] &= ~0x00000020u;
+  _has_bits_[0] &= ~0x00000010u;
   ::BBSerializer::BBVector3f* temp = localposition_;
   localposition_ = nullptr;
   return temp;
 }
 inline ::BBSerializer::BBVector3f* BBGameObject::_internal_mutable_localposition() {
-  _has_bits_[0] |= 0x00000020u;
+  _has_bits_[0] |= 0x00000010u;
   if (localposition_ == nullptr) {
     auto* p = CreateMaybeMessage<::BBSerializer::BBVector3f>(GetArena());
     localposition_ = p;
@@ -845,17 +728,17 @@ inline void BBGameObject::set_allocated_localposition(::BBSerializer::BBVector3f
       localposition = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, localposition, submessage_arena);
     }
-    _has_bits_[0] |= 0x00000020u;
+    _has_bits_[0] |= 0x00000010u;
   } else {
-    _has_bits_[0] &= ~0x00000020u;
+    _has_bits_[0] &= ~0x00000010u;
   }
   localposition_ = localposition;
   // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.localPosition)
 }
 
-// .BBSerializer.BBVector3f rotation = 8;
+// .BBSerializer.BBVector3f rotation = 7;
 inline bool BBGameObject::_internal_has_rotation() const {
-  bool value = (_has_bits_[0] & 0x00000040u) != 0;
+  bool value = (_has_bits_[0] & 0x00000020u) != 0;
   PROTOBUF_ASSUME(!value || rotation_ != nullptr);
   return value;
 }
@@ -878,14 +761,14 @@ inline void BBGameObject::unsafe_arena_set_allocated_rotation(
   }
   rotation_ = rotation;
   if (rotation) {
-    _has_bits_[0] |= 0x00000040u;
+    _has_bits_[0] |= 0x00000020u;
   } else {
-    _has_bits_[0] &= ~0x00000040u;
+    _has_bits_[0] &= ~0x00000020u;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:BBSerializer.BBGameObject.rotation)
 }
 inline ::BBSerializer::BBVector3f* BBGameObject::release_rotation() {
-  _has_bits_[0] &= ~0x00000040u;
+  _has_bits_[0] &= ~0x00000020u;
   ::BBSerializer::BBVector3f* temp = rotation_;
   rotation_ = nullptr;
   if (GetArena() != nullptr) {
@@ -895,13 +778,13 @@ inline ::BBSerializer::BBVector3f* BBGameObject::release_rotation() {
 }
 inline ::BBSerializer::BBVector3f* BBGameObject::unsafe_arena_release_rotation() {
   // @@protoc_insertion_point(field_release:BBSerializer.BBGameObject.rotation)
-  _has_bits_[0] &= ~0x00000040u;
+  _has_bits_[0] &= ~0x00000020u;
   ::BBSerializer::BBVector3f* temp = rotation_;
   rotation_ = nullptr;
   return temp;
 }
 inline ::BBSerializer::BBVector3f* BBGameObject::_internal_mutable_rotation() {
-  _has_bits_[0] |= 0x00000040u;
+  _has_bits_[0] |= 0x00000020u;
   if (rotation_ == nullptr) {
     auto* p = CreateMaybeMessage<::BBSerializer::BBVector3f>(GetArena());
     rotation_ = p;
@@ -924,17 +807,17 @@ inline void BBGameObject::set_allocated_rotation(::BBSerializer::BBVector3f* rot
       rotation = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, rotation, submessage_arena);
     }
-    _has_bits_[0] |= 0x00000040u;
+    _has_bits_[0] |= 0x00000020u;
   } else {
-    _has_bits_[0] &= ~0x00000040u;
+    _has_bits_[0] &= ~0x00000020u;
   }
   rotation_ = rotation;
   // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.rotation)
 }
 
-// .BBSerializer.BBVector3f localRotation = 9;
+// .BBSerializer.BBVector3f localRotation = 8;
 inline bool BBGameObject::_internal_has_localrotation() const {
-  bool value = (_has_bits_[0] & 0x00000080u) != 0;
+  bool value = (_has_bits_[0] & 0x00000040u) != 0;
   PROTOBUF_ASSUME(!value || localrotation_ != nullptr);
   return value;
 }
@@ -957,14 +840,14 @@ inline void BBGameObject::unsafe_arena_set_allocated_localrotation(
   }
   localrotation_ = localrotation;
   if (localrotation) {
-    _has_bits_[0] |= 0x00000080u;
+    _has_bits_[0] |= 0x00000040u;
   } else {
-    _has_bits_[0] &= ~0x00000080u;
+    _has_bits_[0] &= ~0x00000040u;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:BBSerializer.BBGameObject.localRotation)
 }
 inline ::BBSerializer::BBVector3f* BBGameObject::release_localrotation() {
-  _has_bits_[0] &= ~0x00000080u;
+  _has_bits_[0] &= ~0x00000040u;
   ::BBSerializer::BBVector3f* temp = localrotation_;
   localrotation_ = nullptr;
   if (GetArena() != nullptr) {
@@ -974,13 +857,13 @@ inline ::BBSerializer::BBVector3f* BBGameObject::release_localrotation() {
 }
 inline ::BBSerializer::BBVector3f* BBGameObject::unsafe_arena_release_localrotation() {
   // @@protoc_insertion_point(field_release:BBSerializer.BBGameObject.localRotation)
-  _has_bits_[0] &= ~0x00000080u;
+  _has_bits_[0] &= ~0x00000040u;
   ::BBSerializer::BBVector3f* temp = localrotation_;
   localrotation_ = nullptr;
   return temp;
 }
 inline ::BBSerializer::BBVector3f* BBGameObject::_internal_mutable_localrotation() {
-  _has_bits_[0] |= 0x00000080u;
+  _has_bits_[0] |= 0x00000040u;
   if (localrotation_ == nullptr) {
     auto* p = CreateMaybeMessage<::BBSerializer::BBVector3f>(GetArena());
     localrotation_ = p;
@@ -1003,175 +886,17 @@ inline void BBGameObject::set_allocated_localrotation(::BBSerializer::BBVector3f
       localrotation = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, localrotation, submessage_arena);
     }
-    _has_bits_[0] |= 0x00000080u;
+    _has_bits_[0] |= 0x00000040u;
   } else {
-    _has_bits_[0] &= ~0x00000080u;
+    _has_bits_[0] &= ~0x00000040u;
   }
   localrotation_ = localrotation;
   // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.localRotation)
 }
 
-// .BBSerializer.BBVector4f quaternion = 10;
-inline bool BBGameObject::_internal_has_quaternion() const {
-  bool value = (_has_bits_[0] & 0x00000100u) != 0;
-  PROTOBUF_ASSUME(!value || quaternion_ != nullptr);
-  return value;
-}
-inline bool BBGameObject::has_quaternion() const {
-  return _internal_has_quaternion();
-}
-inline const ::BBSerializer::BBVector4f& BBGameObject::_internal_quaternion() const {
-  const ::BBSerializer::BBVector4f* p = quaternion_;
-  return p != nullptr ? *p : reinterpret_cast<const ::BBSerializer::BBVector4f&>(
-      ::BBSerializer::_BBVector4f_default_instance_);
-}
-inline const ::BBSerializer::BBVector4f& BBGameObject::quaternion() const {
-  // @@protoc_insertion_point(field_get:BBSerializer.BBGameObject.quaternion)
-  return _internal_quaternion();
-}
-inline void BBGameObject::unsafe_arena_set_allocated_quaternion(
-    ::BBSerializer::BBVector4f* quaternion) {
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(quaternion_);
-  }
-  quaternion_ = quaternion;
-  if (quaternion) {
-    _has_bits_[0] |= 0x00000100u;
-  } else {
-    _has_bits_[0] &= ~0x00000100u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:BBSerializer.BBGameObject.quaternion)
-}
-inline ::BBSerializer::BBVector4f* BBGameObject::release_quaternion() {
-  _has_bits_[0] &= ~0x00000100u;
-  ::BBSerializer::BBVector4f* temp = quaternion_;
-  quaternion_ = nullptr;
-  if (GetArena() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-  return temp;
-}
-inline ::BBSerializer::BBVector4f* BBGameObject::unsafe_arena_release_quaternion() {
-  // @@protoc_insertion_point(field_release:BBSerializer.BBGameObject.quaternion)
-  _has_bits_[0] &= ~0x00000100u;
-  ::BBSerializer::BBVector4f* temp = quaternion_;
-  quaternion_ = nullptr;
-  return temp;
-}
-inline ::BBSerializer::BBVector4f* BBGameObject::_internal_mutable_quaternion() {
-  _has_bits_[0] |= 0x00000100u;
-  if (quaternion_ == nullptr) {
-    auto* p = CreateMaybeMessage<::BBSerializer::BBVector4f>(GetArena());
-    quaternion_ = p;
-  }
-  return quaternion_;
-}
-inline ::BBSerializer::BBVector4f* BBGameObject::mutable_quaternion() {
-  // @@protoc_insertion_point(field_mutable:BBSerializer.BBGameObject.quaternion)
-  return _internal_mutable_quaternion();
-}
-inline void BBGameObject::set_allocated_quaternion(::BBSerializer::BBVector4f* quaternion) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
-  if (message_arena == nullptr) {
-    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(quaternion_);
-  }
-  if (quaternion) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-      reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(quaternion)->GetArena();
-    if (message_arena != submessage_arena) {
-      quaternion = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, quaternion, submessage_arena);
-    }
-    _has_bits_[0] |= 0x00000100u;
-  } else {
-    _has_bits_[0] &= ~0x00000100u;
-  }
-  quaternion_ = quaternion;
-  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.quaternion)
-}
-
-// .BBSerializer.BBVector4f localQuaternion = 11;
-inline bool BBGameObject::_internal_has_localquaternion() const {
-  bool value = (_has_bits_[0] & 0x00000200u) != 0;
-  PROTOBUF_ASSUME(!value || localquaternion_ != nullptr);
-  return value;
-}
-inline bool BBGameObject::has_localquaternion() const {
-  return _internal_has_localquaternion();
-}
-inline const ::BBSerializer::BBVector4f& BBGameObject::_internal_localquaternion() const {
-  const ::BBSerializer::BBVector4f* p = localquaternion_;
-  return p != nullptr ? *p : reinterpret_cast<const ::BBSerializer::BBVector4f&>(
-      ::BBSerializer::_BBVector4f_default_instance_);
-}
-inline const ::BBSerializer::BBVector4f& BBGameObject::localquaternion() const {
-  // @@protoc_insertion_point(field_get:BBSerializer.BBGameObject.localQuaternion)
-  return _internal_localquaternion();
-}
-inline void BBGameObject::unsafe_arena_set_allocated_localquaternion(
-    ::BBSerializer::BBVector4f* localquaternion) {
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(localquaternion_);
-  }
-  localquaternion_ = localquaternion;
-  if (localquaternion) {
-    _has_bits_[0] |= 0x00000200u;
-  } else {
-    _has_bits_[0] &= ~0x00000200u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:BBSerializer.BBGameObject.localQuaternion)
-}
-inline ::BBSerializer::BBVector4f* BBGameObject::release_localquaternion() {
-  _has_bits_[0] &= ~0x00000200u;
-  ::BBSerializer::BBVector4f* temp = localquaternion_;
-  localquaternion_ = nullptr;
-  if (GetArena() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-  return temp;
-}
-inline ::BBSerializer::BBVector4f* BBGameObject::unsafe_arena_release_localquaternion() {
-  // @@protoc_insertion_point(field_release:BBSerializer.BBGameObject.localQuaternion)
-  _has_bits_[0] &= ~0x00000200u;
-  ::BBSerializer::BBVector4f* temp = localquaternion_;
-  localquaternion_ = nullptr;
-  return temp;
-}
-inline ::BBSerializer::BBVector4f* BBGameObject::_internal_mutable_localquaternion() {
-  _has_bits_[0] |= 0x00000200u;
-  if (localquaternion_ == nullptr) {
-    auto* p = CreateMaybeMessage<::BBSerializer::BBVector4f>(GetArena());
-    localquaternion_ = p;
-  }
-  return localquaternion_;
-}
-inline ::BBSerializer::BBVector4f* BBGameObject::mutable_localquaternion() {
-  // @@protoc_insertion_point(field_mutable:BBSerializer.BBGameObject.localQuaternion)
-  return _internal_mutable_localquaternion();
-}
-inline void BBGameObject::set_allocated_localquaternion(::BBSerializer::BBVector4f* localquaternion) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
-  if (message_arena == nullptr) {
-    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(localquaternion_);
-  }
-  if (localquaternion) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-      reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(localquaternion)->GetArena();
-    if (message_arena != submessage_arena) {
-      localquaternion = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, localquaternion, submessage_arena);
-    }
-    _has_bits_[0] |= 0x00000200u;
-  } else {
-    _has_bits_[0] &= ~0x00000200u;
-  }
-  localquaternion_ = localquaternion;
-  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.localQuaternion)
-}
-
-// .BBSerializer.BBVector3f scale = 12;
+// .BBSerializer.BBVector3f scale = 9;
 inline bool BBGameObject::_internal_has_scale() const {
-  bool value = (_has_bits_[0] & 0x00000400u) != 0;
+  bool value = (_has_bits_[0] & 0x00000080u) != 0;
   PROTOBUF_ASSUME(!value || scale_ != nullptr);
   return value;
 }
@@ -1194,14 +919,14 @@ inline void BBGameObject::unsafe_arena_set_allocated_scale(
   }
   scale_ = scale;
   if (scale) {
-    _has_bits_[0] |= 0x00000400u;
+    _has_bits_[0] |= 0x00000080u;
   } else {
-    _has_bits_[0] &= ~0x00000400u;
+    _has_bits_[0] &= ~0x00000080u;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:BBSerializer.BBGameObject.scale)
 }
 inline ::BBSerializer::BBVector3f* BBGameObject::release_scale() {
-  _has_bits_[0] &= ~0x00000400u;
+  _has_bits_[0] &= ~0x00000080u;
   ::BBSerializer::BBVector3f* temp = scale_;
   scale_ = nullptr;
   if (GetArena() != nullptr) {
@@ -1211,13 +936,13 @@ inline ::BBSerializer::BBVector3f* BBGameObject::release_scale() {
 }
 inline ::BBSerializer::BBVector3f* BBGameObject::unsafe_arena_release_scale() {
   // @@protoc_insertion_point(field_release:BBSerializer.BBGameObject.scale)
-  _has_bits_[0] &= ~0x00000400u;
+  _has_bits_[0] &= ~0x00000080u;
   ::BBSerializer::BBVector3f* temp = scale_;
   scale_ = nullptr;
   return temp;
 }
 inline ::BBSerializer::BBVector3f* BBGameObject::_internal_mutable_scale() {
-  _has_bits_[0] |= 0x00000400u;
+  _has_bits_[0] |= 0x00000080u;
   if (scale_ == nullptr) {
     auto* p = CreateMaybeMessage<::BBSerializer::BBVector3f>(GetArena());
     scale_ = p;
@@ -1240,17 +965,17 @@ inline void BBGameObject::set_allocated_scale(::BBSerializer::BBVector3f* scale)
       scale = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, scale, submessage_arena);
     }
-    _has_bits_[0] |= 0x00000400u;
+    _has_bits_[0] |= 0x00000080u;
   } else {
-    _has_bits_[0] &= ~0x00000400u;
+    _has_bits_[0] &= ~0x00000080u;
   }
   scale_ = scale;
   // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.scale)
 }
 
-// .BBSerializer.BBVector3f localScale = 13;
+// .BBSerializer.BBVector3f localScale = 10;
 inline bool BBGameObject::_internal_has_localscale() const {
-  bool value = (_has_bits_[0] & 0x00000800u) != 0;
+  bool value = (_has_bits_[0] & 0x00000100u) != 0;
   PROTOBUF_ASSUME(!value || localscale_ != nullptr);
   return value;
 }
@@ -1273,14 +998,14 @@ inline void BBGameObject::unsafe_arena_set_allocated_localscale(
   }
   localscale_ = localscale;
   if (localscale) {
-    _has_bits_[0] |= 0x00000800u;
+    _has_bits_[0] |= 0x00000100u;
   } else {
-    _has_bits_[0] &= ~0x00000800u;
+    _has_bits_[0] &= ~0x00000100u;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:BBSerializer.BBGameObject.localScale)
 }
 inline ::BBSerializer::BBVector3f* BBGameObject::release_localscale() {
-  _has_bits_[0] &= ~0x00000800u;
+  _has_bits_[0] &= ~0x00000100u;
   ::BBSerializer::BBVector3f* temp = localscale_;
   localscale_ = nullptr;
   if (GetArena() != nullptr) {
@@ -1290,13 +1015,13 @@ inline ::BBSerializer::BBVector3f* BBGameObject::release_localscale() {
 }
 inline ::BBSerializer::BBVector3f* BBGameObject::unsafe_arena_release_localscale() {
   // @@protoc_insertion_point(field_release:BBSerializer.BBGameObject.localScale)
-  _has_bits_[0] &= ~0x00000800u;
+  _has_bits_[0] &= ~0x00000100u;
   ::BBSerializer::BBVector3f* temp = localscale_;
   localscale_ = nullptr;
   return temp;
 }
 inline ::BBSerializer::BBVector3f* BBGameObject::_internal_mutable_localscale() {
-  _has_bits_[0] |= 0x00000800u;
+  _has_bits_[0] |= 0x00000100u;
   if (localscale_ == nullptr) {
     auto* p = CreateMaybeMessage<::BBSerializer::BBVector3f>(GetArena());
     localscale_ = p;
@@ -1319,9 +1044,9 @@ inline void BBGameObject::set_allocated_localscale(::BBSerializer::BBVector3f* l
       localscale = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, localscale, submessage_arena);
     }
-    _has_bits_[0] |= 0x00000800u;
+    _has_bits_[0] |= 0x00000100u;
   } else {
-    _has_bits_[0] &= ~0x00000800u;
+    _has_bits_[0] &= ~0x00000100u;
   }
   localscale_ = localscale;
   // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.localScale)

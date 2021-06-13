@@ -87,13 +87,18 @@ void BBSceneManager::openScene(const QString &filePath)
     BB_PROCESS_ERROR_RETURN(pData);
 
     BBSerializer::BBScene scene;
-    scene.ParseFromString(pData);
+    scene.ParseFromArray(pData, nLength);
 
     // load scene + tree
     int count = scene.gameobject_size();
     for (int i = 0; i < count; i++)
     {
-        m_pEditViewOpenGLWidget->createModel(scene.gameobject(i));
+        BBSerializer::BBGameObject gameObject = scene.gameobject(i);
+        QString className = QString::fromStdString(gameObject.classname());
+        if (className == BB_CLASSNAME_MODEL)
+        {
+            m_pEditViewOpenGLWidget->createModel(gameObject);
+        }
     }
     // reconstruct the parent connect of the tree
 
@@ -118,6 +123,8 @@ void BBSceneManager::saveScene(const QString &filePath)
     for (QMap<QTreeWidgetItem*, BBGameObject*>::Iterator it = m_ObjectMap.begin(); it != m_ObjectMap.end(); it++)
     {
         QTreeWidgetItem *pKey = it.key();
+        BBGameObject *pValue = it.value();
+
         BBSerializer::BBHierarchyTreeWidgetItem *pItem = scene.add_item();
         pItem->set_index(index);
         for (int i = 0; i < pKey->childCount(); i++)
@@ -128,6 +135,25 @@ void BBSceneManager::saveScene(const QString &filePath)
 
         BBSerializer::BBGameObject *pGameObject = scene.add_gameobject();
         pGameObject->set_index(index);
+
+        pGameObject->set_name(pValue->getName().toStdString().c_str());
+        pGameObject->set_classname(pValue->getClassName().toStdString().c_str());
+        pGameObject->set_filepath(pValue->getFilePath().toStdString().c_str());
+
+        BBSerializer::BBVector3f *pPosition = pGameObject->mutable_position();
+        setVector3f(pValue->getPosition(), pPosition);
+        BBSerializer::BBVector3f *pLocalPosition = pGameObject->mutable_localposition();
+        setVector3f(pValue->getLocalPosition(), pLocalPosition);
+
+        BBSerializer::BBVector3f *pRotation = pGameObject->mutable_rotation();
+        setVector3f(pValue->getRotation(), pRotation);
+        BBSerializer::BBVector3f *pLocalRotation = pGameObject->mutable_localrotation();
+        setVector3f(pValue->getLocalRotation(), pLocalRotation);
+
+        BBSerializer::BBVector3f *pScale = pGameObject->mutable_scale();
+        setVector3f(pValue->getScale(), pScale);
+        BBSerializer::BBVector3f *pLocalScale = pGameObject->mutable_localscale();
+        setVector3f(pValue->getLocalScale(), pLocalScale);
 
         index++;
     }
@@ -155,3 +181,11 @@ void BBSceneManager::removeScene()
     m_bSceneChanged = false;
     m_CurrentSceneFilePath.clear();
 }
+
+void BBSceneManager::setVector3f(const QVector3D &value, BBSerializer::BBVector3f *&pOutVector3f)
+{
+    pOutVector3f->set_x(value.x());
+    pOutVector3f->set_y(value.y());
+    pOutVector3f->set_z(value.z());
+}
+
