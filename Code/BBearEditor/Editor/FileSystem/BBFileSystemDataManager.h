@@ -41,8 +41,7 @@ public:
     bool newScene(const QString &parentPath, QListWidgetItem *&pOutFileItem,
                   QString fileName = BBConstant::BB_NAME_DEFAULT_SCENE);
     bool openScene(const QString &defaultSavedParentPath, const QString &openedPath);
-    bool saveScene(const QString &defaultParentPath);
-    bool saveScene();
+    bool saveScene(const QString &defaultParentPath, QListWidgetItem *&pOutFileItem);
 
     /* Material */
 

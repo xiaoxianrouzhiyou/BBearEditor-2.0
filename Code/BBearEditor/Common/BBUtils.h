@@ -29,6 +29,7 @@
 #define BB_CONSTANT_UPDATE_RATE 16
 
 #define BB_CLASSNAME_MODEL "Model"
+#define BB_CLASSNAME_LIGHT "Light"
 
 #define BB_USER_NAME "BigBugBear"
 #define BB_USER_PROJECT_NAME "BBearEditor"

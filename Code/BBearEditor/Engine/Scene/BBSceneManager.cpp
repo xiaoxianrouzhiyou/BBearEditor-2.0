@@ -4,6 +4,7 @@
 #include "BBUtils.h"
 #include "Render/BBEditViewOpenGLWidget.h"
 #include "BBScene.h"
+#include "Base/BBGameObject.h"
 
 
 QMap<QTreeWidgetItem*, BBGameObject*> BBSceneManager::m_ObjectMap;
@@ -64,11 +65,16 @@ bool BBSceneManager::isSceneSwitched(const QString &filePath)
     }
 }
 
-void BBSceneManager::changeScene()
+void BBSceneManager::changeScene(BBGameObject *pGameObject)
 {
-    BB_PROCESS_ERROR_RETURN(!m_bSceneChanged);
-    m_bSceneChanged = true;
-    m_pEditViewOpenGLWidget->updateEditViewTitle();
+    if (!pGameObject
+            || pGameObject->getClassName() == BB_CLASSNAME_MODEL
+            || pGameObject->getClassName() == BB_CLASSNAME_LIGHT)
+    {
+        BB_PROCESS_ERROR_RETURN(!m_bSceneChanged);
+        m_bSceneChanged = true;
+        m_pEditViewOpenGLWidget->updateEditViewTitle();
+    }
 }
 
 void BBSceneManager::openScene(const QString &filePath)
@@ -132,6 +138,7 @@ void BBSceneManager::saveScene(const QString &filePath)
     BBUtils::saveToFile(filePath.toStdString().c_str(), szBuffer, nLength);
 
     m_bSceneChanged = false;
+    m_CurrentSceneFilePath = filePath;
     m_pEditViewOpenGLWidget->updateEditViewTitle();
 }
 

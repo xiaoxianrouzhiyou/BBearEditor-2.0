@@ -112,7 +112,11 @@ void BBFileSystemManager::newScene(const QString &parentPath)
 
 void BBFileSystemManager::saveScene()
 {
-    m_pDataManager->saveScene();
+    QListWidgetItem *pCurrentItem = NULL;
+    if (m_pDataManager->saveScene(BBFileSystemDataManager::getAbsolutePath(m_pDataManager->getCurrentViewedItem()), pCurrentItem))
+    {
+        updateFileList(BBFileSystemDataManager::getAbsolutePath(m_pDataManager->getCurrentViewedItem()), pCurrentItem);
+    }
 }
 
 void BBFileSystemManager::showInFolder(const QString &filePath)

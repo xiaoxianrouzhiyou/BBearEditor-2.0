@@ -257,7 +257,8 @@ bool BBFileSystemDataManager::openScene(const QString &defaultSavedParentPath, c
     BB_PROCESS_ERROR_RETURN_FALSE(BBSceneManager::isSceneSwitched(openedPath));
 
     // save current scene
-    if (saveScene(defaultSavedParentPath))
+    QListWidgetItem *pFileItem = NULL;
+    if (saveScene(defaultSavedParentPath, pFileItem))
     {
         // open selected scene
         BBSceneManager::openScene(openedPath);
@@ -267,7 +268,7 @@ bool BBFileSystemDataManager::openScene(const QString &defaultSavedParentPath, c
     return false;
 }
 
-bool BBFileSystemDataManager::saveScene(const QString &defaultParentPath)
+bool BBFileSystemDataManager::saveScene(const QString &defaultParentPath, QListWidgetItem *&pOutFileItem)
 {
     // pop-up dialog
     BBConfirmationDialog dialog;
@@ -286,8 +287,7 @@ bool BBFileSystemDataManager::saveScene(const QString &defaultParentPath)
             if (!filePath.isEmpty())
             {
                 // create list item in the file list and empty file
-                QListWidgetItem *pFileItem = NULL;
-                newScene(getParentPath(filePath), pFileItem, getFileNameByPath(filePath));
+                newScene(getParentPath(filePath), pOutFileItem, getFileNameByPath(filePath));
                 // write file
                 BBSceneManager::saveScene(filePath);
                 return true;
@@ -299,6 +299,7 @@ bool BBFileSystemDataManager::saveScene(const QString &defaultParentPath)
         dialog.setMessage("Do you want to save these changes into " + sceneFilePath + " ?");
         if (dialog.exec())
         {
+            pOutFileItem = getFileItem(m_pCurrentViewedItem, sceneFilePath);
             BBSceneManager::saveScene();
             return true;
         }
@@ -313,12 +314,6 @@ bool BBFileSystemDataManager::saveScene(const QString &defaultParentPath)
     }
 
     return false;
-}
-
-bool BBFileSystemDataManager::saveScene()
-{
-    BBSceneManager::saveScene();
-    return true;
 }
 
 bool BBFileSystemDataManager::showInFolder(const QString &filePath)

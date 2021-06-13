@@ -64,7 +64,7 @@ void BBGameObject::setPosition(const QVector3D &position, bool bUpdateLocalTrans
             m_LocalPosition = m_LocalPosition + displacement;
         }
     }
-    BBSceneManager::changeScene();
+    BBSceneManager::changeScene(this);
 }
 
 void BBGameObject::setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform)
@@ -112,7 +112,7 @@ void BBGameObject::setRotation(int nAngle, const QVector3D &axis, bool bUpdateLo
             m_LocalRotation = m_LocalQuaternion.toEulerAngles();
         }
     }
-    BBSceneManager::changeScene();
+    BBSceneManager::changeScene(this);
 }
 
 void BBGameObject::setRotation(const QVector3D &rotation, bool bUpdateLocalTransform)
@@ -149,7 +149,7 @@ void BBGameObject::setRotation(const QVector3D &rotation, bool bUpdateLocalTrans
             setLocalTransform(pGameObject);
         }
     }
-    BBSceneManager::changeScene();
+    BBSceneManager::changeScene(this);
 }
 
 void BBGameObject::setScale(float scale, bool bUpdateLocalTransform)
@@ -198,7 +198,7 @@ void BBGameObject::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
             }
         }
     }
-    BBSceneManager::changeScene();
+    BBSceneManager::changeScene(this);
 }
 
 void BBGameObject::setLocalTransform(BBGameObject *pParent)
@@ -232,7 +232,7 @@ void BBGameObject::setLocalTransform(BBGameObject *pParent)
         m_LocalQuaternion = m_Quaternion;
         m_LocalScale = m_Scale;
     }
-    BBSceneManager::changeScene();
+    BBSceneManager::changeScene(this);
 }
 
 void BBGameObject::setVisibility(bool bVisible)
@@ -250,7 +250,7 @@ void BBGameObject::setVisibility(bool bVisible)
                 pGameObject->setVisibility(bVisible);
         }
     }
-    BBSceneManager::changeScene();
+    BBSceneManager::changeScene(this);
 }
 
 void BBGameObject::setBaseAttributes(const QString &name, const QString &className, const QString &iconName, bool bActive)

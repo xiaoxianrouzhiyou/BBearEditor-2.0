@@ -21,7 +21,7 @@ public:
     static BBGameObject* getGameObject(QTreeWidgetItem *pItem);
 
     static bool isSceneSwitched(const QString &filePath);
-    static void changeScene();
+    static void changeScene(BBGameObject *pGameObject = NULL);
     static bool isSceneChanged() { return m_bSceneChanged; }
     static void openScene(const QString &filePath);
     static void saveScene(const QString &filePath = m_CurrentSceneFilePath);
