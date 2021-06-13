@@ -12,7 +12,8 @@ class BBBoundingBox3D;
 class BBModel : public BBGameObject
 {
 public:
-    BBModel(BBMeshType eType);
+    BBModel(const BBMeshType &eType);
+    BBModel(const QVector3D &position, const QVector3D &rotation, const QVector3D &scale, const BBMeshType &eType);
     BBModel(float px, float py, float pz,
             float rx, float ry, float rz,
             float sx, float sy, float sz, const BBMeshType &eType);

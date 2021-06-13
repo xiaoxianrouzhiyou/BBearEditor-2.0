@@ -7,8 +7,16 @@
 
 using namespace std;
 
-BBModel::BBModel(BBMeshType eType)
+BBModel::BBModel(const BBMeshType &eType)
     : BBModel(0, 0, 0, 0, 0, 0, 1, 1, 1, eType)
+{
+
+}
+
+BBModel::BBModel(const QVector3D &position, const QVector3D &rotation, const QVector3D &scale, const BBMeshType &eType)
+    : BBModel(position.x(), position.y(), position.z(),
+              rotation.x(), rotation.y(), rotation.z(),
+                 scale.x(),    scale.y(),    scale.z(), eType)
 {
 
 }

@@ -4,6 +4,7 @@
 
 #include <QList>
 #include <QVector3D>
+#include <Serializer/BBGameObject.pb.h>
 
 
 class BBCamera;
@@ -31,7 +32,10 @@ public:
 
     BBModel* createModel(const QString &filePath, int x, int y);
     BBModel* createModel(const QString &filePath,
-                         const QVector3D &position = QVector3D(0, 0, 0));
+                         const QVector3D &position = QVector3D(0, 0, 0),
+                         const QVector3D &rotation = QVector3D(0, 0, 0),
+                         const QVector3D &scale = QVector3D(1, 1, 1));
+    BBModel* createModel(const BBSerializer::BBGameObject &gameObject);
     BBModel* createModelForPreview(const QString &filePath, float fDistFactor = 2.0f);
 //    BBModel* pickModel(int x, int y);
     BBGameObject* pickObject(const BBRay &ray, bool bSelect = true);

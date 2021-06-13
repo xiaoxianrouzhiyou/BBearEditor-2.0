@@ -164,7 +164,8 @@ BBModel* BBScene::createModel(const QString &filePath, int x, int y)
     return createModel(filePath, hit);
 }
 
-BBModel* BBScene::createModel(const QString &filePath, const QVector3D &position)
+BBModel* BBScene::createModel(const QString &filePath,
+                              const QVector3D &position, const QVector3D &rotation, const QVector3D &scale)
 {
     BBModel *pModel = NULL;
     if (filePath == "terrain")
@@ -173,7 +174,7 @@ BBModel* BBScene::createModel(const QString &filePath, const QVector3D &position
     }
     else
     {
-        pModel = new BBModel(position.x(), position.y(), position.z(), 0, 0, 0, 1, 1, 1, BBMeshType::OBJ);
+        pModel = new BBModel(position, rotation, scale, BBMeshType::OBJ);
         pModel->setBaseAttributes(QFileInfo(filePath).baseName(), BB_CLASSNAME_MODEL, "model");
     }
     pModel->init(filePath);
@@ -196,6 +197,22 @@ BBModel* BBScene::createModel(const QString &filePath, const QVector3D &position
 //    model->setFogColor(fogColor.redF(), fogColor.greenF(), fogColor.blueF());
 //    model->setFogOption(fogStart, fogEnd, fogDensity, fogPower);
 //    model->setFogMode(fogMode);
+
+    return pModel;
+}
+
+BBModel* BBScene::createModel(const BBSerializer::BBGameObject &gameObject)
+{
+    std::string filePath = gameObject.filepath();
+    BBSerializer::BBVector3f position = gameObject.position();
+    BBSerializer::BBVector3f rotation = gameObject.rotation();
+    BBSerializer::BBVector3f scale = gameObject.scale();
+    // create model with default settings
+    BBModel *pModel = createModel(QString::fromStdString(filePath),
+                                  QVector3D(position.x(), position.y(), position.z()),
+                                  QVector3D(rotation.x(), rotation.y(), rotation.z()),
+                                  QVector3D(scale.x(), scale.y(), scale.z()));
+    // load extra info from the scene file
 
     return pModel;
 }

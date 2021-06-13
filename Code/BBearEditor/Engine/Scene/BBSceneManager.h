@@ -6,16 +6,13 @@
 
 class QTreeWidgetItem;
 class BBGameObject;
-class BBScene;
+class BBEditViewOpenGLWidget;
 
 class BBSceneManager
 {
 public:
-    BBSceneManager();
-    ~BBSceneManager();
-
     static QString getCurrentSceneFilePath() { return m_CurrentSceneFilePath; }
-    static void bindCurrentScene(BBScene *pScene) { m_pCurrentScene = pScene; }
+    static void bindEditViewOpenGLWidget(BBEditViewOpenGLWidget *pWidget) { m_pEditViewOpenGLWidget = pWidget; }
 
     static void insertObjectMap(QTreeWidgetItem *pItem, BBGameObject *pGameObject);
     static void removeObjectMap(QTreeWidgetItem *pItem);
@@ -33,7 +30,7 @@ private:
     // Save the mapping between each scene tree item and its corresponding GameObject
     static QMap<QTreeWidgetItem*, BBGameObject*> m_ObjectMap;
     static QString m_CurrentSceneFilePath;
-    static BBScene *m_pCurrentScene;
+    static BBEditViewOpenGLWidget *m_pEditViewOpenGLWidget;
 };
 
 #endif // BBSCENEMANAGER_H

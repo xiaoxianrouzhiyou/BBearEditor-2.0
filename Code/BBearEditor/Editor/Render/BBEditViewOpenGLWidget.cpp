@@ -16,8 +16,7 @@
 BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
     : BBOpenGLWidget(pParent)
 {
-    // no need to bind in the base class
-    BBSceneManager::bindCurrentScene(m_pScene);
+    BBSceneManager::bindEditViewOpenGLWidget(this);
 
     m_bRightPressed = false;
     m_pPreviewObject = NULL;
@@ -40,6 +39,11 @@ BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
 BBEditViewOpenGLWidget::~BBEditViewOpenGLWidget()
 {
     BB_SAFE_DELETE(m_pPreviewObject);
+}
+
+void BBEditViewOpenGLWidget::createModel(const BBSerializer::BBGameObject &gameObject)
+{
+    addGameObject(m_pScene->createModel(gameObject));
 }
 
 void BBEditViewOpenGLWidget::pressESC()
@@ -439,27 +443,8 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
 
 
 
-
-
-
-
-
-
-
-
-
-
 //void OpenGLWidget::createLightDependParent(QString fileName)
 //{
 //    addGameObjectSignal(scene.createLight(fileName));
 //}
-
-
-//void OpenGLWidget::onKeyPress(QKeyEvent *e)
-//{
-//    scene.onKeyPress(e);
-//}
-
-
-
 

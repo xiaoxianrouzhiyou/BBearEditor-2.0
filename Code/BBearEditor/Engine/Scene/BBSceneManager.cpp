@@ -2,22 +2,14 @@
 #include "Serializer/BBScene.pb.h"
 #include <QTreeWidgetItem>
 #include "BBUtils.h"
+#include "Render/BBEditViewOpenGLWidget.h"
 #include "BBScene.h"
 
 
 QMap<QTreeWidgetItem*, BBGameObject*> BBSceneManager::m_ObjectMap;
 QString BBSceneManager::m_CurrentSceneFilePath;
-BBScene* BBSceneManager::m_pCurrentScene = NULL;
+BBEditViewOpenGLWidget* BBSceneManager::m_pEditViewOpenGLWidget = NULL;
 
-BBSceneManager::BBSceneManager()
-{
-
-}
-
-BBSceneManager::~BBSceneManager()
-{
-
-}
 
 void BBSceneManager::insertObjectMap(QTreeWidgetItem *pItem, BBGameObject *pGameObject)
 {
@@ -80,6 +72,23 @@ void BBSceneManager::openScene(const QString &filePath)
     // clear the last opened scene
     removeScene();
 
+    int nLength = -1;
+    char *pData = BBUtils::loadFileContent(filePath.toStdString().c_str(), nLength);
+    BB_PROCESS_ERROR_RETURN(pData);
+
+    BBSerializer::BBScene scene;
+    scene.ParseFromString(pData);
+
+    // load scene + tree
+    int count = scene.gameobject_size();
+    for (int i = 0; i < count; i++)
+    {
+        m_pEditViewOpenGLWidget->createModel(scene.gameobject(i));
+    }
+    // reconstruct the parent connect of the tree
+
+    BB_SAFE_DELETE(pData);
+
     m_CurrentSceneFilePath = filePath;
 }
 
@@ -122,8 +131,8 @@ void BBSceneManager::saveScene(const QString &filePath)
 
 void BBSceneManager::removeScene()
 {
-    BB_PROCESS_ERROR_RETURN(m_pCurrentScene);
-    m_pCurrentScene->clear();
+    BB_PROCESS_ERROR_RETURN(m_pEditViewOpenGLWidget);
+    m_pEditViewOpenGLWidget->getScene()->clear();
     for (QMap<QTreeWidgetItem*, BBGameObject*>::Iterator it = m_ObjectMap.begin(); it != m_ObjectMap.end(); it++)
     {
         delete it.key();

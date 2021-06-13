@@ -3,6 +3,8 @@
 
 #include "BBOpenGLWidget.h"
 #include <QVector3D>
+#include "Serializer/BBGameObject.pb.h"
+
 
 class QMouseEvent;
 class BBGameObject;
@@ -16,7 +18,7 @@ public:
     explicit BBEditViewOpenGLWidget(QWidget *pParent = 0);
     virtual ~BBEditViewOpenGLWidget();
 
-//    BaseOpenGLWidget *getPreview();
+    void createModel(const BBSerializer::BBGameObject &gameObject);
 
 private slots:
     void pressESC();
@@ -32,7 +34,6 @@ private slots:
     void copyGameObject(BBGameObject *pSourceObject, QTreeWidgetItem *pTranscriptItem);
     void lookAtGameObject(BBGameObject *pGameObject);
 //    void createLightDependParent(QString fileName);
-//    void onKeyPress(QKeyEvent *e);
 
 signals:
     // create QTreeWidgetItem
@@ -65,12 +66,6 @@ private:
     QPoint m_SelectionRegionStartingPoint;
     bool m_bRegionSelecting;
     bool m_bMultipleSelecting;
-
-//    void paintGL() override;
-//    GLuint texture;
-//    int deltaX;
-//    int deltaY;
-//    BaseOpenGLWidget *mPreview;
 };
 
 #endif // BBEDITVIEWOPENGLWIDGET_H
