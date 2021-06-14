@@ -9,6 +9,7 @@
 #include "BBSelectionRegion.h"
 #include <cfloat>
 #include "BBCoordinateSystem.h"
+#include "Render/BBRenderState.h"
 
 
 BBScene::BBScene()
@@ -48,6 +49,8 @@ BBScene::~BBScene()
 
 void BBScene::init()
 {
+    BBGlobalRenderState::init();
+
     m_pCamera->setViewportSize(800.0f, 600.0f);
 
     m_pSkyBox->init(QString(BB_PATH_RESOURCE) + "skyboxs/1/");
