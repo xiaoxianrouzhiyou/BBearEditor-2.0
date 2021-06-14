@@ -74,7 +74,8 @@ SOURCES += \
     Engine/Serializer/BBScene.pb.cc \
     Engine/Render/BBVertexBufferObject.cpp \
     Engine/Render/BBElementBufferObject.cpp \
-    Engine/Render/BBRenderState.cpp
+    Engine/Render/BBRenderState.cpp \
+    Engine/Render/BBMaterial.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -129,7 +130,8 @@ HEADERS += \
     Engine/Render/BBearGL.h \
     Engine/Render/BBVertexBufferObject.h \
     Engine/Render/BBElementBufferObject.h \
-    Engine/Render/BBRenderState.h
+    Engine/Render/BBRenderState.h \
+    Engine/Render/BBMaterial.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
