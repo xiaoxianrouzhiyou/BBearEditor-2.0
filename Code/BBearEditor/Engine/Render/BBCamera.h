@@ -1,9 +1,8 @@
 #ifndef BBCAMERA_H
 #define BBCAMERA_H
 
-#include <QVector3D>
-#include <GL/glu.h>
-#include <QMatrix4x4>
+
+#include "bbeargl.h"
 
 class BBGameObject;
 class BBRay;

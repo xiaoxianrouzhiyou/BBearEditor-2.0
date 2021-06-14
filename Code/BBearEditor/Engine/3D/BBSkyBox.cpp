@@ -1,5 +1,5 @@
 #include "BBSkyBox.h"
-#include "Render/BBGLBuffers.h"
+#include "Render/BBVertexBufferObject.h"
 #include "Render/BBCamera.h"
 #include "Render/BBGLShader.h"
 #include "BBUtils.h"
@@ -8,7 +8,7 @@
 // BBSkyBoxSide
 //--------------------
 
-BBSkyBoxSide::BBSkyBoxSide(BBGLVertexBuffer *pVertexBuffer)
+BBSkyBoxSide::BBSkyBoxSide(BBVertexBufferObject *pVertexBuffer)
     : BBRenderableObject()
 {
     m_pVertexBuffer = pVertexBuffer;
@@ -107,7 +107,7 @@ void BBSkyBox::change(const QString &path)
 
 void BBSkyBox::initFront()
 {
-    BBGLVertexBuffer *pVertexBuffer = new BBGLVertexBuffer(4);
+    BBVertexBufferObject *pVertexBuffer = new BBVertexBufferObject(4);
     pVertexBuffer->setPosition(0, -0.5f, -0.5f, -0.5f);
     pVertexBuffer->setPosition(1, 0.5f, -0.5f, -0.5f);
     pVertexBuffer->setPosition(2, -0.5f, 0.5f, -0.5f);
@@ -121,7 +121,7 @@ void BBSkyBox::initFront()
 
 void BBSkyBox::initBack()
 {
-    BBGLVertexBuffer *pVertexBuffer = new BBGLVertexBuffer(4);
+    BBVertexBufferObject *pVertexBuffer = new BBVertexBufferObject(4);
     pVertexBuffer->setPosition(0, 0.5f, -0.5f, 0.5f);
     pVertexBuffer->setPosition(1, -0.5f, -0.5f, 0.5f);
     pVertexBuffer->setPosition(2, 0.5f, 0.5f, 0.5f);
@@ -135,7 +135,7 @@ void BBSkyBox::initBack()
 
 void BBSkyBox::initLeft()
 {
-    BBGLVertexBuffer *pVertexBuffer = new BBGLVertexBuffer(4);
+    BBVertexBufferObject *pVertexBuffer = new BBVertexBufferObject(4);
     pVertexBuffer->setPosition(0, -0.5f, -0.5f, 0.5f);
     pVertexBuffer->setPosition(1, -0.5f, -0.5f, -0.5f);
     pVertexBuffer->setPosition(2, -0.5f, 0.5f, 0.5f);
@@ -149,7 +149,7 @@ void BBSkyBox::initLeft()
 
 void BBSkyBox::initRight()
 {
-    BBGLVertexBuffer *pVertexBuffer = new BBGLVertexBuffer(4);
+    BBVertexBufferObject *pVertexBuffer = new BBVertexBufferObject(4);
     pVertexBuffer->setPosition(0, 0.5f, -0.5f, -0.5f);
     pVertexBuffer->setPosition(1, 0.5f, -0.5f, 0.5f);
     pVertexBuffer->setPosition(2, 0.5f, 0.5f, -0.5f);
@@ -163,7 +163,7 @@ void BBSkyBox::initRight()
 
 void BBSkyBox::initTop()
 {
-    BBGLVertexBuffer *pVertexBuffer = new BBGLVertexBuffer(4);
+    BBVertexBufferObject *pVertexBuffer = new BBVertexBufferObject(4);
     pVertexBuffer->setPosition(0, -0.5f, 0.5f, -0.5f);
     pVertexBuffer->setPosition(1, 0.5f, 0.5f, -0.5f);
     pVertexBuffer->setPosition(2, -0.5f, 0.5f, 0.5f);
@@ -177,7 +177,7 @@ void BBSkyBox::initTop()
 
 void BBSkyBox::initBottom()
 {
-    BBGLVertexBuffer *pVertexBuffer = new BBGLVertexBuffer(4);
+    BBVertexBufferObject *pVertexBuffer = new BBVertexBufferObject(4);
     pVertexBuffer->setPosition(0, -0.5f, -0.5f, 0.5f);
     pVertexBuffer->setPosition(1, 0.5f, -0.5f, 0.5f);
     pVertexBuffer->setPosition(2, -0.5f, -0.5f, -0.5f);

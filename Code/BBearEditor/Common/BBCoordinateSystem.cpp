@@ -1,5 +1,5 @@
 #include "BBCoordinateSystem.h"
-#include "Render/BBGLBuffers.h"
+#include "Render/BBVertexBufferObject.h"
 #include "Render/BBGLShader.h"
 #include "BBUtils.h"
 #include "Render/BBCamera.h"
@@ -136,7 +136,7 @@ BBCoordinateArrow::BBCoordinateArrow(float px, float py, float pz,
 
 void BBCoordinateArrow::init()
 {
-    m_pVertexBuffer = new BBGLVertexBuffer(39);
+    m_pVertexBuffer = new BBVertexBufferObject(39);
 
     m_pVertexBuffer->setPosition(0, 1.2f, 0.0f, 0.0f);
     m_pVertexBuffer->setPosition(1, 0.85f, 0.1f, 0.0f);
@@ -240,7 +240,7 @@ BBCoordinateAxis::BBCoordinateAxis(float px, float py, float pz,
 
 void BBCoordinateAxis::init()
 {
-    m_pVertexBuffer = new BBGLVertexBuffer(6);
+    m_pVertexBuffer = new BBVertexBufferObject(6);
 
     m_pVertexBuffer->setPosition(0, 1.0f, 0.0f, 0.0f);
     m_pVertexBuffer->setPosition(1, 0.0f, 0.0f, 0.0f);
@@ -301,7 +301,7 @@ BBCoordinateRectFace::BBCoordinateRectFace(float px, float py, float pz,
 
 void BBCoordinateRectFace::init()
 {
-    m_pVertexBuffer = new BBGLVertexBuffer(24);
+    m_pVertexBuffer = new BBVertexBufferObject(24);
 
     m_pVertexBuffer->setPosition(0, 0.0f, 0.3f, 0.3f);
     m_pVertexBuffer->setPosition(1, 0.0f, 0.0f, 0.3f);
@@ -394,7 +394,7 @@ BBCoordinateQuarterCircle::BBCoordinateQuarterCircle(float px, float py, float p
 
 void BBCoordinateQuarterCircle::init()
 {
-    m_pVertexBuffer = new BBGLVertexBuffer(78);
+    m_pVertexBuffer = new BBVertexBufferObject(78);
 
     for (int i = 0; i < 13; i++)
     {
@@ -473,7 +473,7 @@ BBCoordinateCircle::BBCoordinateCircle(float px, float py, float pz,
 
 void BBCoordinateCircle::init()
 {
-    m_pVertexBuffer = new BBGLVertexBuffer(96);
+    m_pVertexBuffer = new BBVertexBufferObject(96);
 
     for (int i = 0; i < 48; i++)
     {
@@ -538,7 +538,7 @@ BBCoordinateTickMark::BBCoordinateTickMark(float px, float py, float pz,
 void BBCoordinateTickMark::init()
 {
     // unit = 10 degree, 360/10*2 = 72 Circles
-    m_pVertexBuffer = new BBGLVertexBuffer(72);
+    m_pVertexBuffer = new BBVertexBufferObject(72);
 
     for (int i = 0; i < 36; i++)
     {
@@ -615,7 +615,7 @@ void BBCoordinateSector::init()
 {
     // unit = 1     2pi/360
     // +1 is center of circle
-    m_pVertexBuffer = new BBGLVertexBuffer(361);
+    m_pVertexBuffer = new BBVertexBufferObject(361);
     m_pVertexBuffer->setPosition(360, 0.0f, 0.0f, 0.0f);
     m_pVertexBuffer->setColor(360, m_GrayTransparency);
     for (int i = 0; i < 360; i++)
@@ -731,7 +731,7 @@ BBCoordinateCube::BBCoordinateCube(float px, float py, float pz,
 
 void BBCoordinateCube::init()
 {
-    m_pVertexBuffer = new BBGLVertexBuffer(24);
+    m_pVertexBuffer = new BBVertexBufferObject(24);
 
     for (int i = 0; i < 8; i++)
     {
@@ -820,7 +820,7 @@ BBCoordinateTriangleFace::BBCoordinateTriangleFace(float px, float py, float pz,
 
 void BBCoordinateTriangleFace::init()
 {
-    m_pVertexBuffer = new BBGLVertexBuffer(36);
+    m_pVertexBuffer = new BBVertexBufferObject(36);
 
     m_pVertexBuffer->setPosition(0, 0.0f, 0.0f, 0.0f);
     m_pVertexBuffer->setPosition(1, 0.0f, 0.0f, 0.3f);

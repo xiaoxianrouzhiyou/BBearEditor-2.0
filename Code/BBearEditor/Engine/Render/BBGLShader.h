@@ -1,21 +1,8 @@
 #ifndef BBGLSHADER_H
 #define BBGLSHADER_H
 
-#include <QtOpenGL>
-#include <QVector4D>
-#include <QMatrix4x4>
-#include <QOpenGLFunctions>
 
-#define NAME_POSITION "positionAttr"
-#define NAME_COLOR "colorAttr"
-#define NAME_TEXCOORD "texcoordAttr"
-#define NAME_NORMAL "normalAttr"
-#define NAME_PROJECTIONMATRIX "projectionMatrix"
-#define NAME_VIEWMATRIX "viewMatrix"
-#define NAME_MODELMATRIX "modelMatrix"
-#define NAME_ITMODELMATRIX "IT_modelMatrix"
-#define NAME_CAMERAPOSITION "cameraPositionUniform"
-#define NAME_TEXTURE "textureUniform"
+#include "bbeargl.h"
 
 //enum Type {
 //    COLOR = 0x01,
@@ -79,9 +66,10 @@ struct UniformMatrix
     }
 };
 
-class BBGLVertexBuffer;
+class BBVertexBufferObject;
+class BBElementBufferObject;
 class QOpenGLShaderProgram;
-class QOpenGLBuffer;
+
 class BBGLShader : protected QOpenGLFunctions
 {
 public:
@@ -91,9 +79,9 @@ public:
     void init(const QString &vertexShaderPath, const QString &fragmentShaderPath,
               const unsigned short *pIndexes = 0, int nIndexCount = 0);
     void render(const std::function<void()> &draw, const QMatrix4x4 &modelMatrix, const QMatrix4x4 &viewMatrix,
-                const QVector3D &cameraPos, BBGLVertexBuffer *pVertexbuffer);
+                const QVector3D &cameraPos, BBVertexBufferObject *pVertexbuffer);
     void render(const std::function<void()> &draw, const QMatrix4x4 &modelMatrix, const QMatrix4x4 &viewMatrix, const QMatrix4x4 &projectionMatrix,
-                const QVector3D &cameraPos, BBGLVertexBuffer *pVertexbuffer);
+                const QVector3D &cameraPos, BBVertexBufferObject *pVertexbuffer);
     void resize(float fWidth, float fHeight);
 
     void setVector4f(const QString &name, float x, float y, float z, float w);
@@ -111,7 +99,7 @@ private:
     QMatrix4x4 m_ModelMatrix;
     QMatrix4x4 m_ITModelMatrix;
 
-    QOpenGLBuffer *m_pElementBufferObject;
+    BBElementBufferObject *m_pElementBufferObject;
 
     GLuint m_nPositionAttr;
     GLuint m_nColorAttr;

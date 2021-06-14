@@ -71,7 +71,9 @@ SOURCES += \
     Engine/Serializer/BBGameObject.pb.cc \
     Engine/Serializer/BBHierarchyTreeWidgetItem.pb.cc \
     Engine/Serializer/BBVector.pb.cc \
-    Engine/Serializer/BBScene.pb.cc
+    Engine/Serializer/BBScene.pb.cc \
+    Engine/Render/BBVertexBufferObject.cpp \
+    Engine/Render/BBElementBufferObject.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -122,7 +124,10 @@ HEADERS += \
     Engine/Serializer/BBGameObject.pb.h \
     Engine/Serializer/BBHierarchyTreeWidgetItem.pb.h \
     Engine/Serializer/BBVector.pb.h \
-    Engine/Serializer/BBScene.pb.h
+    Engine/Serializer/BBScene.pb.h \
+    Engine/Render/BBearGL.h \
+    Engine/Render/BBVertexBufferObject.h \
+    Engine/Render/BBElementBufferObject.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

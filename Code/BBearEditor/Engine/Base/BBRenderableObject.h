@@ -6,7 +6,7 @@
 
 class BBGLShader;
 class BBCamera;
-class BBGLVertexBuffer;
+class BBVertexBufferObject;
 class BBRenderableObject : public BBGameObject
 {
 public:
@@ -34,7 +34,7 @@ public:
 protected:
     virtual void draw();
     BBGLShader *m_pShader;
-    BBGLVertexBuffer *m_pVertexBuffer;
+    BBVertexBufferObject *m_pVertexBuffer;
     unsigned short *m_pIndexes;
     int m_nIndexCount;
     int m_nVertexCount;

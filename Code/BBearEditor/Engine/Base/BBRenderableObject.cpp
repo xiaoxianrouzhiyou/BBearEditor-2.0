@@ -2,7 +2,9 @@
 #include "Render/BBGLShader.h"
 #include "BBUtils.h"
 #include "Render/BBCamera.h"
+#include "Render/BBVertexBufferObject.h"
 #include "Render/BBGLBuffers.h"
+
 
 BBRenderableObject::BBRenderableObject()
     : BBRenderableObject(0, 0, 0, 0, 0, 0, 1, 1, 1)

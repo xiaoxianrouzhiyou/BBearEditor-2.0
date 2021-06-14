@@ -4,10 +4,11 @@
 
 #include "BBRenderableObject.h"
 
+
 class BBSkyBoxSide : public BBRenderableObject
 {
 public:
-    BBSkyBoxSide(BBGLVertexBuffer *pVertexBuffer);
+    BBSkyBoxSide(BBVertexBufferObject *pVertexBuffer);
 
     void init(const QString &path) override;
     void render(BBCamera *pCamera) override;

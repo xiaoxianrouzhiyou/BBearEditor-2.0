@@ -1,8 +1,10 @@
 #include "BBGLShader.h"
-#include "BBGLBuffers.h"
+#include "BBVertexBufferObject.h"
 #include <QOpenGLShaderProgram>
-#include <QOpenGLBuffer>
 #include "BBUtils.h"
+#include "BBGLBuffers.h"
+#include "BBElementBufferObject.h"
+
 
 BBGLShader::BBGLShader()
 {
@@ -72,17 +74,17 @@ void BBGLShader::init(const QString &vertexShaderPath, const QString &fragmentSh
     m_nModelMatrixLocation = m_pProgram->uniformLocation(NAME_MODELMATRIX);
     m_nITModelMatrixLocation = m_pProgram->uniformLocation(NAME_ITMODELMATRIX);
 
-    bindElementBufferObject(pIndexes, nIndexCount);
+    m_pElementBufferObject = new BBElementBufferObject(pIndexes, nIndexCount);
 }
 
 void BBGLShader::render(const std::function<void()> &draw, const QMatrix4x4 &modelMatrix, const QMatrix4x4 &viewMatrix,
-                        const QVector3D &cameraPos, BBGLVertexBuffer *pVertexbuffer)
+                        const QVector3D &cameraPos, BBVertexBufferObject *pVertexbuffer)
 {
     render(draw, modelMatrix, viewMatrix, m_ProjectionMatrix, cameraPos, pVertexbuffer);
 }
 
 void BBGLShader::render(const std::function<void()> &draw, const QMatrix4x4 &modelMatrix, const QMatrix4x4 &viewMatrix, const QMatrix4x4 &projectionMatrix,
-                        const QVector3D &cameraPos, BBGLVertexBuffer *pVertexbuffer)
+                        const QVector3D &cameraPos, BBVertexBufferObject *pVertexbuffer)
 {
     // camera movement
     m_ViewMatrix = viewMatrix;
@@ -209,12 +211,7 @@ void BBGLShader::setTexture(const QString &name, const GLuint &nTexture)
 
 void BBGLShader::bindElementBufferObject(const unsigned short *pIndexes, int nIndexCount)
 {
-    m_pElementBufferObject = new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
-    m_pElementBufferObject->create();
-    m_pElementBufferObject->bind();
-    m_pElementBufferObject->setUsagePattern(QOpenGLBuffer::StaticDraw);
-    m_pElementBufferObject->allocate(pIndexes, sizeof(unsigned short) * nIndexCount);
-    m_pElementBufferObject->release();
+    m_pElementBufferObject->set(pIndexes, nIndexCount);
 }
 
 

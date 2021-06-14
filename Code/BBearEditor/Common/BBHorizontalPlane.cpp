@@ -1,5 +1,5 @@
 #include "BBHorizontalPlane.h"
-#include "Render/BBGLBuffers.h"
+#include "Render/BBVertexBufferObject.h"
 #include "Render/BBGLShader.h"
 #include "BBUtils.h"
 #include "Render/BBCamera.h"
@@ -13,7 +13,7 @@ BBHorizontalPlane::BBHorizontalPlane()
 void BBHorizontalPlane::init()
 {
     float fCoefficient = 2.0f;
-    m_pVertexBuffer = new BBGLVertexBuffer(246);
+    m_pVertexBuffer = new BBVertexBufferObject(246);
     for (int i = 0; i <= 40; i++)
     {
         // The most transparent point on the periphery

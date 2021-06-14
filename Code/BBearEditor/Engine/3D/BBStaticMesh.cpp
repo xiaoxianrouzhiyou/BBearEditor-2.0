@@ -1,6 +1,6 @@
 #include "BBStaticMesh.h"
 #include "BBUtils.h"
-#include "Render/BBGLBuffers.h"
+#include "Render/BBVertexBufferObject.h"
 #include <sstream>
 #include "Geometry/BBBoundingBox.h"
 
@@ -140,7 +140,7 @@ void BBOBJMesh::load(const QString &path, QList<QVector4D> &outPositions)
     }
     // How many unique points
     m_nVertexCount = (int)vertexes.size();
-    m_pVertexBuffer = new BBGLVertexBuffer(m_nVertexCount);
+    m_pVertexBuffer = new BBVertexBufferObject(m_nVertexCount);
     for (int i = 0; i < m_nVertexCount; i++)
     {
         // vertexes[i].posIndex - 1

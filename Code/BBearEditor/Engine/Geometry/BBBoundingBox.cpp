@@ -1,7 +1,7 @@
 #include "BBBoundingBox.h"
 #include "BBUtils.h"
 #include <cfloat>
-#include "Render/BBGLBuffers.h"
+#include "Render/BBVertexBufferObject.h"
 #include "Render/BBGLShader.h"
 #include <Eigen/Eigen>
 
@@ -296,7 +296,7 @@ BBBoundingBox3D::~BBBoundingBox3D()
 
 void BBBoundingBox3D::init()
 {
-    m_pVertexBuffer = new BBGLVertexBuffer(8);
+    m_pVertexBuffer = new BBVertexBufferObject(8);
     for (int i = 0; i < 8; i++)
     {
         m_pVertexBuffer->setPosition(i, m_pOriginalBoxVertexes[i].x(),

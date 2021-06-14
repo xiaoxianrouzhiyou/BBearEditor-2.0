@@ -3,7 +3,8 @@
 #include "BBUtils.h"
 #include "Geometry/BBBoundingBox.h"
 #include <cfloat>
-#include "Render/BBGLBuffers.h"
+#include "Render/BBVertexBufferObject.h"
+
 
 BBMesh::BBMesh()
     : BBMesh(0, 0, 0, 0, 0, 0, 1, 1, 1)
