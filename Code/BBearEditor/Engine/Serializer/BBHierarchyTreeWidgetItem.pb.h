@@ -172,42 +172,19 @@ class BBHierarchyTreeWidgetItem PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kChildrenFieldNumber = 2,
-    kIndexFieldNumber = 1,
+    kParentIndexFieldNumber = 1,
   };
-  // repeated int32 children = 2;
-  int children_size() const;
+  // int32 parentIndex = 1;
+  bool has_parentindex() const;
   private:
-  int _internal_children_size() const;
+  bool _internal_has_parentindex() const;
   public:
-  void clear_children();
+  void clear_parentindex();
+  ::PROTOBUF_NAMESPACE_ID::int32 parentindex() const;
+  void set_parentindex(::PROTOBUF_NAMESPACE_ID::int32 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_children(int index) const;
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
-      _internal_children() const;
-  void _internal_add_children(::PROTOBUF_NAMESPACE_ID::int32 value);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
-      _internal_mutable_children();
-  public:
-  ::PROTOBUF_NAMESPACE_ID::int32 children(int index) const;
-  void set_children(int index, ::PROTOBUF_NAMESPACE_ID::int32 value);
-  void add_children(::PROTOBUF_NAMESPACE_ID::int32 value);
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
-      children() const;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
-      mutable_children();
-
-  // int32 index = 1;
-  bool has_index() const;
-  private:
-  bool _internal_has_index() const;
-  public:
-  void clear_index();
-  ::PROTOBUF_NAMESPACE_ID::int32 index() const;
-  void set_index(::PROTOBUF_NAMESPACE_ID::int32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_index() const;
-  void _internal_set_index(::PROTOBUF_NAMESPACE_ID::int32 value);
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_parentindex() const;
+  void _internal_set_parentindex(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
   // @@protoc_insertion_point(class_scope:BBSerializer.BBHierarchyTreeWidgetItem)
@@ -219,9 +196,7 @@ class BBHierarchyTreeWidgetItem PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 > children_;
-  mutable std::atomic<int> _children_cached_byte_size_;
-  ::PROTOBUF_NAMESPACE_ID::int32 index_;
+  ::PROTOBUF_NAMESPACE_ID::int32 parentindex_;
   friend struct ::TableStruct_BBHierarchyTreeWidgetItem_2eproto;
 };
 // ===================================================================
@@ -235,79 +210,32 @@ class BBHierarchyTreeWidgetItem PROTOBUF_FINAL :
 #endif  // __GNUC__
 // BBHierarchyTreeWidgetItem
 
-// int32 index = 1;
-inline bool BBHierarchyTreeWidgetItem::_internal_has_index() const {
+// int32 parentIndex = 1;
+inline bool BBHierarchyTreeWidgetItem::_internal_has_parentindex() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline bool BBHierarchyTreeWidgetItem::has_index() const {
-  return _internal_has_index();
+inline bool BBHierarchyTreeWidgetItem::has_parentindex() const {
+  return _internal_has_parentindex();
 }
-inline void BBHierarchyTreeWidgetItem::clear_index() {
-  index_ = 0;
+inline void BBHierarchyTreeWidgetItem::clear_parentindex() {
+  parentindex_ = 0;
   _has_bits_[0] &= ~0x00000001u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 BBHierarchyTreeWidgetItem::_internal_index() const {
-  return index_;
+inline ::PROTOBUF_NAMESPACE_ID::int32 BBHierarchyTreeWidgetItem::_internal_parentindex() const {
+  return parentindex_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 BBHierarchyTreeWidgetItem::index() const {
-  // @@protoc_insertion_point(field_get:BBSerializer.BBHierarchyTreeWidgetItem.index)
-  return _internal_index();
+inline ::PROTOBUF_NAMESPACE_ID::int32 BBHierarchyTreeWidgetItem::parentindex() const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBHierarchyTreeWidgetItem.parentIndex)
+  return _internal_parentindex();
 }
-inline void BBHierarchyTreeWidgetItem::_internal_set_index(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void BBHierarchyTreeWidgetItem::_internal_set_parentindex(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _has_bits_[0] |= 0x00000001u;
-  index_ = value;
+  parentindex_ = value;
 }
-inline void BBHierarchyTreeWidgetItem::set_index(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_index(value);
-  // @@protoc_insertion_point(field_set:BBSerializer.BBHierarchyTreeWidgetItem.index)
-}
-
-// repeated int32 children = 2;
-inline int BBHierarchyTreeWidgetItem::_internal_children_size() const {
-  return children_.size();
-}
-inline int BBHierarchyTreeWidgetItem::children_size() const {
-  return _internal_children_size();
-}
-inline void BBHierarchyTreeWidgetItem::clear_children() {
-  children_.Clear();
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 BBHierarchyTreeWidgetItem::_internal_children(int index) const {
-  return children_.Get(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 BBHierarchyTreeWidgetItem::children(int index) const {
-  // @@protoc_insertion_point(field_get:BBSerializer.BBHierarchyTreeWidgetItem.children)
-  return _internal_children(index);
-}
-inline void BBHierarchyTreeWidgetItem::set_children(int index, ::PROTOBUF_NAMESPACE_ID::int32 value) {
-  children_.Set(index, value);
-  // @@protoc_insertion_point(field_set:BBSerializer.BBHierarchyTreeWidgetItem.children)
-}
-inline void BBHierarchyTreeWidgetItem::_internal_add_children(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  children_.Add(value);
-}
-inline void BBHierarchyTreeWidgetItem::add_children(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_add_children(value);
-  // @@protoc_insertion_point(field_add:BBSerializer.BBHierarchyTreeWidgetItem.children)
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
-BBHierarchyTreeWidgetItem::_internal_children() const {
-  return children_;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
-BBHierarchyTreeWidgetItem::children() const {
-  // @@protoc_insertion_point(field_list:BBSerializer.BBHierarchyTreeWidgetItem.children)
-  return _internal_children();
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
-BBHierarchyTreeWidgetItem::_internal_mutable_children() {
-  return &children_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
-BBHierarchyTreeWidgetItem::mutable_children() {
-  // @@protoc_insertion_point(field_mutable_list:BBSerializer.BBHierarchyTreeWidgetItem.children)
-  return _internal_mutable_children();
+inline void BBHierarchyTreeWidgetItem::set_parentindex(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_parentindex(value);
+  // @@protoc_insertion_point(field_set:BBSerializer.BBHierarchyTreeWidgetItem.parentIndex)
 }
 
 #ifdef __GNUC__

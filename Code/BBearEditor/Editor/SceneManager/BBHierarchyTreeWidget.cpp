@@ -9,6 +9,8 @@
 BBHierarchyTreeWidget::BBHierarchyTreeWidget(QWidget *parent)
     : BBTreeWidget(parent)
 {
+    BBSceneManager::bindHierarchyTreeWidget(this);
+
     QStringList list;
     list.push_back("Label");
     list.push_back("Type");
@@ -25,6 +27,19 @@ BBHierarchyTreeWidget::BBHierarchyTreeWidget(QWidget *parent)
 
     // Popup menu
     setMenu();
+}
+
+void BBHierarchyTreeWidget::takeTopLevelItems()
+{
+    while (topLevelItemCount() > 0)
+    {
+        takeTopLevelItem(0);
+    }
+}
+
+void BBHierarchyTreeWidget::reconstruct(const QList<QTreeWidgetItem*> &topLevelItems)
+{
+    addTopLevelItems(topLevelItems);
 }
 
 void BBHierarchyTreeWidget::setMenu()

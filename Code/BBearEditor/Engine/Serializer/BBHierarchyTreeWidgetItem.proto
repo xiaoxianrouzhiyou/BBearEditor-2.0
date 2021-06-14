@@ -3,7 +3,6 @@ package BBSerializer;
 
 message BBHierarchyTreeWidgetItem
 {
-    optional int32 index = 1;
-
-    repeated int32 children = 2;
+    // -1 means that the item is at the top level
+    optional int32 parentIndex = 1;
 }

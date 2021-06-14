@@ -5,11 +5,13 @@
 #include "Render/BBEditViewOpenGLWidget.h"
 #include "BBScene.h"
 #include "Base/BBGameObject.h"
+#include "SceneManager/BBHierarchyTreeWidget.h"
 
 
 QMap<QTreeWidgetItem*, BBGameObject*> BBSceneManager::m_ObjectMap;
 QString BBSceneManager::m_CurrentSceneFilePath;
 BBEditViewOpenGLWidget* BBSceneManager::m_pEditViewOpenGLWidget = NULL;
+BBHierarchyTreeWidget* BBSceneManager::m_pHierarchyTreeWidget = NULL;
 bool BBSceneManager::m_bSceneChanged = true;
 
 
@@ -89,21 +91,41 @@ void BBSceneManager::openScene(const QString &filePath)
     BBSerializer::BBScene scene;
     scene.ParseFromArray(pData, nLength);
 
+    QList<QTreeWidgetItem*> items;
+
     // load scene + tree
     int count = scene.gameobject_size();
     for (int i = 0; i < count; i++)
     {
         BBSerializer::BBGameObject gameObject = scene.gameobject(i);
         QString className = QString::fromStdString(gameObject.classname());
+        BBGameObject *pGameObject = NULL;
         if (className == BB_CLASSNAME_MODEL)
         {
-            m_pEditViewOpenGLWidget->createModel(gameObject);
+            pGameObject = m_pEditViewOpenGLWidget->createModel(gameObject);
         }
+        items.append(m_ObjectMap.key(pGameObject));
     }
     // reconstruct the parent connect of the tree
+    m_pHierarchyTreeWidget->takeTopLevelItems();
+    QList<QTreeWidgetItem*> topLevelItems;
+    for (int i = 0; i < count; i++)
+    {
+        QTreeWidgetItem *pItem = items.at(i);
+        int parentIndex = scene.item(i).parentindex();
+        if (parentIndex < 0)
+        {
+            topLevelItems.append(pItem);
+        }
+        else
+        {
+            QTreeWidgetItem *pParent = items.at(parentIndex);
+            pParent->addChild(pItem);
+        }
+    }
+    m_pHierarchyTreeWidget->reconstruct(topLevelItems);
 
     BB_SAFE_DELETE(pData);
-
     m_CurrentSceneFilePath = filePath;
     m_pEditViewOpenGLWidget->updateEditViewTitle();
 }
@@ -112,29 +134,29 @@ void BBSceneManager::saveScene(const QString &filePath)
 {
     BBSerializer::BBScene scene;
 
-    // for finding index of children
+    // for finding index of items
     QList<QTreeWidgetItem*> items;
     for (QMap<QTreeWidgetItem*, BBGameObject*>::Iterator it = m_ObjectMap.begin(); it != m_ObjectMap.end(); it++)
     {
         items.append(it.key());
     }
 
-    int index = 0;
     for (QMap<QTreeWidgetItem*, BBGameObject*>::Iterator it = m_ObjectMap.begin(); it != m_ObjectMap.end(); it++)
     {
         QTreeWidgetItem *pKey = it.key();
         BBGameObject *pValue = it.value();
 
         BBSerializer::BBHierarchyTreeWidgetItem *pItem = scene.add_item();
-        pItem->set_index(index);
-        for (int i = 0; i < pKey->childCount(); i++)
+        if (pKey->parent())
         {
-            int childIndex = items.indexOf(pKey->child(i));
-            pItem->add_children(childIndex);
+            pItem->set_parentindex(items.indexOf(pKey->parent()));
+        }
+        else
+        {
+            pItem->set_parentindex(-1);
         }
 
         BBSerializer::BBGameObject *pGameObject = scene.add_gameobject();
-        pGameObject->set_index(index);
 
         pGameObject->set_name(pValue->getName().toStdString().c_str());
         pGameObject->set_classname(pValue->getClassName().toStdString().c_str());
@@ -154,8 +176,6 @@ void BBSceneManager::saveScene(const QString &filePath)
         setVector3f(pValue->getScale(), pScale);
         BBSerializer::BBVector3f *pLocalScale = pGameObject->mutable_localscale();
         setVector3f(pValue->getLocalScale(), pLocalScale);
-
-        index++;
     }
 
     int nLength = scene.ByteSizeLong() + 1;

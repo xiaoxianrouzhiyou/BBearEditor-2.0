@@ -5,16 +5,14 @@ import "BBVector.proto";
 
 message BBGameObject
 {
-    int32 index = 1;
+	optional string name = 1;
+	optional string className = 2;
+	optional string filePath = 3;
 
-	optional string name = 2;
-	optional string className = 3;
-	optional string filePath = 4;
-
-	optional BBVector3f position = 5;
-    optional BBVector3f localPosition = 6;
-    optional BBVector3f rotation = 7;
-    optional BBVector3f localRotation = 8;
-    optional BBVector3f scale = 9;
-    optional BBVector3f localScale = 10;
+	optional BBVector3f position = 4;
+    optional BBVector3f localPosition = 5;
+    optional BBVector3f rotation = 6;
+    optional BBVector3f localRotation = 7;
+    optional BBVector3f scale = 8;
+    optional BBVector3f localScale = 9;
 }

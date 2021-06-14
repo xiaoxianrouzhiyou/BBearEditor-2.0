@@ -27,8 +27,7 @@ constexpr BBGameObject::BBGameObject(
   , rotation_(nullptr)
   , localrotation_(nullptr)
   , scale_(nullptr)
-  , localscale_(nullptr)
-  , index_(0){}
+  , localscale_(nullptr){}
 struct BBGameObjectDefaultTypeInternal {
   constexpr BBGameObjectDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -49,7 +48,6 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_BBGameObject_2eproto::offsets[
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::BBSerializer::BBGameObject, index_),
   PROTOBUF_FIELD_OFFSET(::BBSerializer::BBGameObject, name_),
   PROTOBUF_FIELD_OFFSET(::BBSerializer::BBGameObject, classname_),
   PROTOBUF_FIELD_OFFSET(::BBSerializer::BBGameObject, filepath_),
@@ -59,7 +57,6 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_BBGameObject_2eproto::offsets[
   PROTOBUF_FIELD_OFFSET(::BBSerializer::BBGameObject, localrotation_),
   PROTOBUF_FIELD_OFFSET(::BBSerializer::BBGameObject, scale_),
   PROTOBUF_FIELD_OFFSET(::BBSerializer::BBGameObject, localscale_),
-  ~0u,
   0,
   1,
   2,
@@ -71,7 +68,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_BBGameObject_2eproto::offsets[
   8,
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 15, sizeof(::BBSerializer::BBGameObject)},
+  { 0, 14, sizeof(::BBSerializer::BBGameObject)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -80,27 +77,27 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_BBGameObject_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\022BBGameObject.proto\022\014BBSerializer\032\016BBVe"
-  "ctor.proto\"\211\004\n\014BBGameObject\022\r\n\005index\030\001 \001"
-  "(\005\022\021\n\004name\030\002 \001(\tH\000\210\001\001\022\026\n\tclassName\030\003 \001(\t"
-  "H\001\210\001\001\022\025\n\010filePath\030\004 \001(\tH\002\210\001\001\022/\n\010position"
-  "\030\005 \001(\0132\030.BBSerializer.BBVector3fH\003\210\001\001\0224\n"
-  "\rlocalPosition\030\006 \001(\0132\030.BBSerializer.BBVe"
-  "ctor3fH\004\210\001\001\022/\n\010rotation\030\007 \001(\0132\030.BBSerial"
-  "izer.BBVector3fH\005\210\001\001\0224\n\rlocalRotation\030\010 "
-  "\001(\0132\030.BBSerializer.BBVector3fH\006\210\001\001\022,\n\005sc"
-  "ale\030\t \001(\0132\030.BBSerializer.BBVector3fH\007\210\001\001"
-  "\0221\n\nlocalScale\030\n \001(\0132\030.BBSerializer.BBVe"
-  "ctor3fH\010\210\001\001B\007\n\005_nameB\014\n\n_classNameB\013\n\t_f"
-  "ilePathB\013\n\t_positionB\020\n\016_localPositionB\013"
-  "\n\t_rotationB\020\n\016_localRotationB\010\n\006_scaleB"
-  "\r\n\013_localScaleb\006proto3"
+  "ctor.proto\"\372\003\n\014BBGameObject\022\021\n\004name\030\001 \001("
+  "\tH\000\210\001\001\022\026\n\tclassName\030\002 \001(\tH\001\210\001\001\022\025\n\010filePa"
+  "th\030\003 \001(\tH\002\210\001\001\022/\n\010position\030\004 \001(\0132\030.BBSeri"
+  "alizer.BBVector3fH\003\210\001\001\0224\n\rlocalPosition\030"
+  "\005 \001(\0132\030.BBSerializer.BBVector3fH\004\210\001\001\022/\n\010"
+  "rotation\030\006 \001(\0132\030.BBSerializer.BBVector3f"
+  "H\005\210\001\001\0224\n\rlocalRotation\030\007 \001(\0132\030.BBSeriali"
+  "zer.BBVector3fH\006\210\001\001\022,\n\005scale\030\010 \001(\0132\030.BBS"
+  "erializer.BBVector3fH\007\210\001\001\0221\n\nlocalScale\030"
+  "\t \001(\0132\030.BBSerializer.BBVector3fH\010\210\001\001B\007\n\005"
+  "_nameB\014\n\n_classNameB\013\n\t_filePathB\013\n\t_pos"
+  "itionB\020\n\016_localPositionB\013\n\t_rotationB\020\n\016"
+  "_localRotationB\010\n\006_scaleB\r\n\013_localScaleb"
+  "\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_BBGameObject_2eproto_deps[1] = {
   &::descriptor_table_BBVector_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_BBGameObject_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_BBGameObject_2eproto = {
-  false, false, 582, descriptor_table_protodef_BBGameObject_2eproto, "BBGameObject.proto", 
+  false, false, 567, descriptor_table_protodef_BBGameObject_2eproto, "BBGameObject.proto", 
   &descriptor_table_BBGameObject_2eproto_once, descriptor_table_BBGameObject_2eproto_deps, 1, 1,
   schemas, file_default_instances, TableStruct_BBGameObject_2eproto::offsets,
   file_level_metadata_BBGameObject_2eproto, file_level_enum_descriptors_BBGameObject_2eproto, file_level_service_descriptors_BBGameObject_2eproto,
@@ -274,7 +271,6 @@ BBGameObject::BBGameObject(const BBGameObject& from)
   } else {
     localscale_ = nullptr;
   }
-  index_ = from.index_;
   // @@protoc_insertion_point(copy_constructor:BBSerializer.BBGameObject)
 }
 
@@ -284,8 +280,8 @@ classname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAl
 filepath_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&position_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&index_) -
-    reinterpret_cast<char*>(&position_)) + sizeof(index_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&localscale_) -
+    reinterpret_cast<char*>(&position_)) + sizeof(localscale_));
 }
 
 BBGameObject::~BBGameObject() {
@@ -371,7 +367,6 @@ void BBGameObject::Clear() {
     }
     localscale_ = nullptr;
   }
-  index_ = 0;
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -383,78 +378,71 @@ const char* BBGameObject::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // int32 index = 1;
+      // string name = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          index_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // string name = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
           auto str = _internal_mutable_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "BBSerializer.BBGameObject.name"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string className = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+      // string className = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           auto str = _internal_mutable_classname();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "BBSerializer.BBGameObject.className"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string filePath = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+      // string filePath = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
           auto str = _internal_mutable_filepath();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "BBSerializer.BBGameObject.filePath"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // .BBSerializer.BBVector3f position = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
+      // .BBSerializer.BBVector3f position = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
           ptr = ctx->ParseMessage(_internal_mutable_position(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // .BBSerializer.BBVector3f localPosition = 6;
-      case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
+      // .BBSerializer.BBVector3f localPosition = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
           ptr = ctx->ParseMessage(_internal_mutable_localposition(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // .BBSerializer.BBVector3f rotation = 7;
-      case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
+      // .BBSerializer.BBVector3f rotation = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
           ptr = ctx->ParseMessage(_internal_mutable_rotation(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // .BBSerializer.BBVector3f localRotation = 8;
-      case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
+      // .BBSerializer.BBVector3f localRotation = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
           ptr = ctx->ParseMessage(_internal_mutable_localrotation(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // .BBSerializer.BBVector3f scale = 9;
-      case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 74)) {
+      // .BBSerializer.BBVector3f scale = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
           ptr = ctx->ParseMessage(_internal_mutable_scale(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // .BBSerializer.BBVector3f localScale = 10;
-      case 10:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 82)) {
+      // .BBSerializer.BBVector3f localScale = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 74)) {
           ptr = ctx->ParseMessage(_internal_mutable_localscale(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
@@ -489,88 +477,82 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int32 index = 1;
-  if (this->index() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_index(), target);
-  }
-
-  // string name = 2;
+  // string name = 1;
   if (_internal_has_name()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "BBSerializer.BBGameObject.name");
     target = stream->WriteStringMaybeAliased(
-        2, this->_internal_name(), target);
+        1, this->_internal_name(), target);
   }
 
-  // string className = 3;
+  // string className = 2;
   if (_internal_has_classname()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_classname().data(), static_cast<int>(this->_internal_classname().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "BBSerializer.BBGameObject.className");
     target = stream->WriteStringMaybeAliased(
-        3, this->_internal_classname(), target);
+        2, this->_internal_classname(), target);
   }
 
-  // string filePath = 4;
+  // string filePath = 3;
   if (_internal_has_filepath()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_filepath().data(), static_cast<int>(this->_internal_filepath().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "BBSerializer.BBGameObject.filePath");
     target = stream->WriteStringMaybeAliased(
-        4, this->_internal_filepath(), target);
+        3, this->_internal_filepath(), target);
   }
 
-  // .BBSerializer.BBVector3f position = 5;
+  // .BBSerializer.BBVector3f position = 4;
   if (_internal_has_position()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
-        5, _Internal::position(this), target, stream);
+        4, _Internal::position(this), target, stream);
   }
 
-  // .BBSerializer.BBVector3f localPosition = 6;
+  // .BBSerializer.BBVector3f localPosition = 5;
   if (_internal_has_localposition()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
-        6, _Internal::localposition(this), target, stream);
+        5, _Internal::localposition(this), target, stream);
   }
 
-  // .BBSerializer.BBVector3f rotation = 7;
+  // .BBSerializer.BBVector3f rotation = 6;
   if (_internal_has_rotation()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
-        7, _Internal::rotation(this), target, stream);
+        6, _Internal::rotation(this), target, stream);
   }
 
-  // .BBSerializer.BBVector3f localRotation = 8;
+  // .BBSerializer.BBVector3f localRotation = 7;
   if (_internal_has_localrotation()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
-        8, _Internal::localrotation(this), target, stream);
+        7, _Internal::localrotation(this), target, stream);
   }
 
-  // .BBSerializer.BBVector3f scale = 9;
+  // .BBSerializer.BBVector3f scale = 8;
   if (_internal_has_scale()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
-        9, _Internal::scale(this), target, stream);
+        8, _Internal::scale(this), target, stream);
   }
 
-  // .BBSerializer.BBVector3f localScale = 10;
+  // .BBSerializer.BBVector3f localScale = 9;
   if (_internal_has_localscale()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
-        10, _Internal::localscale(this), target, stream);
+        9, _Internal::localscale(this), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -591,56 +573,56 @@ size_t BBGameObject::ByteSizeLong() const {
 
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x000000ffu) {
-    // string name = 2;
+    // string name = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
           this->_internal_name());
     }
 
-    // string className = 3;
+    // string className = 2;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
           this->_internal_classname());
     }
 
-    // string filePath = 4;
+    // string filePath = 3;
     if (cached_has_bits & 0x00000004u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
           this->_internal_filepath());
     }
 
-    // .BBSerializer.BBVector3f position = 5;
+    // .BBSerializer.BBVector3f position = 4;
     if (cached_has_bits & 0x00000008u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
           *position_);
     }
 
-    // .BBSerializer.BBVector3f localPosition = 6;
+    // .BBSerializer.BBVector3f localPosition = 5;
     if (cached_has_bits & 0x00000010u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
           *localposition_);
     }
 
-    // .BBSerializer.BBVector3f rotation = 7;
+    // .BBSerializer.BBVector3f rotation = 6;
     if (cached_has_bits & 0x00000020u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
           *rotation_);
     }
 
-    // .BBSerializer.BBVector3f localRotation = 8;
+    // .BBSerializer.BBVector3f localRotation = 7;
     if (cached_has_bits & 0x00000040u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
           *localrotation_);
     }
 
-    // .BBSerializer.BBVector3f scale = 9;
+    // .BBSerializer.BBVector3f scale = 8;
     if (cached_has_bits & 0x00000080u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
@@ -648,18 +630,11 @@ size_t BBGameObject::ByteSizeLong() const {
     }
 
   }
-  // .BBSerializer.BBVector3f localScale = 10;
+  // .BBSerializer.BBVector3f localScale = 9;
   if (cached_has_bits & 0x00000100u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *localscale_);
-  }
-
-  // int32 index = 1;
-  if (this->index() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_index());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -723,9 +698,6 @@ void BBGameObject::MergeFrom(const BBGameObject& from) {
   if (cached_has_bits & 0x00000100u) {
     _internal_mutable_localscale()->::BBSerializer::BBVector3f::MergeFrom(from._internal_localscale());
   }
-  if (from.index() != 0) {
-    _internal_set_index(from._internal_index());
-  }
 }
 
 void BBGameObject::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -754,8 +726,8 @@ void BBGameObject::InternalSwap(BBGameObject* other) {
   classname_.Swap(&other->classname_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   filepath_.Swap(&other->filepath_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(BBGameObject, index_)
-      + sizeof(BBGameObject::index_)
+      PROTOBUF_FIELD_OFFSET(BBGameObject, localscale_)
+      + sizeof(BBGameObject::localscale_)
       - PROTOBUF_FIELD_OFFSET(BBGameObject, position_)>(
           reinterpret_cast<char*>(&position_),
           reinterpret_cast<char*>(&other->position_));

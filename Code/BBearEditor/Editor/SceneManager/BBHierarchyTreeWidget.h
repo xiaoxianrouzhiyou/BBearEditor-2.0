@@ -13,6 +13,9 @@ public:
     explicit BBHierarchyTreeWidget(QWidget *parent = 0);
     QString getMimeType() { return BB_MIMETYPE_HIERARCHYTREEWIDGET; }
 
+    void takeTopLevelItems();
+    void reconstruct(const QList<QTreeWidgetItem*> &topLevelItems);
+
 private:
     void setMenu() override;
     void pasteOne(QTreeWidgetItem *pSource, QTreeWidgetItem* pTranscript) override;

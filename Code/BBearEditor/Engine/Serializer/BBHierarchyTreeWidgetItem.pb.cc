@@ -19,9 +19,7 @@ PROTOBUF_PRAGMA_INIT_SEG
 namespace BBSerializer {
 constexpr BBHierarchyTreeWidgetItem::BBHierarchyTreeWidgetItem(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : children_()
-  , _children_cached_byte_size_()
-  , index_(0){}
+  : parentindex_(0){}
 struct BBHierarchyTreeWidgetItemDefaultTypeInternal {
   constexpr BBHierarchyTreeWidgetItemDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -42,13 +40,11 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_BBHierarchyTreeWidgetItem_2epr
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::BBSerializer::BBHierarchyTreeWidgetItem, index_),
-  PROTOBUF_FIELD_OFFSET(::BBSerializer::BBHierarchyTreeWidgetItem, children_),
+  PROTOBUF_FIELD_OFFSET(::BBSerializer::BBHierarchyTreeWidgetItem, parentindex_),
   0,
-  ~0u,
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 7, sizeof(::BBSerializer::BBHierarchyTreeWidgetItem)},
+  { 0, 6, sizeof(::BBSerializer::BBHierarchyTreeWidgetItem)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -57,13 +53,13 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_BBHierarchyTreeWidgetItem_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\037BBHierarchyTreeWidgetItem.proto\022\014BBSer"
-  "ializer\"K\n\031BBHierarchyTreeWidgetItem\022\022\n\005"
-  "index\030\001 \001(\005H\000\210\001\001\022\020\n\010children\030\002 \003(\005B\010\n\006_i"
-  "ndexb\006proto3"
+  "ializer\"E\n\031BBHierarchyTreeWidgetItem\022\030\n\013"
+  "parentIndex\030\001 \001(\005H\000\210\001\001B\016\n\014_parentIndexb\006"
+  "proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_BBHierarchyTreeWidgetItem_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_BBHierarchyTreeWidgetItem_2eproto = {
-  false, false, 132, descriptor_table_protodef_BBHierarchyTreeWidgetItem_2eproto, "BBHierarchyTreeWidgetItem.proto", 
+  false, false, 126, descriptor_table_protodef_BBHierarchyTreeWidgetItem_2eproto, "BBHierarchyTreeWidgetItem.proto", 
   &descriptor_table_BBHierarchyTreeWidgetItem_2eproto_once, nullptr, 0, 1,
   schemas, file_default_instances, TableStruct_BBHierarchyTreeWidgetItem_2eproto::offsets,
   file_level_metadata_BBHierarchyTreeWidgetItem_2eproto, file_level_enum_descriptors_BBHierarchyTreeWidgetItem_2eproto, file_level_service_descriptors_BBHierarchyTreeWidgetItem_2eproto,
@@ -81,29 +77,27 @@ namespace BBSerializer {
 class BBHierarchyTreeWidgetItem::_Internal {
  public:
   using HasBits = decltype(std::declval<BBHierarchyTreeWidgetItem>()._has_bits_);
-  static void set_has_index(HasBits* has_bits) {
+  static void set_has_parentindex(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
 };
 
 BBHierarchyTreeWidgetItem::BBHierarchyTreeWidgetItem(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena),
-  children_(arena) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
   RegisterArenaDtor(arena);
   // @@protoc_insertion_point(arena_constructor:BBSerializer.BBHierarchyTreeWidgetItem)
 }
 BBHierarchyTreeWidgetItem::BBHierarchyTreeWidgetItem(const BBHierarchyTreeWidgetItem& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _has_bits_(from._has_bits_),
-      children_(from.children_) {
+      _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  index_ = from.index_;
+  parentindex_ = from.parentindex_;
   // @@protoc_insertion_point(copy_constructor:BBSerializer.BBHierarchyTreeWidgetItem)
 }
 
 void BBHierarchyTreeWidgetItem::SharedCtor() {
-index_ = 0;
+parentindex_ = 0;
 }
 
 BBHierarchyTreeWidgetItem::~BBHierarchyTreeWidgetItem() {
@@ -132,8 +126,7 @@ void BBHierarchyTreeWidgetItem::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  children_.Clear();
-  index_ = 0;
+  parentindex_ = 0;
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -145,21 +138,11 @@ const char* BBHierarchyTreeWidgetItem::_InternalParse(const char* ptr, ::PROTOBU
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // int32 index = 1;
+      // int32 parentIndex = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          _Internal::set_has_index(&has_bits);
-          index_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // repeated int32 children = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedInt32Parser(_internal_mutable_children(), ptr, ctx);
-          CHK_(ptr);
-        } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16) {
-          _internal_add_children(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
+          _Internal::set_has_parentindex(&has_bits);
+          parentindex_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -193,19 +176,10 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int32 index = 1;
-  if (_internal_has_index()) {
+  // int32 parentIndex = 1;
+  if (_internal_has_parentindex()) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_index(), target);
-  }
-
-  // repeated int32 children = 2;
-  {
-    int byte_size = _children_cached_byte_size_.load(std::memory_order_relaxed);
-    if (byte_size > 0) {
-      target = stream->WriteInt32Packed(
-          2, _internal_children(), byte_size, target);
-    }
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_parentindex(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -224,27 +198,12 @@ size_t BBHierarchyTreeWidgetItem::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated int32 children = 2;
-  {
-    size_t data_size = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      Int32Size(this->children_);
-    if (data_size > 0) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-            static_cast<::PROTOBUF_NAMESPACE_ID::int32>(data_size));
-    }
-    int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(data_size);
-    _children_cached_byte_size_.store(cached_size,
-                                    std::memory_order_relaxed);
-    total_size += data_size;
-  }
-
-  // int32 index = 1;
+  // int32 parentIndex = 1;
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_index());
+        this->_internal_parentindex());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -278,9 +237,8 @@ void BBHierarchyTreeWidgetItem::MergeFrom(const BBHierarchyTreeWidgetItem& from)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  children_.MergeFrom(from.children_);
-  if (from._internal_has_index()) {
-    _internal_set_index(from._internal_index());
+  if (from._internal_has_parentindex()) {
+    _internal_set_parentindex(from._internal_parentindex());
   }
 }
 
@@ -306,8 +264,7 @@ void BBHierarchyTreeWidgetItem::InternalSwap(BBHierarchyTreeWidgetItem* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  children_.InternalSwap(&other->children_);
-  swap(index_, other->index_);
+  swap(parentindex_, other->parentindex_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata BBHierarchyTreeWidgetItem::GetMetadata() const {

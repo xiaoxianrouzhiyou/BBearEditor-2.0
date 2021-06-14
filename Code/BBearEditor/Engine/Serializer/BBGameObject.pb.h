@@ -173,18 +173,17 @@ class BBGameObject PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kNameFieldNumber = 2,
-    kClassNameFieldNumber = 3,
-    kFilePathFieldNumber = 4,
-    kPositionFieldNumber = 5,
-    kLocalPositionFieldNumber = 6,
-    kRotationFieldNumber = 7,
-    kLocalRotationFieldNumber = 8,
-    kScaleFieldNumber = 9,
-    kLocalScaleFieldNumber = 10,
-    kIndexFieldNumber = 1,
+    kNameFieldNumber = 1,
+    kClassNameFieldNumber = 2,
+    kFilePathFieldNumber = 3,
+    kPositionFieldNumber = 4,
+    kLocalPositionFieldNumber = 5,
+    kRotationFieldNumber = 6,
+    kLocalRotationFieldNumber = 7,
+    kScaleFieldNumber = 8,
+    kLocalScaleFieldNumber = 9,
   };
-  // string name = 2;
+  // string name = 1;
   bool has_name() const;
   private:
   bool _internal_has_name() const;
@@ -202,7 +201,7 @@ class BBGameObject PROTOBUF_FINAL :
   std::string* _internal_mutable_name();
   public:
 
-  // string className = 3;
+  // string className = 2;
   bool has_classname() const;
   private:
   bool _internal_has_classname() const;
@@ -220,7 +219,7 @@ class BBGameObject PROTOBUF_FINAL :
   std::string* _internal_mutable_classname();
   public:
 
-  // string filePath = 4;
+  // string filePath = 3;
   bool has_filepath() const;
   private:
   bool _internal_has_filepath() const;
@@ -238,7 +237,7 @@ class BBGameObject PROTOBUF_FINAL :
   std::string* _internal_mutable_filepath();
   public:
 
-  // .BBSerializer.BBVector3f position = 5;
+  // .BBSerializer.BBVector3f position = 4;
   bool has_position() const;
   private:
   bool _internal_has_position() const;
@@ -256,7 +255,7 @@ class BBGameObject PROTOBUF_FINAL :
       ::BBSerializer::BBVector3f* position);
   ::BBSerializer::BBVector3f* unsafe_arena_release_position();
 
-  // .BBSerializer.BBVector3f localPosition = 6;
+  // .BBSerializer.BBVector3f localPosition = 5;
   bool has_localposition() const;
   private:
   bool _internal_has_localposition() const;
@@ -274,7 +273,7 @@ class BBGameObject PROTOBUF_FINAL :
       ::BBSerializer::BBVector3f* localposition);
   ::BBSerializer::BBVector3f* unsafe_arena_release_localposition();
 
-  // .BBSerializer.BBVector3f rotation = 7;
+  // .BBSerializer.BBVector3f rotation = 6;
   bool has_rotation() const;
   private:
   bool _internal_has_rotation() const;
@@ -292,7 +291,7 @@ class BBGameObject PROTOBUF_FINAL :
       ::BBSerializer::BBVector3f* rotation);
   ::BBSerializer::BBVector3f* unsafe_arena_release_rotation();
 
-  // .BBSerializer.BBVector3f localRotation = 8;
+  // .BBSerializer.BBVector3f localRotation = 7;
   bool has_localrotation() const;
   private:
   bool _internal_has_localrotation() const;
@@ -310,7 +309,7 @@ class BBGameObject PROTOBUF_FINAL :
       ::BBSerializer::BBVector3f* localrotation);
   ::BBSerializer::BBVector3f* unsafe_arena_release_localrotation();
 
-  // .BBSerializer.BBVector3f scale = 9;
+  // .BBSerializer.BBVector3f scale = 8;
   bool has_scale() const;
   private:
   bool _internal_has_scale() const;
@@ -328,7 +327,7 @@ class BBGameObject PROTOBUF_FINAL :
       ::BBSerializer::BBVector3f* scale);
   ::BBSerializer::BBVector3f* unsafe_arena_release_scale();
 
-  // .BBSerializer.BBVector3f localScale = 10;
+  // .BBSerializer.BBVector3f localScale = 9;
   bool has_localscale() const;
   private:
   bool _internal_has_localscale() const;
@@ -345,15 +344,6 @@ class BBGameObject PROTOBUF_FINAL :
   void unsafe_arena_set_allocated_localscale(
       ::BBSerializer::BBVector3f* localscale);
   ::BBSerializer::BBVector3f* unsafe_arena_release_localscale();
-
-  // int32 index = 1;
-  void clear_index();
-  ::PROTOBUF_NAMESPACE_ID::int32 index() const;
-  void set_index(::PROTOBUF_NAMESPACE_ID::int32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_index() const;
-  void _internal_set_index(::PROTOBUF_NAMESPACE_ID::int32 value);
-  public:
 
   // @@protoc_insertion_point(class_scope:BBSerializer.BBGameObject)
  private:
@@ -373,7 +363,6 @@ class BBGameObject PROTOBUF_FINAL :
   ::BBSerializer::BBVector3f* localrotation_;
   ::BBSerializer::BBVector3f* scale_;
   ::BBSerializer::BBVector3f* localscale_;
-  ::PROTOBUF_NAMESPACE_ID::int32 index_;
   friend struct ::TableStruct_BBGameObject_2eproto;
 };
 // ===================================================================
@@ -387,27 +376,7 @@ class BBGameObject PROTOBUF_FINAL :
 #endif  // __GNUC__
 // BBGameObject
 
-// int32 index = 1;
-inline void BBGameObject::clear_index() {
-  index_ = 0;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 BBGameObject::_internal_index() const {
-  return index_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 BBGameObject::index() const {
-  // @@protoc_insertion_point(field_get:BBSerializer.BBGameObject.index)
-  return _internal_index();
-}
-inline void BBGameObject::_internal_set_index(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  
-  index_ = value;
-}
-inline void BBGameObject::set_index(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_index(value);
-  // @@protoc_insertion_point(field_set:BBSerializer.BBGameObject.index)
-}
-
-// string name = 2;
+// string name = 1;
 inline bool BBGameObject::_internal_has_name() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -464,7 +433,7 @@ inline void BBGameObject::set_allocated_name(std::string* name) {
   // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.name)
 }
 
-// string className = 3;
+// string className = 2;
 inline bool BBGameObject::_internal_has_classname() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -521,7 +490,7 @@ inline void BBGameObject::set_allocated_classname(std::string* classname) {
   // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.className)
 }
 
-// string filePath = 4;
+// string filePath = 3;
 inline bool BBGameObject::_internal_has_filepath() const {
   bool value = (_has_bits_[0] & 0x00000004u) != 0;
   return value;
@@ -578,7 +547,7 @@ inline void BBGameObject::set_allocated_filepath(std::string* filepath) {
   // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.filePath)
 }
 
-// .BBSerializer.BBVector3f position = 5;
+// .BBSerializer.BBVector3f position = 4;
 inline bool BBGameObject::_internal_has_position() const {
   bool value = (_has_bits_[0] & 0x00000008u) != 0;
   PROTOBUF_ASSUME(!value || position_ != nullptr);
@@ -657,7 +626,7 @@ inline void BBGameObject::set_allocated_position(::BBSerializer::BBVector3f* pos
   // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.position)
 }
 
-// .BBSerializer.BBVector3f localPosition = 6;
+// .BBSerializer.BBVector3f localPosition = 5;
 inline bool BBGameObject::_internal_has_localposition() const {
   bool value = (_has_bits_[0] & 0x00000010u) != 0;
   PROTOBUF_ASSUME(!value || localposition_ != nullptr);
@@ -736,7 +705,7 @@ inline void BBGameObject::set_allocated_localposition(::BBSerializer::BBVector3f
   // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.localPosition)
 }
 
-// .BBSerializer.BBVector3f rotation = 7;
+// .BBSerializer.BBVector3f rotation = 6;
 inline bool BBGameObject::_internal_has_rotation() const {
   bool value = (_has_bits_[0] & 0x00000020u) != 0;
   PROTOBUF_ASSUME(!value || rotation_ != nullptr);
@@ -815,7 +784,7 @@ inline void BBGameObject::set_allocated_rotation(::BBSerializer::BBVector3f* rot
   // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.rotation)
 }
 
-// .BBSerializer.BBVector3f localRotation = 8;
+// .BBSerializer.BBVector3f localRotation = 7;
 inline bool BBGameObject::_internal_has_localrotation() const {
   bool value = (_has_bits_[0] & 0x00000040u) != 0;
   PROTOBUF_ASSUME(!value || localrotation_ != nullptr);
@@ -894,7 +863,7 @@ inline void BBGameObject::set_allocated_localrotation(::BBSerializer::BBVector3f
   // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.localRotation)
 }
 
-// .BBSerializer.BBVector3f scale = 9;
+// .BBSerializer.BBVector3f scale = 8;
 inline bool BBGameObject::_internal_has_scale() const {
   bool value = (_has_bits_[0] & 0x00000080u) != 0;
   PROTOBUF_ASSUME(!value || scale_ != nullptr);
@@ -973,7 +942,7 @@ inline void BBGameObject::set_allocated_scale(::BBSerializer::BBVector3f* scale)
   // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBGameObject.scale)
 }
 
-// .BBSerializer.BBVector3f localScale = 10;
+// .BBSerializer.BBVector3f localScale = 9;
 inline bool BBGameObject::_internal_has_localscale() const {
   bool value = (_has_bits_[0] & 0x00000100u) != 0;
   PROTOBUF_ASSUME(!value || localscale_ != nullptr);

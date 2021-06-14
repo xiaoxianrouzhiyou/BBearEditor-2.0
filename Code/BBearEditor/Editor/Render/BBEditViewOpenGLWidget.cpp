@@ -41,9 +41,11 @@ BBEditViewOpenGLWidget::~BBEditViewOpenGLWidget()
     BB_SAFE_DELETE(m_pPreviewObject);
 }
 
-void BBEditViewOpenGLWidget::createModel(const BBSerializer::BBGameObject &gameObject)
+BBGameObject* BBEditViewOpenGLWidget::createModel(const BBSerializer::BBGameObject &gameObject)
 {
-    addGameObject(m_pScene->createModel(gameObject));
+    BBGameObject *pResult = m_pScene->createModel(gameObject);
+    addGameObject(pResult);
+    return pResult;
 }
 
 void BBEditViewOpenGLWidget::pressESC()

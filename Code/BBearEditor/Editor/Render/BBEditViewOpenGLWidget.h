@@ -18,7 +18,7 @@ public:
     explicit BBEditViewOpenGLWidget(QWidget *pParent = 0);
     virtual ~BBEditViewOpenGLWidget();
 
-    void createModel(const BBSerializer::BBGameObject &gameObject);
+    BBGameObject* createModel(const BBSerializer::BBGameObject &gameObject);
 
 private slots:
     void pressESC();
