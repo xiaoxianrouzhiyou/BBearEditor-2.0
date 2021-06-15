@@ -75,7 +75,8 @@ SOURCES += \
     Engine/Render/BBVertexBufferObject.cpp \
     Engine/Render/BBElementBufferObject.cpp \
     Engine/Render/BBRenderState.cpp \
-    Engine/Render/BBMaterial.cpp
+    Engine/Render/BBMaterial.cpp \
+    Engine/Render/BBBufferObject.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -131,7 +132,8 @@ HEADERS += \
     Engine/Render/BBVertexBufferObject.h \
     Engine/Render/BBElementBufferObject.h \
     Engine/Render/BBRenderState.h \
-    Engine/Render/BBMaterial.h
+    Engine/Render/BBMaterial.h \
+    Engine/Render/BBBufferObject.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

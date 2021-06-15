@@ -4,7 +4,7 @@
 #include "BBGameObject.h"
 #include <QtOpenGL>
 
-class BBGLShader;
+class BBMaterial;
 class BBCamera;
 class BBVertexBufferObject;
 class BBRenderableObject : public BBGameObject
@@ -33,7 +33,7 @@ public:
 
 protected:
     virtual void draw();
-    BBGLShader *m_pShader;
+    BBMaterial *m_pMaterial;
     BBVertexBufferObject *m_pVertexBuffer;
     unsigned short *m_pIndexes;
     int m_nIndexCount;

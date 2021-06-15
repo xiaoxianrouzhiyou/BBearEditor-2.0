@@ -1,8 +1,9 @@
 #include "BBHorizontalPlane.h"
 #include "Render/BBVertexBufferObject.h"
-#include "Render/BBGLShader.h"
+#include "Render/BBMaterial.h"
 #include "BBUtils.h"
 #include "Render/BBCamera.h"
+
 
 BBHorizontalPlane::BBHorizontalPlane()
     : BBRenderableObject(0, 0, 0, 0, 0, 0, 1, 1, 1)
@@ -42,6 +43,7 @@ void BBHorizontalPlane::init()
         m_pVertexBuffer->setNormal(i + 205, 0.0f, 1.0f, 0.0f);
         m_pVertexBuffer->setColor(i + 205, 0.847059f, 0.603922f, 0.309804f, alpha * fCoefficient);
     }
+    m_pVertexBuffer->submitData();
 
     m_nIndexCount = 328;
     m_pIndexes = new unsigned short[m_nIndexCount];
@@ -54,10 +56,10 @@ void BBHorizontalPlane::init()
         m_pIndexes[i * 4 + 3] = i + 164;
     }
 
-    m_pShader->init(BB_PATH_RESOURCE_SHADER(base.vert),
-                    BB_PATH_RESOURCE_SHADER(base.frag),
-                    m_pIndexes,
-                    m_nIndexCount);
+    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(base.vert),
+                      BB_PATH_RESOURCE_SHADER(base.frag),
+                      m_pIndexes,
+                      m_nIndexCount);
 }
 
 void BBHorizontalPlane::render(BBCamera *pCamera)
@@ -84,10 +86,10 @@ void BBHorizontalPlane::render(BBCamera *pCamera)
 
 void BBHorizontalPlane::draw()
 {
-    glEnable(GL_BLEND);
-    glLineWidth(1);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_DEPTH_TEST);
-    glDrawElements(GL_LINES, m_nIndexCount, GL_UNSIGNED_SHORT, 0);
-    glDisable(GL_BLEND);
+//    glEnable(GL_BLEND);
+//    glLineWidth(1);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//    glEnable(GL_DEPTH_TEST);
+//    glDrawElements(GL_LINES, m_nIndexCount, GL_UNSIGNED_SHORT, 0);
+//    glDisable(GL_BLEND);
 }

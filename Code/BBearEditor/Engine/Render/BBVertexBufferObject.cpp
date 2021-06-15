@@ -2,24 +2,22 @@
 
 
 BBVertexBufferObject::BBVertexBufferObject(int nVertexCount)
+    : BBBufferObject()
 {
     setSize(nVertexCount);
 }
 
 BBVertexBufferObject::~BBVertexBufferObject()
 {
-    BB_SAFE_DELETE_ARRAY(m_fPosition);
-    BB_SAFE_DELETE_ARRAY(m_fColor);
-    BB_SAFE_DELETE_ARRAY(m_fTexcoord);
-    BB_SAFE_DELETE_ARRAY(m_fNormal);
+    BB_SAFE_DELETE_ARRAY(m_pVertexes);
 }
 
 void BBVertexBufferObject::setPosition(int index, float x, float y, float z, float w)
 {
-    m_fPosition[index * 4] = x;
-    m_fPosition[index * 4 + 1] = y;
-    m_fPosition[index * 4 + 2] = z;
-    m_fPosition[index * 4 + 3] = w;
+    m_pVertexes[index].m_fPosition[0] = x;
+    m_pVertexes[index].m_fPosition[1] = y;
+    m_pVertexes[index].m_fPosition[2] = z;
+    m_pVertexes[index].m_fPosition[3] = w;
 }
 
 void BBVertexBufferObject::setPosition(int index, const QVector3D &position)
@@ -34,15 +32,17 @@ void BBVertexBufferObject::setPosition(int index, const QVector4D &position)
 
 QVector3D BBVertexBufferObject::getPosition(int index)
 {
-    return QVector3D(m_fPosition[index * 4], m_fPosition[index * 4 + 1], m_fPosition[index * 4 + 2]);
+    return QVector3D(m_pVertexes[index].m_fPosition[0],
+                     m_pVertexes[index].m_fPosition[1],
+                     m_pVertexes[index].m_fPosition[2]);
 }
 
 void BBVertexBufferObject::setColor(int index, float r, float g, float b, float a)
 {
-    m_fColor[index * 4] = r;
-    m_fColor[index * 4 + 1] = g;
-    m_fColor[index * 4 + 2] = b;
-    m_fColor[index * 4 + 3] = a;
+    m_pVertexes[index].m_fColor[0] = r;
+    m_pVertexes[index].m_fColor[1] = g;
+    m_pVertexes[index].m_fColor[2] = b;
+    m_pVertexes[index].m_fColor[3] = a;
 }
 
 void BBVertexBufferObject::setColor(int index, const QVector3D &rgb)
@@ -57,8 +57,8 @@ void BBVertexBufferObject::setColor(int index, const QVector4D &rgba)
 
 void BBVertexBufferObject::setTexcoord(int index, float u, float v)
 {
-    m_fTexcoord[index * 2] = u;
-    m_fTexcoord[index * 2 + 1] = v;
+    m_pVertexes[index].m_fTexcoord[0] = u;
+    m_pVertexes[index].m_fTexcoord[1] = v;
 }
 
 void BBVertexBufferObject::setTexcoord(int index, const QVector2D &uv)
@@ -68,10 +68,10 @@ void BBVertexBufferObject::setTexcoord(int index, const QVector2D &uv)
 
 void BBVertexBufferObject::setNormal(int index, float x, float y, float z)
 {
-    m_fNormal[index * 4] = x;
-    m_fNormal[index * 4 + 1] = y;
-    m_fNormal[index * 4 + 2] = z;
-    m_fNormal[index * 4 + 3] = 1.0f;
+    m_pVertexes[index].m_fNormal[0] = x;
+    m_pVertexes[index].m_fNormal[1] = y;
+    m_pVertexes[index].m_fNormal[2] = z;
+    m_pVertexes[index].m_fNormal[3] = 1.0f;
 }
 
 void BBVertexBufferObject::setNormal(int index, const QVector3D &normal)
@@ -84,15 +84,36 @@ void BBVertexBufferObject::setNormal(int index, const QVector4D &normal)
     setNormal(index, normal.x(), normal.y(), normal.z());
 }
 
+void BBVertexBufferObject::submitData()
+{
+    m_VBO = createBufferObject(GL_ARRAY_BUFFER, sizeof(BBVertex) * m_nVertexCount, GL_STATIC_DRAW, m_pVertexes);
+}
+
+void BBVertexBufferObject::bind()
+{
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(BBVertex) * m_nVertexCount, m_pVertexes);
+}
+
+void BBVertexBufferObject::unbind()
+{
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 void BBVertexBufferObject::setSize(int nVertexCount)
 {
     m_nVertexCount = nVertexCount;
-    m_fPosition = new float[m_nVertexCount * 4];
-    m_fColor = new float[m_nVertexCount * 4];
-    m_fTexcoord = new float[m_nVertexCount * 2];
-    m_fNormal = new float[m_nVertexCount * 4];
-    memset(m_fPosition, 0, sizeof(float) * m_nVertexCount * 4);
-    memset(m_fColor, 0, sizeof(float) * m_nVertexCount * 4);
-    memset(m_fTexcoord, 0, sizeof(float) * m_nVertexCount * 2);
-    memset(m_fNormal, 0, sizeof(float) * m_nVertexCount * 4);
+    m_pVertexes = new BBVertex[m_nVertexCount];
+    memset(m_pVertexes, 0, sizeof(BBVertex) * m_nVertexCount);
+    m_VBO = createBufferObject(GL_ARRAY_BUFFER, sizeof(BBVertex) * m_nVertexCount, GL_STATIC_DRAW, NULL);
+}
+
+GLuint BBVertexBufferObject::createBufferObject(GLenum bufferType, GLsizeiptr size, GLenum usage, void *pData)
+{
+    GLuint bufferObject;
+    glGenBuffers(1, &bufferObject);
+    glBindBuffer(bufferType, bufferObject);
+    glBufferData(bufferType, size, pData, usage);
+    glBindBuffer(bufferType, 0);
+    return bufferObject;
 }

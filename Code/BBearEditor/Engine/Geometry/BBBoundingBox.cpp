@@ -2,7 +2,7 @@
 #include "BBUtils.h"
 #include <cfloat>
 #include "Render/BBVertexBufferObject.h"
-#include "Render/BBGLShader.h"
+#include "Render/BBMaterial.h"
 #include <Eigen/Eigen>
 
 
@@ -304,6 +304,7 @@ void BBBoundingBox3D::init()
                                         m_pOriginalBoxVertexes[i].z());
         m_pVertexBuffer->setColor(i, m_DefaultColor);
     }
+    m_pVertexBuffer->submitData();
 
     m_nIndexCount = 24;
     unsigned short indexes[] = {0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7};
@@ -313,10 +314,10 @@ void BBBoundingBox3D::init()
         m_pIndexes[i] = indexes[i];
     }
 
-    m_pShader->init(BB_PATH_RESOURCE_SHADER(base.vert),
-                    BB_PATH_RESOURCE_SHADER(base.frag),
-                    m_pIndexes,
-                    m_nIndexCount);
+    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(base.vert),
+                      BB_PATH_RESOURCE_SHADER(base.frag),
+                      m_pIndexes,
+                      m_nIndexCount);
 }
 
 bool BBBoundingBox3D::hit(const BBRay &ray, float &fDistance)

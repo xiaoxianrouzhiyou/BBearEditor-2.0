@@ -2,6 +2,7 @@
 #include "Render/BBCamera.h"
 #include "Scene/BBSceneManager.h"
 #include "BBGameObjectSet.h"
+#include <QTreeWidgetItem>
 
 
 BBGameObject::BBGameObject()

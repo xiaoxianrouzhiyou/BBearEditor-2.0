@@ -15,6 +15,8 @@ BBCamera::BBCamera()
         m_pModelView[i] = 0;
         m_pProjection[i] = 0;
     }
+
+    m_ProjectionMatrix.perspective(50.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
 }
 
 void BBCamera::resetMove()
@@ -87,6 +89,8 @@ void BBCamera::setViewportSize(int fWidth, int fHeight)
     m_pViewport[1] = 0;
     m_pViewport[2] = m_iViewportWidth;
     m_pViewport[3] = m_iViewportHeight;
+    m_ProjectionMatrix.setToIdentity();
+    m_ProjectionMatrix.perspective(50.0f, fWidth / fHeight, 0.1f, 1000.0f);
 }
 
 void BBCamera::switchTo3D()

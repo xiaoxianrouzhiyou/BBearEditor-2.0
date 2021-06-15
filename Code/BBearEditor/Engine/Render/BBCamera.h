@@ -28,6 +28,7 @@ public:
     inline void setViewCenter(const QVector3D &viewCenter) { m_ViewCenter = viewCenter; }
     inline QVector3D getViewCenter() { return m_ViewCenter; }
     inline QMatrix4x4 getViewMatrix() { return m_ViewMatrix; }
+    inline QMatrix4x4 getProjectionMatrix() { return m_ProjectionMatrix; }
     inline int getViewportWidth() { return m_iViewportWidth; }
     inline int getViewportHeight() { return m_iViewportHeight; }
 
@@ -51,6 +52,7 @@ private:
     int m_iViewportHeight;
     GLint m_pViewport[4];
     QMatrix4x4 m_ViewMatrix;
+    QMatrix4x4 m_ProjectionMatrix;
 };
 
 #endif // BBCAMERA_H

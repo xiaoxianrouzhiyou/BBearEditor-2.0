@@ -3,7 +3,7 @@
 
 
 #include "BBearGL.h"
-#include <QOpenGLShaderProgram>
+
 
 class BBMaterial : protected QOpenGLFunctions
 {
@@ -11,8 +11,10 @@ public:
     BBMaterial();
     ~BBMaterial();
 
-    void init(const QString &vShaderPath, const QString &fShaderPath);
+    void init(const QString &vShaderPath, const QString &fShaderPath,
+              const unsigned short *pIndexes = 0, int nIndexCount = 0);
     void bind(const QMatrix4x4 &modelMatrix, const QMatrix4x4 &viewMatrix, const QMatrix4x4 &projectionMatrix);
+    void bindElementBufferObject(const unsigned short *pIndexes, int nIndexCount);
 
     GLuint compileShader(GLenum shaderType, const char *shaderCode);
     GLuint createProgram(GLuint vShader, GLuint fShader);

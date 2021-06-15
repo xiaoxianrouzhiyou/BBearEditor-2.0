@@ -1,6 +1,6 @@
 #include "BBCoordinateSystem.h"
 #include "Render/BBVertexBufferObject.h"
-#include "Render/BBGLShader.h"
+#include "Render/BBMaterial.h"
 #include "BBUtils.h"
 #include "Render/BBCamera.h"
 #include "Geometry/BBBoundingBox.h"
@@ -186,6 +186,8 @@ void BBCoordinateArrow::init()
     for (int i = 26; i < 39; i++)
         m_pVertexBuffer->setColor(i, m_Blue);
 
+    m_pVertexBuffer->submitData();
+
     m_nIndexCount = 108;
     unsigned short indexes[] = {0, 1, 2, 0, 2, 3, 0, 3, 4,
                                 0, 4, 5, 0, 5, 6, 0, 6, 7,
@@ -205,10 +207,10 @@ void BBCoordinateArrow::init()
         m_pIndexes[i] = indexes[i];
     }
 
-    m_pShader->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                    BB_PATH_RESOURCE_SHADER(coordinate.frag),
-                    m_pIndexes,
-                    m_nIndexCount);
+    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
+                      BB_PATH_RESOURCE_SHADER(coordinate.frag),
+                      m_pIndexes,
+                      m_nIndexCount);
 }
 
 void BBCoordinateArrow::draw()
@@ -264,8 +266,10 @@ void BBCoordinateAxis::init()
         m_pVertexBuffer->setColor(i, m_Blue);
     }
 
-    m_pShader->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                    BB_PATH_RESOURCE_SHADER(coordinate.frag));
+    m_pVertexBuffer->submitData();
+
+    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
+                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
 }
 
 void BBCoordinateAxis::draw()
@@ -355,8 +359,10 @@ void BBCoordinateRectFace::init()
         m_pVertexBuffer->setColor(i, m_Blue);
     }
 
-    m_pShader->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                    BB_PATH_RESOURCE_SHADER(coordinate.frag));
+    m_pVertexBuffer->submitData();
+
+    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
+                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
 }
 
 void BBCoordinateRectFace::draw()
@@ -438,10 +444,12 @@ void BBCoordinateQuarterCircle::init()
 
     }
 
-    m_pShader->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                    BB_PATH_RESOURCE_SHADER(coordinate.frag),
-                    m_pIndexes,
-                    m_nIndexCount);
+    m_pVertexBuffer->submitData();
+
+    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
+                      BB_PATH_RESOURCE_SHADER(coordinate.frag),
+                      m_pIndexes,
+                      m_nIndexCount);
 }
 
 void BBCoordinateQuarterCircle::draw()
@@ -488,6 +496,8 @@ void BBCoordinateCircle::init()
         m_pVertexBuffer->setColor(2 * i + 1, m_Yellow);
     }
 
+    m_pVertexBuffer->submitData();
+
     m_nIndexCount = 192;
     m_pIndexes = new unsigned short[m_nIndexCount];
 
@@ -502,10 +512,10 @@ void BBCoordinateCircle::init()
     m_pIndexes[190] = 1;
     m_pIndexes[191] = 0;
 
-    m_pShader->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                    BB_PATH_RESOURCE_SHADER(coordinate.frag),
-                    m_pIndexes,
-                    m_nIndexCount);
+    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
+                      BB_PATH_RESOURCE_SHADER(coordinate.frag),
+                      m_pIndexes,
+                      m_nIndexCount);
 }
 
 void BBCoordinateCircle::draw()
@@ -565,6 +575,8 @@ void BBCoordinateTickMark::init()
         m_pVertexBuffer->setColor(2 * i + 1, m_Gray);
     }
 
+    m_pVertexBuffer->submitData();
+
     m_nIndexCount = 72;
     m_pIndexes = new unsigned short[m_nIndexCount];
 
@@ -575,10 +587,10 @@ void BBCoordinateTickMark::init()
     }
     m_pIndexes[71] = 0;
 
-    m_pShader->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                    BB_PATH_RESOURCE_SHADER(coordinate.frag),
-                    m_pIndexes,
-                    m_nIndexCount);
+    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
+                      BB_PATH_RESOURCE_SHADER(coordinate.frag),
+                      m_pIndexes,
+                      m_nIndexCount);
 }
 
 void BBCoordinateTickMark::draw()
@@ -626,6 +638,7 @@ void BBCoordinateSector::init()
         m_pVertexBuffer->setPosition(i, 0.0f, c, s);
         m_pVertexBuffer->setColor(i, m_Gray);
     }
+    m_pVertexBuffer->submitData();
 
     m_nIndexCount = 1080;
     m_pIndexes = new unsigned short[m_nIndexCount];
@@ -637,10 +650,10 @@ void BBCoordinateSector::init()
     }
     m_pIndexes[1079] = 0;
 
-    m_pShader->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                    BB_PATH_RESOURCE_SHADER(coordinate.frag),
-                    m_pIndexes,
-                    m_nIndexCount);
+    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
+                      BB_PATH_RESOURCE_SHADER(coordinate.frag),
+                      m_pIndexes,
+                      m_nIndexCount);
 }
 
 void BBCoordinateSector::render(BBCamera *pCamera)
@@ -668,7 +681,7 @@ void BBCoordinateSector::render(BBCamera *pCamera)
             }
         }
 
-        m_pShader->bindElementBufferObject(pIndexes, nIndexCount);
+        m_pMaterial->bindElementBufferObject(pIndexes, nIndexCount);
     }
 
     BBCoordinateComponent::render(pCamera);
@@ -749,6 +762,8 @@ void BBCoordinateCube::init()
         m_pVertexBuffer->setColor(i + 16, m_Blue);
     }
 
+    m_pVertexBuffer->submitData();
+
     m_nIndexCount = 72;
     m_pIndexes = new unsigned short[m_nIndexCount];
     unsigned short indexes[] = {0, 1, 2, 3,
@@ -764,10 +779,10 @@ void BBCoordinateCube::init()
         m_pIndexes[i + 48] = indexes[i] + 16;
     }
 
-    m_pShader->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                    BB_PATH_RESOURCE_SHADER(coordinate.frag),
-                    m_pIndexes,
-                    m_nIndexCount);
+    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
+                      BB_PATH_RESOURCE_SHADER(coordinate.frag),
+                      m_pIndexes,
+                      m_nIndexCount);
 }
 
 void BBCoordinateCube::move(const QVector3D &delta)
@@ -789,6 +804,7 @@ void BBCoordinateCube::move(const QVector3D &delta)
                                      m_Sign[i].y() * m_fHalfLength,
                                      m_Sign[i].z() * m_fHalfLength + 1.0f + delta.z());
     }
+    m_pVertexBuffer->submitData();
 }
 
 void BBCoordinateCube::draw()
@@ -886,8 +902,10 @@ void BBCoordinateTriangleFace::init()
         m_pVertexBuffer->setColor(i, m_Blue);
     }
 
-    m_pShader->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                    BB_PATH_RESOURCE_SHADER(coordinate.frag));
+    m_pVertexBuffer->submitData();
+
+    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
+                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
 }
 
 void BBCoordinateTriangleFace::draw()

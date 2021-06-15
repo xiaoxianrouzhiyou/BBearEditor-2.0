@@ -1,9 +1,9 @@
 #ifndef BBOPENGLWIDGET_H
 #define BBOPENGLWIDGET_H
 
+
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
-
 
 class BBScene;
 class BBRenderThread;

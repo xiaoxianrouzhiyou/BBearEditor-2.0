@@ -86,83 +86,48 @@ void BBGLShader::render(const std::function<void()> &draw, const QMatrix4x4 &mod
 void BBGLShader::render(const std::function<void()> &draw, const QMatrix4x4 &modelMatrix, const QMatrix4x4 &viewMatrix, const QMatrix4x4 &projectionMatrix,
                         const QVector3D &cameraPos, BBVertexBufferObject *pVertexbuffer)
 {
-    // camera movement
-    m_ViewMatrix = viewMatrix;
-    setVector4f(NAME_CAMERAPOSITION, cameraPos.x(), cameraPos.y(), cameraPos.z(), 1.0f);
+//    // camera movement
+//    m_ViewMatrix = viewMatrix;
+//    setVector4f(NAME_CAMERAPOSITION, cameraPos.x(), cameraPos.y(), cameraPos.z(), 1.0f);
 
-    m_ModelMatrix = modelMatrix;
-    m_ITModelMatrix = m_ModelMatrix.transposed().inverted();
+//    m_ModelMatrix = modelMatrix;
+//    m_ITModelMatrix = m_ModelMatrix.transposed().inverted();
 
-    m_pProgram->bind();
-    m_pElementBufferObject->bind();
+//    m_pProgram->bind();
+//    m_pElementBufferObject->bind();
 
-    m_pProgram->setUniformValue(m_nProjectionMatrixLocation, projectionMatrix);
-    m_pProgram->setUniformValue(m_nViewMatrixLocation, m_ViewMatrix);
-    m_pProgram->setUniformValue(m_nModelMatrixLocation, m_ModelMatrix);
-    m_pProgram->setUniformValue(m_nITModelMatrixLocation, m_ITModelMatrix);
+//    m_pProgram->setUniformValue(m_nProjectionMatrixLocation, projectionMatrix);
+//    m_pProgram->setUniformValue(m_nViewMatrixLocation, m_ViewMatrix);
+//    m_pProgram->setUniformValue(m_nModelMatrixLocation, m_ModelMatrix);
+//    m_pProgram->setUniformValue(m_nITModelMatrixLocation, m_ITModelMatrix);
 
-    int index = 0;
-    QMap<QString, UniformTexture*>::Iterator texItr;
-    for (texItr = m_mapUniformTextures.begin(); texItr != m_mapUniformTextures.end(); texItr++)
-    {
-        glActiveTexture(GL_TEXTURE0 + index);
-        glBindTexture(GL_TEXTURE_2D, (*texItr)->m_nTexture);
-        m_pProgram->setUniformValue((*texItr)->m_nLocation, index);
-        index++;
-    }
-
-//    //各种四维向量
-//    QMap<QString, UniformVector4f*>::Iterator vectorItr;
-//    for (vectorItr = m_uniformVector4f.begin(); vectorItr != m_uniformVector4f.end(); vectorItr++)
+//    int index = 0;
+//    QMap<QString, UniformTexture*>::Iterator texItr;
+//    for (texItr = m_mapUniformTextures.begin(); texItr != m_mapUniformTextures.end(); texItr++)
 //    {
-//        m_program->setUniformValue((*vectorItr)->m_location, (*vectorItr)->vector4);
+//        glActiveTexture(GL_TEXTURE0 + index);
+//        glBindTexture(GL_TEXTURE_2D, (*texItr)->m_nTexture);
+//        m_pProgram->setUniformValue((*texItr)->m_nLocation, index);
+//        index++;
 //    }
 
-//    //各种四维向量数组
-//    QMap<QString, UniformVector4fArray*>::Iterator vectorArrayItr;
-//    for (vectorArrayItr = m_uniformVector4fArray.begin(); vectorArrayItr != m_uniformVector4fArray.end(); vectorArrayItr++)
-//    {
-//        m_program->setUniformValueArray((*vectorArrayItr)->m_location, (*vectorArrayItr)->vector4Array,
-//                                        (*vectorArrayItr)->count);
-//    }
+//    m_pProgram->enableAttributeArray(m_nPositionAttr);
+//    m_pProgram->enableAttributeArray(m_nColorAttr);
+//    m_pProgram->enableAttributeArray(m_nTexcoordAttr);
+//    m_pProgram->enableAttributeArray(m_nNormalAttr);
 
-//    //各种布尔值
-//    QMap<QString, UniformBool*>::Iterator boolItr;
-//    for (boolItr = m_uniformBool.begin(); boolItr != m_uniformBool.end(); boolItr++)
-//    {
-//        m_program->setUniformValue((*boolItr)->m_location, (*boolItr)->b);
-//    }
+////    glDrawArrays(GL_TRIANGLES, 0, 3);
+//    // How many indexes to draw, data type, data starting position
+////    glDrawElements(GL_QUADS, 6, GL_UNSIGNED_INT, 0);
+//    draw();
 
-//    //各种矩阵
-//    QMap<QString, UniformMatrix*>::Iterator matrixItr;
-//    for (matrixItr = m_uniformMatrix.begin(); matrixItr != m_uniformMatrix.end(); matrixItr++)
-//    {
-//        m_program->setUniformValue((*matrixItr)->m_location, (*matrixItr)->m_matrix);
-//    }
+//    m_pProgram->disableAttributeArray(m_nNormalAttr);
+//    m_pProgram->disableAttributeArray(m_nTexcoordAttr);
+//    m_pProgram->disableAttributeArray(m_nColorAttr);
+//    m_pProgram->disableAttributeArray(m_nPositionAttr);
 
-
-    m_pProgram->setAttributeArray(m_nPositionAttr, pVertexbuffer->getPosition(), 4, sizeof(float) * 4);
-    m_pProgram->setAttributeArray(m_nColorAttr, pVertexbuffer->getColor(), 4, sizeof(float) * 4);
-    m_pProgram->setAttributeArray(m_nTexcoordAttr, pVertexbuffer->getTexcoord(), 2, sizeof(float) * 2);
-    m_pProgram->setAttributeArray(m_nNormalAttr, pVertexbuffer->getNormal(), 4, sizeof(float) * 4);
-
-    m_pProgram->enableAttributeArray(m_nPositionAttr);
-    m_pProgram->enableAttributeArray(m_nColorAttr);
-    m_pProgram->enableAttributeArray(m_nTexcoordAttr);
-    m_pProgram->enableAttributeArray(m_nNormalAttr);
-
-//    glDrawArrays(GL_TRIANGLES, 0, 3);
-    // How many indexes to draw, data type, data starting position
-//    glDrawElements(GL_QUADS, 6, GL_UNSIGNED_INT, 0);
-    draw();
-
-    m_pProgram->disableAttributeArray(m_nNormalAttr);
-    m_pProgram->disableAttributeArray(m_nTexcoordAttr);
-    m_pProgram->disableAttributeArray(m_nColorAttr);
-    m_pProgram->disableAttributeArray(m_nPositionAttr);
-
-    m_pElementBufferObject->release();
-    m_pProgram->release();
+//    m_pElementBufferObject->release();
+//    m_pProgram->release();
 }
 
 void BBGLShader::resize(float fWidth, float fHeight)

@@ -2,8 +2,7 @@
 #define BBRAY_H
 
 
-#include <QtOpenGL>
-#include <QVector3D>
+#include "Render/BBearGL.h"
 
 
 enum BBPlaneName

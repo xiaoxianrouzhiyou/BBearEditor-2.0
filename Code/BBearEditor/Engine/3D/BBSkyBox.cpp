@@ -1,7 +1,7 @@
 #include "BBSkyBox.h"
 #include "Render/BBVertexBufferObject.h"
 #include "Render/BBCamera.h"
-#include "Render/BBGLShader.h"
+#include "Render/BBMaterial.h"
 #include "BBUtils.h"
 
 //--------------------
@@ -16,8 +16,8 @@ BBSkyBoxSide::BBSkyBoxSide(BBVertexBufferObject *pVertexBuffer)
 
 void BBSkyBoxSide::init(const QString &path)
 {
-    m_pShader->init(BB_PATH_RESOURCE_SHADER(texture.vert),
-                    BB_PATH_RESOURCE_SHADER(texture.frag));
+    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(base.vert),
+                      BB_PATH_RESOURCE_SHADER(base.frag));
     setTexture(path);
 }
 
@@ -116,6 +116,7 @@ void BBSkyBox::initFront()
     pVertexBuffer->setTexcoord(1, 1.0f, 0.0f);
     pVertexBuffer->setTexcoord(2, 0.0f, 1.0f);
     pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
+    pVertexBuffer->submitData();
     m_pFront = new BBSkyBoxSide(pVertexBuffer);
 }
 
@@ -130,6 +131,7 @@ void BBSkyBox::initBack()
     pVertexBuffer->setTexcoord(1, 1.0f, 0.0f);
     pVertexBuffer->setTexcoord(2, 0.0f, 1.0f);
     pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
+    pVertexBuffer->submitData();
     m_pBack = new BBSkyBoxSide(pVertexBuffer);
 }
 
@@ -144,6 +146,7 @@ void BBSkyBox::initLeft()
     pVertexBuffer->setTexcoord(1, 1.0f, 0.0f);
     pVertexBuffer->setTexcoord(2, 0.0f, 1.0f);
     pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
+    pVertexBuffer->submitData();
     m_pLeft = new BBSkyBoxSide(pVertexBuffer);
 }
 
@@ -158,6 +161,7 @@ void BBSkyBox::initRight()
     pVertexBuffer->setTexcoord(1, 1.0f, 0.0f);
     pVertexBuffer->setTexcoord(2, 0.0f, 1.0f);
     pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
+    pVertexBuffer->submitData();
     m_pRight = new BBSkyBoxSide(pVertexBuffer);
 }
 
@@ -172,6 +176,7 @@ void BBSkyBox::initTop()
     pVertexBuffer->setTexcoord(1, 1.0f, 0.0f);
     pVertexBuffer->setTexcoord(2, 0.0f, 1.0f);
     pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
+    pVertexBuffer->submitData();
     m_pTop = new BBSkyBoxSide(pVertexBuffer);
 }
 
@@ -186,5 +191,6 @@ void BBSkyBox::initBottom()
     pVertexBuffer->setTexcoord(1, 1.0f, 0.0f);
     pVertexBuffer->setTexcoord(2, 0.0f, 1.0f);
     pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
+    pVertexBuffer->submitData();
     m_pBottom = new BBSkyBoxSide(pVertexBuffer);
 }

@@ -1,5 +1,5 @@
 #include "BBMesh.h"
-#include "Render/BBGLShader.h"
+#include "Render/BBMaterial.h"
 #include "BBUtils.h"
 #include "Geometry/BBBoundingBox.h"
 #include <cfloat>
@@ -32,8 +32,8 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
     pOutBoundingBox->init();
 
     // test
-    m_pShader->init(BB_PATH_RESOURCE_SHADER(base.vert),
-                    BB_PATH_RESOURCE_SHADER(base.frag), m_pIndexes, m_nIndexCount);
+    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(base.vert),
+                      BB_PATH_RESOURCE_SHADER(base.frag), m_pIndexes, m_nIndexCount);
 //    m_pShader->init(QString(BB_PATH_RESOURCE_SHADER) + "standard.vert",
 //                    QString(BB_PATH_RESOURCE_SHADER) + "standard.frag", m_pIndexes, m_nIndexCount);
 //    mShader.setVector4f(Light::lightAmbientUniformLocationName, 1.0f, 1.0f, 1.0f, 1.0f);

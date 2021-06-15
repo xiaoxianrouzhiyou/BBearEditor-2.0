@@ -15,11 +15,11 @@
 BBScene::BBScene()
 {
     m_fUpdateRate = (float) BB_CONSTANT_UPDATE_RATE / 1000;
-    m_pCamera = new BBCamera;
-    m_pSkyBox = new BBSkyBox;
-    m_pHorizontalPlane = new BBHorizontalPlane();
-    m_pSelectionRegion = new BBSelectionRegion();
-    m_pTransformCoordinateSystem = new BBTransformCoordinateSystem();
+    m_pCamera = NULL;
+    m_pSkyBox = NULL;
+    m_pHorizontalPlane = NULL;
+    m_pSelectionRegion = NULL;
+    m_pTransformCoordinateSystem = NULL;
 
 //    particle = new Particle();
 //    fogSwitch = false;
@@ -37,6 +37,8 @@ BBScene::~BBScene()
     BB_SAFE_DELETE(m_pCamera);
     BB_SAFE_DELETE(m_pSkyBox);
     BB_SAFE_DELETE(m_pHorizontalPlane);
+    BB_SAFE_DELETE(m_pSelectionRegion);
+    BB_SAFE_DELETE(m_pTransformCoordinateSystem);
     QList<BBGameObject*> objects = m_Models;
 //    + directionLights + pointLights + spotLights + audios;
     QList<BBGameObject*>::Iterator itr;
@@ -50,6 +52,12 @@ BBScene::~BBScene()
 void BBScene::init()
 {
     BBGlobalRenderState::init();
+
+    m_pCamera = new BBCamera;
+    m_pSkyBox = new BBSkyBox;
+    m_pHorizontalPlane = new BBHorizontalPlane();
+    m_pSelectionRegion = new BBSelectionRegion();
+    m_pTransformCoordinateSystem = new BBTransformCoordinateSystem();
 
     m_pCamera->setViewportSize(800.0f, 600.0f);
 
