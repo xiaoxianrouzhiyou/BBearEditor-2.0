@@ -79,7 +79,7 @@ void BBMaterial::bind(const QMatrix4x4 &modelMatrix, const QMatrix4x4 &viewMatri
 
 void BBMaterial::bindElementBufferObject(const unsigned short *pIndexes, int nIndexCount)
 {
-
+//    m_pElementBufferObject->set(pIndexes, nIndexCount);
 }
 
 GLuint BBMaterial::compileShader(GLenum shaderType, const char *shaderCode)

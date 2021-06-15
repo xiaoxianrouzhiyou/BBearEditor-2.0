@@ -56,12 +56,6 @@ void BBModel::render(BBCamera *pCamera)
     }
 }
 
-void BBModel::resize(float fWidth, float fHeight)
-{
-    m_pMesh->resize(fWidth, fHeight);
-    m_pBoundingBox->resize(fWidth, fHeight);
-}
-
 void BBModel::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
 {
     BBGameObject::setPosition(position, bUpdateLocalTransform);

@@ -57,7 +57,6 @@ public:
     virtual void init(const QString &path);
     virtual void render(BBCamera *pCamera);
     virtual void render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera);
-    virtual void resize(float fWidth, float fHeight);
 
     virtual bool hit(const BBRay &ray, float &fDistance);
     virtual bool belongToSelectionRegion(const QVector3D &left1, const QVector3D &left2, const QVector3D &left3,

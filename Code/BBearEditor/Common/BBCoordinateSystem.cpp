@@ -1084,13 +1084,6 @@ void BBPositionCoordinateSystem::render(BBCamera *pCamera)
     m_pCoordinateRectFace->render(pCamera);
 }
 
-void BBPositionCoordinateSystem::resize(float fWidth, float fHeight)
-{
-    m_pCoordinateArrow->resize(fWidth, fHeight);
-    m_pCoordinateAxis->resize(fWidth, fHeight);
-    m_pCoordinateRectFace->resize(fWidth, fHeight);
-}
-
 void BBPositionCoordinateSystem::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
 {
     // Modifying m_Position directly will cause an error
@@ -1287,14 +1280,6 @@ void BBRotationCoordinateSystem::render(BBCamera *pCamera)
     }
 }
 
-void BBRotationCoordinateSystem::resize(float fWidth, float fHeight)
-{
-    m_pCoordinateQuarterCircle->resize(fWidth, fHeight);
-    m_pCoordinateCircle->resize(fWidth, fHeight);
-    m_pCoordinateTickMark->resize(fWidth, fHeight);
-    m_pCoordinateSector->resize(fWidth, fHeight);
-}
-
 void BBRotationCoordinateSystem::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
 {
     BBCoordinateSystem::setPosition(position, bUpdateLocalTransform);
@@ -1482,13 +1467,6 @@ void BBScaleCoordinateSystem::render(BBCamera *pCamera)
     m_pCoordinateCube->render(pCamera);
     m_pCoordinateAxis->render(pCamera);
     m_pCoordinateTriangleFace->render(pCamera);
-}
-
-void BBScaleCoordinateSystem::resize(float fWidth, float fHeight)
-{
-    m_pCoordinateCube->resize(fWidth, fHeight);
-    m_pCoordinateAxis->resize(fWidth, fHeight);
-    m_pCoordinateTriangleFace->resize(fWidth, fHeight);
 }
 
 void BBScaleCoordinateSystem::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
@@ -1737,13 +1715,6 @@ void BBTransformCoordinateSystem::render(BBCamera *pCamera)
     m_pRotationCoordinateSystem->render(pCamera);
     m_pScaleCoordinateSystem->render(pCamera);
     glDisable(GL_BLEND);
-}
-
-void BBTransformCoordinateSystem::resize(float fWidth, float fHeight)
-{
-    m_pPositionCoordinateSystem->resize(fWidth, fHeight);
-    m_pRotationCoordinateSystem->resize(fWidth, fHeight);
-    m_pScaleCoordinateSystem->resize(fWidth, fHeight);
 }
 
 void BBTransformCoordinateSystem::setSelectedObject(BBGameObject *pObject)

@@ -47,11 +47,6 @@ void BBRenderableObject::render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera
     }
 }
 
-void BBRenderableObject::resize(float fWidth, float fHeight)
-{
-
-}
-
 void BBRenderableObject::setTexture(const QString &filePath, bool bInvertY)
 {
 //    m_pShader->setTexture(NAME_TEXTURE, filePath, bInvertY);

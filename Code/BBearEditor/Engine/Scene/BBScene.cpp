@@ -143,19 +143,6 @@ void BBScene::resize(float width, float height)
     // 3D camera, resize
     m_pCamera->setViewportSize(width, height);
 
-    QList<BBGameObject*> objects = m_Models;
-            //+ directionLights + pointLights + spotLights + audios;
-    for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
-    {
-        BBGameObject *pObject = *itr;
-        pObject->resize(width, height);
-    }
-
-    m_pSkyBox->resize(width, height);
-    m_pHorizontalPlane->resize(width, height);
-    m_pTransformCoordinateSystem->resize(width, height);
-//    //particle->resize(width, height);
-
 //    mFBO = new FrameBufferObject;
 //    mFBO->attachColorBuffer("color", GL_COLOR_ATTACHMENT0, width, height);
 //    mFBO->attachDepthBuffer("depth", width, height);
@@ -189,7 +176,6 @@ BBModel* BBScene::createModel(const QString &filePath,
         pModel->setBaseAttributes(QFileInfo(filePath).baseName(), BB_CLASSNAME_MODEL, "model");
     }
     pModel->init(filePath);
-    pModel->resize(m_pCamera->getViewportWidth(), m_pCamera->getViewportHeight());
     m_Models.append(pModel);
 
 //    //给该模型添加灯光效果

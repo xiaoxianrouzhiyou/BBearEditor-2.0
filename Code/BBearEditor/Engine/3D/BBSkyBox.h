@@ -27,7 +27,6 @@ public:
 
     void init(const QString &path) override;
     void render(BBCamera *pCamera) override;
-    void resize(float fWidth, float fHeight) override;
     void change(const QString &path);
 
 private:

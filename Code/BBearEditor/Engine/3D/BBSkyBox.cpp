@@ -85,16 +85,6 @@ void BBSkyBox::render(BBCamera *pCamera)
     m_pBottom->render(pCamera);
 }
 
-void BBSkyBox::resize(float fWidth, float fHeight)
-{
-    m_pFront->resize(fWidth, fHeight);
-    m_pBack->resize(fWidth, fHeight);
-    m_pLeft->resize(fWidth, fHeight);
-    m_pRight->resize(fWidth, fHeight);
-    m_pTop->resize(fWidth, fHeight);
-    m_pBottom->resize(fWidth, fHeight);
-}
-
 void BBSkyBox::change(const QString &path)
 {
     m_pFront->change(path + "front");

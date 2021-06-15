@@ -21,7 +21,6 @@ public:
 
     void init(const QString &path) override;
     void render(BBCamera *pCamera) override;
-    void resize(float fWidth, float fHeight) override;
 
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
     void setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform = true) override;

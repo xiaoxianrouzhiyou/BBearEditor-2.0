@@ -18,7 +18,6 @@ public:
 
     void render(BBCamera *pCamera) override;
     void render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera) override;
-    void resize(float fWidth, float fHeight) override;
 
     void setTexture(const QString &filePath, bool bInvertY = true);
     void setTexture(int nSize);

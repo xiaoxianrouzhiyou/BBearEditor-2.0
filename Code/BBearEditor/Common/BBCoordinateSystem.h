@@ -250,7 +250,6 @@ public:
 
     void init() override;
     void render(BBCamera *pCamera) override;
-    void resize(float fWidth, float fHeight) override;
 
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
     void setScale(float scale, bool bUpdateLocalTransform = true) override;
@@ -282,7 +281,6 @@ public:
 
     void init() override;
     void render(BBCamera *pCamera) override;
-    void resize(float fWidth, float fHeight) override;
 
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
     void setScale(const QVector3D &scale, bool bUpdateLocalTransform = true) override;
@@ -314,7 +312,6 @@ public:
 
     void init() override;
     void render(BBCamera *pCamera) override;
-    void resize(float fWidth, float fHeight) override;
 
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
     void setRotation(const QVector3D &rotation, bool bUpdateLocalTransform = true) override;
@@ -351,7 +348,6 @@ public:
 
     void init() override;
     void render(BBCamera *pCamera) override;
-    void resize(float fWidth, float fHeight) override;
 
     void setSelectedObject(BBGameObject *pObject);
     void setSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet);

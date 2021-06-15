@@ -283,12 +283,6 @@ void BBGameObject::render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera)
     Q_UNUSED(pCamera);
 }
 
-void BBGameObject::resize(float fWidth, float fHeight)
-{
-    Q_UNUSED(fWidth);
-    Q_UNUSED(fHeight);
-}
-
 bool BBGameObject::hit(const BBRay &ray, float &fDistance)
 {
     Q_UNUSED(ray);
