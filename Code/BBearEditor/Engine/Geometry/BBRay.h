@@ -2,7 +2,7 @@
 #define BBRAY_H
 
 
-#include "Render/BBearGL.h"
+#include "Render/BBBaseRenderComponent.h"
 
 
 enum BBPlaneName

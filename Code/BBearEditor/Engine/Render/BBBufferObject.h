@@ -2,9 +2,9 @@
 #define BBBUFFEROBJECT_H
 
 
-#include "BBearGL.h"
+#include "BBBaseRenderComponent.h"
 
-class BBBufferObject : protected QOpenGLFunctions
+class BBBufferObject : public BBBaseRenderComponent
 {
 public:
     BBBufferObject();

@@ -57,7 +57,6 @@ SOURCES += \
     Engine/Geometry/BBBoundingBox.cpp \
     Engine/Geometry/BBRay.cpp \
     Engine/Render/BBGLBuffers.cpp \
-    Engine/Render/BBGLShader.cpp \
     Engine/Render/BBCamera.cpp \
     Engine/Scene/BBScene.cpp \
     Common/BBCoordinateSystem.cpp \
@@ -76,7 +75,11 @@ SOURCES += \
     Engine/Render/BBElementBufferObject.cpp \
     Engine/Render/BBRenderState.cpp \
     Engine/Render/BBMaterial.cpp \
-    Engine/Render/BBBufferObject.cpp
+    Engine/Render/BBBufferObject.cpp \
+    Engine/Render/BBAttribute.cpp \
+    Engine/Render/BBBaseRenderComponent.cpp \
+    Engine/Render/BBLinkedList.cpp \
+    Engine/Render/BBShader.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -111,7 +114,6 @@ HEADERS += \
     Engine/Geometry/BBBoundingBox.h \
     Engine/Geometry/BBRay.h \
     Engine/Render/BBGLBuffers.h \
-    Engine/Render/BBGLShader.h \
     Engine/Render/BBCamera.h \
     Engine/Scene/BBScene.h \
     Common/BBCoordinateSystem.h \
@@ -128,12 +130,15 @@ HEADERS += \
     Engine/Serializer/BBHierarchyTreeWidgetItem.pb.h \
     Engine/Serializer/BBVector.pb.h \
     Engine/Serializer/BBScene.pb.h \
-    Engine/Render/BBearGL.h \
     Engine/Render/BBVertexBufferObject.h \
     Engine/Render/BBElementBufferObject.h \
     Engine/Render/BBRenderState.h \
     Engine/Render/BBMaterial.h \
-    Engine/Render/BBBufferObject.h
+    Engine/Render/BBBufferObject.h \
+    Engine/Render/BBAttribute.h \
+    Engine/Render/BBBaseRenderComponent.h \
+    Engine/Render/BBLinkedList.h \
+    Engine/Render/BBShader.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

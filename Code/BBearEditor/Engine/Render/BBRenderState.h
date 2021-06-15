@@ -2,7 +2,7 @@
 #define BBRENDERSTATE_H
 
 
-#include "BBearGL.h"
+#include "BBBaseRenderComponent.h"
 
 struct BBRenderState
 {

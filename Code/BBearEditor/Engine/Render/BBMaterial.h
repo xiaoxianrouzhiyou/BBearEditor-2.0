@@ -2,10 +2,11 @@
 #define BBMATERIAL_H
 
 
-#include "BBearGL.h"
+#include "BBBaseRenderComponent.h"
+#include "BBAttribute.h"
 
 
-class BBMaterial : protected QOpenGLFunctions
+class BBMaterial : protected BBBaseRenderComponent
 {
 public:
     BBMaterial();
@@ -21,6 +22,8 @@ public:
 
 private:
     GLuint m_Program;
+
+    BBAttribute *m_pAttributes;
 
     GLuint m_PositionLocation;
     GLuint m_ColorLocation;

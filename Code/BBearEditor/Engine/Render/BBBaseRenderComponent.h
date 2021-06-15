@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef BBBASERENDERCOMPONENT_H
+#define BBBASERENDERCOMPONENT_H
+
+
 #include <GL/glu.h>
 #include <QOpenGLFunctions>
 #include <QVector2D>
@@ -21,3 +25,12 @@
 #define NAME_ITMODELMATRIX "IT_modelMatrix"
 #define NAME_CAMERAPOSITION "cameraPositionUniform"
 #define NAME_TEXTURE "textureUniform"
+
+
+class BBBaseRenderComponent : protected QOpenGLFunctions
+{
+public:
+    BBBaseRenderComponent();
+};
+
+#endif // BBBASERENDERCOMPONENT_H

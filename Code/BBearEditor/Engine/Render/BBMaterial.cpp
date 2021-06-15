@@ -4,7 +4,7 @@
 
 BBMaterial::BBMaterial()
 {
-
+    m_pAttributes = NULL;
 }
 
 BBMaterial::~BBMaterial()
@@ -19,8 +19,6 @@ void BBMaterial::init(const QString &vShaderPath, const QString &fShaderPath,
     const char *fCode = NULL;
     do
     {
-        initializeOpenGLFunctions();
-
         int nFileSize;
         // path.toLatin1().data(); will cause Chinese garbled
         vCode = BBUtils::loadFileContent(vShaderPath.toStdString().c_str(), nFileSize);
@@ -36,14 +34,57 @@ void BBMaterial::init(const QString &vShaderPath, const QString &fShaderPath,
 
         if (m_Program != 0)
         {
-            m_PositionLocation = glGetAttribLocation(m_Program, NAME_POSITION);
-            m_ColorLocation = glGetAttribLocation(m_Program, NAME_COLOR);
-            m_TexcoordLocation = glGetAttribLocation(m_Program, NAME_TEXCOORD);
-            m_NormalLocation = glGetAttribLocation(m_Program, NAME_NORMAL);
             m_ProjectionMatrixLocation = glGetUniformLocation(m_Program, NAME_PROJECTIONMATRIX);
             m_ViewMatrixLocation = glGetUniformLocation(m_Program, NAME_VIEWMATRIX);
             m_ModelMatrixLocation = glGetUniformLocation(m_Program, NAME_MODELMATRIX);
             m_ITModelMatrixLocation = glGetUniformLocation(m_Program, NAME_ITMODELMATRIX);
+
+            // generate attribute chain
+            GLint count = 0;
+            glGetProgramiv(m_Program, GL_ACTIVE_ATTRIBUTES, &count);
+            for (int i = 0; i < count; i++)
+            {
+                GLsizei length = 0;
+                GLenum type = 0;
+                GLint size = 0;
+                char attribName[256] = {0};
+                glGetActiveAttrib(m_Program, i, 256, &length, &size, &type, attribName);
+                GLint location = glGetAttribLocation(m_Program, attribName);
+                int nComponentCount = 0;
+                int nBasicDataType = 0;
+                if (type == GL_FLOAT_VEC4)
+                {
+                    nComponentCount = 4;
+                    nBasicDataType = GL_FLOAT;
+                }
+                int nDataOffset = 0;
+                if (strcmp(attribName, NAME_POSITION) == 0)
+                {
+                    nDataOffset = 0;
+                }
+                else if (strcmp(attribName, NAME_COLOR) == 0)
+                {
+                    nDataOffset = sizeof(float) * 4;
+                }
+                else if (strcmp(attribName, NAME_TEXCOORD) == 0)
+                {
+                    nDataOffset = sizeof(float) * 8;
+                }
+                else if (strcmp(attribName, NAME_NORMAL) == 0)
+                {
+                    nDataOffset = sizeof(float) * 12;
+                }
+                BBAttribute *pAttribute = new BBAttribute(location, nComponentCount, nBasicDataType,
+                                                          GL_FALSE, sizeof(BBVertex), nDataOffset);
+                if (m_pAttributes == nullptr)
+                {
+                    m_pAttributes = pAttribute;
+                }
+                else
+                {
+                    m_pAttributes->pushBack(pAttribute);
+                }
+            }
         }
     } while(0);
 
@@ -64,17 +105,10 @@ void BBMaterial::bind(const QMatrix4x4 &modelMatrix, const QMatrix4x4 &viewMatri
 
     glUniformMatrix4fv(m_ProjectionMatrixLocation, 1, GL_FALSE, projectionMatrix.data());
 
-    glEnableVertexAttribArray(m_PositionLocation);
-    glVertexAttribPointer(m_PositionLocation, 4, GL_FLOAT, GL_FALSE, sizeof(BBVertex), 0);
-
-    glEnableVertexAttribArray(m_ColorLocation);
-    glVertexAttribPointer(m_ColorLocation, 4, GL_FLOAT, GL_FALSE, sizeof(BBVertex), (void*)(sizeof(float) * 4));
-
-    glEnableVertexAttribArray(m_TexcoordLocation);
-    glVertexAttribPointer(m_TexcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(BBVertex), (void*)(sizeof(float) * 8));
-
-    glEnableVertexAttribArray(m_NormalLocation);
-    glVertexAttribPointer(m_NormalLocation, 4, GL_FLOAT, GL_FALSE, sizeof(BBVertex), (void*)(sizeof(float) * 12));
+    if (m_pAttributes != nullptr)
+    {
+        m_pAttributes->active();
+    }
 }
 
 void BBMaterial::bindElementBufferObject(const unsigned short *pIndexes, int nIndexCount)

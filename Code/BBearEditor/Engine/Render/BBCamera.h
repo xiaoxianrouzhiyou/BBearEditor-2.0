@@ -2,7 +2,7 @@
 #define BBCAMERA_H
 
 
-#include "bbeargl.h"
+#include "BBBaseRenderComponent.h"
 
 class BBGameObject;
 class BBRay;

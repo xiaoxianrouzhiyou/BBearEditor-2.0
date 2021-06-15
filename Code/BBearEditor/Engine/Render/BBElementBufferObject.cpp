@@ -4,6 +4,7 @@
 
 
 BBElementBufferObject::BBElementBufferObject(const unsigned short *pIndexes, int nIndexCount)
+    : BBBufferObject()
 {
     m_pBuffer = NULL;
     set(pIndexes, nIndexCount);

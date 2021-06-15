@@ -2,7 +2,7 @@
 #define BBGLBUFFERS_H
 
 
-#include "bbeargl.h"
+#include "BBBaseRenderComponent.h"
 
 
 class BBGLTexture

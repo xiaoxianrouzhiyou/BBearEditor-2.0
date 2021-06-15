@@ -2,6 +2,7 @@
 
 
 BBBufferObject::BBBufferObject()
+    : BBBaseRenderComponent()
 {
-    initializeOpenGLFunctions();
+
 }

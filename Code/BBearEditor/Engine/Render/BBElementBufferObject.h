@@ -2,9 +2,11 @@
 #define BBELEMENTBUFFEROBJECT_H
 
 
+#include "BBBufferObject.h"
+
 class QOpenGLBuffer;
 
-class BBElementBufferObject
+class BBElementBufferObject : public BBBufferObject
 {
 public:
     BBElementBufferObject(const unsigned short *pIndexes, int nIndexCount);
