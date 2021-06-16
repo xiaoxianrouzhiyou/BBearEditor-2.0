@@ -7,6 +7,7 @@
 #include <Serializer/BBGameObject.pb.h>
 
 
+class BBDrawCall;
 class BBCamera;
 class BBSkyBox;
 class BBHorizontalPlane;
@@ -48,6 +49,8 @@ public:
     void clear();
 
 private:
+    BBDrawCall *m_pDrawCall;
+
     float m_fUpdateRate;
     BBCamera *m_pCamera;
     BBSkyBox *m_pSkyBox;

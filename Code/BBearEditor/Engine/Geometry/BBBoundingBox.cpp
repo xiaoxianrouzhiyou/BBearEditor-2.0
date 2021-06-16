@@ -296,15 +296,15 @@ BBBoundingBox3D::~BBBoundingBox3D()
 
 void BBBoundingBox3D::init()
 {
-    m_pVertexBuffer = new BBVertexBufferObject(8);
+    m_pVBO = new BBVertexBufferObject(8);
     for (int i = 0; i < 8; i++)
     {
-        m_pVertexBuffer->setPosition(i, m_pOriginalBoxVertexes[i].x(),
-                                        m_pOriginalBoxVertexes[i].y(),
-                                        m_pOriginalBoxVertexes[i].z());
-        m_pVertexBuffer->setColor(i, m_DefaultColor);
+        m_pVBO->setPosition(i, m_pOriginalBoxVertexes[i].x(),
+                               m_pOriginalBoxVertexes[i].y(),
+                               m_pOriginalBoxVertexes[i].z());
+        m_pVBO->setColor(i, m_DefaultColor);
     }
-    m_pVertexBuffer->submitData();
+    m_pVBO->submitData();
 
     m_nIndexCount = 24;
     unsigned short indexes[] = {0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7};
@@ -318,6 +318,8 @@ void BBBoundingBox3D::init()
                       BB_PATH_RESOURCE_SHADER(base.frag),
                       m_pIndexes,
                       m_nIndexCount);
+
+    BBRenderableObject::init();
 }
 
 bool BBBoundingBox3D::hit(const BBRay &ray, float &fDistance)

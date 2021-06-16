@@ -61,9 +61,9 @@ void BBCoordinateComponent::setSelectedAxis(const BBAxisFlags &axis)
 
 void BBCoordinateComponent::setVertexColor(const BBAxisFlags &axis, bool bSelected)
 {
-    int count1 = m_pVertexBuffer->getVertexCount() / 3;
+    int count1 = m_pVBO->getVertexCount() / 3;
     int count2 = count1 * 2;
-    int count3 = m_pVertexBuffer->getVertexCount();
+    int count3 = m_pVBO->getVertexCount();
     if (axis & BBAxisName::AxisX)
     {
         if (bSelected)
@@ -103,7 +103,7 @@ void BBCoordinateComponent::setVertexColor(int start, int end, const QVector3D &
 {
     for (int i = start; i < end; i++)
     {
-        m_pVertexBuffer->setColor(i, color);
+        m_pVBO->setColor(i, color);
     }
 }
 
@@ -111,7 +111,7 @@ void BBCoordinateComponent::setVertexColor(int start, int end, const QVector4D &
 {
     for (int i = start; i < end; i++)
     {
-        m_pVertexBuffer->setColor(i, color);
+        m_pVBO->setColor(i, color);
     }
 }
 
@@ -136,57 +136,57 @@ BBCoordinateArrow::BBCoordinateArrow(float px, float py, float pz,
 
 void BBCoordinateArrow::init()
 {
-    m_pVertexBuffer = new BBVertexBufferObject(39);
+    m_pVBO = new BBVertexBufferObject(39);
 
-    m_pVertexBuffer->setPosition(0, 1.2f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(1, 0.85f, 0.1f, 0.0f);
-    m_pVertexBuffer->setPosition(2, 0.85f, 0.086603f, 0.05f);
-    m_pVertexBuffer->setPosition(3, 0.85f, 0.05f, 0.086603f);
-    m_pVertexBuffer->setPosition(4, 0.85f, 0.0f, 0.1f);
-    m_pVertexBuffer->setPosition(5, 0.85f, -0.05f, 0.086603f);
-    m_pVertexBuffer->setPosition(6, 0.85f, -0.086603f, 0.05f);
-    m_pVertexBuffer->setPosition(7, 0.85f, -0.1f, 0.0f);
-    m_pVertexBuffer->setPosition(8, 0.85f, -0.086603f, -0.05f);
-    m_pVertexBuffer->setPosition(9, 0.85f, -0.05f, -0.086603f);
-    m_pVertexBuffer->setPosition(10, 0.85f, 0.0f, -0.1f);
-    m_pVertexBuffer->setPosition(11, 0.85f, 0.05f, -0.086603f);
-    m_pVertexBuffer->setPosition(12, 0.85f, 0.086603f, -0.05f);
+    m_pVBO->setPosition(0, 1.2f, 0.0f, 0.0f);
+    m_pVBO->setPosition(1, 0.85f, 0.1f, 0.0f);
+    m_pVBO->setPosition(2, 0.85f, 0.086603f, 0.05f);
+    m_pVBO->setPosition(3, 0.85f, 0.05f, 0.086603f);
+    m_pVBO->setPosition(4, 0.85f, 0.0f, 0.1f);
+    m_pVBO->setPosition(5, 0.85f, -0.05f, 0.086603f);
+    m_pVBO->setPosition(6, 0.85f, -0.086603f, 0.05f);
+    m_pVBO->setPosition(7, 0.85f, -0.1f, 0.0f);
+    m_pVBO->setPosition(8, 0.85f, -0.086603f, -0.05f);
+    m_pVBO->setPosition(9, 0.85f, -0.05f, -0.086603f);
+    m_pVBO->setPosition(10, 0.85f, 0.0f, -0.1f);
+    m_pVBO->setPosition(11, 0.85f, 0.05f, -0.086603f);
+    m_pVBO->setPosition(12, 0.85f, 0.086603f, -0.05f);
     for (int i = 0; i < 13; i++)
-        m_pVertexBuffer->setColor(i, m_Red);
+        m_pVBO->setColor(i, m_Red);
 
-    m_pVertexBuffer->setPosition(13, 0.0f, 1.2f, 0.0f);
-    m_pVertexBuffer->setPosition(14, 0.1f, 0.85f, 0.0f);
-    m_pVertexBuffer->setPosition(15, 0.086603f, 0.85f, 0.05f);
-    m_pVertexBuffer->setPosition(16, 0.05f, 0.85f, 0.086603f);
-    m_pVertexBuffer->setPosition(17, 0.0f, 0.85f, 0.1f);
-    m_pVertexBuffer->setPosition(18, -0.05f, 0.85f, 0.086603f);
-    m_pVertexBuffer->setPosition(19, -0.086603f, 0.85f, 0.05f);
-    m_pVertexBuffer->setPosition(20, -0.1f, 0.85f, 0.0f);
-    m_pVertexBuffer->setPosition(21, -0.086603f, 0.85f, -0.05f);
-    m_pVertexBuffer->setPosition(22, -0.05f, 0.85f, -0.086603f);
-    m_pVertexBuffer->setPosition(23, 0.0f, 0.85f, -0.1f);
-    m_pVertexBuffer->setPosition(24, 0.05f, 0.85f, -0.086603f);
-    m_pVertexBuffer->setPosition(25, 0.086603f, 0.85f, -0.05f);
+    m_pVBO->setPosition(13, 0.0f, 1.2f, 0.0f);
+    m_pVBO->setPosition(14, 0.1f, 0.85f, 0.0f);
+    m_pVBO->setPosition(15, 0.086603f, 0.85f, 0.05f);
+    m_pVBO->setPosition(16, 0.05f, 0.85f, 0.086603f);
+    m_pVBO->setPosition(17, 0.0f, 0.85f, 0.1f);
+    m_pVBO->setPosition(18, -0.05f, 0.85f, 0.086603f);
+    m_pVBO->setPosition(19, -0.086603f, 0.85f, 0.05f);
+    m_pVBO->setPosition(20, -0.1f, 0.85f, 0.0f);
+    m_pVBO->setPosition(21, -0.086603f, 0.85f, -0.05f);
+    m_pVBO->setPosition(22, -0.05f, 0.85f, -0.086603f);
+    m_pVBO->setPosition(23, 0.0f, 0.85f, -0.1f);
+    m_pVBO->setPosition(24, 0.05f, 0.85f, -0.086603f);
+    m_pVBO->setPosition(25, 0.086603f, 0.85f, -0.05f);
     for (int i = 13; i < 26; i++)
-        m_pVertexBuffer->setColor(i, m_Green);
+        m_pVBO->setColor(i, m_Green);
 
-    m_pVertexBuffer->setPosition(26, 0.0f, 0.0f, 1.2f);
-    m_pVertexBuffer->setPosition(27, 0.1f, 0.0f, 0.85f);
-    m_pVertexBuffer->setPosition(28, 0.086603f, 0.05f, 0.85f);
-    m_pVertexBuffer->setPosition(29, 0.05f, 0.086603f, 0.85f);
-    m_pVertexBuffer->setPosition(30, 0.0f, 0.1f, 0.85f);
-    m_pVertexBuffer->setPosition(31, -0.05f, 0.086603f, 0.85f);
-    m_pVertexBuffer->setPosition(32, -0.086603f, 0.05f, 0.85f);
-    m_pVertexBuffer->setPosition(33, -0.1f, 0.0f, 0.85f);
-    m_pVertexBuffer->setPosition(34, -0.086603f, -0.05f, 0.85f);
-    m_pVertexBuffer->setPosition(35, -0.05f, -0.086603f, 0.85f);
-    m_pVertexBuffer->setPosition(36, 0.0f, -0.1f, 0.85f);
-    m_pVertexBuffer->setPosition(37, 0.05f, -0.086603f, 0.85f);
-    m_pVertexBuffer->setPosition(38, 0.086603f, -0.05f, 0.85f);
+    m_pVBO->setPosition(26, 0.0f, 0.0f, 1.2f);
+    m_pVBO->setPosition(27, 0.1f, 0.0f, 0.85f);
+    m_pVBO->setPosition(28, 0.086603f, 0.05f, 0.85f);
+    m_pVBO->setPosition(29, 0.05f, 0.086603f, 0.85f);
+    m_pVBO->setPosition(30, 0.0f, 0.1f, 0.85f);
+    m_pVBO->setPosition(31, -0.05f, 0.086603f, 0.85f);
+    m_pVBO->setPosition(32, -0.086603f, 0.05f, 0.85f);
+    m_pVBO->setPosition(33, -0.1f, 0.0f, 0.85f);
+    m_pVBO->setPosition(34, -0.086603f, -0.05f, 0.85f);
+    m_pVBO->setPosition(35, -0.05f, -0.086603f, 0.85f);
+    m_pVBO->setPosition(36, 0.0f, -0.1f, 0.85f);
+    m_pVBO->setPosition(37, 0.05f, -0.086603f, 0.85f);
+    m_pVBO->setPosition(38, 0.086603f, -0.05f, 0.85f);
     for (int i = 26; i < 39; i++)
-        m_pVertexBuffer->setColor(i, m_Blue);
+        m_pVBO->setColor(i, m_Blue);
 
-    m_pVertexBuffer->submitData();
+    m_pVBO->submitData();
 
     m_nIndexCount = 108;
     unsigned short indexes[] = {0, 1, 2, 0, 2, 3, 0, 3, 4,
@@ -211,6 +211,8 @@ void BBCoordinateArrow::init()
                       BB_PATH_RESOURCE_SHADER(coordinate.frag),
                       m_pIndexes,
                       m_nIndexCount);
+
+    BBRenderableObject::init();
 }
 
 void BBCoordinateArrow::draw()
@@ -242,34 +244,36 @@ BBCoordinateAxis::BBCoordinateAxis(float px, float py, float pz,
 
 void BBCoordinateAxis::init()
 {
-    m_pVertexBuffer = new BBVertexBufferObject(6);
+    m_pVBO = new BBVertexBufferObject(6);
 
-    m_pVertexBuffer->setPosition(0, 1.0f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(1, 0.0f, 0.0f, 0.0f);
+    m_pVBO->setPosition(0, 1.0f, 0.0f, 0.0f);
+    m_pVBO->setPosition(1, 0.0f, 0.0f, 0.0f);
 
-    m_pVertexBuffer->setPosition(2, 0.0f, 1.0f, 0.0f);
-    m_pVertexBuffer->setPosition(3, 0.0f, 0.0f, 0.0f);
+    m_pVBO->setPosition(2, 0.0f, 1.0f, 0.0f);
+    m_pVBO->setPosition(3, 0.0f, 0.0f, 0.0f);
 
-    m_pVertexBuffer->setPosition(4, 0.0f, 0.0f, 1.0f);
-    m_pVertexBuffer->setPosition(5, 0.0f, 0.0f, 0.0f);
+    m_pVBO->setPosition(4, 0.0f, 0.0f, 1.0f);
+    m_pVBO->setPosition(5, 0.0f, 0.0f, 0.0f);
 
     for (int i = 0; i < 2; i++)
     {
-        m_pVertexBuffer->setColor(i, m_Red);
+        m_pVBO->setColor(i, m_Red);
     }
     for (int i = 2; i < 4; i++)
     {
-        m_pVertexBuffer->setColor(i, m_Green);
+        m_pVBO->setColor(i, m_Green);
     }
     for (int i = 4; i < 6; i++)
     {
-        m_pVertexBuffer->setColor(i, m_Blue);
+        m_pVBO->setColor(i, m_Blue);
     }
 
-    m_pVertexBuffer->submitData();
+    m_pVBO->submitData();
 
     m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
                       BB_PATH_RESOURCE_SHADER(coordinate.frag));
+
+    BBRenderableObject::init();
 }
 
 void BBCoordinateAxis::draw()
@@ -305,64 +309,66 @@ BBCoordinateRectFace::BBCoordinateRectFace(float px, float py, float pz,
 
 void BBCoordinateRectFace::init()
 {
-    m_pVertexBuffer = new BBVertexBufferObject(24);
+    m_pVBO = new BBVertexBufferObject(24);
 
-    m_pVertexBuffer->setPosition(0, 0.0f, 0.3f, 0.3f);
-    m_pVertexBuffer->setPosition(1, 0.0f, 0.0f, 0.3f);
-    m_pVertexBuffer->setPosition(2, 0.0f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(3, 0.0f, 0.3f, 0.0f);
-    m_pVertexBuffer->setPosition(4, 0.0f, 0.3f, 0.3f);
-    m_pVertexBuffer->setPosition(5, 0.0f, 0.3f, 0.0f);
-    m_pVertexBuffer->setPosition(6, 0.0f, 0.3f, 0.3f);
-    m_pVertexBuffer->setPosition(7, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(0, 0.0f, 0.3f, 0.3f);
+    m_pVBO->setPosition(1, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(2, 0.0f, 0.0f, 0.0f);
+    m_pVBO->setPosition(3, 0.0f, 0.3f, 0.0f);
+    m_pVBO->setPosition(4, 0.0f, 0.3f, 0.3f);
+    m_pVBO->setPosition(5, 0.0f, 0.3f, 0.0f);
+    m_pVBO->setPosition(6, 0.0f, 0.3f, 0.3f);
+    m_pVBO->setPosition(7, 0.0f, 0.0f, 0.3f);
 
-    m_pVertexBuffer->setPosition(8, 0.3f, 0.0f, 0.3f);
-    m_pVertexBuffer->setPosition(9, 0.0f, 0.0f, 0.3f);
-    m_pVertexBuffer->setPosition(10, 0.0f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(11, 0.3f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(12, 0.3f, 0.0f, 0.3f);
-    m_pVertexBuffer->setPosition(13, 0.3f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(14, 0.3f, 0.0f, 0.3f);
-    m_pVertexBuffer->setPosition(15, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(8, 0.3f, 0.0f, 0.3f);
+    m_pVBO->setPosition(9, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(10, 0.0f, 0.0f, 0.0f);
+    m_pVBO->setPosition(11, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(12, 0.3f, 0.0f, 0.3f);
+    m_pVBO->setPosition(13, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(14, 0.3f, 0.0f, 0.3f);
+    m_pVBO->setPosition(15, 0.0f, 0.0f, 0.3f);
 
-    m_pVertexBuffer->setPosition(16, 0.3f, 0.3f, 0.0f);
-    m_pVertexBuffer->setPosition(17, 0.0f, 0.3f, 0.0f);
-    m_pVertexBuffer->setPosition(18, 0.0f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(19, 0.3f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(20, 0.3f, 0.3f, 0.0f);
-    m_pVertexBuffer->setPosition(21, 0.3f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(22, 0.3f, 0.3f, 0.0f);
-    m_pVertexBuffer->setPosition(23, 0.0f, 0.3f, 0.0f);
+    m_pVBO->setPosition(16, 0.3f, 0.3f, 0.0f);
+    m_pVBO->setPosition(17, 0.0f, 0.3f, 0.0f);
+    m_pVBO->setPosition(18, 0.0f, 0.0f, 0.0f);
+    m_pVBO->setPosition(19, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(20, 0.3f, 0.3f, 0.0f);
+    m_pVBO->setPosition(21, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(22, 0.3f, 0.3f, 0.0f);
+    m_pVBO->setPosition(23, 0.0f, 0.3f, 0.0f);
 
     for (int i = 0; i < 4; i++)
     {
-        m_pVertexBuffer->setColor(i, m_RedTransparency);
+        m_pVBO->setColor(i, m_RedTransparency);
     }
     for (int i = 4; i < 8; i++)
     {
-        m_pVertexBuffer->setColor(i, m_Red);
+        m_pVBO->setColor(i, m_Red);
     }
     for (int i = 8; i < 12; i++)
     {
-        m_pVertexBuffer->setColor(i, m_GreenTransparency);
+        m_pVBO->setColor(i, m_GreenTransparency);
     }
     for (int i = 12; i < 16; i++)
     {
-        m_pVertexBuffer->setColor(i, m_Green);
+        m_pVBO->setColor(i, m_Green);
     }
     for (int i = 16; i < 20; i++)
     {
-        m_pVertexBuffer->setColor(i, m_BlueTransparency);
+        m_pVBO->setColor(i, m_BlueTransparency);
     }
     for (int i = 20; i < 24; i++)
     {
-        m_pVertexBuffer->setColor(i, m_Blue);
+        m_pVBO->setColor(i, m_Blue);
     }
 
-    m_pVertexBuffer->submitData();
+    m_pVBO->submitData();
 
     m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
                       BB_PATH_RESOURCE_SHADER(coordinate.frag));
+
+    BBRenderableObject::init();
 }
 
 void BBCoordinateRectFace::draw()
@@ -400,7 +406,7 @@ BBCoordinateQuarterCircle::BBCoordinateQuarterCircle(float px, float py, float p
 
 void BBCoordinateQuarterCircle::init()
 {
-    m_pVertexBuffer = new BBVertexBufferObject(78);
+    m_pVBO = new BBVertexBufferObject(78);
 
     for (int i = 0; i < 13; i++)
     {
@@ -408,18 +414,18 @@ void BBCoordinateQuarterCircle::init()
         float s1 = sinf(0.1309 * i);
         float c2 = 0.8f * c1;
         float s2 = 0.8f * s1;
-        m_pVertexBuffer->setPosition(i, 0.0f, c1, s1);
-        m_pVertexBuffer->setColor(i, m_Red);
-        m_pVertexBuffer->setPosition(i + 13, 0.0f, c2, s2);
-        m_pVertexBuffer->setColor(i + 13, m_Red);
-        m_pVertexBuffer->setPosition(i + 26, c1, 0.0f, s1);
-        m_pVertexBuffer->setColor(i + 26, m_Green);
-        m_pVertexBuffer->setPosition(i + 39, c2, 0.0f, s2);
-        m_pVertexBuffer->setColor(i + 39, m_Green);
-        m_pVertexBuffer->setPosition(i + 52, c1, s1, 0.0f);
-        m_pVertexBuffer->setColor(i + 52, m_Blue);
-        m_pVertexBuffer->setPosition(i + 65, c2, s2, 0.0f);
-        m_pVertexBuffer->setColor(i + 65, m_Blue);
+        m_pVBO->setPosition(i, 0.0f, c1, s1);
+        m_pVBO->setColor(i, m_Red);
+        m_pVBO->setPosition(i + 13, 0.0f, c2, s2);
+        m_pVBO->setColor(i + 13, m_Red);
+        m_pVBO->setPosition(i + 26, c1, 0.0f, s1);
+        m_pVBO->setColor(i + 26, m_Green);
+        m_pVBO->setPosition(i + 39, c2, 0.0f, s2);
+        m_pVBO->setColor(i + 39, m_Green);
+        m_pVBO->setPosition(i + 52, c1, s1, 0.0f);
+        m_pVBO->setColor(i + 52, m_Blue);
+        m_pVBO->setPosition(i + 65, c2, s2, 0.0f);
+        m_pVBO->setColor(i + 65, m_Blue);
     }
 
     m_nIndexCount = 144;
@@ -444,12 +450,14 @@ void BBCoordinateQuarterCircle::init()
 
     }
 
-    m_pVertexBuffer->submitData();
+    m_pVBO->submitData();
 
     m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
                       BB_PATH_RESOURCE_SHADER(coordinate.frag),
                       m_pIndexes,
                       m_nIndexCount);
+
+    BBRenderableObject::init();
 }
 
 void BBCoordinateQuarterCircle::draw()
@@ -481,7 +489,7 @@ BBCoordinateCircle::BBCoordinateCircle(float px, float py, float pz,
 
 void BBCoordinateCircle::init()
 {
-    m_pVertexBuffer = new BBVertexBufferObject(96);
+    m_pVBO = new BBVertexBufferObject(96);
 
     for (int i = 0; i < 48; i++)
     {
@@ -490,13 +498,13 @@ void BBCoordinateCircle::init()
         float c2 = 0.8f * c1;
         float s2 = 0.8f * s1;
         // Circle
-        m_pVertexBuffer->setPosition(2 * i, 0.0f, c1, s1);
-        m_pVertexBuffer->setColor(2 * i, m_Yellow);
-        m_pVertexBuffer->setPosition(2 * i + 1, 0.0f, c2, s2);
-        m_pVertexBuffer->setColor(2 * i + 1, m_Yellow);
+        m_pVBO->setPosition(2 * i, 0.0f, c1, s1);
+        m_pVBO->setColor(2 * i, m_Yellow);
+        m_pVBO->setPosition(2 * i + 1, 0.0f, c2, s2);
+        m_pVBO->setColor(2 * i + 1, m_Yellow);
     }
 
-    m_pVertexBuffer->submitData();
+    m_pVBO->submitData();
 
     m_nIndexCount = 192;
     m_pIndexes = new unsigned short[m_nIndexCount];
@@ -516,6 +524,8 @@ void BBCoordinateCircle::init()
                       BB_PATH_RESOURCE_SHADER(coordinate.frag),
                       m_pIndexes,
                       m_nIndexCount);
+
+    BBRenderableObject::init();
 }
 
 void BBCoordinateCircle::draw()
@@ -548,7 +558,7 @@ BBCoordinateTickMark::BBCoordinateTickMark(float px, float py, float pz,
 void BBCoordinateTickMark::init()
 {
     // unit = 10 degree, 360/10*2 = 72 Circles
-    m_pVertexBuffer = new BBVertexBufferObject(72);
+    m_pVBO = new BBVertexBufferObject(72);
 
     for (int i = 0; i < 36; i++)
     {
@@ -569,13 +579,13 @@ void BBCoordinateTickMark::init()
         }
 
         // Circle
-        m_pVertexBuffer->setPosition(2 * i, 0.0f, c1, s1);
-        m_pVertexBuffer->setColor(2 * i, m_Gray);
-        m_pVertexBuffer->setPosition(2 * i + 1, 0.0f, c2, s2);
-        m_pVertexBuffer->setColor(2 * i + 1, m_Gray);
+        m_pVBO->setPosition(2 * i, 0.0f, c1, s1);
+        m_pVBO->setColor(2 * i, m_Gray);
+        m_pVBO->setPosition(2 * i + 1, 0.0f, c2, s2);
+        m_pVBO->setColor(2 * i + 1, m_Gray);
     }
 
-    m_pVertexBuffer->submitData();
+    m_pVBO->submitData();
 
     m_nIndexCount = 72;
     m_pIndexes = new unsigned short[m_nIndexCount];
@@ -591,6 +601,8 @@ void BBCoordinateTickMark::init()
                       BB_PATH_RESOURCE_SHADER(coordinate.frag),
                       m_pIndexes,
                       m_nIndexCount);
+
+    BBRenderableObject::init();
 }
 
 void BBCoordinateTickMark::draw()
@@ -627,18 +639,18 @@ void BBCoordinateSector::init()
 {
     // unit = 1     2pi/360
     // +1 is center of circle
-    m_pVertexBuffer = new BBVertexBufferObject(361);
-    m_pVertexBuffer->setPosition(360, 0.0f, 0.0f, 0.0f);
-    m_pVertexBuffer->setColor(360, m_GrayTransparency);
+    m_pVBO = new BBVertexBufferObject(361);
+    m_pVBO->setPosition(360, 0.0f, 0.0f, 0.0f);
+    m_pVBO->setColor(360, m_GrayTransparency);
     for (int i = 0; i < 360; i++)
     {
         float c = 0.8f * cosf(0.017453f * i);
         float s = 0.8f * sinf(0.017453f * i);
         // on the circle
-        m_pVertexBuffer->setPosition(i, 0.0f, c, s);
-        m_pVertexBuffer->setColor(i, m_Gray);
+        m_pVBO->setPosition(i, 0.0f, c, s);
+        m_pVBO->setColor(i, m_Gray);
     }
-    m_pVertexBuffer->submitData();
+    m_pVBO->submitData();
 
     m_nIndexCount = 1080;
     m_pIndexes = new unsigned short[m_nIndexCount];
@@ -654,6 +666,8 @@ void BBCoordinateSector::init()
                       BB_PATH_RESOURCE_SHADER(coordinate.frag),
                       m_pIndexes,
                       m_nIndexCount);
+
+    BBRenderableObject::init();
 }
 
 void BBCoordinateSector::render(BBCamera *pCamera)
@@ -744,25 +758,25 @@ BBCoordinateCube::BBCoordinateCube(float px, float py, float pz,
 
 void BBCoordinateCube::init()
 {
-    m_pVertexBuffer = new BBVertexBufferObject(24);
+    m_pVBO = new BBVertexBufferObject(24);
 
     for (int i = 0; i < 8; i++)
     {
-        m_pVertexBuffer->setPosition(i, 1.0f + m_Sign[i].x() * m_fHalfLength,
-                                               m_Sign[i].y() * m_fHalfLength,
-                                               m_Sign[i].z() * m_fHalfLength);
-        m_pVertexBuffer->setColor(i, m_Red);
-        m_pVertexBuffer->setPosition(i + 8, m_Sign[i].x() * m_fHalfLength,
-                                     1.0f + m_Sign[i].y() * m_fHalfLength,
-                                            m_Sign[i].z() * m_fHalfLength);
-        m_pVertexBuffer->setColor(i + 8, m_Green);
-        m_pVertexBuffer->setPosition(i + 16, m_Sign[i].x() * m_fHalfLength,
-                                             m_Sign[i].y() * m_fHalfLength,
-                                      1.0f + m_Sign[i].z() * m_fHalfLength);
-        m_pVertexBuffer->setColor(i + 16, m_Blue);
+        m_pVBO->setPosition(i, 1.0f + m_Sign[i].x() * m_fHalfLength,
+                                      m_Sign[i].y() * m_fHalfLength,
+                                      m_Sign[i].z() * m_fHalfLength);
+        m_pVBO->setColor(i, m_Red);
+        m_pVBO->setPosition(i + 8, m_Sign[i].x() * m_fHalfLength,
+                            1.0f + m_Sign[i].y() * m_fHalfLength,
+                                   m_Sign[i].z() * m_fHalfLength);
+        m_pVBO->setColor(i + 8, m_Green);
+        m_pVBO->setPosition(i + 16, m_Sign[i].x() * m_fHalfLength,
+                                    m_Sign[i].y() * m_fHalfLength,
+                             1.0f + m_Sign[i].z() * m_fHalfLength);
+        m_pVBO->setColor(i + 16, m_Blue);
     }
 
-    m_pVertexBuffer->submitData();
+    m_pVBO->submitData();
 
     m_nIndexCount = 72;
     m_pIndexes = new unsigned short[m_nIndexCount];
@@ -783,6 +797,8 @@ void BBCoordinateCube::init()
                       BB_PATH_RESOURCE_SHADER(coordinate.frag),
                       m_pIndexes,
                       m_nIndexCount);
+
+    BBRenderableObject::init();
 }
 
 void BBCoordinateCube::move(const QVector3D &delta)
@@ -791,20 +807,22 @@ void BBCoordinateCube::move(const QVector3D &delta)
     // As scale, the position of cube changes
     for (int i = 0; i < 8; i++)
     {
-        m_pVertexBuffer->setPosition(i,
-                                     m_Sign[i].x() * m_fHalfLength + 1.0f + delta.x(),
-                                     m_Sign[i].y() * m_fHalfLength,
-                                     m_Sign[i].z() * m_fHalfLength);
-        m_pVertexBuffer->setPosition(i + 8,
-                                     m_Sign[i].x() * m_fHalfLength,
-                                     m_Sign[i].y() * m_fHalfLength + 1.0f + delta.y(),
-                                     m_Sign[i].z() * m_fHalfLength);
-        m_pVertexBuffer->setPosition(i + 16,
-                                     m_Sign[i].x() * m_fHalfLength,
-                                     m_Sign[i].y() * m_fHalfLength,
-                                     m_Sign[i].z() * m_fHalfLength + 1.0f + delta.z());
+        m_pVBO->setPosition(i,
+                            m_Sign[i].x() * m_fHalfLength + 1.0f + delta.x(),
+                            m_Sign[i].y() * m_fHalfLength,
+                            m_Sign[i].z() * m_fHalfLength);
+        m_pVBO->setPosition(i + 8,
+                            m_Sign[i].x() * m_fHalfLength,
+                            m_Sign[i].y() * m_fHalfLength + 1.0f + delta.y(),
+                            m_Sign[i].z() * m_fHalfLength);
+        m_pVBO->setPosition(i + 16,
+                            m_Sign[i].x() * m_fHalfLength,
+                            m_Sign[i].y() * m_fHalfLength,
+                            m_Sign[i].z() * m_fHalfLength + 1.0f + delta.z());
     }
-    m_pVertexBuffer->submitData();
+    m_pVBO->submitData();
+
+    BBRenderableObject::init();
 }
 
 void BBCoordinateCube::draw()
@@ -836,76 +854,78 @@ BBCoordinateTriangleFace::BBCoordinateTriangleFace(float px, float py, float pz,
 
 void BBCoordinateTriangleFace::init()
 {
-    m_pVertexBuffer = new BBVertexBufferObject(36);
+    m_pVBO = new BBVertexBufferObject(36);
 
-    m_pVertexBuffer->setPosition(0, 0.0f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(1, 0.0f, 0.0f, 0.3f);
-    m_pVertexBuffer->setPosition(2, 0.0f, 0.3f, 0.0f);
-    m_pVertexBuffer->setPosition(3, 0.0f, 0.3f, 0.3f);
-    m_pVertexBuffer->setPosition(4, 0.0f, 0.0f, 0.3f);
-    m_pVertexBuffer->setPosition(5, 0.0f, 0.3f, 0.0f);
-    m_pVertexBuffer->setPosition(6, 0.0f, 0.0f, 0.3f);
-    m_pVertexBuffer->setPosition(7, 0.0f, 0.3f, 0.0f);
-    m_pVertexBuffer->setPosition(8, 0.0f, 0.0f, 0.3f);
-    m_pVertexBuffer->setPosition(9, 0.0f, 0.3f, 0.3f);
-    m_pVertexBuffer->setPosition(10, 0.0f, 0.3f, 0.0f);
-    m_pVertexBuffer->setPosition(11, 0.0f, 0.3f, 0.3f);
+    m_pVBO->setPosition(0, 0.0f, 0.0f, 0.0f);
+    m_pVBO->setPosition(1, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(2, 0.0f, 0.3f, 0.0f);
+    m_pVBO->setPosition(3, 0.0f, 0.3f, 0.3f);
+    m_pVBO->setPosition(4, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(5, 0.0f, 0.3f, 0.0f);
+    m_pVBO->setPosition(6, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(7, 0.0f, 0.3f, 0.0f);
+    m_pVBO->setPosition(8, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(9, 0.0f, 0.3f, 0.3f);
+    m_pVBO->setPosition(10, 0.0f, 0.3f, 0.0f);
+    m_pVBO->setPosition(11, 0.0f, 0.3f, 0.3f);
 
-    m_pVertexBuffer->setPosition(12, 0.0f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(13, 0.0f, 0.0f, 0.3f);
-    m_pVertexBuffer->setPosition(14, 0.3f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(15, 0.3f, 0.0f, 0.3f);
-    m_pVertexBuffer->setPosition(16, 0.0f, 0.0f, 0.3f);
-    m_pVertexBuffer->setPosition(17, 0.3f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(18, 0.0f, 0.0f, 0.3f);
-    m_pVertexBuffer->setPosition(19, 0.3f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(20, 0.0f, 0.0f, 0.3f);
-    m_pVertexBuffer->setPosition(21, 0.3f, 0.0f, 0.3f);
-    m_pVertexBuffer->setPosition(22, 0.3f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(23, 0.3f, 0.0f, 0.3f);
+    m_pVBO->setPosition(12, 0.0f, 0.0f, 0.0f);
+    m_pVBO->setPosition(13, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(14, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(15, 0.3f, 0.0f, 0.3f);
+    m_pVBO->setPosition(16, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(17, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(18, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(19, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(20, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(21, 0.3f, 0.0f, 0.3f);
+    m_pVBO->setPosition(22, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(23, 0.3f, 0.0f, 0.3f);
 
-    m_pVertexBuffer->setPosition(24, 0.0f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(25, 0.0f, 0.3f, 0.0f);
-    m_pVertexBuffer->setPosition(26, 0.3f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(27, 0.3f, 0.3f, 0.0f);
-    m_pVertexBuffer->setPosition(28, 0.0f, 0.3f, 0.0f);
-    m_pVertexBuffer->setPosition(29, 0.3f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(30, 0.0f, 0.3f, 0.0f);
-    m_pVertexBuffer->setPosition(31, 0.3f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(32, 0.0f, 0.3f, 0.0f);
-    m_pVertexBuffer->setPosition(33, 0.3f, 0.3f, 0.0f);
-    m_pVertexBuffer->setPosition(34, 0.3f, 0.0f, 0.0f);
-    m_pVertexBuffer->setPosition(35, 0.3f, 0.3f, 0.0f);
+    m_pVBO->setPosition(24, 0.0f, 0.0f, 0.0f);
+    m_pVBO->setPosition(25, 0.0f, 0.3f, 0.0f);
+    m_pVBO->setPosition(26, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(27, 0.3f, 0.3f, 0.0f);
+    m_pVBO->setPosition(28, 0.0f, 0.3f, 0.0f);
+    m_pVBO->setPosition(29, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(30, 0.0f, 0.3f, 0.0f);
+    m_pVBO->setPosition(31, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(32, 0.0f, 0.3f, 0.0f);
+    m_pVBO->setPosition(33, 0.3f, 0.3f, 0.0f);
+    m_pVBO->setPosition(34, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(35, 0.3f, 0.3f, 0.0f);
 
     for (int i = 0; i < 6; i++)
     {
-        m_pVertexBuffer->setColor(i, m_RedTransparency);
+        m_pVBO->setColor(i, m_RedTransparency);
     }
     for (int i = 6; i < 12; i++)
     {
-        m_pVertexBuffer->setColor(i, m_Red);
+        m_pVBO->setColor(i, m_Red);
     }
     for (int i = 12; i < 18; i++)
     {
-        m_pVertexBuffer->setColor(i, m_GreenTransparency);
+        m_pVBO->setColor(i, m_GreenTransparency);
     }
     for (int i = 18; i < 24; i++)
     {
-        m_pVertexBuffer->setColor(i, m_Green);
+        m_pVBO->setColor(i, m_Green);
     }
     for (int i = 24; i < 30; i++)
     {
-        m_pVertexBuffer->setColor(i, m_BlueTransparency);
+        m_pVBO->setColor(i, m_BlueTransparency);
     }
     for (int i = 30; i < 36; i++)
     {
-        m_pVertexBuffer->setColor(i, m_Blue);
+        m_pVBO->setColor(i, m_Blue);
     }
 
-    m_pVertexBuffer->submitData();
+    m_pVBO->submitData();
 
     m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
                       BB_PATH_RESOURCE_SHADER(coordinate.frag));
+
+    BBRenderableObject::init();
 }
 
 void BBCoordinateTriangleFace::draw()

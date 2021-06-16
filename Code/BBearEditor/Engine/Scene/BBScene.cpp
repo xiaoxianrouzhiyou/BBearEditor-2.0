@@ -1,5 +1,6 @@
 #include "BBScene.h"
 #include "BBUtils.h"
+#include "Render/BBDrawCall.h"
 #include "Render/BBCamera.h"
 #include "3D/BBSkyBox.h"
 #include "BBHorizontalPlane.h"
@@ -14,6 +15,7 @@
 
 BBScene::BBScene()
 {
+    m_pDrawCall = NULL;
     m_fUpdateRate = (float) BB_CONSTANT_UPDATE_RATE / 1000;
     m_pCamera = NULL;
     m_pSkyBox = NULL;
@@ -34,6 +36,7 @@ BBScene::BBScene()
 
 BBScene::~BBScene()
 {
+    BB_SAFE_DELETE(m_pDrawCall);
     BB_SAFE_DELETE(m_pCamera);
     BB_SAFE_DELETE(m_pSkyBox);
     BB_SAFE_DELETE(m_pHorizontalPlane);
@@ -62,9 +65,12 @@ void BBScene::init()
     m_pCamera->setViewportSize(800.0f, 600.0f);
 
     m_pSkyBox->init(QString(BB_PATH_RESOURCE) + "skyboxs/1/");
-    // Horizontal reference grid
     m_pHorizontalPlane->init();
     m_pTransformCoordinateSystem->init();
+
+    m_pDrawCall = new BBDrawCall;
+
+
 //    //粒子
 //    particle->init();
 
@@ -80,13 +86,6 @@ void BBScene::render()
     m_pCamera->switchTo3D();
     // refresh camera position and direction, update pos and ..., Convenient for subsequent use
     m_pCamera->update(m_fUpdateRate);
-
-//    //执行脚本的update接口
-//    for (QList<GameObject*>::Iterator itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        model->onUpdateLua();
-//    }
 
 //    renderShadowMap();
 //    //给模型添加高度图信息 用于阴影计算
@@ -112,9 +111,7 @@ void BBScene::render()
     }
 
     m_pTransformCoordinateSystem->render(m_pCamera);
-//    //粒子
-//    //particle->update();
-//    //particle->render(camera);
+
 
     // 2D camera mode
     m_pCamera->switchTo2D();

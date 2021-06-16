@@ -14,36 +14,36 @@ BBHorizontalPlane::BBHorizontalPlane()
 void BBHorizontalPlane::init()
 {
     float fCoefficient = 2.0f;
-    m_pVertexBuffer = new BBVertexBufferObject(246);
+    m_pVBO = new BBVertexBufferObject(246);
     for (int i = 0; i <= 40; i++)
     {
         // The most transparent point on the periphery
-        m_pVertexBuffer->setPosition(i, -20 + i, 0.0f, -20);
-        m_pVertexBuffer->setNormal(i, 0.0f, 1.0f, 0.0f);
-        m_pVertexBuffer->setColor(i, 0.847059f, 0.603922f, 0.309804f, 0.01f * fCoefficient);
+        m_pVBO->setPosition(i, -20 + i, 0.0f, -20);
+        m_pVBO->setNormal(i, 0.0f, 1.0f, 0.0f);
+        m_pVBO->setColor(i, 0.847059f, 0.603922f, 0.309804f, 0.01f * fCoefficient);
 
-        m_pVertexBuffer->setPosition(i + 41, -20, 0.0f, -20 + i);
-        m_pVertexBuffer->setNormal(i + 41, 0.0f, 1.0f, 0.0f);
-        m_pVertexBuffer->setColor(i + 41, 0.847059f, 0.603922f, 0.309804f, 0.01f * fCoefficient);
+        m_pVBO->setPosition(i + 41, -20, 0.0f, -20 + i);
+        m_pVBO->setNormal(i + 41, 0.0f, 1.0f, 0.0f);
+        m_pVBO->setColor(i + 41, 0.847059f, 0.603922f, 0.309804f, 0.01f * fCoefficient);
 
-        m_pVertexBuffer->setPosition(i + 82, -20 + i, 0.0f, 20);
-        m_pVertexBuffer->setNormal(i + 82, 0.0f, 1.0f, 0.0f);
-        m_pVertexBuffer->setColor(i + 82, 0.847059f, 0.603922f, 0.309804f, 0.01f * fCoefficient);
+        m_pVBO->setPosition(i + 82, -20 + i, 0.0f, 20);
+        m_pVBO->setNormal(i + 82, 0.0f, 1.0f, 0.0f);
+        m_pVBO->setColor(i + 82, 0.847059f, 0.603922f, 0.309804f, 0.01f * fCoefficient);
 
-        m_pVertexBuffer->setPosition(i + 123, 20, 0.0f, -20 + i);
-        m_pVertexBuffer->setNormal(i + 123, 0.0f, 1.0f, 0.0f);
-        m_pVertexBuffer->setColor(i + 123, 0.847059f, 0.603922f, 0.309804f, 0.01f * fCoefficient);
+        m_pVBO->setPosition(i + 123, 20, 0.0f, -20 + i);
+        m_pVBO->setNormal(i + 123, 0.0f, 1.0f, 0.0f);
+        m_pVBO->setColor(i + 123, 0.847059f, 0.603922f, 0.309804f, 0.01f * fCoefficient);
 
         // Two midlines
         float alpha = 0.09f - abs(-20 + i) * 0.004f;
-        m_pVertexBuffer->setPosition(i + 164, -20 + i, 0.0f, 0);
-        m_pVertexBuffer->setNormal(i + 164, 0.0f, 1.0f, 0.0f);
-        m_pVertexBuffer->setColor(i + 164, 0.847059f, 0.603922f, 0.309804f, alpha * fCoefficient);
-        m_pVertexBuffer->setPosition(i + 205, 0, 0.0f, -20 + i);
-        m_pVertexBuffer->setNormal(i + 205, 0.0f, 1.0f, 0.0f);
-        m_pVertexBuffer->setColor(i + 205, 0.847059f, 0.603922f, 0.309804f, alpha * fCoefficient);
+        m_pVBO->setPosition(i + 164, -20 + i, 0.0f, 0);
+        m_pVBO->setNormal(i + 164, 0.0f, 1.0f, 0.0f);
+        m_pVBO->setColor(i + 164, 0.847059f, 0.603922f, 0.309804f, alpha * fCoefficient);
+        m_pVBO->setPosition(i + 205, 0, 0.0f, -20 + i);
+        m_pVBO->setNormal(i + 205, 0.0f, 1.0f, 0.0f);
+        m_pVBO->setColor(i + 205, 0.847059f, 0.603922f, 0.309804f, alpha * fCoefficient);
     }
-    m_pVertexBuffer->submitData();
+    m_pVBO->submitData();
 
     m_nIndexCount = 328;
     m_pIndexes = new unsigned short[m_nIndexCount];
@@ -60,6 +60,8 @@ void BBHorizontalPlane::init()
                       BB_PATH_RESOURCE_SHADER(base.frag),
                       m_pIndexes,
                       m_nIndexCount);
+
+    BBRenderableObject::init();
 }
 
 void BBHorizontalPlane::render(BBCamera *pCamera)

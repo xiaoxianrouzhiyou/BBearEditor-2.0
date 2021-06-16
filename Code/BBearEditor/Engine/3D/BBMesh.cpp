@@ -45,6 +45,8 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
 //    mShader.setVector4f(Light::lightSpecularUniformLocationName, 1.0f, 1.0f, 1.0f, 1.0f);
 //    mShader.setVector4f(Light::lightOptionUniformLocationName, 32.0f, 0.0f, 0.0f, 0.0f);
 //    setDefaultMaterial();
+
+    BBRenderableObject::init();
 }
 
 bool BBMesh::hit(const BBRay &ray, float &fDistance)
@@ -54,9 +56,9 @@ bool BBMesh::hit(const BBRay &ray, float &fDistance)
     fDistance = FLT_MAX;
     for (int i = 0; i < m_nIndexCount; i += 3)
     {
-        if (ray.computeIntersectWithTriangle(m_ModelMatrix * m_pVertexBuffer->getPosition(m_pIndexes[i]),
-                                             m_ModelMatrix * m_pVertexBuffer->getPosition(m_pIndexes[i + 1]),
-                                             m_ModelMatrix * m_pVertexBuffer->getPosition(m_pIndexes[i + 2]),
+        if (ray.computeIntersectWithTriangle(m_ModelMatrix * m_pVBO->getPosition(m_pIndexes[i]),
+                                             m_ModelMatrix * m_pVBO->getPosition(m_pIndexes[i + 1]),
+                                             m_ModelMatrix * m_pVBO->getPosition(m_pIndexes[i + 2]),
                                              intersection))
         {
             float temp = ray.computeIntersectDistance(intersection);

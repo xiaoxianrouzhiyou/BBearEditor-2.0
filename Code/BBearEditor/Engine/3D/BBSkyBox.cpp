@@ -8,10 +8,10 @@
 // BBSkyBoxSide
 //--------------------
 
-BBSkyBoxSide::BBSkyBoxSide(BBVertexBufferObject *pVertexBuffer)
+BBSkyBoxSide::BBSkyBoxSide(BBVertexBufferObject *pVBO)
     : BBRenderableObject()
 {
-    m_pVertexBuffer = pVertexBuffer;
+    m_pVBO = pVBO;
 }
 
 void BBSkyBoxSide::init(const QString &path)
@@ -19,6 +19,8 @@ void BBSkyBoxSide::init(const QString &path)
     m_pMaterial->init(BB_PATH_RESOURCE_SHADER(base.vert),
                       BB_PATH_RESOURCE_SHADER(base.frag));
     setTexture(path);
+
+    BBRenderableObject::init();
 }
 
 void BBSkyBoxSide::render(BBCamera *pCamera)

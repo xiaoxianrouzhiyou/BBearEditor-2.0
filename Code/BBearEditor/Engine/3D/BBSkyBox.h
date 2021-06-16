@@ -8,7 +8,7 @@
 class BBSkyBoxSide : public BBRenderableObject
 {
 public:
-    BBSkyBoxSide(BBVertexBufferObject *pVertexBuffer);
+    BBSkyBoxSide(BBVertexBufferObject *pVBO);
 
     void init(const QString &path) override;
     void render(BBCamera *pCamera) override;

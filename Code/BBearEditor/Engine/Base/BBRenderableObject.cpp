@@ -1,4 +1,5 @@
 #include "BBRenderableObject.h"
+#include "Render/BBDrawCall.h"
 #include "Render/BBMaterial.h"
 #include "BBUtils.h"
 #include "Render/BBCamera.h"
@@ -15,9 +16,11 @@ BBRenderableObject::BBRenderableObject()
 BBRenderableObject::BBRenderableObject(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz)
     : BBGameObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
+    m_pDrawCall = new BBDrawCall;
     m_bVisible = true;
     m_pMaterial = new BBMaterial;
-    m_pVertexBuffer = NULL;
+    m_pVBO = NULL;
+    m_pEBO = NULL;
     m_pIndexes = NULL;
     m_nIndexCount = 0;
     m_nVertexCount = 0;
@@ -26,9 +29,18 @@ BBRenderableObject::BBRenderableObject(float px, float py, float pz, float rx, f
 
 BBRenderableObject::~BBRenderableObject()
 {
+    BB_SAFE_DELETE(m_pDrawCall);
     BB_SAFE_DELETE(m_pMaterial);
-    BB_SAFE_DELETE(m_pVertexBuffer);
+    BB_SAFE_DELETE(m_pVBO);
+    BB_SAFE_DELETE(m_pEBO);
     BB_SAFE_DELETE(m_pIndexes);
+}
+
+void BBRenderableObject::init()
+{
+    m_pDrawCall->setMaterial(m_pMaterial);
+    m_pDrawCall->setVBO(m_pVBO);
+    m_pDrawCall->setEBO(m_pEBO);
 }
 
 void BBRenderableObject::render(BBCamera *pCamera)
@@ -40,8 +52,6 @@ void BBRenderableObject::render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera
 {
     if (m_bVisible)
     {
-        m_pVertexBuffer->bind();
-
         // test
         BBUniformUpdater *pUniformUpdater = m_pMaterial->getUniforms();
         while (pUniformUpdater != nullptr)
@@ -54,9 +64,7 @@ void BBRenderableObject::render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera
             pUniformUpdater = pUniformUpdater->next<BBUniformUpdater>();
         }
 
-        m_pMaterial->bind(pCamera);
-        draw();
-        m_pVertexBuffer->unbind();
+        m_pDrawCall->draw(pCamera);
     }
 }
 

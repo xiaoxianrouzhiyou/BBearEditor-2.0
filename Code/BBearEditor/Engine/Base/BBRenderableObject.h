@@ -4,9 +4,12 @@
 #include "BBGameObject.h"
 #include <QtOpenGL>
 
+
+class BBDrawCall;
 class BBMaterial;
 class BBCamera;
 class BBVertexBufferObject;
+class BBElementBufferObject;
 class BBRenderableObject : public BBGameObject
 {
 public:
@@ -16,12 +19,17 @@ public:
                        float sx, float sy, float sz);
     virtual ~BBRenderableObject();
 
+    void init() override;
     void render(BBCamera *pCamera) override;
     void render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera) override;
 
     void setTexture(const QString &filePath, bool bInvertY = true);
     void setTexture(int nSize);
     void setTexture(const GLuint &nTexture);
+
+    inline BBMaterial* getMaterial() { return m_pMaterial; }
+    inline BBVertexBufferObject* getVBO() { return m_pVBO; }
+    inline BBElementBufferObject* getEBO() { return m_pEBO; }
 
 //    void setAmbientMaterial(float r, float g, float b, float a);
 //    void setAmbientMaterial(QColor color);
@@ -32,8 +40,10 @@ public:
 
 protected:
     virtual void draw();
+    BBDrawCall *m_pDrawCall;
     BBMaterial *m_pMaterial;
-    BBVertexBufferObject *m_pVertexBuffer;
+    BBVertexBufferObject *m_pVBO;
+    BBElementBufferObject *m_pEBO;
     unsigned short *m_pIndexes;
     int m_nIndexCount;
     int m_nVertexCount;

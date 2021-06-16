@@ -140,7 +140,7 @@ void BBOBJMesh::load(const QString &path, QList<QVector4D> &outPositions)
     }
     // How many unique points
     m_nVertexCount = (int)vertexes.size();
-    m_pVertexBuffer = new BBVertexBufferObject(m_nVertexCount);
+    m_pVBO = new BBVertexBufferObject(m_nVertexCount);
     for (int i = 0; i < m_nVertexCount; i++)
     {
         // vertexes[i].posIndex - 1
@@ -148,17 +148,17 @@ void BBOBJMesh::load(const QString &path, QList<QVector4D> &outPositions)
         QVector4D temp;
 
         temp = positions.at(vertexes[i].posIndex - 1);
-        m_pVertexBuffer->setPosition(i, temp);
+        m_pVBO->setPosition(i, temp);
 
-        m_pVertexBuffer->setColor(i, m_DefaultColor);
+        m_pVBO->setColor(i, m_DefaultColor);
 
         temp = texcoords.at(vertexes[i].texcoordIndex - 1);
-        m_pVertexBuffer->setTexcoord(i, temp.x(), temp.y());
+        m_pVBO->setTexcoord(i, temp.x(), temp.y());
 
         temp = normals.at(vertexes[i].normalIndex - 1);
-        m_pVertexBuffer->setNormal(i, temp);
+        m_pVBO->setNormal(i, temp);
     }
-    m_pVertexBuffer->submitData();
+    m_pVBO->submitData();
 
     // for creating bounding box
     outPositions = positions;
