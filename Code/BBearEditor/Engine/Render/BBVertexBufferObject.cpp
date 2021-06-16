@@ -86,34 +86,13 @@ void BBVertexBufferObject::setNormal(int index, const QVector4D &normal)
 
 void BBVertexBufferObject::submitData()
 {
-    m_VBO = createBufferObject(GL_ARRAY_BUFFER, sizeof(BBVertex) * m_nVertexCount, GL_STATIC_DRAW, m_pVertexes);
+    updateData(GL_ARRAY_BUFFER, sizeof(BBVertex) * m_nVertexCount, m_pVertexes);
 }
 
-void BBVertexBufferObject::bind()
-{
-    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(BBVertex) * m_nVertexCount, m_pVertexes);
-}
-
-void BBVertexBufferObject::unbind()
-{
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-void BBVertexBufferObject::setSize(int nVertexCount)
+void BBVertexBufferObject::setSize(int nVertexCount, GLenum hint)
 {
     m_nVertexCount = nVertexCount;
     m_pVertexes = new BBVertex[m_nVertexCount];
     memset(m_pVertexes, 0, sizeof(BBVertex) * m_nVertexCount);
-    m_VBO = createBufferObject(GL_ARRAY_BUFFER, sizeof(BBVertex) * m_nVertexCount, GL_STATIC_DRAW, NULL);
-}
-
-GLuint BBVertexBufferObject::createBufferObject(GLenum bufferType, GLsizeiptr size, GLenum usage, void *pData)
-{
-    GLuint bufferObject;
-    glGenBuffers(1, &bufferObject);
-    glBindBuffer(bufferType, bufferObject);
-    glBufferData(bufferType, size, pData, usage);
-    glBindBuffer(bufferType, 0);
-    return bufferObject;
+    m_Name = createBufferObject(GL_ARRAY_BUFFER, sizeof(BBVertex) * m_nVertexCount, hint, NULL);
 }

@@ -16,7 +16,7 @@ class BBVertexBufferObject : public BBBufferObject
 {
 public:
     BBVertexBufferObject(int nVertexCount);
-    virtual ~BBVertexBufferObject();
+    ~BBVertexBufferObject();
 
     void setPosition(int index, float x, float y, float z, float w = 1.0f);
     void setPosition(int index, const QVector3D &position);
@@ -37,16 +37,12 @@ public:
     inline int getVertexCount() { return m_nVertexCount; }
 
     void submitData();
-    void bind();
-    void unbind();
 
 private:
-    void setSize(int nVertexCount);
-    GLuint createBufferObject(GLenum bufferType, GLsizeiptr size, GLenum usage, void *pData = NULL);
+    void setSize(int nVertexCount, GLenum hint = GL_STATIC_DRAW);
 
     BBVertex *m_pVertexes;
     int m_nVertexCount;
-    GLuint m_VBO;
 };
 
 #endif // BBVERTEXBUFFEROBJECT_H

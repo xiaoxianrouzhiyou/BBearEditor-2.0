@@ -4,20 +4,15 @@
 
 #include "BBBufferObject.h"
 
-class QOpenGLBuffer;
-
 class BBElementBufferObject : public BBBufferObject
 {
 public:
-    BBElementBufferObject(const unsigned short *pIndexes, int nIndexCount);
-    ~BBElementBufferObject();
+    BBElementBufferObject();
 
-    void set(const unsigned short *pIndexes, int nIndexCount);
-    void bind();
-    void release();
+    void setSize(int nIndexCount, GLenum hint = GL_STATIC_DRAW);
 
 private:
-    QOpenGLBuffer *m_pBuffer;
+
 };
 
 #endif // BBELEMENTBUFFEROBJECT_H

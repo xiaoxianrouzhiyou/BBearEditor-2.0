@@ -80,7 +80,8 @@ SOURCES += \
     Engine/Render/BBBaseRenderComponent.cpp \
     Engine/Render/BBLinkedList.cpp \
     Engine/Render/BBShader.cpp \
-    Engine/Render/BBUniformUpdater.cpp
+    Engine/Render/BBUniformUpdater.cpp \
+    Engine/Render/BBDrawCall.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -140,7 +141,8 @@ HEADERS += \
     Engine/Render/BBBaseRenderComponent.h \
     Engine/Render/BBLinkedList.h \
     Engine/Render/BBShader.h \
-    Engine/Render/BBUniformUpdater.h
+    Engine/Render/BBUniformUpdater.h \
+    Engine/Render/BBDrawCall.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
