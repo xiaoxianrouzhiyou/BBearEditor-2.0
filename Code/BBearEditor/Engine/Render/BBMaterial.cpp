@@ -1,10 +1,12 @@
 #include "BBMaterial.h"
 #include "BBVertexBufferObject.h"
+#include "BBCamera.h"
 
 
 BBMaterial::BBMaterial()
 {
     m_pAttributes = NULL;
+    m_pUniforms = NULL;
 }
 
 BBMaterial::~BBMaterial()
@@ -34,57 +36,9 @@ void BBMaterial::init(const QString &vShaderPath, const QString &fShaderPath,
 
         if (m_Program != 0)
         {
-            m_ProjectionMatrixLocation = glGetUniformLocation(m_Program, NAME_PROJECTIONMATRIX);
-            m_ViewMatrixLocation = glGetUniformLocation(m_Program, NAME_VIEWMATRIX);
-            m_ModelMatrixLocation = glGetUniformLocation(m_Program, NAME_MODELMATRIX);
-            m_ITModelMatrixLocation = glGetUniformLocation(m_Program, NAME_ITMODELMATRIX);
-
             // generate attribute chain
-            GLint count = 0;
-            glGetProgramiv(m_Program, GL_ACTIVE_ATTRIBUTES, &count);
-            for (int i = 0; i < count; i++)
-            {
-                GLsizei length = 0;
-                GLenum type = 0;
-                GLint size = 0;
-                char attribName[256] = {0};
-                glGetActiveAttrib(m_Program, i, 256, &length, &size, &type, attribName);
-                GLint location = glGetAttribLocation(m_Program, attribName);
-                int nComponentCount = 0;
-                int nBasicDataType = 0;
-                if (type == GL_FLOAT_VEC4)
-                {
-                    nComponentCount = 4;
-                    nBasicDataType = GL_FLOAT;
-                }
-                int nDataOffset = 0;
-                if (strcmp(attribName, NAME_POSITION) == 0)
-                {
-                    nDataOffset = 0;
-                }
-                else if (strcmp(attribName, NAME_COLOR) == 0)
-                {
-                    nDataOffset = sizeof(float) * 4;
-                }
-                else if (strcmp(attribName, NAME_TEXCOORD) == 0)
-                {
-                    nDataOffset = sizeof(float) * 8;
-                }
-                else if (strcmp(attribName, NAME_NORMAL) == 0)
-                {
-                    nDataOffset = sizeof(float) * 12;
-                }
-                BBAttribute *pAttribute = new BBAttribute(location, nComponentCount, nBasicDataType,
-                                                          GL_FALSE, sizeof(BBVertex), nDataOffset);
-                if (m_pAttributes == nullptr)
-                {
-                    m_pAttributes = pAttribute;
-                }
-                else
-                {
-                    m_pAttributes->pushBack(pAttribute);
-                }
-            }
+            initAttributes();
+            initUniforms();
         }
     } while(0);
 
@@ -92,22 +46,17 @@ void BBMaterial::init(const QString &vShaderPath, const QString &fShaderPath,
     BB_SAFE_DELETE(fCode);
 }
 
-void BBMaterial::bind(const QMatrix4x4 &modelMatrix, const QMatrix4x4 &viewMatrix, const QMatrix4x4 &projectionMatrix)
+void BBMaterial::bind(BBCamera *pCamera)
 {
     glUseProgram(m_Program);
-
-    glUniformMatrix4fv(m_ModelMatrixLocation, 1, GL_FALSE, modelMatrix.data());
-
-    QMatrix4x4 ITModelMatrix = modelMatrix.transposed().inverted();
-    glUniformMatrix4fv(m_ITModelMatrixLocation, 1, GL_FALSE, ITModelMatrix.data());
-
-    glUniformMatrix4fv(m_ViewMatrixLocation, 1, GL_FALSE, viewMatrix.data());
-
-    glUniformMatrix4fv(m_ProjectionMatrixLocation, 1, GL_FALSE, projectionMatrix.data());
 
     if (m_pAttributes != nullptr)
     {
         m_pAttributes->active();
+    }
+    if (m_pUniforms != nullptr)
+    {
+        m_pUniforms->update(pCamera);
     }
 }
 
@@ -155,4 +104,86 @@ GLuint BBMaterial::createProgram(GLuint vShader, GLuint fShader)
         program = 0;
     }
     return program;
+}
+
+void BBMaterial::initAttributes()
+{
+    GLint count = 0;
+    glGetProgramiv(m_Program, GL_ACTIVE_ATTRIBUTES, &count);
+    for (int i = 0; i < count; i++)
+    {
+        GLsizei length = 0;
+        GLenum type = 0;
+        GLint size = 0;
+        char attribName[256] = {0};
+        glGetActiveAttrib(m_Program, i, 256, &length, &size, &type, attribName);
+        GLint location = glGetAttribLocation(m_Program, attribName);
+        int nComponentCount = 0;
+        int nBasicDataType = 0;
+        if (type == GL_FLOAT_VEC4)
+        {
+            nComponentCount = 4;
+            nBasicDataType = GL_FLOAT;
+        }
+        int nDataOffset = 0;
+        if (strcmp(attribName, NAME_POSITION) == 0)
+        {
+            nDataOffset = 0;
+        }
+        else if (strcmp(attribName, NAME_COLOR) == 0)
+        {
+            nDataOffset = sizeof(float) * 4;
+        }
+        else if (strcmp(attribName, NAME_TEXCOORD) == 0)
+        {
+            nDataOffset = sizeof(float) * 8;
+        }
+        else if (strcmp(attribName, NAME_NORMAL) == 0)
+        {
+            nDataOffset = sizeof(float) * 12;
+        }
+        BBAttribute *pAttribute = new BBAttribute(location, nComponentCount, nBasicDataType,
+                                                  GL_FALSE, sizeof(BBVertex), nDataOffset);
+        if (m_pAttributes == nullptr)
+        {
+            m_pAttributes = pAttribute;
+        }
+        else
+        {
+            m_pAttributes->pushBack(pAttribute);
+        }
+    }
+}
+
+void BBMaterial::initUniforms()
+{
+    GLint count = 0;
+    glGetProgramiv(m_Program, GL_ACTIVE_UNIFORMS, &count);
+    for (int i = 0; i < count; i++)
+    {
+        GLsizei length = 0;
+        GLenum type = 0;
+        GLint size = 0;
+        char uniformName[256] = {0};
+        glGetActiveUniform(m_Program, i, 256, &length, &size, &type, uniformName);
+        GLint location = glGetUniformLocation(m_Program, uniformName);
+        BBMaterialUniformPropertyType uniformType = BBMaterialUniformPropertyType::Matrix4;
+        if (strcmp(uniformName, NAME_PROJECTIONMATRIX) == 0)
+        {
+            uniformType = BBMaterialUniformPropertyType::CameraProjectionMatrix;
+        }
+        else if (strcmp(uniformName, NAME_VIEWMATRIX) == 0)
+        {
+            uniformType = BBMaterialUniformPropertyType::CameraViewMatrix;
+        }
+        BBUniformUpdater *pUniformUpdater = new BBUniformUpdater(location, uniformType);
+        if (m_pUniforms == nullptr)
+        {
+            m_pUniforms = pUniformUpdater;
+        }
+        else
+        {
+            m_pUniforms->pushBack(pUniformUpdater);
+        }
+    }
 }

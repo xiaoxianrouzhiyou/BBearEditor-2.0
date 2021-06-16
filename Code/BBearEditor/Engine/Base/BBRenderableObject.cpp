@@ -41,7 +41,20 @@ void BBRenderableObject::render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera
     if (m_bVisible)
     {
         m_pVertexBuffer->bind();
-        m_pMaterial->bind(modelMatrix, pCamera->getViewMatrix(), pCamera->getProjectionMatrix());
+
+        // test
+        BBUniformUpdater *pUniformUpdater = m_pMaterial->getUniforms();
+        while (pUniformUpdater != nullptr)
+        {
+            if (pUniformUpdater->getPropertyType() == BBMaterialUniformPropertyType::Matrix4)
+            {
+                pUniformUpdater->setData(modelMatrix.data());
+                break;
+            }
+            pUniformUpdater = pUniformUpdater->next<BBUniformUpdater>();
+        }
+
+        m_pMaterial->bind(pCamera);
         draw();
         m_pVertexBuffer->unbind();
     }

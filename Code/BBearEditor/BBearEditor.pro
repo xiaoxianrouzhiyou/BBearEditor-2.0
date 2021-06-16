@@ -79,7 +79,8 @@ SOURCES += \
     Engine/Render/BBAttribute.cpp \
     Engine/Render/BBBaseRenderComponent.cpp \
     Engine/Render/BBLinkedList.cpp \
-    Engine/Render/BBShader.cpp
+    Engine/Render/BBShader.cpp \
+    Engine/Render/BBUniformUpdater.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -138,7 +139,8 @@ HEADERS += \
     Engine/Render/BBAttribute.h \
     Engine/Render/BBBaseRenderComponent.h \
     Engine/Render/BBLinkedList.h \
-    Engine/Render/BBShader.h
+    Engine/Render/BBShader.h \
+    Engine/Render/BBUniformUpdater.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
