@@ -2,8 +2,9 @@
 #define BBOPENGLWIDGET_H
 
 
+#include "Render/BBBaseRenderComponent.h"
 #include <QOpenGLWidget>
-#include <QOpenGLFunctions>
+
 
 class BBScene;
 class BBRenderThread;

@@ -5,6 +5,7 @@
 #include "Render/BBCamera.h"
 #include "Render/BBVertexBufferObject.h"
 #include "Render/BBGLBuffers.h"
+#include "Render/BBUniformUpdater.h"
 
 
 BBRenderableObject::BBRenderableObject()
@@ -52,18 +53,7 @@ void BBRenderableObject::render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera
 {
     if (m_bVisible)
     {
-        // test
-        BBUniformUpdater *pUniformUpdater = m_pMaterial->getUniforms();
-        while (pUniformUpdater != nullptr)
-        {
-            if (pUniformUpdater->getPropertyType() == BBMaterialUniformPropertyType::Matrix4)
-            {
-                pUniformUpdater->setData(modelMatrix.data());
-                break;
-            }
-            pUniformUpdater = pUniformUpdater->next<BBUniformUpdater>();
-        }
-
+        m_pMaterial->setMatrix4(NAME_MODELMATRIX, modelMatrix.data());
         m_pDrawCall->draw(pCamera);
     }
 }

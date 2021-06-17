@@ -13,6 +13,7 @@
 #include <QRgb>
 #include "BBUtils.h"
 #include <QImage>
+#include <QMap>
 
 
 #define NAME_POSITION "positionAttr"

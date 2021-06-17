@@ -1,6 +1,8 @@
 #include "BBMaterial.h"
 #include "BBVertexBufferObject.h"
 #include "BBCamera.h"
+#include "BBAttribute.h"
+#include "BBUniformUpdater.h"
 
 
 BBMaterial::BBMaterial()
@@ -54,9 +56,21 @@ void BBMaterial::bind(BBCamera *pCamera)
     {
         m_pAttributes->active();
     }
-    if (m_pUniforms != nullptr)
+
+    BBUniformUpdater *pUniformUpdater = m_pUniforms;
+    while (pUniformUpdater != nullptr)
     {
-        m_pUniforms->update(pCamera);
+        pUniformUpdater->updateUniform(pUniformUpdater->getLocation(), pCamera, pUniformUpdater->getTargetProperty());
+        pUniformUpdater = pUniformUpdater->next<BBUniformUpdater>();
+    }
+}
+
+void BBMaterial::setMatrix4(const std::string &uniformName, const float *pMatrix4)
+{
+    auto it = m_Properties.find(uniformName);
+    if (it != m_Properties.end())
+    {
+        ((BBMatrix4MaterialProperty*)it.value())->setPropertyValue(pMatrix4);
     }
 }
 
@@ -167,16 +181,25 @@ void BBMaterial::initUniforms()
         char uniformName[256] = {0};
         glGetActiveUniform(m_Program, i, 256, &length, &size, &type, uniformName);
         GLint location = glGetUniformLocation(m_Program, uniformName);
+        BBUpdateUniformFunc updateUniformFunc = &BBUniformUpdater::updateMatrix4;
+        BBMatrix4MaterialProperty *pMatrix4MaterialProperty = NULL;
         BBMaterialUniformPropertyType uniformType = BBMaterialUniformPropertyType::Matrix4;
         if (strcmp(uniformName, NAME_PROJECTIONMATRIX) == 0)
         {
+            updateUniformFunc = &BBUniformUpdater::updateCameraProjectionMatrix;
             uniformType = BBMaterialUniformPropertyType::CameraProjectionMatrix;
         }
         else if (strcmp(uniformName, NAME_VIEWMATRIX) == 0)
         {
+            updateUniformFunc = &BBUniformUpdater::updateCameraViewMatrix;
             uniformType = BBMaterialUniformPropertyType::CameraViewMatrix;
         }
-        BBUniformUpdater *pUniformUpdater = new BBUniformUpdater(location, uniformType);
+        else if (strcmp(uniformName, NAME_MODELMATRIX) == 0)
+        {
+            pMatrix4MaterialProperty = new BBMatrix4MaterialProperty(uniformType);
+            m_Properties.insert(uniformName, pMatrix4MaterialProperty);
+        }
+        BBUniformUpdater *pUniformUpdater = new BBUniformUpdater(location, updateUniformFunc, pMatrix4MaterialProperty);
         if (m_pUniforms == nullptr)
         {
             m_pUniforms = pUniformUpdater;

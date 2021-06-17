@@ -3,10 +3,12 @@
 
 
 #include "BBBaseRenderComponent.h"
-#include "BBAttribute.h"
-#include "BBUniformUpdater.h"
+
 
 class BBCamera;
+class BBAttribute;
+class BBUniformUpdater;
+class BBMaterialProperty;
 
 class BBMaterial : protected BBBaseRenderComponent
 {
@@ -17,6 +19,8 @@ public:
     void init(const QString &vShaderPath, const QString &fShaderPath,
               const unsigned short *pIndexes = 0, int nIndexCount = 0);
     void bind(BBCamera *pCamera);
+    void setMatrix4(const std::string &uniformName, const float *pMatrix4);
+
     void bindElementBufferObject(const unsigned short *pIndexes, int nIndexCount);
 
     GLuint compileShader(GLenum shaderType, const char *shaderCode);
@@ -32,6 +36,8 @@ private:
 
     BBAttribute *m_pAttributes;
     BBUniformUpdater *m_pUniforms;
+
+    QMap<std::string, BBMaterialProperty*> m_Properties;
 
     GLuint m_PositionLocation;
     GLuint m_ColorLocation;

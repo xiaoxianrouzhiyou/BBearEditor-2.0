@@ -2,37 +2,36 @@
 #include "BBCamera.h"
 
 
-BBUniformUpdater::BBUniformUpdater(GLint location, const BBMaterialUniformPropertyType &eType)
+BBUniformUpdater::BBUniformUpdater(GLint location, const BBUpdateUniformFunc &updateFunc, BBMaterialProperty *pTargetProperty)
     : BBBaseRenderComponent()
 {
     m_Location = location;
-    m_eType = eType;
-    m_pData = NULL;
+    m_UpdateUniformFunc = updateFunc;
+    m_pTargetProperty = pTargetProperty;
 }
 
-void BBUniformUpdater::setData(const float *pData)
+BBUniformUpdater::~BBUniformUpdater()
 {
-    m_pData = pData;
+    BB_SAFE_DELETE(m_pTargetProperty);
 }
 
-void BBUniformUpdater::update(void *pData)
+void BBUniformUpdater::updateUniform(GLint location, void *pCamera, void *pPropertyValue)
 {
-    switch (m_eType) {
-    case CameraProjectionMatrix:
-        glUniformMatrix4fv(m_Location, 1, GL_FALSE, ((BBCamera*)pData)->getProjectionMatrix().data());
-        break;
-    case CameraViewMatrix:
-        glUniformMatrix4fv(m_Location, 1, GL_FALSE, ((BBCamera*)pData)->getViewMatrix().data());
-        break;
-    case Matrix4:
-        glUniformMatrix4fv(m_Location, 1, GL_FALSE, m_pData);
-        break;
-    default:
-        break;
-    }
+    (this->*m_UpdateUniformFunc)(location, pCamera, pPropertyValue);
+}
 
-    if (m_pNext != nullptr)
-    {
-        next<BBUniformUpdater>()->update(pData);
-    }
+void BBUniformUpdater::updateCameraProjectionMatrix(GLint location, void *pCamera, void *pPropertyValue)
+{
+    glUniformMatrix4fv(location, 1, GL_FALSE, ((BBCamera*)pCamera)->getProjectionMatrix().data());
+}
+
+void BBUniformUpdater::updateCameraViewMatrix(GLint location, void *pCamera, void *pPropertyValue)
+{
+    glUniformMatrix4fv(location, 1, GL_FALSE, ((BBCamera*)pCamera)->getViewMatrix().data());
+}
+
+void BBUniformUpdater::updateMatrix4(GLint location, void *pCamera, void *pPropertyValue)
+{
+    BBMatrix4MaterialProperty *pProperty = (BBMatrix4MaterialProperty*)pPropertyValue;
+    glUniformMatrix4fv(location, 1, GL_FALSE, pProperty->getPropertyValue());
 }
