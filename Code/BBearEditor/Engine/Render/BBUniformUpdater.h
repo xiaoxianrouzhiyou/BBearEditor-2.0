@@ -24,6 +24,7 @@ public:
     void updateCameraProjectionMatrix(GLint location, void *pCamera, void *pPropertyValue);
     void updateCameraViewMatrix(GLint location, void *pCamera, void *pPropertyValue);
     void updateMatrix4(GLint location, void *pCamera, void *pPropertyValue);
+    void updateVector4(GLint location, void *pCamera, void *pPropertyValue);
 
 private:
     GLint m_Location;

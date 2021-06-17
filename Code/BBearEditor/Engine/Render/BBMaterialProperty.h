@@ -7,6 +7,7 @@ enum BBMaterialUniformPropertyType
     CameraProjectionMatrix,
     CameraViewMatrix,
     Matrix4,
+    Vector4,
     Count
 };
 
@@ -27,6 +28,21 @@ class BBMatrix4MaterialProperty : public BBMaterialProperty
 public:
     BBMatrix4MaterialProperty(const BBMaterialUniformPropertyType &eType);
     ~BBMatrix4MaterialProperty();
+
+    inline void setPropertyValue(const float *pPropertyValue) { m_pPropertyValue = pPropertyValue; }
+    inline const float* getPropertyValue() { return m_pPropertyValue; }
+
+private:
+    // 智能指针 to do
+    const float *m_pPropertyValue;
+};
+
+
+class BBVector4MaterialProperty : public BBMaterialProperty
+{
+public:
+    BBVector4MaterialProperty(const BBMaterialUniformPropertyType &eType);
+    ~BBVector4MaterialProperty();
 
     inline void setPropertyValue(const float *pPropertyValue) { m_pPropertyValue = pPropertyValue; }
     inline const float* getPropertyValue() { return m_pPropertyValue; }

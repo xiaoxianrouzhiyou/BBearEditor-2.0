@@ -35,3 +35,9 @@ void BBUniformUpdater::updateMatrix4(GLint location, void *pCamera, void *pPrope
     BBMatrix4MaterialProperty *pProperty = (BBMatrix4MaterialProperty*)pPropertyValue;
     glUniformMatrix4fv(location, 1, GL_FALSE, pProperty->getPropertyValue());
 }
+
+void BBUniformUpdater::updateVector4(GLint location, void *pCamera, void *pPropertyValue)
+{
+    BBVector4MaterialProperty *pProperty = (BBVector4MaterialProperty*)pPropertyValue;
+    glUniform4fv(location, 1, pProperty->getPropertyValue());
+}

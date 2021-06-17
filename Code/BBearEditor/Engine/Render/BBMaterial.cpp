@@ -74,6 +74,15 @@ void BBMaterial::setMatrix4(const std::string &uniformName, const float *pMatrix
     }
 }
 
+void BBMaterial::setVector4(const std::string &uniformName, const float *pVector4)
+{
+    auto it = m_Properties.find(uniformName);
+    if (it != m_Properties.end())
+    {
+        ((BBVector4MaterialProperty*)it.value())->setPropertyValue(pVector4);
+    }
+}
+
 void BBMaterial::bindElementBufferObject(const unsigned short *pIndexes, int nIndexCount)
 {
 //    m_pElementBufferObject->set(pIndexes, nIndexCount);
@@ -181,32 +190,59 @@ void BBMaterial::initUniforms()
         char uniformName[256] = {0};
         glGetActiveUniform(m_Program, i, 256, &length, &size, &type, uniformName);
         GLint location = glGetUniformLocation(m_Program, uniformName);
-        BBUpdateUniformFunc updateUniformFunc = &BBUniformUpdater::updateMatrix4;
-        BBMatrix4MaterialProperty *pMatrix4MaterialProperty = NULL;
-        BBMaterialUniformPropertyType uniformType = BBMaterialUniformPropertyType::Matrix4;
-        if (strcmp(uniformName, NAME_PROJECTIONMATRIX) == 0)
+        BBUniformUpdater *pUniformUpdater = NULL;
+
+        if (type == GL_FLOAT_MAT4)
         {
-            updateUniformFunc = &BBUniformUpdater::updateCameraProjectionMatrix;
-            uniformType = BBMaterialUniformPropertyType::CameraProjectionMatrix;
+            pUniformUpdater = initUniformMatrix4(location, uniformName);
         }
-        else if (strcmp(uniformName, NAME_VIEWMATRIX) == 0)
+        else if (type == GL_FLOAT_VEC4)
         {
-            updateUniformFunc = &BBUniformUpdater::updateCameraViewMatrix;
-            uniformType = BBMaterialUniformPropertyType::CameraViewMatrix;
+            pUniformUpdater = initUniformVector4(location, uniformName);
         }
-        else if (strcmp(uniformName, NAME_MODELMATRIX) == 0)
-        {
-            pMatrix4MaterialProperty = new BBMatrix4MaterialProperty(uniformType);
-            m_Properties.insert(uniformName, pMatrix4MaterialProperty);
-        }
-        BBUniformUpdater *pUniformUpdater = new BBUniformUpdater(location, updateUniformFunc, pMatrix4MaterialProperty);
-        if (m_pUniforms == nullptr)
-        {
-            m_pUniforms = pUniformUpdater;
-        }
-        else
-        {
-            m_pUniforms->pushBack(pUniformUpdater);
-        }
+
+        appendUniformUpdater(pUniformUpdater);
+    }
+}
+
+BBUniformUpdater* BBMaterial::initUniformMatrix4(GLint location, const char *pUniformName)
+{
+    BBUpdateUniformFunc updateUniformFunc = &BBUniformUpdater::updateMatrix4;
+    BBMatrix4MaterialProperty *pProperty = NULL;
+    BBMaterialUniformPropertyType uniformType = BBMaterialUniformPropertyType::Matrix4;
+    if (strcmp(pUniformName, NAME_PROJECTIONMATRIX) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updateCameraProjectionMatrix;
+        uniformType = BBMaterialUniformPropertyType::CameraProjectionMatrix;
+    }
+    else if (strcmp(pUniformName, NAME_VIEWMATRIX) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updateCameraViewMatrix;
+        uniformType = BBMaterialUniformPropertyType::CameraViewMatrix;
+    }
+    else if (strcmp(pUniformName, NAME_MODELMATRIX) == 0)
+    {
+        pProperty = new BBMatrix4MaterialProperty(uniformType);
+        m_Properties.insert(pUniformName, pProperty);
+    }
+    return new BBUniformUpdater(location, updateUniformFunc, pProperty);
+}
+
+BBUniformUpdater* BBMaterial::initUniformVector4(GLint location, const char *pUniformName)
+{
+    BBVector4MaterialProperty *pProperty = new BBVector4MaterialProperty(Vector4);
+    m_Properties.insert(pUniformName, pProperty);
+    return new BBUniformUpdater(location, &BBUniformUpdater::updateVector4, pProperty);
+}
+
+void BBMaterial::appendUniformUpdater(BBUniformUpdater *pUniformUpdater)
+{
+    if (m_pUniforms == nullptr)
+    {
+        m_pUniforms = pUniformUpdater;
+    }
+    else
+    {
+        m_pUniforms->pushBack(pUniformUpdater);
     }
 }

@@ -20,6 +20,7 @@ public:
               const unsigned short *pIndexes = 0, int nIndexCount = 0);
     void bind(BBCamera *pCamera);
     void setMatrix4(const std::string &uniformName, const float *pMatrix4);
+    void setVector4(const std::string &uniformName, const float *pVector4);
 
     void bindElementBufferObject(const unsigned short *pIndexes, int nIndexCount);
 
@@ -31,6 +32,9 @@ public:
 private:
     void initAttributes();
     void initUniforms();
+    BBUniformUpdater* initUniformMatrix4(GLint location, const char *pUniformName);
+    BBUniformUpdater* initUniformVector4(GLint location, const char *pUniformName);
+    void appendUniformUpdater(BBUniformUpdater *pUniformUpdater);
 
     GLuint m_Program;
 

@@ -30,3 +30,19 @@ BBMatrix4MaterialProperty::~BBMatrix4MaterialProperty()
 {
     BB_SAFE_DELETE(m_pPropertyValue);
 }
+
+
+/**
+ * @brief BBVector4MaterialProperty::BBVector4MaterialProperty
+ * @param eType
+ */
+BBVector4MaterialProperty::BBVector4MaterialProperty(const BBMaterialUniformPropertyType &eType)
+    : BBMaterialProperty(eType)
+{
+    m_pPropertyValue = nullptr;
+}
+
+BBVector4MaterialProperty::~BBVector4MaterialProperty()
+{
+    BB_SAFE_DELETE(m_pPropertyValue);
+}
