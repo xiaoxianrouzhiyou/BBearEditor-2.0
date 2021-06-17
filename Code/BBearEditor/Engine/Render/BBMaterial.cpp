@@ -52,6 +52,9 @@ void BBMaterial::bind(BBCamera *pCamera)
 {
     glUseProgram(m_Program);
 
+    BBGlobalRenderState::updateBlendState(m_RenderState.m_bBlend);
+    BBGlobalRenderState::updateBlendFunc(m_RenderState.m_SRCBlendFunc, m_RenderState.m_DSTBlendFunc);
+
     if (m_pAttributes != nullptr)
     {
         m_pAttributes->active();

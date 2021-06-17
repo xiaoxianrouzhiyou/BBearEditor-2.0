@@ -3,6 +3,7 @@
 
 
 #include "BBBaseRenderComponent.h"
+#include "BBRenderState.h"
 
 
 class BBCamera;
@@ -43,15 +44,7 @@ private:
 
     QMap<std::string, BBMaterialProperty*> m_Properties;
 
-    GLuint m_PositionLocation;
-    GLuint m_ColorLocation;
-    GLuint m_TexcoordLocation;
-    GLuint m_NormalLocation;
-
-    GLuint m_ProjectionMatrixLocation;
-    GLuint m_ViewMatrixLocation;
-    GLuint m_ModelMatrixLocation;
-    GLuint m_ITModelMatrixLocation;
+    BBRenderState m_RenderState;
 };
 
 #endif // BBMATERIAL_H
