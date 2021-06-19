@@ -82,7 +82,8 @@ SOURCES += \
     Engine/Render/BBShader.cpp \
     Engine/Render/BBUniformUpdater.cpp \
     Engine/Render/BBDrawCall.cpp \
-    Engine/Render/BBMaterialProperty.cpp
+    Engine/Render/BBMaterialProperty.cpp \
+    Engine/Render/BBRenderPass.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -144,7 +145,8 @@ HEADERS += \
     Engine/Render/BBShader.h \
     Engine/Render/BBUniformUpdater.h \
     Engine/Render/BBDrawCall.h \
-    Engine/Render/BBMaterialProperty.h
+    Engine/Render/BBMaterialProperty.h \
+    Engine/Render/BBRenderPass.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

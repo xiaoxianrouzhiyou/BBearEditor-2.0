@@ -20,6 +20,8 @@ public:
     inline GLint getLocation() { return m_Location; }
     inline BBMaterialProperty* getTargetProperty() { return m_pTargetProperty; }
 
+    BBUniformUpdater* clone();
+
     void updateUniform(GLint location, void *pCamera, void *pPropertyValue);
     void updateCameraProjectionMatrix(GLint location, void *pCamera, void *pPropertyValue);
     void updateCameraViewMatrix(GLint location, void *pCamera, void *pPropertyValue);

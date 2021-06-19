@@ -6,9 +6,11 @@
  * @brief BBMaterialProperty::BBMaterialProperty
  * @param eType
  */
-BBMaterialProperty::BBMaterialProperty(const BBMaterialUniformPropertyType &eType)
+BBMaterialProperty::BBMaterialProperty(const BBMaterialUniformPropertyType &eType, const char *name)
 {
     m_eType = eType;
+    memset(m_Name, 0, 64);
+    strcpy(m_Name, name);
 }
 
 BBMaterialProperty::~BBMaterialProperty()
@@ -20,8 +22,8 @@ BBMaterialProperty::~BBMaterialProperty()
 /**
  * @brief BBMatrix4MaterialProperty::BBMatrix4MaterialProperty
  */
-BBMatrix4MaterialProperty::BBMatrix4MaterialProperty(const BBMaterialUniformPropertyType &eType)
-    : BBMaterialProperty(eType)
+BBMatrix4MaterialProperty::BBMatrix4MaterialProperty(const char *name)
+    : BBMaterialProperty(Matrix4, name)
 {
     m_pPropertyValue = nullptr;
 }
@@ -31,13 +33,20 @@ BBMatrix4MaterialProperty::~BBMatrix4MaterialProperty()
     BB_SAFE_DELETE(m_pPropertyValue);
 }
 
+BBMaterialProperty* BBMatrix4MaterialProperty::clone()
+{
+    BBMatrix4MaterialProperty *pRet = new BBMatrix4MaterialProperty(m_Name);
+    pRet->setPropertyValue(m_pPropertyValue);
+    return pRet;
+}
+
 
 /**
  * @brief BBVector4MaterialProperty::BBVector4MaterialProperty
  * @param eType
  */
-BBVector4MaterialProperty::BBVector4MaterialProperty(const BBMaterialUniformPropertyType &eType)
-    : BBMaterialProperty(eType)
+BBVector4MaterialProperty::BBVector4MaterialProperty(const char *name)
+    : BBMaterialProperty(Vector4, name)
 {
     m_pPropertyValue = nullptr;
 }
@@ -45,4 +54,11 @@ BBVector4MaterialProperty::BBVector4MaterialProperty(const BBMaterialUniformProp
 BBVector4MaterialProperty::~BBVector4MaterialProperty()
 {
     BB_SAFE_DELETE(m_pPropertyValue);
+}
+
+BBMaterialProperty* BBVector4MaterialProperty::clone()
+{
+    BBVector4MaterialProperty *pRet = new BBVector4MaterialProperty(m_Name);
+    pRet->setPropertyValue(m_pPropertyValue);
+    return pRet;
 }

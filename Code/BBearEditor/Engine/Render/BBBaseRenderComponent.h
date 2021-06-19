@@ -14,6 +14,7 @@
 #include "BBUtils.h"
 #include <QImage>
 #include <QMap>
+#include "BBUtils.h"
 
 
 #define NAME_POSITION "positionAttr"

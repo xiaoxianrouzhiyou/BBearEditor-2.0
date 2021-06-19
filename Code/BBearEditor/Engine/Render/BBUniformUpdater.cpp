@@ -15,6 +15,12 @@ BBUniformUpdater::~BBUniformUpdater()
     BB_SAFE_DELETE(m_pTargetProperty);
 }
 
+BBUniformUpdater* BBUniformUpdater::clone()
+{
+    return new BBUniformUpdater(m_Location, m_UpdateUniformFunc,
+                                m_pTargetProperty == nullptr ? nullptr : m_pTargetProperty->clone());
+}
+
 void BBUniformUpdater::updateUniform(GLint location, void *pCamera, void *pPropertyValue)
 {
     (this->*m_UpdateUniformFunc)(location, pCamera, pPropertyValue);

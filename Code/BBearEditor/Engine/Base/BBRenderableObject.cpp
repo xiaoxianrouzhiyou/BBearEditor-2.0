@@ -6,6 +6,7 @@
 #include "Render/BBVertexBufferObject.h"
 #include "Render/BBGLBuffers.h"
 #include "Render/BBUniformUpdater.h"
+#include "Render/BBRenderPass.h"
 
 
 BBRenderableObject::BBRenderableObject()

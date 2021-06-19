@@ -15,19 +15,25 @@ enum BBMaterialUniformPropertyType
 class BBMaterialProperty
 {
 public:
-    BBMaterialProperty(const BBMaterialUniformPropertyType &eType);
+    BBMaterialProperty(const BBMaterialUniformPropertyType &eType, const char *name);
     virtual ~BBMaterialProperty();
 
-private:
+    virtual BBMaterialProperty* clone() = 0;
+    inline char* getName() { return m_Name; }
+
+protected:
     BBMaterialUniformPropertyType m_eType;
+    char m_Name[64];
 };
 
 
 class BBMatrix4MaterialProperty : public BBMaterialProperty
 {
 public:
-    BBMatrix4MaterialProperty(const BBMaterialUniformPropertyType &eType);
+    BBMatrix4MaterialProperty(const char *name);
     ~BBMatrix4MaterialProperty();
+
+    BBMaterialProperty* clone() override;
 
     inline void setPropertyValue(const float *pPropertyValue) { m_pPropertyValue = pPropertyValue; }
     inline const float* getPropertyValue() { return m_pPropertyValue; }
@@ -41,8 +47,10 @@ private:
 class BBVector4MaterialProperty : public BBMaterialProperty
 {
 public:
-    BBVector4MaterialProperty(const BBMaterialUniformPropertyType &eType);
+    BBVector4MaterialProperty(const char *name);
     ~BBVector4MaterialProperty();
+
+    BBMaterialProperty* clone() override;
 
     inline void setPropertyValue(const float *pPropertyValue) { m_pPropertyValue = pPropertyValue; }
     inline const float* getPropertyValue() { return m_pPropertyValue; }
