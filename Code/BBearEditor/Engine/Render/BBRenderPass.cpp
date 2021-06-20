@@ -42,6 +42,13 @@ void BBRenderPass::bind(BBCamera *pCamera)
     BBGlobalRenderState::updateBlendFunc(m_RenderState.m_SRCBlendFunc, m_RenderState.m_DSTBlendFunc);
 
     m_pShader->activeAttributes();
+
+    BBUniformUpdater *pUniformUpdater = m_pUniforms;
+    while (pUniformUpdater != nullptr)
+    {
+        pUniformUpdater->updateUniform(pUniformUpdater->getLocation(), pCamera, pUniformUpdater->getTargetProperty());
+        pUniformUpdater = pUniformUpdater->next<BBUniformUpdater>();
+    }
 }
 
 void BBRenderPass::setMatrix4(const std::string &uniformName, const float *pMatrix4)

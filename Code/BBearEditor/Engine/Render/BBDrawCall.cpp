@@ -36,6 +36,9 @@ void BBDrawCall::draw(BBCamera *pCamera)
         glDrawArrays(GL_TRIANGLES, 0, m_pVBO->getVertexCount());
     }
 
+    // test
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
     m_pVBO->unbind();
 
     if (m_pNext != nullptr)
