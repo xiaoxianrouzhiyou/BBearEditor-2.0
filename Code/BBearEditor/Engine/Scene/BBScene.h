@@ -8,6 +8,7 @@
 
 
 class BBDrawCall;
+class BBFrameBufferObject;
 class BBCamera;
 class BBSkyBox;
 class BBHorizontalPlane;
@@ -52,6 +53,7 @@ private:
     BBDrawCall *m_pDrawCall;
 
     float m_fUpdateRate;
+    BBFrameBufferObject *m_pFBO;
     BBCamera *m_pCamera;
     BBSkyBox *m_pSkyBox;
     BBHorizontalPlane *m_pHorizontalPlane;
@@ -85,9 +87,6 @@ private:
 //    int fogMode;
 //    int fogDensity;
 //    float fogPower;
-//    //必须是指针 在opengl环境没有搭建起来 调用opengl的函数（构造函数中）会出错
-//    FrameBufferObject *mFBO;
-
 
 //    void renderShadowMap();
 //    GameObject *createLight(QString fileName, int x, int y, bool isSelect = true);

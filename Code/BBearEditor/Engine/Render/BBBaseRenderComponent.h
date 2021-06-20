@@ -5,7 +5,7 @@
 
 
 #include <GL/glu.h>
-#include <QOpenGLFunctions>
+#include <QOpenGLExtraFunctions>
 #include <QVector2D>
 #include <QVector3D>
 #include <QVector4D>
@@ -29,7 +29,7 @@
 #define NAME_TEXTURE "textureUniform"
 
 
-class BBBaseRenderComponent : protected QOpenGLFunctions
+class BBBaseRenderComponent : protected QOpenGLExtraFunctions
 {
 public:
     BBBaseRenderComponent();

@@ -1,6 +1,7 @@
 #include "BBScene.h"
 #include "BBUtils.h"
 #include "Render/BBDrawCall.h"
+#include "Render/BBFrameBufferObject.h"
 #include "Render/BBCamera.h"
 #include "3D/BBSkyBox.h"
 #include "BBHorizontalPlane.h"
@@ -17,6 +18,7 @@ BBScene::BBScene()
 {
     m_pDrawCall = NULL;
     m_fUpdateRate = (float) BB_CONSTANT_UPDATE_RATE / 1000;
+    m_pFBO = NULL;
     m_pCamera = NULL;
     m_pSkyBox = NULL;
     m_pHorizontalPlane = NULL;
@@ -37,6 +39,7 @@ BBScene::BBScene()
 BBScene::~BBScene()
 {
     BB_SAFE_DELETE(m_pDrawCall);
+    BB_SAFE_DELETE(m_pFBO);
     BB_SAFE_DELETE(m_pCamera);
     BB_SAFE_DELETE(m_pSkyBox);
     BB_SAFE_DELETE(m_pHorizontalPlane);
@@ -140,10 +143,10 @@ void BBScene::resize(float width, float height)
     // 3D camera, resize
     m_pCamera->setViewportSize(width, height);
 
-//    mFBO = new FrameBufferObject;
-//    mFBO->attachColorBuffer("color", GL_COLOR_ATTACHMENT0, width, height);
-//    mFBO->attachDepthBuffer("depth", width, height);
-//    mFBO->finish();
+    m_pFBO = new BBFrameBufferObject;
+    m_pFBO->attachColorBuffer("color", GL_COLOR_ATTACHMENT0, width, height);
+    m_pFBO->attachDepthBuffer("depth", width, height);
+    m_pFBO->finish();
 }
 
 void BBScene::setSkyBox(const QString &path)
