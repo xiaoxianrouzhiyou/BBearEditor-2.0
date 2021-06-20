@@ -37,6 +37,8 @@ public:
     inline int getVertexCount() { return m_nVertexCount; }
 
     void submitData();
+    void setDrawParameter(GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount);
+    void draw() override;
 
 private:
     void setSize(int nVertexCount, GLenum hint = GL_STATIC_DRAW);

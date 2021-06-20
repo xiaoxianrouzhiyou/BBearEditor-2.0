@@ -18,6 +18,7 @@ void BBSkyBoxSide::init(const QString &path)
 {
     m_pMaterial->init(BB_PATH_RESOURCE_SHADER(base.vert),
                       BB_PATH_RESOURCE_SHADER(base.frag));
+    m_pVBO->setDrawParameter(GL_TRIANGLE_STRIP, 0, 4);
     setTexture(path);
 
     BBRenderableObject::init();

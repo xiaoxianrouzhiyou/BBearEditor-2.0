@@ -11,6 +11,10 @@ BBElementBufferObject::BBElementBufferObject()
 
 void BBElementBufferObject::setSize(int nIndexCount, GLenum hint)
 {
-    createBufferObject(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * nIndexCount, hint, nullptr);
+    m_Name = createBufferObject(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * nIndexCount, hint, nullptr);
 }
 
+void BBElementBufferObject::draw()
+{
+
+}

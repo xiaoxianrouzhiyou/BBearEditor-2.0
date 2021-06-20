@@ -31,13 +31,6 @@ public:
     inline BBVertexBufferObject* getVBO() { return m_pVBO; }
     inline BBElementBufferObject* getEBO() { return m_pEBO; }
 
-//    void setAmbientMaterial(float r, float g, float b, float a);
-//    void setAmbientMaterial(QColor color);
-//    void setDiffuseMaterial(float r, float g, float b, float a);
-//    void setDiffuseMaterial(QColor color);
-//    void setSpecularMaterial(float r, float g, float b, float a);
-//    void setSpecularMaterial(QColor color);
-
 protected:
     virtual void draw();
     BBDrawCall *m_pDrawCall;

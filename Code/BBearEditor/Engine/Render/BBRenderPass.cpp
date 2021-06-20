@@ -40,6 +40,7 @@ void BBRenderPass::bind(BBCamera *pCamera)
 
     BBGlobalRenderState::updateBlendState(m_RenderState.m_bBlend);
     BBGlobalRenderState::updateBlendFunc(m_RenderState.m_SRCBlendFunc, m_RenderState.m_DSTBlendFunc);
+    BBGlobalRenderState::updateZMask(m_RenderState.m_bWriteZ);
 
     m_pShader->activeAttributes();
 

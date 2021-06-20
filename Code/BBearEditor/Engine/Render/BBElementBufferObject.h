@@ -11,6 +11,8 @@ public:
 
     void setSize(int nIndexCount, GLenum hint = GL_STATIC_DRAW);
 
+    void draw() override;
+
 private:
 
 };

@@ -89,6 +89,18 @@ void BBVertexBufferObject::submitData()
     updateData(GL_ARRAY_BUFFER, sizeof(BBVertex) * m_nVertexCount, m_pVertexes);
 }
 
+void BBVertexBufferObject::setDrawParameter(GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount)
+{
+    m_eDrawPrimitiveType = eDrawPrimitiveType;
+    m_nDrawStartIndex = nDrawStartIndex;
+    m_nDrawCount = nDrawCount;
+}
+
+void BBVertexBufferObject::draw()
+{
+    glDrawArrays(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
+}
+
 void BBVertexBufferObject::setSize(int nVertexCount, GLenum hint)
 {
     m_nVertexCount = nVertexCount;

@@ -34,12 +34,12 @@ void BBDrawCall::draw(BBCamera *pCamera)
     m_pMaterial->getBaseRenderPass()->bind(pCamera);
     if (m_pEBO == nullptr)
     {
-        glDrawArrays(GL_TRIANGLES, 0, m_pVBO->getVertexCount());
+        m_pVBO->draw();
     }
 //    m_pMaterial->getAdditiveRenderPass()->bind(pCamera);
 //    if (m_pEBO == nullptr)
 //    {
-//        glDrawArrays(GL_TRIANGLES, 0, m_pVBO->getVertexCount());
+//        m_pVBO->draw();
 //    }
 
     m_pVBO->unbind();

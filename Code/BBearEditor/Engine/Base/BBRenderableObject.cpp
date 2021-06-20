@@ -78,33 +78,3 @@ void BBRenderableObject::draw()
 {
 
 }
-
-//void RenderableObject::setAmbientMaterial(float r, float g, float b, float a)
-//{
-//    mShader.setVector4f("ambientMaterialUniform", r, g, b, a);
-//}
-
-//void RenderableObject::setAmbientMaterial(QColor color)
-//{
-//    setAmbientMaterial(color.redF(), color.greenF(), color.blueF(), color.alphaF());
-//}
-
-//void RenderableObject::setDiffuseMaterial(float r, float g, float b, float a)
-//{
-//    mShader.setVector4f("diffuseMaterialUniform", r, g, b, a);
-//}
-
-//void RenderableObject::setDiffuseMaterial(QColor color)
-//{
-//    setDiffuseMaterial(color.redF(), color.greenF(), color.blueF(), color.alphaF());
-//}
-
-//void RenderableObject::setSpecularMaterial(float r, float g, float b, float a)
-//{
-//    mShader.setVector4f("specularMaterialUniform", r, g, b, a);
-//}
-
-//void RenderableObject::setSpecularMaterial(QColor color)
-//{
-//    setSpecularMaterial(color.redF(), color.greenF(), color.blueF(), color.alphaF());
-//}
