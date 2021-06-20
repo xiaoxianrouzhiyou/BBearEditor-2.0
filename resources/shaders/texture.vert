@@ -1,7 +1,7 @@
 attribute vec4 positionAttr;
-attribute vec2 texcoordAttr;
+attribute vec4 texcoordAttr;
 
-varying vec2 texcoordVary;
+varying vec4 texcoordVary;
 
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;

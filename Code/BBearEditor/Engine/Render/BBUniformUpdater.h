@@ -18,6 +18,7 @@ public:
     ~BBUniformUpdater();
 
     inline GLint getLocation() { return m_Location; }
+    inline BBUpdateUniformFunc getUpdateUniformFunc() { return m_UpdateUniformFunc; }
     inline BBMaterialProperty* getTargetProperty() { return m_pTargetProperty; }
 
     BBUniformUpdater* clone();
@@ -27,6 +28,7 @@ public:
     void updateCameraViewMatrix(GLint location, void *pCamera, void *pPropertyValue);
     void updateMatrix4(GLint location, void *pCamera, void *pPropertyValue);
     void updateVector4(GLint location, void *pCamera, void *pPropertyValue);
+    void updateSampler2D(GLint location, void *pCamera, void *pPropertyValue);
 
 private:
     GLint m_Location;

@@ -59,6 +59,26 @@ bool BBUtils::saveToFile(const char *pFilePath, void *pBuffer, int nSize)
     return true;
 }
 
-
+unsigned char* BBUtils::decodeBMP(unsigned char *pBmpFileData, int &nWidth, int &nHeight)
+{
+    // Is it a bitmap file
+    if (0x4D42 == *((unsigned short*)pBmpFileData))
+    {
+        int nPixelDataOffset = *((int*)(pBmpFileData + 10));
+        nWidth = *((int*)(pBmpFileData + 18));
+        nHeight =  *((int*)(pBmpFileData + 22));
+        unsigned char *pPixelData = pBmpFileData + nPixelDataOffset;
+        // be saved as BGR, but opengl support RGB, exchange B with R
+        // bmp does not support alpha
+        for (int i = 0; i < nWidth * nHeight * 3; i += 3)
+        {
+            unsigned char temp = pPixelData[i];
+            pPixelData[i] = pPixelData[i + 2];
+            pPixelData[i + 2] = temp;
+        }
+        return pPixelData;
+    }
+    return nullptr;
+}
 
 

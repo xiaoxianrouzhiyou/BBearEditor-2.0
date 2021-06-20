@@ -47,3 +47,9 @@ void BBUniformUpdater::updateVector4(GLint location, void *pCamera, void *pPrope
     BBVector4MaterialProperty *pProperty = (BBVector4MaterialProperty*)pPropertyValue;
     glUniform4fv(location, 1, pProperty->getPropertyValue());
 }
+
+void BBUniformUpdater::updateSampler2D(GLint location, void *pCamera, void *pPropertyValue)
+{
+    BBSampler2DMaterialProperty *pProperty = (BBSampler2DMaterialProperty*)pPropertyValue;
+    glUniform1i(location, pProperty->getTextureName());
+}

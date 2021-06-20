@@ -141,6 +141,10 @@ void BBShader::initUniforms()
         {
             pUniformUpdater = initUniformVector4(location, uniformName);
         }
+        else if (type == GL_SAMPLER_2D)
+        {
+            pUniformUpdater = initUniformSampler2D(location, uniformName);
+        }
 
         appendUniformUpdater(pUniformUpdater);
     }
@@ -174,6 +178,13 @@ BBUniformUpdater* BBShader::initUniformVector4(GLint location, const char *pUnif
     BBVector4MaterialProperty *pProperty = new BBVector4MaterialProperty(pUniformName);
     m_Properties.insert(pUniformName, pProperty);
     return new BBUniformUpdater(location, &BBUniformUpdater::updateVector4, pProperty);
+}
+
+BBUniformUpdater* BBShader::initUniformSampler2D(GLint location, const char *pUniformName)
+{
+    BBSampler2DMaterialProperty *pProperty = new BBSampler2DMaterialProperty(pUniformName);
+    m_Properties.insert(pUniformName, pProperty);
+    return new BBUniformUpdater(location, &BBUniformUpdater::updateSampler2D, pProperty);
 }
 
 void BBShader::appendUniformUpdater(BBUniformUpdater *pUniformUpdater)

@@ -22,6 +22,7 @@ public:
 
     void setMatrix4(const std::string &uniformName, const float *pMatrix4);
     void setVector4(const std::string &uniformName, const float *pVector4);
+    void setSampler2D(const std::string &uniformName, GLuint textureName);
 
 private:
     void appendUniformUpdater(BBUniformUpdater *pUniformUpdater);

@@ -2,6 +2,8 @@
 #include "Render/BBVertexBufferObject.h"
 #include "Render/BBCamera.h"
 #include "Render/BBMaterial.h"
+#include "Render/BBRenderPass.h"
+#include "Render/BBTexture.h"
 #include "BBUtils.h"
 
 //--------------------
@@ -16,10 +18,12 @@ BBSkyBoxSide::BBSkyBoxSide(BBVertexBufferObject *pVBO)
 
 void BBSkyBoxSide::init(const QString &path)
 {
-    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(base.vert),
-                      BB_PATH_RESOURCE_SHADER(base.frag));
+    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(texture.vert),
+                      BB_PATH_RESOURCE_SHADER(texture.frag));
+    BBTexture texture;
+    m_pMaterial->getBaseRenderPass()->setSampler2D(NAME_TEXTURE,
+                                                   texture.createTexture2DFromBMP(path.toStdString().c_str()));
     m_pVBO->setDrawParameter(GL_TRIANGLE_STRIP, 0, 4);
-    setTexture(path);
 
     BBRenderableObject::init();
 }
@@ -70,12 +74,12 @@ BBSkyBox::~BBSkyBox()
 
 void BBSkyBox::init(const QString &path)
 {
-    m_pFront->init(path + "front");
-    m_pBack->init(path + "back");
-    m_pLeft->init(path + "left");
-    m_pRight->init(path + "right");
-    m_pTop->init(path + "top");
-    m_pBottom->init(path + "bottom");
+    m_pFront->init(path + "front.bmp");
+    m_pBack->init(path + "back.bmp");
+    m_pLeft->init(path + "left.bmp");
+    m_pRight->init(path + "right.bmp");
+    m_pTop->init(path + "top.bmp");
+    m_pBottom->init(path + "bottom.bmp");
 }
 
 void BBSkyBox::render(BBCamera *pCamera)

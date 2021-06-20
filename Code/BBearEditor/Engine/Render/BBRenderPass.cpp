@@ -45,9 +45,21 @@ void BBRenderPass::bind(BBCamera *pCamera)
     m_pShader->activeAttributes();
 
     BBUniformUpdater *pUniformUpdater = m_pUniforms;
+    int nSlotIndex = 0;
     while (pUniformUpdater != nullptr)
     {
-        pUniformUpdater->updateUniform(pUniformUpdater->getLocation(), pCamera, pUniformUpdater->getTargetProperty());
+        if (pUniformUpdater->getUpdateUniformFunc() == &BBUniformUpdater::updateSampler2D)
+        {
+            glActiveTexture(GL_TEXTURE0 + nSlotIndex);
+            BBSampler2DMaterialProperty *pProperty = (BBSampler2DMaterialProperty*) pUniformUpdater->getTargetProperty();
+            glBindTexture(GL_TEXTURE_2D, pProperty->getTextureName());
+            glUniform1i(pUniformUpdater->getLocation(), nSlotIndex);
+            nSlotIndex++;
+        }
+        else
+        {
+            pUniformUpdater->updateUniform(pUniformUpdater->getLocation(), pCamera, pUniformUpdater->getTargetProperty());
+        }
         pUniformUpdater = pUniformUpdater->next<BBUniformUpdater>();
     }
 }
@@ -67,6 +79,15 @@ void BBRenderPass::setVector4(const std::string &uniformName, const float *pVect
     if (it != m_Properties.end())
     {
         ((BBVector4MaterialProperty*)it.value())->setPropertyValue(pVector4);
+    }
+}
+
+void BBRenderPass::setSampler2D(const std::string &uniformName, GLuint textureName)
+{
+    auto it = m_Properties.find(uniformName);
+    if (it != m_Properties.end())
+    {
+        ((BBSampler2DMaterialProperty*)it.value())->setTextureName(textureName);
     }
 }
 

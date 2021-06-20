@@ -1,4 +1,4 @@
-varying vec2 texcoordVary;
+varying vec4 texcoordVary;
 
 uniform sampler2D textureUniform;
 

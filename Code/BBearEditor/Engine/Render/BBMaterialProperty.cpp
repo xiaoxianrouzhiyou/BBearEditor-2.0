@@ -62,3 +62,26 @@ BBMaterialProperty* BBVector4MaterialProperty::clone()
     pRet->setPropertyValue(m_pPropertyValue);
     return pRet;
 }
+
+
+/**
+ * @brief BBSampler2DMaterialProperty::BBSampler2DMaterialProperty
+ * @param name
+ */
+BBSampler2DMaterialProperty::BBSampler2DMaterialProperty(const char *name)
+    : BBMaterialProperty(Sampler2D, name)
+{
+    m_TextureName = 0;
+}
+
+BBSampler2DMaterialProperty::~BBSampler2DMaterialProperty()
+{
+
+}
+
+BBMaterialProperty* BBSampler2DMaterialProperty::clone()
+{
+    BBSampler2DMaterialProperty *pRet = new BBSampler2DMaterialProperty(m_Name);
+    pRet->setTextureName(m_TextureName);
+    return pRet;
+}

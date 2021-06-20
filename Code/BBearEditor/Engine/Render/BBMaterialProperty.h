@@ -2,12 +2,15 @@
 #define BBMATERIALPROPERTY_H
 
 
+#include "BBBaseRenderComponent.h"
+
 enum BBMaterialUniformPropertyType
 {
     CameraProjectionMatrix,
     CameraViewMatrix,
     Matrix4,
     Vector4,
+    Sampler2D,
     Count
 };
 
@@ -58,6 +61,23 @@ public:
 private:
     // 智能指针 to do
     const float *m_pPropertyValue;
+};
+
+
+class BBSampler2DMaterialProperty : public BBMaterialProperty
+{
+public:
+    BBSampler2DMaterialProperty(const char *name);
+    ~BBSampler2DMaterialProperty();
+
+    BBMaterialProperty* clone() override;
+
+    inline void setTextureName(GLuint textureName) { m_TextureName = textureName; }
+    inline GLuint getTextureName() const { return m_TextureName; }
+
+private:
+    // 智能指针 to do
+    GLuint m_TextureName;
 };
 
 
