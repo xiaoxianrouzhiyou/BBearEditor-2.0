@@ -2,6 +2,7 @@
 #include "BBVertexBufferObject.h"
 #include "BBElementBufferObject.h"
 #include "BBCamera.h"
+#include "BBRenderPass.h"
 
 
 BBDrawCall::BBDrawCall()
@@ -29,15 +30,17 @@ void BBDrawCall::setEBO(BBElementBufferObject *pEBO)
 void BBDrawCall::draw(BBCamera *pCamera)
 {
     m_pVBO->bind();
-    m_pMaterial->bind(pCamera);
 
+    m_pMaterial->getBaseRenderPass()->bind(pCamera);
     if (m_pEBO == nullptr)
     {
         glDrawArrays(GL_TRIANGLES, 0, m_pVBO->getVertexCount());
     }
-
-    // test
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+//    m_pMaterial->getAdditiveRenderPass()->bind(pCamera);
+//    if (m_pEBO == nullptr)
+//    {
+//        glDrawArrays(GL_TRIANGLES, 0, m_pVBO->getVertexCount());
+//    }
 
     m_pVBO->unbind();
 

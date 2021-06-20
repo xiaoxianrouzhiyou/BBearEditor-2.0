@@ -22,11 +22,6 @@ void BBMaterial::init(const QString &vShaderPath, const QString &fShaderPath,
     m_pBaseRenderPass->setShader(BBShader::loadShader("test", vShaderPath, fShaderPath));
 }
 
-void BBMaterial::bind(BBCamera *pCamera)
-{
-    m_pBaseRenderPass->bind(pCamera);
-}
-
 void BBMaterial::setMatrix4(const std::string &uniformName, const float *pMatrix4)
 {
     if (m_pBaseRenderPass != nullptr)
