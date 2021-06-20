@@ -44,7 +44,7 @@ void BBOpenGLWidget::initializeGL()
 {
     initializeOpenGLFunctions();
     // Anti-aliasing
-//    glShadeModel(GL_SMOOTH);
+    // glShadeModel(GL_SMOOTH);
     // Projection matrix
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -54,8 +54,6 @@ void BBOpenGLWidget::initializeGL()
     // model matrix
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    // Clear the color, the background becomes black, don't care the alpha
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     m_pScene->init();
 }
@@ -76,9 +74,11 @@ void BBOpenGLWidget::resizeGL(int width, int height)
 
 void BBOpenGLWidget::paintGL()
 {
+    // Clear the color, the background becomes black, don't care the alpha
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     // Erase the current background color, color buffer and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_MULTISAMPLE);
+    // glEnable(GL_MULTISAMPLE);
     m_pScene->render();
 }
 

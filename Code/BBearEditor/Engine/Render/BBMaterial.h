@@ -12,7 +12,7 @@ class BBUniformUpdater;
 class BBMaterialProperty;
 class BBRenderPass;
 
-class BBMaterial : protected BBBaseRenderComponent
+class BBMaterial
 {
 public:
     BBMaterial();

@@ -1,5 +1,4 @@
 #include <QApplication>
-#include "Render/BBBaseRenderComponent.h"
 #include "NcFramelessHelper.h"
 #include <QVBoxLayout>
 #include "Window/BBTitleBar.h"
