@@ -20,6 +20,7 @@ public:
 
     void bind(BBCamera *pCamera);
 
+    void setBlendState(bool bEnable);
     void setZTestState(bool bEnable);
 
     void setMatrix4(const std::string &uniformName, const float *pMatrix4);

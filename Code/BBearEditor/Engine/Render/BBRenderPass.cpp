@@ -65,6 +65,11 @@ void BBRenderPass::bind(BBCamera *pCamera)
     }
 }
 
+void BBRenderPass::setBlendState(bool bEnable)
+{
+    m_RenderState.m_bBlend = bEnable;
+}
+
 void BBRenderPass::setZTestState(bool bEnable)
 {
     m_RenderState.m_bZTest = bEnable;

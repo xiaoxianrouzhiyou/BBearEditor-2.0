@@ -19,11 +19,13 @@ BBSkyBoxSide::BBSkyBoxSide(BBVertexBufferObject *pVBO)
 
 void BBSkyBoxSide::init(const QString &path)
 {
-    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(texture.vert),
+    m_pMaterial->init("texture",
+                      BB_PATH_RESOURCE_SHADER(texture.vert),
                       BB_PATH_RESOURCE_SHADER(texture.frag));
     BBTexture texture;
     m_pMaterial->getBaseRenderPass()->setSampler2D(NAME_TEXTURE,
                                                    texture.createTexture2DFromBMP(path.toStdString().c_str()));
+    m_pMaterial->getBaseRenderPass()->setBlendState(false);
     m_pMaterial->getBaseRenderPass()->setZTestState(false);
 
     BBRenderableObject::init();

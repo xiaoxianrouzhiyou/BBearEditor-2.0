@@ -18,8 +18,7 @@ public:
     BBMaterial();
     ~BBMaterial();
 
-    void init(const QString &vShaderPath, const QString &fShaderPath,
-              const unsigned short *pIndexes = 0, int nIndexCount = 0);
+    void init(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath);
 
     void setMatrix4(const std::string &uniformName, const float *pMatrix4);
     void setVector4(const std::string &uniformName, const float *pVector4);

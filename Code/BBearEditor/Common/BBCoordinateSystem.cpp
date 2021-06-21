@@ -207,10 +207,9 @@ void BBCoordinateArrow::init()
         m_pIndexes[i] = indexes[i];
     }
 
-    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                      BB_PATH_RESOURCE_SHADER(coordinate.frag),
-                      m_pIndexes,
-                      m_nIndexCount);
+    m_pMaterial->init("coordinate",
+                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
+                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
 
     BBRenderableObject::init();
 }
@@ -270,7 +269,8 @@ void BBCoordinateAxis::init()
 
     m_pVBO->submitData();
 
-    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
+    m_pMaterial->init("coordinate",
+                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
                       BB_PATH_RESOURCE_SHADER(coordinate.frag));
 
     BBRenderableObject::init();
@@ -365,7 +365,8 @@ void BBCoordinateRectFace::init()
 
     m_pVBO->submitData();
 
-    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
+    m_pMaterial->init("coordinate",
+                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
                       BB_PATH_RESOURCE_SHADER(coordinate.frag));
 
     BBRenderableObject::init();
@@ -452,10 +453,9 @@ void BBCoordinateQuarterCircle::init()
 
     m_pVBO->submitData();
 
-    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                      BB_PATH_RESOURCE_SHADER(coordinate.frag),
-                      m_pIndexes,
-                      m_nIndexCount);
+    m_pMaterial->init("coordinate",
+                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
+                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
 
     BBRenderableObject::init();
 }
@@ -520,10 +520,9 @@ void BBCoordinateCircle::init()
     m_pIndexes[190] = 1;
     m_pIndexes[191] = 0;
 
-    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                      BB_PATH_RESOURCE_SHADER(coordinate.frag),
-                      m_pIndexes,
-                      m_nIndexCount);
+    m_pMaterial->init("coordinate",
+                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
+                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
 
     BBRenderableObject::init();
 }
@@ -597,10 +596,9 @@ void BBCoordinateTickMark::init()
     }
     m_pIndexes[71] = 0;
 
-    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                      BB_PATH_RESOURCE_SHADER(coordinate.frag),
-                      m_pIndexes,
-                      m_nIndexCount);
+    m_pMaterial->init("coordinate",
+                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
+                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
 
     BBRenderableObject::init();
 }
@@ -662,10 +660,9 @@ void BBCoordinateSector::init()
     }
     m_pIndexes[1079] = 0;
 
-    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                      BB_PATH_RESOURCE_SHADER(coordinate.frag),
-                      m_pIndexes,
-                      m_nIndexCount);
+    m_pMaterial->init("coordinate",
+                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
+                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
 
     BBRenderableObject::init();
 }
@@ -793,10 +790,9 @@ void BBCoordinateCube::init()
         m_pIndexes[i + 48] = indexes[i] + 16;
     }
 
-    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                      BB_PATH_RESOURCE_SHADER(coordinate.frag),
-                      m_pIndexes,
-                      m_nIndexCount);
+    m_pMaterial->init("coordinate",
+                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
+                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
 
     BBRenderableObject::init();
 }
@@ -922,7 +918,8 @@ void BBCoordinateTriangleFace::init()
 
     m_pVBO->submitData();
 
-    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(coordinate.vert),
+    m_pMaterial->init("coordinate",
+                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
                       BB_PATH_RESOURCE_SHADER(coordinate.frag));
 
     BBRenderableObject::init();

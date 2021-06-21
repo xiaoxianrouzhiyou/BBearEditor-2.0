@@ -314,10 +314,9 @@ void BBBoundingBox3D::init()
         m_pIndexes[i] = indexes[i];
     }
 
-    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(base.vert),
-                      BB_PATH_RESOURCE_SHADER(base.frag),
-                      m_pIndexes,
-                      m_nIndexCount);
+    m_pMaterial->init("base",
+                      BB_PATH_RESOURCE_SHADER(base.vert),
+                      BB_PATH_RESOURCE_SHADER(base.frag));
 
     BBRenderableObject::init();
 }

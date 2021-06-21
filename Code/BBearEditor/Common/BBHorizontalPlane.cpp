@@ -1,6 +1,7 @@
 #include "BBHorizontalPlane.h"
 #include "Render/BBVertexBufferObject.h"
 #include "Render/BBElementBufferObject.h"
+#include "Render/BBRenderPass.h"
 #include "Render/BBMaterial.h"
 #include "BBUtils.h"
 #include "Render/BBCamera.h"
@@ -56,10 +57,11 @@ void BBHorizontalPlane::init()
         m_pIndexes[i * 4 + 2] = i + 82;
         m_pIndexes[i * 4 + 3] = i + 164;
     }
-    m_pMaterial->init(BB_PATH_RESOURCE_SHADER(base.vert),
-                      BB_PATH_RESOURCE_SHADER(base.frag),
-                      m_pIndexes,
-                      m_nIndexCount);
+    m_pMaterial->init("base",
+                      BB_PATH_RESOURCE_SHADER(base.vert),
+                      BB_PATH_RESOURCE_SHADER(base.frag));
+    m_pMaterial->getBaseRenderPass()->setBlendState(true);
+    m_pMaterial->getBaseRenderPass()->setZTestState(true);
 
     BBRenderableObject::init();
 
@@ -96,8 +98,5 @@ void BBHorizontalPlane::draw()
 {
 //    glEnable(GL_BLEND);
 //    glLineWidth(1);
-//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//    glEnable(GL_DEPTH_TEST);
-//    glDrawElements(GL_LINES, m_nIndexCount, GL_UNSIGNED_SHORT, 0);
 //    glDisable(GL_BLEND);
 }

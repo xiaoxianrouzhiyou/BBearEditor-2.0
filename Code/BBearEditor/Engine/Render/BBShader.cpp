@@ -10,7 +10,8 @@ QMap<std::string, BBShader*> BBShader::m_CachedShaders;
 BBShader::BBShader()
     : BBBaseRenderComponent()
 {
-
+    m_pAttributes = NULL;
+    m_pUniforms = NULL;
 }
 
 BBShader::~BBShader()
@@ -107,7 +108,7 @@ void BBShader::initAttributes()
             nDataOffset = sizeof(float) * 12;
         }
         BBAttribute *pAttribute = new BBAttribute(location, nComponentCount, nBasicDataType,
-                                                  GL_FALSE, sizeof(BBVertex), nDataOffset);
+                                                  GL_TRUE, sizeof(BBVertex), nDataOffset);
         if (m_pAttributes == nullptr)
         {
             m_pAttributes = pAttribute;

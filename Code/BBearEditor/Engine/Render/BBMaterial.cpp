@@ -16,10 +16,9 @@ BBMaterial::~BBMaterial()
     BB_SAFE_DELETE(m_pAdditiveRenderPass);
 }
 
-void BBMaterial::init(const QString &vShaderPath, const QString &fShaderPath,
-                      const unsigned short *pIndexes, int nIndexCount)
+void BBMaterial::init(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath)
 {
-    m_pBaseRenderPass->setShader(BBShader::loadShader("test", vShaderPath, fShaderPath));
+    m_pBaseRenderPass->setShader(BBShader::loadShader(shaderName, vShaderPath, fShaderPath));
 }
 
 void BBMaterial::setMatrix4(const std::string &uniformName, const float *pMatrix4)
