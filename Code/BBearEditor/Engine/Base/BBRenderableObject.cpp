@@ -4,6 +4,7 @@
 #include "BBUtils.h"
 #include "Render/BBCamera.h"
 #include "Render/BBVertexBufferObject.h"
+#include "Render/BBElementBufferObject.h"
 #include "Render/BBGLBuffers.h"
 #include "Render/BBUniformUpdater.h"
 #include "Render/BBRenderPass.h"
@@ -39,7 +40,12 @@ BBRenderableObject::~BBRenderableObject()
 
 void BBRenderableObject::init()
 {
-
+    m_pVBO->submitData();
+    if (m_nIndexCount > 0)
+    {
+        m_pEBO = new BBElementBufferObject(m_nIndexCount);
+        m_pEBO->submitData(m_pIndexes, m_nIndexCount);
+    }
 }
 
 void BBRenderableObject::render(BBCamera *pCamera)

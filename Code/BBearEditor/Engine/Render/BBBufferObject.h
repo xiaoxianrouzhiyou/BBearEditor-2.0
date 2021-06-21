@@ -10,12 +10,13 @@ public:
     BBBufferObject();
     virtual ~BBBufferObject();
 
+    void updateData(GLenum bufferType, GLsizeiptr size, const void *pData);
+
     void bind();
     void unbind();
 
 protected:
     GLuint createBufferObject(GLenum bufferType, GLsizeiptr size, GLenum usage, void *pData = NULL);
-    void updateData(GLenum bufferType, GLsizeiptr size, void *pData = NULL);
 
     GLuint m_Name;
     GLenum m_BufferType;

@@ -24,14 +24,14 @@ void BBSkyBoxSide::init(const QString &path)
     BBTexture texture;
     m_pMaterial->getBaseRenderPass()->setSampler2D(NAME_TEXTURE,
                                                    texture.createTexture2DFromBMP(path.toStdString().c_str()));
-    m_pMaterial->getBaseRenderPass()->setZTestState(true);
+    m_pMaterial->getBaseRenderPass()->setZTestState(false);
+
+    BBRenderableObject::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
     pDrawCall->setMaterial(m_pMaterial);
     pDrawCall->setVBO(m_pVBO, GL_TRIANGLE_STRIP, 0, 4);
     appendDrawCall(pDrawCall);
-
-    BBRenderableObject::init();
 }
 
 void BBSkyBoxSide::render(BBCamera *pCamera)
@@ -119,7 +119,6 @@ void BBSkyBox::initFront()
     pVertexBuffer->setTexcoord(1, 1.0f, 0.0f);
     pVertexBuffer->setTexcoord(2, 0.0f, 1.0f);
     pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
-    pVertexBuffer->submitData();
     m_pFront = new BBSkyBoxSide(pVertexBuffer);
 }
 
@@ -134,7 +133,6 @@ void BBSkyBox::initBack()
     pVertexBuffer->setTexcoord(1, 1.0f, 0.0f);
     pVertexBuffer->setTexcoord(2, 0.0f, 1.0f);
     pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
-    pVertexBuffer->submitData();
     m_pBack = new BBSkyBoxSide(pVertexBuffer);
 }
 
@@ -149,7 +147,6 @@ void BBSkyBox::initLeft()
     pVertexBuffer->setTexcoord(1, 1.0f, 0.0f);
     pVertexBuffer->setTexcoord(2, 0.0f, 1.0f);
     pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
-    pVertexBuffer->submitData();
     m_pLeft = new BBSkyBoxSide(pVertexBuffer);
 }
 
@@ -164,7 +161,6 @@ void BBSkyBox::initRight()
     pVertexBuffer->setTexcoord(1, 1.0f, 0.0f);
     pVertexBuffer->setTexcoord(2, 0.0f, 1.0f);
     pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
-    pVertexBuffer->submitData();
     m_pRight = new BBSkyBoxSide(pVertexBuffer);
 }
 
@@ -179,7 +175,6 @@ void BBSkyBox::initTop()
     pVertexBuffer->setTexcoord(1, 1.0f, 0.0f);
     pVertexBuffer->setTexcoord(2, 0.0f, 1.0f);
     pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
-    pVertexBuffer->submitData();
     m_pTop = new BBSkyBoxSide(pVertexBuffer);
 }
 
@@ -194,6 +189,5 @@ void BBSkyBox::initBottom()
     pVertexBuffer->setTexcoord(1, 1.0f, 0.0f);
     pVertexBuffer->setTexcoord(2, 0.0f, 1.0f);
     pVertexBuffer->setTexcoord(3, 1.0f, 1.0f);
-    pVertexBuffer->submitData();
     m_pBottom = new BBSkyBoxSide(pVertexBuffer);
 }

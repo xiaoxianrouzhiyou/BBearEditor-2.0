@@ -100,7 +100,7 @@ void BBScene::render()
 
     // Render the skybox at first
     m_pSkyBox->render(m_pCamera);
-//    m_pHorizontalPlane->render(m_pCamera);
+    m_pHorizontalPlane->render(m_pCamera);
 
     // render dropped model
 //    //渲染灯光的图标 关闭深度测试 最后渲染 出现在最前面

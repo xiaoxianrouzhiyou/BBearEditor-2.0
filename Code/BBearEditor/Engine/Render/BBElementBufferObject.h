@@ -7,9 +7,10 @@
 class BBElementBufferObject : public BBBufferObject
 {
 public:
-    BBElementBufferObject();
+    BBElementBufferObject(int nIndexCount);
 
     void setSize(int nIndexCount, GLenum hint = GL_STATIC_DRAW);
+    void submitData(const unsigned short *pIndexes, int nIndexCount);
 
     void draw(GLenum eDrawPrimitiveType, int nIndexCount, int nDrawStartIndex);
 

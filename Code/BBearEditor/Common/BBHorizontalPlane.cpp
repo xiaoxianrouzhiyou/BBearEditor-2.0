@@ -1,8 +1,10 @@
 #include "BBHorizontalPlane.h"
 #include "Render/BBVertexBufferObject.h"
+#include "Render/BBElementBufferObject.h"
 #include "Render/BBMaterial.h"
 #include "BBUtils.h"
 #include "Render/BBCamera.h"
+#include "Render/BBDrawCall.h"
 
 
 BBHorizontalPlane::BBHorizontalPlane()
@@ -43,7 +45,6 @@ void BBHorizontalPlane::init()
         m_pVBO->setNormal(i + 205, 0.0f, 1.0f, 0.0f);
         m_pVBO->setColor(i + 205, 0.847059f, 0.603922f, 0.309804f, alpha * fCoefficient);
     }
-    m_pVBO->submitData();
 
     m_nIndexCount = 328;
     m_pIndexes = new unsigned short[m_nIndexCount];
@@ -55,13 +56,18 @@ void BBHorizontalPlane::init()
         m_pIndexes[i * 4 + 2] = i + 82;
         m_pIndexes[i * 4 + 3] = i + 164;
     }
-
     m_pMaterial->init(BB_PATH_RESOURCE_SHADER(base.vert),
                       BB_PATH_RESOURCE_SHADER(base.frag),
                       m_pIndexes,
                       m_nIndexCount);
 
     BBRenderableObject::init();
+
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setVBO(m_pVBO);
+    pDrawCall->setEBO(m_pEBO, GL_LINES, m_nIndexCount, 0);
+    appendDrawCall(pDrawCall);
 }
 
 void BBHorizontalPlane::render(BBCamera *pCamera)

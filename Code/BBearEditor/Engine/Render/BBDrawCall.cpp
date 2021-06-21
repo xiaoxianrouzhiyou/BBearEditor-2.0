@@ -51,7 +51,9 @@ void BBDrawCall::draw(BBCamera *pCamera)
     }
     else
     {
+        m_pEBO->bind();
         m_pEBO->draw(m_eDrawPrimitiveType, m_nIndexCount, m_nDrawStartIndex);
+        m_pEBO->unbind();
     }
 //    m_pMaterial->getAdditiveRenderPass()->bind(pCamera);
 //    if (m_pEBO == nullptr)
