@@ -3,6 +3,7 @@
 #include <cfloat>
 #include "Render/BBVertexBufferObject.h"
 #include "Render/BBMaterial.h"
+#include "Render/BBDrawCall.h"
 #include <Eigen/Eigen>
 
 
@@ -319,6 +320,12 @@ void BBBoundingBox3D::init()
                       BB_PATH_RESOURCE_SHADER(base.frag));
 
     BBRenderableObject::init();
+
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setVBO(m_pVBO);
+    pDrawCall->setEBO(m_pEBO, GL_LINES, m_nIndexCount, 0);
+    appendDrawCall(pDrawCall);
 }
 
 bool BBBoundingBox3D::hit(const BBRay &ray, float &fDistance)
@@ -376,9 +383,7 @@ QVector3D BBBoundingBox3D::getHalfLength()
 
 void BBBoundingBox3D::draw()
 {
-    glEnable(GL_DEPTH_TEST);
-    glLineWidth(1.5f);
-    glDrawElements(GL_LINES, m_nIndexCount, GL_UNSIGNED_SHORT, 0);
+
 }
 
 void BBBoundingBox3D::computeBoxVertexes(const QList<QVector4D> &vertexes)

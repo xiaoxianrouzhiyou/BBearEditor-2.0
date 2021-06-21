@@ -81,23 +81,25 @@ void BBCamera::update(float fDeltaTime)
                               m_pModelView[3], m_pModelView[7], m_pModelView[11], m_pModelView[15]);
 }
 
-void BBCamera::setViewportSize(int fWidth, int fHeight)
+void BBCamera::setViewportSize(int nWidth, int nHeight)
 {
-    m_iViewportWidth = fWidth;
-    m_iViewportHeight = fHeight;
+    m_nViewportWidth = nWidth;
+    m_nViewportHeight = nHeight;
     m_pViewport[0] = 0;
     m_pViewport[1] = 0;
-    m_pViewport[2] = m_iViewportWidth;
-    m_pViewport[3] = m_iViewportHeight;
+    m_pViewport[2] = m_nViewportWidth;
+    m_pViewport[3] = m_nViewportHeight;
+
     m_ProjectionMatrix.setToIdentity();
-    m_ProjectionMatrix.perspective(50.0f, fWidth / fHeight, 0.1f, 1000.0f);
+    m_ProjectionMatrix.perspective(50.0f, (float) nWidth / nHeight, 0.1f, 1000.0f);
+    qDebug() << m_ProjectionMatrix;
 }
 
 void BBCamera::switchTo3D()
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(50.0f, (GLdouble) m_iViewportWidth / m_iViewportHeight, 0.1f, 1000.0f);
+    gluPerspective(50.0f, (GLdouble) m_nViewportWidth / m_nViewportHeight, 0.1f, 1000.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
@@ -107,7 +109,7 @@ void BBCamera::switchTo2D()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     // left, right, bottom, top edge of 2D window
-    gluOrtho2D(-m_iViewportWidth / 2, m_iViewportWidth / 2, -m_iViewportHeight / 2, m_iViewportHeight / 2);
+    gluOrtho2D(-m_nViewportWidth / 2, m_nViewportWidth / 2, -m_nViewportHeight / 2, m_nViewportHeight / 2);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
@@ -171,7 +173,7 @@ void BBCamera::lookAt(BBGameObject *pGameObject)
 BBRay BBCamera::createRayFromScreen(int x, int y)
 {
     int winX = x;
-    int winY = m_iViewportHeight - y;
+    int winY = m_nViewportHeight - y;
     // Get the 3D point coordinates corresponding to the 2D point in the front clipping plane
     GLdouble nearPosX, nearPosY, nearPosZ;
     gluUnProject(winX, winY, 0.0f, m_pModelView, m_pProjection, m_pViewport, &nearPosX, &nearPosY, &nearPosZ);

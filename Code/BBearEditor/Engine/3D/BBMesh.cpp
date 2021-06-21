@@ -4,6 +4,8 @@
 #include "Geometry/BBBoundingBox.h"
 #include <cfloat>
 #include "Render/BBVertexBufferObject.h"
+#include "Render/BBRenderPass.h"
+#include "Render/BBDrawCall.h"
 
 
 BBMesh::BBMesh()
@@ -31,23 +33,18 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
                                               positions);
     pOutBoundingBox->init();
 
-    // test
     m_pMaterial->init("base",
                       BB_PATH_RESOURCE_SHADER(base.vert),
                       BB_PATH_RESOURCE_SHADER(base.frag));
-//    m_pShader->init(QString(BB_PATH_RESOURCE_SHADER) + "standard.vert",
-//                    QString(BB_PATH_RESOURCE_SHADER) + "standard.frag", m_pIndexes, m_nIndexCount);
-//    mShader.setVector4f(Light::lightAmbientUniformLocationName, 1.0f, 1.0f, 1.0f, 1.0f);
-//    //环境光无需考虑光的位置 而漫反射光需要 齐次坐标为0 无穷远处
-//    QVector4D *lightPosition = new QVector4D[1];
-//    lightPosition[0] = QVector4D(5.0f, 5.0f, 1.0f, 0.0f);
-//    updateDirectionLightPosition(lightPosition, QVector3D(1, 0, 0));
-//    mShader.setVector4f(Light::directionLightColorUniformLocationName, 1.0f, 1.0f, 1.0f, 1.0f);
-//    mShader.setVector4f(Light::lightSpecularUniformLocationName, 1.0f, 1.0f, 1.0f, 1.0f);
-//    mShader.setVector4f(Light::lightOptionUniformLocationName, 32.0f, 0.0f, 0.0f, 0.0f);
-//    setDefaultMaterial();
+    m_pMaterial->getBaseRenderPass()->setZTestState(true);
 
     BBRenderableObject::init();
+
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setVBO(m_pVBO);
+    pDrawCall->setEBO(m_pEBO, GL_TRIANGLES, m_nIndexCount, 0);
+    appendDrawCall(pDrawCall);
 }
 
 bool BBMesh::hit(const BBRay &ray, float &fDistance)
@@ -73,11 +70,6 @@ bool BBMesh::hit(const BBRay &ray, float &fDistance)
 
 void BBMesh::draw()
 {
-//    if (mIsDepthTest)
-//        glEnable(GL_DEPTH_TEST);
-//    else
-//        glDisable(GL_DEPTH_TEST);
-
 //    if (mMeshType == MeshType::fbx)
 //    {
 //        //动画
@@ -89,7 +81,6 @@ void BBMesh::draw()
 //            mVertexBuffer->setColor(i, mColor);
 //        }
 //    }
-    glDrawElements(GL_TRIANGLES, m_nIndexCount, GL_UNSIGNED_SHORT, 0);
 }
 
 //void Mesh::loadFbx(QString path)

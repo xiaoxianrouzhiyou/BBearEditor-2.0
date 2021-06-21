@@ -103,14 +103,14 @@ void BBScene::render()
     m_pHorizontalPlane->render(m_pCamera);
 
     // render dropped model
-//    //渲染灯光的图标 关闭深度测试 最后渲染 出现在最前面
-//    QList<BBGameObject*> objects = m_Models;
-//            //+ directionLights + pointLights + spotLights + audios;
-//    for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
-//    {
-//        BBGameObject *pObject = *itr;
-//        pObject->render(m_pCamera);
-//    }
+    //渲染灯光的图标 关闭深度测试 最后渲染 出现在最前面
+    QList<BBGameObject*> objects = m_Models;
+            //+ directionLights + pointLights + spotLights + audios;
+    for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
+    {
+        BBGameObject *pObject = *itr;
+        pObject->render(m_pCamera);
+    }
 
 //    m_pTransformCoordinateSystem->render(m_pCamera);
 

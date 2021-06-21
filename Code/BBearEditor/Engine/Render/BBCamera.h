@@ -13,7 +13,7 @@ public:
     BBCamera();
     void resetMove();
     void update(float fDeltaTime);
-    void setViewportSize(int fWidth, int fHeight);
+    void setViewportSize(int nWidth, int nHeight);
     void switchTo3D();
     void switchTo2D();
     void move(char dir, bool bMove);
@@ -29,8 +29,8 @@ public:
     inline QVector3D getViewCenter() { return m_ViewCenter; }
     inline QMatrix4x4 getViewMatrix() { return m_ViewMatrix; }
     inline QMatrix4x4 getProjectionMatrix() { return m_ProjectionMatrix; }
-    inline int getViewportWidth() { return m_iViewportWidth; }
-    inline int getViewportHeight() { return m_iViewportHeight; }
+    inline int getViewportWidth() { return m_nViewportWidth; }
+    inline int getViewportHeight() { return m_nViewportHeight; }
 
 private:
     void rotateView(float fAngle, float x, float y, float z);
@@ -48,8 +48,8 @@ private:
     bool m_bMoveDown;
     GLdouble m_pModelView[16];
     GLdouble m_pProjection[16];
-    int m_iViewportWidth;
-    int m_iViewportHeight;
+    int m_nViewportWidth;
+    int m_nViewportHeight;
     GLint m_pViewport[4];
     QMatrix4x4 m_ViewMatrix;
     QMatrix4x4 m_ProjectionMatrix;
