@@ -18,7 +18,7 @@ BBRenderableObject::BBRenderableObject()
 BBRenderableObject::BBRenderableObject(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz)
     : BBGameObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
-    m_pDrawCall = new BBDrawCall;
+    m_pDrawCalls = new BBDrawCall;
     m_bVisible = true;
     m_pMaterial = new BBMaterial;
     m_pVBO = NULL;
@@ -31,7 +31,6 @@ BBRenderableObject::BBRenderableObject(float px, float py, float pz, float rx, f
 
 BBRenderableObject::~BBRenderableObject()
 {
-    BB_SAFE_DELETE(m_pDrawCall);
     BB_SAFE_DELETE(m_pMaterial);
     BB_SAFE_DELETE(m_pVBO);
     BB_SAFE_DELETE(m_pEBO);
@@ -40,9 +39,15 @@ BBRenderableObject::~BBRenderableObject()
 
 void BBRenderableObject::init()
 {
-    m_pDrawCall->setMaterial(m_pMaterial);
-    m_pDrawCall->setVBO(m_pVBO);
-    m_pDrawCall->setEBO(m_pEBO);
+    BBDrawCall *pDrawCall = m_pDrawCalls;
+    while (pDrawCall != nullptr)
+    {
+        pDrawCall->setMaterial(m_pMaterial);
+        pDrawCall->setVBO(m_pVBO);
+        pDrawCall->setEBO(m_pEBO);
+        pDrawCall = pDrawCall->next<BBDrawCall>();
+    }
+
 }
 
 void BBRenderableObject::render(BBCamera *pCamera)
@@ -55,26 +60,23 @@ void BBRenderableObject::render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera
     if (m_bVisible)
     {
         m_pMaterial->setMatrix4(NAME_MODELMATRIX, modelMatrix.data());
-        m_pDrawCall->draw(pCamera);
+        m_pDrawCalls->draw(pCamera);
     }
-}
-
-void BBRenderableObject::setTexture(const QString &filePath, bool bInvertY)
-{
-//    m_pShader->setTexture(NAME_TEXTURE, filePath, bInvertY);
-}
-
-void BBRenderableObject::setTexture(int nSize)
-{
-//    m_pShader->setTexture(NAME_TEXTURE, nSize);
-}
-
-void BBRenderableObject::setTexture(const GLuint &nTexture)
-{
-//    m_pShader->setTexture(NAME_TEXTURE, nTexture);
 }
 
 void BBRenderableObject::draw()
 {
 
+}
+
+void BBRenderableObject::appendDrawCall(BBDrawCall *pDrawCall)
+{
+    if (m_pDrawCalls == nullptr)
+    {
+        m_pDrawCalls = pDrawCall;
+    }
+    else
+    {
+        m_pDrawCalls->pushBack(pDrawCall);
+    }
 }

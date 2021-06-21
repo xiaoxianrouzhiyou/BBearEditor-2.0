@@ -21,10 +21,6 @@ protected:
 
     GLuint m_Name;
     GLenum m_BufferType;
-
-    GLenum m_eDrawPrimitiveType;
-    int m_nDrawStartIndex;
-    int m_nDrawCount;
 };
 
 #endif // BBBUFFEROBJECT_H

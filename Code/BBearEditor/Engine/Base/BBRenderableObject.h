@@ -23,17 +23,16 @@ public:
     void render(BBCamera *pCamera) override;
     void render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera) override;
 
-    void setTexture(const QString &filePath, bool bInvertY = true);
-    void setTexture(int nSize);
-    void setTexture(const GLuint &nTexture);
-
     inline BBMaterial* getMaterial() { return m_pMaterial; }
     inline BBVertexBufferObject* getVBO() { return m_pVBO; }
     inline BBElementBufferObject* getEBO() { return m_pEBO; }
 
 protected:
     virtual void draw();
-    BBDrawCall *m_pDrawCall;
+
+    void appendDrawCall(BBDrawCall *pDrawCall);
+
+    BBDrawCall *m_pDrawCalls;
     BBMaterial *m_pMaterial;
     BBVertexBufferObject *m_pVBO;
     BBElementBufferObject *m_pEBO;

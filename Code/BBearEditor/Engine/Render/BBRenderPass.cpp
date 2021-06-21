@@ -38,6 +38,7 @@ void BBRenderPass::bind(BBCamera *pCamera)
 {
     glUseProgram(m_pShader->getProgram());
 
+    BBGlobalRenderState::updateZTestState(m_RenderState.m_bZTest);
     BBGlobalRenderState::updateBlendState(m_RenderState.m_bBlend);
     BBGlobalRenderState::updateBlendFunc(m_RenderState.m_SRCBlendFunc, m_RenderState.m_DSTBlendFunc);
     BBGlobalRenderState::updateZMask(m_RenderState.m_bWriteZ);
@@ -62,6 +63,11 @@ void BBRenderPass::bind(BBCamera *pCamera)
         }
         pUniformUpdater = pUniformUpdater->next<BBUniformUpdater>();
     }
+}
+
+void BBRenderPass::setZTestState(bool bEnable)
+{
+    m_RenderState.m_bZTest = bEnable;
 }
 
 void BBRenderPass::setMatrix4(const std::string &uniformName, const float *pMatrix4)

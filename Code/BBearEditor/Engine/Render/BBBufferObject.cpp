@@ -6,9 +6,6 @@ BBBufferObject::BBBufferObject()
 {
     m_Name = 0;
     m_BufferType = GL_ARRAY_BUFFER;
-    m_eDrawPrimitiveType = GL_TRIANGLES;
-    m_nDrawStartIndex = 0;
-    m_nDrawCount = 3;
 }
 
 BBBufferObject::~BBBufferObject()

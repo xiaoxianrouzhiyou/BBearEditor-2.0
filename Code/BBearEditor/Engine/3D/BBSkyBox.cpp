@@ -23,6 +23,7 @@ void BBSkyBoxSide::init(const QString &path)
     BBTexture texture;
     m_pMaterial->getBaseRenderPass()->setSampler2D(NAME_TEXTURE,
                                                    texture.createTexture2DFromBMP(path.toStdString().c_str()));
+    m_pMaterial->getBaseRenderPass()->setZTestState(true);
     m_pVBO->setDrawParameter(GL_TRIANGLE_STRIP, 0, 4);
 
     BBRenderableObject::init();
@@ -37,7 +38,7 @@ void BBSkyBoxSide::render(BBCamera *pCamera)
 
 void BBSkyBoxSide::change(const QString &path)
 {
-    setTexture(path);
+
 }
 
 void BBSkyBoxSide::draw()

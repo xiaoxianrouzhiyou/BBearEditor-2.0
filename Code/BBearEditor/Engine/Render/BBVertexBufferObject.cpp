@@ -5,6 +5,9 @@ BBVertexBufferObject::BBVertexBufferObject(int nVertexCount)
     : BBBufferObject()
 {
     setSize(nVertexCount);
+    m_eDrawPrimitiveType = GL_TRIANGLES;
+    m_nDrawStartIndex = 0;
+    m_nDrawCount = 3;
 }
 
 BBVertexBufferObject::~BBVertexBufferObject()

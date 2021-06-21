@@ -45,6 +45,9 @@ private:
 
     BBVertex *m_pVertexes;
     int m_nVertexCount;
+    GLenum m_eDrawPrimitiveType;
+    int m_nDrawStartIndex;
+    int m_nDrawCount;
 };
 
 #endif // BBVERTEXBUFFEROBJECT_H
