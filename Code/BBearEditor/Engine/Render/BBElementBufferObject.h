@@ -11,7 +11,7 @@ public:
 
     void setSize(int nIndexCount, GLenum hint = GL_STATIC_DRAW);
 
-    void draw();
+    void draw(GLenum eDrawPrimitiveType, int nIndexCount, int nDrawStartIndex);
 
 private:
 

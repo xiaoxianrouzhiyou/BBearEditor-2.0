@@ -26,14 +26,10 @@ void BBSkyBoxSide::init(const QString &path)
                                                    texture.createTexture2DFromBMP(path.toStdString().c_str()));
     m_pMaterial->getBaseRenderPass()->setZTestState(true);
 
-    BBDrawCall *pDrawCall = m_pDrawCalls;
-    while (pDrawCall != nullptr)
-    {
-        pDrawCall->setMaterial(m_pMaterial);
-        pDrawCall->setVBO(m_pVBO, GL_TRIANGLE_STRIP, 0, 4);
-        pDrawCall->setEBO(m_pEBO);
-        pDrawCall = pDrawCall->next<BBDrawCall>();
-    }
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setVBO(m_pVBO, GL_TRIANGLE_STRIP, 0, 4);
+    appendDrawCall(pDrawCall);
 
     BBRenderableObject::init();
 }

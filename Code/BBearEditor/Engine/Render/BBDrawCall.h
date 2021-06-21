@@ -16,7 +16,7 @@ public:
 
     void setMaterial(BBMaterial *pMaterial);
     void setVBO(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount);
-    void setEBO(BBElementBufferObject *pEBO);
+    void setEBO(BBElementBufferObject *pEBO, GLenum eDrawPrimitiveType, int nIndexCount, int nDrawStartIndex);
 
     void draw(BBCamera *pCamera);
 
@@ -24,9 +24,9 @@ private:
     BBMaterial *m_pMaterial;
 
     GLenum m_eDrawPrimitiveType;
+    int m_nDrawStartIndex;
 
     BBVertexBufferObject *m_pVBO;
-    int m_nDrawStartIndex;
     int m_nDrawCount;
 
     BBElementBufferObject *m_pEBO;

@@ -18,7 +18,7 @@ BBRenderableObject::BBRenderableObject()
 BBRenderableObject::BBRenderableObject(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz)
     : BBGameObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
-    m_pDrawCalls = new BBDrawCall;
+    m_pDrawCalls = NULL;
     m_bVisible = true;
     m_pMaterial = new BBMaterial;
     m_pVBO = NULL;
