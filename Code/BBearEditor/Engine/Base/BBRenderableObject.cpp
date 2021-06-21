@@ -39,14 +39,6 @@ BBRenderableObject::~BBRenderableObject()
 
 void BBRenderableObject::init()
 {
-    BBDrawCall *pDrawCall = m_pDrawCalls;
-    while (pDrawCall != nullptr)
-    {
-        pDrawCall->setMaterial(m_pMaterial);
-        pDrawCall->setVBO(m_pVBO);
-        pDrawCall->setEBO(m_pEBO);
-        pDrawCall = pDrawCall->next<BBDrawCall>();
-    }
 
 }
 

@@ -37,17 +37,13 @@ public:
     inline int getVertexCount() { return m_nVertexCount; }
 
     void submitData();
-    void setDrawParameter(GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount);
-    void draw() override;
+    void draw(GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount);
 
 private:
     void setSize(int nVertexCount, GLenum hint = GL_STATIC_DRAW);
 
     BBVertex *m_pVertexes;
     int m_nVertexCount;
-    GLenum m_eDrawPrimitiveType;
-    int m_nDrawStartIndex;
-    int m_nDrawCount;
 };
 
 #endif // BBVERTEXBUFFEROBJECT_H

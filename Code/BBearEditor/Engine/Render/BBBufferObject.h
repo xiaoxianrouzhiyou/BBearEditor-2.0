@@ -13,8 +13,6 @@ public:
     void bind();
     void unbind();
 
-    virtual void draw() = 0;
-
 protected:
     GLuint createBufferObject(GLenum bufferType, GLsizeiptr size, GLenum usage, void *pData = NULL);
     void updateData(GLenum bufferType, GLsizeiptr size, void *pData = NULL);

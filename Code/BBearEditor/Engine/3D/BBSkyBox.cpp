@@ -4,6 +4,7 @@
 #include "Render/BBMaterial.h"
 #include "Render/BBRenderPass.h"
 #include "Render/BBTexture.h"
+#include "Render/BBDrawCall.h"
 #include "BBUtils.h"
 
 //--------------------
@@ -24,7 +25,15 @@ void BBSkyBoxSide::init(const QString &path)
     m_pMaterial->getBaseRenderPass()->setSampler2D(NAME_TEXTURE,
                                                    texture.createTexture2DFromBMP(path.toStdString().c_str()));
     m_pMaterial->getBaseRenderPass()->setZTestState(true);
-    m_pVBO->setDrawParameter(GL_TRIANGLE_STRIP, 0, 4);
+
+    BBDrawCall *pDrawCall = m_pDrawCalls;
+    while (pDrawCall != nullptr)
+    {
+        pDrawCall->setMaterial(m_pMaterial);
+        pDrawCall->setVBO(m_pVBO, GL_TRIANGLE_STRIP, 0, 4);
+        pDrawCall->setEBO(m_pEBO);
+        pDrawCall = pDrawCall->next<BBDrawCall>();
+    }
 
     BBRenderableObject::init();
 }
