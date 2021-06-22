@@ -89,7 +89,8 @@ SOURCES += \
     Engine/Render/BBTexture.cpp \
     Engine/Render/Light/BBDirectionalLight.cpp \
     Engine/Render/Light/BBPointLight.cpp \
-    Engine/Render/Light/BBSpotLight.cpp
+    Engine/Render/Light/BBSpotLight.cpp \
+    Engine/3D/BBIcon.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -158,7 +159,8 @@ HEADERS += \
     Engine/Render/BBTexture.h \
     Engine/Render/Light/BBDirectionalLight.h \
     Engine/Render/Light/BBPointLight.h \
-    Engine/Render/Light/BBSpotLight.h
+    Engine/Render/Light/BBSpotLight.h \
+    Engine/3D/BBIcon.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

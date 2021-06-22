@@ -5,6 +5,7 @@
 #include "Base/BBGameObject.h"
 
 class BBScene;
+class BBIcon;
 
 enum BBLightType
 {
@@ -20,6 +21,15 @@ public:
     BBLight(BBScene *pScene, const QVector3D &position, const QVector3D &rotation, const QVector3D &scale);
     ~BBLight();
 
+    void init(const QString &path) override;
+    void render(BBCamera *pCamera) override;
+
+    bool hit(const BBRay &ray, float &fDistance) override;
+    bool belongToSelectionRegion(const QVector3D &left1, const QVector3D &left2, const QVector3D &left3,
+                                 const QVector3D &top1, const QVector3D &top2, const QVector3D &top3,
+                                 const QVector3D &right1, const QVector3D &right2, const QVector3D &right3,
+                                 const QVector3D &bottom1, const QVector3D &bottom2, const QVector3D &bottom3) override;
+
     void setAmbientColor(float r, float g, float b, float a);
     void setDiffuseColor(float r, float g, float b, float a);
     void setSpecularColor(float r, float g, float b, float a);
@@ -31,6 +41,9 @@ protected:
 
 protected:
     BBLightType m_eType;
+    BBScene *m_pScene;
+    BBIcon *m_pIcon;
+
     float m_Ambient[4];
     float m_Diffuse[4];
     float m_Specular[4];
@@ -132,8 +145,6 @@ protected:
 //    Indicator *mIndicator;
 
 //protected:
-//    GameObjectIcon *mIcon;
-//    Scene *mScene;
 //    QColor mColor;
 //    QVector4D mColorVector4f;
 //};

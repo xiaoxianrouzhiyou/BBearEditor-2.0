@@ -16,6 +16,14 @@ BBRenderableObject::BBRenderableObject()
 
 }
 
+BBRenderableObject::BBRenderableObject(const QVector3D &position, const QVector3D &rotation, const QVector3D &scale)
+    : BBRenderableObject(position.x(), position.y(), position.z(),
+                         rotation.x(), rotation.y(), rotation.z(),
+                            scale.x(),    scale.y(),    scale.z())
+{
+
+}
+
 BBRenderableObject::BBRenderableObject(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz)
     : BBGameObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
@@ -35,7 +43,7 @@ BBRenderableObject::~BBRenderableObject()
     BB_SAFE_DELETE(m_pMaterial);
     BB_SAFE_DELETE(m_pVBO);
     BB_SAFE_DELETE(m_pEBO);
-    BB_SAFE_DELETE(m_pIndexes);
+    BB_SAFE_DELETE_ARRAY(m_pIndexes);
 }
 
 void BBRenderableObject::init()

@@ -35,6 +35,13 @@ GLuint BBTexture::createTexture2D(unsigned char *pPixelData, int nWidth, int nHe
     return texture;
 }
 
+GLuint BBTexture::createTexture2D(const QString &path)
+{
+    QImage image(path);
+    image = image.mirrored(false, true);
+    return createTexture2D(image.bits(), image.width(), image.height(), GL_RGBA);
+}
+
 GLuint BBTexture::createTexture2DFromBMP(const char *path)
 {
     // black

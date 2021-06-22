@@ -14,6 +14,7 @@ class BBRenderableObject : public BBGameObject
 {
 public:
     BBRenderableObject();
+    BBRenderableObject(const QVector3D &position, const QVector3D &rotation, const QVector3D &scale);
     BBRenderableObject(float px, float py, float pz,
                        float rx, float ry, float rz,
                        float sx, float sy, float sz);
