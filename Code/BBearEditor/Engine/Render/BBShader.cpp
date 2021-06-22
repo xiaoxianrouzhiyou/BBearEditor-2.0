@@ -108,7 +108,7 @@ void BBShader::initAttributes()
             nDataOffset = sizeof(float) * 12;
         }
         BBAttribute *pAttribute = new BBAttribute(location, nComponentCount, nBasicDataType,
-                                                  GL_TRUE, sizeof(BBVertex), nDataOffset);
+                                                  GL_FALSE, sizeof(BBVertex), nDataOffset);
         if (m_pAttributes == nullptr)
         {
             m_pAttributes = pAttribute;

@@ -24,10 +24,6 @@ void BBSelectionRegion::render()
     if (m_bVisible)
     {
         glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        // glShadeModel(GL_SMOOTH);
-        // 2D images do not receive lighting algorithms
-        glDisable(GL_LIGHTING);
         // Rect
         glColor4ub(214, 223, 235, 50);
         glBegin(GL_QUADS);

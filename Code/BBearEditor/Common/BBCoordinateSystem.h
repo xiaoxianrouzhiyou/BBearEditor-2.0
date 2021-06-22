@@ -37,6 +37,8 @@ protected:
                           float rx, float ry, float rz,
                           float sx, float sy, float sz);
 
+    void init() override;
+
     BBAxisFlags m_SelectedAxis;
     static QVector3D m_Red;
     static QVector4D m_RedTransparency;
@@ -68,9 +70,6 @@ public:
                       float sx, float sy, float sz);
 
     void init() override;
-
-private:
-    void draw() override;
 };
 
 
@@ -84,9 +83,6 @@ public:
                      float sx, float sy, float sz);
 
     void init() override;
-
-private:
-    void draw() override;
 };
 
 
@@ -100,9 +96,6 @@ public:
                          float sx, float sy, float sz);
 
     void init() override;
-
-private:
-    void draw() override;
 };
 
 
@@ -116,9 +109,6 @@ public:
                               float sx, float sy, float sz);
 
     void init() override;
-
-private:
-    void draw() override;
 };
 
 
@@ -131,9 +121,6 @@ public:
                        float sx, float sy, float sz);
 
     void init() override;
-
-private:
-    void draw() override;
 };
 
 
@@ -147,9 +134,6 @@ public:
                          float sx, float sy, float sz);
 
     void init() override;
-
-private:
-    void draw() override;
 };
 
 
@@ -169,8 +153,6 @@ public:
     void reset();
 
 private:
-    void draw() override;
-
     int m_nAngle;
 };
 
@@ -188,8 +170,6 @@ public:
     void move(const QVector3D &delta);
 
 private:
-    void draw() override;
-
     float m_fHalfLength;
     static QVector3D m_Sign[8];
 };
@@ -205,9 +185,6 @@ public:
                              float sx, float sy, float sz);
 
     void init() override;
-
-private:
-    void draw() override;
 };
 
 

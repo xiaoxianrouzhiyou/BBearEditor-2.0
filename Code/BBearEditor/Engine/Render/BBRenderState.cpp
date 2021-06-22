@@ -45,6 +45,7 @@ BBRenderState::BBRenderState()
     m_ClearStencilValue = -1;
     m_DrawFace = GL_FRONT;
     m_PolygonMode = GL_FILL;
+    m_fLineWidth = 1.0f;
 }
 
 void BBRenderState::operator =(const BBRenderState &rs)
@@ -73,6 +74,7 @@ void BBGlobalRenderState::init()
     glDepthFunc(m_RenderState.m_ZTestFunc);
     glPolygonMode(m_RenderState.m_DrawFace, m_RenderState.m_PolygonMode);
     glAlphaFunc(m_RenderState.m_AlphaTestFunc, m_RenderState.m_fAlphaTestValue);
+    glLineWidth(m_RenderState.m_fLineWidth);
 }
 
 void BBGlobalRenderState::updateBlendState(bool bEnable)
@@ -163,5 +165,14 @@ void BBGlobalRenderState::updateAlphaFunc(unsigned int func, float value)
         m_RenderState.m_AlphaTestFunc = func;
         m_RenderState.m_fAlphaTestValue = value;
         glAlphaFunc(m_RenderState.m_AlphaTestFunc, m_RenderState.m_fAlphaTestValue);
+    }
+}
+
+void BBGlobalRenderState::updateLineWidth(float fWidth)
+{
+    if (m_RenderState.m_fLineWidth != fWidth)
+    {
+        m_RenderState.m_fLineWidth = fWidth;
+        glLineWidth(m_RenderState.m_fLineWidth);
     }
 }

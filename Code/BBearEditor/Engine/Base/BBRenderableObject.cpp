@@ -62,11 +62,6 @@ void BBRenderableObject::render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera
     }
 }
 
-void BBRenderableObject::draw()
-{
-
-}
-
 void BBRenderableObject::appendDrawCall(BBDrawCall *pDrawCall)
 {
     if (m_pDrawCalls == nullptr)

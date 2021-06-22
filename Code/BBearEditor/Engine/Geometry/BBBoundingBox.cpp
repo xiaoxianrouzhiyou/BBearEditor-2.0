@@ -381,11 +381,6 @@ QVector3D BBBoundingBox3D::getHalfLength()
     return QVector3D(m_HalfLength[0], m_HalfLength[1], m_HalfLength[2]);
 }
 
-void BBBoundingBox3D::draw()
-{
-
-}
-
 void BBBoundingBox3D::computeBoxVertexes(const QList<QVector4D> &vertexes)
 {
     Q_UNUSED(vertexes);

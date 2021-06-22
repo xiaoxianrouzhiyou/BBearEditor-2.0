@@ -100,7 +100,6 @@ public:
     QVector3D getHalfLength();
 
 protected:
-    void draw() override;
     virtual void computeBoxVertexes(const QList<QVector4D> &vertexes);
 
     float m_Axis[3][3];

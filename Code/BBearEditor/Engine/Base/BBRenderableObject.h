@@ -28,8 +28,6 @@ public:
     inline BBElementBufferObject* getEBO() { return m_pEBO; }
 
 protected:
-    virtual void draw();
-
     void appendDrawCall(BBDrawCall *pDrawCall);
 
     BBDrawCall *m_pDrawCalls;

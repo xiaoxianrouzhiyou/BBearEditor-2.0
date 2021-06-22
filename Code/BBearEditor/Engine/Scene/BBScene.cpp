@@ -1,6 +1,5 @@
 #include "BBScene.h"
 #include "BBUtils.h"
-#include "Render/BBDrawCall.h"
 #include "Render/BBFrameBufferObject.h"
 #include "Render/BBCamera.h"
 #include "3D/BBSkyBox.h"
@@ -16,7 +15,6 @@
 
 BBScene::BBScene()
 {
-    m_pDrawCall = NULL;
     m_fUpdateRate = (float) BB_CONSTANT_UPDATE_RATE / 1000;
     m_pFBO = NULL;
     m_pCamera = NULL;
@@ -38,7 +36,6 @@ BBScene::BBScene()
 
 BBScene::~BBScene()
 {
-    BB_SAFE_DELETE(m_pDrawCall);
     BB_SAFE_DELETE(m_pFBO);
     BB_SAFE_DELETE(m_pCamera);
     BB_SAFE_DELETE(m_pSkyBox);
@@ -70,8 +67,6 @@ void BBScene::init()
     m_pSkyBox->init(QString(BB_PATH_RESOURCE) + "skyboxs/1/");
     m_pHorizontalPlane->init();
     m_pTransformCoordinateSystem->init();
-
-    m_pDrawCall = new BBDrawCall;
 
 
 //    //粒子
@@ -112,7 +107,7 @@ void BBScene::render()
         pObject->render(m_pCamera);
     }
 
-//    m_pTransformCoordinateSystem->render(m_pCamera);
+    m_pTransformCoordinateSystem->render(m_pCamera);
 
 
     // 2D camera mode

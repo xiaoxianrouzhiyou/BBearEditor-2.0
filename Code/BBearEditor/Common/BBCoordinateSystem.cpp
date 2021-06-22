@@ -1,6 +1,9 @@
 #include "BBCoordinateSystem.h"
 #include "Render/BBVertexBufferObject.h"
+#include "Render/BBElementBufferObject.h"
 #include "Render/BBMaterial.h"
+#include "Render/BBRenderPass.h"
+#include "Render/BBDrawCall.h"
 #include "BBUtils.h"
 #include "Render/BBCamera.h"
 #include "Geometry/BBBoundingBox.h"
@@ -40,6 +43,17 @@ BBCoordinateComponent::BBCoordinateComponent(float px, float py, float pz,
     : BBRenderableObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
     m_SelectedAxis = BBAxisName::AxisNULL;
+}
+
+void BBCoordinateComponent::init()
+{
+    m_pMaterial->init("coordinate",
+                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
+                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
+    m_pMaterial->getBaseRenderPass()->setZFunc(GL_ALWAYS);
+    m_pMaterial->getBaseRenderPass()->setLineWidth(1.5f);
+
+    BBRenderableObject::init();
 }
 
 void BBCoordinateComponent::setSelectedAxis(const BBAxisFlags &axis)
@@ -97,6 +111,8 @@ void BBCoordinateComponent::setVertexColor(const BBAxisFlags &axis, bool bSelect
             setVertexColor(count2, count3, m_Blue);
         }
     }
+    // update
+    m_pVBO->submitData();
 }
 
 void BBCoordinateComponent::setVertexColor(int start, int end, const QVector3D &color)
@@ -186,8 +202,6 @@ void BBCoordinateArrow::init()
     for (int i = 26; i < 39; i++)
         m_pVBO->setColor(i, m_Blue);
 
-    m_pVBO->submitData();
-
     m_nIndexCount = 108;
     unsigned short indexes[] = {0, 1, 2, 0, 2, 3, 0, 3, 4,
                                 0, 4, 5, 0, 5, 6, 0, 6, 7,
@@ -207,19 +221,13 @@ void BBCoordinateArrow::init()
         m_pIndexes[i] = indexes[i];
     }
 
-    m_pMaterial->init("coordinate",
-                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
+    BBCoordinateComponent::init();
 
-    BBRenderableObject::init();
-}
-
-void BBCoordinateArrow::draw()
-{
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_ALWAYS);
-    glDrawElements(GL_TRIANGLES, m_nIndexCount, GL_UNSIGNED_SHORT, 0);
-    glDepthFunc(GL_LEQUAL);
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setVBO(m_pVBO);
+    pDrawCall->setEBO(m_pEBO, GL_TRIANGLES, m_nIndexCount, 0);
+    appendDrawCall(pDrawCall);
 }
 
 
@@ -267,25 +275,12 @@ void BBCoordinateAxis::init()
         m_pVBO->setColor(i, m_Blue);
     }
 
-    m_pVBO->submitData();
+    BBCoordinateComponent::init();
 
-    m_pMaterial->init("coordinate",
-                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
-
-    BBRenderableObject::init();
-}
-
-void BBCoordinateAxis::draw()
-{
-    glEnable(GL_DEPTH_TEST);
-    // Handle all
-    glDepthFunc(GL_ALWAYS);
-    glLineWidth(1.5f);
-    for (int i = 0; i < 3; i++)
-        glDrawArrays(GL_LINES, i * 2, 2);
-    // Set back to default
-    glDepthFunc(GL_LEQUAL);
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setVBO(m_pVBO, GL_LINES, 0, 6);
+    appendDrawCall(pDrawCall);
 }
 
 
@@ -311,28 +306,33 @@ void BBCoordinateRectFace::init()
 {
     m_pVBO = new BBVertexBufferObject(24);
 
+    // face
     m_pVBO->setPosition(0, 0.0f, 0.3f, 0.3f);
     m_pVBO->setPosition(1, 0.0f, 0.0f, 0.3f);
     m_pVBO->setPosition(2, 0.0f, 0.0f, 0.0f);
     m_pVBO->setPosition(3, 0.0f, 0.3f, 0.0f);
-    m_pVBO->setPosition(4, 0.0f, 0.3f, 0.3f);
-    m_pVBO->setPosition(5, 0.0f, 0.3f, 0.0f);
-    m_pVBO->setPosition(6, 0.0f, 0.3f, 0.3f);
-    m_pVBO->setPosition(7, 0.0f, 0.0f, 0.3f);
 
-    m_pVBO->setPosition(8, 0.3f, 0.0f, 0.3f);
-    m_pVBO->setPosition(9, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(4, 0.3f, 0.0f, 0.3f);
+    m_pVBO->setPosition(5, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(6, 0.0f, 0.0f, 0.0f);
+    m_pVBO->setPosition(7, 0.3f, 0.0f, 0.0f);
+
+    m_pVBO->setPosition(8, 0.3f, 0.3f, 0.0f);
+    m_pVBO->setPosition(9, 0.0f, 0.3f, 0.0f);
     m_pVBO->setPosition(10, 0.0f, 0.0f, 0.0f);
     m_pVBO->setPosition(11, 0.3f, 0.0f, 0.0f);
-    m_pVBO->setPosition(12, 0.3f, 0.0f, 0.3f);
-    m_pVBO->setPosition(13, 0.3f, 0.0f, 0.0f);
-    m_pVBO->setPosition(14, 0.3f, 0.0f, 0.3f);
+
+    // line
+    m_pVBO->setPosition(12, 0.0f, 0.3f, 0.3f);
+    m_pVBO->setPosition(13, 0.0f, 0.3f, 0.0f);
+    m_pVBO->setPosition(14, 0.0f, 0.3f, 0.3f);
     m_pVBO->setPosition(15, 0.0f, 0.0f, 0.3f);
 
-    m_pVBO->setPosition(16, 0.3f, 0.3f, 0.0f);
-    m_pVBO->setPosition(17, 0.0f, 0.3f, 0.0f);
-    m_pVBO->setPosition(18, 0.0f, 0.0f, 0.0f);
-    m_pVBO->setPosition(19, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(16, 0.3f, 0.0f, 0.3f);
+    m_pVBO->setPosition(17, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(18, 0.3f, 0.0f, 0.3f);
+    m_pVBO->setPosition(19, 0.0f, 0.0f, 0.3f);
+
     m_pVBO->setPosition(20, 0.3f, 0.3f, 0.0f);
     m_pVBO->setPosition(21, 0.3f, 0.0f, 0.0f);
     m_pVBO->setPosition(22, 0.3f, 0.3f, 0.0f);
@@ -344,46 +344,36 @@ void BBCoordinateRectFace::init()
     }
     for (int i = 4; i < 8; i++)
     {
-        m_pVBO->setColor(i, m_Red);
+        m_pVBO->setColor(i, m_GreenTransparency);
     }
     for (int i = 8; i < 12; i++)
     {
-        m_pVBO->setColor(i, m_GreenTransparency);
+        m_pVBO->setColor(i, m_BlueTransparency);
     }
     for (int i = 12; i < 16; i++)
     {
-        m_pVBO->setColor(i, m_Green);
+        m_pVBO->setColor(i, m_Red);
     }
     for (int i = 16; i < 20; i++)
     {
-        m_pVBO->setColor(i, m_BlueTransparency);
+        m_pVBO->setColor(i, m_Green);
     }
     for (int i = 20; i < 24; i++)
     {
         m_pVBO->setColor(i, m_Blue);
     }
 
-    m_pVBO->submitData();
+    BBCoordinateComponent::init();
 
-    m_pMaterial->init("coordinate",
-                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setVBO(m_pVBO, GL_QUADS, 0, 12);
+    appendDrawCall(pDrawCall);
 
-    BBRenderableObject::init();
-}
-
-void BBCoordinateRectFace::draw()
-{
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_ALWAYS);
-    glLineWidth(1.5f);
-    for (int i = 0; i < 3; i++)
-    {
-        glDrawArrays(GL_TRIANGLE_FAN, i * 8, 4);
-        glDrawArrays(GL_LINES, i * 8 + 4, 2);
-        glDrawArrays(GL_LINES, i * 8 + 6, 2);
-    }
-    glDepthFunc(GL_LEQUAL);
+    BBDrawCall *pDrawCall2 = new BBDrawCall;
+    pDrawCall2->setMaterial(m_pMaterial);
+    pDrawCall2->setVBO(m_pVBO, GL_LINES, 12, 24);
+    appendDrawCall(pDrawCall2);
 }
 
 
@@ -451,21 +441,13 @@ void BBCoordinateQuarterCircle::init()
 
     }
 
-    m_pVBO->submitData();
+    BBCoordinateComponent::init();
 
-    m_pMaterial->init("coordinate",
-                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
-
-    BBRenderableObject::init();
-}
-
-void BBCoordinateQuarterCircle::draw()
-{
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_ALWAYS);
-    glDrawElements(GL_QUADS, m_nIndexCount, GL_UNSIGNED_SHORT, 0);
-    glDepthFunc(GL_LEQUAL);
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setVBO(m_pVBO);
+    pDrawCall->setEBO(m_pEBO, GL_QUADS, m_nIndexCount, 0);
+    appendDrawCall(pDrawCall);
 }
 
 
@@ -504,8 +486,6 @@ void BBCoordinateCircle::init()
         m_pVBO->setColor(2 * i + 1, m_Yellow);
     }
 
-    m_pVBO->submitData();
-
     m_nIndexCount = 192;
     m_pIndexes = new unsigned short[m_nIndexCount];
 
@@ -520,19 +500,13 @@ void BBCoordinateCircle::init()
     m_pIndexes[190] = 1;
     m_pIndexes[191] = 0;
 
-    m_pMaterial->init("coordinate",
-                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
+    BBCoordinateComponent::init();
 
-    BBRenderableObject::init();
-}
-
-void BBCoordinateCircle::draw()
-{
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_ALWAYS);
-    glDrawElements(GL_QUADS, m_nIndexCount, GL_UNSIGNED_SHORT, 0);
-    glDepthFunc(GL_LEQUAL);
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setVBO(m_pVBO);
+    pDrawCall->setEBO(m_pEBO, GL_QUADS, m_nIndexCount, 0);
+    appendDrawCall(pDrawCall);
 }
 
 
@@ -584,34 +558,12 @@ void BBCoordinateTickMark::init()
         m_pVBO->setColor(2 * i + 1, m_Gray);
     }
 
-    m_pVBO->submitData();
+    BBCoordinateComponent::init();
 
-    m_nIndexCount = 72;
-    m_pIndexes = new unsigned short[m_nIndexCount];
-
-    for (int i = 0; i < 72; i += 2)
-    {
-        m_pIndexes[i] = i;
-        m_pIndexes[i + 1] = i + 2;
-    }
-    m_pIndexes[71] = 0;
-
-    m_pMaterial->init("coordinate",
-                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
-
-    BBRenderableObject::init();
-}
-
-void BBCoordinateTickMark::draw()
-{
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_ALWAYS);
-    glDrawElements(GL_LINES, m_nIndexCount, GL_UNSIGNED_SHORT, 0);
-    glLineWidth(1.5f);
-    for (int i = 0; i < 36; i++)
-        glDrawArrays(GL_LINES, i * 2, 2);
-    glDepthFunc(GL_LEQUAL);
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setVBO(m_pVBO, GL_LINES, 0, 72);
+    appendDrawCall(pDrawCall);
 }
 
 
@@ -648,7 +600,6 @@ void BBCoordinateSector::init()
         m_pVBO->setPosition(i, 0.0f, c, s);
         m_pVBO->setColor(i, m_Gray);
     }
-    m_pVBO->submitData();
 
     m_nIndexCount = 1080;
     m_pIndexes = new unsigned short[m_nIndexCount];
@@ -660,11 +611,12 @@ void BBCoordinateSector::init()
     }
     m_pIndexes[1079] = 0;
 
-    m_pMaterial->init("coordinate",
-                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
+    BBCoordinateComponent::init();
 
-    BBRenderableObject::init();
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setVBO(m_pVBO);
+    appendDrawCall(pDrawCall);
 }
 
 void BBCoordinateSector::render(BBCamera *pCamera)
@@ -692,7 +644,8 @@ void BBCoordinateSector::render(BBCamera *pCamera)
             }
         }
 
-        m_pMaterial->bindElementBufferObject(pIndexes, nIndexCount);
+        m_pEBO->submitData(pIndexes, nIndexCount);
+        m_pDrawCalls->setEBO(m_pEBO, GL_TRIANGLES, abs(m_nAngle) * 3, 0);
     }
 
     BBCoordinateComponent::render(pCamera);
@@ -715,14 +668,6 @@ void BBCoordinateSector::setAngle(int nDeltaAngle)
 void BBCoordinateSector::reset()
 {
     m_nAngle = 0;
-}
-
-void BBCoordinateSector::draw()
-{
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_ALWAYS);
-    glDrawElements(GL_TRIANGLES, abs(m_nAngle) * 3, GL_UNSIGNED_SHORT, 0);
-    glDepthFunc(GL_LEQUAL);
 }
 
 
@@ -773,8 +718,6 @@ void BBCoordinateCube::init()
         m_pVBO->setColor(i + 16, m_Blue);
     }
 
-    m_pVBO->submitData();
-
     m_nIndexCount = 72;
     m_pIndexes = new unsigned short[m_nIndexCount];
     unsigned short indexes[] = {0, 1, 2, 3,
@@ -790,11 +733,13 @@ void BBCoordinateCube::init()
         m_pIndexes[i + 48] = indexes[i] + 16;
     }
 
-    m_pMaterial->init("coordinate",
-                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
+    BBCoordinateComponent::init();
 
-    BBRenderableObject::init();
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setVBO(m_pVBO);
+    pDrawCall->setEBO(m_pEBO, GL_QUADS, m_nIndexCount, 0);
+    appendDrawCall(pDrawCall);
 }
 
 void BBCoordinateCube::move(const QVector3D &delta)
@@ -817,16 +762,6 @@ void BBCoordinateCube::move(const QVector3D &delta)
                             m_Sign[i].z() * m_fHalfLength + 1.0f + delta.z());
     }
     m_pVBO->submitData();
-
-    BBRenderableObject::init();
-}
-
-void BBCoordinateCube::draw()
-{
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_ALWAYS);
-    glDrawElements(GL_QUADS, m_nIndexCount, GL_UNSIGNED_SHORT, 0);
-    glDepthFunc(GL_LEQUAL);
 }
 
 
@@ -852,38 +787,43 @@ void BBCoordinateTriangleFace::init()
 {
     m_pVBO = new BBVertexBufferObject(36);
 
+    // GL_TRIANGLES
     m_pVBO->setPosition(0, 0.0f, 0.0f, 0.0f);
     m_pVBO->setPosition(1, 0.0f, 0.0f, 0.3f);
     m_pVBO->setPosition(2, 0.0f, 0.3f, 0.0f);
     m_pVBO->setPosition(3, 0.0f, 0.3f, 0.3f);
     m_pVBO->setPosition(4, 0.0f, 0.0f, 0.3f);
     m_pVBO->setPosition(5, 0.0f, 0.3f, 0.0f);
-    m_pVBO->setPosition(6, 0.0f, 0.0f, 0.3f);
-    m_pVBO->setPosition(7, 0.0f, 0.3f, 0.0f);
-    m_pVBO->setPosition(8, 0.0f, 0.0f, 0.3f);
-    m_pVBO->setPosition(9, 0.0f, 0.3f, 0.3f);
-    m_pVBO->setPosition(10, 0.0f, 0.3f, 0.0f);
-    m_pVBO->setPosition(11, 0.0f, 0.3f, 0.3f);
+
+    m_pVBO->setPosition(6, 0.0f, 0.0f, 0.0f);
+    m_pVBO->setPosition(7, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(8, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(9, 0.3f, 0.0f, 0.3f);
+    m_pVBO->setPosition(10, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(11, 0.3f, 0.0f, 0.0f);
 
     m_pVBO->setPosition(12, 0.0f, 0.0f, 0.0f);
-    m_pVBO->setPosition(13, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(13, 0.0f, 0.3f, 0.0f);
     m_pVBO->setPosition(14, 0.3f, 0.0f, 0.0f);
-    m_pVBO->setPosition(15, 0.3f, 0.0f, 0.3f);
-    m_pVBO->setPosition(16, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(15, 0.3f, 0.3f, 0.0f);
+    m_pVBO->setPosition(16, 0.0f, 0.3f, 0.0f);
     m_pVBO->setPosition(17, 0.3f, 0.0f, 0.0f);
-    m_pVBO->setPosition(18, 0.0f, 0.0f, 0.3f);
-    m_pVBO->setPosition(19, 0.3f, 0.0f, 0.0f);
-    m_pVBO->setPosition(20, 0.0f, 0.0f, 0.3f);
-    m_pVBO->setPosition(21, 0.3f, 0.0f, 0.3f);
-    m_pVBO->setPosition(22, 0.3f, 0.0f, 0.0f);
-    m_pVBO->setPosition(23, 0.3f, 0.0f, 0.3f);
 
-    m_pVBO->setPosition(24, 0.0f, 0.0f, 0.0f);
-    m_pVBO->setPosition(25, 0.0f, 0.3f, 0.0f);
-    m_pVBO->setPosition(26, 0.3f, 0.0f, 0.0f);
-    m_pVBO->setPosition(27, 0.3f, 0.3f, 0.0f);
-    m_pVBO->setPosition(28, 0.0f, 0.3f, 0.0f);
-    m_pVBO->setPosition(29, 0.3f, 0.0f, 0.0f);
+    // GL_LINES
+    m_pVBO->setPosition(18, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(19, 0.0f, 0.3f, 0.0f);
+    m_pVBO->setPosition(20, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(21, 0.0f, 0.3f, 0.3f);
+    m_pVBO->setPosition(22, 0.0f, 0.3f, 0.0f);
+    m_pVBO->setPosition(23, 0.0f, 0.3f, 0.3f);
+
+    m_pVBO->setPosition(24, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(25, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(26, 0.0f, 0.0f, 0.3f);
+    m_pVBO->setPosition(27, 0.3f, 0.0f, 0.3f);
+    m_pVBO->setPosition(28, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(29, 0.3f, 0.0f, 0.3f);
+
     m_pVBO->setPosition(30, 0.0f, 0.3f, 0.0f);
     m_pVBO->setPosition(31, 0.3f, 0.0f, 0.0f);
     m_pVBO->setPosition(32, 0.0f, 0.3f, 0.0f);
@@ -897,48 +837,36 @@ void BBCoordinateTriangleFace::init()
     }
     for (int i = 6; i < 12; i++)
     {
-        m_pVBO->setColor(i, m_Red);
+        m_pVBO->setColor(i, m_GreenTransparency);
     }
     for (int i = 12; i < 18; i++)
     {
-        m_pVBO->setColor(i, m_GreenTransparency);
+        m_pVBO->setColor(i, m_BlueTransparency);
     }
     for (int i = 18; i < 24; i++)
     {
-        m_pVBO->setColor(i, m_Green);
+        m_pVBO->setColor(i, m_Red);
     }
     for (int i = 24; i < 30; i++)
     {
-        m_pVBO->setColor(i, m_BlueTransparency);
+        m_pVBO->setColor(i, m_Green);
     }
     for (int i = 30; i < 36; i++)
     {
         m_pVBO->setColor(i, m_Blue);
     }
 
-    m_pVBO->submitData();
+    BBCoordinateComponent::init();
 
-    m_pMaterial->init("coordinate",
-                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setVBO(m_pVBO, GL_TRIANGLES, 0, 18);
+    appendDrawCall(pDrawCall);
 
-    BBRenderableObject::init();
-}
-
-void BBCoordinateTriangleFace::draw()
-{
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_ALWAYS);
-    glLineWidth(1.5f);
-    for (int i = 0; i < 3; i++)
-    {
-        glDrawArrays(GL_TRIANGLES, i * 12, 3);
-        glDrawArrays(GL_TRIANGLES, i * 12 + 3, 3);
-        glDrawArrays(GL_LINES, i * 12 + 6, 2);
-        glDrawArrays(GL_LINES, i * 12 + 8, 2);
-        glDrawArrays(GL_LINES, i * 12 + 10, 2);
-    }
-    glDepthFunc(GL_LEQUAL);
+    BBDrawCall *pDrawCall2 = new BBDrawCall;
+    pDrawCall2->setMaterial(m_pMaterial);
+    pDrawCall2->setVBO(m_pVBO, GL_LINES, 18, 36);
+    appendDrawCall(pDrawCall2);
 }
 
 

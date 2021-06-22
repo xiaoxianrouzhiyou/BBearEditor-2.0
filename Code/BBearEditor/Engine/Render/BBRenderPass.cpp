@@ -39,9 +39,11 @@ void BBRenderPass::bind(BBCamera *pCamera)
     glUseProgram(m_pShader->getProgram());
 
     BBGlobalRenderState::updateZTestState(m_RenderState.m_bZTest);
+    BBGlobalRenderState::updateZFunc(m_RenderState.m_ZTestFunc);
     BBGlobalRenderState::updateBlendState(m_RenderState.m_bBlend);
     BBGlobalRenderState::updateBlendFunc(m_RenderState.m_SRCBlendFunc, m_RenderState.m_DSTBlendFunc);
     BBGlobalRenderState::updateZMask(m_RenderState.m_bWriteZ);
+    BBGlobalRenderState::updateLineWidth(m_RenderState.m_fLineWidth);
 
     m_pShader->activeAttributes();
 
@@ -73,6 +75,16 @@ void BBRenderPass::setBlendState(bool bEnable)
 void BBRenderPass::setZTestState(bool bEnable)
 {
     m_RenderState.m_bZTest = bEnable;
+}
+
+void BBRenderPass::setZFunc(unsigned int func)
+{
+    m_RenderState.m_ZTestFunc = func;
+}
+
+void BBRenderPass::setLineWidth(float fWidth)
+{
+    m_RenderState.m_fLineWidth = fWidth;
 }
 
 void BBRenderPass::setMatrix4(const std::string &uniformName, const float *pMatrix4)

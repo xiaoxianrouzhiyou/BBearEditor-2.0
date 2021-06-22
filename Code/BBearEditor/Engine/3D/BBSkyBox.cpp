@@ -25,7 +25,6 @@ void BBSkyBoxSide::init(const QString &path)
     BBTexture texture;
     m_pMaterial->getBaseRenderPass()->setSampler2D(NAME_TEXTURE,
                                                    texture.createTexture2DFromBMP(path.toStdString().c_str()));
-    m_pMaterial->getBaseRenderPass()->setBlendState(false);
     m_pMaterial->getBaseRenderPass()->setZTestState(false);
 
     BBRenderableObject::init();
@@ -46,12 +45,6 @@ void BBSkyBoxSide::render(BBCamera *pCamera)
 void BBSkyBoxSide::change(const QString &path)
 {
 
-}
-
-void BBSkyBoxSide::draw()
-{
-    glDisable(GL_DEPTH_TEST);
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 

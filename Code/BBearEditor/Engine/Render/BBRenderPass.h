@@ -22,6 +22,8 @@ public:
 
     void setBlendState(bool bEnable);
     void setZTestState(bool bEnable);
+    void setZFunc(unsigned int func);
+    void setLineWidth(float fWidth);
 
     void setMatrix4(const std::string &uniformName, const float *pMatrix4);
     void setVector4(const std::string &uniformName, const float *pVector4);

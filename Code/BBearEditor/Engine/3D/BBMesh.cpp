@@ -68,8 +68,8 @@ bool BBMesh::hit(const BBRay &ray, float &fDistance)
     return bResult;
 }
 
-void BBMesh::draw()
-{
+//void BBMesh::draw()
+//{
 //    if (mMeshType == MeshType::fbx)
 //    {
 //        //动画
@@ -81,7 +81,7 @@ void BBMesh::draw()
 //            mVertexBuffer->setColor(i, mColor);
 //        }
 //    }
-}
+//}
 
 //void Mesh::loadFbx(QString path)
 //{

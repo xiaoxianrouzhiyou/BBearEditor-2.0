@@ -32,6 +32,7 @@ struct BBRenderState
     int m_ClearStencilValue;
     unsigned int m_DrawFace;
     unsigned int m_PolygonMode;
+    float m_fLineWidth;
 };
 
 class BBGlobalRenderState
@@ -47,6 +48,7 @@ public:
     static void updateZFunc(unsigned int func);
     static void updatePolygonMode(unsigned int face, unsigned int mode);
     static void updateAlphaFunc(unsigned int func, float value);
+    static void updateLineWidth(float fWidth);
 
 private:
     static BBRenderState m_RenderState;

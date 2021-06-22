@@ -92,7 +92,6 @@ void BBCamera::setViewportSize(int nWidth, int nHeight)
 
     m_ProjectionMatrix.setToIdentity();
     m_ProjectionMatrix.perspective(50.0f, (float) nWidth / nHeight, 0.1f, 1000.0f);
-    qDebug() << m_ProjectionMatrix;
 }
 
 void BBCamera::switchTo3D()

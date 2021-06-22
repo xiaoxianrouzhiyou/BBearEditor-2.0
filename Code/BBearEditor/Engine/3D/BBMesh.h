@@ -28,7 +28,6 @@ public:
 
 protected:
     virtual void load(const QString &path, QList<QVector4D> &outPositions) = 0;
-    void draw() override;
 };
 
 #endif // BBMESH_H

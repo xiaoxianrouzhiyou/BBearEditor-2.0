@@ -13,9 +13,6 @@ public:
     void init(const QString &path) override;
     void render(BBCamera *pCamera) override;
     void change(const QString &path);
-
-private:
-    void draw() override;
 };
 
 

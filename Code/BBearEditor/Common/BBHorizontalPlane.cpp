@@ -61,7 +61,6 @@ void BBHorizontalPlane::init()
                       BB_PATH_RESOURCE_SHADER(base.vert),
                       BB_PATH_RESOURCE_SHADER(base.frag));
     m_pMaterial->getBaseRenderPass()->setBlendState(true);
-    m_pMaterial->getBaseRenderPass()->setZTestState(true);
 
     BBRenderableObject::init();
 
@@ -92,11 +91,4 @@ void BBHorizontalPlane::render(BBCamera *pCamera)
     modelMatrix.scale(ratio / 10);
 
     BBRenderableObject::render(modelMatrix, pCamera);
-}
-
-void BBHorizontalPlane::draw()
-{
-//    glEnable(GL_BLEND);
-//    glLineWidth(1);
-//    glDisable(GL_BLEND);
 }
