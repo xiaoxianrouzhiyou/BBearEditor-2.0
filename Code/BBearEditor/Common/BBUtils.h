@@ -17,6 +17,7 @@
 #define BB_MIMETYPE_FILELISTWIDGET "FileListWidget"
 
 #define BB_PATH_BASEOBJECTLIST "../../../BBearEditor/resources/xmlfiles/baselist.xml"
+#define BB_PATH_LIGHTOBJECTLIST "../../../BBearEditor/resources/xmlfiles/lightlist.xml"
 #define BB_PATH_RESOURCE "../../../BBearEditor/resources/"
 #define BB_PATH_RESOURCE_MESH(x) "../../../BBearEditor/resources/meshes/"#x
 #define BB_PATH_RESOURCE_SHADER(x) "../../../BBearEditor/resources/shaders/"#x

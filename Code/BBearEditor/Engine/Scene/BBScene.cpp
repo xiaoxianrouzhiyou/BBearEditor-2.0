@@ -5,12 +5,16 @@
 #include "3D/BBSkyBox.h"
 #include "BBHorizontalPlane.h"
 #include "BBGameObject.h"
-#include "3d/BBModel.h"
+#include "3D/BBModel.h"
 #include "Geometry/BBRay.h"
 #include "BBSelectionRegion.h"
 #include <cfloat>
 #include "BBCoordinateSystem.h"
 #include "Render/BBRenderState.h"
+#include "Render/Light/BBLight.h"
+#include "Render/Light/BBDirectionalLight.h"
+#include "Render/Light/BBPointLight.h"
+#include "Render/Light/BBSpotLight.h"
 
 
 BBScene::BBScene()
@@ -99,8 +103,8 @@ void BBScene::render()
 
     // render dropped model
     //渲染灯光的图标 关闭深度测试 最后渲染 出现在最前面
-    QList<BBGameObject*> objects = m_Models;
-            //+ directionLights + pointLights + spotLights + audios;
+    QList<BBGameObject*> objects = m_Models + m_Lights;
+            //+ audios;
     for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
     {
         BBGameObject *pObject = *itr;
@@ -171,23 +175,6 @@ BBModel* BBScene::createModel(const QString &filePath,
     pModel->init(filePath);
     m_Models.append(pModel);
 
-//    //给该模型添加灯光效果
-//    QVector3D count = QVector3D(directionLights.count(), pointLights.count(), spotLights.count());
-//    model->updateDirectionLightPosition(directionLightPosition, count);
-//    model->updateDirectionLightColor(directionLightColor, directionLights.count());
-//    model->updatePointLightPosition(pointLightPosition, count);
-//    model->updatePointLightColor(pointLightColor, pointLights.count());
-//    model->updatePointLightOption(pointLightOption, pointLights.count());
-//    model->updateSpotLightPosition(spotLightPosition, count);
-//    model->updateSpotLightDirection(spotLightDirection, spotLights.count());
-//    model->updateSpotLightColor(spotLightColor, spotLights.count());
-//    model->updateSpotLightOption(spotLightOption, spotLights.count());
-//    model->updateSpotLightOption2(spotLightOption2, spotLights.count());
-//    model->switchFog(fogSwitch);
-//    model->setFogColor(fogColor.redF(), fogColor.greenF(), fogColor.blueF());
-//    model->setFogOption(fogStart, fogEnd, fogDensity, fogPower);
-//    model->setFogMode(fogMode);
-
     return pModel;
 }
 
@@ -221,36 +208,46 @@ BBModel* BBScene::createModelForPreview(const QString &filePath, float fDistFact
     return pModel;
 }
 
-//BBModel* BBScene::pickModel(int x, int y)
-//{
-//    BBRay ray = m_pCamera->createRayFromScreen(x, y);
+BBLight* BBScene::createLight(const QString &fileName, int x, int y, bool bSelect)
+{
+    BBRay ray = m_pCamera->createRayFromScreen(x, y);
+    // ground y=0
+    QVector3D hit = ray.computeIntersectWithXOZPlane(0);
+    return createLight(fileName, hit, QVector3D(0, 0, 0), bSelect);
+}
 
-//    float fDistance = FLT_MAX;
-//    BBModel *pModel = nullptr;
-//    QList<BBGameObject*>::Iterator itr;
-//    for (itr = m_Models.begin(); itr != m_Models.end(); itr++)
-//    {
-//        BBGameObject *pObject = *itr;
-//        float d;
-//        if (pObject->hit(ray, d))
-//        {
-//            if (d < fDistance)
-//            {
-//                fDistance = d;
-//                pModel = (BBModel*)pObject;
-//            }
-//        }
-//    }
-//    return pModel;
-//}
+BBLight* BBScene::createLight(const QString &fileName, const QVector3D &position, const QVector3D &rotation, bool bSelect)
+{
+    BBLight *pLight;
+    if (fileName == "directional light.png")
+    {
+        pLight = new BBDirectionalLight(this, position, rotation);
+    }
+    else if (fileName == "point light.png")
+    {
+        pLight = new BBPointLight(this, position);
+    }
+    else if (fileName == "spot light.png")
+    {
+        pLight = new BBSpotLight(this, position, rotation);
+    }
+    pLight->setBaseAttributes(fileName.split('.')[0], BB_CLASSNAME_LIGHT, "light2");
+    pLight->init(fileName);
+    m_Lights.append(pLight);
+    if (bSelect)
+    {
+        m_pTransformCoordinateSystem->setSelectedObject(pLight);
+    }
+    return pLight;
+}
 
 BBGameObject* BBScene::pickObject(const BBRay &ray, bool bSelect)
 {
     float fDistance = FLT_MAX;
     BBGameObject *pSelectedObject = nullptr;
     // traverse models and lights
-    QList<BBGameObject*> objects = m_Models;
-            //+ directionLights + pointLights + spotLights + audios;
+    QList<BBGameObject*> objects = m_Models + m_Lights;
+            //audios;
     QList<BBGameObject*>::Iterator itr;
     for (itr = objects.begin(); itr != objects.end(); itr++)
     {
@@ -288,31 +285,13 @@ void BBScene::deleteGameObject(BBGameObject *pGameObject)
     {
         m_Models.removeOne(pGameObject);
     }
+    else if (pGameObject->getClassName() == BB_CLASSNAME_LIGHT)
+    {
+        m_Lights.removeOne(pGameObject);
+    }
 //    else if (object->getClassName() == TerrainClassName)
 //    {
 //        models.removeOne(object);
-//    }
-//    else if (object->getClassName() == DirectionLightClassName)
-//    {
-//        directionLights.removeOne(object);
-//        updateDirectionLightPosition();
-//        updateDirectionLightColor();
-//    }
-//    else if (object->getClassName() == PointLightClassName)
-//    {
-//        pointLights.removeOne(object);
-//        updatePointLightPosition();
-//        updatePointLightColor();
-//        updatePointLightOption();
-//    }
-//    else if (object->getClassName() == SpotLightClassName)
-//    {
-//        spotLights.removeOne(object);
-//        updateSpotLightPosition();
-//        updateSpotLightDirection();
-//        updateSpotLightColor();
-//        updateSpotLightOption();
-//        updateSpotLightOption2();
 //    }
 //    else if (object->getClassName() == AudioClassName)
 //    {
@@ -422,57 +401,6 @@ void BBScene::clear()
 //    mFBO->unbind();
 //}
 
-
-//GameObject *Scene::createLight(QString fileName, int x, int y, bool isSelect)
-//{
-//    Ray ray = camera.createRayFromScreen(x, y);
-//    //地面y=0
-//    QVector3D hit = ray.computeIntersectWithXOZPlane(0);
-//    return createLight(fileName, hit, isSelect);
-//}
-
-//GameObject *Scene::createLight(QString fileName, QVector3D position, bool isSelect)
-//{
-//    Light *light;
-//    if (fileName == "directional light.png")
-//    {
-//        light = new DirectionLight(this, position.x(), position.y(), position.z(), 45, 45, 0, 1, 1, 1);
-//        light->setBaseAttributes(fileName.split('.')[0], DirectionLightClassName, "light2");
-//        directionLights.append(light);
-//        //如果构造函数中调用 light还没加入list 灯光访问不到
-//        updateDirectionLightPosition();
-//        //增加了新的光 颜色也有一份新颜色
-//        updateDirectionLightColor();
-//    }
-//    else if (fileName == "point light.png")
-//    {
-//        light = new PointLight(this, position.x(), position.y(), position.z(), 0, 0, 0, 1, 1, 1);
-//        light->setBaseAttributes(fileName.split('.')[0], PointLightClassName, "light2");
-//        pointLights.append(light);
-//        updatePointLightPosition();
-//        updatePointLightColor();
-//        updatePointLightOption();
-//    }
-//    else if (fileName == "spot light.png")
-//    {
-//        light = new SpotLight(this, position.x(), position.y(), position.z(), 0, 0, 0, 1, 1, 1);
-//        light->setBaseAttributes(fileName.split('.')[0], SpotLightClassName, "light2");
-//        spotLights.append(light);
-//        updateSpotLightPosition();
-//        updateSpotLightDirection();
-//        updateSpotLightColor();
-//        updateSpotLightOption();
-//        updateSpotLightOption2();
-//    }
-//    light->init(fileName);
-//    light->resize(camera.viewportWidth, camera.viewportHeight);
-//    if (isSelect)
-//    {
-//        transformCoordinate->setSelectedObject(light);
-//    }
-//    return light;
-//}
-
 //Audio *Scene::createAudio(QString filePath, int x, int y, bool isSelect)
 //{
 //    Ray ray = camera.createRayFromScreen(x, y);
@@ -512,233 +440,6 @@ void BBScene::clear()
 //    }
 //}
 
-//void Scene::updateDirectionLightPosition()
-//{
-//    //平行光的个数
-//    int count = directionLights.count();
-//    directionLightPosition = new QVector4D[count];
-//    for (int i = 0; i < count; i++)
-//    {
-//        DirectionLight *light = (DirectionLight*)directionLights.at(i);
-//        directionLightPosition[i] = light->getHomogeneousPosition();
-//    }
-//    //场景中所有受灯光影响的对象 shader的平行光都需要更新
-//    //判断是否开启灯光渲染？ 目前设所有模型都渲染灯光
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        model->updateDirectionLightPosition(directionLightPosition, QVector3D(count, pointLights.count(), spotLights.count()));
-//    }
-//}
-
-//void Scene::updateDirectionLightColor()
-//{
-//    //平行光的个数
-//    int count = directionLights.count();
-//    directionLightColor = new QVector4D[count];
-//    for (int i = 0; i < count; i++)
-//    {
-//        DirectionLight *light = (DirectionLight*)directionLights.at(i);
-//        directionLightColor[i] = light->getColorVector4f();
-//    }
-//    //场景中所有受灯光影响的对象 shader的光颜色都需要更新
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        model->updateDirectionLightColor(directionLightColor, count);
-//    }
-//}
-
-//void Scene::updatePointLightPosition()
-//{
-//    int count = pointLights.count();
-//    pointLightPosition = new QVector4D[count];
-//    for (int i = 0; i < count; i++)
-//    {
-//        PointLight *light = (PointLight*)pointLights.at(i);
-//        pointLightPosition[i] = QVector4D(light->getPosition(), 1.0f);
-//    }
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        model->updatePointLightPosition(pointLightPosition,
-//                                        QVector3D(directionLights.count(), count, spotLights.count()));
-//    }
-//}
-
-//void Scene::updatePointLightColor()
-//{
-//    int count = pointLights.count();
-//    pointLightColor = new QVector4D[count];
-//    for (int i = 0; i < count; i++)
-//    {
-//        PointLight *light = (PointLight*)pointLights.at(i);
-//        pointLightColor[i] = light->getColorVector4f();
-//    }
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        model->updatePointLightColor(pointLightColor, count);
-//    }
-//}
-
-//void Scene::updatePointLightOption()
-//{
-//    int count = pointLights.count();
-//    pointLightOption = new QVector4D[count];
-//    for (int i = 0; i < count; i++)
-//    {
-//        PointLight *light = (PointLight*)pointLights.at(i);
-//        pointLightOption[i] = light->getOptionVector4f();
-//    }
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        model->updatePointLightOption(pointLightOption, count);
-//    }
-//}
-
-//void Scene::updateSpotLightPosition()
-//{
-//    int count = spotLights.count();
-//    spotLightPosition = new QVector4D[count];
-//    for (int i = 0; i < count; i++)
-//    {
-//        SpotLight *light = (SpotLight*)spotLights.at(i);
-//        spotLightPosition[i] = QVector4D(light->getPosition(), 1.0f);
-//    }
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        model->updateSpotLightPosition(spotLightPosition,
-//                                       QVector3D(directionLights.count(), pointLights.count(), count));
-//    }
-//}
-
-//void Scene::updateSpotLightDirection()
-//{
-//    int count = spotLights.count();
-//    spotLightDirection = new QVector4D[count];
-//    for (int i = 0; i < count; i++)
-//    {
-//        SpotLight *light = (SpotLight*)spotLights.at(i);
-//        spotLightDirection[i] = light->getLightDirection();
-//    }
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        model->updateSpotLightDirection(spotLightDirection, count);
-//    }
-//}
-
-//void Scene::updateSpotLightColor()
-//{
-//    int count = spotLights.count();
-//    spotLightColor = new QVector4D[count];
-//    for (int i = 0; i < count; i++)
-//    {
-//        SpotLight *light = (SpotLight*)spotLights.at(i);
-//        spotLightColor[i] = light->getColorVector4f();
-//    }
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        model->updateSpotLightColor(spotLightColor, count);
-//    }
-//}
-
-//void Scene::updateSpotLightOption()
-//{
-//    int count = spotLights.count();
-//    spotLightOption = new QVector4D[count];
-//    for (int i = 0; i < count; i++)
-//    {
-//        SpotLight *light = (SpotLight*)spotLights.at(i);
-//        spotLightOption[i] = light->getOptionVector4f();
-//    }
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        model->updateSpotLightOption(spotLightOption, count);
-//    }
-//}
-
-//void Scene::updateSpotLightOption2()
-//{
-//    int count = spotLights.count();
-//    spotLightOption2 = new QVector4D[count];
-//    for (int i = 0; i < count; i++)
-//    {
-//        SpotLight *light = (SpotLight*)spotLights.at(i);
-//        spotLightOption2[i] = light->getOption2Vector4f();
-//    }
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        model->updateSpotLightOption2(spotLightOption2, count);
-//    }
-//}
-
-//void Scene::switchFog(bool b)
-//{
-//    fogSwitch = b;
-//    //场景中所有模型开关雾
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        model->switchFog(b);
-//    }
-//}
-
-//void Scene::setFogColor(float r, float g, float b)
-//{
-//    fogColor = QColor::fromRgbF(r, g, b);
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        model->setFogColor(r, g, b);
-//    }
-//}
-
-
-//void Scene::setFogOption(float start, float end, int density, float power)
-//{
-//    fogStart = start;
-//    fogEnd = end;
-//    fogDensity = density;
-//    fogPower = power;
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        model->setFogOption(fogStart, fogEnd, fogDensity, fogPower);
-//    }
-//}
-
-//void Scene::setFogMode(int mode)
-//{
-//    fogMode = mode;
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        model->setFogMode(fogMode);
-//    }
-//}
-
-
 //void Scene::play()
 //{
 //    QList<GameObject*>::Iterator itr;
@@ -763,12 +464,3 @@ void BBScene::clear()
 //    }
 //}
 
-//void Scene::onKeyPress(QKeyEvent *e)
-//{
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        model->onKeyDownLua(e);
-//    }
-//}

@@ -444,6 +444,8 @@ void BBTransformGroupManager::showLocalCoordinate()
 
 /**
  * @brief BBGlobalSettingsGroupManager::BBGlobalSettingsGroupManager
+ * @param pScene
+ * @param pParent
  */
 BBGlobalSettingsGroupManager::BBGlobalSettingsGroupManager(BBScene *pScene, QWidget *pParent)
     : BBGroupManager("Global Settings", BB_PATH_RESOURCE_ICON(earth.png), pParent)

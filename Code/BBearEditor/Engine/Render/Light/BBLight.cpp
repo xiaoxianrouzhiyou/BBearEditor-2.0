@@ -4,7 +4,14 @@
 
 BBLight* BBLight::m_pMainLight = nullptr;
 
-BBLight::BBLight()
+BBLight::BBLight(BBScene *pScene)
+    : BBLight(pScene, QVector3D(0, 0, 0), QVector3D(0, 0, 0), QVector3D(1, 1, 1))
+{
+
+}
+
+BBLight::BBLight(BBScene *pScene, const QVector3D &position, const QVector3D &rotation, const QVector3D &scale)
+    : BBGameObject(position, rotation, scale)
 {
     m_eType = Directional;
 }

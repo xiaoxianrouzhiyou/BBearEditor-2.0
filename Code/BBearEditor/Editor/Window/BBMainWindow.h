@@ -20,6 +20,7 @@ private slots:
     void createProject();
     void openProject();
     void showGlobalSettingsProperty();
+    void switchGameObjectPage(int nIndex);
 
 signals:
     void pressMultipleSelectionKey(bool);

@@ -13,6 +13,7 @@ class BBSkyBox;
 class BBHorizontalPlane;
 class BBGameObject;
 class BBModel;
+class BBLight;
 class BBSelectionRegion;
 class BBRay;
 class BBTransformCoordinateSystem;
@@ -38,7 +39,13 @@ public:
                          const QVector3D &scale = QVector3D(1, 1, 1));
     BBModel* createModel(const BBSerializer::BBGameObject &gameObject);
     BBModel* createModelForPreview(const QString &filePath, float fDistFactor = 2.0f);
-//    BBModel* pickModel(int x, int y);
+
+    BBLight* createLight(const QString &fileName, int x, int y, bool bSelect = true);
+    BBLight* createLight(const QString &fileName,
+                         const QVector3D &position = QVector3D(0, 0, 0),
+                         const QVector3D &rotation = QVector3D(0, 0, 0),
+                         bool bSelect = true);
+
     BBGameObject* pickObject(const BBRay &ray, bool bSelect = true);
     void lookAtGameObject(BBGameObject *pGameObject);
     void deleteGameObject(BBGameObject *pGameObject);
@@ -57,65 +64,18 @@ private:
     BBTransformCoordinateSystem *m_pTransformCoordinateSystem;
 
     QList<BBGameObject*> m_Models;
+    QList<BBGameObject*> m_Lights;
 
     BBSelectionRegion *m_pSelectionRegion;
 
-//    QList<GameObject*> directionLights;
-//    QList<GameObject*> pointLights;
-//    QList<GameObject*> spotLights;
 //    QList<GameObject*> audios;
 
-
-//    Particle *particle;
-//    QVector4D *directionLightPosition;
-//    QVector4D *directionLightColor;
-//    QVector4D *pointLightPosition;
-//    QVector4D *pointLightColor;
-//    QVector4D *pointLightOption;
-//    QVector4D *spotLightPosition;
-//    QVector4D *spotLightDirection;
-//    QVector4D *spotLightColor;
-//    QVector4D *spotLightOption;
-//    QVector4D *spotLightOption2;
-//    bool fogSwitch;
-//    QColor fogColor;
-//    float fogStart;
-//    float fogEnd;
-//    int fogMode;
-//    int fogDensity;
-//    float fogPower;
-
 //    void renderShadowMap();
-//    GameObject *createLight(QString fileName, int x, int y, bool isSelect = true);
-//    GameObject *createLight(QString fileName, QVector3D position = QVector3D(0, 0, 0), bool isSelect = true);
 //    Audio *createAudio(QString filePath, int x, int y, bool isSelect = true);
 //    Audio *createAudio(QString filePath, QVector3D position = QVector3D(0, 0, 0), bool isSelect = true);
-//    void lookAtGameObject(GameObject *object);
 //    bool setModelMaterial(Model *model, QString mtlPath);
-//    void updateDirectionLightPosition();
-//    void updateDirectionLightColor();
-//    void updatePointLightPosition();
-//    void updatePointLightColor();
-//    void updatePointLightOption();
-//    void updateSpotLightPosition();
-//    void updateSpotLightDirection();
-//    void updateSpotLightColor();
-//    void updateSpotLightOption();
-//    void updateSpotLightOption2();
-//    void switchFog(bool b);
-//    float getFogSwitch();
-//    void setFogColor(float r, float g, float b);
-//    QColor getFogColor();
-//    void setFogOption(float start, float end, int density, float power);
-//    float getFogStart();
-//    float getFogEnd();
-//    int getFogDensity();
-//    float getFogPower();
-//    void setFogMode(int mode);
-//    int getFogMode();
 //    void play();
 //    void stop();
-//    void onKeyPress(QKeyEvent *e);
 //    Sprite2D sprite;
 //    GLuint particleTexture;
 };

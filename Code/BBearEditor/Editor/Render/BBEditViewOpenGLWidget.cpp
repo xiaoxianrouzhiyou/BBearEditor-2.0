@@ -11,6 +11,7 @@
 #include "BBCoordinateSystem.h"
 #include <QTreeWidgetItem>
 #include "Scene/BBSceneManager.h"
+#include "Render/Light/BBLight.h"
 
 
 BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
@@ -288,10 +289,10 @@ void BBEditViewOpenGLWidget::dragEnterEvent(QDragEnterEvent *event)
         setCoordinateSystemSelectedObject(NULL);
         event->accept();
     }
-//    else if ((data = event->mimeData()->data("light")) != nullptr)
-//    {
-//        event->accept();
-//    }
+    else if ((data = event->mimeData()->data(BB_MIMETYPE_LIGHTOBJECT)) != nullptr)
+    {
+        event->accept();
+    }
 //    else if ((data = event->mimeData()->data(FileList::getMimeType())) != nullptr)
 //    {
 //        //拖入资源文件
@@ -351,7 +352,6 @@ void BBEditViewOpenGLWidget::dragLeaveEvent(QDragLeaveEvent *event)
     {
         // no longer show pre-created object
         m_pScene->deleteGameObject(m_pPreviewObject);
-        //设为空 用于下次计算
         m_pPreviewObject = NULL;
     }
     event->accept();
@@ -374,17 +374,16 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
         event->accept();
         setFocus();
     }
-//    else if ((data = event->mimeData()->data("light")) != nullptr)
-//    {
-//        QDataStream dataStream(&data, QIODevice::ReadOnly);
-//        QString fileName;
-//        dataStream >> fileName;
-//        //创建灯光
-//        GameObject *object = scene.createLight(fileName, event->pos().x(), event->pos().y());
-//        //在层级视图中显示结点
-//        addGameObjectSignal(object);
-//        event->accept();
-//    }
+    else if ((data = event->mimeData()->data(BB_MIMETYPE_LIGHTOBJECT)) != nullptr)
+    {
+        QDataStream dataStream(&data, QIODevice::ReadOnly);
+        QString fileName;
+        dataStream >> fileName;
+        BBGameObject *pLight = m_pScene->createLight(fileName, event->pos().x(), event->pos().y());
+        addGameObject(pLight);
+        event->accept();
+        setFocus();
+    }
 //    else if ((data = event->mimeData()->data(FileList::getMimeType())) != nullptr)
 //    {
 //        QDataStream dataStream(&data, QIODevice::ReadOnly);

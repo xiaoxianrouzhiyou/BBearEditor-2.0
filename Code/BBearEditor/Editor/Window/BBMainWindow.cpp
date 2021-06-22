@@ -36,6 +36,11 @@ void BBMainWindow::showGlobalSettingsProperty()
     m_pUi->propertyManager->showGlobalSettingsProperty(m_pUi->openGLWidget->getScene());
 }
 
+void BBMainWindow::switchGameObjectPage(int nIndex)
+{
+    m_pUi->stackedWidget->setCurrentIndex(nIndex);
+}
+
 void BBMainWindow::setWindowLayout()
 {
     // Allow nesting of docks
@@ -60,9 +65,19 @@ void BBMainWindow::setWindowLayout()
 
 void BBMainWindow::setGameObjectDockWidget()
 {
+    QButtonGroup *pGroup = new QButtonGroup;
+    pGroup->addButton(m_pUi->buttonBase, 0);
+    pGroup->addButton(m_pUi->buttonLight, 1);
+    pGroup->addButton(m_pUi->buttonParticle, 2);
+    pGroup->addButton(m_pUi->buttonCustom, 3);
+    pGroup->addButton(m_pUi->buttonOther, 4);
+    QObject::connect(pGroup, SIGNAL(buttonClicked(int)), this, SLOT(switchGameObjectPage(int)));
+
     // Load contents for list
     m_pUi->listBaseGameObject->loadListItems(BB_PATH_BASEOBJECTLIST);
     m_pUi->listBaseGameObject->setMimeType(BB_MIMETYPE_BASEOBJECT);
+    m_pUi->listLightGameObject->loadListItems(BB_PATH_LIGHTOBJECTLIST);
+    m_pUi->listLightGameObject->setMimeType(BB_MIMETYPE_LIGHTOBJECT);
 }
 
 void BBMainWindow::setConnect()
@@ -132,8 +147,7 @@ void BBMainWindow::setConnect()
     QObject::connect(m_pUi->buttonRootHierarchy, SIGNAL(clicked()),
                      this, SLOT(showGlobalSettingsProperty()));
 
-//    //对整个项目操作的菜单事件
-//    QObject::connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(save()));
+
 
 //    //属性栏根按钮切换
 //    QObject::connect(ui->buttonRootInspector, SIGNAL(clicked()), this, SLOT(switchInspectorRootButton()));
