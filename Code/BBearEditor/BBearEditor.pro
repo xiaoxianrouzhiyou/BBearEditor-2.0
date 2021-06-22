@@ -59,10 +59,6 @@ SOURCES += \
     Engine/Render/BBGLBuffers.cpp \
     Engine/Render/BBCamera.cpp \
     Engine/Scene/BBScene.cpp \
-    Common/BBCoordinateSystem.cpp \
-    Common/BBHorizontalPlane.cpp \
-    Common/BBSelectionRegion.cpp \
-    Common/BBUtils.cpp \
     Engine/Allocator/tlsf/tlsf.c \
     Engine/Allocator/BBAllocator.cpp \
     Engine/Profiler/BBProfiler.cpp \
@@ -90,7 +86,11 @@ SOURCES += \
     Engine/Render/Light/BBDirectionalLight.cpp \
     Engine/Render/Light/BBPointLight.cpp \
     Engine/Render/Light/BBSpotLight.cpp \
-    Engine/3D/BBIcon.cpp
+    Engine/3D/BBIcon.cpp \
+    Engine/3D/BBCoordinateSystem.cpp \
+    Engine/3D/BBHorizontalPlane.cpp \
+    Engine/2D/BBSelectionRegion.cpp \
+    Engine/Utils/BBUtils.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -127,10 +127,6 @@ HEADERS += \
     Engine/Render/BBGLBuffers.h \
     Engine/Render/BBCamera.h \
     Engine/Scene/BBScene.h \
-    Common/BBCoordinateSystem.h \
-    Common/BBHorizontalPlane.h \
-    Common/BBSelectionRegion.h \
-    Common/BBUtils.h \
     Engine/Allocator/tlsf/tlsf.h \
     Engine/Allocator/tlsf/tlsfbits.h \
     Engine/Allocator/BBAllocator.h \
@@ -160,7 +156,11 @@ HEADERS += \
     Engine/Render/Light/BBDirectionalLight.h \
     Engine/Render/Light/BBPointLight.h \
     Engine/Render/Light/BBSpotLight.h \
-    Engine/3D/BBIcon.h
+    Engine/3D/BBIcon.h \
+    Engine/3D/BBCoordinateSystem.h \
+    Engine/3D/BBHorizontalPlane.h \
+    Engine/2D/BBSelectionRegion.h \
+    Engine/Utils/BBUtils.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
@@ -173,11 +173,9 @@ RESOURCES += \
     ../../resources/BBBasicResource.qrc
 
 INCLUDEPATH += \
-    ../BBearEditor/Common \
     ../BBearEditor/Editor \
     ../BBearEditor/Editor/Common \
     ../BBearEditor/Engine \
-    ../BBearEditor/Engine/Base \
     ../../External \
     ../../External/Eigen \
     ../../External/rapidxml \

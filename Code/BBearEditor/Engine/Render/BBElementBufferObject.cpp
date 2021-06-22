@@ -1,5 +1,5 @@
 #include "BBElementBufferObject.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include <QOpenGLBuffer>
 
 

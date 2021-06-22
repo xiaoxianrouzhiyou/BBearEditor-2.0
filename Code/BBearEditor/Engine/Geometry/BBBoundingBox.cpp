@@ -1,5 +1,5 @@
 #include "BBBoundingBox.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include <cfloat>
 #include "Render/BBVertexBufferObject.h"
 #include "Render/BBMaterial.h"

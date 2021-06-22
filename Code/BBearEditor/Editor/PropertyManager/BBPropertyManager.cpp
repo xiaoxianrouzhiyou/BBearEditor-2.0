@@ -1,5 +1,5 @@
 #include "BBPropertyManager.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include <QVBoxLayout>
 #include "BBGroupManager.h"
 

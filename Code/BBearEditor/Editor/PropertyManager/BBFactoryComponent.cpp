@@ -1,5 +1,5 @@
 #include "BBFactoryComponent.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include <QPixmap>
 #include <QMouseEvent>
 

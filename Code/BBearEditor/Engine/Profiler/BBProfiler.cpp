@@ -1,5 +1,5 @@
 #include "BBProfiler.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 
 
 QMap<void*, BBMemoryLabel>* BBProfiler::m_pMemoryObjects = NULL;

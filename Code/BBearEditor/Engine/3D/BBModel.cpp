@@ -1,6 +1,6 @@
 #include "BBModel.h"
 #include "BBStaticMesh.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include "Geometry/BBBoundingBox.h"
 #include <cfloat>
 

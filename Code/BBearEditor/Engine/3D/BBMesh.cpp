@@ -1,6 +1,6 @@
 #include "BBMesh.h"
 #include "Render/BBMaterial.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include "Geometry/BBBoundingBox.h"
 #include <cfloat>
 #include "Render/BBVertexBufferObject.h"

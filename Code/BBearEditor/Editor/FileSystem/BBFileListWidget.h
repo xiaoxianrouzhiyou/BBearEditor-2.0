@@ -4,7 +4,7 @@
 
 #include <QListWidget>
 #include <QPlainTextEdit>
-#include <BBUtils.h>
+#include "Utils/BBUtils.h"
 
 
 using namespace BBFileSystem;

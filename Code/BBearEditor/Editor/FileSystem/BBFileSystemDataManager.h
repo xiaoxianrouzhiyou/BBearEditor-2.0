@@ -5,7 +5,7 @@
 #include <QMap>
 #include <QIcon>
 #include <QColor>
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 
 
 using namespace BBFileSystem;

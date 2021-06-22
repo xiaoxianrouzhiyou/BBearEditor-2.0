@@ -2,7 +2,7 @@
 #define BBMESH_H
 
 
-#include "BBRenderableObject.h"
+#include "Base/BBRenderableObject.h"
 
 
 enum BBMeshType

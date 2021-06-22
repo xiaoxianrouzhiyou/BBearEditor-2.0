@@ -1,7 +1,7 @@
 #include "BBRenderableObject.h"
 #include "Render/BBDrawCall.h"
 #include "Render/BBMaterial.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include "Render/BBCamera.h"
 #include "Render/BBVertexBufferObject.h"
 #include "Render/BBElementBufferObject.h"

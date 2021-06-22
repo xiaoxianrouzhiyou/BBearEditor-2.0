@@ -1,6 +1,6 @@
 #include "BBProjectDialog.h"
 #include "ui_BBProjectDialog.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include <QSettings>
 #include <QDir>
 #include <QFileDialog>

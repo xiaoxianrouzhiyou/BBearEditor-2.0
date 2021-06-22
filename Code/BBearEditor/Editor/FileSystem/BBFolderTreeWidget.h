@@ -2,7 +2,7 @@
 #define BBFOLDERTREEWIDGET_H
 
 #include "BBTreeWidget.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 
 
 using namespace BBFileSystem;

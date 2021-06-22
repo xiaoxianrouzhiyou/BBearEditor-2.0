@@ -1,8 +1,8 @@
 #include "BBHierarchyTreeWidget.h"
 #include <QMimeData>
 #include <QMenu>
-#include "BBGameObject.h"
-#include "BBGameObjectSet.h"
+#include "Base/BBGameObject.h"
+#include "Base/BBGameObjectSet.h"
 #include "Scene/BBSceneManager.h"
 
 

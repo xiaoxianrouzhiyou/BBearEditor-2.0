@@ -2,7 +2,7 @@
 #define BBBOUNDINGBOX_H
 
 
-#include "BBRenderableObject.h"
+#include "Base/BBRenderableObject.h"
 #include "BBRay.h"
 #include <QMatrix4x4>
 

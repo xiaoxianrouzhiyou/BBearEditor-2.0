@@ -1,7 +1,7 @@
 #include "BBOpenGLWidget.h"
 #include <QMatrix4x4>
 #include "Scene/BBScene.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include <QThread>
 #include <QTimer>
 

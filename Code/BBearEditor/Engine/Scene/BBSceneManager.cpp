@@ -1,7 +1,7 @@
 #include "BBSceneManager.h"
 #include "Serializer/BBScene.pb.h"
 #include <QTreeWidgetItem>
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include "Render/BBEditViewOpenGLWidget.h"
 #include "BBScene.h"
 #include "Base/BBGameObject.h"

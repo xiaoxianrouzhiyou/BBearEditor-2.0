@@ -2,7 +2,7 @@
 #define BBSKYBOX_H
 
 
-#include "BBRenderableObject.h"
+#include "Base/BBRenderableObject.h"
 
 
 class BBSkyBoxSide : public BBRenderableObject

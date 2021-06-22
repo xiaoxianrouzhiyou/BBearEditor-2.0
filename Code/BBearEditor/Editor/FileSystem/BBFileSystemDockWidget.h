@@ -2,7 +2,7 @@
 #define BBFILESYSTEMDOCKWIDGET_H
 
 #include <QDockWidget>
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include <QUrl>
 
 

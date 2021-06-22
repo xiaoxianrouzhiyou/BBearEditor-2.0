@@ -1,5 +1,5 @@
 #include "BBStaticMesh.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include "Render/BBVertexBufferObject.h"
 #include <sstream>
 #include "Geometry/BBBoundingBox.h"

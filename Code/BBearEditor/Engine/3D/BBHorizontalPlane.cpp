@@ -3,7 +3,7 @@
 #include "Render/BBElementBufferObject.h"
 #include "Render/BBRenderPass.h"
 #include "Render/BBMaterial.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include "Render/BBCamera.h"
 #include "Render/BBDrawCall.h"
 

@@ -1,5 +1,5 @@
 #include "BBObjectListWidget.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include "rapidxml/rapidxml.hpp"
 #include <QMimeData>
 #include <QDrag>

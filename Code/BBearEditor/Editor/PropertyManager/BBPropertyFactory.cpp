@@ -1,6 +1,6 @@
 #include "BBPropertyFactory.h"
 #include <QHBoxLayout>
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include "BBFactoryComponent.h"
 #include <QLineEdit>
 #include <QRegExpValidator>

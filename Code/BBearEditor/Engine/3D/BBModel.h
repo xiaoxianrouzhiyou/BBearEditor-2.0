@@ -2,7 +2,7 @@
 #define BBMODEL_H
 
 
-#include "BBGameObject.h"
+#include "Base/BBGameObject.h"
 #include "BBMesh.h"
 
 

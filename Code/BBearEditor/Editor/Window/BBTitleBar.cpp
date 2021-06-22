@@ -1,6 +1,6 @@
 #include "BBTitleBar.h"
 #include "ui_BBTitleBar.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 
 BBTitleBar::BBTitleBar(QWidget *parent) :
     QWidget(parent),

@@ -4,10 +4,10 @@
 #include "Render/BBMaterial.h"
 #include "Render/BBRenderPass.h"
 #include "Render/BBDrawCall.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include "Render/BBCamera.h"
 #include "Geometry/BBBoundingBox.h"
-#include "BBGameObjectSet.h"
+#include "Base/BBGameObjectSet.h"
 
 
 //------------------------------

@@ -2,13 +2,13 @@
 #include "Scene/BBScene.h"
 #include "Render/BBCamera.h"
 #include <QMouseEvent>
-#include "BBUtils.h"
-#include "BBGameObject.h"
+#include "Utils/BBUtils.h"
+#include "Base/BBGameObject.h"
 #include <QMimeData>
 #include "3D/BBModel.h"
 #include <QDrag>
 #include "Geometry/BBRay.h"
-#include "BBCoordinateSystem.h"
+#include "3D/BBCoordinateSystem.h"
 #include <QTreeWidgetItem>
 #include "Scene/BBSceneManager.h"
 #include "Render/Light/BBLight.h"

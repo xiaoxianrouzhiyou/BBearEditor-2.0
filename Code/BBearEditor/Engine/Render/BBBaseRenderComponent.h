@@ -11,10 +11,9 @@
 #include <QVector4D>
 #include <QMatrix4x4>
 #include <QRgb>
-#include "BBUtils.h"
 #include <QImage>
 #include <QMap>
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 
 
 #define NAME_POSITION "positionAttr"

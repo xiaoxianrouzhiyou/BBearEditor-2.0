@@ -1,6 +1,6 @@
 #include "BBConfirmationDialog.h"
 #include "ui_BBConfirmationDialog.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include <QApplication>
 #include <QDesktopWidget>
 #include "Render/BBEditViewDockWidget.h"

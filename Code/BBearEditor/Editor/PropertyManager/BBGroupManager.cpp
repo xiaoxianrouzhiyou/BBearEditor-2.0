@@ -1,5 +1,5 @@
 #include "BBGroupManager.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include <QVBoxLayout>
 #include <QLineEdit>
 #include <QToolButton>
@@ -8,7 +8,7 @@
 #include <QLabel>
 #include <QTreeWidgetItem>
 #include "BBPropertyFactory.h"
-#include "BBGameObject.h"
+#include "Base/BBGameObject.h"
 #include "Scene/BBSceneManager.h"
 
 

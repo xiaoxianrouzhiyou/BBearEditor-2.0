@@ -1,5 +1,5 @@
 #include "BBFilePathBarWidget.h"
-#include "BBUtils.h"
+#include "Utils/BBUtils.h"
 #include <QHBoxLayout>
 #include <QButtonGroup>
 #include <QPushButton>
