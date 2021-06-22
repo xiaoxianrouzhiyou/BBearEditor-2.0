@@ -9,7 +9,7 @@ class BBCamera;
 class BBVertexBufferObject;
 class BBElementBufferObject;
 
-class BBDrawCall : public BBLinkedList
+class BBDrawCall : public BBBaseRenderComponent, public BBLinkedList
 {
 public:
     BBDrawCall();

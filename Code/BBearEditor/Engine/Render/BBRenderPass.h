@@ -19,6 +19,7 @@ public:
     void setShader(BBShader *pShader);
 
     void bind(BBCamera *pCamera);
+    void unbind();
 
     void setBlendState(bool bEnable);
     void setZTestState(bool bEnable);

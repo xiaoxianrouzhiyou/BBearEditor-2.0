@@ -26,8 +26,6 @@ public:
     inline BBRenderPass* getBaseRenderPass() const { return m_pBaseRenderPass; }
     inline BBRenderPass* getAdditiveRenderPass() const { return m_pAdditiveRenderPass; }
 
-    void bindElementBufferObject(const unsigned short *pIndexes, int nIndexCount);
-
 private:
     BBRenderPass *m_pBaseRenderPass;
     BBRenderPass *m_pAdditiveRenderPass;

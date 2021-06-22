@@ -6,6 +6,7 @@
 
 
 BBDrawCall::BBDrawCall()
+    : BBBaseRenderComponent()
 {
     m_pMaterial = nullptr;
 
@@ -55,6 +56,8 @@ void BBDrawCall::draw(BBCamera *pCamera)
         m_pEBO->draw(m_eDrawPrimitiveType, m_nIndexCount, m_nDrawStartIndex);
         m_pEBO->unbind();
     }
+    m_pMaterial->getBaseRenderPass()->unbind();
+
 //    m_pMaterial->getAdditiveRenderPass()->bind(pCamera);
 //    if (m_pEBO == nullptr)
 //    {

@@ -67,6 +67,11 @@ void BBRenderPass::bind(BBCamera *pCamera)
     }
 }
 
+void BBRenderPass::unbind()
+{
+    glUseProgram(0);
+}
+
 void BBRenderPass::setBlendState(bool bEnable)
 {
     m_RenderState.m_bBlend = bEnable;

@@ -45,9 +45,4 @@ void BBMaterial::setVector4(const std::string &uniformName, const float *pVector
     }
 }
 
-void BBMaterial::bindElementBufferObject(const unsigned short *pIndexes, int nIndexCount)
-{
-//    m_pElementBufferObject->set(pIndexes, nIndexCount);
-}
-
 
