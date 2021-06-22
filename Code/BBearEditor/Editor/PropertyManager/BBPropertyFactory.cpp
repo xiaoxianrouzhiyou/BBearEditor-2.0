@@ -9,10 +9,14 @@
 #include <QComboBox>
 
 
-//---------------------------------------------------------------------------------------------------
-//  BBLineEditFactory
-//---------------------------------------------------------------------------------------------------
-
+/**
+ * @brief BBLineEditFactory::BBLineEditFactory
+ * @param name
+ * @param fValue
+ * @param pParent
+ * @param nNameStretch
+ * @param nValueStretch
+ */
 BBLineEditFactory::BBLineEditFactory(const QString &name, float fValue, QWidget *pParent,
                                      int nNameStretch, int nValueStretch)
     : QWidget(pParent)
@@ -95,10 +99,11 @@ void BBLineEditFactory::showFromLeft()
 }
 
 
-//---------------------------------------------------------------------------------------------------
-//  BBVector3DFactory
-//---------------------------------------------------------------------------------------------------
-
+/**
+ * @brief BBVector3DFactory::BBVector3DFactory
+ * @param value
+ * @param pParent
+ */
 BBVector3DFactory::BBVector3DFactory(const QVector3D &value, QWidget *pParent)
     : QWidget(pParent)
 {
@@ -152,27 +157,33 @@ void BBVector3DFactory::setZ(float z)
 }
 
 
-//---------------------------------------------------------------------------------------------------
-//  BBEnumFactory
-//---------------------------------------------------------------------------------------------------
-
+/**
+ * @brief BBEnumFactory::BBEnumFactory
+ * @param name
+ * @param comboBoxItems
+ * @param currentText
+ * @param pParent
+ * @param labelStretch
+ * @param comboBoxStretch
+ */
 BBEnumFactory::BBEnumFactory(const QString &name, const QStringList &comboBoxItems,
-                             const QString &currentText, QWidget *pParent)
+                             const QString &currentText, QWidget *pParent,
+                             int labelStretch, int comboBoxStretch)
     : QWidget(pParent)
 {
     QHBoxLayout *pLayout = new QHBoxLayout(this);
     pLayout->setMargin(0);
     m_pLabel = new QLabel(name, this);
     m_pLabel->setFocusPolicy(Qt::NoFocus);
-    pLayout->addWidget(m_pLabel, 0);
+    pLayout->addWidget(m_pLabel, labelStretch);
     m_pComboBox = new QComboBox(this);
     m_pComboBox->addItems(comboBoxItems);
     // With this sentence, qss can take effect
     m_pComboBox->setView(new QListView());
     m_pComboBox->setCurrentText(currentText);
-    pLayout->addWidget(m_pComboBox, 1);
+    pLayout->addWidget(m_pComboBox, comboBoxStretch);
 
-//    QObject::connect(comboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(currentIndexChangedSlot(QString)));
+    QObject::connect(m_pComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCurrentItem(int)));
 }
 
 BBEnumFactory::~BBEnumFactory()
@@ -181,26 +192,9 @@ BBEnumFactory::~BBEnumFactory()
     BB_SAFE_DELETE(m_pComboBox);
 }
 
-//void EnumFactory::currentIndexChangedSlot(const QString &text)
-//{
-//    currentIndexChanged(text);
-//}
+void BBEnumFactory::changeCurrentItem(int nIndex)
+{
+    emit currentItemChanged(nIndex);
+}
 
 
-//---------------------------------------------------------------------------------------------------
-//
-//---------------------------------------------------------------------------------------------------
-
-
-
-
-//---------------------------------------------------------------------------------------------------
-//
-//---------------------------------------------------------------------------------------------------
-
-
-
-
-//---------------------------------------------------------------------------------------------------
-//
-//---------------------------------------------------------------------------------------------------

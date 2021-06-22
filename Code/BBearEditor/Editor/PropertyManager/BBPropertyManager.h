@@ -9,6 +9,7 @@ class BBSetBaseInformationManager;
 class BBGroupManager;
 class BBTransformGroupManager;
 class BBGameObject;
+class BBScene;
 
 
 class BBPropertyManager : public QWidget
@@ -19,11 +20,13 @@ public:
     explicit BBPropertyManager(QWidget *pParent = nullptr);
     ~BBPropertyManager();
 
-private slots:
+public slots:
     void clear();
     void showGameObjectProperty(BBGameObject *pGameObject);
     void showGameObjectSetProperty(BBGameObject *pCenterGameObject,
                                    const QList<BBGameObject*> &gameObjectSet);
+    void showGlobalSettingsProperty(BBScene *pScene);
+
     void updateCoordinateSystem();
     void updateTransform(BBGameObject *pGameObject, char transformModeKey);
 
@@ -38,6 +41,7 @@ private:
                                       const QList<BBGameObject*> &gameObjectSet);
     BBGroupManager* addGroupManager(const QString &name, const QString &iconPath);
     void addTransformGroupManager(BBGameObject *pGameObject);
+    void addGlobalSettingsGroupManager(BBScene *pScene);
 
     BBBaseInformationManager *m_pBaseInformationManager;
     BBSetBaseInformationManager *m_pSetBaseInformationManager;

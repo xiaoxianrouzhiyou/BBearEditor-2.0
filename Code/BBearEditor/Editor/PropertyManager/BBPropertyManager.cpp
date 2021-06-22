@@ -107,6 +107,12 @@ void BBPropertyManager::showGameObjectSetProperty(BBGameObject *pCenterGameObjec
     addTransformGroupManager(pCenterGameObject);
 }
 
+void BBPropertyManager::showGlobalSettingsProperty(BBScene *pScene)
+{
+    clear();
+    addGlobalSettingsGroupManager(pScene);
+}
+
 void BBPropertyManager::updateCoordinateSystem()
 {
     coordinateSystemUpdated();
@@ -186,6 +192,10 @@ void BBPropertyManager::addTransformGroupManager(BBGameObject *pGameObject)
     QObject::connect(m_pTransformGroupManager, SIGNAL(coordinateSystemUpdated()), this, SLOT(updateCoordinateSystem()));
 }
 
+void BBPropertyManager::addGlobalSettingsGroupManager(BBScene *pScene)
+{
+    layout()->addWidget(new BBGlobalSettingsGroupManager(pScene, this));
+}
 
 
 

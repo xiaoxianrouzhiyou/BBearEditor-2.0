@@ -77,14 +77,15 @@ class BBEnumFactory : public QWidget
 
 public:
     BBEnumFactory(const QString &name, const QStringList &comboBoxItems,
-                  const QString &currentText = "", QWidget *pParent = 0);
+                  const QString &currentText = "", QWidget *pParent = 0,
+                  int labelStretch = 0, int comboBoxStretch = 1);
     ~BBEnumFactory();
 
-//private slots:
-//    void currentIndexChangedSlot(const QString &text);
+private slots:
+    void changeCurrentItem(int nIndex);
 
-//signals:
-//    void currentIndexChanged(const QString &text);
+signals:
+    void currentItemChanged(int nIndex);
 
 private:
     QLabel *m_pLabel;

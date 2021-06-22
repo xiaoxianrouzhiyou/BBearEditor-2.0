@@ -11,6 +11,8 @@ class QPushButton;
 class QMenu;
 class BBGameObject;
 class BBVector3DFactory;
+class BBScene;
+class BBEnumFactory;
 
 
 // manage name, class name, visibility, and so on
@@ -71,6 +73,7 @@ public:
     ~BBGroupManager();
 
     void addFactory(const QString &name, QWidget *pFactory, int nStretch = 1);
+    void addFactory(QWidget *pFactory);
     //    void addProperty(QWidget *factory);
     //    LineEditFactory *addProperty(QString name, float value);
     //    void removeProperty(int index);
@@ -125,7 +128,23 @@ private:
 };
 
 
+class BBGlobalSettingsGroupManager : public BBGroupManager
+{
+    Q_OBJECT
 
+public:
+    BBGlobalSettingsGroupManager(BBScene *pScene, QWidget *pParent = 0);
+    ~BBGlobalSettingsGroupManager();
+
+private slots:
+    void changeCurrentRenderingAlgorithm(int nIndex);
+
+private:
+    void initRenderingAlgorithmEnumFactory();
+
+    BBScene *m_pScene;
+    BBEnumFactory *m_pRenderingAlgorithmEnumFactory;
+};
 
 
 #endif // BBGROUPMANAGER_H

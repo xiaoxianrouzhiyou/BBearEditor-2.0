@@ -19,6 +19,7 @@ public:
 private slots:
     void createProject();
     void openProject();
+    void showGlobalSettingsProperty();
 
 signals:
     void pressMultipleSelectionKey(bool);

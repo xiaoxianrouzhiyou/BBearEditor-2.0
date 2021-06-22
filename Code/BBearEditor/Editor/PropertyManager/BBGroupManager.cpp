@@ -12,10 +12,11 @@
 #include "Scene/BBSceneManager.h"
 
 
-//---------------------------------------------------------------------------------------------------
-//  BBBaseInformationManager
-//---------------------------------------------------------------------------------------------------
-
+/**
+ * @brief BBBaseInformationManager::BBBaseInformationManager
+ * @param pGameObject
+ * @param pParent
+ */
 BBBaseInformationManager::BBBaseInformationManager(BBGameObject *pGameObject, QWidget *pParent)
     : QWidget(pParent)
 {
@@ -100,10 +101,12 @@ void BBBaseInformationManager::setVisibilityButtonChecked(bool bChecked)
 }
 
 
-//---------------------------------------------------------------------------------------------------
-//  BBSetBaseInformationManager
-//---------------------------------------------------------------------------------------------------
-
+/**
+ * @brief BBSetBaseInformationManager::BBSetBaseInformationManager
+ * @param pCenterGameObject
+ * @param gameObjectSet
+ * @param pParent
+ */
 BBSetBaseInformationManager::BBSetBaseInformationManager(BBGameObject *pCenterGameObject,
                                                          const QList<BBGameObject*> &gameObjectSet,
                                                          QWidget *pParent)
@@ -127,13 +130,17 @@ void BBSetBaseInformationManager::changeVisibility()
 }
 
 
-//---------------------------------------------------------------------------------------------------
-//  BBGroupManager
-//---------------------------------------------------------------------------------------------------
-
+/**
+ * @brief BBGroupManager::BBGroupManager
+ * @param groupName
+ * @param iconPath
+ * @param pParent
+ */
 BBGroupManager::BBGroupManager(const QString &groupName, const QString &iconPath, QWidget *pParent)
     : QWidget(pParent)
 {
+    m_pMenu = NULL;
+
     QVBoxLayout *pLayout = new QVBoxLayout(this);
     pLayout->setMargin(0);
 
@@ -193,6 +200,16 @@ void BBGroupManager::addFactory(const QString &name, QWidget *pFactory, int nStr
     m_pContainer->layout()->addWidget(pWidget);
 }
 
+void BBGroupManager::addFactory(QWidget *pFactory)
+{
+    QWidget *pWidget = new QWidget(m_pContainer);
+    QHBoxLayout *pLayout = new QHBoxLayout(pWidget);
+    pLayout->setMargin(0);
+    pFactory->setParent(pWidget);
+    pLayout->addWidget(pFactory);
+    m_pContainer->layout()->addWidget(pWidget);
+}
+
 void BBGroupManager::setContainerExpanded(bool bExpanded)
 {
     if (bExpanded)
@@ -217,10 +234,11 @@ void BBGroupManager::setContainerExpanded(bool bExpanded)
 }
 
 
-//---------------------------------------------------------------------------------------------------
-//  BBTransformGroupManager
-//---------------------------------------------------------------------------------------------------
-
+/**
+ * @brief BBTransformGroupManager::BBTransformGroupManager
+ * @param pGameObject
+ * @param pParent
+ */
 BBTransformGroupManager::BBTransformGroupManager(BBGameObject *pGameObject, QWidget *pParent)
     : BBGroupManager("Transform [Global]", BB_PATH_RESOURCE_ICON(transform.png), pParent)
 {
@@ -421,4 +439,39 @@ void BBTransformGroupManager::showLocalCoordinate()
     updatePositionValue();
     updateRotationValue();
     updateScaleValue();
+}
+
+
+/**
+ * @brief BBGlobalSettingsGroupManager::BBGlobalSettingsGroupManager
+ */
+BBGlobalSettingsGroupManager::BBGlobalSettingsGroupManager(BBScene *pScene, QWidget *pParent)
+    : BBGroupManager("Global Settings", BB_PATH_RESOURCE_ICON(earth.png), pParent)
+{
+    m_pScene = pScene;
+    m_pRenderingAlgorithmEnumFactory = NULL;
+    initRenderingAlgorithmEnumFactory();
+}
+
+BBGlobalSettingsGroupManager::~BBGlobalSettingsGroupManager()
+{
+    BB_SAFE_DELETE(m_pRenderingAlgorithmEnumFactory);
+}
+
+void BBGlobalSettingsGroupManager::changeCurrentRenderingAlgorithm(int nIndex)
+{
+    // 0 Forward Rendering
+    // 1 Deferred Rendering
+    qDebug() << nIndex;
+}
+
+void BBGlobalSettingsGroupManager::initRenderingAlgorithmEnumFactory()
+{
+    QStringList items;
+    items.append("Forward Rendering");
+    items.append("Deferred Rendering");
+    m_pRenderingAlgorithmEnumFactory = new BBEnumFactory("Rendering Algorithm", items, "", this, 1, 1);
+    QObject::connect(m_pRenderingAlgorithmEnumFactory, SIGNAL(currentItemChanged(int)),
+                     this, SLOT(changeCurrentRenderingAlgorithm(int)));
+    addFactory(m_pRenderingAlgorithmEnumFactory);
 }

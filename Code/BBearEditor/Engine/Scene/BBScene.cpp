@@ -119,7 +119,6 @@ void BBScene::render()
 //    //实心？   会导致选框绘制不出
 //    glEnable(GL_TEXTURE_2D);
 //    glBindTexture(GL_TEXTURE_2D, mFBO->getBuffer("depth"));
-
 //    glBegin(GL_QUADS);
 //    glTexCoord2f(0.0f, 0.0f);
 //    glVertex3f(-50, -50, 0);
