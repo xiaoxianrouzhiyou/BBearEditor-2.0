@@ -150,13 +150,13 @@ bool BBHierarchyTreeWidget::moveItemFromOthers(const QMimeData *pMimeData)
             createModel(filePath);
         }
     }
-//    else if ((data = mimeData->data("light")) != nullptr)
-//    {
-//        QDataStream dataStream(&data, QIODevice::ReadOnly);
-//        QString fileName;
-//        dataStream >> fileName;
-//        createLight(fileName);
-//    }
+    else if ((data = pMimeData->data(BB_MIMETYPE_LIGHTOBJECT)) != nullptr)
+    {
+        QDataStream dataStream(&data, QIODevice::ReadOnly);
+        QString fileName;
+        dataStream >> fileName;
+        createLight(fileName);
+    }
     else
     {
         return false;

@@ -29,6 +29,7 @@ private:
 
 signals:
     void createModel(const QString &filePath);
+    void createLight(const QString &fileName);
     void setCoordinateSystemSelectedObject(BBGameObject *pGameObject);
     void setCoordinateSystemSelectedObjects(const QList<BBGameObject*> &gameObjects, BBGameObjectSet *pSet);
     void showGameObjectProperty(BBGameObject *pGameObject);
@@ -53,23 +54,15 @@ private slots:
 
 
 //private slots:
-//    void itemChangedSlot(QTreeWidgetItem *item, int column);
-//    void renameItemName(GameObject *gameObject);
 //    void changeGameObjectActivation(GameObject *gameObject, bool isActive);
-//    void copyGameObjectInsertMap(QTreeWidgetItem *item, GameObject *gameObject);
-//    void updateMultipleSelectObjects(GameObject *gameObject);
-//    void finishRename() override;
 //    void cancelSelectedItems();
 
 //signals:
-//    void showSetProperty(QList<GameObject*> gameObjects, CenterPoint *center);
 //    void updateNameInInspector(GameObject *gameObject, QString newName);
 //    void changeButtonActiveCheckStateInInspector(GameObject *gameObject, bool isActive);
-//    void createLight(QString fileName);
 //    void cancelFileListSelectedItems();
 
 //private:
-//    void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript) override;
 //    bool moveItemFromFileList(const QMimeData *mimeData) override;
 //    void focusInEvent(QFocusEvent *event) override;
 };

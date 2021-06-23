@@ -30,10 +30,10 @@ private slots:
     void pressMultipleSelectionKey(bool bPressed);
     void updateCoordinateSystem();
     void createModelAtOrigin(const QString &filePath);
+    void createLightAtOrigin(const QString &fileName);
     void deleteGameObject(BBGameObject *pGameObject);
     void copyGameObject(BBGameObject *pSourceObject, QTreeWidgetItem *pTranscriptItem);
     void lookAtGameObject(BBGameObject *pGameObject);
-//    void createLightDependParent(QString fileName);
 
 signals:
     void updateEditViewTitle();

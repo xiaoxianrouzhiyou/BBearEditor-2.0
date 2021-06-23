@@ -106,6 +106,11 @@ void BBEditViewOpenGLWidget::createModelAtOrigin(const QString &filePath)
     addGameObject(m_pScene->createModel(filePath));
 }
 
+void BBEditViewOpenGLWidget::createLightAtOrigin(const QString &fileName)
+{
+    addGameObject(m_pScene->createLight(fileName));
+}
+
 void BBEditViewOpenGLWidget::deleteGameObject(BBGameObject *pGameObject)
 {
     m_pScene->deleteGameObject(pGameObject);

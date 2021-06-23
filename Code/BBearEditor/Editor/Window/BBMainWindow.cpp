@@ -128,9 +128,11 @@ void BBMainWindow::setConnect()
     // perform transform in OpenGL view, change transform in propertyManager
     QObject::connect(m_pUi->openGLWidget, SIGNAL(updateTransformInPropertyManager(BBGameObject*, char)),
                      m_pUi->propertyManager, SLOT(updateTransform(BBGameObject*, char)));
-    // Drag files or prefabs into the hierarchical view, create model in the scene
+    // Drag files or prefabs into the hierarchical view, create object in the scene
     QObject::connect(m_pUi->treeHierarchy, SIGNAL(createModel(QString)),
                      m_pUi->openGLWidget, SLOT(createModelAtOrigin(QString)));
+    QObject::connect(m_pUi->treeHierarchy, SIGNAL(createLight(QString)),
+                     m_pUi->openGLWidget, SLOT(createLightAtOrigin(QString)));
     // perform operation in treeHierarchy, delete corresponding object in the scene
     QObject::connect(m_pUi->treeHierarchy, SIGNAL(deleteGameObject(BBGameObject*)),
                      m_pUi->openGLWidget, SLOT(deleteGameObject(BBGameObject*)));
