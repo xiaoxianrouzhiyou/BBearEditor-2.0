@@ -39,22 +39,13 @@ void BBLight::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
 void BBLight::setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform)
 {
     BBGameObject::setRotation(nAngle, axis, bUpdateLocalTransform);
-    m_pIcon->setRotation(nAngle, axis, bUpdateLocalTransform);
     m_pIndicator->setRotation(nAngle, axis, bUpdateLocalTransform);
 }
 
 void BBLight::setRotation(const QVector3D &rotation, bool bUpdateLocalTransform)
 {
     BBGameObject::setRotation(rotation, bUpdateLocalTransform);
-    m_pIcon->setRotation(rotation, bUpdateLocalTransform);
     m_pIndicator->setRotation(rotation, bUpdateLocalTransform);
-}
-
-void BBLight::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
-{
-    BBGameObject::setScale(scale, bUpdateLocalTransform);
-    m_pIcon->setScale(scale, bUpdateLocalTransform);
-    m_pIndicator->setScale(scale, bUpdateLocalTransform);
 }
 
 void BBLight::setVisibility(bool bVisible)
@@ -72,12 +63,12 @@ void BBLight::init(const QString &path)
 
 void BBLight::render(BBCamera *pCamera)
 {
-    QMatrix4x4 iconModelMatrix;
-    iconModelMatrix.translate(m_Position);
     // face camera
     QVector3D dir = pCamera->getPosition() - pCamera->getViewCenter();
-    iconModelMatrix.rotate(QQuaternion::fromDirection(dir, QVector3D(0, 1, 0)));
-    m_pIcon->render(iconModelMatrix, pCamera);
+    QQuaternion rot = QQuaternion::fromDirection(dir, QVector3D(0, 1, 0));
+    m_pIcon->setRotation(rot, false);
+
+    m_pIcon->render(pCamera);
     m_pIndicator->render(pCamera);
 }
 

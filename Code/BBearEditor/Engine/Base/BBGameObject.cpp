@@ -153,6 +153,42 @@ void BBGameObject::setRotation(const QVector3D &rotation, bool bUpdateLocalTrans
     BBSceneManager::changeScene(this);
 }
 
+void BBGameObject::setRotation(const QQuaternion &quaternion, bool bUpdateLocalTransform)
+{
+    m_Quaternion = quaternion;
+    m_Rotation = m_Quaternion.toEulerAngles();
+    setModelMatrix(m_Position.x(), m_Position.y(), m_Position.z(),
+                   m_Quaternion,
+                   m_Scale.x(), m_Scale.y(), m_Scale.z());
+
+    QTreeWidgetItem *pItem = BBSceneManager::getSceneTreeItem(this);
+    // Some objects are not managed by BBHierarchyTreeWidget
+    if (pItem)
+    {
+        for (int i = 0; i < pItem->childCount(); i++)
+        {
+            BBGameObject *pGameObject = BBSceneManager::getGameObject(pItem->child(i));
+            // The transform matrix of the child object relative to the parent object
+            QMatrix4x4 localMatrix;
+            localMatrix.translate(pGameObject->getLocalPosition());
+            localMatrix.rotate(pGameObject->getLocalQuaternion());
+            localMatrix.scale(pGameObject->getLocalScale());
+
+            QMatrix4x4 globalMatrix = m_ModelMatrix * localMatrix;
+            pGameObject->setPosition(globalMatrix * QVector3D(0, 0, 0), false);
+            pGameObject->setRotation((m_Quaternion * pGameObject->getLocalQuaternion()).toEulerAngles(), false);
+        }
+
+        if (bUpdateLocalTransform)
+        {
+            QTreeWidgetItem *pParent = pItem->parent();
+            BBGameObject *pGameObject = BBSceneManager::getGameObject(pParent);
+            setLocalTransform(pGameObject);
+        }
+    }
+    BBSceneManager::changeScene(this);
+}
+
 void BBGameObject::setScale(float scale, bool bUpdateLocalTransform)
 {
     setScale(QVector3D(scale, scale, scale), bUpdateLocalTransform);

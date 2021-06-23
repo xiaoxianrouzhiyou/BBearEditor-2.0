@@ -17,11 +17,30 @@ BBIcon::BBIcon(const QVector3D &position, const QVector3D &rotation, const QVect
     : BBRenderableObject(position, rotation, scale)
 {
     m_pBoundingBox2D = new BBRectBoundingBox2D(0.0f, 0.0f, 0.0f, 0.25f, 0.25f, 0.0f);
+    m_pBoundingBox2D->setPosition(position, false);
 }
 
 BBIcon::~BBIcon()
 {
     BB_SAFE_DELETE(m_pBoundingBox2D);
+}
+
+void BBIcon::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
+{
+    BBRenderableObject::setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBox2D->setPosition(position, bUpdateLocalTransform);
+}
+
+void BBIcon::setRotation(const QQuaternion &quaternion, bool bUpdateLocalTransform)
+{
+    BBRenderableObject::setRotation(quaternion, bUpdateLocalTransform);
+    m_pBoundingBox2D->setRotation(quaternion, bUpdateLocalTransform);
+}
+
+void BBIcon::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
+{
+    BBRenderableObject::setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBox2D->setScale(scale, bUpdateLocalTransform);
 }
 
 void BBIcon::init(const QString &path)
