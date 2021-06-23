@@ -6,6 +6,7 @@
 
 class BBScene;
 class BBIcon;
+class BBLightIndicator;
 
 enum BBLightType
 {
@@ -20,6 +21,13 @@ public:
     BBLight(BBScene *pScene);
     BBLight(BBScene *pScene, const QVector3D &position, const QVector3D &rotation, const QVector3D &scale);
     ~BBLight();
+
+    void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
+    void setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform = true) override;
+    void setRotation(const QVector3D &rotation, bool bUpdateLocalTransform = true) override;
+    void setScale(const QVector3D &scale, bool bUpdateLocalTransform = true) override;
+
+    void setVisibility(bool bVisible) override;
 
     void init(const QString &path) override;
     void render(BBCamera *pCamera) override;
@@ -43,6 +51,7 @@ protected:
     BBLightType m_eType;
     BBScene *m_pScene;
     BBIcon *m_pIcon;
+    BBLightIndicator *m_pIndicator;
 
     float m_Ambient[4];
     float m_Diffuse[4];
@@ -58,30 +67,6 @@ protected:
 
 #endif // BBLIGHT_H
 
-
-
-//class Indicator : public RenderableObject
-//{
-//public:
-//    Indicator();
-//    Indicator(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz);
-
-//protected:
-//    unsigned short *mIndexes;
-//    int mIndexCount;
-//};
-
-//class DirectionLightIndicator : public Indicator
-//{
-//public:
-//    DirectionLightIndicator();
-//    DirectionLightIndicator(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz);
-//    void render(Camera camera) override;
-//    void init() override;
-
-//private:
-//    void draw() override;
-//};
 
 
 //class Circle : public RenderableObject

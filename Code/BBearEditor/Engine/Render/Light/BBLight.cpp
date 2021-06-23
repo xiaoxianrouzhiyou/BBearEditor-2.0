@@ -2,6 +2,7 @@
 #include "Utils/BBUtils.h"
 #include "3D/BBIcon.h"
 #include "Render/BBCamera.h"
+#include "3D/BBLightIndicator.h"
 
 
 BBLight* BBLight::m_pMainLight = nullptr;
@@ -25,12 +26,48 @@ BBLight::~BBLight()
 {
     BB_SAFE_DELETE(m_pMainLight);
     BB_SAFE_DELETE(m_pIcon);
+    BB_SAFE_DELETE(m_pIndicator);
+}
+
+void BBLight::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
+{
+    BBGameObject::setPosition(position, bUpdateLocalTransform);
+    m_pIcon->setPosition(position, bUpdateLocalTransform);
+    m_pIndicator->setPosition(position, bUpdateLocalTransform);
+}
+
+void BBLight::setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform)
+{
+    BBGameObject::setRotation(nAngle, axis, bUpdateLocalTransform);
+    m_pIcon->setRotation(nAngle, axis, bUpdateLocalTransform);
+    m_pIndicator->setRotation(nAngle, axis, bUpdateLocalTransform);
+}
+
+void BBLight::setRotation(const QVector3D &rotation, bool bUpdateLocalTransform)
+{
+    BBGameObject::setRotation(rotation, bUpdateLocalTransform);
+    m_pIcon->setRotation(rotation, bUpdateLocalTransform);
+    m_pIndicator->setRotation(rotation, bUpdateLocalTransform);
+}
+
+void BBLight::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
+{
+    BBGameObject::setScale(scale, bUpdateLocalTransform);
+    m_pIcon->setScale(scale, bUpdateLocalTransform);
+    m_pIndicator->setScale(scale, bUpdateLocalTransform);
+}
+
+void BBLight::setVisibility(bool bVisible)
+{
+    BBGameObject::setVisibility(bVisible);
+    m_pIndicator->setVisibility(bVisible);
 }
 
 void BBLight::init(const QString &path)
 {
     BBGameObject::init(path);
     m_pIcon->init(BB_PATH_RESOURCE_ICON() + path.split('.')[0] + " white.png");
+    m_pIndicator->init();
 }
 
 void BBLight::render(BBCamera *pCamera)
@@ -41,6 +78,7 @@ void BBLight::render(BBCamera *pCamera)
     QVector3D dir = pCamera->getPosition() - pCamera->getViewCenter();
     iconModelMatrix.rotate(QQuaternion::fromDirection(dir, QVector3D(0, 1, 0)));
     m_pIcon->render(iconModelMatrix, pCamera);
+    m_pIndicator->render(pCamera);
 }
 
 bool BBLight::hit(const BBRay &ray, float &fDistance)
@@ -101,76 +139,6 @@ void BBLight::setSetting1(float x, float y, float z, float w)
 
 
 
-//void DirectionLightIndicator::init()
-//{
-//    mVertexBuffer = new VertexBuffer();
-//    mVertexBuffer->setSize(32);
-//    for (int i = 0, j = 24; i < 24; i++)
-//    {
-//        float c = 0.45f * cosf(0.261799f * i);
-//        float s = 0.45f * sinf(0.261799f * i);
-//        mVertexBuffer->setPosition(i, c, 1.4f, s);
-//        mVertexBuffer->setColor(i, 0.909804f, 0.337255f, 0.333333f);
-//        if (i % 3 == 0)
-//        {
-//            mVertexBuffer->setPosition(j, c, -1.4f, s);
-//            mVertexBuffer->setColor(j, 0.909804f, 0.337255f, 0.333333f);
-//            j++;
-//        }
-//    }
-
-//    mIndexCount = 64;
-//    mIndexes = new unsigned short[mIndexCount];
-//    for (int i = 0; i < 24; i++)
-//    {
-//        mIndexes[2 * i] = i;
-//        mIndexes[2 * i + 1] = i + 1;
-//    }
-//    mIndexes[47] = 0;
-//    for (int i = 0; i < 8; i++)
-//    {
-//        mIndexes[48 + 2 * i] = 3 * i;
-//        mIndexes[48 + 2 * i + 1] = 24 + i;
-//    }
-
-//    mShader.init("../../../../BBearEngine/resources/shaders/base.vert",
-//                 "../../../../BBearEngine/resources/shaders/base.frag", mIndexes, mIndexCount);
-//}
-
-//void DirectionLightIndicator::render(Camera camera)
-//{
-//    QMatrix4x4 modelMatrix;
-//    modelMatrix.translate(mPosition);
-//    //大小不随远近变化
-//    float distance = (camera.pos - mPosition).length();
-//    modelMatrix.scale(distance / 12);
-//    modelMatrix.rotate(mQuaternion);
-//    RenderableObject::render(modelMatrix, camera);
-//}
-
-//void DirectionLightIndicator::draw()
-//{
-//    glDisable(GL_DEPTH_TEST);
-//    glLineWidth(2);
-//    glDrawElements(GL_LINES, mIndexCount, GL_UNSIGNED_SHORT, 0);
-//}
-
-
-///*************************
-// * Round
-// * ************************/
-
-//Circle::Circle()
-//    : Circle(0, 0, 0, 0, 0, 0, 1, 1, 1)
-//{
-
-//}
-
-//Circle::Circle(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz)
-//    : RenderableObject(px, py, pz, rx, ry, rz, sx, sy, sz)
-//{
-
-//}
 
 //void Circle::init()
 //{
@@ -297,23 +265,6 @@ void BBLight::setSetting1(float x, float y, float z, float w)
 //    mCircle->setVisible(isVisible);
 //}
 
-
-///*************************
-// * SpotLightIndicator
-// * ************************/
-
-//SpotLightIndicator::SpotLightIndicator()
-//    : SpotLightIndicator(0, 0, 0, 0, 0, 0, 1, 1, 1)
-//{
-
-//}
-
-//SpotLightIndicator::SpotLightIndicator(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz)
-//    : Indicator(px, py, pz, rx, ry, rz, sx, sy, sz)
-//{
-
-//}
-
 //void SpotLightIndicator::init()
 //{
 //    mVertexBuffer = new VertexBuffer();
@@ -392,69 +343,10 @@ void BBLight::setSetting1(float x, float y, float z, float w)
 //    setColor(255, 255, 255);
 //}
 
-//void Light::init(QString fileName)
-//{
-//    mIndicator->init();
-//}
-
-//void Light::render(Camera camera)
-//{
-//    mIndicator->render(camera);
-//}
-
-//void Light::setPosition(QVector3D position, bool isUpdateLocalTransform)
-//{
-//    GameObject::setPosition(position, isUpdateLocalTransform);
-//    mIcon->setPosition(position, isUpdateLocalTransform);
-//    mIndicator->setPosition(position, isUpdateLocalTransform);
-//}
-
-//void Light::setRotation(int angle, QVector3D axis, bool isUpdateLocalTransform)
-//{
-//    GameObject::setRotation(angle, axis, isUpdateLocalTransform);
-//    mIcon->setRotation(angle, axis, isUpdateLocalTransform);
-//    mIndicator->setRotation(angle, axis, isUpdateLocalTransform);
-//}
-
-//void Light::setRotation(QVector3D rotation, bool isUpdateLocalTransform)
-//{
-//    GameObject::setRotation(rotation, isUpdateLocalTransform);
-//    mIcon->setRotation(rotation, isUpdateLocalTransform);
-//    mIndicator->setRotation(rotation, isUpdateLocalTransform);
-//}
-
-//void Light::setVisible(bool isVisible)
-//{
-//    GameObject::setVisible(isVisible);
-//    mIndicator->setVisible(isVisible);
-//}
-
-//QColor Light::getColor()
-//{
-//    return mColor;
-//}
-
-//QVector4D Light::getColorVector4f()
-//{
-//    return mColorVector4f;
-//}
-
 //void Light::setColor(int r, int g, int b)
 //{
 //    mColor = QColor(r, g, b);
 //    mColorVector4f = QVector4D(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
-//}
-
-
-///*************************
-// * DirectionLight
-// * ************************/
-
-
-//DirectionLight::DirectionLight(Scene *scene)
-//    : DirectionLight(scene, 0, 0, 0, 0, 0, 0, 1, 1, 1)
-//{
-
 //}
 
 //DirectionLight::DirectionLight(Scene *scene, float px, float py, float pz,

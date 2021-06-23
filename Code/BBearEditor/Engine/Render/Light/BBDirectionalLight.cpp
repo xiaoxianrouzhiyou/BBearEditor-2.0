@@ -1,4 +1,5 @@
 #include "BBDirectionalLight.h"
+#include "3D/BBLightIndicator.h"
 
 
 BBDirectionalLight::BBDirectionalLight(BBScene *pScene)
@@ -11,4 +12,5 @@ BBDirectionalLight::BBDirectionalLight(BBScene *pScene, const QVector3D &positio
     : BBLight(pScene, position, rotation, QVector3D(1, 1, 1))
 {
     m_eType = Directional;
+    m_pIndicator = new BBDirectionalLightIndicator(position, rotation);
 }

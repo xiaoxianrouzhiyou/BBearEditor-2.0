@@ -77,7 +77,7 @@ void BBModel::setRotation(const QVector3D &rotation, bool bUpdateLocalTransform)
     m_pBoundingBox->setRotation(rotation, bUpdateLocalTransform);
 }
 
-void BBModel::setScale(const QVector3D &scale, const bool bUpdateLocalTransform)
+void BBModel::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
 {
     BBGameObject::setScale(scale, bUpdateLocalTransform);
     m_pMesh->setScale(scale, bUpdateLocalTransform);
