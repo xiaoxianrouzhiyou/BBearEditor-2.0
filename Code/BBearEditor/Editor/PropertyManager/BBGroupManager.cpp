@@ -10,6 +10,7 @@
 #include "BBPropertyFactory.h"
 #include "Base/BBGameObject.h"
 #include "Scene/BBSceneManager.h"
+#include "Render/BBDrawCall.h"
 
 
 /**
@@ -464,7 +465,7 @@ void BBGlobalSettingsGroupManager::changeCurrentRenderingAlgorithm(int nIndex)
 {
     // 0 Forward Rendering
     // 1 Deferred Rendering
-    qDebug() << nIndex;
+    BBDrawCall::setDrawFunc(nIndex);
 }
 
 void BBGlobalSettingsGroupManager::initRenderingAlgorithmEnumFactory()

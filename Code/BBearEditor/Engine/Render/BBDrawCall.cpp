@@ -8,6 +8,8 @@
 #include "Render/Light/BBLight.h"
 
 
+BBDrawFunc BBDrawCall::m_DrawFunc = &BBDrawCall::forwardRendering;
+
 BBDrawCall::BBDrawCall()
     : BBBaseRenderComponent()
 {
@@ -45,6 +47,25 @@ void BBDrawCall::setEBO(BBElementBufferObject *pEBO, GLenum eDrawPrimitiveType, 
 }
 
 void BBDrawCall::draw(BBCamera *pCamera)
+{
+    (this->*m_DrawFunc)(pCamera);
+}
+
+void BBDrawCall::setDrawFunc(int nIndex)
+{
+    switch (nIndex) {
+    case 0:
+        m_DrawFunc = &BBDrawCall::forwardRendering;
+        break;
+    case 1:
+        m_DrawFunc = &BBDrawCall::deferredRendering;
+        break;
+    default:
+        break;
+    }
+}
+
+void BBDrawCall::forwardRendering(BBCamera *pCamera)
 {
     QList<BBGameObject*> lights = collectLights();
 
@@ -97,6 +118,11 @@ void BBDrawCall::draw(BBCamera *pCamera)
     {
         next<BBDrawCall>()->draw(pCamera);
     }
+}
+
+void BBDrawCall::deferredRendering(BBCamera *pCamera)
+{
+
 }
 
 QList<BBGameObject*> BBDrawCall::collectLights()
