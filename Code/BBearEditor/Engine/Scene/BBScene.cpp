@@ -219,15 +219,15 @@ BBLight* BBScene::createLight(const QString &fileName, int x, int y, bool bSelec
 BBLight* BBScene::createLight(const QString &fileName, const QVector3D &position, const QVector3D &rotation, bool bSelect)
 {
     BBLight *pLight;
-    if (fileName == "directional light.png")
+    if (fileName == BB_FILENAME_DIRECTIONALLIGHT)
     {
-        pLight = new BBDirectionalLight(this, position, rotation);
+        pLight = new BBDirectionalLight(this, position, QVector3D(0, -30, -30));
     }
-    else if (fileName == "point light.png")
+    else if (fileName == BB_FILENAME_POINTLIGHT)
     {
         pLight = new BBPointLight(this, position);
     }
-    else if (fileName == "spot light.png")
+    else if (fileName == BB_FILENAME_SPOTLIGHT)
     {
         pLight = new BBSpotLight(this, position, rotation);
     }

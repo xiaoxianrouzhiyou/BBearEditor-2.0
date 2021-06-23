@@ -3,9 +3,8 @@
 #include "3D/BBIcon.h"
 #include "Render/BBCamera.h"
 #include "3D/BBLightIndicator.h"
+#include "Render/BBRenderPass.h"
 
-
-BBLight* BBLight::m_pMainLight = nullptr;
 
 BBLight::BBLight(BBScene *pScene)
     : BBLight(pScene, QVector3D(0, 0, 0), QVector3D(0, 0, 0), QVector3D(1, 1, 1))
@@ -20,11 +19,13 @@ BBLight::BBLight(BBScene *pScene, const QVector3D &position, const QVector3D &ro
     m_pScene = pScene;
     // no need to rotate
     m_pIcon = new BBIcon(position, QVector3D(0, 0, 0), scale);
+    // default
+    setDiffuseColor(0.976f, 0.804f, 0.678f, 1.0f);
+    setHomogeneousPosition(position, 1.0f);
 }
 
 BBLight::~BBLight()
 {
-    BB_SAFE_DELETE(m_pMainLight);
     BB_SAFE_DELETE(m_pIcon);
     BB_SAFE_DELETE(m_pIndicator);
 }
@@ -34,6 +35,7 @@ void BBLight::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
     BBGameObject::setPosition(position, bUpdateLocalTransform);
     m_pIcon->setPosition(position, bUpdateLocalTransform);
     m_pIndicator->setPosition(position, bUpdateLocalTransform);
+    setHomogeneousPosition(position, 1.0f);
 }
 
 void BBLight::setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform)
@@ -88,6 +90,12 @@ bool BBLight::belongToSelectionRegion(const QVector3D &left1, const QVector3D &l
                                             bottom1, bottom2, bottom3);
 }
 
+void BBLight::setRenderPass(BBRenderPass *pRenderPass)
+{
+    pRenderPass->setVector4(NAME_LIGHT_POSITION, m_HomogeneousPosition);
+    pRenderPass->setVector4(NAME_LIGHT_COLOR, m_Diffuse);
+}
+
 void BBLight::setAmbientColor(float r, float g, float b, float a)
 {
     m_Ambient[0] = r;
@@ -128,7 +136,13 @@ void BBLight::setSetting1(float x, float y, float z, float w)
     m_Setting1[3] = w;
 }
 
-
+void BBLight::setHomogeneousPosition(const QVector3D &value, float w)
+{
+    m_HomogeneousPosition[0] = value.x();
+    m_HomogeneousPosition[1] = value.y();
+    m_HomogeneousPosition[2] = value.z();
+    m_HomogeneousPosition[3] = w;
+}
 
 
 //void Circle::init()
@@ -311,20 +325,6 @@ void BBLight::setSetting1(float x, float y, float z, float w)
 // * Light
 // * ************************/
 
-//QString Light::directionLightPositionUniformLocationName = "directionLightPositionUniform";
-//QString Light::directionLightColorUniformLocationName = "directionLightColorUniform";
-//QString Light::pointLightPositionUniformLocationName = "pointLightPositionUniform";
-//QString Light::pointLightColorUniformLocationName = "pointLightColorUniform";
-//QString Light::pointLightOptionUniformLocationName = "pointLightOptionUniform";
-//QString Light::spotLightPositionUniformLocationName = "spotLightPositionUniform";
-//QString Light::spotLightDirectionUniformLocationName = "spotLightDirectionUniform";
-//QString Light::spotLightColorUniformLocationName = "spotLightColorUniform";
-//QString Light::spotLightOptionUniformLocationName = "spotLightOptionUniform";
-//QString Light::spotLightOption2UniformLocationName = "spotLightOption2Uniform";
-//QString Light::lightAmbientUniformLocationName = "lightAmbientUniform";
-//QString Light::lightSpecularUniformLocationName = "lightSpecularUniform";
-//QString Light::lightOptionUniformLocationName = "lightOptionUniform";
-//QString Light::lightCountUniformLocationName = "lightCountUniform";
 
 //Light::Light(Scene *scene, float px, float py, float pz,
 //             float rx, float ry, float rz, float sx, float sy, float sz)

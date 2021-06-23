@@ -8,6 +8,7 @@
 class BBCamera;
 class BBVertexBufferObject;
 class BBElementBufferObject;
+class BBGameObject;
 
 class BBDrawCall : public BBBaseRenderComponent, public BBLinkedList
 {
@@ -22,6 +23,8 @@ public:
     void draw(BBCamera *pCamera);
 
 private:
+    QList<BBGameObject*> collectLights();
+
     BBMaterial *m_pMaterial;
 
     GLenum m_eDrawPrimitiveType;

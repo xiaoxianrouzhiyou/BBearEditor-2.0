@@ -10,13 +10,15 @@
 class QTreeWidgetItem;
 class BBGameObject;
 class BBEditViewOpenGLWidget;
+class BBScene;
 class BBHierarchyTreeWidget;
 
 class BBSceneManager
 {
 public:
     static QString getCurrentSceneFilePath() { return m_CurrentSceneFilePath; }
-    static void bindEditViewOpenGLWidget(BBEditViewOpenGLWidget *pWidget) { m_pEditViewOpenGLWidget = pWidget; }
+    static BBScene* getScene() { return m_pScene; }
+    static void bindEditViewOpenGLWidget(BBEditViewOpenGLWidget *pWidget);
     static void bindHierarchyTreeWidget(BBHierarchyTreeWidget *pWidget) { m_pHierarchyTreeWidget = pWidget; }
 
     static void insertObjectMap(QTreeWidgetItem *pItem, BBGameObject *pGameObject);
@@ -39,6 +41,7 @@ private:
     static QMap<QTreeWidgetItem*, BBGameObject*> m_ObjectMap;
     static QString m_CurrentSceneFilePath;
     static BBEditViewOpenGLWidget *m_pEditViewOpenGLWidget;
+    static BBScene *m_pScene;
     static BBHierarchyTreeWidget *m_pHierarchyTreeWidget;
     static bool m_bSceneChanged;
 };

@@ -29,6 +29,7 @@ public:
 
     inline BBCamera* getCamera() { return m_pCamera; }
     inline BBTransformCoordinateSystem* getTransformCoordinateSystem() { return m_pTransformCoordinateSystem; }
+    inline QList<BBGameObject*> getLights() { return m_Lights; }
 
     void setSkyBox(const QString &path);
 

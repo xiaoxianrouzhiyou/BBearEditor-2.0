@@ -24,8 +24,25 @@
 #define NAME_VIEWMATRIX "viewMatrix"
 #define NAME_MODELMATRIX "modelMatrix"
 #define NAME_ITMODELMATRIX "IT_modelMatrix"
-#define NAME_CAMERAPOSITION "cameraPositionUniform"
+#define NAME_CAMERA_POSITION "cameraPositionUniform"
 #define NAME_TEXTURE "textureUniform"
+#define NAME_LIGHT_POSITION "lightPositionUniform"
+#define NAME_LIGHT_COLOR "lightColorUniform"
+
+//QString Light::directionLightPositionUniformLocationName = "directionLightPositionUniform";
+//QString Light::directionLightColorUniformLocationName = "directionLightColorUniform";
+//QString Light::pointLightPositionUniformLocationName = "pointLightPositionUniform";
+//QString Light::pointLightColorUniformLocationName = "pointLightColorUniform";
+//QString Light::pointLightOptionUniformLocationName = "pointLightOptionUniform";
+//QString Light::spotLightPositionUniformLocationName = "spotLightPositionUniform";
+//QString Light::spotLightDirectionUniformLocationName = "spotLightDirectionUniform";
+//QString Light::spotLightColorUniformLocationName = "spotLightColorUniform";
+//QString Light::spotLightOptionUniformLocationName = "spotLightOptionUniform";
+//QString Light::spotLightOption2UniformLocationName = "spotLightOption2Uniform";
+//QString Light::lightAmbientUniformLocationName = "lightAmbientUniform";
+//QString Light::lightSpecularUniformLocationName = "lightSpecularUniform";
+//QString Light::lightOptionUniformLocationName = "lightOptionUniform";
+//QString Light::lightCountUniformLocationName = "lightCountUniform";
 
 
 class BBBaseRenderComponent : protected QOpenGLExtraFunctions

@@ -4,7 +4,12 @@
 
 #include "Base/BBGameObject.h"
 
+#define BB_FILENAME_DIRECTIONALLIGHT "directional light.png"
+#define BB_FILENAME_POINTLIGHT "point light.png"
+#define BB_FILENAME_SPOTLIGHT "spot light.png"
+
 class BBScene;
+class BBRenderPass;
 class BBIcon;
 class BBLightIndicator;
 
@@ -37,6 +42,8 @@ public:
                                  const QVector3D &right1, const QVector3D &right2, const QVector3D &right3,
                                  const QVector3D &bottom1, const QVector3D &bottom2, const QVector3D &bottom3) override;
 
+    void setRenderPass(BBRenderPass *pRenderPass);
+
     void setAmbientColor(float r, float g, float b, float a);
     void setDiffuseColor(float r, float g, float b, float a);
     void setSpecularColor(float r, float g, float b, float a);
@@ -44,14 +51,14 @@ public:
     void setSetting1(float x, float y, float z, float w);
 
 protected:
-    static BBLight *m_pMainLight;
+    void setHomogeneousPosition(const QVector3D &value, float w = 1.0f);
 
-protected:
     BBLightType m_eType;
     BBScene *m_pScene;
     BBIcon *m_pIcon;
     BBLightIndicator *m_pIndicator;
 
+    float m_HomogeneousPosition[4];
     float m_Ambient[4];
     float m_Diffuse[4];
     float m_Specular[4];
@@ -109,29 +116,6 @@ protected:
 //};
 
 
-//class Light : public GameObject
-//{
-//public:
-//    void init(QString fileName);
-//    void render(Camera camera) override;
-//    bool hit(Ray ray, float &distance) override;
-//    bool belongToSelectionRegion(QVector3D left1, QVector3D left2, QVector3D left3,
-//                                 QVector3D top1, QVector3D top2, QVector3D top3,
-//                                 QVector3D right1, QVector3D right2, QVector3D right3,
-//                                 QVector3D bottom1, QVector3D bottom2, QVector3D bottom3) override;
-//    void setPosition(QVector3D position, bool isUpdateLocalTransform = true) override;
-//    void setRotation(int angle, QVector3D axis, bool isUpdateLocalTransform = true) override;
-//    void setRotation(QVector3D rotation, bool isUpdateLocalTransform = true) override;
-//    void setVisible(bool isVisible) override;
-//    QColor getColor();
-//    QVector4D getColorVector4f();
-//    virtual void setColor(int r, int g, int b);
-//    Indicator *mIndicator;
-
-//protected:
-//    QColor mColor;
-//    QVector4D mColorVector4f;
-//};
 
 //class DirectionLight : public Light
 //{

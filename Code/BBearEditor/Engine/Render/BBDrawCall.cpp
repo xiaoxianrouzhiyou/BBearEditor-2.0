@@ -3,6 +3,9 @@
 #include "BBElementBufferObject.h"
 #include "BBCamera.h"
 #include "BBRenderPass.h"
+#include "Scene/BBSceneManager.h"
+#include "Scene/BBScene.h"
+#include "Render/Light/BBLight.h"
 
 
 BBDrawCall::BBDrawCall()
@@ -43,9 +46,17 @@ void BBDrawCall::setEBO(BBElementBufferObject *pEBO, GLenum eDrawPrimitiveType, 
 
 void BBDrawCall::draw(BBCamera *pCamera)
 {
+    QList<BBGameObject*> lights = collectLights();
+
     m_pVBO->bind();
 
+    // base
     m_pMaterial->getBaseRenderPass()->bind(pCamera);
+    if (lights.count() > 0)
+    {
+        // render the first light
+        ((BBLight*)lights[0])->setRenderPass(m_pMaterial->getBaseRenderPass());
+    }
     if (m_pEBO == nullptr)
     {
         m_pVBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
@@ -58,11 +69,22 @@ void BBDrawCall::draw(BBCamera *pCamera)
     }
     m_pMaterial->getBaseRenderPass()->unbind();
 
+    // additive
 //    m_pMaterial->getAdditiveRenderPass()->bind(pCamera);
-//    if (m_pEBO == nullptr)
+//    for (int i = 0; i < lights.count(); i++)
 //    {
-//        m_pVBO->draw();
+//        if (m_pEBO == nullptr)
+//        {
+//            m_pVBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
+//        }
+//        else
+//        {
+//            m_pEBO->bind();
+//            m_pEBO->draw(m_eDrawPrimitiveType, m_nIndexCount, m_nDrawStartIndex);
+//            m_pEBO->unbind();
+//        }
 //    }
+//    m_pMaterial->getAdditiveRenderPass()->unbind();
 
     m_pVBO->unbind();
 
@@ -70,4 +92,9 @@ void BBDrawCall::draw(BBCamera *pCamera)
     {
         next<BBDrawCall>()->draw(pCamera);
     }
+}
+
+QList<BBGameObject*> BBDrawCall::collectLights()
+{
+    return BBSceneManager::getScene()->getLights();
 }

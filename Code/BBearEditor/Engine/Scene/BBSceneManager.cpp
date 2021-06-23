@@ -11,9 +11,16 @@
 QMap<QTreeWidgetItem*, BBGameObject*> BBSceneManager::m_ObjectMap;
 QString BBSceneManager::m_CurrentSceneFilePath;
 BBEditViewOpenGLWidget* BBSceneManager::m_pEditViewOpenGLWidget = NULL;
+BBScene* BBSceneManager::m_pScene = NULL;
 BBHierarchyTreeWidget* BBSceneManager::m_pHierarchyTreeWidget = NULL;
 bool BBSceneManager::m_bSceneChanged = true;
 
+
+void BBSceneManager::bindEditViewOpenGLWidget(BBEditViewOpenGLWidget *pWidget)
+{
+    m_pEditViewOpenGLWidget = pWidget;
+    m_pScene = m_pEditViewOpenGLWidget->getScene();
+}
 
 void BBSceneManager::insertObjectMap(QTreeWidgetItem *pItem, BBGameObject *pGameObject)
 {
@@ -191,7 +198,7 @@ void BBSceneManager::saveScene(const QString &filePath)
 void BBSceneManager::removeScene()
 {
     BB_PROCESS_ERROR_RETURN(m_pEditViewOpenGLWidget);
-    m_pEditViewOpenGLWidget->getScene()->clear();
+    m_pScene->clear();
     for (QMap<QTreeWidgetItem*, BBGameObject*>::Iterator it = m_ObjectMap.begin(); it != m_ObjectMap.end(); it++)
     {
         delete it.key();
