@@ -6,7 +6,7 @@
 
 BBMaterial::BBMaterial()
 {
-    m_pBaseRenderPass = new BBRenderPass;
+    m_pBaseRenderPass = nullptr;
     m_pAdditiveRenderPass = nullptr;
 }
 
@@ -18,7 +18,39 @@ BBMaterial::~BBMaterial()
 
 void BBMaterial::init(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath)
 {
+    m_pBaseRenderPass = new BBRenderPass;
     m_pBaseRenderPass->setShader(BBShader::loadShader(shaderName, vShaderPath, fShaderPath));
+}
+
+void BBMaterial::initMultiPass(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath)
+{
+    init(shaderName, vShaderPath, fShaderPath);
+    m_pAdditiveRenderPass = new BBRenderPass;
+    m_pAdditiveRenderPass->setShader(BBShader::loadShader(shaderName, vShaderPath, fShaderPath));
+}
+
+void BBMaterial::setBlendState(bool bEnable)
+{
+    if (m_pBaseRenderPass != nullptr)
+    {
+        m_pBaseRenderPass->setBlendState(bEnable);
+    }
+    if (m_pAdditiveRenderPass != nullptr)
+    {
+        m_pAdditiveRenderPass->setBlendState(bEnable);
+    }
+}
+
+void BBMaterial::setZTestState(bool bEnable)
+{
+    if (m_pBaseRenderPass != nullptr)
+    {
+        m_pBaseRenderPass->setZTestState(bEnable);
+    }
+    if (m_pAdditiveRenderPass != nullptr)
+    {
+        m_pAdditiveRenderPass->setZTestState(bEnable);
+    }
 }
 
 void BBMaterial::setMatrix4(const std::string &uniformName, const float *pMatrix4)

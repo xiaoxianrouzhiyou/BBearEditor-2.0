@@ -12,6 +12,7 @@ BBShader::BBShader()
 {
     m_pAttributes = NULL;
     m_pUniforms = NULL;
+    m_Program = 0;
 }
 
 BBShader::~BBShader()

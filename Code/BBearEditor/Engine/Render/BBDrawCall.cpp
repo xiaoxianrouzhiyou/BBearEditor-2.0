@@ -51,12 +51,12 @@ void BBDrawCall::draw(BBCamera *pCamera)
     m_pVBO->bind();
 
     // base
-    m_pMaterial->getBaseRenderPass()->bind(pCamera);
     if (lights.count() > 0)
     {
         // render the first light
         ((BBLight*)lights[0])->setRenderPass(m_pMaterial->getBaseRenderPass());
     }
+    m_pMaterial->getBaseRenderPass()->bind(pCamera);
     if (m_pEBO == nullptr)
     {
         m_pVBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
@@ -70,21 +70,26 @@ void BBDrawCall::draw(BBCamera *pCamera)
     m_pMaterial->getBaseRenderPass()->unbind();
 
     // additive
-//    m_pMaterial->getAdditiveRenderPass()->bind(pCamera);
-//    for (int i = 0; i < lights.count(); i++)
-//    {
-//        if (m_pEBO == nullptr)
-//        {
-//            m_pVBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
-//        }
-//        else
-//        {
-//            m_pEBO->bind();
-//            m_pEBO->draw(m_eDrawPrimitiveType, m_nIndexCount, m_nDrawStartIndex);
-//            m_pEBO->unbind();
-//        }
-//    }
-//    m_pMaterial->getAdditiveRenderPass()->unbind();
+    BBRenderPass *pAdditiveRenderPass = m_pMaterial->getAdditiveRenderPass();
+    if (lights.count() > 1 && pAdditiveRenderPass)
+    {
+        for (int i = 1; i < lights.count(); i++)
+        {
+            ((BBLight*)lights[i])->setRenderPass(pAdditiveRenderPass);
+            pAdditiveRenderPass->bind(pCamera);
+            if (m_pEBO == nullptr)
+            {
+                m_pVBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
+            }
+            else
+            {
+                m_pEBO->bind();
+                m_pEBO->draw(m_eDrawPrimitiveType, m_nIndexCount, m_nDrawStartIndex);
+                m_pEBO->unbind();
+            }
+        }
+        pAdditiveRenderPass->unbind();
+    }
 
     m_pVBO->unbind();
 

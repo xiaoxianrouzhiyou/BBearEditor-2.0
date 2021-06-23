@@ -19,6 +19,10 @@ public:
     ~BBMaterial();
 
     void init(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath);
+    void initMultiPass(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath);
+
+    void setBlendState(bool bEnable);
+    void setZTestState(bool bEnable);
 
     void setMatrix4(const std::string &uniformName, const float *pMatrix4);
     void setVector4(const std::string &uniformName, const float *pVector4);
