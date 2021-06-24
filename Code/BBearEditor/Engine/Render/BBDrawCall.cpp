@@ -6,6 +6,7 @@
 #include "Scene/BBSceneManager.h"
 #include "Scene/BBScene.h"
 #include "Render/Light/BBLight.h"
+#include "Render/BBFrameBufferObject.h"
 
 
 BBDrawFunc BBDrawCall::m_DrawFunc = &BBDrawCall::forwardRendering;
@@ -56,9 +57,11 @@ void BBDrawCall::setDrawFunc(int nIndex)
     switch (nIndex) {
     case 0:
         m_DrawFunc = &BBDrawCall::forwardRendering;
+        BBSceneManager::getScene()->enableFBO(false);
         break;
     case 1:
         m_DrawFunc = &BBDrawCall::deferredRendering;
+        BBSceneManager::getScene()->enableFBO(true);
         break;
     default:
         break;
@@ -122,7 +125,20 @@ void BBDrawCall::forwardRendering(BBCamera *pCamera)
 
 void BBDrawCall::deferredRendering(BBCamera *pCamera)
 {
-
+    m_pVBO->bind();
+    m_pMaterial->getBaseRenderPass()->bind(pCamera);
+    if (m_pEBO == nullptr)
+    {
+        m_pVBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
+    }
+    else
+    {
+        m_pEBO->bind();
+        m_pEBO->draw(m_eDrawPrimitiveType, m_nIndexCount, m_nDrawStartIndex);
+        m_pEBO->unbind();
+    }
+    m_pMaterial->getBaseRenderPass()->unbind();
+    m_pVBO->unbind();
 }
 
 QList<BBGameObject*> BBDrawCall::collectLights()

@@ -17,6 +17,7 @@ class BBLight;
 class BBSelectionRegion;
 class BBRay;
 class BBTransformCoordinateSystem;
+class BBFullScreenQuad;
 class BBScene
 {
 public:
@@ -30,6 +31,8 @@ public:
     inline BBCamera* getCamera() { return m_pCamera; }
     inline BBTransformCoordinateSystem* getTransformCoordinateSystem() { return m_pTransformCoordinateSystem; }
     inline QList<BBGameObject*> getLights() { return m_Lights; }
+    inline BBFrameBufferObject* getFBO() { return m_pFBO; }
+    inline void enableFBO(bool bEnable) { m_bEnableFBO = bEnable; }
 
     void setSkyBox(const QString &path);
 
@@ -57,12 +60,20 @@ public:
     void clear();
 
 private:
-    float m_fUpdateRate;
+    void bindFBO();
+    void unbindFBO();
     BBFrameBufferObject *m_pFBO;
+    bool m_bEnableFBO;
+    static QString m_ColorBufferName;
+
+private:
+    float m_fUpdateRate;
+
     BBCamera *m_pCamera;
     BBSkyBox *m_pSkyBox;
     BBHorizontalPlane *m_pHorizontalPlane;
     BBTransformCoordinateSystem *m_pTransformCoordinateSystem;
+    BBFullScreenQuad *m_pFullScreenQuad;
 
     QList<BBGameObject*> m_Models;
     QList<BBGameObject*> m_Lights;

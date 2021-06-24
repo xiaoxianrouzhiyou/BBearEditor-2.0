@@ -10,6 +10,7 @@
 #include "2D/BBSelectionRegion.h"
 #include <cfloat>
 #include "3D/BBCoordinateSystem.h"
+#include "2D/BBFullScreenQuad.h"
 #include "Render/BBRenderState.h"
 #include "Render/Light/BBLight.h"
 #include "Render/Light/BBDirectionalLight.h"
@@ -17,15 +18,19 @@
 #include "Render/Light/BBSpotLight.h"
 
 
+QString BBScene::m_ColorBufferName = "color";
+
 BBScene::BBScene()
 {
     m_fUpdateRate = (float) BB_CONSTANT_UPDATE_RATE / 1000;
     m_pFBO = NULL;
+    m_bEnableFBO = false;
     m_pCamera = NULL;
     m_pSkyBox = NULL;
     m_pHorizontalPlane = NULL;
     m_pSelectionRegion = NULL;
     m_pTransformCoordinateSystem = NULL;
+    m_pFullScreenQuad = NULL;
 
 //    particle = new Particle();
 //    fogSwitch = false;
@@ -46,6 +51,7 @@ BBScene::~BBScene()
     BB_SAFE_DELETE(m_pHorizontalPlane);
     BB_SAFE_DELETE(m_pSelectionRegion);
     BB_SAFE_DELETE(m_pTransformCoordinateSystem);
+    BB_SAFE_DELETE(m_pFullScreenQuad);
     QList<BBGameObject*> objects = m_Models;
 //    + directionLights + pointLights + spotLights + audios;
     QList<BBGameObject*>::Iterator itr;
@@ -65,13 +71,14 @@ void BBScene::init()
     m_pHorizontalPlane = new BBHorizontalPlane();
     m_pSelectionRegion = new BBSelectionRegion();
     m_pTransformCoordinateSystem = new BBTransformCoordinateSystem();
+    m_pFullScreenQuad = new BBFullScreenQuad();
 
     m_pCamera->setViewportSize(800.0f, 600.0f);
 
     m_pSkyBox->init(QString(BB_PATH_RESOURCE) + "skyboxs/1/");
     m_pHorizontalPlane->init();
     m_pTransformCoordinateSystem->init();
-
+    m_pFullScreenQuad->init();
 
 //    //粒子
 //    particle->init();
@@ -89,6 +96,7 @@ void BBScene::render()
     // refresh camera position and direction, update pos and ..., Convenient for subsequent use
     m_pCamera->update(m_fUpdateRate);
 
+    bindFBO();
 //    renderShadowMap();
 //    //给模型添加高度图信息 用于阴影计算
 //    for (QList<GameObject*>::Iterator itr = models.begin(); itr != models.end(); itr++)
@@ -113,12 +121,18 @@ void BBScene::render()
 
     m_pTransformCoordinateSystem->render(m_pCamera);
 
+    unbindFBO();
+
+    if (m_bEnableFBO)
+    {
+        m_pFullScreenQuad->setTexture(m_pFBO->getBuffer(m_ColorBufferName));
+        m_pFullScreenQuad->render(m_pCamera);
+    }
 
     // 2D camera mode
     m_pCamera->switchTo2D();
 
     m_pSelectionRegion->render();
-//    //sprite.draw();
 
 //    //实心？   会导致选框绘制不出
 //    glEnable(GL_TEXTURE_2D);
@@ -141,7 +155,7 @@ void BBScene::resize(float width, float height)
     m_pCamera->setViewportSize(width, height);
 
     m_pFBO = new BBFrameBufferObject;
-    m_pFBO->attachColorBuffer("color", GL_COLOR_ATTACHMENT0, width, height);
+    m_pFBO->attachColorBuffer(m_ColorBufferName, GL_COLOR_ATTACHMENT0, width, height);
     m_pFBO->attachDepthBuffer("depth", width, height);
     m_pFBO->finish();
 }
@@ -366,6 +380,22 @@ void BBScene::clear()
     {
         BBGameObject *pObject = *itr;
         deleteGameObject(pObject);
+    }
+}
+
+void BBScene::bindFBO()
+{
+    if (m_bEnableFBO && m_pFBO)
+    {
+        m_pFBO->bind();
+    }
+}
+
+void BBScene::unbindFBO()
+{
+    if (m_bEnableFBO && m_pFBO)
+    {
+        m_pFBO->unbind();
     }
 }
 

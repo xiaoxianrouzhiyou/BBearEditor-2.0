@@ -91,7 +91,8 @@ SOURCES += \
     Engine/3D/BBHorizontalPlane.cpp \
     Engine/2D/BBSelectionRegion.cpp \
     Engine/Utils/BBUtils.cpp \
-    Engine/3D/BBLightIndicator.cpp
+    Engine/3D/BBLightIndicator.cpp \
+    Engine/2D/BBFullScreenQuad.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -162,7 +163,8 @@ HEADERS += \
     Engine/3D/BBHorizontalPlane.h \
     Engine/2D/BBSelectionRegion.h \
     Engine/Utils/BBUtils.h \
-    Engine/3D/BBLightIndicator.h
+    Engine/3D/BBLightIndicator.h \
+    Engine/2D/BBFullScreenQuad.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

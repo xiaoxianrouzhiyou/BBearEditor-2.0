@@ -448,6 +448,8 @@ void BBTransformGroupManager::showLocalCoordinate()
  * @param pScene
  * @param pParent
  */
+int BBGlobalSettingsGroupManager::m_nCurrentRenderingAlgorithmIndex = 0;
+
 BBGlobalSettingsGroupManager::BBGlobalSettingsGroupManager(BBScene *pScene, QWidget *pParent)
     : BBGroupManager("Global Settings", BB_PATH_RESOURCE_ICON(earth.png), pParent)
 {
@@ -466,6 +468,7 @@ void BBGlobalSettingsGroupManager::changeCurrentRenderingAlgorithm(int nIndex)
     // 0 Forward Rendering
     // 1 Deferred Rendering
     BBDrawCall::setDrawFunc(nIndex);
+    m_nCurrentRenderingAlgorithmIndex = nIndex;
 }
 
 void BBGlobalSettingsGroupManager::initRenderingAlgorithmEnumFactory()
@@ -473,7 +476,9 @@ void BBGlobalSettingsGroupManager::initRenderingAlgorithmEnumFactory()
     QStringList items;
     items.append("Forward Rendering");
     items.append("Deferred Rendering");
-    m_pRenderingAlgorithmEnumFactory = new BBEnumFactory("Rendering Algorithm", items, "", this, 1, 1);
+    m_pRenderingAlgorithmEnumFactory = new BBEnumFactory("Rendering Algorithm", items,
+                                                         items[m_nCurrentRenderingAlgorithmIndex],
+                                                         this, 1, 1);
     QObject::connect(m_pRenderingAlgorithmEnumFactory, SIGNAL(currentItemChanged(int)),
                      this, SLOT(changeCurrentRenderingAlgorithm(int)));
     addFactory(m_pRenderingAlgorithmEnumFactory);

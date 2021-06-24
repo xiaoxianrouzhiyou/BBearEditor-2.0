@@ -142,6 +142,7 @@ private slots:
 private:
     void initRenderingAlgorithmEnumFactory();
 
+    static int m_nCurrentRenderingAlgorithmIndex;
     BBScene *m_pScene;
     BBEnumFactory *m_pRenderingAlgorithmEnumFactory;
 };
