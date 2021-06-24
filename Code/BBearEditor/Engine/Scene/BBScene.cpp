@@ -222,16 +222,18 @@ BBLight* BBScene::createLight(const QString &fileName, const QVector3D &position
     if (fileName == BB_FILENAME_DIRECTIONALLIGHT)
     {
         pLight = new BBDirectionalLight(this, position, QVector3D(0, -30, -30));
+        pLight->setBaseAttributes(fileName.split('.')[0], BB_CLASSNAME_DIRECTIONAL_LIGHT, "light2");
     }
     else if (fileName == BB_FILENAME_POINTLIGHT)
     {
         pLight = new BBPointLight(this, position);
+        pLight->setBaseAttributes(fileName.split('.')[0], BB_CLASSNAME_POINT_LIGHT, "light2");
     }
     else if (fileName == BB_FILENAME_SPOTLIGHT)
     {
         pLight = new BBSpotLight(this, position, rotation);
+        pLight->setBaseAttributes(fileName.split('.')[0], BB_CLASSNAME_SPOT_LIGHT, "light2");
     }
-    pLight->setBaseAttributes(fileName.split('.')[0], BB_CLASSNAME_LIGHT, "light2");
     pLight->init(fileName);
     m_Lights.append(pLight);
     if (bSelect)
@@ -285,7 +287,9 @@ void BBScene::deleteGameObject(BBGameObject *pGameObject)
     {
         m_Models.removeOne(pGameObject);
     }
-    else if (pGameObject->getClassName() == BB_CLASSNAME_LIGHT)
+    else if (pGameObject->getClassName() == BB_CLASSNAME_DIRECTIONAL_LIGHT
+             || pGameObject->getClassName() == BB_CLASSNAME_POINT_LIGHT
+             || pGameObject->getClassName() == BB_CLASSNAME_SPOT_LIGHT)
     {
         m_Lights.removeOne(pGameObject);
     }

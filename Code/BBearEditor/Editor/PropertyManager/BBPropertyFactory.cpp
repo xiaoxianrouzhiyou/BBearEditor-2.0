@@ -7,6 +7,7 @@
 #include <QListView>
 #include <QLabel>
 #include <QComboBox>
+#include "Render/Light/BBLight.h"
 
 
 /**
@@ -198,3 +199,64 @@ void BBEnumFactory::changeCurrentItem(int nIndex)
 }
 
 
+/**
+ * @brief BBColorFactory::BBColorFactory
+ * @param color
+ * @param pParent
+ */
+BBColorFactory::BBColorFactory(float *color, QWidget *pParent)
+    : QWidget(pParent)
+{
+    QHBoxLayout *pLayout = new QHBoxLayout(this);
+    pLayout->setMargin(0);
+    QPushButton *pDropper = new QPushButton(this);
+    pDropper->setStyleSheet("image: url(../../resources/icons/eyedropper.png);");
+    pLayout->addWidget(pDropper, 0);
+    m_pColorButton = new BBColorButton(this);
+    pLayout->addWidget(m_pColorButton, 1);
+
+    QObject::connect(pDropper, SIGNAL(clicked()), this, SLOT(catchColor()));
+
+    // default
+    m_pColorButton->setColor(color);
+}
+
+BBColorFactory::~BBColorFactory()
+{
+    BB_SAFE_DELETE(m_pColorButton);
+}
+
+void BBColorFactory::catchColor()
+{
+    // Create a dialog box that is the same as the screen, select the color on it
+    BBScreenDialog dialog;
+    // After the selection is completed, the color button is set to the selected color
+    QObject::connect(&dialog, SIGNAL(setColor(float, float, float)),
+                     this, SLOT(finishCatchColor(float, float, float)));
+
+    dialog.exec();
+}
+
+void BBColorFactory::finishCatchColor(float r, float g, float b)
+{
+    m_pColorButton->setColor(r * 255, g * 255, b * 255);
+    emit colorChanged(r, g, b);
+}
+
+
+/**
+ * @brief BBLightColorFactory::BBLightColorFactory
+ * @param pLight
+ * @param pParent
+ */
+BBLightColorFactory::BBLightColorFactory(BBLight *pLight, QWidget *pParent)
+    : BBColorFactory(pLight->getDiffuseColor(), pParent)
+{
+    m_pLight = pLight;
+}
+
+void BBLightColorFactory::finishCatchColor(float r, float g, float b)
+{
+    BBColorFactory::finishCatchColor(r, g, b);
+    m_pLight->setDiffuseColor(r, g, b);
+}

@@ -78,7 +78,9 @@ void BBSceneManager::changeScene(BBGameObject *pGameObject)
 {
     if (!pGameObject
             || pGameObject->getClassName() == BB_CLASSNAME_MODEL
-            || pGameObject->getClassName() == BB_CLASSNAME_LIGHT)
+            || pGameObject->getClassName() == BB_CLASSNAME_DIRECTIONAL_LIGHT
+            || pGameObject->getClassName() == BB_CLASSNAME_POINT_LIGHT
+            || pGameObject->getClassName() == BB_CLASSNAME_SPOT_LIGHT)
     {
         BB_PROCESS_ERROR_RETURN(!m_bSceneChanged);
         m_bSceneChanged = true;

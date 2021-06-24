@@ -2,6 +2,9 @@
 #include "Utils/BBUtils.h"
 #include <QVBoxLayout>
 #include "BBGroupManager.h"
+#include "BBPropertyFactory.h"
+#include "Base/BBGameObject.h"
+#include "Render/Light/BBDirectionalLight.h"
 
 
 BBPropertyManager::BBPropertyManager(QWidget *pParent)
@@ -51,51 +54,48 @@ void BBPropertyManager::showGameObjectProperty(BBGameObject *pGameObject)
     addBaseInformationManager(pGameObject);
     addTransformGroupManager(pGameObject);
 
-//    if (gameObject)
+    if (pGameObject->getClassName() == BB_CLASSNAME_DIRECTIONAL_LIGHT)
+    {
+        BBGroupManager *pRenderManager = addGroupManager("Render", BB_PATH_RESOURCE_ICON(render.png));
+        BBLightColorFactory *pColorFactory = new BBLightColorFactory((BBDirectionalLight*)pGameObject);
+        pRenderManager->addFactory("Color", pColorFactory, 1);
+    }
+
+//    if (gameObject->getClassName() == ModelClassName || gameObject->getClassName() == TerrainClassName)
 //    {
-//        if (gameObject->getClassName() == ModelClassName || gameObject->getClassName() == TerrainClassName)
+//        //渲染属性组
+//        GroupManager *renderManager = addGroupManager("Render", ":/icon/resources/icons/render.png");
+//        Model *model = (Model*) gameObject;
+//        materialFactory = new MaterialFactory(model);
+//        renderManager->addProperty("Material", materialFactory, 0);
+//        //动画属性组 fbx文件才有动画
+//        if (model->getMeshType() == MeshType::fbx)
 //        {
-//            //渲染属性组
-//            GroupManager *renderManager = addGroupManager("Render", ":/icon/resources/icons/render.png");
-//            Model *model = (Model*) gameObject;
-//            materialFactory = new MaterialFactory(model);
-//            renderManager->addProperty("Material", materialFactory, 0);
-//            //动画属性组 fbx文件才有动画
-//            if (model->getMeshType() == MeshType::fbx)
-//            {
-//                GroupManager *animManager = addGroupManager("Animation", ":/icon/resources/icons/moive.png");
-//                AnimFactory *animFactory = new AnimFactory(model, mPreview);
-//                animManager->addProperty("Default", animFactory);
-//            }
-//            else if (model->getMeshType() == MeshType::terrain)
-//            {
-//                HeightMapFactory *heightMapFactory = new HeightMapFactory(model);
-//                renderManager->addProperty("HeightMap", heightMapFactory, 0);
-//            }
+//            GroupManager *animManager = addGroupManager("Animation", ":/icon/resources/icons/moive.png");
+//            AnimFactory *animFactory = new AnimFactory(model, mPreview);
+//            animManager->addProperty("Default", animFactory);
 //        }
-//        else if (gameObject->getClassName() == DirectionLightClassName)
+//        else if (model->getMeshType() == MeshType::terrain)
 //        {
-//            GroupManager *renderManager = addGroupManager("Render", ":/icon/resources/icons/render.png");
-//            //转为DirectionLight*才会多态
-//            DirectionLight *light = (DirectionLight*) gameObject;
-//            LightColorFactory *colorFactory = new LightColorFactory(light);
-//            renderManager->addProperty("Color", colorFactory, 1);
-//        }
-//        else if (gameObject->getClassName() == PointLightClassName)
-//        {
-//            PointLight *light = (PointLight*) gameObject;
-//            PointLightManager *renderManager = new PointLightManager(light, this, "Render",
-//                                                                     ":/icon/resources/icons/render.png");
-//            layout()->addWidget(renderManager);
-//        }
-//        else if (gameObject->getClassName() == SpotLightClassName)
-//        {
-//            SpotLight *light = (SpotLight*) gameObject;
-//            SpotLightManager *renderManager = new SpotLightManager(light, this, "Render",
-//                                                                   ":/icon/resources/icons/render.png");
-//            layout()->addWidget(renderManager);
+//            HeightMapFactory *heightMapFactory = new HeightMapFactory(model);
+//            renderManager->addProperty("HeightMap", heightMapFactory, 0);
 //        }
 //    }
+//    else if (gameObject->getClassName() == PointLightClassName)
+//    {
+//        PointLight *light = (PointLight*) gameObject;
+//        PointLightManager *renderManager = new PointLightManager(light, this, "Render",
+//                                                                 ":/icon/resources/icons/render.png");
+//        layout()->addWidget(renderManager);
+//    }
+//    else if (gameObject->getClassName() == SpotLightClassName)
+//    {
+//        SpotLight *light = (SpotLight*) gameObject;
+//        SpotLightManager *renderManager = new SpotLightManager(light, this, "Render",
+//                                                               ":/icon/resources/icons/render.png");
+//        layout()->addWidget(renderManager);
+//    }
+
 }
 
 void BBPropertyManager::showGameObjectSetProperty(BBGameObject *pCenterGameObject,
@@ -200,154 +200,7 @@ void BBPropertyManager::addGlobalSettingsGroupManager(BBScene *pScene)
 
 
 
-////------------------ColorButton--------------------------
 
-
-//ColorButton::ColorButton(QWidget *parent)
-//    : QPushButton(parent)
-//{
-//    //白色大背景
-//    setStyleSheet("border: none; border-radius: 2px; padding: 2px 4px; background: white;");
-//    //在白色背景中加入设置具体颜色的内容控件 这样做 透明颜色可以与白色叠加
-//    contentWhite = new QWidget(this);
-//    QHBoxLayout *l = new QHBoxLayout(this);
-//    l->setMargin(1);
-//    l->addWidget(contentWhite);
-//    //在白色背景的内容控件中加入一块黑色背景
-//    QHBoxLayout *whiteLayout = new QHBoxLayout(contentWhite);
-//    whiteLayout->setMargin(2);
-//    whiteLayout->setSpacing(0);
-//    //黑色背景
-//    QWidget *black = new QWidget(this);
-//    black->setStyleSheet("background: black;");
-//    whiteLayout->addWidget(black);
-//    //在黑色背景中加入设置具体颜色的内容控件 这样做 透明颜色可以与黑色叠加
-//    contentBlack = new QWidget(black);
-//    QHBoxLayout *blackLayout = new QHBoxLayout(black);
-//    blackLayout->setMargin(1);
-//    blackLayout->addWidget(contentBlack);
-//    //占位
-//    QWidget *transparent = new QWidget(contentWhite);
-//    transparent->setStyleSheet("background: transparent;");
-//    whiteLayout->addWidget(transparent);
-//    //默认选中白色
-//    setColor(255, 255, 255, 255);
-//    QObject::connect(this, SIGNAL(clicked()), this, SLOT(clickedSlot()));
-//}
-
-//void ColorButton::setColor(int r, int g, int b, int a)
-//{
-//    QString styleSheet = "background: rgba(" + QString::number(r) + ", " + QString::number(g) + ", "
-//            + QString::number(b) + ", " + QString::number(a) + ");";
-//    //刷新成新颜色
-//    contentBlack->setStyleSheet(styleSheet);
-//    contentWhite->setStyleSheet(styleSheet);
-//}
-
-//void ColorButton::setColor(QColor color)
-//{
-//    setColor(color.red(), color.green(), color.blue(), color.alpha());
-//}
-
-//void ColorButton::clickedSlot()
-//{
-//    qDebug() << "123";
-//}
-
-
-////------------------ScreenDialog-------------------------
-
-
-//int ScreenDialog::cursorSize = 19;
-
-//ScreenDialog::ScreenDialog(QWidget *parent)
-//    : QDialog(parent)
-//{
-//    //边框
-//    setWindowFlags(Qt::FramelessWindowHint | windowFlags());
-//    setWindowState(Qt::WindowMaximized);
-//    //截取屏幕 将对话框背景设置与屏幕一致
-//    QVBoxLayout *l = new QVBoxLayout(this);
-//    l->setMargin(0);
-//    background = new QLabel(this);
-//    l->addWidget(background);
-//    //截屏
-//    setBackground();
-//    //除去弹出动画
-//    hide();
-//    show();
-//    //设置光标为滴管
-//    QPixmap pix(":/icon/resources/icons/eyedropper.png");
-//    //针对R屏
-//    pix.setDevicePixelRatio(devicePixelRatio());
-//    pix = pix.scaled(cursorSize * devicePixelRatio(), cursorSize * devicePixelRatio(),
-//                     Qt::KeepAspectRatio, Qt::SmoothTransformation);
-//    setCursor(QCursor(pix));
-//}
-
-//void ScreenDialog::setBackground()
-//{
-//    //截屏
-//    pixBackground = QPixmap::grabWindow(QApplication::desktop()->winId());
-//    //R屏
-//    pixBackground.setDevicePixelRatio(devicePixelRatio());
-//    //mac需要去掉截屏上方的菜单栏
-//#if defined(Q_OS_WIN32)
-
-//#elif defined(Q_OS_MAC)
-//    //去掉截屏的菜单栏的高度
-//    pixBackground = pixBackground.copy(0, QApplication::desktop()->availableGeometry().y() * devicePixelRatio(),
-//                                       pixBackground.width(), pixBackground.height());
-//#endif
-//    background->setPixmap(pixBackground);
-//}
-
-//void ScreenDialog::mousePressEvent(QMouseEvent *event)
-//{
-//    QColor color = pixBackground.toImage().pixelColor((event->pos() + cursorSize / 2 * QPoint(-1, 1)) * devicePixelRatio());
-//    //设置颜色按钮的颜色为当前选中值
-//    setColor(color.red(), color.green(), color.blue());
-//    accept();
-//}
-
-
-////------------------ColorFactory------------------------
-
-
-//ColorFactory::ColorFactory(QColor color, QWidget *parent)
-//    : QWidget(parent)
-//{
-//    QHBoxLayout *l = new QHBoxLayout(this);
-//    l->setMargin(0);
-//    QPushButton *buttonDropper = new QPushButton(this);
-//    buttonDropper->setStyleSheet("image: url(:/icon/resources/icons/eyedropper.png);");
-//    l->addWidget(buttonDropper, 0);
-//    buttonColor = new ColorButton(this);
-//    l->addWidget(buttonColor, 1);
-
-//    QObject::connect(buttonDropper, SIGNAL(clicked()), this, SLOT(catchColor()));
-
-//    //给定初始颜色
-//    buttonColor->setColor(color);
-//}
-
-//void ColorFactory::catchColor()
-//{
-//    //创建一个无边框最大化的模态对话框
-//    //和屏幕长相一致
-//    //在对话框上选取颜色
-//    ScreenDialog dialog;
-//    //选取完毕 颜色按钮设置选中颜色
-//    QObject::connect(&dialog, SIGNAL(setColor(int, int, int)), this, SLOT(finishCatchColor(int, int, int)));
-//    //会阻塞 绑定信号槽要在之前
-//    dialog.exec();
-//}
-
-//void ColorFactory::finishCatchColor(int r, int g, int b)
-//{
-//    buttonColor->setColor(r, g, b);
-//    colorChanged(r / 255.0f, g / 255.0f, b / 255.0f);
-//}
 
 
 ////------------------MaterialColorFactory-------------------
@@ -367,24 +220,6 @@ void BBPropertyManager::addGlobalSettingsGroupManager(BBScene *pScene)
 //    //更新材质浏览图的显示 如图标
 //    updateMaterialPreview();
 //}
-
-
-////------------------LightColorFactory--------------------
-
-
-//LightColorFactory::LightColorFactory(Light *light, QWidget *parent)
-//    : ColorFactory(light->getColor(), parent)
-//{
-//    mLight = light;
-//}
-
-//void LightColorFactory::finishCatchColor(int r, int g, int b)
-//{
-//    ColorFactory::finishCatchColor(r, g, b);
-//    //修改光的颜色属性
-//    mLight->setColor(r, g, b);
-//}
-
 
 ////------------------IconLabel----------------------------
 

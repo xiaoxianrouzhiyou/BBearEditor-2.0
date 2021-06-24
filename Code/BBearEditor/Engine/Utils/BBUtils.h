@@ -30,7 +30,9 @@
 #define BB_CONSTANT_UPDATE_RATE 16
 
 #define BB_CLASSNAME_MODEL "Model"
-#define BB_CLASSNAME_LIGHT "Light"
+#define BB_CLASSNAME_DIRECTIONAL_LIGHT "DirectionalLight"
+#define BB_CLASSNAME_POINT_LIGHT "PointLight"
+#define BB_CLASSNAME_SPOT_LIGHT "SpotLight"
 
 #define BB_USER_NAME "BigBugBear"
 #define BB_USER_PROJECT_NAME "BBearEditor"

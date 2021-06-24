@@ -94,78 +94,6 @@ private:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-////可以设置背景颜色的按钮
-//class ColorButton : public QPushButton
-//{
-//    Q_OBJECT
-
-//public:
-//    ColorButton(QWidget *parent = 0);
-//    void setColor(int r, int g, int b, int a = 255);
-//    void setColor(QColor color);
-
-//private slots:
-//    void clickedSlot();
-
-//private:
-//    QWidget *contentBlack;
-//    QWidget *contentWhite;
-//};
-
-
-////截取全屏幕的对话框 用于滴管取色
-//class ScreenDialog : public QDialog
-//{
-//    Q_OBJECT
-
-//public:
-//    ScreenDialog(QWidget *parent = 0);
-
-//signals:
-//    void setColor(int r, int g, int b);
-
-//private:
-//    void setBackground();
-//    void mousePressEvent(QMouseEvent *event) override;
-//    QLabel *background;
-//    QPixmap pixBackground;
-//    static int cursorSize;
-//};
-
-
-////左侧滴管按钮 右侧颜色框
-//class ColorFactory : public QWidget
-//{
-//    Q_OBJECT
-
-//public:
-//    ColorFactory(QColor color = QColor(255, 255, 255), QWidget *parent = 0);
-
-//protected:
-//    ColorButton *buttonColor;
-
-//signals:
-//    void colorChanged(float r, float g, float b);
-
-//protected slots:
-//    void catchColor();
-//    virtual void finishCatchColor(int r, int g, int b);
-//};
-
-
 //class MaterialColorFactory : public ColorFactory
 //{
 //    Q_OBJECT
@@ -183,20 +111,6 @@ private:
 //    Material *material;
 //};
 
-
-//class LightColorFactory : public ColorFactory
-//{
-//    Q_OBJECT
-
-//public:
-//    LightColorFactory(Light *light, QWidget *parent = 0);
-
-//private slots:
-//    void finishCatchColor(int r, int g, int b) override;
-
-//private:
-//    Light *mLight;
-//};
 
 
 ////可以拖入文件的 可以显示图标的控件 如显示纹理贴图 可以拖入图片替换

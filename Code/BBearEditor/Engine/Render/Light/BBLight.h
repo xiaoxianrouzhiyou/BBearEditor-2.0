@@ -44,11 +44,14 @@ public:
 
     void setRenderPass(BBRenderPass *pRenderPass);
 
-    void setAmbientColor(float r, float g, float b, float a);
-    void setDiffuseColor(float r, float g, float b, float a);
-    void setSpecularColor(float r, float g, float b, float a);
+    void setAmbientColor(float r, float g, float b, float a = 1.0f);
+    void setDiffuseColor(float r, float g, float b, float a = 1.0f);
+    void setSpecularColor(float r, float g, float b, float a = 1.0f);
     void setSetting0(float x, float y, float z, float w);
     void setSetting1(float x, float y, float z, float w);
+
+public:
+    inline float* getDiffuseColor() { return m_Diffuse; }
 
 protected:
     void setHomogeneousPosition(const QVector3D &value, float w = 1.0f);

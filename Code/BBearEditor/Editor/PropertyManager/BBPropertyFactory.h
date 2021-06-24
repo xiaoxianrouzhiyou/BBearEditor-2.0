@@ -9,9 +9,13 @@ class BBSliderLabel;
 class QLineEdit;
 class QLabel;
 class QComboBox;
+class BBColorButton;
+class BBLight;
 
 
-// QLineEdit with the BBSliderLabel of name on the left
+/**
+ * @brief The BBLineEditFactory class       QLineEdit with the BBSliderLabel of name on the left
+ */
 class BBLineEditFactory : public QWidget
 {
     Q_OBJECT
@@ -43,7 +47,9 @@ private:
 };
 
 
-// Composed of three BBLineEditFactory
+/**
+ * @brief The BBVector3DFactory class       Composed of three BBLineEditFactory
+ */
 class BBVector3DFactory : public QWidget
 {
     Q_OBJECT
@@ -70,7 +76,9 @@ private:
 };
 
 
-// name showed in the left side and enum box showed in the right side
+/**
+ * @brief The BBEnumFactory class           name showed in the left side and enum box showed in the right side
+ */
 class BBEnumFactory : public QWidget
 {
     Q_OBJECT
@@ -90,6 +98,44 @@ signals:
 private:
     QLabel *m_pLabel;
     QComboBox *m_pComboBox;
+};
+
+
+/**
+ * @brief The BBColorFactory class          dropper and color box
+ */
+class BBColorFactory : public QWidget
+{
+    Q_OBJECT
+
+public:
+    BBColorFactory(float *color, QWidget *pParent = 0);
+    ~BBColorFactory();
+
+protected slots:
+    void catchColor();
+    virtual void finishCatchColor(float r, float g, float b);
+
+signals:
+    void colorChanged(float r, float g, float b);
+
+protected:
+    BBColorButton *m_pColorButton;
+};
+
+
+class BBLightColorFactory : public BBColorFactory
+{
+    Q_OBJECT
+
+public:
+    BBLightColorFactory(BBLight *pLight, QWidget *pParent = 0);
+
+private slots:
+    void finishCatchColor(float r, float g, float b) override;
+
+private:
+    BBLight *m_pLight;
 };
 
 
