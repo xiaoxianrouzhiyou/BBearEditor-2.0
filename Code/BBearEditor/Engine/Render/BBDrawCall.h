@@ -27,10 +27,11 @@ public:
 
 public:
     static void setDrawFunc(int nIndex);
-
-private:
+    void onePassRendering(BBCamera *pCamera);
     void forwardRendering(BBCamera *pCamera);
     void deferredRendering(BBCamera *pCamera);
+
+private:
     QList<BBGameObject*> collectLights();
 
     static BBDrawFunc m_DrawFunc;

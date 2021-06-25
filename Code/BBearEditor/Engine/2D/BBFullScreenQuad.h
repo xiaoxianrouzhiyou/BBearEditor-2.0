@@ -10,6 +10,7 @@ public:
     BBFullScreenQuad();
 
     void init() override;
+    void render(BBCamera *pCamera) override;
 
     void setTexture(GLuint textureName);
 };

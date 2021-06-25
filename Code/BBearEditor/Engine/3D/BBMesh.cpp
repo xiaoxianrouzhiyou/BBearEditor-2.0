@@ -33,20 +33,21 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
                                               positions);
     pOutBoundingBox->init();
 
-    m_pMaterial->initMultiPass("diffuse",
-                               BB_PATH_RESOURCE_SHADER(diffuse.vert),
-                               BB_PATH_RESOURCE_SHADER(diffuse.frag));
-    m_pMaterial->getAdditiveRenderPass()->setBlendState(true);
+    m_pCurrentMaterial->initMultiPass("diffuse",
+                                      BB_PATH_RESOURCE_SHADER(diffuse.vert),
+                                      BB_PATH_RESOURCE_SHADER(diffuse.frag));
+    m_pCurrentMaterial->getAdditiveRenderPass()->setBlendState(true);
+
     // default
     float *pLightPosition = new float[4] {1.0f, 1.0f, 0.0f, 0.0f};
     float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};
-    m_pMaterial->setVector4(NAME_LIGHT_POSITION, pLightPosition);
-    m_pMaterial->setVector4(NAME_LIGHT_COLOR, pLightColor);
+    m_pCurrentMaterial->setVector4(NAME_LIGHT_POSITION, pLightPosition);
+    m_pCurrentMaterial->setVector4(NAME_LIGHT_COLOR, pLightColor);
 
     BBRenderableObject::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
-    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO);
     pDrawCall->setEBO(m_pEBO, GL_TRIANGLES, m_nIndexCount, 0);
     appendDrawCall(pDrawCall);

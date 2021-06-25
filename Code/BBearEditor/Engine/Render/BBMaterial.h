@@ -26,13 +26,16 @@ public:
 
     void setMatrix4(const std::string &uniformName, const float *pMatrix4);
     void setVector4(const std::string &uniformName, const float *pVector4);
+    void setSampler2D(const std::string &uniformName, GLuint textureName);
 
     inline BBRenderPass* getBaseRenderPass() const { return m_pBaseRenderPass; }
     inline BBRenderPass* getAdditiveRenderPass() const { return m_pAdditiveRenderPass; }
+    inline BBRenderPass* getDeferredRenderPass() const { return m_pDeferredRenderPass; }
 
 private:
     BBRenderPass *m_pBaseRenderPass;
     BBRenderPass *m_pAdditiveRenderPass;
+    BBRenderPass *m_pDeferredRenderPass;
 };
 
 #endif // BBMATERIAL_H

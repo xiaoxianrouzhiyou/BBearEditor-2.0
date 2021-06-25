@@ -23,8 +23,9 @@ public:
     void init() override;
     void render(BBCamera *pCamera) override;
     void render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera) override;
+    void setCurrentMaterial(int nIndex) override;
 
-    inline BBMaterial* getMaterial() { return m_pMaterial; }
+    inline BBMaterial* getMaterial() { return m_pCurrentMaterial; }
     inline BBVertexBufferObject* getVBO() { return m_pVBO; }
     inline BBElementBufferObject* getEBO() { return m_pEBO; }
 
@@ -32,7 +33,8 @@ protected:
     void appendDrawCall(BBDrawCall *pDrawCall);
 
     BBDrawCall *m_pDrawCalls;
-    BBMaterial *m_pMaterial;
+    QList<BBMaterial*> m_Materials;
+    BBMaterial *m_pCurrentMaterial;
     BBVertexBufferObject *m_pVBO;
     BBElementBufferObject *m_pEBO;
     unsigned short *m_pIndexes;

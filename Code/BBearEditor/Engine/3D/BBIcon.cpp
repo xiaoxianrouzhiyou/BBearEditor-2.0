@@ -59,19 +59,19 @@ void BBIcon::init(const QString &path)
         m_pVBO->setColor(i, 1.0f, 1.0f, 1.0f);
     }
 
-    m_pMaterial->init("texture",
-                      BB_PATH_RESOURCE_SHADER(texture.vert),
-                      BB_PATH_RESOURCE_SHADER(texture.frag));
+    m_pCurrentMaterial->init("texture",
+                             BB_PATH_RESOURCE_SHADER(texture.vert),
+                             BB_PATH_RESOURCE_SHADER(texture.frag));
     BBTexture texture;
-    m_pMaterial->getBaseRenderPass()->setSampler2D(NAME_TEXTURE,
+    m_pCurrentMaterial->getBaseRenderPass()->setSampler2D(NAME_TEXTURE,
                                                    texture.createTexture2D(path));
-    m_pMaterial->getBaseRenderPass()->setBlendState(true);
-    m_pMaterial->getBaseRenderPass()->setZTestState(false);
+    m_pCurrentMaterial->getBaseRenderPass()->setBlendState(true);
+    m_pCurrentMaterial->getBaseRenderPass()->setZTestState(false);
 
     BBRenderableObject::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
-    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO, GL_QUADS, 0, 4);
     appendDrawCall(pDrawCall);
 }

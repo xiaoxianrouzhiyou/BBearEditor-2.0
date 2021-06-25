@@ -319,6 +319,11 @@ void BBGameObject::render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera)
     Q_UNUSED(pCamera);
 }
 
+void BBGameObject::setCurrentMaterial(int nIndex)
+{
+    Q_UNUSED(nIndex);
+}
+
 bool BBGameObject::hit(const BBRay &ray, float &fDistance)
 {
     Q_UNUSED(ray);

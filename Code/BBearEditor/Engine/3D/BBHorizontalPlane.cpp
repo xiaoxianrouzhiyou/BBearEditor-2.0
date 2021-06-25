@@ -57,15 +57,15 @@ void BBHorizontalPlane::init()
         m_pIndexes[i * 4 + 2] = i + 82;
         m_pIndexes[i * 4 + 3] = i + 164;
     }
-    m_pMaterial->init("base",
-                      BB_PATH_RESOURCE_SHADER(base.vert),
-                      BB_PATH_RESOURCE_SHADER(base.frag));
-    m_pMaterial->getBaseRenderPass()->setBlendState(true);
+    m_pCurrentMaterial->init("base",
+                             BB_PATH_RESOURCE_SHADER(base.vert),
+                             BB_PATH_RESOURCE_SHADER(base.frag));
+    m_pCurrentMaterial->getBaseRenderPass()->setBlendState(true);
 
     BBRenderableObject::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
-    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO);
     pDrawCall->setEBO(m_pEBO, GL_LINES, m_nIndexCount, 0);
     appendDrawCall(pDrawCall);

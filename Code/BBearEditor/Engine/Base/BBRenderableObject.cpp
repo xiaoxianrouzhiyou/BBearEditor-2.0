@@ -29,7 +29,8 @@ BBRenderableObject::BBRenderableObject(float px, float py, float pz, float rx, f
 {
     m_pDrawCalls = NULL;
     m_bVisible = true;
-    m_pMaterial = new BBMaterial;
+    m_Materials.append(new BBMaterial());
+    m_pCurrentMaterial = m_Materials[0];
     m_pVBO = NULL;
     m_pEBO = NULL;
     m_pIndexes = NULL;
@@ -40,7 +41,7 @@ BBRenderableObject::BBRenderableObject(float px, float py, float pz, float rx, f
 
 BBRenderableObject::~BBRenderableObject()
 {
-    BB_SAFE_DELETE(m_pMaterial);
+    qDeleteAll(m_Materials);
     BB_SAFE_DELETE(m_pVBO);
     BB_SAFE_DELETE(m_pEBO);
     BB_SAFE_DELETE_ARRAY(m_pIndexes);
@@ -65,9 +66,14 @@ void BBRenderableObject::render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera
 {
     if (m_bVisible)
     {
-        m_pMaterial->setMatrix4(NAME_MODELMATRIX, modelMatrix.data());
+        m_pCurrentMaterial->setMatrix4(NAME_MODELMATRIX, modelMatrix.data());
         m_pDrawCalls->draw(pCamera);
     }
+}
+
+void BBRenderableObject::setCurrentMaterial(int nIndex)
+{
+    m_pCurrentMaterial = m_Materials[nIndex];
 }
 
 void BBRenderableObject::appendDrawCall(BBDrawCall *pDrawCall)

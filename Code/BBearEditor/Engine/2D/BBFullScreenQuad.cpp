@@ -24,19 +24,24 @@ void BBFullScreenQuad::init()
     m_pVBO->setTexcoord(2, 0.0f, 1.0f);
     m_pVBO->setTexcoord(3, 1.0f, 1.0f);
 
-    m_pMaterial->init("fullscreenquad",
-                      BB_PATH_RESOURCE_SHADER(fullscreenquad.vert),
-                      BB_PATH_RESOURCE_SHADER(texture.frag));
+    m_pCurrentMaterial->init("fullscreenquad",
+                             BB_PATH_RESOURCE_SHADER(fullscreenquad.vert),
+                             BB_PATH_RESOURCE_SHADER(fullscreenquad.frag));
 
     BBRenderableObject::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
-    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO, GL_TRIANGLE_STRIP, 0, 4);
     appendDrawCall(pDrawCall);
 }
 
+void BBFullScreenQuad::render(BBCamera *pCamera)
+{
+    m_pDrawCalls->onePassRendering(pCamera);
+}
+
 void BBFullScreenQuad::setTexture(GLuint textureName)
 {
-    m_pMaterial->getBaseRenderPass()->setSampler2D(NAME_TEXTURE, textureName);
+    m_pCurrentMaterial->getBaseRenderPass()->setSampler2D(NAME_TEXTURE, textureName);
 }

@@ -23,11 +23,11 @@ BBLightIndicator::BBLightIndicator(const QVector3D &position, const QVector3D &r
 
 void BBLightIndicator::init()
 {
-    m_pMaterial->init("base",
-                      BB_PATH_RESOURCE_SHADER(base.vert),
-                      BB_PATH_RESOURCE_SHADER(base.frag));
-    m_pMaterial->getBaseRenderPass()->setZTestState(false);
-    m_pMaterial->getBaseRenderPass()->setLineWidth(1.5f);
+    m_pCurrentMaterial->init("base",
+                             BB_PATH_RESOURCE_SHADER(base.vert),
+                             BB_PATH_RESOURCE_SHADER(base.frag));
+    m_pCurrentMaterial->getBaseRenderPass()->setZTestState(false);
+    m_pCurrentMaterial->getBaseRenderPass()->setLineWidth(1.5f);
 
     BBRenderableObject::init();
 }
@@ -82,7 +82,7 @@ void BBDirectionalLightIndicator::init()
     BBLightIndicator::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
-    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO);
     pDrawCall->setEBO(m_pEBO, GL_LINES, m_nIndexCount, 0);
     appendDrawCall(pDrawCall);

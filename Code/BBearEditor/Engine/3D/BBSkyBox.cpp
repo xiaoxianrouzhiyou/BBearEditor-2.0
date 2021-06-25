@@ -19,18 +19,17 @@ BBSkyBoxSide::BBSkyBoxSide(BBVertexBufferObject *pVBO)
 
 void BBSkyBoxSide::init(const QString &path)
 {
-    m_pMaterial->init("texture",
-                      BB_PATH_RESOURCE_SHADER(texture.vert),
-                      BB_PATH_RESOURCE_SHADER(texture.frag));
+    m_pCurrentMaterial->init("texture",
+                             BB_PATH_RESOURCE_SHADER(texture.vert),
+                             BB_PATH_RESOURCE_SHADER(texture.frag));
     BBTexture texture;
-    m_pMaterial->getBaseRenderPass()->setSampler2D(NAME_TEXTURE,
-                                                   texture.createTexture2DFromBMP(path.toStdString().c_str()));
-    m_pMaterial->getBaseRenderPass()->setZTestState(false);
+    m_pCurrentMaterial->setSampler2D(NAME_TEXTURE, texture.createTexture2DFromBMP(path.toStdString().c_str()));
+    m_pCurrentMaterial->setZTestState(false);
 
     BBRenderableObject::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
-    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO, GL_TRIANGLE_STRIP, 0, 4);
     appendDrawCall(pDrawCall);
 }

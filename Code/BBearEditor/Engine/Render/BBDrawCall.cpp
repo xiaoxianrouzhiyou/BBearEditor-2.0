@@ -68,6 +68,24 @@ void BBDrawCall::setDrawFunc(int nIndex)
     }
 }
 
+void BBDrawCall::onePassRendering(BBCamera *pCamera)
+{
+    m_pVBO->bind();
+    m_pMaterial->getBaseRenderPass()->bind(pCamera);
+    if (m_pEBO == nullptr)
+    {
+        m_pVBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
+    }
+    else
+    {
+        m_pEBO->bind();
+        m_pEBO->draw(m_eDrawPrimitiveType, m_nIndexCount, m_nDrawStartIndex);
+        m_pEBO->unbind();
+    }
+    m_pMaterial->getBaseRenderPass()->unbind();
+    m_pVBO->unbind();
+}
+
 void BBDrawCall::forwardRendering(BBCamera *pCamera)
 {
     QList<BBGameObject*> lights = collectLights();
@@ -126,7 +144,7 @@ void BBDrawCall::forwardRendering(BBCamera *pCamera)
 void BBDrawCall::deferredRendering(BBCamera *pCamera)
 {
     m_pVBO->bind();
-    m_pMaterial->getBaseRenderPass()->bind(pCamera);
+    m_pMaterial->getDeferredRenderPass()->bind(pCamera);
     if (m_pEBO == nullptr)
     {
         m_pVBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
@@ -137,7 +155,7 @@ void BBDrawCall::deferredRendering(BBCamera *pCamera)
         m_pEBO->draw(m_eDrawPrimitiveType, m_nIndexCount, m_nDrawStartIndex);
         m_pEBO->unbind();
     }
-    m_pMaterial->getBaseRenderPass()->unbind();
+    m_pMaterial->getDeferredRenderPass()->unbind();
     m_pVBO->unbind();
 }
 

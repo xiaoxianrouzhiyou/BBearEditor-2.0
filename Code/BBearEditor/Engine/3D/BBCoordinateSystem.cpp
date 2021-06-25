@@ -47,11 +47,11 @@ BBCoordinateComponent::BBCoordinateComponent(float px, float py, float pz,
 
 void BBCoordinateComponent::init()
 {
-    m_pMaterial->init("coordinate",
-                      BB_PATH_RESOURCE_SHADER(coordinate.vert),
-                      BB_PATH_RESOURCE_SHADER(coordinate.frag));
-    m_pMaterial->getBaseRenderPass()->setZFunc(GL_ALWAYS);
-    m_pMaterial->getBaseRenderPass()->setLineWidth(1.5f);
+    m_pCurrentMaterial->init("coordinate",
+                             BB_PATH_RESOURCE_SHADER(coordinate.vert),
+                             BB_PATH_RESOURCE_SHADER(coordinate.frag));
+    m_pCurrentMaterial->getBaseRenderPass()->setZFunc(GL_ALWAYS);
+    m_pCurrentMaterial->getBaseRenderPass()->setLineWidth(1.5f);
 
     BBRenderableObject::init();
 }
@@ -224,7 +224,7 @@ void BBCoordinateArrow::init()
     BBCoordinateComponent::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
-    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO);
     pDrawCall->setEBO(m_pEBO, GL_TRIANGLES, m_nIndexCount, 0);
     appendDrawCall(pDrawCall);
@@ -278,7 +278,7 @@ void BBCoordinateAxis::init()
     BBCoordinateComponent::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
-    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO, GL_LINES, 0, 6);
     appendDrawCall(pDrawCall);
 }
@@ -366,12 +366,12 @@ void BBCoordinateRectFace::init()
     BBCoordinateComponent::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
-    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO, GL_QUADS, 0, 12);
     appendDrawCall(pDrawCall);
 
     BBDrawCall *pDrawCall2 = new BBDrawCall;
-    pDrawCall2->setMaterial(m_pMaterial);
+    pDrawCall2->setMaterial(m_pCurrentMaterial);
     pDrawCall2->setVBO(m_pVBO, GL_LINES, 12, 24);
     appendDrawCall(pDrawCall2);
 }
@@ -444,7 +444,7 @@ void BBCoordinateQuarterCircle::init()
     BBCoordinateComponent::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
-    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO);
     pDrawCall->setEBO(m_pEBO, GL_QUADS, m_nIndexCount, 0);
     appendDrawCall(pDrawCall);
@@ -503,7 +503,7 @@ void BBCoordinateCircle::init()
     BBCoordinateComponent::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
-    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO);
     pDrawCall->setEBO(m_pEBO, GL_QUADS, m_nIndexCount, 0);
     appendDrawCall(pDrawCall);
@@ -561,7 +561,7 @@ void BBCoordinateTickMark::init()
     BBCoordinateComponent::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
-    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO, GL_LINES, 0, 72);
     appendDrawCall(pDrawCall);
 }
@@ -614,7 +614,7 @@ void BBCoordinateSector::init()
     BBCoordinateComponent::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
-    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO);
     appendDrawCall(pDrawCall);
 }
@@ -736,7 +736,7 @@ void BBCoordinateCube::init()
     BBCoordinateComponent::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
-    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO);
     pDrawCall->setEBO(m_pEBO, GL_QUADS, m_nIndexCount, 0);
     appendDrawCall(pDrawCall);
@@ -859,12 +859,12 @@ void BBCoordinateTriangleFace::init()
     BBCoordinateComponent::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
-    pDrawCall->setMaterial(m_pMaterial);
+    pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO, GL_TRIANGLES, 0, 18);
     appendDrawCall(pDrawCall);
 
     BBDrawCall *pDrawCall2 = new BBDrawCall;
-    pDrawCall2->setMaterial(m_pMaterial);
+    pDrawCall2->setMaterial(m_pCurrentMaterial);
     pDrawCall2->setVBO(m_pVBO, GL_LINES, 18, 36);
     appendDrawCall(pDrawCall2);
 }

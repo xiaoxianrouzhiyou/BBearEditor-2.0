@@ -110,7 +110,6 @@ void BBScene::render()
     m_pHorizontalPlane->render(m_pCamera);
 
     // render dropped model
-    //渲染灯光的图标 关闭深度测试 最后渲染 出现在最前面
     QList<BBGameObject*> objects = m_Models + m_Lights;
             //+ audios;
     for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
@@ -154,6 +153,8 @@ void BBScene::resize(float width, float height)
     // 3D camera, resize
     m_pCamera->setViewportSize(width, height);
 
+    if (!m_pFBO)
+        BB_SAFE_DELETE(m_pFBO);
     m_pFBO = new BBFrameBufferObject;
     m_pFBO->attachColorBuffer(m_ColorBufferName, GL_COLOR_ATTACHMENT0, width, height);
     m_pFBO->attachDepthBuffer("depth", width, height);
