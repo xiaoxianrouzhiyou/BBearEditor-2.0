@@ -98,10 +98,10 @@ void BBFileSystemManager::newFolder(const QString &parentPath, const BBSignalSen
     setFolderTree();
 }
 
-void BBFileSystemManager::newScene(const QString &parentPath)
+void BBFileSystemManager::newFile(const QString &parentPath, int nType)
 {
     QListWidgetItem *pCurrentItem = NULL;
-    if (m_pDataManager->newScene(parentPath, pCurrentItem))
+    if (m_pDataManager->newFile(parentPath, nType, pCurrentItem))
     {
         if (m_pFileListWidget->getCurrentParentPath() == parentPath)
         {

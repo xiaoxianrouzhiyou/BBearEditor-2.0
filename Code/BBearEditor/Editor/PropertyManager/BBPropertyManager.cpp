@@ -54,7 +54,11 @@ void BBPropertyManager::showGameObjectProperty(BBGameObject *pGameObject)
     addBaseInformationManager(pGameObject);
     addTransformGroupManager(pGameObject);
 
-    if (pGameObject->getClassName() == BB_CLASSNAME_DIRECTIONAL_LIGHT)
+    if (pGameObject->getClassName() == BB_CLASSNAME_MODEL)
+    {
+        BBGroupManager *pRenderManager = addGroupManager("Render", BB_PATH_RESOURCE_ICON(render.png));
+    }
+    else if (pGameObject->getClassName() == BB_CLASSNAME_DIRECTIONAL_LIGHT)
     {
         BBGroupManager *pRenderManager = addGroupManager("Render", BB_PATH_RESOURCE_ICON(render.png));
         BBLightColorFactory *pColorFactory = new BBLightColorFactory((BBDirectionalLight*)pGameObject);
@@ -63,8 +67,6 @@ void BBPropertyManager::showGameObjectProperty(BBGameObject *pGameObject)
 
 //    if (gameObject->getClassName() == ModelClassName || gameObject->getClassName() == TerrainClassName)
 //    {
-//        //渲染属性组
-//        GroupManager *renderManager = addGroupManager("Render", ":/icon/resources/icons/render.png");
 //        Model *model = (Model*) gameObject;
 //        materialFactory = new MaterialFactory(model);
 //        renderManager->addProperty("Material", materialFactory, 0);

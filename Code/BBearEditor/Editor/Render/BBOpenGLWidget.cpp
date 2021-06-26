@@ -75,7 +75,7 @@ void BBOpenGLWidget::resizeGL(int width, int height)
 void BBOpenGLWidget::paintGL()
 {
     // Clear the color, the background becomes black, don't care the alpha
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClearColor(0.141f, 0.169f, 0.227f, 1.0f);
     // Erase the current background color, color buffer and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // glEnable(GL_MULTISAMPLE);

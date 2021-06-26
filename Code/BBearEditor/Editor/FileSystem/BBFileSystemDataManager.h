@@ -36,10 +36,10 @@ public:
     inline QList<QListWidgetItem*> getSelectedFileItems() { return m_SelectedFileItems; }
     bool openFile(const QString &filePath);
     bool newFolder(const QString &parentPath, QTreeWidgetItem *&pOutFolderItem, QListWidgetItem *&pOutFileItem);
+    bool newFile(const QString &parentPath, int nType, QListWidgetItem *&pOutFileItem);
+    bool newFile(const QString &parentPath, QListWidgetItem *&pOutFileItem, QString fileName);
 
     /* Scene */
-    bool newScene(const QString &parentPath, QListWidgetItem *&pOutFileItem,
-                  QString fileName = BBConstant::BB_NAME_DEFAULT_SCENE);
     bool openScene(const QString &defaultSavedParentPath, const QString &openedPath);
     bool saveScene(const QString &defaultParentPath, QListWidgetItem *&pOutFileItem);
 

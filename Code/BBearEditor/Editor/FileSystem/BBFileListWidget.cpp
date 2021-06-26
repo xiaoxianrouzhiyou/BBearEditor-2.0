@@ -147,13 +147,12 @@ void BBFileListWidget::newFolder()
 
 void BBFileListWidget::newSceneAction()
 {
-    emit newScene(m_ParentPath);
-    openRenameEditor();
+    newFile(0);
 }
 
-void BBFileListWidget::newMaterial()
+void BBFileListWidget::newMaterialAction()
 {
-
+    newFile(1);
 }
 
 void BBFileListWidget::newScript()
@@ -325,7 +324,7 @@ void BBFileListWidget::setMenu()
 
     QObject::connect(pActionNewFolder, SIGNAL(triggered()), this, SLOT(newFolder()));
     QObject::connect(pActionNewScene, SIGNAL(triggered()), this, SLOT(newSceneAction()));
-    QObject::connect(pActionNewMaterial, SIGNAL(triggered()), this, SLOT(newMaterial()));
+    QObject::connect(pActionNewMaterial, SIGNAL(triggered()), this, SLOT(newMaterialAction()));
     QObject::connect(pActionNewScript, SIGNAL(triggered()), this, SLOT(newScript()));
     QObject::connect(pActionShowInFolder, SIGNAL(triggered()), this, SLOT(showInFolder()));
     QObject::connect(pActionCopy, SIGNAL(triggered()), this, SLOT(copyAction()));
@@ -354,6 +353,13 @@ QWidgetAction* BBFileListWidget::createWidgetAction(const QString &iconPath, con
     pLayout->addWidget(pText, Qt::AlignLeft);
     pAction->setDefaultWidget(pWidget);
     return pAction;
+}
+
+void BBFileListWidget::newFile(int nType)
+{
+    // 0 scene
+    emit newFile(m_ParentPath, nType);
+    openRenameEditor();
 }
 
 void BBFileListWidget::startDrag(Qt::DropActions supportedActions)

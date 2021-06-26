@@ -51,7 +51,7 @@ private slots:
     void changeItemSize(int factor);
     void newFolder();
     void newSceneAction();
-    void newMaterial();
+    void newMaterialAction();
     void newScript();
     void showInFolder();
     void copyAction();
@@ -63,7 +63,7 @@ private slots:
 signals:
     void openFile(const QString &filePath);
     void newFolder(const QString &parentPath, const BBSignalSender &eSender);
-    void newScene(const QString &parentPath);
+    void newFile(const QString &parentPath, int nType);
     void showInFolder(const QString &filePath);
     void rename(QListWidgetItem *pFileItem, const QString &oldPath, const QString &newPath);
     void deleteFiles(const QList<QListWidgetItem*> &items);
@@ -75,6 +75,7 @@ signals:
 private:
     void setMenu();
     QWidgetAction* createWidgetAction(const QString &iconPath, const QString &name);
+    void newFile(int nType);
 
     void startDrag(Qt::DropActions supportedActions) override;
     void dragEnterEvent(QDragEnterEvent *event) override;

@@ -35,6 +35,8 @@ public:
     inline void enableFBO(bool bEnable) { m_bEnableFBO = bEnable; }
 
     void setSkyBox(const QString &path);
+    void enableSkyBox(bool bEnable) { m_bEnableSkyBox = bEnable; }
+    void enableHorizontalPlane(bool bEnable) { m_bHorizontalPlane = bEnable; }
 
     BBModel* createModel(const QString &filePath, int x, int y);
     BBModel* createModel(const QString &filePath,
@@ -71,7 +73,9 @@ private:
 
     BBCamera *m_pCamera;
     BBSkyBox *m_pSkyBox;
+    bool m_bEnableSkyBox;
     BBHorizontalPlane *m_pHorizontalPlane;
+    bool m_bHorizontalPlane;
     BBTransformCoordinateSystem *m_pTransformCoordinateSystem;
     BBFullScreenQuad *m_pFullScreenQuad;
 

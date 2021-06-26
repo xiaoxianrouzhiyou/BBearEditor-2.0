@@ -33,8 +33,8 @@ private slots:
     void clickItemInFolderPathBar(const QString &filePath);
 
     void newFolder(const QString &parentPath, const BBSignalSender &eSender);
+    void newFile(const QString &parentPath, int nType);
 
-    void newScene(const QString &parentPath);
     void saveScene();
 
     void showInFolder(const QString &filePath);

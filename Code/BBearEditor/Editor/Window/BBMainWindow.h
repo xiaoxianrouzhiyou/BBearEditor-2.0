@@ -28,6 +28,7 @@ signals:
 private:
     void setWindowLayout();
     void setGameObjectDockWidget();
+    void setPreview();
     void setConnect();
 
     void keyPressEvent(QKeyEvent *e) override;

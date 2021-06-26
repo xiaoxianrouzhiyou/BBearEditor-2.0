@@ -55,9 +55,9 @@ void BBFileSystemDockWidget::newFolder(const QString &parentPath, const BBSignal
     m_pFileSystemManager->newFolder(parentPath, eSender);
 }
 
-void BBFileSystemDockWidget::newScene(const QString &parentPath)
+void BBFileSystemDockWidget::newFile(const QString &parentPath, int nType)
 {
-    m_pFileSystemManager->newScene(parentPath);
+    m_pFileSystemManager->newFile(parentPath, nType);
 }
 
 void BBFileSystemDockWidget::saveScene()
@@ -145,11 +145,11 @@ void BBFileSystemDockWidget::setConnect()
                      this, SLOT(newFolder(QString, BBSignalSender)));
     QObject::connect(m_pUi->listFile, SIGNAL(newFolder(QString, BBSignalSender)),
                      this, SLOT(newFolder(QString, BBSignalSender)));
-    // new Scene
-    QObject::connect(m_pUi->treeFolder, SIGNAL(newScene(QString)),
-                     this, SLOT(newScene(QString)));
-    QObject::connect(m_pUi->listFile, SIGNAL(newScene(QString)),
-                     this, SLOT(newScene(QString)));
+    // new Scene ...
+    QObject::connect(m_pUi->treeFolder, SIGNAL(newFile(QString, int)),
+                     this, SLOT(newFile(QString, int)));
+    QObject::connect(m_pUi->listFile, SIGNAL(newFile(QString, int)),
+                     this, SLOT(newFile(QString, int)));
     // show in folder
     QObject::connect(m_pUi->treeFolder, SIGNAL(showInFolder(QString)),
                      this, SLOT(showInFolder(QString)));

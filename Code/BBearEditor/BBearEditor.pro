@@ -92,7 +92,8 @@ SOURCES += \
     Engine/2D/BBSelectionRegion.cpp \
     Engine/Utils/BBUtils.cpp \
     Engine/3D/BBLightIndicator.cpp \
-    Engine/2D/BBFullScreenQuad.cpp
+    Engine/2D/BBFullScreenQuad.cpp \
+    Editor/Render/BBPreviewOpenGLWidget.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -164,7 +165,8 @@ HEADERS += \
     Engine/2D/BBSelectionRegion.h \
     Engine/Utils/BBUtils.h \
     Engine/3D/BBLightIndicator.h \
-    Engine/2D/BBFullScreenQuad.h
+    Engine/2D/BBFullScreenQuad.h \
+    Editor/Render/BBPreviewOpenGLWidget.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

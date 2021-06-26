@@ -20,7 +20,7 @@ QList<QString> BBFileSystemDataManager::m_TextureSuffixs = {"png", "jpg", "jpeg"
 QList<QString> BBFileSystemDataManager::m_AudioSuffixs = {"mp3", "wav"};
 QList<QString> BBFileSystemDataManager::m_SceneSuffixs = {"bbscene"};
 QList<QString> BBFileSystemDataManager::m_ScriptSuffixs = {"lua"};
-QList<QString> BBFileSystemDataManager::m_MaterialSuffixs = {"mtl"};
+QList<QString> BBFileSystemDataManager::m_MaterialSuffixs = {"bbmtl"};
 
 QString BBFileSystemDataManager::m_MeshFileLogoColor = "#e85655";
 QString BBFileSystemDataManager::m_TextureFileLogoColor = "#e49831";
@@ -242,7 +242,23 @@ bool BBFileSystemDataManager::newFolder(const QString &parentPath, QTreeWidgetIt
     return true;
 }
 
-bool BBFileSystemDataManager::newScene(const QString &parentPath, QListWidgetItem *&pOutFileItem, QString fileName)
+bool BBFileSystemDataManager::newFile(const QString &parentPath, int nType, QListWidgetItem *&pOutFileItem)
+{
+    bool bRet = false;
+    switch (nType) {
+    case 0:
+        bRet = newFile(parentPath, pOutFileItem, BBConstant::BB_NAME_DEFAULT_SCENE);
+        break;
+    case 1:
+        bRet = newFile(parentPath, pOutFileItem, BBConstant::BB_NAME_DEFAULT_MATERIAL);
+        break;
+    default:
+        break;
+    }
+    return bRet;
+}
+
+bool BBFileSystemDataManager::newFile(const QString &parentPath, QListWidgetItem *&pOutFileItem, QString fileName)
 {
     QString filePath = getExclusiveFilePath(parentPath, fileName);
     std::ofstream file(filePath.toStdString().c_str());
@@ -293,7 +309,7 @@ bool BBFileSystemDataManager::saveScene(const QString &defaultParentPath, QListW
             if (!filePath.isEmpty())
             {
                 // create list item in the file list and empty file
-                newScene(getParentPath(filePath), pOutFileItem, getFileNameByPath(filePath));
+                newFile(getParentPath(filePath), pOutFileItem, getFileNameByPath(filePath));
                 // write file
                 BBSceneManager::saveScene(filePath);
                 return true;
@@ -1148,9 +1164,8 @@ QListWidgetItem* BBFileSystemDataManager::addFileItem(const QFileInfo &fileInfo,
         }
         else if (m_MaterialSuffixs.contains(suffix))
         {
-//            Material* material = Material::mtlMap.value(fileInfo.absoluteFilePath());
-//            item->setIcon(QIcon(material->getPreview()));
-//            pOutFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Material));
+            pItem->setIcon(getIcon(BB_PATH_RESOURCE_ICON(material3.png)));
+            pOutFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Material));
         }
         else
         {

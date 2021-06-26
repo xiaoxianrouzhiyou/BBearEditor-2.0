@@ -127,6 +127,7 @@ public:
     static QString BB_NAME_FILE_SYSTEM_ENGINE;
     static QString BB_NAME_OVERVIEW_MAP;
     static QString BB_NAME_DEFAULT_SCENE;
+    static QString BB_NAME_DEFAULT_MATERIAL;
 };
 
 class BBUtils

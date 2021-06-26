@@ -31,6 +31,7 @@ private slots:
     void clickItem(QTreeWidgetItem *pItem, int nColumn);
     void newFolder();
     void newSceneAction();
+    void newMaterialAction();
     void showInFolder();
     void copyAction() override;
     void pasteAction() override;
@@ -40,7 +41,7 @@ private slots:
 signals:
     void accessFolder(const QString &filePath, QTreeWidgetItem *pItem);
     void newFolder(const QString &parentPath, const BBSignalSender &eSender);
-    void newScene(const QString &parentPath);
+    void newFile(const QString &parentPath, int nType);
     void showInFolder(const QString &filePath);
     void rename(QTreeWidgetItem *pParentFolderItem, const QString &oldPath, const QString &newPath);
     void deleteFolder(QTreeWidgetItem *pItem);
@@ -51,6 +52,7 @@ signals:
 private:
     void setMenu() override;
     QWidgetAction* createWidgetAction(QMenu *pParent, const QString &iconPath, const QString &name);
+    void newFile(int nType);
     void deleteOne(QTreeWidgetItem *pItem) override;
 
     void dragMoveEvent(QDragMoveEvent *event) override;
@@ -66,29 +68,4 @@ private:
 };
 
 #endif // BBFOLDERTREEWIDGET_H
-
-
-
-
-
-
-
-//signals:
-//    void copyToFileList(QList<QString> folderPaths);
-//    void pasteFile(QList<QString> filePaths, QString destPath, QList<QString> pastedFolderNames);
-//    void cancelHierarchyTreeSelectedItems();
-//    void clearPropertyWidget();
-
-//private slots:
-//    void copyByFileList(QList<QString> filePaths);
-//    void pasteItemWithoutPasteFile(QList<QString> clipBoardTranscriptFolderNames);
-
-//private:
-//    void pasteOne(QTreeWidgetItem *source, QTreeWidgetItem* transcript) override;
-//    void pasteEnd() override;
-//    void loadMaterial(QString filePath);
-//    //用于存粘贴的副本文件夹名字 用于高亮显示
-//    QList<QString> pastedFolderNames;
-//    //有时候加载工程 却无需加载材质
-//    bool isLoadMaterial;
 

@@ -2,6 +2,7 @@
 #include "ui_BBMainWindow.h"
 #include "Utils/BBUtils.h"
 #include <QKeyEvent>
+#include "Scene/BBScene.h"
 
 
 BBMainWindow::BBMainWindow(QWidget *parent)
@@ -12,6 +13,7 @@ BBMainWindow::BBMainWindow(QWidget *parent)
 
     setWindowLayout();
     setGameObjectDockWidget();
+    setPreview();
     setConnect();
 }
 
@@ -52,15 +54,16 @@ void BBMainWindow::setWindowLayout()
     splitDockWidget(m_pUi->dockEditview, m_pUi->dockInspector, Qt::Horizontal);
     splitDockWidget(m_pUi->dockGameObject, m_pUi->dockHierarchy, Qt::Vertical);
     splitDockWidget(m_pUi->dockEditview, m_pUi->dockProject, Qt::Vertical);
+    splitDockWidget(m_pUi->dockInspector, m_pUi->dockPreview, Qt::Vertical);
 //    tabifyDockWidget(m_pUi->dockPreview, m_pUi->dockEditview);
 //    tabifyDockWidget(m_pUi->dockConsole, m_pUi->dockProject);
 //    splitDockWidget(m_pUi->dockProject, m_pUi->dockConsole, Qt::Horizontal);
-//    m_pUi->dockPreview->setVisible(false);
 //    m_pUi->dockConsole->setVisible(false);
 
     // resize
     m_pUi->dockGameObjectContents->updateSizeHint(QSize(350, 150));
     m_pUi->dockInspectorContents->updateSizeHint(QSize(300, 500));
+    m_pUi->dockPreviewContents->updateSizeHint(QSize(300, 200));
 }
 
 void BBMainWindow::setGameObjectDockWidget()
@@ -78,6 +81,12 @@ void BBMainWindow::setGameObjectDockWidget()
     m_pUi->listBaseGameObject->setMimeType(BB_MIMETYPE_BASEOBJECT);
     m_pUi->listLightGameObject->loadListItems(BB_PATH_LIGHTOBJECTLIST);
     m_pUi->listLightGameObject->setMimeType(BB_MIMETYPE_LIGHTOBJECT);
+}
+
+void BBMainWindow::setPreview()
+{
+    m_pUi->previewOpenGLWidget->getScene()->enableSkyBox(false);
+    m_pUi->previewOpenGLWidget->getScene()->enableHorizontalPlane(false);
 }
 
 void BBMainWindow::setConnect()

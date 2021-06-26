@@ -83,9 +83,12 @@ void BBFolderTreeWidget::newFolder()
 
 void BBFolderTreeWidget::newSceneAction()
 {
-    QTreeWidgetItem *pItem = currentItem();
-    QString parentPath = BBFileSystemDataManager::getAbsolutePath(pItem);
-    emit newScene(parentPath);
+    newFile(0);
+}
+
+void BBFolderTreeWidget::newMaterialAction()
+{
+    newFile(1);
 }
 
 void BBFolderTreeWidget::showInFolder()
@@ -143,6 +146,7 @@ void BBFolderTreeWidget::setMenu()
     // second level menu
     QMenu *pMenuNewAsset = new QMenu(tr("New Asset"), m_pMenu);
     QWidgetAction *pActionNewScene = createWidgetAction(pMenuNewAsset, BB_PATH_RESOURCE_ICON(scene.png), tr("Scene"));
+    QWidgetAction *pActionNewMaterial = createWidgetAction(pMenuNewAsset, BB_PATH_RESOURCE_ICON(material.png), tr("Material"));
 
     QAction *pActionShowInFolder = new QAction(tr("Show In Folder"));
     QAction *pActionCopy = new QAction(tr("Copy"));
@@ -158,7 +162,7 @@ void BBFolderTreeWidget::setMenu()
     QAction *pActionDelete = new QAction(tr("Delete"));
 
     pMenuNewAsset->addAction(pActionNewScene);
-    pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, BB_PATH_RESOURCE_ICON(material.png), tr("Material")));
+    pMenuNewAsset->addAction(pActionNewMaterial);
     pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, BB_PATH_RESOURCE_ICON(animation.png), tr("Animation")));
     pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, BB_PATH_RESOURCE_ICON(particle.png), tr("Particle")));
     pMenuNewAsset->addAction(createWidgetAction(pMenuNewAsset, BB_PATH_RESOURCE_ICON(script.png), tr("Script")));
@@ -177,6 +181,7 @@ void BBFolderTreeWidget::setMenu()
 
     QObject::connect(pActionNewFolder, SIGNAL(triggered()), this, SLOT(newFolder()));
     QObject::connect(pActionNewScene, SIGNAL(triggered()), this, SLOT(newSceneAction()));
+    QObject::connect(pActionNewMaterial, SIGNAL(triggered()), this, SLOT(newMaterialAction()));
     QObject::connect(pActionShowInFolder, SIGNAL(triggered()), this, SLOT(showInFolder()));
     QObject::connect(pActionCopy, SIGNAL(triggered()), this, SLOT(copyAction()));
     QObject::connect(pActionPaste, SIGNAL(triggered()), this, SLOT(pasteAction()));
@@ -204,6 +209,14 @@ QWidgetAction* BBFolderTreeWidget::createWidgetAction(QMenu *pParent, const QStr
     pLayout->addWidget(pText, Qt::AlignLeft);
     pAction->setDefaultWidget(pWidget);
     return pAction;
+}
+
+void BBFolderTreeWidget::newFile(int nType)
+{
+    // 0 scene
+    QTreeWidgetItem *pItem = currentItem();
+    QString parentPath = BBFileSystemDataManager::getAbsolutePath(pItem);
+    emit newFile(parentPath, nType);
 }
 
 void BBFolderTreeWidget::deleteOne(QTreeWidgetItem *pItem)

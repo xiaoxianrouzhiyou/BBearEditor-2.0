@@ -27,7 +27,9 @@ BBScene::BBScene()
     m_bEnableFBO = false;
     m_pCamera = NULL;
     m_pSkyBox = NULL;
+    m_bEnableSkyBox = true;
     m_pHorizontalPlane = NULL;
+    m_bHorizontalPlane = true;
     m_pSelectionRegion = NULL;
     m_pTransformCoordinateSystem = NULL;
     m_pFullScreenQuad = NULL;
@@ -106,8 +108,10 @@ void BBScene::render()
 //    }
 
     // Render the skybox at first
-    m_pSkyBox->render(m_pCamera);
-    m_pHorizontalPlane->render(m_pCamera);
+    if (m_bEnableSkyBox)
+        m_pSkyBox->render(m_pCamera);
+    if (m_bHorizontalPlane)
+        m_pHorizontalPlane->render(m_pCamera);
 
     // render dropped model
     QList<BBGameObject*> objects = m_Models + m_Lights;

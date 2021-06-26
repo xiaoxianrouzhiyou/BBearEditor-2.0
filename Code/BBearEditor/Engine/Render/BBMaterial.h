@@ -30,12 +30,10 @@ public:
 
     inline BBRenderPass* getBaseRenderPass() const { return m_pBaseRenderPass; }
     inline BBRenderPass* getAdditiveRenderPass() const { return m_pAdditiveRenderPass; }
-    inline BBRenderPass* getDeferredRenderPass() const { return m_pDeferredRenderPass; }
 
 private:
     BBRenderPass *m_pBaseRenderPass;
     BBRenderPass *m_pAdditiveRenderPass;
-    BBRenderPass *m_pDeferredRenderPass;
 };
 
 #endif // BBMATERIAL_H

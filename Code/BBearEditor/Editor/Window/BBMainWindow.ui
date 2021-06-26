@@ -979,6 +979,36 @@ BBFileListWidget::item:selected {
     </layout>
    </widget>
   </widget>
+  <widget class="QDockWidget" name="dockPreview">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="windowTitle">
+    <string>Preview</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>4</number>
+   </attribute>
+   <widget class="BBResizableWidget" name="dockPreviewContents">
+    <layout class="QGridLayout" name="gridLayout">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="BBPreviewOpenGLWidget" name="previewOpenGLWidget" native="true"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
   <widget class="BBEditViewDockWidget" name="dockEditview">
    <property name="focusPolicy">
     <enum>Qt::StrongFocus</enum>
@@ -1049,6 +1079,11 @@ BBFileListWidget::item:selected {
    <class>BBEditViewDockWidget</class>
    <extends>QDockWidget</extends>
    <header>Render/bbeditviewdockwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BBPreviewOpenGLWidget</class>
+   <extends>QOpenGLWidget</extends>
+   <header>Render/BBPreviewOpenGLWidget.h</header>
   </customwidget>
   <customwidget>
    <class>BBEditViewOpenGLWidget</class>
