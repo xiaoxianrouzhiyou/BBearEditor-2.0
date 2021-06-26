@@ -35,6 +35,12 @@ void BBFileSystemDockWidget::openProject()
     m_pFileSystemManager->openProject();
 }
 
+void BBFileSystemDockWidget::removeCurrentItem()
+{
+    emit removeMaterialPreview();
+    m_pFileSystemManager->setCurrentItemInFileList(NULL);
+}
+
 void BBFileSystemDockWidget::clickItemInFolderTree(const QString &filePath, QTreeWidgetItem *pItem)
 {
     m_pFileSystemManager->clickItemInFolderTree(filePath, pItem);
@@ -55,6 +61,7 @@ void BBFileSystemDockWidget::doubleClickItemInFileList(const QString &filePath)
 
 void BBFileSystemDockWidget::changeCurrentItemInFileList(BBFileType eCurrentType, BBFileType ePreviousType)
 {
+    emit removeCurrentItemInHierarchyTree();
     if (ePreviousType == BBFileType::Material && eCurrentType != BBFileType::Material)
     {
         // remove material sphere in the preview
@@ -147,7 +154,7 @@ void BBFileSystemDockWidget::setConnect()
                      this, SLOT(doubleClickItemInFileList(QString)));
     QObject::connect(m_pUi->barFilePath, SIGNAL(accessFolder(QString)),
                      this, SLOT(clickItemInFolderPathBar(QString)));
-    // click file item, and show property
+    // click file item, and show property, or remove
     QObject::connect(m_pUi->listFile, SIGNAL(clickItem(QString, BBFileType)),
                      this, SLOT(clickItemInFileList(QString, BBFileType)));
     QObject::connect(m_pUi->listFile, SIGNAL(changeCurrentItem(BBFileType, BBFileType)),
@@ -202,4 +209,3 @@ void BBFileSystemDockWidget::setConnect()
     QObject::connect(m_pUi->listFile, SIGNAL(moveFiles(QList<QListWidgetItem*>, QString, QString, bool)),
                      this, SLOT(moveFiles(QList<QListWidgetItem*>, QString, QString, bool)));
 }
-

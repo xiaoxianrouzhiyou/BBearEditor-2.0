@@ -310,6 +310,8 @@ void BBHierarchyTreeWidget::updateMultipleSelectedItems(BBGameObject *pGameObjec
 
 void BBHierarchyTreeWidget::changeSelectedItems()
 {
+    emit removeCurrentItemInFileList();
+
     QList<QTreeWidgetItem*> items = selectedItems();
     int count = items.count();
     if (count == 0)
@@ -401,6 +403,10 @@ void BBHierarchyTreeWidget::deleteAction()
     setCurrentItem(NULL);
 }
 
+void BBHierarchyTreeWidget::removeCurrentItem()
+{
+    setCurrentItem(NULL);
+}
 
 
 //bool HierarchyTree::moveItemFromFileList(const QMimeData *mimeData)
@@ -422,11 +428,6 @@ void BBHierarchyTreeWidget::deleteAction()
 //    //新建的树节点根据指示器位置放置
 //    moveItemToIndicator();
 //    return true;
-//}
-
-//void HierarchyTree::cancelSelectedItems()
-//{
-//    setCurrentItem(NULL);
 //}
 
 //void HierarchyTree::finishRename()

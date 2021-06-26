@@ -11,23 +11,16 @@ BBFileSystemManager::BBFileSystemManager(BBFolderTreeWidget *pFolderTreeWidget,
                                          BBFileListWidget *pFileListWidget,
                                          BBFilePathBarWidget *pFilePathBarWidget)
 {
-    m_pPreviewOpenGLWidget = new BBOpenGLWidget;
-    m_pPreviewOpenGLWidget->resize(256, 256);
-    // Cannot be used without a context shared with the toplevel.
-    m_pPreviewOpenGLWidget->show();
-    m_pPreviewOpenGLWidget->hide();
-
     m_pFolderTreeWidget = pFolderTreeWidget;
     m_pFileListWidget = pFileListWidget;
     m_pFilePathBarWidget = pFilePathBarWidget;
 
     m_pDataManager = new BBFileSystemDataManager();
-    m_pDataManager->bindPreviewOpenGLWidget(m_pPreviewOpenGLWidget);
+//    m_pDataManager->bindPreviewOpenGLWidget(m_pPreviewOpenGLWidget);
 }
 
 BBFileSystemManager::~BBFileSystemManager()
 {
-    BB_SAFE_DELETE(m_pPreviewOpenGLWidget);
     BB_SAFE_DELETE(m_pDataManager);
 }
 
@@ -76,6 +69,11 @@ void BBFileSystemManager::clickItemInFolderPathBar(const QString &filePath)
     setFolderTreeCurrentItem(filePath);
     updateFileList(filePath, NULL);
     updateFolderPathBar(filePath);
+}
+
+void BBFileSystemManager::setCurrentItemInFileList(QListWidgetItem *pItem)
+{
+    m_pFileListWidget->setCurrentItem(pItem);
 }
 
 void BBFileSystemManager::newFolder(const QString &parentPath, const BBSignalSender &eSender)

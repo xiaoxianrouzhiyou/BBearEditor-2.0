@@ -28,6 +28,7 @@ public:
     void openProject();
 
 private slots:
+    void removeCurrentItem();
     void clickItemInFolderTree(const QString &filePath, QTreeWidgetItem *pItem);
     void clickItemInFileList(const QString &filePath, const BBFileType &eType);
     void doubleClickItemInFileList(const QString &filePath);
@@ -62,6 +63,7 @@ signals:
     void updateFolderPathBar(const QString &filePath);
     void showMaterialPreview(const QString &filePath);
     void removeMaterialPreview();
+    void removeCurrentItemInHierarchyTree();
 
 private:
     void setConnect();

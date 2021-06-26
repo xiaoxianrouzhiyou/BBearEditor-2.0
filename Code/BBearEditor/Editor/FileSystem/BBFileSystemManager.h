@@ -30,6 +30,7 @@ public:
     void clickItemInFolderTree(const QString &filePath, QTreeWidgetItem *pItem);
     void doubleClickItemInFileList(const QString &filePath);
     void clickItemInFolderPathBar(const QString &filePath);
+    void setCurrentItemInFileList(QListWidgetItem *pItem);
 
     void newFolder(const QString &parentPath, const BBSignalSender &eSender);
     void newFile(const QString &parentPath, int nType);
@@ -65,7 +66,6 @@ private:
     void rename(QTreeWidgetItem *pParentFolderItem, QListWidgetItem *pFileItem,
                 const QString &oldPath, const QString &newPath);
 
-    BBOpenGLWidget *m_pPreviewOpenGLWidget;
     BBFolderTreeWidget *m_pFolderTreeWidget;
     BBFileListWidget *m_pFileListWidget;
     BBFilePathBarWidget *m_pFilePathBarWidget;

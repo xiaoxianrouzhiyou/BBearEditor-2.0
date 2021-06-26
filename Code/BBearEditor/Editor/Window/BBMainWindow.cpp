@@ -154,6 +154,13 @@ void BBMainWindow::setConnect()
     // Select multiple items in the hierarchy tree, the property manager shows the properties of the set
     QObject::connect(m_pUi->treeHierarchy, SIGNAL(showGameObjectSetProperty(BBGameObject*, QList<BBGameObject*>)),
                      m_pUi->propertyManager, SLOT(showGameObjectSetProperty(BBGameObject*, QList<BBGameObject*>)));
+    // in the file list, need to show file's property, so remove selected item in the treeHierarchy
+    QObject::connect(m_pUi->dockProject, SIGNAL(removeCurrentItemInHierarchyTree()),
+                     m_pUi->treeHierarchy, SLOT(removeCurrentItem()));
+    QObject::connect(m_pUi->listBaseGameObject, SIGNAL(removeCurrentItemInFileList()),
+                     m_pUi->dockProject, SLOT(removeCurrentItem()));
+    QObject::connect(m_pUi->listLightGameObject, SIGNAL(removeCurrentItemInFileList()),
+                     m_pUi->dockProject, SLOT(removeCurrentItem()));
     // press scene button, show global settings in the property manager
     QObject::connect(m_pUi->buttonRootHierarchy, SIGNAL(clicked()),
                      this, SLOT(showGlobalSettingsProperty()));

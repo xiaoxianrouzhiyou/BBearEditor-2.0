@@ -38,6 +38,7 @@ signals:
     void deleteGameObject(BBGameObject *pGameObject);
     void copyGameObject(BBGameObject *pSourceObject, QTreeWidgetItem *pTranscriptItem);
     void lookAtGameObject(BBGameObject *pGameObject);
+    void removeCurrentItemInFileList();
 
 private slots:
     void addGameObject(BBGameObject *pGameObject);
@@ -48,19 +49,17 @@ private slots:
     void changeSelectedItems();
     void doubleClickItem(QTreeWidgetItem *pItem, int nColumn);
     void deleteAction() override;
-
+    void removeCurrentItem();
 
 
 
 
 //private slots:
 //    void changeGameObjectActivation(GameObject *gameObject, bool isActive);
-//    void cancelSelectedItems();
 
 //signals:
 //    void updateNameInInspector(GameObject *gameObject, QString newName);
 //    void changeButtonActiveCheckStateInInspector(GameObject *gameObject, bool isActive);
-//    void cancelFileListSelectedItems();
 
 //private:
 //    bool moveItemFromFileList(const QMimeData *mimeData) override;

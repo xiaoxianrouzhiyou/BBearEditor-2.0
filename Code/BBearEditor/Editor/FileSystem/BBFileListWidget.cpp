@@ -132,9 +132,16 @@ void BBFileListWidget::doubleClickItem(QListWidgetItem *pItem)
 
 void BBFileListWidget::changeCurrentItem(QListWidgetItem *pCurrent, QListWidgetItem *pPrevious)
 {
-    BB_PROCESS_ERROR_RETURN(pPrevious);
-    BBFileType eCurrentType = m_pFileData->value(pCurrent)->m_eFileType;
-    BBFileType ePreviousType = m_pFileData->value(pPrevious)->m_eFileType;
+    BBFileType eCurrentType = BBFileType::Other;
+    BBFileType ePreviousType = BBFileType::Other;
+    if (pCurrent)
+    {
+        eCurrentType = m_pFileData->value(pCurrent)->m_eFileType;
+    }
+    if (pPrevious)
+    {
+        ePreviousType = m_pFileData->value(pPrevious)->m_eFileType;
+    }
     emit changeCurrentItem(eCurrentType, ePreviousType);
 }
 
@@ -705,6 +712,7 @@ void BBFileListWidget::focusInEvent(QFocusEvent *event)
 {
     // parent class, when the focus is obtained, the first item will show a blue box, which is ugly
     Q_UNUSED(event);
+    setFocus();
 }
 
 QString BBFileListWidget::getPathByItem(QListWidgetItem *pItem)

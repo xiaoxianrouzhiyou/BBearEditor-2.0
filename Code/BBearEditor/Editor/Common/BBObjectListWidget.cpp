@@ -105,3 +105,9 @@ void BBObjectListWidget::startDrag(Qt::DropActions supportedActions)
     drag.setPixmap(pixmap);
     drag.exec(Qt::MoveAction);
 }
+
+void BBObjectListWidget::focusInEvent(QFocusEvent *e)
+{
+    Q_UNUSED(e);
+    emit removeCurrentItemInFileList();
+}

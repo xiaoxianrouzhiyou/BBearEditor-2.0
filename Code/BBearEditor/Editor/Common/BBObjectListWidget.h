@@ -14,8 +14,12 @@ public:
     bool loadListItems(const char *xmlFilePath);
     void setMimeType(const QString &strMimeType) { m_strMimeType = strMimeType; }
 
+signals:
+    void removeCurrentItemInFileList();
+
 private:
     void startDrag(Qt::DropActions supportedActions) override;
+    void focusInEvent(QFocusEvent *e) override;
 
     int m_iPieceSize;
     // {base, light, ...}
