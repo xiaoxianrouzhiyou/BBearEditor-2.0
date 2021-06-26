@@ -28,6 +28,8 @@ BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
     // Single selection mode
     m_bMultipleSelecting = false;
 
+    setRenderThread();
+
 //    //右下角的浏览视图
 //    QHBoxLayout *l = new QHBoxLayout(this);
 //    l->setMargin(0);
@@ -40,6 +42,9 @@ BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
 BBEditViewOpenGLWidget::~BBEditViewOpenGLWidget()
 {
     BB_SAFE_DELETE(m_pPreviewObject);
+    m_pRenderThread->quit();
+    m_pRenderThread->wait();
+    BB_SAFE_DELETE(m_pRenderThread);
 }
 
 BBGameObject* BBEditViewOpenGLWidget::createModel(const BBSerializer::BBGameObject &gameObject)
@@ -47,6 +52,20 @@ BBGameObject* BBEditViewOpenGLWidget::createModel(const BBSerializer::BBGameObje
     BBGameObject *pResult = m_pScene->createModel(gameObject);
     addGameObject(pResult);
     return pResult;
+}
+
+void BBEditViewOpenGLWidget::setRenderThread()
+{
+    m_pRenderThread = new QThread(this);
+    m_pRenderTimer = new QTimer();
+    m_pRenderTimer->setInterval(BB_CONSTANT_UPDATE_RATE);
+    m_pRenderTimer->moveToThread(m_pRenderThread);
+
+    QObject::connect(m_pRenderThread, SIGNAL(started()), m_pRenderTimer, SLOT(start()));
+    QObject::connect(m_pRenderTimer, SIGNAL(timeout()), this, SLOT(update()), Qt::DirectConnection);
+    QObject::connect(m_pRenderThread, SIGNAL(finished()), m_pRenderTimer, SLOT(deleteLater()));
+
+    m_pRenderThread->start();
 }
 
 void BBEditViewOpenGLWidget::pressESC()

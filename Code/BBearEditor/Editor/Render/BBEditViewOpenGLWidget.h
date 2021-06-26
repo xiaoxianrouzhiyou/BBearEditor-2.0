@@ -20,6 +20,11 @@ public:
 
     BBGameObject* createModel(const BBSerializer::BBGameObject &gameObject);
 
+private:
+    void setRenderThread();
+    QThread *m_pRenderThread;
+    QTimer *m_pRenderTimer;
+
 private slots:
     void pressESC();
     void pressMoveKey(char key);

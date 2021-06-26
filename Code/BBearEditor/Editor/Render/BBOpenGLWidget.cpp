@@ -14,30 +14,11 @@ BBOpenGLWidget::BBOpenGLWidget(QWidget *parent)
     setFormat(format);
 
     m_pScene = new BBScene;
-
-    setRenderThread();
 }
 
 BBOpenGLWidget::~BBOpenGLWidget()
 {
-    m_pRenderThread->quit();
-    m_pRenderThread->wait();
     BB_SAFE_DELETE(m_pScene);
-    BB_SAFE_DELETE(m_pRenderThread);
-}
-
-void BBOpenGLWidget::setRenderThread()
-{
-    m_pRenderThread = new QThread(this);
-    m_pRenderTimer = new QTimer();
-    m_pRenderTimer->setInterval(BB_CONSTANT_UPDATE_RATE);
-    m_pRenderTimer->moveToThread(m_pRenderThread);
-
-    QObject::connect(m_pRenderThread, SIGNAL(started()), m_pRenderTimer, SLOT(start()));
-    QObject::connect(m_pRenderTimer, SIGNAL(timeout()), this, SLOT(update()), Qt::DirectConnection);
-    QObject::connect(m_pRenderThread, SIGNAL(finished()), m_pRenderTimer, SLOT(deleteLater()));
-
-    m_pRenderThread->start();
 }
 
 void BBOpenGLWidget::initializeGL()

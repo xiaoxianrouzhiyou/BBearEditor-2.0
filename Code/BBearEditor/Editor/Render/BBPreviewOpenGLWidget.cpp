@@ -22,6 +22,7 @@ void BBPreviewOpenGLWidget::showMaterialPreview(const QString &filePath)
         m_pSphere->setActivity(true);
         m_pSphere->setVisibility(false);
     }
+    update();
 }
 
 void BBPreviewOpenGLWidget::removeMaterialPreview()
