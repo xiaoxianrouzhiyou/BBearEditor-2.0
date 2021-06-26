@@ -64,7 +64,7 @@ void BBRenderableObject::render(BBCamera *pCamera)
 
 void BBRenderableObject::render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera)
 {
-    if (m_bVisible)
+    if (m_bActive && m_bVisible)
     {
         m_pCurrentMaterial->setMatrix4(NAME_MODELMATRIX, modelMatrix.data());
         m_pDrawCalls->draw(pCamera);

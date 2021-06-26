@@ -51,7 +51,7 @@ void BBCoordinateComponent::init()
                              BB_PATH_RESOURCE_SHADER(coordinate.vert),
                              BB_PATH_RESOURCE_SHADER(coordinate.frag));
     m_pCurrentMaterial->getBaseRenderPass()->setZFunc(GL_ALWAYS);
-    m_pCurrentMaterial->getBaseRenderPass()->setLineWidth(1.5f);
+//    m_pCurrentMaterial->getBaseRenderPass()->setLineWidth(1.5f);
 
     BBRenderableObject::init();
 }

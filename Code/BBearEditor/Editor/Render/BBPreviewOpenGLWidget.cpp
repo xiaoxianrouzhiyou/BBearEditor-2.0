@@ -11,7 +11,24 @@ BBPreviewOpenGLWidget::BBPreviewOpenGLWidget(QWidget *pParent)
     m_pSphere = NULL;
 }
 
+void BBPreviewOpenGLWidget::showMaterialPreview(const QString &filePath)
+{
+    if (!m_pSphere)
+    {
+        createSphere();
+    }
+    else
+    {
+        m_pSphere->setActivity(true);
+    }
+}
+
+void BBPreviewOpenGLWidget::removeMaterialPreview()
+{
+    m_pSphere->setActivity(false);
+}
+
 void BBPreviewOpenGLWidget::createSphere()
 {
-    m_pScene->createModel(BB_PATH_RESOURCE_MESH(sphere.obj));
+    m_pSphere = m_pScene->createModelForPreview(BB_PATH_RESOURCE_MESH(sphere.obj));
 }

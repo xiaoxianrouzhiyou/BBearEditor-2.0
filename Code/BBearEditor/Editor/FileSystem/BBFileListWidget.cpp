@@ -83,6 +83,8 @@ BBFileListWidget::BBFileListWidget(QWidget *pParent)
                      this, SLOT(clickItem(QListWidgetItem*)));
     QObject::connect(this, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
                      this, SLOT(doubleClickItem(QListWidgetItem*)));
+    QObject::connect(this, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
+                     this, SLOT(changeCurrentItem(QListWidgetItem*, QListWidgetItem*)));
 }
 
 BBFileListWidget::~BBFileListWidget()
@@ -120,12 +122,20 @@ void BBFileListWidget::setSelectedItems(const QList<QListWidgetItem*> &items)
 
 void BBFileListWidget::clickItem(QListWidgetItem *pItem)
 {
-
+    emit clickItem(getPathByItem(pItem), m_pFileData->value(pItem)->m_eFileType);
 }
 
 void BBFileListWidget::doubleClickItem(QListWidgetItem *pItem)
 {
     emit openFile(getPathByItem(pItem));
+}
+
+void BBFileListWidget::changeCurrentItem(QListWidgetItem *pCurrent, QListWidgetItem *pPrevious)
+{
+    BB_PROCESS_ERROR_RETURN(pPrevious);
+    BBFileType eCurrentType = m_pFileData->value(pCurrent)->m_eFileType;
+    BBFileType ePreviousType = m_pFileData->value(pPrevious)->m_eFileType;
+    emit changeCurrentItem(eCurrentType, ePreviousType);
 }
 
 void BBFileListWidget::changeItemSize(int factor)

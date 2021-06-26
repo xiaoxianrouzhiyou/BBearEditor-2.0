@@ -48,6 +48,7 @@ public:
 private slots:
     void clickItem(QListWidgetItem *pItem);
     void doubleClickItem(QListWidgetItem *pItem);
+    void changeCurrentItem(QListWidgetItem *pCurrent, QListWidgetItem *pPrevious);
     void changeItemSize(int factor);
     void newFolder();
     void newSceneAction();
@@ -71,6 +72,8 @@ signals:
     void moveFolders(const QList<QString> &oldFilePaths, const QString &newParentPath, bool bCopy);
     void moveFiles(const QList<QListWidgetItem*> &items, const QString &oldParentPath,
                    const QString &newParentPath, bool bCopy);
+    void clickItem(const QString &filePath, const BBFileType &eType);
+    void changeCurrentItem(BBFileType eCurrentType, BBFileType ePreviousType);
 
 private:
     void setMenu();

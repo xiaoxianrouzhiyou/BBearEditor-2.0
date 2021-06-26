@@ -40,9 +40,26 @@ void BBFileSystemDockWidget::clickItemInFolderTree(const QString &filePath, QTre
     m_pFileSystemManager->clickItemInFolderTree(filePath, pItem);
 }
 
+void BBFileSystemDockWidget::clickItemInFileList(const QString &filePath, const BBFileType &eType)
+{
+    if (eType == BBFileType::Material)
+    {
+        emit showMaterialPreview(filePath);
+    }
+}
+
 void BBFileSystemDockWidget::doubleClickItemInFileList(const QString &filePath)
 {
     m_pFileSystemManager->doubleClickItemInFileList(filePath);
+}
+
+void BBFileSystemDockWidget::changeCurrentItemInFileList(BBFileType eCurrentType, BBFileType ePreviousType)
+{
+    if (ePreviousType == BBFileType::Material && eCurrentType != BBFileType::Material)
+    {
+        // remove material sphere in the preview
+        emit removeMaterialPreview();
+    }
 }
 
 void BBFileSystemDockWidget::clickItemInFolderPathBar(const QString &filePath)
@@ -130,6 +147,11 @@ void BBFileSystemDockWidget::setConnect()
                      this, SLOT(doubleClickItemInFileList(QString)));
     QObject::connect(m_pUi->barFilePath, SIGNAL(accessFolder(QString)),
                      this, SLOT(clickItemInFolderPathBar(QString)));
+    // click file item, and show property
+    QObject::connect(m_pUi->listFile, SIGNAL(clickItem(QString, BBFileType)),
+                     this, SLOT(clickItemInFileList(QString, BBFileType)));
+    QObject::connect(m_pUi->listFile, SIGNAL(changeCurrentItem(BBFileType, BBFileType)),
+                     this, SLOT(changeCurrentItemInFileList(BBFileType, BBFileType)));
     // click buttons in the file system
     QObject::connect(m_pUi->buttonRootProject, SIGNAL(clicked()),
                      m_pUi->treeFolder, SLOT(pressRootButton()));

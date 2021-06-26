@@ -12,6 +12,10 @@ class BBPreviewOpenGLWidget : public BBOpenGLWidget
 public:
     BBPreviewOpenGLWidget(QWidget *pParent = 0);
 
+private slots:
+    void showMaterialPreview(const QString &filePath);
+    void removeMaterialPreview();
+
 private:
     void createSphere();
     BBModel *m_pSphere;

@@ -157,7 +157,11 @@ void BBMainWindow::setConnect()
     // press scene button, show global settings in the property manager
     QObject::connect(m_pUi->buttonRootHierarchy, SIGNAL(clicked()),
                      this, SLOT(showGlobalSettingsProperty()));
-
+    // click material file, and show
+    QObject::connect(m_pUi->dockProject, SIGNAL(showMaterialPreview(QString)),
+                     m_pUi->previewOpenGLWidget, SLOT(showMaterialPreview(QString)));
+    QObject::connect(m_pUi->dockProject, SIGNAL(removeMaterialPreview()),
+                     m_pUi->previewOpenGLWidget, SLOT(removeMaterialPreview()));
 
 
 //    //属性栏根按钮切换

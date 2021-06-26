@@ -29,7 +29,9 @@ public:
 
 private slots:
     void clickItemInFolderTree(const QString &filePath, QTreeWidgetItem *pItem);
+    void clickItemInFileList(const QString &filePath, const BBFileType &eType);
     void doubleClickItemInFileList(const QString &filePath);
+    void changeCurrentItemInFileList(BBFileType eCurrentType, BBFileType ePreviousType);
     void clickItemInFolderPathBar(const QString &filePath);
 
     void newFolder(const QString &parentPath, const BBSignalSender &eSender);
@@ -58,6 +60,8 @@ private slots:
 signals:
     void updateFolderPathBar();
     void updateFolderPathBar(const QString &filePath);
+    void showMaterialPreview(const QString &filePath);
+    void removeMaterialPreview();
 
 private:
     void setConnect();
