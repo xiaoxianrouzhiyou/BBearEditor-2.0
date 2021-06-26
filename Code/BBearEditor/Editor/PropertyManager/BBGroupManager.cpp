@@ -132,6 +132,61 @@ void BBSetBaseInformationManager::changeVisibility()
 
 
 /**
+ * @brief BBMaterialManager::BBMaterialManager
+ * @param filePath
+ * @param pParent
+ */
+BBMaterialManager::BBMaterialManager(const QString &filePath, QWidget *pParent)
+    : QWidget(pParent)
+{
+    m_FilePath = filePath;
+
+    QVBoxLayout *pLayout = new QVBoxLayout(this);
+    pLayout->setMargin(0);
+    // icon + info
+    QWidget *pBaseInfoWidget = new QWidget(this);
+    QHBoxLayout *pBaseInfoLayout = new QHBoxLayout(pBaseInfoWidget);
+    pBaseInfoLayout->setContentsMargins(10, 0, 0, 0);
+    m_pIcon = new QLabel(pBaseInfoWidget);
+    m_pIcon->setFocusPolicy(Qt::NoFocus);
+    setIcon();
+    pBaseInfoLayout->addWidget(m_pIcon, 1, Qt::AlignLeft);
+    // specific data on the right
+    QWidget *pInfoWidget = new QWidget(pBaseInfoWidget);
+    QVBoxLayout *pInfoLayout = new QVBoxLayout(pInfoWidget);
+    pInfoLayout->setMargin(0);
+    // file name on the top right
+    QLabel *pLabelName = new QLabel(pInfoWidget);
+    QString name = filePath.mid(filePath.lastIndexOf('/') + 1);
+    name = name.mid(0, name.lastIndexOf('.'));
+    pLabelName->setText(name);
+    pLabelName->setStyleSheet("font: 75 9pt \"Arial\";");
+    pInfoLayout->addWidget(pLabelName, 1);
+    // shader on the bottom right
+    QStringList shaderList;
+    shaderList.append("1");
+    shaderList.append("2");
+    BBEnumFactory *pEnumFactory = new BBEnumFactory("Shader", shaderList, "1", pInfoWidget);
+    pInfoLayout->addWidget(pEnumFactory);
+    pBaseInfoLayout->addWidget(pInfoWidget, 3);
+    pLayout->addWidget(pBaseInfoWidget);
+}
+
+BBMaterialManager::~BBMaterialManager()
+{
+    BB_SAFE_DELETE(m_pIcon);
+}
+
+void BBMaterialManager::setIcon()
+{
+    QPixmap pix(BB_PATH_RESOURCE_ICON(material3.png));
+    pix.setDevicePixelRatio(devicePixelRatio());
+    pix = pix.scaled(30 * devicePixelRatio(), 30 * devicePixelRatio(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    m_pIcon->setPixmap(pix);
+}
+
+
+/**
  * @brief BBGroupManager::BBGroupManager
  * @param groupName
  * @param iconPath

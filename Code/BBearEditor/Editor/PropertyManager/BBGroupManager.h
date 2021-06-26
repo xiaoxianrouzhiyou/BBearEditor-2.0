@@ -13,6 +13,7 @@ class BBGameObject;
 class BBVector3DFactory;
 class BBScene;
 class BBEnumFactory;
+class QLabel;
 
 
 // manage name, class name, visibility, and so on
@@ -61,6 +62,22 @@ signals:
 
 private:
     QList<BBGameObject*> m_CurrentGameObjectSet;
+};
+
+
+class BBMaterialManager : public QWidget
+{
+    Q_OBJECT
+
+public:
+    BBMaterialManager(const QString &filePath, QWidget *pParent = nullptr);
+    ~BBMaterialManager();
+
+private:
+    void setIcon();
+
+    QString m_FilePath;
+    QLabel *m_pIcon;
 };
 
 

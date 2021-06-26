@@ -62,6 +62,7 @@ signals:
     void updateFolderPathBar();
     void updateFolderPathBar(const QString &filePath);
     void showMaterialPreview(const QString &filePath);
+    void showMaterialInPropertyManager(const QString &filePath);
     void removeMaterialPreview();
     void removeCurrentItemInHierarchyTree();
 

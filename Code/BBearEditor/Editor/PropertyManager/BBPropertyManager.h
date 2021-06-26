@@ -26,6 +26,7 @@ public slots:
     void showGameObjectSetProperty(BBGameObject *pCenterGameObject,
                                    const QList<BBGameObject*> &gameObjectSet);
     void showGlobalSettingsProperty(BBScene *pScene);
+    void showMaterialProperty(const QString &filePath);
 
     void updateCoordinateSystem();
     void updateTransform(BBGameObject *pGameObject, char transformModeKey);
@@ -42,6 +43,7 @@ private:
     BBGroupManager* addGroupManager(const QString &name, const QString &iconPath);
     void addTransformGroupManager(BBGameObject *pGameObject);
     void addGlobalSettingsGroupManager(BBScene *pScene);
+    void addMaterialGroupManager(const QString &filePath);
 
     BBBaseInformationManager *m_pBaseInformationManager;
     BBSetBaseInformationManager *m_pSetBaseInformationManager;

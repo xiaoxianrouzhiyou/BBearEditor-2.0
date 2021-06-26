@@ -115,6 +115,12 @@ void BBPropertyManager::showGlobalSettingsProperty(BBScene *pScene)
     addGlobalSettingsGroupManager(pScene);
 }
 
+void BBPropertyManager::showMaterialProperty(const QString &filePath)
+{
+    clear();
+    addMaterialGroupManager(filePath);
+}
+
 void BBPropertyManager::updateCoordinateSystem()
 {
     coordinateSystemUpdated();
@@ -199,7 +205,10 @@ void BBPropertyManager::addGlobalSettingsGroupManager(BBScene *pScene)
     layout()->addWidget(new BBGlobalSettingsGroupManager(pScene, this));
 }
 
-
+void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
+{
+    layout()->addWidget(new BBMaterialManager(filePath, this));
+}
 
 
 
@@ -691,37 +700,7 @@ void BBPropertyManager::addGlobalSettingsGroupManager(BBScene *pScene)
 //    mFilePath = filePath;
 //    //找到材质对象
 //    material = Material::mtlMap.value(filePath);
-//    //布局
-//    QVBoxLayout *l = new QVBoxLayout(this);
-//    l->setMargin(0);
-//    //图标和信息的水平布局
-//    QWidget *baseInfoWidget = new QWidget(this);
-//    QHBoxLayout *baseInfoLayout = new QHBoxLayout(baseInfoWidget);
-//    baseInfoLayout->setContentsMargins(10, 0, 0, 0);
-//    icon = new QLabel(baseInfoWidget);
-//    icon->setFocusPolicy(Qt::NoFocus);
-//    setIcon();
-//    baseInfoLayout->addWidget(icon, 1, Qt::AlignLeft);
-//    //右侧具体数据
-//    QWidget *infoWidget = new QWidget(baseInfoWidget);
-//    QVBoxLayout *infoLayout = new QVBoxLayout(infoWidget);
-//    infoLayout->setMargin(0);
-//    //右上文件名
-//    QLabel *labelName = new QLabel(infoWidget);
-//    //labelName->setAlignment(Qt::AlignRight);
-//    QString name = filePath.mid(filePath.lastIndexOf('/') + 1);
-//    name = name.mid(0, name.lastIndexOf('.'));
-//    labelName->setText(name);
-//    labelName->setStyleSheet("font: 75 11pt \"Arial\";");
-//    infoLayout->addWidget(labelName, 1);
-//    //右下的 选择shader类型
-//    QStringList shaderType;
-//    shaderType.append(Material::StandardShader);
-//    shaderType.append(Material::BlinByVertexShader);
-//    EnumFactory *enumFactory = new EnumFactory("Type", shaderType, infoWidget, material->getShaderType());
-//    infoLayout->addWidget(enumFactory);
-//    baseInfoLayout->addWidget(infoWidget, 3);
-//    l->addWidget(baseInfoWidget);
+
 //    //main maps 属性组
 //    GroupManager *mainGroupManager = new GroupManager(this, "Main Maps", "");
 //    l->addWidget(mainGroupManager);
@@ -740,15 +719,6 @@ void BBPropertyManager::addGlobalSettingsGroupManager(BBScene *pScene)
 //    QObject::connect(colorFactory, SIGNAL(updateMaterialPreview()), this, SLOT(updatePreview()));
 //    QObject::connect(enumFactory, SIGNAL(currentIndexChanged(QString)), this, SLOT(currentIndexChangedSlot(QString)));
 //    QObject::connect(smoothnessFactory, SIGNAL(valueChangedSignal(int)), this, SLOT(smoothnessChanged(int)));
-//}
-
-//void MaterialManager::setIcon()
-//{
-//    QPixmap pix = material->getPreview();
-//    //和两行差不多高
-//    pix.setDevicePixelRatio(devicePixelRatio());
-//    pix = pix.scaled(30 * devicePixelRatio(), 30 * devicePixelRatio(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-//    icon->setPixmap(pix);
 //}
 
 //void MaterialManager::updatePreview()

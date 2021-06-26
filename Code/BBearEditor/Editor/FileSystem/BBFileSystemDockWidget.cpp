@@ -51,6 +51,7 @@ void BBFileSystemDockWidget::clickItemInFileList(const QString &filePath, const 
     if (eType == BBFileType::Material)
     {
         emit showMaterialPreview(filePath);
+        emit showMaterialInPropertyManager(filePath);
     }
 }
 
