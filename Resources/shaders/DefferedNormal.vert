@@ -1,5 +1,5 @@
-attribute vec4 positionAttr;
-attribute vec4 normalAttr;
+attribute vec4 position;
+attribute vec4 normal;
 
 varying vec4 V_Normal;
 
@@ -9,6 +9,6 @@ uniform mat4 modelMatrix;
 
 void main()
 {
-    V_Normal = modelMatrix * normalAttr;
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * positionAttr;
+    V_Normal = modelMatrix * normal;
+    gl_Position = projectionMatrix * viewMatrix * modelMatrix * position;
 }

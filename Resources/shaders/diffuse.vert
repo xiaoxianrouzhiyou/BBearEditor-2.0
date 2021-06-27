@@ -1,22 +1,25 @@
-attribute vec4 positionAttr;
-attribute vec4 colorAttr;
-attribute vec4 normalAttr;
+attribute vec4 position;
+attribute vec4 color;
+attribute vec4 texcoord;
+attribute vec4 normal;
 
-varying vec4 colorVary;
+varying vec4 V_Color;
+varying vec4 V_Texcoord;
 
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 modelMatrix;
-uniform vec4 lightPositionUniform;
-uniform vec4 lightColorUniform;
+uniform vec4 lightPosition;
+uniform vec4 lightColor;
 
 vec4 getLightColor()
 {
-    return dot(lightPositionUniform.xyz, normalAttr.xyz) * lightColorUniform;
+    return dot(lightPosition.xyz, normal.xyz) * lightColor;
 }
 
 void main()
 {
-    colorVary = colorAttr * getLightColor();
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * positionAttr;
+    V_Color = color * getLightColor();
+    V_Texcoord = texcoord;
+    gl_Position = projectionMatrix * viewMatrix * modelMatrix * position;
 }

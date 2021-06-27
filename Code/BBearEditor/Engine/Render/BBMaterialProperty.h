@@ -22,6 +22,7 @@ public:
     virtual ~BBMaterialProperty();
 
     virtual BBMaterialProperty* clone() = 0;
+    BBMaterialUniformPropertyType getType() { return m_eType; }
     inline char* getName() { return m_Name; }
 
 protected:

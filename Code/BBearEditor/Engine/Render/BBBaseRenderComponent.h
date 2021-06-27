@@ -16,18 +16,18 @@
 #include "Utils/BBUtils.h"
 
 
-#define NAME_POSITION "positionAttr"
-#define NAME_COLOR "colorAttr"
-#define NAME_TEXCOORD "texcoordAttr"
-#define NAME_NORMAL "normalAttr"
+#define NAME_POSITION "position"
+#define NAME_COLOR "color"
+#define NAME_TEXCOORD "texcoord"
+#define NAME_NORMAL "normal"
 #define NAME_PROJECTIONMATRIX "projectionMatrix"
 #define NAME_VIEWMATRIX "viewMatrix"
 #define NAME_MODELMATRIX "modelMatrix"
 #define NAME_ITMODELMATRIX "IT_modelMatrix"
-#define NAME_CAMERA_POSITION "cameraPositionUniform"
-#define NAME_TEXTURE "textureUniform"
-#define NAME_LIGHT_POSITION "lightPositionUniform"
-#define NAME_LIGHT_COLOR "lightColorUniform"
+#define NAME_CAMERA_POSITION "cameraPosition"
+#define NAME_TEXTURE "texture0"
+#define NAME_LIGHT_POSITION "lightPosition"
+#define NAME_LIGHT_COLOR "lightColor"
 
 //QString Light::directionLightPositionUniformLocationName = "directionLightPositionUniform";
 //QString Light::directionLightColorUniformLocationName = "directionLightColorUniform";

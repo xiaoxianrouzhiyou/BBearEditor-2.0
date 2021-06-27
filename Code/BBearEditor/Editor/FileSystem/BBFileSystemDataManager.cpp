@@ -13,6 +13,7 @@
 #include "Render/BBEditViewDockWidget.h"
 #include <fstream>
 #include "Window/BBConfirmationDialog.h"
+#include "IO/BBMaterialFileManager.h"
 
 
 QList<QString> BBFileSystemDataManager::m_MeshSuffixs = {"obj", "fbx"};
@@ -56,9 +57,8 @@ BBFileSystemDataManager::~BBFileSystemDataManager()
 
 
 /**
- * @brief BBFileSystemDataManager::loadProject read all files and build a tree
+ * @brief BBFileSystemDataManager::load     read all files and build a tree
  */
-
 void BBFileSystemDataManager::load()
 {
     QString rootPath = BBConstant::BB_PATH_PROJECT_USER;
@@ -245,12 +245,15 @@ bool BBFileSystemDataManager::newFolder(const QString &parentPath, QTreeWidgetIt
 bool BBFileSystemDataManager::newFile(const QString &parentPath, int nType, QListWidgetItem *&pOutFileItem)
 {
     bool bRet = false;
-    switch (nType) {
+    QString filePath;
+    switch (nType)
+    {
     case 0:
-        bRet = newFile(parentPath, pOutFileItem, BBConstant::BB_NAME_DEFAULT_SCENE);
+        bRet = newFile(parentPath, BBConstant::BB_NAME_DEFAULT_SCENE, filePath, pOutFileItem);
         break;
     case 1:
-        bRet = newFile(parentPath, pOutFileItem, BBConstant::BB_NAME_DEFAULT_MATERIAL);
+        bRet = newFile(parentPath, BBConstant::BB_NAME_DEFAULT_MATERIAL, filePath, pOutFileItem);
+        BBMaterialFileManager::saveDefaultMaterial(filePath);
         break;
     default:
         break;
@@ -258,13 +261,14 @@ bool BBFileSystemDataManager::newFile(const QString &parentPath, int nType, QLis
     return bRet;
 }
 
-bool BBFileSystemDataManager::newFile(const QString &parentPath, QListWidgetItem *&pOutFileItem, QString fileName)
+bool BBFileSystemDataManager::newFile(const QString &parentPath, QString &outFileName,
+                                      QString &outFilePath, QListWidgetItem *&pOutFileItem)
 {
-    QString filePath = getExclusiveFilePath(parentPath, fileName);
-    std::ofstream file(filePath.toStdString().c_str());
+    outFilePath = getExclusiveFilePath(parentPath, outFileName);
+    std::ofstream file(outFilePath.toStdString().c_str());
     BB_PROCESS_ERROR_RETURN_FALSE(file);
     BBFILE *pParentContent = getFolderContent(getFolderItemByPath(parentPath));
-    pOutFileItem = addFileItem(QFileInfo(filePath), pParentContent);
+    pOutFileItem = addFileItem(QFileInfo(outFilePath), pParentContent);
     return true;
 }
 
@@ -309,7 +313,8 @@ bool BBFileSystemDataManager::saveScene(const QString &defaultParentPath, QListW
             if (!filePath.isEmpty())
             {
                 // create list item in the file list and empty file
-                newFile(getParentPath(filePath), pOutFileItem, getFileNameByPath(filePath));
+                QString fileName = getFileNameByPath(filePath);
+                newFile(getParentPath(filePath), fileName, filePath, pOutFileItem);
                 // write file
                 BBSceneManager::saveScene(filePath);
                 return true;

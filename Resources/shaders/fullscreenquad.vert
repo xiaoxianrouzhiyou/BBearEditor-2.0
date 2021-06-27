@@ -1,10 +1,10 @@
-attribute vec4 positionAttr;
-attribute vec4 texcoordAttr;
+attribute vec4 position;
+attribute vec4 texcoord;
 
-varying vec4 texcoordVary;
+varying vec4 V_Texcoord;
 
 void main()
 {
-    texcoordVary = texcoordAttr;
-    gl_Position = positionAttr;
+    V_Texcoord = texcoord;
+    gl_Position = position;
 }

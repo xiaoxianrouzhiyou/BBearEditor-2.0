@@ -87,6 +87,7 @@ void BBMainWindow::setPreview()
 {
     m_pUi->previewOpenGLWidget->getScene()->enableSkyBox(false);
     m_pUi->previewOpenGLWidget->getScene()->enableHorizontalPlane(false);
+    m_pUi->propertyManager->bindPreviewOpenGLWidget(m_pUi->previewOpenGLWidget);
 }
 
 void BBMainWindow::setConnect()

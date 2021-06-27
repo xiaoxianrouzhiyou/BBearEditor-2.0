@@ -1,4 +1,4 @@
-attribute vec4 positionAttr;
+attribute vec4 position;
 
 varying vec4 V_WorldPos;
 
@@ -8,6 +8,6 @@ uniform mat4 modelMatrix;
 
 void main()
 {
-    V_WorldPos = modelMatrix * positionAttr;
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * positionAttr;
+    V_WorldPos = modelMatrix * position;
+    gl_Position = projectionMatrix * viewMatrix * modelMatrix * position;
 }

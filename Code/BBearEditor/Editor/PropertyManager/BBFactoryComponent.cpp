@@ -189,3 +189,18 @@ void BBScreenDialog::mousePressEvent(QMouseEvent *event)
         reject();
     }
 }
+
+
+/**
+ * @brief BBPictureLabel::BBPictureLabel
+ * @param pParent
+ */
+BBPictureLabel::BBPictureLabel(QWidget *pParent)
+    : QLabel(pParent)
+{
+    setAcceptDrops(true);
+    setAlignment(Qt::AlignCenter);
+    setFocusPolicy(Qt::NoFocus);
+    setText("None");
+    setMinimumSize(48 * devicePixelRatio(), 48 * devicePixelRatio());
+}

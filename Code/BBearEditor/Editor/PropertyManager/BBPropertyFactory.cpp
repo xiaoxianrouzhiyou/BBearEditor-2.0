@@ -260,3 +260,37 @@ void BBLightColorFactory::finishCatchColor(float r, float g, float b)
     BBColorFactory::finishCatchColor(r, g, b);
     m_pLight->setDiffuseColor(r, g, b);
 }
+
+
+/**
+ * @brief BBPictureFactory::BBPictureFactory
+ * @param pParent
+ */
+BBPictureFactory::BBPictureFactory(QWidget *pParent)
+    : QWidget(pParent)
+{
+    QHBoxLayout *pLayout = new QHBoxLayout(this);
+    pLayout->setMargin(0);
+    // button in the left
+    m_pRemoveButton = new QPushButton(this);
+    m_pRemoveButton->setStyleSheet("image: url(../../resources/icons/return.png);");
+    pLayout->addWidget(m_pRemoveButton, 0, Qt::AlignBottom);
+    m_pSelectButton = new QPushButton(this);
+    m_pSelectButton->setStyleSheet("image: url(../../resources/icons/more2.png);");
+    pLayout->addWidget(m_pSelectButton, 0, Qt::AlignBottom);
+    // picture in the right
+    QWidget *pFrame = new QWidget(this);
+    pFrame->setStyleSheet("border: none; border-radius: 2px; background: rgb(60, 64, 75);");
+    QHBoxLayout *pFrameLayout = new QHBoxLayout(pFrame);
+    pFrameLayout->setMargin(1);
+    m_pPictureLabel = new BBPictureLabel(pFrame);
+    pFrameLayout->addWidget(m_pPictureLabel);
+    pLayout->addWidget(pFrame, 1, Qt::AlignRight);
+}
+
+BBPictureFactory::~BBPictureFactory()
+{
+    BB_SAFE_DELETE(m_pRemoveButton);
+    BB_SAFE_DELETE(m_pSelectButton);
+    BB_SAFE_DELETE(m_pPictureLabel);
+}

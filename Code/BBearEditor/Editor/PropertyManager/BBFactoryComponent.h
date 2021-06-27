@@ -3,9 +3,8 @@
 
 #include <QPushButton>
 #include <QDialog>
+#include <QLabel>
 
-
-class QLabel;
 
 // When hovering, it shows an arrow cursor, press and then move left and right to adjust the parameter
 class BBSliderLabel : public QPushButton
@@ -69,6 +68,18 @@ private:
     QLabel *m_pBackground;
     QPixmap m_PixBackground;
     static int m_nCursorSize;
+};
+
+
+/**
+ * @brief The BBPictureLabel class      show icon
+ */
+class BBPictureLabel : public QLabel
+{
+    Q_OBJECT
+
+public:
+    BBPictureLabel(QWidget *pParent = 0);
 };
 
 #endif // BBFACTORYCOMPONENT_H

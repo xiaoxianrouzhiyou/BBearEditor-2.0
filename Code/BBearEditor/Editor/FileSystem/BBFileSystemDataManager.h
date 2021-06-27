@@ -37,7 +37,7 @@ public:
     bool openFile(const QString &filePath);
     bool newFolder(const QString &parentPath, QTreeWidgetItem *&pOutFolderItem, QListWidgetItem *&pOutFileItem);
     bool newFile(const QString &parentPath, int nType, QListWidgetItem *&pOutFileItem);
-    bool newFile(const QString &parentPath, QListWidgetItem *&pOutFileItem, QString fileName);
+    bool newFile(const QString &parentPath, QString &outFileName, QString &outFilePath, QListWidgetItem *&pOutFileItem);
 
     /* Scene */
     bool openScene(const QString &defaultSavedParentPath, const QString &openedPath);

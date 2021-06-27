@@ -5,11 +5,13 @@
 #include "BBPropertyFactory.h"
 #include "Base/BBGameObject.h"
 #include "Render/Light/BBDirectionalLight.h"
+#include "BBHeadManager.h"
 
 
 BBPropertyManager::BBPropertyManager(QWidget *pParent)
     : QWidget(pParent)
 {
+    m_pPreviewOpenGLWidget = NULL;
     m_pBaseInformationManager = NULL;
     m_pSetBaseInformationManager = NULL;
     m_pTransformGroupManager = NULL;
@@ -207,7 +209,11 @@ void BBPropertyManager::addGlobalSettingsGroupManager(BBScene *pScene)
 
 void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 {
-    layout()->addWidget(new BBMaterialManager(filePath, this));
+    BBMaterialManager *pMaterialManager = new BBMaterialManager(filePath, this);
+    layout()->addWidget(pMaterialManager);
+    BBMaterialPropertyGroupManager *pPropertyGroupManager = new BBMaterialPropertyGroupManager(pMaterialManager->getMaterial(),
+                                                                                               m_pPreviewOpenGLWidget, this);
+    layout()->addWidget(pPropertyGroupManager);
 }
 
 
@@ -235,12 +241,6 @@ void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 ////------------------IconLabel----------------------------
 
 
-//IconLabel::IconLabel(QWidget *parent)
-//    : QLabel(parent)
-//{
-//    //支持拖放
-//    setAcceptDrops(true);
-//}
 
 //void IconLabel::setAcceptableSuffixs(QList<QString> acceptableSuffixs)
 //{
@@ -281,38 +281,6 @@ void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 //    dataStream >> filePath;
 //    changeValue(filePath);
 //    event->accept();
-//}
-
-
-////------------------IconFactory--------------------------
-
-
-//IconFactory::IconFactory(QWidget *parent)
-//    : QWidget(parent)
-//{
-//    QHBoxLayout *l = new QHBoxLayout(this);
-//    l->setMargin(0);
-//    //左侧按钮
-//    buttonRemove = new QPushButton(this);
-//    buttonRemove->setStyleSheet("image: url(:/icon/resources/icons/return.png);");
-//    l->addWidget(buttonRemove, 0, Qt::AlignBottom);
-//    buttonMore = new QPushButton(this);
-//    buttonMore->setStyleSheet("image: url(:/icon/resources/icons/more2.png);");
-//    l->addWidget(buttonMore, 0, Qt::AlignBottom);
-//    //右侧显示纹理图片
-//    //边框
-//    QWidget *frame = new QWidget(this);
-//    frame->setStyleSheet("border: none; border-radius: 2px; background: rgb(60, 64, 75);");
-//    QHBoxLayout *frameLayout = new QHBoxLayout(frame);
-//    frameLayout->setMargin(1);
-//    labelIcon = new IconLabel(frame);
-//    labelIcon->setAlignment(Qt::AlignCenter);
-//    labelIcon->setFocusPolicy(Qt::NoFocus);
-//    labelIcon->setText("None");
-//    //尺寸
-//    labelIcon->setMinimumSize(24 * devicePixelRatio(), 24 * devicePixelRatio());
-//    frameLayout->addWidget(labelIcon);
-//    l->addWidget(frame, 1, Qt::AlignRight);
 //}
 
 

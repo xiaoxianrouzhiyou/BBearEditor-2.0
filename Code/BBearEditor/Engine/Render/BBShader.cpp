@@ -1,6 +1,5 @@
 #include "BBShader.h"
 #include "BBAttribute.h"
-#include "BBMaterialProperty.h"
 #include "BBUniformUpdater.h"
 #include "BBVertexBufferObject.h"
 
@@ -27,8 +26,11 @@ BBShader* BBShader::loadShader(const char *name, const QString &vShaderPath, con
     {
         return it.value();
     }
-    BBShader *pShader = new BBShader;
+    BBShader *pShader = new BBShader();
     pShader->init(vShaderPath, fShaderPath);
+    pShader->setShaderName(name);
+    pShader->setVShaderPath(vShaderPath);
+    pShader->setFShaderPath(fShaderPath);
     m_CachedShaders.insert(name, pShader);
     return pShader;
 }
@@ -69,6 +71,25 @@ void BBShader::activeAttributes()
     if (m_pAttributes != nullptr)
     {
         m_pAttributes->active();
+    }
+}
+
+void BBShader::getEditableProperties(QList<std::string> &outNames, QList<BBMaterialUniformPropertyType> &outTypes)
+{
+    for (QMap<std::string, BBMaterialProperty*>::Iterator it = m_Properties.begin(); it != m_Properties.end(); it++)
+    {
+        std::string uniformName = it.key();
+        // some properties cannot be outputted
+        if (strcmp(uniformName.data(), NAME_MODELMATRIX) != 0
+                || strcmp(uniformName.data(), NAME_VIEWMATRIX) != 0
+                || strcmp(uniformName.data(), NAME_PROJECTIONMATRIX) != 0
+                || strcmp(uniformName.data(), NAME_LIGHT_POSITION) != 0
+                || strcmp(uniformName.data(), NAME_LIGHT_COLOR) != 0)
+        {
+            outNames.append(uniformName);
+            BBMaterialProperty* pMaterialProperty = it.value();
+            outTypes.append(pMaterialProperty->getType());
+        }
     }
 }
 

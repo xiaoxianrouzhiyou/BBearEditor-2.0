@@ -10,6 +10,7 @@ class BBGroupManager;
 class BBTransformGroupManager;
 class BBGameObject;
 class BBScene;
+class BBPreviewOpenGLWidget;
 
 
 class BBPropertyManager : public QWidget
@@ -22,6 +23,7 @@ public:
 
 public slots:
     void clear();
+    inline void bindPreviewOpenGLWidget(BBPreviewOpenGLWidget *pWidget) { m_pPreviewOpenGLWidget = pWidget; }
     void showGameObjectProperty(BBGameObject *pGameObject);
     void showGameObjectSetProperty(BBGameObject *pCenterGameObject,
                                    const QList<BBGameObject*> &gameObjectSet);
@@ -45,6 +47,7 @@ private:
     void addGlobalSettingsGroupManager(BBScene *pScene);
     void addMaterialGroupManager(const QString &filePath);
 
+    BBPreviewOpenGLWidget *m_pPreviewOpenGLWidget;
     BBBaseInformationManager *m_pBaseInformationManager;
     BBSetBaseInformationManager *m_pSetBaseInformationManager;
     BBTransformGroupManager *m_pTransformGroupManager;
@@ -115,13 +118,9 @@ private:
 
 
 
-////可以拖入文件的 可以显示图标的控件 如显示纹理贴图 可以拖入图片替换
+
 //class IconLabel : public QLabel
 //{
-//    Q_OBJECT
-
-//public:
-//    IconLabel(QWidget *parent = 0);
 //    void setAcceptableSuffixs(QList<QString> acceptableSuffixs);
 //    void dragEnterEvent(QDragEnterEvent *event) override;
 //    void dropEvent(QDropEvent *event) override;
@@ -253,25 +252,12 @@ private:
 ////材质各项属性
 //class MaterialManager : public QWidget
 //{
-//    Q_OBJECT
-
-//public:
-//    MaterialManager(QWidget *parent, QString filePath, BaseOpenGLWidget *previewWidget);
-
-//signals:
-//    void updatePreviewInOtherWidget(QString filePath);
 
 //private slots:
 //    void updatePreview();
 //    void currentIndexChangedSlot(const QString &text);
 //    void smoothnessChanged(int value);
 
-//private:
-//    void setIcon();
-//    BaseOpenGLWidget *mPreviewWidget;
-//    QString mFilePath;
-//    Material *material;
-//    QLabel *icon;
 //};
 
 

@@ -134,13 +134,15 @@ void BBFileListWidget::changeCurrentItem(QListWidgetItem *pCurrent, QListWidgetI
 {
     BBFileType eCurrentType = BBFileType::Other;
     BBFileType ePreviousType = BBFileType::Other;
-    if (pCurrent)
+    BBFileInfo *pFileInfo = m_pFileData->value(pCurrent);
+    if (pFileInfo)
     {
-        eCurrentType = m_pFileData->value(pCurrent)->m_eFileType;
+        eCurrentType = pFileInfo->m_eFileType;
     }
-    if (pPrevious)
+    pFileInfo = m_pFileData->value(pPrevious);
+    if (pFileInfo)
     {
-        ePreviousType = m_pFileData->value(pPrevious)->m_eFileType;
+        ePreviousType = pFileInfo->m_eFileType;
     }
     emit changeCurrentItem(eCurrentType, ePreviousType);
 }

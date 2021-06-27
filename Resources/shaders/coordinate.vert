@@ -1,7 +1,7 @@
-attribute vec4 positionAttr;
-attribute vec4 colorAttr;
+attribute vec4 position;
+attribute vec4 color;
 
-varying vec4 colorVary;
+varying vec4 V_Color;
 
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
@@ -9,6 +9,6 @@ uniform mat4 modelMatrix;
 
 void main()
 {
-    colorVary = colorAttr;
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * positionAttr;
+    V_Color = color;
+    gl_Position = projectionMatrix * viewMatrix * modelMatrix * position;
 }

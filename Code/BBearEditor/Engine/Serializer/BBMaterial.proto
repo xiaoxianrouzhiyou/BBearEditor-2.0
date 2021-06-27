@@ -1,0 +1,11 @@
+syntax = "proto3";
+package BBSerializer;
+
+import "BBVector.proto";
+
+message BBMaterial
+{
+	optional string shaderName = 1;
+	optional string vShaderPath = 2;
+	optional string fShaderPath = 3;
+}

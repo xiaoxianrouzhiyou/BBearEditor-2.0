@@ -11,6 +11,8 @@ class QLabel;
 class QComboBox;
 class BBColorButton;
 class BBLight;
+class QPushButton;
+class BBPictureLabel;
 
 
 /**
@@ -138,6 +140,20 @@ private:
     BBLight *m_pLight;
 };
 
+
+class BBPictureFactory : public QWidget
+{
+    Q_OBJECT
+
+public:
+    BBPictureFactory(QWidget *pParent = 0);
+    ~BBPictureFactory();
+
+protected:
+    QPushButton *m_pRemoveButton;
+    QPushButton *m_pSelectButton;
+    BBPictureLabel *m_pPictureLabel;
+};
 
 #endif // BBPROPERTYFACTORY_H
 

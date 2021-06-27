@@ -5,7 +5,6 @@
 #include <QWidget>
 
 
-class QLineEdit;
 class QToolButton;
 class QPushButton;
 class QMenu;
@@ -13,75 +12,8 @@ class BBGameObject;
 class BBVector3DFactory;
 class BBScene;
 class BBEnumFactory;
-class QLabel;
-
-
-// manage name, class name, visibility, and so on
-// showed in the top of property manager
-class BBBaseInformationManager : public QWidget
-{
-    Q_OBJECT
-
-public:
-    BBBaseInformationManager(BBGameObject *pGameObject, QWidget *pParent = 0);
-    ~BBBaseInformationManager();
-//    void rename(QString newName);
-
-private slots:
-    virtual void changeVisibility();
-//    void finishRename();
-
-signals:
-    void visibilityChanged(BBGameObject *pGameObject, bool bVisible);
-//    void nameChanged(GameObject *gameObject);
-
-protected:
-    void setVisibilityButtonChecked(bool bChecked);
-
-    QPushButton *m_pVisibilityButton;
-    QLineEdit *m_pNameEdit;
-    BBGameObject *m_pCurrentGameObject;
-};
-
-
-// manage base information of BBGameObjectSet
-class BBSetBaseInformationManager : public BBBaseInformationManager
-{
-    Q_OBJECT
-
-public:
-    BBSetBaseInformationManager(BBGameObject *pCenterGameObject,
-                                const QList<BBGameObject*> &gameObjectSet,
-                                QWidget *pParent = 0);
-
-private slots:
-    void changeVisibility() override;
-
-signals:
-    void visibilityChanged(const QList<BBGameObject*> &gameObjectSet, bool bVisible);
-
-private:
-    QList<BBGameObject*> m_CurrentGameObjectSet;
-};
-
-
-class BBMaterialManager : public QWidget
-{
-    Q_OBJECT
-
-public:
-    BBMaterialManager(const QString &filePath, QWidget *pParent = nullptr);
-    ~BBMaterialManager();
-
-private:
-    void setIcon();
-    void setShaderEnumFactory(QWidget *pParent);
-
-    QString m_FilePath;
-    QLabel *m_pIcon;
-    BBEnumFactory *m_pVShaderEnumFactory;
-    BBEnumFactory *m_pFShaderEnumFactory;
-};
+class BBPreviewOpenGLWidget;
+class BBMaterial;
 
 
 // Manage a group of property
@@ -165,6 +97,22 @@ private:
     static int m_nCurrentRenderingAlgorithmIndex;
     BBScene *m_pScene;
     BBEnumFactory *m_pRenderingAlgorithmEnumFactory;
+};
+
+
+class BBMaterialPropertyGroupManager : public BBGroupManager
+{
+    Q_OBJECT
+
+public:
+    BBMaterialPropertyGroupManager(BBMaterial *pMaterial, BBPreviewOpenGLWidget *pPreviewOpenGLWidget, QWidget *pParent = 0);
+    ~BBMaterialPropertyGroupManager();
+
+private:
+    void setPropertyItems();
+
+    BBMaterial* m_pMaterial;
+    BBPreviewOpenGLWidget *m_pPreviewOpenGLWidget;
 };
 
 

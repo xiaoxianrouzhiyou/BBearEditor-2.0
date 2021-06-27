@@ -94,7 +94,9 @@ SOURCES += \
     Engine/3D/BBLightIndicator.cpp \
     Engine/2D/BBFullScreenQuad.cpp \
     Editor/Render/BBPreviewOpenGLWidget.cpp \
-    Engine/IO/BBMaterialLoader.cpp
+    Engine/Serializer/BBMaterial.pb.cc \
+    Engine/IO/BBMaterialFileManager.cpp \
+    Editor/PropertyManager/BBHeadManager.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -168,7 +170,9 @@ HEADERS += \
     Engine/3D/BBLightIndicator.h \
     Engine/2D/BBFullScreenQuad.h \
     Editor/Render/BBPreviewOpenGLWidget.h \
-    Engine/IO/BBMaterialLoader.h
+    Engine/Serializer/BBMaterial.pb.h \
+    Engine/IO/BBMaterialFileManager.h \
+    Editor/PropertyManager/BBHeadManager.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
