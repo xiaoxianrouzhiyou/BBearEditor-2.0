@@ -64,7 +64,7 @@ void BBIcon::init(const QString &path)
                              BB_PATH_RESOURCE_SHADER(texture.frag));
     BBTexture texture;
     m_pCurrentMaterial->getBaseRenderPass()->setSampler2D(NAME_TEXTURE,
-                                                   texture.createTexture2D(path));
+                                                          texture.createTexture2D(path));
     m_pCurrentMaterial->getBaseRenderPass()->setBlendState(true);
     m_pCurrentMaterial->getBaseRenderPass()->setZTestState(false);
 

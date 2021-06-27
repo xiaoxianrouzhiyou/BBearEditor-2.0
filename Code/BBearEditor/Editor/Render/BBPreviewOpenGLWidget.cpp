@@ -31,6 +31,7 @@ void BBPreviewOpenGLWidget::removeMaterialPreview()
     {
         m_pSphere->setActivity(false);
     }
+    update();
 }
 
 void BBPreviewOpenGLWidget::createSphere()

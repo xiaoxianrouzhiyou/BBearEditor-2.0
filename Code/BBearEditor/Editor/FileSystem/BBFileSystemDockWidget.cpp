@@ -62,12 +62,12 @@ void BBFileSystemDockWidget::doubleClickItemInFileList(const QString &filePath)
 
 void BBFileSystemDockWidget::changeCurrentItemInFileList(BBFileType eCurrentType, BBFileType ePreviousType)
 {
-    emit removeCurrentItemInHierarchyTree();
-    if (ePreviousType == BBFileType::Material && eCurrentType != BBFileType::Material)
-    {
-        // remove material sphere in the preview
-        emit removeMaterialPreview();
-    }
+//    emit removeCurrentItemInHierarchyTree();
+//    if (ePreviousType == BBFileType::Material && eCurrentType != BBFileType::Material)
+//    {
+//        // remove material sphere in the preview
+//        emit removeMaterialPreview();
+//    }
 }
 
 void BBFileSystemDockWidget::inFocusInFileList()

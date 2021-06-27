@@ -80,6 +80,17 @@ class BBPictureLabel : public QLabel
 
 public:
     BBPictureLabel(QWidget *pParent = 0);
+
+    void setFilter(const QStringList &acceptableSuffixs) { m_Filter = acceptableSuffixs; }
+
+signals:
+    void currentFilePathChanged(QString path);
+
+private:
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
+    QStringList m_Filter;
+    QString m_CurrentFilePath;
 };
 
 #endif // BBFACTORYCOMPONENT_H

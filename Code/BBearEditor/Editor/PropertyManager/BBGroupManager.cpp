@@ -12,6 +12,8 @@
 #include "Scene/BBSceneManager.h"
 #include "Render/BBDrawCall.h"
 #include "Render/BBShader.h"
+#include "Render/BBTexture.h"
+#include "Render/BBPreviewOpenGLWidget.h"
 
 
 /**
@@ -391,6 +393,13 @@ BBMaterialPropertyGroupManager::~BBMaterialPropertyGroupManager()
 
 }
 
+void BBMaterialPropertyGroupManager::setSampler2D(const QString &uniformName, const QString &texturePath)
+{
+    BBTexture texture;
+    m_pMaterial->setSampler2D(uniformName.toStdString().c_str(), texture.createTexture2D(texturePath));
+    m_pPreviewOpenGLWidget->update();
+}
+
 void BBMaterialPropertyGroupManager::setPropertyItems()
 {
     QList<std::string> names;
@@ -400,8 +409,11 @@ void BBMaterialPropertyGroupManager::setPropertyItems()
     {
         if (types[i] == BBMaterialUniformPropertyType::Sampler2D)
         {
-            BBPictureFactory *pPictureFactory = new BBPictureFactory(this);
-            addFactory(QString::fromStdString(names[i]), pPictureFactory);
+            QString name = QString::fromStdString(names[i]);
+            BBTextureFactory *pTextureFactory = new BBTextureFactory(name, this);
+            addFactory(name, pTextureFactory);
+            QObject::connect(pTextureFactory, SIGNAL(setSampler2D(QString, QString)),
+                             this, SLOT(setSampler2D(QString, QString)));
         }
     }
 }

@@ -7,6 +7,8 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QScreen>
+#include <QMimeData>
+#include <QFileInfo>
 
 
 /**
@@ -203,4 +205,51 @@ BBPictureLabel::BBPictureLabel(QWidget *pParent)
     setFocusPolicy(Qt::NoFocus);
     setText("None");
     setMinimumSize(48 * devicePixelRatio(), 48 * devicePixelRatio());
+}
+
+void BBPictureLabel::dragEnterEvent(QDragEnterEvent *event)
+{
+    QByteArray data;
+    if ((data = event->mimeData()->data(BB_MIMETYPE_FILELISTWIDGET)) != nullptr)
+    {
+        QDataStream dataStream(&data, QIODevice::ReadOnly);
+        dataStream >> m_CurrentFilePath;
+        QString suffix = QFileInfo(m_CurrentFilePath).suffix();
+        if (m_Filter.contains(suffix))
+        {
+            event->accept();
+        }
+        else
+        {
+            event->ignore();
+        }
+    }
+    else
+    {
+        event->ignore();
+    }
+}
+
+void BBPictureLabel::dropEvent(QDropEvent *event)
+{
+    if (m_CurrentFilePath.isEmpty())
+    {
+        // there is nothing
+        setText("None");
+    }
+    else
+    {
+        if (QFile(m_CurrentFilePath).exists())
+        {
+            setText("");
+            emit currentFilePathChanged(m_CurrentFilePath);
+        }
+        else
+        {
+            setText("Missing");
+        }
+    }
+    setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\"; "
+                  "border-image: url(" + m_CurrentFilePath + "); border-radius: 2px;");
+    event->accept();
 }

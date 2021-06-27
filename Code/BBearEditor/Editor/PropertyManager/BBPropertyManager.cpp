@@ -238,50 +238,6 @@ void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 //    updateMaterialPreview();
 //}
 
-////------------------IconLabel----------------------------
-
-
-
-//void IconLabel::setAcceptableSuffixs(QList<QString> acceptableSuffixs)
-//{
-//    mAcceptableSuffixs = acceptableSuffixs;
-//}
-
-//void IconLabel::dragEnterEvent(QDragEnterEvent *event)
-//{
-//    QByteArray data;
-//    if ((data = event->mimeData()->data(FileList::getMimeType())) != nullptr)
-//    {
-//        //只能拖文件
-//        QDataStream dataStream(&data, QIODevice::ReadOnly);
-//        QString filePath;
-//        dataStream >> filePath;
-//        QString suffix = filePath.mid(filePath.lastIndexOf('.') + 1);
-//        if (mAcceptableSuffixs.contains(suffix))
-//        {
-//            //接受的文件类型
-//            event->accept();
-//        }
-//        else
-//        {
-//            event->ignore();
-//        }
-//    }
-//    else
-//    {
-//        event->ignore();
-//    }
-//}
-
-//void IconLabel::dropEvent(QDropEvent *event)
-//{
-//    QByteArray data = event->mimeData()->data(FileList::getMimeType());
-//    QDataStream dataStream(&data, QIODevice::ReadOnly);
-//    QString filePath;
-//    dataStream >> filePath;
-//    changeValue(filePath);
-//    event->accept();
-//}
 
 
 ////------------------TextureFactory-----------------------
@@ -304,35 +260,6 @@ void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 //    QObject::connect(labelIcon, SIGNAL(changeValue(QString)), this, SLOT(changeTexture(QString)));
 //}
 
-//void TextureFactory::setTexture(QString texturePath)
-//{
-//    //默认纹理不处理
-//    if (texturePath == DefaultTexturePath)
-//    {
-//        texturePath = "";
-//    }
-
-//    //设置纹理显示区的内容
-//    if (texturePath.isEmpty())
-//    {
-//        //没有设置纹理 文字提示
-//        labelIcon->setText("None");
-//    }
-//    else
-//    {
-//        //纹理是否存在
-//        if (QFile(texturePath).exists())
-//        {
-//            labelIcon->setText("");
-//        }
-//        else
-//        {
-//            labelIcon->setText("Missing");
-//        }
-//    }
-//    labelIcon->setStyleSheet("color: #d6dfeb; font: 10pt \"Arial\"; "
-//                             "border-image: url(" + texturePath + "); border-radius: 2px;");
-//}
 
 //void TextureFactory::removeTexture()
 //{

@@ -8,6 +8,7 @@
 #include <QLabel>
 #include <QComboBox>
 #include "Render/Light/BBLight.h"
+#include "FileSystem/BBFileSystemDataManager.h"
 
 
 /**
@@ -293,4 +294,24 @@ BBPictureFactory::~BBPictureFactory()
     BB_SAFE_DELETE(m_pRemoveButton);
     BB_SAFE_DELETE(m_pSelectButton);
     BB_SAFE_DELETE(m_pPictureLabel);
+}
+
+
+/**
+ * @brief BBTextureFactory::BBTextureFactory
+ * @param pParent
+ */
+BBTextureFactory::BBTextureFactory(const QString &uniformName, QWidget *pParent)
+    : BBPictureFactory(pParent)
+{
+    m_UniformName = uniformName;
+    m_pPictureLabel->setFilter(BBFileSystemDataManager::m_TextureSuffixs);
+
+    QObject::connect(m_pPictureLabel, SIGNAL(currentFilePathChanged(QString)),
+                     this, SLOT(changeCurrentFilePath(QString)));
+}
+
+void BBTextureFactory::changeCurrentFilePath(const QString &filePath)
+{
+    emit setSampler2D(m_UniformName, filePath);
 }

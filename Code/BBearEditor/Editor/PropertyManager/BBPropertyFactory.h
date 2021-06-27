@@ -155,6 +155,24 @@ protected:
     BBPictureLabel *m_pPictureLabel;
 };
 
+
+class BBTextureFactory : public BBPictureFactory
+{
+    Q_OBJECT
+
+public:
+    BBTextureFactory(const QString &uniformName, QWidget *pParent = 0);
+
+private slots:
+    void changeCurrentFilePath(const QString &filePath);
+
+signals:
+    void setSampler2D(const QString &uniformName, const QString &texturePath);
+
+private:
+    QString m_UniformName;
+};
+
 #endif // BBPROPERTYFACTORY_H
 
 

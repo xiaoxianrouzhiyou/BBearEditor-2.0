@@ -108,6 +108,9 @@ public:
     BBMaterialPropertyGroupManager(BBMaterial *pMaterial, BBPreviewOpenGLWidget *pPreviewOpenGLWidget, QWidget *pParent = 0);
     ~BBMaterialPropertyGroupManager();
 
+private slots:
+    void setSampler2D(const QString &uniformName, const QString &texturePath);
+
 private:
     void setPropertyItems();
 

@@ -59,6 +59,8 @@ void BBVertexBufferObject::setTexcoord(int index, float u, float v)
 {
     m_pVertexes[index].m_fTexcoord[0] = u;
     m_pVertexes[index].m_fTexcoord[1] = v;
+    m_pVertexes[index].m_fTexcoord[2] = 0.0f;
+    m_pVertexes[index].m_fTexcoord[3] = 0.0f;
 }
 
 void BBVertexBufferObject::setTexcoord(int index, const QVector2D &uv)
