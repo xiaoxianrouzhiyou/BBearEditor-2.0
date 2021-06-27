@@ -713,6 +713,7 @@ void BBFileListWidget::focusInEvent(QFocusEvent *event)
     // parent class, when the focus is obtained, the first item will show a blue box, which is ugly
     Q_UNUSED(event);
     setFocus();
+    emit inFocus();
 }
 
 QString BBFileListWidget::getPathByItem(QListWidgetItem *pItem)

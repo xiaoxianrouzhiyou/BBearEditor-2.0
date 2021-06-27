@@ -11,6 +11,7 @@
 #include "Base/BBGameObject.h"
 #include "Scene/BBSceneManager.h"
 #include "Render/BBDrawCall.h"
+#include "IO/BBMaterialLoader.h"
 
 
 /**
@@ -163,11 +164,9 @@ BBMaterialManager::BBMaterialManager(const QString &filePath, QWidget *pParent)
     pLabelName->setStyleSheet("font: 75 9pt \"Arial\";");
     pInfoLayout->addWidget(pLabelName, 1);
     // shader on the bottom right
-    QStringList shaderList;
-    shaderList.append("1");
-    shaderList.append("2");
-    BBEnumFactory *pEnumFactory = new BBEnumFactory("Shader", shaderList, "1", pInfoWidget);
-    pInfoLayout->addWidget(pEnumFactory);
+    setShaderEnumFactory(pInfoWidget);
+    pInfoLayout->addWidget(m_pVShaderEnumFactory);
+    pInfoLayout->addWidget(m_pFShaderEnumFactory);
     pBaseInfoLayout->addWidget(pInfoWidget, 3);
     pLayout->addWidget(pBaseInfoWidget);
 }
@@ -175,14 +174,22 @@ BBMaterialManager::BBMaterialManager(const QString &filePath, QWidget *pParent)
 BBMaterialManager::~BBMaterialManager()
 {
     BB_SAFE_DELETE(m_pIcon);
+    BB_SAFE_DELETE(m_pVShaderEnumFactory);
+    BB_SAFE_DELETE(m_pFShaderEnumFactory);
 }
 
 void BBMaterialManager::setIcon()
 {
-    QPixmap pix(BB_PATH_RESOURCE_ICON(material3.png));
+    QPixmap pix(BB_PATH_RESOURCE_ICON(material5.png));
     pix.setDevicePixelRatio(devicePixelRatio());
-    pix = pix.scaled(30 * devicePixelRatio(), 30 * devicePixelRatio(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    pix = pix.scaled(45 * devicePixelRatio(), 45 * devicePixelRatio(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     m_pIcon->setPixmap(pix);
+}
+
+void BBMaterialManager::setShaderEnumFactory(QWidget *pParent)
+{
+    m_pVShaderEnumFactory = new BBEnumFactory("V Shader", BBMaterialLoader::loadVShaderList(), "", pParent);
+    m_pFShaderEnumFactory = new BBEnumFactory("F Shader", BBMaterialLoader::loadFShaderList(), "", pParent);
 }
 
 

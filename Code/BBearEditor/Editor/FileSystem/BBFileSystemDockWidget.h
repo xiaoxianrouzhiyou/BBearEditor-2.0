@@ -33,6 +33,7 @@ private slots:
     void clickItemInFileList(const QString &filePath, const BBFileType &eType);
     void doubleClickItemInFileList(const QString &filePath);
     void changeCurrentItemInFileList(BBFileType eCurrentType, BBFileType ePreviousType);
+    void inFocusInFileList();
     void clickItemInFolderPathBar(const QString &filePath);
 
     void newFolder(const QString &parentPath, const BBSignalSender &eSender);

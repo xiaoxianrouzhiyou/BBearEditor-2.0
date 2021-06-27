@@ -11,6 +11,7 @@ class BBAttribute;
 class BBUniformUpdater;
 class BBMaterialProperty;
 class BBRenderPass;
+class BBShader;
 
 class BBMaterial
 {
@@ -30,6 +31,7 @@ public:
 
     inline BBRenderPass* getBaseRenderPass() const { return m_pBaseRenderPass; }
     inline BBRenderPass* getAdditiveRenderPass() const { return m_pAdditiveRenderPass; }
+    BBShader* getShader();
 
 private:
     BBRenderPass *m_pBaseRenderPass;

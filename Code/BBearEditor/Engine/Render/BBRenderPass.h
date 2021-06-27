@@ -17,6 +17,7 @@ public:
     ~BBRenderPass();
 
     void setShader(BBShader *pShader);
+    BBShader* getShader() { return m_pShader; }
 
     void bind(BBCamera *pCamera);
     void unbind();

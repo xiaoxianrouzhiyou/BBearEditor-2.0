@@ -70,6 +70,11 @@ void BBFileSystemDockWidget::changeCurrentItemInFileList(BBFileType eCurrentType
     }
 }
 
+void BBFileSystemDockWidget::inFocusInFileList()
+{
+    emit removeCurrentItemInHierarchyTree();
+}
+
 void BBFileSystemDockWidget::clickItemInFolderPathBar(const QString &filePath)
 {
     m_pFileSystemManager->clickItemInFolderPathBar(filePath);
@@ -160,6 +165,8 @@ void BBFileSystemDockWidget::setConnect()
                      this, SLOT(clickItemInFileList(QString, BBFileType)));
     QObject::connect(m_pUi->listFile, SIGNAL(changeCurrentItem(BBFileType, BBFileType)),
                      this, SLOT(changeCurrentItemInFileList(BBFileType, BBFileType)));
+    QObject::connect(m_pUi->listFile, SIGNAL(inFocus()),
+                     this, SLOT(inFocusInFileList()));
     // click buttons in the file system
     QObject::connect(m_pUi->buttonRootProject, SIGNAL(clicked()),
                      m_pUi->treeFolder, SLOT(pressRootButton()));

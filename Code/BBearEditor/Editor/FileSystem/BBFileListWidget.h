@@ -74,6 +74,7 @@ signals:
                    const QString &newParentPath, bool bCopy);
     void clickItem(const QString &filePath, const BBFileType &eType);
     void changeCurrentItem(BBFileType eCurrentType, BBFileType ePreviousType);
+    void inFocus();
 
 private:
     void setMenu();

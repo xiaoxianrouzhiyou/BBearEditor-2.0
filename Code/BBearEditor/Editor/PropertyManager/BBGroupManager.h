@@ -75,9 +75,12 @@ public:
 
 private:
     void setIcon();
+    void setShaderEnumFactory(QWidget *pParent);
 
     QString m_FilePath;
     QLabel *m_pIcon;
+    BBEnumFactory *m_pVShaderEnumFactory;
+    BBEnumFactory *m_pFShaderEnumFactory;
 };
 
 

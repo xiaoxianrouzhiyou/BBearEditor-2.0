@@ -89,4 +89,11 @@ void BBMaterial::setSampler2D(const std::string &uniformName, GLuint textureName
     }
 }
 
-
+BBShader* BBMaterial::getShader()
+{
+    if (m_pBaseRenderPass != nullptr)
+    {
+        return m_pBaseRenderPass->getShader();
+    }
+    return nullptr;
+}
