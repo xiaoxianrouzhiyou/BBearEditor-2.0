@@ -9,7 +9,7 @@ BBFileSystemDockWidget::BBFileSystemDockWidget(QWidget *pParent)
 {
     m_pUi->setupUi(this);
 
-    m_pUi->dockProjectContents->updateSizeHint(QSize(300, 250));
+    m_pUi->dockProjectContents->updateSizeHint(QSize(1024, 400));
     // Stretch the width of the file list
     m_pUi->splitterProject->setStretchFactor(0, 1);
     m_pUi->splitterProject->setStretchFactor(1, 2);

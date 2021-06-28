@@ -94,7 +94,7 @@ QDockWidget::title {
     padding-left: 5px;
 }
 
-#scrollAreaWidgetContents { /*The background color of the scroll area*/
+#scrollAreaWidgetContents, #scrollAreaConsoleContents { /*The background color of the scroll area*/
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #191f28, stop: 1 rgb(36, 43, 58));
 }
 
@@ -295,7 +295,7 @@ BBObjectListWidget::item:focus {
     image: url(../../resources/icons/search_close2.png);
 }
 
-#buttonRootHierarchy, #buttonRootProject, #buttonRootInspector {
+#buttonRootHierarchy, #buttonRootProject, #buttonRootInspector, #buttonClearConsole {
     font: 9pt &quot;Arial&quot;;
     color: #d6dfeb;
     background: #0ebf9c;
@@ -312,11 +312,7 @@ BBObjectListWidget::item:focus {
     background: #8c0ebf9c;
 }
 
-#buttonMoreProject {
-    image: url(../../resources/icons/setting.png);
-}
-
-#buttonSettingFile, #buttonSettingInspector, #buttonSettingFile {
+#buttonSettingFile, #buttonSettingInspector, #buttonSettingConsole {
     image: url(../../resources/icons/setting.png);
 }
 
@@ -720,7 +716,7 @@ BBFileListWidget::item:selected {
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockHierarchyContents">
+   <widget class="BBResizableWidget" name="dockHierarchyContents">
     <layout class="QVBoxLayout" name="verticalLayout_3">
      <property name="spacing">
       <number>0</number>
@@ -1023,7 +1019,7 @@ BBFileListWidget::item:selected {
     <number>4</number>
    </attribute>
    <widget class="BBResizableWidget" name="dockEditviewContents">
-    <layout class="QGridLayout" name="gridLayout">
+    <layout class="QGridLayout" name="editviewGridLayout">
      <property name="leftMargin">
       <number>0</number>
      </property>
@@ -1052,6 +1048,129 @@ BBFileListWidget::item:selected {
    <attribute name="dockWidgetArea">
     <number>4</number>
    </attribute>
+  </widget>
+  <widget class="QDockWidget" name="dockConsole">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="windowTitle">
+    <string>Console</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>4</number>
+   </attribute>
+   <widget class="BBResizableWidget" name="dockConsoleContents">
+    <layout class="QVBoxLayout" name="consoleLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QWidget" name="consoleBar" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>22</height>
+        </size>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayoutConsoleBar">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item alignment="Qt::AlignLeft | Qt::AlignBottom">
+         <widget class="QPushButton" name="buttonClearConsole">
+          <property name="minimumSize">
+           <size>
+            <width>48</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Clear</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item alignment="Qt::AlignRight">
+         <widget class="QPushButton" name="buttonSettingConsole">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QScrollArea" name="scrollAreaConsole">
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaConsoleContents">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>399</width>
+          <height>184</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="gridLayout_4">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item alignment="Qt::AlignTop">
+          <widget class="QLabel" name="console" native="true"/>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
  </widget>
  <customwidgets>

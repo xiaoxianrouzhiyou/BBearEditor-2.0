@@ -50,20 +50,17 @@ void BBMainWindow::setWindowLayout()
 
     // dock layout
     addDockWidget(Qt::LeftDockWidgetArea, m_pUi->dockGameObject);
+    splitDockWidget(m_pUi->dockGameObject, m_pUi->dockConsole, Qt::Vertical);
     splitDockWidget(m_pUi->dockGameObject, m_pUi->dockEditview, Qt::Horizontal);
-    splitDockWidget(m_pUi->dockEditview, m_pUi->dockInspector, Qt::Horizontal);
-    splitDockWidget(m_pUi->dockGameObject, m_pUi->dockHierarchy, Qt::Vertical);
-    splitDockWidget(m_pUi->dockEditview, m_pUi->dockProject, Qt::Vertical);
+    splitDockWidget(m_pUi->dockConsole, m_pUi->dockProject, Qt::Horizontal);
+    addDockWidget(Qt::RightDockWidgetArea, m_pUi->dockHierarchy);
+    splitDockWidget(m_pUi->dockHierarchy, m_pUi->dockInspector, Qt::Vertical);
     splitDockWidget(m_pUi->dockInspector, m_pUi->dockPreview, Qt::Vertical);
-//    tabifyDockWidget(m_pUi->dockPreview, m_pUi->dockEditview);
-//    tabifyDockWidget(m_pUi->dockConsole, m_pUi->dockProject);
-//    splitDockWidget(m_pUi->dockProject, m_pUi->dockConsole, Qt::Horizontal);
-//    m_pUi->dockConsole->setVisible(false);
 
     // resize
-    m_pUi->dockGameObjectContents->updateSizeHint(QSize(350, 150));
-    m_pUi->dockInspectorContents->updateSizeHint(QSize(300, 500));
-    m_pUi->dockPreviewContents->updateSizeHint(QSize(300, 200));
+    m_pUi->dockGameObjectContents->updateSizeHint(QSize(250, 900));
+    m_pUi->dockEditviewContents->updateSizeHint(QSize(1440, 900));
+    m_pUi->dockPreviewContents->updateSizeHint(QSize(480, 300));
 }
 
 void BBMainWindow::setGameObjectDockWidget()

@@ -82,7 +82,7 @@ void BBGroupManager::addFactory(const QString &name, QWidget *pFactory, int nStr
     pLayout->addWidget(pLabel, 1, Qt::AlignBottom);
     // factory showed in the right side
     pFactory->setParent(pWidget);
-    pLayout->addWidget(pFactory, nStretch, Qt::AlignRight);
+    pLayout->addWidget(pFactory, nStretch);
     m_pContainer->layout()->addWidget(pWidget);
 }
 
@@ -412,7 +412,7 @@ void BBMaterialPropertyGroupManager::setPropertyItems()
             QString name = QString::fromStdString(names[i]);
             BBSampler2DMaterialProperty *pProperty = (BBSampler2DMaterialProperty*)properties[i];
             BBTextureFactory *pTextureFactory = new BBTextureFactory(name, pProperty->getResourcePath(), this);
-            addFactory(name, pTextureFactory);
+            addFactory(name, pTextureFactory, 0);
             QObject::connect(pTextureFactory, SIGNAL(setSampler2D(QString, QString)),
                              this, SLOT(setSampler2D(QString, QString)));
         }

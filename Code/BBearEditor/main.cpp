@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     // main interface
     QWidget mainWidget;
 //    mainWidget.setWindowState(Qt::WindowMaximized);
-    mainWidget.resize(1600, 1000);
+    mainWidget.resize(1920, 1200);
     mainWidget.setWindowFlags(Qt::FramelessWindowHint | mainWidget.windowFlags());
 
     NcFramelessHelper mainWidgetHelper;
