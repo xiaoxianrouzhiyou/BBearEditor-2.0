@@ -397,7 +397,7 @@ void BBMaterialPropertyGroupManager::setSampler2D(const QString &uniformName, co
 {
     BBTexture texture;
     m_pMaterial->setSampler2D(uniformName.toStdString().c_str(), texture.createTexture2D(texturePath));
-    m_pPreviewOpenGLWidget->update();
+    m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
 }
 
 void BBMaterialPropertyGroupManager::setPropertyItems()

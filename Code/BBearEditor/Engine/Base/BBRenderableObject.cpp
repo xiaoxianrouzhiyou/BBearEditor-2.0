@@ -76,6 +76,12 @@ void BBRenderableObject::setCurrentMaterial(int nIndex)
     m_pCurrentMaterial = m_Materials[nIndex];
 }
 
+void BBRenderableObject::setCurrentMaterial(BBMaterial *pMaterial)
+{
+    m_pCurrentMaterial = pMaterial;
+    m_pDrawCalls->setMaterial(m_pCurrentMaterial);
+}
+
 void BBRenderableObject::appendDrawCall(BBDrawCall *pDrawCall)
 {
     if (m_pDrawCalls == nullptr)

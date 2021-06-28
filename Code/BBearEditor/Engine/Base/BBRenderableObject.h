@@ -24,6 +24,7 @@ public:
     void render(BBCamera *pCamera) override;
     void render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera) override;
     void setCurrentMaterial(int nIndex) override;
+    void setCurrentMaterial(BBMaterial *pMaterial) override;
 
     inline BBMaterial* getMaterial() { return m_pCurrentMaterial; }
     inline BBVertexBufferObject* getVBO() { return m_pVBO; }

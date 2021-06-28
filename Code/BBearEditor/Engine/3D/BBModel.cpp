@@ -56,6 +56,11 @@ void BBModel::render(BBCamera *pCamera)
     }
 }
 
+void BBModel::setCurrentMaterial(BBMaterial *pMaterial)
+{
+    m_pMesh->setCurrentMaterial(pMaterial);
+}
+
 void BBModel::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
 {
     BBGameObject::setPosition(position, bUpdateLocalTransform);

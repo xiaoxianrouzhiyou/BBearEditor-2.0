@@ -11,6 +11,14 @@ BBPreviewOpenGLWidget::BBPreviewOpenGLWidget(QWidget *pParent)
     m_pSphere = NULL;
 }
 
+void BBPreviewOpenGLWidget::updateMaterialSphere(BBMaterial *pMaterial)
+{
+    BB_PROCESS_ERROR_RETURN(m_pSphere);
+    BB_PROCESS_ERROR_RETURN(pMaterial);
+    m_pSphere->setCurrentMaterial(pMaterial);
+    update();
+}
+
 void BBPreviewOpenGLWidget::showMaterialPreview(const QString &filePath)
 {
     if (!m_pSphere)
@@ -27,10 +35,8 @@ void BBPreviewOpenGLWidget::showMaterialPreview(const QString &filePath)
 
 void BBPreviewOpenGLWidget::removeMaterialPreview()
 {
-    if (m_pSphere)
-    {
-        m_pSphere->setActivity(false);
-    }
+    BB_PROCESS_ERROR_RETURN(m_pSphere);
+    m_pSphere->setActivity(false);
     update();
 }
 

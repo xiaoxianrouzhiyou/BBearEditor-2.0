@@ -79,4 +79,9 @@ void BBMaterialFileManager::loadMaterialContent(const QString &filePath, BBMater
     pMaterial->init(material.shadername().data(),
                     QString::fromStdString(material.vshaderpath()),
                     QString::fromStdString(material.fshaderpath()));
+    // default
+    float *pLightPosition = new float[4] {1.0f, 1.0f, 0.0f, 0.0f};
+    float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};
+    pMaterial->setVector4(NAME_LIGHT_POSITION, pLightPosition);
+    pMaterial->setVector4(NAME_LIGHT_COLOR, pLightColor);
 }

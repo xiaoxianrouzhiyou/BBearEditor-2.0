@@ -324,6 +324,11 @@ void BBGameObject::setCurrentMaterial(int nIndex)
     Q_UNUSED(nIndex);
 }
 
+void BBGameObject::setCurrentMaterial(BBMaterial *pMaterial)
+{
+    Q_UNUSED(pMaterial);
+}
+
 bool BBGameObject::hit(const BBRay &ray, float &fDistance)
 {
     Q_UNUSED(ray);

@@ -5,12 +5,17 @@
 #include "BBOpenGLWidget.h"
 
 class BBModel;
+class BBMaterial;
+
 class BBPreviewOpenGLWidget : public BBOpenGLWidget
 {
     Q_OBJECT
 
 public:
     BBPreviewOpenGLWidget(QWidget *pParent = 0);
+
+public:
+    void updateMaterialSphere(BBMaterial *pMaterial);
 
 private slots:
     void showMaterialPreview(const QString &filePath);
