@@ -57,16 +57,20 @@ void BBDrawCall::draw(BBCamera *pCamera)
     (this->*m_DrawFunc)(pCamera);
 }
 
-void BBDrawCall::setDrawFunc(int nIndex)
+void BBDrawCall::switchRenderingSettings(int nIndex)
 {
     switch (nIndex) {
     case 0:
         m_DrawFunc = &BBDrawCall::forwardRendering;
         BBSceneManager::getScene()->enableFBO(false);
+        BBSceneManager::getScene()->enableSkyBox(true);
+        BBSceneManager::getScene()->enableHorizontalPlane(true);
         break;
     case 1:
         m_DrawFunc = &BBDrawCall::deferredRendering;
         BBSceneManager::getScene()->enableFBO(true);
+        BBSceneManager::getScene()->enableSkyBox(false);
+        BBSceneManager::getScene()->enableHorizontalPlane(false);
         break;
     default:
         break;

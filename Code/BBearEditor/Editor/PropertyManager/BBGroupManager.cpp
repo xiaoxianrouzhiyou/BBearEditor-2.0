@@ -352,7 +352,7 @@ void BBGlobalSettingsGroupManager::changeCurrentRenderingAlgorithm(int nIndex)
 {
     // 0 Forward Rendering
     // 1 Deferred Rendering
-    BBDrawCall::setDrawFunc(nIndex);
+    BBDrawCall::switchRenderingSettings(nIndex);
     m_nCurrentRenderingAlgorithmIndex = nIndex;
 }
 

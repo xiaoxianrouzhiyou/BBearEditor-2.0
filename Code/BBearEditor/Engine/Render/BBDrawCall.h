@@ -26,7 +26,7 @@ public:
     void draw(BBCamera *pCamera);
 
 public:
-    static void setDrawFunc(int nIndex);
+    static void switchRenderingSettings(int nIndex);
     void onePassRendering(BBCamera *pCamera);
     void forwardRendering(BBCamera *pCamera);
     void deferredRendering(BBCamera *pCamera);
