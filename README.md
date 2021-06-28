@@ -5,3 +5,5 @@ QT 5.7.2    OpenGL
 
 Recently, I update it on a daily basis. Now, it has had several functions. After it has a basic frame, I will write related documents.
 I referred to some code, learning resources, UI designs, and art resources. I'm pretty thankful!
+
+![image](https://user-images.githubusercontent.com/31690363/123601936-d04f0e00-d82a-11eb-9ef9-b777fc1e2b1a.png)
