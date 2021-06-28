@@ -77,15 +77,23 @@ void BBMaterial::setVector4(const std::string &uniformName, const float *pVector
     }
 }
 
-void BBMaterial::setSampler2D(const std::string &uniformName, GLuint textureName)
+void BBMaterial::setSampler2D(const std::string &uniformName, GLuint textureName, const QString &resourcePath)
 {
     if (m_pBaseRenderPass != nullptr)
     {
-        m_pBaseRenderPass->setSampler2D(uniformName, textureName);
+        m_pBaseRenderPass->setSampler2D(uniformName, textureName, resourcePath);
     }
     if (m_pAdditiveRenderPass != nullptr)
     {
-        m_pAdditiveRenderPass->setSampler2D(uniformName, textureName);
+        m_pAdditiveRenderPass->setSampler2D(uniformName, textureName, resourcePath);
+    }
+}
+
+void BBMaterial::getEditableProperties(QList<std::string> &outNames, QList<BBMaterialProperty*> &outProperties)
+{
+    if (m_pBaseRenderPass != nullptr)
+    {
+        m_pBaseRenderPass->getEditableProperties(outNames, outProperties);
     }
 }
 

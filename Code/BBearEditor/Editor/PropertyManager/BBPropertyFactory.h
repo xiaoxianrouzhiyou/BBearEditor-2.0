@@ -161,9 +161,9 @@ class BBTextureFactory : public BBPictureFactory
     Q_OBJECT
 
 public:
-    BBTextureFactory(const QString &uniformName, QWidget *pParent = 0);
+    BBTextureFactory(const QString &uniformName, const QString &originalPicturePath = "", QWidget *pParent = 0);
 
-private slots:
+public slots:
     void changeCurrentFilePath(const QString &filePath);
 
 signals:

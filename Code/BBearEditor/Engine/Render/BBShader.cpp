@@ -74,25 +74,6 @@ void BBShader::activeAttributes()
     }
 }
 
-void BBShader::getEditableProperties(QList<std::string> &outNames, QList<BBMaterialUniformPropertyType> &outTypes)
-{
-    for (QMap<std::string, BBMaterialProperty*>::Iterator it = m_Properties.begin(); it != m_Properties.end(); it++)
-    {
-        std::string uniformName = it.key();
-        // some properties cannot be outputted
-        if (strcmp(uniformName.data(), NAME_MODELMATRIX) != 0
-                || strcmp(uniformName.data(), NAME_VIEWMATRIX) != 0
-                || strcmp(uniformName.data(), NAME_PROJECTIONMATRIX) != 0
-                || strcmp(uniformName.data(), NAME_LIGHT_POSITION) != 0
-                || strcmp(uniformName.data(), NAME_LIGHT_COLOR) != 0)
-        {
-            outNames.append(uniformName);
-            BBMaterialProperty* pMaterialProperty = it.value();
-            outTypes.append(pMaterialProperty->getType());
-        }
-    }
-}
-
 void BBShader::initAttributes()
 {
     GLint count = 0;

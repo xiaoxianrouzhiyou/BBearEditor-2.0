@@ -28,8 +28,6 @@ public:
     void activeAttributes();
     inline BBUniformUpdater* getUniforms() { return m_pUniforms; }
 
-    void getEditableProperties(QList<std::string> &outNames, QList<BBMaterialUniformPropertyType> &outTypes);
-
 private:
     void initAttributes();
     void initUniforms();

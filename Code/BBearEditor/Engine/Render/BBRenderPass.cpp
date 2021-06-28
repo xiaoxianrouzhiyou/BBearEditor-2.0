@@ -110,12 +110,31 @@ void BBRenderPass::setVector4(const std::string &uniformName, const float *pVect
     }
 }
 
-void BBRenderPass::setSampler2D(const std::string &uniformName, GLuint textureName)
+void BBRenderPass::setSampler2D(const std::string &uniformName, GLuint textureName, const QString &resourcePath)
 {
     auto it = m_Properties.find(uniformName);
     if (it != m_Properties.end())
     {
-        ((BBSampler2DMaterialProperty*)it.value())->setTextureName(textureName);
+        ((BBSampler2DMaterialProperty*)it.value())->setTextureName(textureName, resourcePath);
+    }
+}
+
+void BBRenderPass::getEditableProperties(QList<std::string> &outNames, QList<BBMaterialProperty*> &outProperties)
+{
+    for (QMap<std::string, BBMaterialProperty*>::Iterator it = m_Properties.begin(); it != m_Properties.end(); it++)
+    {
+        std::string uniformName = it.key();
+        // some properties cannot be outputted
+        if (strcmp(uniformName.data(), NAME_MODELMATRIX) != 0
+                || strcmp(uniformName.data(), NAME_VIEWMATRIX) != 0
+                || strcmp(uniformName.data(), NAME_PROJECTIONMATRIX) != 0
+                || strcmp(uniformName.data(), NAME_LIGHT_POSITION) != 0
+                || strcmp(uniformName.data(), NAME_LIGHT_COLOR) != 0)
+        {
+            outNames.append(uniformName);
+            BBMaterialProperty* pMaterialProperty = it.value();
+            outProperties.append(pMaterialProperty);
+        }
     }
 }
 

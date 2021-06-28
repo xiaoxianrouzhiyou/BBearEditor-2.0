@@ -301,11 +301,12 @@ BBPictureFactory::~BBPictureFactory()
  * @brief BBTextureFactory::BBTextureFactory
  * @param pParent
  */
-BBTextureFactory::BBTextureFactory(const QString &uniformName, QWidget *pParent)
+BBTextureFactory::BBTextureFactory(const QString &uniformName, const QString &originalPicturePath, QWidget *pParent)
     : BBPictureFactory(pParent)
 {
     m_UniformName = uniformName;
     m_pPictureLabel->setFilter(BBFileSystemDataManager::m_TextureSuffixs);
+    m_pPictureLabel->setPicture(originalPicturePath);
 
     QObject::connect(m_pPictureLabel, SIGNAL(currentFilePathChanged(QString)),
                      this, SLOT(changeCurrentFilePath(QString)));

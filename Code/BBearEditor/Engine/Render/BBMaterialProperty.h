@@ -73,12 +73,14 @@ public:
 
     BBMaterialProperty* clone() override;
 
-    inline void setTextureName(GLuint textureName) { m_TextureName = textureName; }
+    void setTextureName(GLuint textureName, const QString &resourcePath = "");
     inline GLuint getTextureName() const { return m_TextureName; }
+    inline QString getResourcePath() { return m_ResourcePath; }
 
 private:
     // 智能指针 to do
     GLuint m_TextureName;
+    QString m_ResourcePath;
 };
 
 

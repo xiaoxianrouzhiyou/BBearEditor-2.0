@@ -82,6 +82,12 @@ BBSampler2DMaterialProperty::~BBSampler2DMaterialProperty()
 BBMaterialProperty* BBSampler2DMaterialProperty::clone()
 {
     BBSampler2DMaterialProperty *pRet = new BBSampler2DMaterialProperty(m_Name);
-    pRet->setTextureName(m_TextureName);
+    pRet->setTextureName(m_TextureName, m_ResourcePath);
     return pRet;
+}
+
+void BBSampler2DMaterialProperty::setTextureName(GLuint textureName, const QString &resourcePath)
+{
+    m_TextureName = textureName;
+    m_ResourcePath = resourcePath;
 }

@@ -82,9 +82,10 @@ public:
     BBPictureLabel(QWidget *pParent = 0);
 
     void setFilter(const QStringList &acceptableSuffixs) { m_Filter = acceptableSuffixs; }
+    void setPicture(const QString &filePath);
 
 signals:
-    void currentFilePathChanged(QString path);
+    void currentFilePathChanged(const QString &path);
 
 private:
     void dragEnterEvent(QDragEnterEvent *event) override;

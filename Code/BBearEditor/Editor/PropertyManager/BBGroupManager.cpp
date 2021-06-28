@@ -396,21 +396,22 @@ BBMaterialPropertyGroupManager::~BBMaterialPropertyGroupManager()
 void BBMaterialPropertyGroupManager::setSampler2D(const QString &uniformName, const QString &texturePath)
 {
     BBTexture texture;
-    m_pMaterial->setSampler2D(uniformName.toStdString().c_str(), texture.createTexture2D(texturePath));
+    m_pMaterial->setSampler2D(uniformName.toStdString().c_str(), texture.createTexture2D(texturePath), texturePath);
     m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
 }
 
 void BBMaterialPropertyGroupManager::setPropertyItems()
 {
     QList<std::string> names;
-    QList<BBMaterialUniformPropertyType> types;
-    m_pMaterial->getShader()->getEditableProperties(names, types);
-    for (int i = 0; i < types.count(); i++)
+    QList<BBMaterialProperty*> properties;
+    m_pMaterial->getEditableProperties(names, properties);
+    for (int i = 0; i < properties.count(); i++)
     {
-        if (types[i] == BBMaterialUniformPropertyType::Sampler2D)
+        if (properties[i]->getType() == BBMaterialUniformPropertyType::Sampler2D)
         {
             QString name = QString::fromStdString(names[i]);
-            BBTextureFactory *pTextureFactory = new BBTextureFactory(name, this);
+            BBSampler2DMaterialProperty *pProperty = (BBSampler2DMaterialProperty*)properties[i];
+            BBTextureFactory *pTextureFactory = new BBTextureFactory(name, pProperty->getResourcePath(), this);
             addFactory(name, pTextureFactory);
             QObject::connect(pTextureFactory, SIGNAL(setSampler2D(QString, QString)),
                              this, SLOT(setSampler2D(QString, QString)));

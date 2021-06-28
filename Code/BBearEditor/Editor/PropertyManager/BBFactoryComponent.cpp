@@ -207,6 +207,30 @@ BBPictureLabel::BBPictureLabel(QWidget *pParent)
     setMinimumSize(48 * devicePixelRatio(), 48 * devicePixelRatio());
 }
 
+void BBPictureLabel::setPicture(const QString &filePath)
+{
+    m_CurrentFilePath = filePath;
+    if (m_CurrentFilePath.isEmpty())
+    {
+        // there is nothing
+        setText("None");
+    }
+    else
+    {
+        if (QFile(m_CurrentFilePath).exists())
+        {
+            setText("");
+            emit currentFilePathChanged(m_CurrentFilePath);
+        }
+        else
+        {
+            setText("Missing");
+        }
+    }
+    setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\"; "
+                  "border-image: url(" + m_CurrentFilePath + "); border-radius: 2px;");
+}
+
 void BBPictureLabel::dragEnterEvent(QDragEnterEvent *event)
 {
     QByteArray data;
@@ -232,24 +256,6 @@ void BBPictureLabel::dragEnterEvent(QDragEnterEvent *event)
 
 void BBPictureLabel::dropEvent(QDropEvent *event)
 {
-    if (m_CurrentFilePath.isEmpty())
-    {
-        // there is nothing
-        setText("None");
-    }
-    else
-    {
-        if (QFile(m_CurrentFilePath).exists())
-        {
-            setText("");
-            emit currentFilePathChanged(m_CurrentFilePath);
-        }
-        else
-        {
-            setText("Missing");
-        }
-    }
-    setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\"; "
-                  "border-image: url(" + m_CurrentFilePath + "); border-radius: 2px;");
+    setPicture(m_CurrentFilePath);
     event->accept();
 }
