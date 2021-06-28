@@ -10,7 +10,7 @@ public:
     BBTexture();
 
     GLuint createTexture2D(unsigned char *pPixelData, int nWidth, int nHeight, GLenum eType = GL_RGB);
-    GLuint createTexture2D(const QString &path);
+    GLuint createTexture2D(const QString &path = "");
     GLuint createTexture2DFromBMP(const char *path);
 };
 

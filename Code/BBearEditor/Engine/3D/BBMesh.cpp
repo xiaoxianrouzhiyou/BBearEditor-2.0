@@ -6,6 +6,7 @@
 #include "Render/BBVertexBufferObject.h"
 #include "Render/BBRenderPass.h"
 #include "Render/BBDrawCall.h"
+#include "Render/BBTexture.h"
 
 
 BBMesh::BBMesh()
@@ -43,6 +44,8 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
     float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};
     m_pCurrentMaterial->setVector4(NAME_LIGHT_POSITION, pLightPosition);
     m_pCurrentMaterial->setVector4(NAME_LIGHT_COLOR, pLightColor);
+    BBTexture texture;
+    m_pCurrentMaterial->setSampler2D(NAME_TEXTURE, texture.createTexture2D());
 
     BBRenderableObject::init();
 

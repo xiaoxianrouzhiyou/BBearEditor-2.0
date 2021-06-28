@@ -38,6 +38,11 @@ GLuint BBTexture::createTexture2D(unsigned char *pPixelData, int nWidth, int nHe
 GLuint BBTexture::createTexture2D(const QString &path)
 {
     QImage image(path);
+    if (image.isNull())
+    {
+        image = QImage(128, 128, QImage::Format_RGB32);
+        image.fill(QColor(255, 255, 255));
+    }
     image = image.mirrored(false, true);
     return createTexture2D(image.bits(), image.width(), image.height(), GL_RGBA);
 }
