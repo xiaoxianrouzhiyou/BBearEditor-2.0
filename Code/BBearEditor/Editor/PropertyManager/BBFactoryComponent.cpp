@@ -197,6 +197,9 @@ void BBScreenDialog::mousePressEvent(QMouseEvent *event)
  * @brief BBPictureLabel::BBPictureLabel
  * @param pParent
  */
+QSize BBPictureLabel::m_DefaultSize = QSize(60, 60);
+QSize BBPictureLabel::m_ContentDefaultSize = QSize(58, 58);
+
 BBPictureLabel::BBPictureLabel(QWidget *pParent)
     : QLabel(pParent)
 {
@@ -204,31 +207,14 @@ BBPictureLabel::BBPictureLabel(QWidget *pParent)
     setAlignment(Qt::AlignCenter);
     setFocusPolicy(Qt::NoFocus);
     setText("None");
-    setMinimumSize(48 * devicePixelRatio(), 48 * devicePixelRatio());
+    setMinimumSize(m_DefaultSize * devicePixelRatio());
+    setMaximumSize(m_DefaultSize * devicePixelRatio());
+    setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\"; border-radius: 2px;");
 }
 
-void BBPictureLabel::setPicture(const QString &filePath)
+void BBPictureLabel::setScaledPixmap(const QPixmap &pixmap)
 {
-    m_CurrentFilePath = filePath;
-    if (m_CurrentFilePath.isEmpty())
-    {
-        // there is nothing
-        setText("None");
-    }
-    else
-    {
-        if (QFile(m_CurrentFilePath).exists())
-        {
-            setText("");
-            emit currentFilePathChanged(m_CurrentFilePath);
-        }
-        else
-        {
-            setText("Missing");
-        }
-    }
-    setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\"; "
-                  "border-image: url(" + m_CurrentFilePath + "); border-radius: 2px;");
+    setPixmap(pixmap.scaled(m_ContentDefaultSize * devicePixelRatio(), Qt::KeepAspectRatio));
 }
 
 void BBPictureLabel::dragEnterEvent(QDragEnterEvent *event)
@@ -256,6 +242,6 @@ void BBPictureLabel::dragEnterEvent(QDragEnterEvent *event)
 
 void BBPictureLabel::dropEvent(QDropEvent *event)
 {
-    setPicture(m_CurrentFilePath);
+    emit currentFilePathChanged(m_CurrentFilePath);
     event->accept();
 }

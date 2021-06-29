@@ -10,6 +10,7 @@ using namespace BBFileSystem;
 
 
 class BBFileSystemManager;
+class BBPreviewOpenGLWidget;
 
 
 namespace Ui {
@@ -24,6 +25,7 @@ public:
     explicit BBFileSystemDockWidget(QWidget *pParent = 0);
     ~BBFileSystemDockWidget();
 
+    void bindPreviewOpenGLWidget(BBPreviewOpenGLWidget *pPreviewOpenGLWidget);
     void createProject();
     void openProject();
 
@@ -31,7 +33,8 @@ private slots:
     void removeCurrentItem();
     void clickItemInFolderTree(const QString &filePath, QTreeWidgetItem *pItem);
     void clickItemInFileList(const QString &filePath, const BBFileType &eType);
-    void doubleClickItemInFileList(const QString &filePath);
+    void pressItemInFileList(const BBFileType &eType);
+    void doubleClickItemInFileList(const QString &filePath, const BBFileType &eType);
     void changeCurrentItemInFileList(BBFileType eCurrentType, BBFileType ePreviousType);
     void inFocusInFileList();
     void clickItemInFolderPathBar(const QString &filePath);

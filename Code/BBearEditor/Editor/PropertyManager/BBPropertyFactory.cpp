@@ -9,6 +9,9 @@
 #include <QComboBox>
 #include "Render/Light/BBLight.h"
 #include "FileSystem/BBFileSystemDataManager.h"
+#include <QFile>
+#include "Render/BBMaterial.h"
+#include "IO/BBMaterialFileManager.h"
 
 
 /**
@@ -287,6 +290,9 @@ BBPictureFactory::BBPictureFactory(QWidget *pParent)
     m_pPictureLabel = new BBPictureLabel(pFrame);
     pFrameLayout->addWidget(m_pPictureLabel);
     pLayout->addWidget(pFrame, 1, Qt::AlignRight);
+
+    QObject::connect(m_pPictureLabel, SIGNAL(currentFilePathChanged(QString)),
+                     this, SLOT(changeCurrentFilePath(QString)));
 }
 
 BBPictureFactory::~BBPictureFactory()
@@ -306,13 +312,57 @@ BBTextureFactory::BBTextureFactory(const QString &uniformName, const QString &or
 {
     m_UniformName = uniformName;
     m_pPictureLabel->setFilter(BBFileSystemDataManager::m_TextureSuffixs);
-    m_pPictureLabel->setPicture(originalPicturePath);
-
-    QObject::connect(m_pPictureLabel, SIGNAL(currentFilePathChanged(QString)),
-                     this, SLOT(changeCurrentFilePath(QString)));
+    setPicture(originalPicturePath);
 }
 
 void BBTextureFactory::changeCurrentFilePath(const QString &filePath)
 {
+    setPicture(filePath);
     emit setSampler2D(m_UniformName, filePath);
+}
+
+void BBTextureFactory::setPicture(const QString &filePath)
+{
+    if (filePath.isEmpty())
+    {
+        // there is nothing
+        m_pPictureLabel->setText("None");
+    }
+    else
+    {
+        if (QFile(filePath).exists())
+        {
+            m_pPictureLabel->setText("");
+            QPixmap pix(filePath);
+            m_pPictureLabel->setScaledPixmap(pix);
+        }
+        else
+        {
+            m_pPictureLabel->setText("Missing");
+        }
+    }
+}
+
+
+/**
+ * @brief BBMaterialFactory::BBMaterialFactory
+ * @param pObject
+ * @param pParent
+ */
+BBMaterialFactory::BBMaterialFactory(BBRenderableObject *pObject, QWidget *pParent)
+    : BBPictureFactory(pParent)
+{
+    m_pPictureLabel->setFilter(BBFileSystemDataManager::m_MaterialSuffixs);
+}
+
+void BBMaterialFactory::changeCurrentFilePath(const QString &filePath)
+{
+    setPicture(filePath);
+}
+
+void BBMaterialFactory::setPicture(const QString &filePath)
+{
+    BBMaterial *pMaterial = BBMaterialFileManager::loadMaterial(filePath);
+    BB_PROCESS_ERROR_RETURN(pMaterial);
+    m_pPictureLabel->setScaledPixmap(pMaterial->getOverviewMap());
 }

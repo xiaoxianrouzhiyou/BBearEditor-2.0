@@ -24,6 +24,11 @@ BBFileSystemManager::~BBFileSystemManager()
     BB_SAFE_DELETE(m_pDataManager);
 }
 
+void BBFileSystemManager::bindPreviewOpenGLWidget(BBPreviewOpenGLWidget *pPreviewOpenGLWidget)
+{
+    m_pDataManager->bindPreviewOpenGLWidget(pPreviewOpenGLWidget);
+}
+
 void BBFileSystemManager::createProject()
 {
 //    //新项目预创建直射光

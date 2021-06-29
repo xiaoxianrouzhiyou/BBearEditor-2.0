@@ -126,11 +126,11 @@ void BBScene::render()
 
     unbindFBO();
 
-    if (m_bEnableFBO)
-    {
-        m_pFullScreenQuad->setTexture(m_pFBO->getBuffer(m_ColorBufferName));
-        m_pFullScreenQuad->render(m_pCamera);
-    }
+//    if (m_bEnableFBO)
+//    {
+//        m_pFullScreenQuad->setTexture(m_pFBO->getBuffer(m_ColorBufferName));
+//        m_pFullScreenQuad->render(m_pCamera);
+//    }
 
     // 2D camera mode
     m_pCamera->switchTo2D();
@@ -163,6 +163,11 @@ void BBScene::resize(float width, float height)
     m_pFBO->attachColorBuffer(m_ColorBufferName, GL_COLOR_ATTACHMENT0, width, height);
     m_pFBO->attachDepthBuffer("depth", width, height);
     m_pFBO->finish();
+}
+
+QPixmap BBScene::getFBOPixmap()
+{
+    return m_pFBO->getPixmap();
 }
 
 void BBScene::setSkyBox(const QString &path)

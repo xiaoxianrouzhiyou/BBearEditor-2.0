@@ -14,6 +14,7 @@ class BBScene;
 class BBEnumFactory;
 class BBPreviewOpenGLWidget;
 class BBMaterial;
+class BBRenderableObject;
 
 
 // Manage a group of property
@@ -116,6 +117,17 @@ private:
 
     BBMaterial* m_pMaterial;
     BBPreviewOpenGLWidget *m_pPreviewOpenGLWidget;
+};
+
+class BBRenderManager : public BBGroupManager
+{
+    Q_OBJECT
+
+public:
+    BBRenderManager(BBRenderableObject *pObject, QWidget *pParent = 0);
+
+private:
+
 };
 
 

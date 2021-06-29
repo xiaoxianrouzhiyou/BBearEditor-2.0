@@ -89,6 +89,12 @@ void BBMaterial::setSampler2D(const std::string &uniformName, GLuint textureName
     }
 }
 
+void BBMaterial::setOverviewMap(const QPixmap &pix)
+{
+    // cut to square
+    m_OverviewMap = pix;
+}
+
 void BBMaterial::getEditableProperties(QList<std::string> &outNames, QList<BBMaterialProperty*> &outProperties)
 {
     if (m_pBaseRenderPass != nullptr)

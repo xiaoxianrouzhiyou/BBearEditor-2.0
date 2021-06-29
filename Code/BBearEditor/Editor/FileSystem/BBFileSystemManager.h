@@ -9,7 +9,7 @@
 using namespace BBFileSystem;
 
 
-class BBOpenGLWidget;
+class BBPreviewOpenGLWidget;
 class BBFolderTreeWidget;
 class BBFileListWidget;
 class BBFilePathBarWidget;
@@ -24,6 +24,7 @@ public:
                         BBFilePathBarWidget *pFilePathBarWidget);
     ~BBFileSystemManager();
 
+    void bindPreviewOpenGLWidget(BBPreviewOpenGLWidget *pPreviewOpenGLWidget);
     void createProject();
     void openProject();
 

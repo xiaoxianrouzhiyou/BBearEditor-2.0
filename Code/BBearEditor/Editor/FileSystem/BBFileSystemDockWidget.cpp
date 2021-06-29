@@ -25,6 +25,11 @@ BBFileSystemDockWidget::~BBFileSystemDockWidget()
     BB_SAFE_DELETE(m_pFileSystemManager);
 }
 
+void BBFileSystemDockWidget::bindPreviewOpenGLWidget(BBPreviewOpenGLWidget *pPreviewOpenGLWidget)
+{
+    m_pFileSystemManager->bindPreviewOpenGLWidget(pPreviewOpenGLWidget);
+}
+
 void BBFileSystemDockWidget::createProject()
 {
     m_pFileSystemManager->createProject();
@@ -50,14 +55,26 @@ void BBFileSystemDockWidget::clickItemInFileList(const QString &filePath, const 
 {
     if (eType == BBFileType::Material)
     {
-        emit showMaterialPreview(filePath);
+        emit removeCurrentItemInHierarchyTree();
         emit showMaterialInPropertyManager(filePath);
     }
 }
 
-void BBFileSystemDockWidget::doubleClickItemInFileList(const QString &filePath)
+void BBFileSystemDockWidget::pressItemInFileList(const BBFileType &eType)
 {
-    m_pFileSystemManager->doubleClickItemInFileList(filePath);
+
+}
+
+void BBFileSystemDockWidget::doubleClickItemInFileList(const QString &filePath, const BBFileType &eType)
+{
+    if (eType == BBFileType::Material)
+    {
+        emit showMaterialPreview(filePath);
+    }
+    else
+    {
+        m_pFileSystemManager->doubleClickItemInFileList(filePath);
+    }
 }
 
 void BBFileSystemDockWidget::changeCurrentItemInFileList(BBFileType eCurrentType, BBFileType ePreviousType)
@@ -72,7 +89,7 @@ void BBFileSystemDockWidget::changeCurrentItemInFileList(BBFileType eCurrentType
 
 void BBFileSystemDockWidget::inFocusInFileList()
 {
-    emit removeCurrentItemInHierarchyTree();
+
 }
 
 void BBFileSystemDockWidget::clickItemInFolderPathBar(const QString &filePath)
@@ -156,13 +173,15 @@ void BBFileSystemDockWidget::setConnect()
     // update selected folder
     QObject::connect(m_pUi->treeFolder, SIGNAL(accessFolder(QString, QTreeWidgetItem*)),
                      this, SLOT(clickItemInFolderTree(QString, QTreeWidgetItem*)));
-    QObject::connect(m_pUi->listFile, SIGNAL(openFile(QString)),
-                     this, SLOT(doubleClickItemInFileList(QString)));
+    QObject::connect(m_pUi->listFile, SIGNAL(openFile(QString, BBFileType)),
+                     this, SLOT(doubleClickItemInFileList(QString, BBFileType)));
     QObject::connect(m_pUi->barFilePath, SIGNAL(accessFolder(QString)),
                      this, SLOT(clickItemInFolderPathBar(QString)));
     // click file item, and show property, or remove
     QObject::connect(m_pUi->listFile, SIGNAL(clickItem(QString, BBFileType)),
                      this, SLOT(clickItemInFileList(QString, BBFileType)));
+    QObject::connect(m_pUi->listFile, SIGNAL(pressItem(BBFileType)),
+                     this, SLOT(pressItemInFileList(BBFileType)));
     QObject::connect(m_pUi->listFile, SIGNAL(changeCurrentItem(BBFileType, BBFileType)),
                      this, SLOT(changeCurrentItemInFileList(BBFileType, BBFileType)));
     QObject::connect(m_pUi->listFile, SIGNAL(inFocus()),

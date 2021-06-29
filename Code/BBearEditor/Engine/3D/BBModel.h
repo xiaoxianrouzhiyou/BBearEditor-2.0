@@ -19,6 +19,8 @@ public:
             float sx, float sy, float sz, const BBMeshType &eType);
     ~BBModel();
 
+    inline BBMesh* getMesh() { return m_pMesh; }
+
     void init(const QString &path) override;
     void render(BBCamera *pCamera) override;
     void setCurrentMaterial(BBMaterial *pMaterial) override;

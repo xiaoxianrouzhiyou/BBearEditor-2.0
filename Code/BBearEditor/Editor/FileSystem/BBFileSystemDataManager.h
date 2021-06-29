@@ -12,7 +12,7 @@ using namespace BBFileSystem;
 
 
 class QFileInfo;
-class BBOpenGLWidget;
+class BBPreviewOpenGLWidget;
 
 
 class BBFileSystemDataManager
@@ -22,7 +22,7 @@ public:
     ~BBFileSystemDataManager();
 
 public:
-    void bindPreviewOpenGLWidget(BBOpenGLWidget *pPreviewOpenGLWidget) { m_pPreviewOpenGLWidget = pPreviewOpenGLWidget; }
+    void bindPreviewOpenGLWidget(BBPreviewOpenGLWidget *pPreviewOpenGLWidget) { m_pPreviewOpenGLWidget = pPreviewOpenGLWidget; }
     inline void setCurrentViewedItem(QTreeWidgetItem *pItem) { m_pCurrentViewedItem = pItem; }
     inline QTreeWidgetItem* getCurrentViewedItem() { return m_pCurrentViewedItem; }
     void load();
@@ -118,7 +118,7 @@ private:
     bool importFiles(const QFileInfo &fileInfo, const QString &newPath);
     bool loadImportedData(const QString &parentPath);
 
-    BBOpenGLWidget *m_pPreviewOpenGLWidget;
+    BBPreviewOpenGLWidget *m_pPreviewOpenGLWidget;
 
     BBFILE *m_pRootFileData;
     QMap<QTreeWidgetItem*, BBFILE*> m_TopLevelFileData;

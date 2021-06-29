@@ -100,7 +100,6 @@ private:
 
 
 
-////对象的材质 可以拖放材质进行修改
 //class MaterialFactory : public IconFactory
 //{
 //    Q_OBJECT

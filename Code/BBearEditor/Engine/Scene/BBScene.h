@@ -31,8 +31,11 @@ public:
     inline BBCamera* getCamera() { return m_pCamera; }
     inline BBTransformCoordinateSystem* getTransformCoordinateSystem() { return m_pTransformCoordinateSystem; }
     inline QList<BBGameObject*> getLights() { return m_Lights; }
+
+    /* FBO */
     inline BBFrameBufferObject* getFBO() { return m_pFBO; }
     inline void enableFBO(bool bEnable) { m_bEnableFBO = bEnable; }
+    QPixmap getFBOPixmap();
 
     void setSkyBox(const QString &path);
     void enableSkyBox(bool bEnable) { m_bEnableSkyBox = bEnable; }

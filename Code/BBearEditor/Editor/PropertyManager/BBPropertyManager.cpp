@@ -6,6 +6,7 @@
 #include "Base/BBGameObject.h"
 #include "Render/Light/BBDirectionalLight.h"
 #include "BBHeadManager.h"
+#include "3D/BBModel.h"
 
 
 BBPropertyManager::BBPropertyManager(QWidget *pParent)
@@ -58,7 +59,8 @@ void BBPropertyManager::showGameObjectProperty(BBGameObject *pGameObject)
 
     if (pGameObject->getClassName() == BB_CLASSNAME_MODEL)
     {
-        BBGroupManager *pRenderManager = addGroupManager("Render", BB_PATH_RESOURCE_ICON(render.png));
+        BBModel *pModel = (BBModel*)pGameObject;
+        layout()->addWidget(new BBRenderManager(pModel->getMesh(), this));
     }
     else if (pGameObject->getClassName() == BB_CLASSNAME_DIRECTIONAL_LIGHT)
     {

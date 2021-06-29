@@ -1,11 +1,12 @@
 #include "BBFrameBufferObject.h"
+#include <QPixmap>
 
 BBFrameBufferObject::BBFrameBufferObject()
 {
     glGenFramebuffers(1, &m_FrameBufferObject);
 }
 
-void BBFrameBufferObject::attachColorBuffer(QString bufferName, GLenum attachment, int nWidth, int nHeight)
+void BBFrameBufferObject::attachColorBuffer(const QString &bufferName, GLenum attachment, int nWidth, int nHeight)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferObject);
     GLuint colorBuffer;
@@ -20,13 +21,15 @@ void BBFrameBufferObject::attachColorBuffer(QString bufferName, GLenum attachmen
     glBindTexture(GL_TEXTURE_2D, 0);
     // give the color buffer to the attachment node
     glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, GL_TEXTURE_2D, colorBuffer, 0);
-    // record nodes for subsequent use
-    m_DrawBuffers.append(attachment);
+
     m_Buffers.insert(bufferName, colorBuffer);
+    m_DrawBuffers.append(attachment);
+    m_nWidth = nWidth;
+    m_nHeight = nHeight;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void BBFrameBufferObject::attachDepthBuffer(QString bufferName, int nWidth, int nHeight)
+void BBFrameBufferObject::attachDepthBuffer(const QString &bufferName, int nWidth, int nHeight)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferObject);
     GLuint depthBuffer;
@@ -41,6 +44,8 @@ void BBFrameBufferObject::attachDepthBuffer(QString bufferName, int nWidth, int 
     glBindTexture(GL_TEXTURE_2D, 0);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthBuffer, 0);
     m_Buffers.insert(bufferName, depthBuffer);
+    m_nWidth = nWidth;
+    m_nHeight = nHeight;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -67,7 +72,7 @@ void BBFrameBufferObject::bind()
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_PreFrameBufferObject);
     glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferObject);
     // all the things rendered afterwards will be drawn to this FBO
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearColor(0.141f, 0.169f, 0.227f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -76,7 +81,7 @@ void BBFrameBufferObject::unbind()
     glBindFramebuffer(GL_FRAMEBUFFER, m_PreFrameBufferObject);
 }
 
-GLuint BBFrameBufferObject::getBuffer(QString bufferName)
+GLuint BBFrameBufferObject::getBuffer(const QString &bufferName)
 {
     QMap<QString, GLuint>::Iterator it = m_Buffers.find(bufferName);
     if (it != m_Buffers.end())
@@ -87,4 +92,16 @@ GLuint BBFrameBufferObject::getBuffer(QString bufferName)
     {
         return 0;
     }
+}
+
+QPixmap BBFrameBufferObject::getPixmap()
+{
+    unsigned char buffer[m_nWidth * m_nHeight * 4] = {0};
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_PreFrameBufferObject);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferObject);
+    glReadPixels(0, 0, m_nWidth, m_nHeight, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_PreFrameBufferObject);
+    QImage image(buffer, m_nWidth, m_nHeight, QImage::Format_RGBA8888);
+    QPixmap pix = QPixmap::fromImage(image);
+    return pix;
 }

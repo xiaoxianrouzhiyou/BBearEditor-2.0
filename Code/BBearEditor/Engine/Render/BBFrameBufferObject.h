@@ -10,20 +10,23 @@ public:
     BBFrameBufferObject();
 
     /* one or more */
-    void attachColorBuffer(QString bufferName, GLenum attachment, int nWidth, int nHeight);
+    void attachColorBuffer(const QString &bufferName, GLenum attachment, int nWidth, int nHeight);
     /* only one */
-    void attachDepthBuffer(QString bufferName, int nWidth, int nHeight);
+    void attachDepthBuffer(const QString &bufferName, int nWidth, int nHeight);
     /* make the settings take effect */
     void finish();
 
     void bind();
     void unbind();
 
-    GLuint getBuffer(QString bufferName);
+    GLuint getBuffer(const QString &bufferName);
+    QPixmap getPixmap();
 
 private:
     GLuint m_FrameBufferObject;
     GLint m_PreFrameBufferObject;
+    int m_nWidth;
+    int m_nHeight;
     /* each buffer and its name */
     QMap<QString, GLuint> m_Buffers;
     /* buffer in which FBO need to render */

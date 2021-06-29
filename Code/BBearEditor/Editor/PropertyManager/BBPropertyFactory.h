@@ -13,6 +13,7 @@ class BBColorButton;
 class BBLight;
 class QPushButton;
 class BBPictureLabel;
+class BBRenderableObject;
 
 
 /**
@@ -149,7 +150,11 @@ public:
     BBPictureFactory(QWidget *pParent = 0);
     ~BBPictureFactory();
 
+public slots:
+    virtual void changeCurrentFilePath(const QString &filePath) = 0;
+
 protected:
+    virtual void setPicture(const QString &filePath) = 0;
     QPushButton *m_pRemoveButton;
     QPushButton *m_pSelectButton;
     BBPictureLabel *m_pPictureLabel;
@@ -164,13 +169,29 @@ public:
     BBTextureFactory(const QString &uniformName, const QString &originalPicturePath = "", QWidget *pParent = 0);
 
 public slots:
-    void changeCurrentFilePath(const QString &filePath);
+    void changeCurrentFilePath(const QString &filePath) override;
 
 signals:
     void setSampler2D(const QString &uniformName, const QString &texturePath);
 
 private:
+    void setPicture(const QString &filePath) override;
     QString m_UniformName;
+};
+
+
+class BBMaterialFactory : public BBPictureFactory
+{
+    Q_OBJECT
+
+public:
+    BBMaterialFactory(BBRenderableObject *pObject, QWidget *pParent = 0);
+
+public slots:
+    void changeCurrentFilePath(const QString &filePath) override;
+
+private:
+    void setPicture(const QString &filePath) override;
 };
 
 #endif // BBPROPERTYFACTORY_H

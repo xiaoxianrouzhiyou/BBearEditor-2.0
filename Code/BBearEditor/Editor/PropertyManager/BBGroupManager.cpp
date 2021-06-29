@@ -398,6 +398,8 @@ void BBMaterialPropertyGroupManager::setSampler2D(const QString &uniformName, co
     BBTexture texture;
     m_pMaterial->setSampler2D(uniformName.toStdString().c_str(), texture.createTexture2D(texturePath), texturePath);
     m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
+    // record OverviewMap
+    m_pMaterial->setOverviewMap(m_pPreviewOpenGLWidget->grab());
 }
 
 void BBMaterialPropertyGroupManager::setPropertyItems()
@@ -417,4 +419,17 @@ void BBMaterialPropertyGroupManager::setPropertyItems()
                              this, SLOT(setSampler2D(QString, QString)));
         }
     }
+}
+
+
+/**
+ * @brief BBRenderManager::BBRenderManager
+ * @param pObject
+ * @param pParent
+ */
+BBRenderManager::BBRenderManager(BBRenderableObject *pObject, QWidget *pParent)
+    : BBGroupManager("Render", BB_PATH_RESOURCE_ICON(render.png), pParent)
+{
+    BBMaterialFactory *pMaterialFactory = new BBMaterialFactory(pObject, pParent);
+    addFactory("Material", pMaterialFactory, 0);
 }

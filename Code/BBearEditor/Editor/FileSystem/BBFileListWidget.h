@@ -47,6 +47,7 @@ public:
 
 private slots:
     void clickItem(QListWidgetItem *pItem);
+    void pressItem(QListWidgetItem *pItem);
     void doubleClickItem(QListWidgetItem *pItem);
     void changeCurrentItem(QListWidgetItem *pCurrent, QListWidgetItem *pPrevious);
     void changeItemSize(int factor);
@@ -62,7 +63,7 @@ private slots:
     void deleteAction();
 
 signals:
-    void openFile(const QString &filePath);
+    void openFile(const QString &filePath, const BBFileType &eType);
     void newFolder(const QString &parentPath, const BBSignalSender &eSender);
     void newFile(const QString &parentPath, int nType);
     void showInFolder(const QString &filePath);
@@ -73,6 +74,7 @@ signals:
     void moveFiles(const QList<QListWidgetItem*> &items, const QString &oldParentPath,
                    const QString &newParentPath, bool bCopy);
     void clickItem(const QString &filePath, const BBFileType &eType);
+    void pressItem(const BBFileType &eType);
     void changeCurrentItem(BBFileType eCurrentType, BBFileType ePreviousType);
     void inFocus();
 

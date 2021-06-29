@@ -15,6 +15,7 @@ public:
     BBPreviewOpenGLWidget(QWidget *pParent = 0);
 
 public:
+    void saveMaterialPreview(BBMaterial *pMaterial);
     void updateMaterialSphere(BBMaterial *pMaterial);
 
 private slots:

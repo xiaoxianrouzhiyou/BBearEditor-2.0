@@ -82,16 +82,19 @@ public:
     BBPictureLabel(QWidget *pParent = 0);
 
     void setFilter(const QStringList &acceptableSuffixs) { m_Filter = acceptableSuffixs; }
-    void setPicture(const QString &filePath);
+    void setScaledPixmap(const QPixmap &pixmap);
 
 signals:
     void currentFilePathChanged(const QString &path);
 
-private:
+protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dropEvent(QDropEvent *event) override;
     QStringList m_Filter;
     QString m_CurrentFilePath;
+    static QSize m_DefaultSize;
+    static QSize m_ContentDefaultSize;
 };
+
 
 #endif // BBFACTORYCOMPONENT_H
