@@ -20,13 +20,10 @@ public:
     void unbind();
 
     GLuint getBuffer(const QString &bufferName);
-    QPixmap getPixmap();
 
 private:
     GLuint m_FrameBufferObject;
     GLint m_PreFrameBufferObject;
-    int m_nWidth;
-    int m_nHeight;
     /* each buffer and its name */
     QMap<QString, GLuint> m_Buffers;
     /* buffer in which FBO need to render */

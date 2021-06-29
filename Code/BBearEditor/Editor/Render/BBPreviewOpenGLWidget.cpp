@@ -14,20 +14,6 @@ BBPreviewOpenGLWidget::BBPreviewOpenGLWidget(QWidget *pParent)
     m_pSphere = NULL;
 }
 
-void BBPreviewOpenGLWidget::saveMaterialPreview(BBMaterial *pMaterial)
-{
-    if (!m_pSphere)
-    {
-        createSphere();
-    }
-    m_pSphere->setCurrentMaterial(pMaterial);
-    m_pScene->enableFBO(true);
-    update();
-    QPixmap pix = m_pScene->getFBOPixmap();
-    pMaterial->setOverviewMap(pix);
-    m_pScene->enableFBO(false);
-}
-
 void BBPreviewOpenGLWidget::updateMaterialSphere(BBMaterial *pMaterial)
 {
     BB_PROCESS_ERROR_RETURN(m_pSphere);

@@ -72,14 +72,14 @@ private:
 
 
 /**
- * @brief The BBPictureLabel class      show icon
+ * @brief The BBIconLabel class
  */
-class BBPictureLabel : public QLabel
+class BBIconLabel : public QLabel
 {
     Q_OBJECT
 
 public:
-    BBPictureLabel(QWidget *pParent = 0);
+    BBIconLabel(QWidget *pParent = 0);
 
     void setFilter(const QStringList &acceptableSuffixs) { m_Filter = acceptableSuffixs; }
     void setScaledPixmap(const QPixmap &pixmap);

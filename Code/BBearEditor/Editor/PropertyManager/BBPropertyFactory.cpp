@@ -267,39 +267,73 @@ void BBLightColorFactory::finishCatchColor(float r, float g, float b)
 
 
 /**
- * @brief BBPictureFactory::BBPictureFactory
+ * @brief BBIconFactory::BBIconFactory
  * @param pParent
  */
-BBPictureFactory::BBPictureFactory(QWidget *pParent)
+BBIconFactory::BBIconFactory(QWidget *pParent)
     : QWidget(pParent)
 {
     QHBoxLayout *pLayout = new QHBoxLayout(this);
     pLayout->setMargin(0);
-    // button in the left
-    m_pRemoveButton = new QPushButton(this);
-    m_pRemoveButton->setStyleSheet("image: url(../../resources/icons/return.png);");
-    pLayout->addWidget(m_pRemoveButton, 0, Qt::AlignBottom);
-    m_pSelectButton = new QPushButton(this);
-    m_pSelectButton->setStyleSheet("image: url(../../resources/icons/more2.png);");
-    pLayout->addWidget(m_pSelectButton, 0, Qt::AlignBottom);
-    // picture in the right
-    QWidget *pFrame = new QWidget(this);
-    pFrame->setStyleSheet("border: none; border-radius: 2px; background: rgb(60, 64, 75);");
-    QHBoxLayout *pFrameLayout = new QHBoxLayout(pFrame);
-    pFrameLayout->setMargin(1);
-    m_pPictureLabel = new BBPictureLabel(pFrame);
-    pFrameLayout->addWidget(m_pPictureLabel);
-    pLayout->addWidget(pFrame, 1, Qt::AlignRight);
 
-    QObject::connect(m_pPictureLabel, SIGNAL(currentFilePathChanged(QString)),
+    QWidget *pLeft = new QWidget(this);
+    QVBoxLayout *pLeftLayout = new QVBoxLayout(pLeft);
+    pLeftLayout->setMargin(0);
+    // button in the top-left
+    m_pRemoveButton = new QPushButton(pLeft);
+    m_pRemoveButton->setStyleSheet("image: url(../../resources/icons/return.png);");
+    pLeftLayout->addWidget(m_pRemoveButton, 0, Qt::AlignTop | Qt::AlignRight);
+    m_pSelectButton = new QPushButton(pLeft);
+    m_pSelectButton->setStyleSheet("image: url(../../resources/icons/more2.png);");
+    pLeftLayout->addWidget(m_pSelectButton, 0, Qt::AlignTop | Qt::AlignRight);
+    // name in the bottom-left
+    m_pNameEdit = new QLineEdit(pLeft);
+    m_pNameEdit->setText("None");
+    pLeftLayout->addWidget(m_pNameEdit, 0, Qt::AlignBottom);
+    pLayout->addWidget(pLeft, 1);
+
+    // picture in the right
+    QWidget *pRight = new QWidget(this);
+    pRight->setStyleSheet("border: none; border-radius: 2px; background: rgb(60, 64, 75);");
+    QHBoxLayout *pFrameLayout = new QHBoxLayout(pRight);
+    pFrameLayout->setMargin(1);
+    m_pIconLabel = new BBIconLabel(pRight);
+    pFrameLayout->addWidget(m_pIconLabel);
+    pLayout->addWidget(pRight, 0, Qt::AlignRight);
+
+    QObject::connect(m_pIconLabel, SIGNAL(currentFilePathChanged(QString)),
                      this, SLOT(changeCurrentFilePath(QString)));
 }
 
-BBPictureFactory::~BBPictureFactory()
+BBIconFactory::~BBIconFactory()
 {
     BB_SAFE_DELETE(m_pRemoveButton);
     BB_SAFE_DELETE(m_pSelectButton);
-    BB_SAFE_DELETE(m_pPictureLabel);
+    BB_SAFE_DELETE(m_pIconLabel);
+    BB_SAFE_DELETE(m_pNameEdit);
+}
+
+
+void BBIconFactory::setIcon(const QString &filePath)
+{
+    if (filePath.isEmpty())
+    {
+        // there is nothing
+        m_pIconLabel->setText("None");
+    }
+    else
+    {
+        if (QFile(filePath).exists())
+        {
+            m_pIconLabel->setText("");
+            QPixmap pix(filePath);
+            m_pIconLabel->setScaledPixmap(pix);
+        }
+        else
+        {
+            m_pIconLabel->setText("Missing");
+        }
+    }
 }
 
 
@@ -307,40 +341,18 @@ BBPictureFactory::~BBPictureFactory()
  * @brief BBTextureFactory::BBTextureFactory
  * @param pParent
  */
-BBTextureFactory::BBTextureFactory(const QString &uniformName, const QString &originalPicturePath, QWidget *pParent)
-    : BBPictureFactory(pParent)
+BBTextureFactory::BBTextureFactory(const QString &uniformName, const QString &originalIconPath, QWidget *pParent)
+    : BBIconFactory(pParent)
 {
     m_UniformName = uniformName;
-    m_pPictureLabel->setFilter(BBFileSystemDataManager::m_TextureSuffixs);
-    setPicture(originalPicturePath);
+    m_pIconLabel->setFilter(BBFileSystemDataManager::m_TextureSuffixs);
+    setIcon(originalIconPath);
 }
 
 void BBTextureFactory::changeCurrentFilePath(const QString &filePath)
 {
-    setPicture(filePath);
+    setIcon(filePath);
     emit setSampler2D(m_UniformName, filePath);
-}
-
-void BBTextureFactory::setPicture(const QString &filePath)
-{
-    if (filePath.isEmpty())
-    {
-        // there is nothing
-        m_pPictureLabel->setText("None");
-    }
-    else
-    {
-        if (QFile(filePath).exists())
-        {
-            m_pPictureLabel->setText("");
-            QPixmap pix(filePath);
-            m_pPictureLabel->setScaledPixmap(pix);
-        }
-        else
-        {
-            m_pPictureLabel->setText("Missing");
-        }
-    }
 }
 
 
@@ -350,19 +362,12 @@ void BBTextureFactory::setPicture(const QString &filePath)
  * @param pParent
  */
 BBMaterialFactory::BBMaterialFactory(BBRenderableObject *pObject, QWidget *pParent)
-    : BBPictureFactory(pParent)
+    : BBIconFactory(pParent)
 {
-    m_pPictureLabel->setFilter(BBFileSystemDataManager::m_MaterialSuffixs);
+    m_pIconLabel->setFilter(BBFileSystemDataManager::m_MaterialSuffixs);
 }
 
 void BBMaterialFactory::changeCurrentFilePath(const QString &filePath)
 {
-    setPicture(filePath);
-}
 
-void BBMaterialFactory::setPicture(const QString &filePath)
-{
-    BBMaterial *pMaterial = BBMaterialFileManager::loadMaterial(filePath);
-    BB_PROCESS_ERROR_RETURN(pMaterial);
-    m_pPictureLabel->setScaledPixmap(pMaterial->getOverviewMap());
 }

@@ -194,13 +194,13 @@ void BBScreenDialog::mousePressEvent(QMouseEvent *event)
 
 
 /**
- * @brief BBPictureLabel::BBPictureLabel
+ * @brief BBIconLabel::BBIconLabel
  * @param pParent
  */
-QSize BBPictureLabel::m_DefaultSize = QSize(60, 60);
-QSize BBPictureLabel::m_ContentDefaultSize = QSize(58, 58);
+QSize BBIconLabel::m_DefaultSize = QSize(64, 64);
+QSize BBIconLabel::m_ContentDefaultSize = QSize(62, 62);
 
-BBPictureLabel::BBPictureLabel(QWidget *pParent)
+BBIconLabel::BBIconLabel(QWidget *pParent)
     : QLabel(pParent)
 {
     setAcceptDrops(true);
@@ -212,12 +212,12 @@ BBPictureLabel::BBPictureLabel(QWidget *pParent)
     setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\"; border-radius: 2px;");
 }
 
-void BBPictureLabel::setScaledPixmap(const QPixmap &pixmap)
+void BBIconLabel::setScaledPixmap(const QPixmap &pixmap)
 {
     setPixmap(pixmap.scaled(m_ContentDefaultSize * devicePixelRatio(), Qt::KeepAspectRatio));
 }
 
-void BBPictureLabel::dragEnterEvent(QDragEnterEvent *event)
+void BBIconLabel::dragEnterEvent(QDragEnterEvent *event)
 {
     QByteArray data;
     if ((data = event->mimeData()->data(BB_MIMETYPE_FILELISTWIDGET)) != nullptr)
@@ -240,7 +240,7 @@ void BBPictureLabel::dragEnterEvent(QDragEnterEvent *event)
     }
 }
 
-void BBPictureLabel::dropEvent(QDropEvent *event)
+void BBIconLabel::dropEvent(QDropEvent *event)
 {
     emit currentFilePathChanged(m_CurrentFilePath);
     event->accept();

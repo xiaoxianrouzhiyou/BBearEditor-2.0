@@ -24,8 +24,6 @@ void BBFrameBufferObject::attachColorBuffer(const QString &bufferName, GLenum at
 
     m_Buffers.insert(bufferName, colorBuffer);
     m_DrawBuffers.append(attachment);
-    m_nWidth = nWidth;
-    m_nHeight = nHeight;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -44,8 +42,6 @@ void BBFrameBufferObject::attachDepthBuffer(const QString &bufferName, int nWidt
     glBindTexture(GL_TEXTURE_2D, 0);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthBuffer, 0);
     m_Buffers.insert(bufferName, depthBuffer);
-    m_nWidth = nWidth;
-    m_nHeight = nHeight;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -92,16 +88,4 @@ GLuint BBFrameBufferObject::getBuffer(const QString &bufferName)
     {
         return 0;
     }
-}
-
-QPixmap BBFrameBufferObject::getPixmap()
-{
-    unsigned char buffer[m_nWidth * m_nHeight * 4] = {0};
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_PreFrameBufferObject);
-    glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferObject);
-    glReadPixels(0, 0, m_nWidth, m_nHeight, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, m_PreFrameBufferObject);
-    QImage image(buffer, m_nWidth, m_nHeight, QImage::Format_RGBA8888);
-    QPixmap pix = QPixmap::fromImage(image);
-    return pix;
 }

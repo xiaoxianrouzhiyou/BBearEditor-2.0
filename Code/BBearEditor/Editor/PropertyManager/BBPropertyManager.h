@@ -98,25 +98,6 @@ private:
 //};
 
 
-
-
-//class MaterialFactory : public IconFactory
-//{
-//    Q_OBJECT
-
-//public:
-//    MaterialFactory(Model* model, QWidget *parent = 0);
-//    void setMaterial();
-
-//private slots:
-//    void removeMaterial();
-//    void changeMaterial(QString path);
-
-//private:
-//    Model* mModel;
-//};
-
-
 ////高度图
 //class HeightMapFactory : public IconFactory
 //{

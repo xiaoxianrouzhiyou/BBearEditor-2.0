@@ -165,11 +165,6 @@ void BBScene::resize(float width, float height)
     m_pFBO->finish();
 }
 
-QPixmap BBScene::getFBOPixmap()
-{
-    return m_pFBO->getPixmap();
-}
-
 void BBScene::setSkyBox(const QString &path)
 {
     m_pSkyBox->change(path);

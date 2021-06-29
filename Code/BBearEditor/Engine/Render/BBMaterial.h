@@ -30,9 +30,6 @@ public:
     void setVector4(const std::string &uniformName, const float *pVector4);
     void setSampler2D(const std::string &uniformName, GLuint textureName, const QString &resourcePath = "");
 
-    void setOverviewMap(const QPixmap &pix);
-    QPixmap getOverviewMap() { return m_OverviewMap; }
-
     void getEditableProperties(QList<std::string> &outNames, QList<BBMaterialProperty*> &outProperties);
 
     inline BBRenderPass* getBaseRenderPass() const { return m_pBaseRenderPass; }
@@ -42,8 +39,6 @@ public:
 private:
     BBRenderPass *m_pBaseRenderPass;
     BBRenderPass *m_pAdditiveRenderPass;
-
-    QPixmap m_OverviewMap;
 };
 
 #endif // BBMATERIAL_H

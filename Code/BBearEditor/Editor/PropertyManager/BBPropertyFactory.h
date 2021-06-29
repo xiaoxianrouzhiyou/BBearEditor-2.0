@@ -12,7 +12,7 @@ class QComboBox;
 class BBColorButton;
 class BBLight;
 class QPushButton;
-class BBPictureLabel;
+class BBIconLabel;
 class BBRenderableObject;
 
 
@@ -142,31 +142,33 @@ private:
 };
 
 
-class BBPictureFactory : public QWidget
+class BBIconFactory : public QWidget
 {
     Q_OBJECT
 
 public:
-    BBPictureFactory(QWidget *pParent = 0);
-    ~BBPictureFactory();
+    BBIconFactory(QWidget *pParent = 0);
+    ~BBIconFactory();
 
 public slots:
     virtual void changeCurrentFilePath(const QString &filePath) = 0;
 
 protected:
-    virtual void setPicture(const QString &filePath) = 0;
+    void setIcon(const QString &filePath);
+
     QPushButton *m_pRemoveButton;
     QPushButton *m_pSelectButton;
-    BBPictureLabel *m_pPictureLabel;
+    BBIconLabel *m_pIconLabel;
+    QLineEdit *m_pNameEdit;
 };
 
 
-class BBTextureFactory : public BBPictureFactory
+class BBTextureFactory : public BBIconFactory
 {
     Q_OBJECT
 
 public:
-    BBTextureFactory(const QString &uniformName, const QString &originalPicturePath = "", QWidget *pParent = 0);
+    BBTextureFactory(const QString &uniformName, const QString &originalIconPath = "", QWidget *pParent = 0);
 
 public slots:
     void changeCurrentFilePath(const QString &filePath) override;
@@ -175,12 +177,11 @@ signals:
     void setSampler2D(const QString &uniformName, const QString &texturePath);
 
 private:
-    void setPicture(const QString &filePath) override;
     QString m_UniformName;
 };
 
 
-class BBMaterialFactory : public BBPictureFactory
+class BBMaterialFactory : public BBIconFactory
 {
     Q_OBJECT
 
@@ -191,7 +192,7 @@ public slots:
     void changeCurrentFilePath(const QString &filePath) override;
 
 private:
-    void setPicture(const QString &filePath) override;
+
 };
 
 #endif // BBPROPERTYFACTORY_H

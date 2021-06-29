@@ -86,7 +86,4 @@ void BBMaterialFileManager::loadMaterialContent(const QString &filePath, BBMater
     float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};
     pMaterial->setVector4(NAME_LIGHT_POSITION, pLightPosition);
     pMaterial->setVector4(NAME_LIGHT_COLOR, pLightColor);
-
-    // init overview map for material
-    m_pPreviewOpenGLWidget->saveMaterialPreview(pMaterial);
 }
