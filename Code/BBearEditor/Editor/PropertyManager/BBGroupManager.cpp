@@ -428,6 +428,6 @@ void BBMaterialPropertyGroupManager::setPropertyItems()
 BBRenderManager::BBRenderManager(BBRenderableObject *pObject, QWidget *pParent)
     : BBGroupManager("Render", BB_PATH_RESOURCE_ICON(render.png), pParent)
 {
-    BBMaterialFactory *pMaterialFactory = new BBMaterialFactory(pObject, pParent);
-    addFactory("Material", pMaterialFactory, 1);
+//    BBMaterialFactory *pMaterialFactory = new BBMaterialFactory(pObject, pParent);
+//    addFactory("Material", pMaterialFactory, 1);
 }

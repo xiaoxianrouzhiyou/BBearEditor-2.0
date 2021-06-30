@@ -154,7 +154,7 @@ public slots:
     virtual void changeCurrentFilePath(const QString &filePath) = 0;
 
 protected:
-    void setIcon(const QString &filePath);
+    void setContent(const QString &filePath);
 
     QPushButton *m_pRemoveButton;
     QPushButton *m_pSelectButton;
@@ -180,20 +180,6 @@ private:
     QString m_UniformName;
 };
 
-
-class BBMaterialFactory : public BBIconFactory
-{
-    Q_OBJECT
-
-public:
-    BBMaterialFactory(BBRenderableObject *pObject, QWidget *pParent = 0);
-
-public slots:
-    void changeCurrentFilePath(const QString &filePath) override;
-
-private:
-
-};
 
 #endif // BBPROPERTYFACTORY_H
 

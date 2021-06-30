@@ -10,6 +10,7 @@
 #include "Render/Light/BBLight.h"
 #include "FileSystem/BBFileSystemDataManager.h"
 #include <QFile>
+#include <QFileInfo>
 #include "Render/BBMaterial.h"
 #include "IO/BBMaterialFileManager.h"
 
@@ -288,7 +289,7 @@ BBIconFactory::BBIconFactory(QWidget *pParent)
     pLeftLayout->addWidget(m_pSelectButton, 0, Qt::AlignTop | Qt::AlignRight);
     // name in the bottom-left
     m_pNameEdit = new QLineEdit(pLeft);
-    m_pNameEdit->setText("None");
+    m_pNameEdit->setEnabled(false);
     pLeftLayout->addWidget(m_pNameEdit, 0, Qt::AlignBottom);
     pLayout->addWidget(pLeft, 1);
 
@@ -314,26 +315,29 @@ BBIconFactory::~BBIconFactory()
 }
 
 
-void BBIconFactory::setIcon(const QString &filePath)
+void BBIconFactory::setContent(const QString &filePath)
 {
     if (filePath.isEmpty())
     {
         // there is nothing
         m_pIconLabel->setText("None");
+        m_pNameEdit->setText("");
     }
     else
     {
-        if (QFile(filePath).exists())
+        QFileInfo fileInfo(filePath);
+        if (fileInfo.exists())
         {
             m_pIconLabel->setText("");
-            QPixmap pix(filePath);
-            m_pIconLabel->setScaledPixmap(pix);
+            m_pNameEdit->setText(fileInfo.fileName());
         }
         else
         {
             m_pIconLabel->setText("Missing");
+            m_pNameEdit->setText("");
         }
     }
+    m_pIconLabel->setIcon(filePath);
 }
 
 
@@ -346,28 +350,12 @@ BBTextureFactory::BBTextureFactory(const QString &uniformName, const QString &or
 {
     m_UniformName = uniformName;
     m_pIconLabel->setFilter(BBFileSystemDataManager::m_TextureSuffixs);
-    setIcon(originalIconPath);
+    setContent(originalIconPath);
 }
 
 void BBTextureFactory::changeCurrentFilePath(const QString &filePath)
 {
-    setIcon(filePath);
+    setContent(filePath);
     emit setSampler2D(m_UniformName, filePath);
 }
 
-
-/**
- * @brief BBMaterialFactory::BBMaterialFactory
- * @param pObject
- * @param pParent
- */
-BBMaterialFactory::BBMaterialFactory(BBRenderableObject *pObject, QWidget *pParent)
-    : BBIconFactory(pParent)
-{
-    m_pIconLabel->setFilter(BBFileSystemDataManager::m_MaterialSuffixs);
-}
-
-void BBMaterialFactory::changeCurrentFilePath(const QString &filePath)
-{
-
-}

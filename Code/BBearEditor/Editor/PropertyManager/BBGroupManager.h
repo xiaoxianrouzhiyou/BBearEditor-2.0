@@ -119,6 +119,7 @@ private:
     BBPreviewOpenGLWidget *m_pPreviewOpenGLWidget;
 };
 
+
 class BBRenderManager : public BBGroupManager
 {
     Q_OBJECT

@@ -194,30 +194,16 @@ void BBScreenDialog::mousePressEvent(QMouseEvent *event)
 
 
 /**
- * @brief BBIconLabel::BBIconLabel
+ * @brief BBDragAcceptedEdit::BBDragAcceptedLabel
  * @param pParent
  */
-QSize BBIconLabel::m_DefaultSize = QSize(64, 64);
-QSize BBIconLabel::m_ContentDefaultSize = QSize(62, 62);
-
-BBIconLabel::BBIconLabel(QWidget *pParent)
-    : QLabel(pParent)
+BBDragAcceptedEdit::BBDragAcceptedEdit(QWidget *pParent)
+    : QLineEdit(pParent)
 {
     setAcceptDrops(true);
-    setAlignment(Qt::AlignCenter);
-    setFocusPolicy(Qt::NoFocus);
-    setText("None");
-    setMinimumSize(m_DefaultSize * devicePixelRatio());
-    setMaximumSize(m_DefaultSize * devicePixelRatio());
-    setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\"; border-radius: 2px;");
 }
 
-void BBIconLabel::setScaledPixmap(const QPixmap &pixmap)
-{
-    setPixmap(pixmap.scaled(m_ContentDefaultSize * devicePixelRatio(), Qt::KeepAspectRatio));
-}
-
-void BBIconLabel::dragEnterEvent(QDragEnterEvent *event)
+void BBDragAcceptedEdit::dragEnterEvent(QDragEnterEvent *event)
 {
     QByteArray data;
     if ((data = event->mimeData()->data(BB_MIMETYPE_FILELISTWIDGET)) != nullptr)
@@ -240,8 +226,33 @@ void BBIconLabel::dragEnterEvent(QDragEnterEvent *event)
     }
 }
 
-void BBIconLabel::dropEvent(QDropEvent *event)
+void BBDragAcceptedEdit::dropEvent(QDropEvent *event)
 {
     emit currentFilePathChanged(m_CurrentFilePath);
     event->accept();
+}
+
+
+/**
+ * @brief BBIconLabel::BBIconLabel
+ * @param pParent
+ */
+QSize BBIconLabel::m_DefaultSize = QSize(64, 64);
+
+BBIconLabel::BBIconLabel(QWidget *pParent)
+    : BBDragAcceptedEdit(pParent)
+{
+    setAlignment(Qt::AlignCenter);
+    // setFocusPolicy(Qt::NoFocus);
+    setEnabled(false);
+    setText("None");
+    setMinimumSize(m_DefaultSize * devicePixelRatio());
+    setMaximumSize(m_DefaultSize * devicePixelRatio());
+    setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\"; border-radius: 2px;");
+}
+
+void BBIconLabel::setIcon(const QString &filePath)
+{
+    setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\"; "
+                  "border-image: url(" + filePath + "); border-radius: 2px;");
 }

@@ -4,6 +4,7 @@
 #include <QPushButton>
 #include <QDialog>
 #include <QLabel>
+#include <QLineEdit>
 
 
 // When hovering, it shows an arrow cursor, press and then move left and right to adjust the parameter
@@ -72,17 +73,16 @@ private:
 
 
 /**
- * @brief The BBIconLabel class
+ * @brief The BBDragAcceptedEdit class
  */
-class BBIconLabel : public QLabel
+class BBDragAcceptedEdit : public QLineEdit
 {
     Q_OBJECT
 
 public:
-    BBIconLabel(QWidget *pParent = 0);
+    BBDragAcceptedEdit(QWidget *pParent = 0);
 
     void setFilter(const QStringList &acceptableSuffixs) { m_Filter = acceptableSuffixs; }
-    void setScaledPixmap(const QPixmap &pixmap);
 
 signals:
     void currentFilePathChanged(const QString &path);
@@ -90,10 +90,26 @@ signals:
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dropEvent(QDropEvent *event) override;
+
     QStringList m_Filter;
     QString m_CurrentFilePath;
+};
+
+
+/**
+ * @brief The BBIconLabel class
+ */
+class BBIconLabel : public BBDragAcceptedEdit
+{
+    Q_OBJECT
+
+public:
+    BBIconLabel(QWidget *pParent = 0);
+
+    void setIcon(const QString &filePath);
+
+protected:
     static QSize m_DefaultSize;
-    static QSize m_ContentDefaultSize;
 };
 
 
