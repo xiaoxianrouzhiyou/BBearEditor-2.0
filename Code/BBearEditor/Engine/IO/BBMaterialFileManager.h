@@ -18,6 +18,7 @@ public:
     static QStringList loadFShaderList();
     static void saveDefaultMaterial(const QString &filePath);
     static BBMaterial* loadMaterial(const QString &filePath);
+    static QString getMaterialPath(BBMaterial *pMaterial);
 
 private:
     static QStringList loadShaderList(const QString &filter);

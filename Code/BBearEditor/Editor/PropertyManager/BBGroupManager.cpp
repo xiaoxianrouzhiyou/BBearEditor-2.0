@@ -14,6 +14,10 @@
 #include "Render/BBShader.h"
 #include "Render/BBTexture.h"
 #include "Render/BBPreviewOpenGLWidget.h"
+#include "FileSystem/BBFileSystemDataManager.h"
+#include "Base/BBRenderableObject.h"
+#include "3D/BBMesh.h"
+#include "IO/BBMaterialFileManager.h"
 
 
 /**
@@ -428,6 +432,17 @@ void BBMaterialPropertyGroupManager::setPropertyItems()
 BBRenderManager::BBRenderManager(BBRenderableObject *pObject, QWidget *pParent)
     : BBGroupManager("Render", BB_PATH_RESOURCE_ICON(render.png), pParent)
 {
-//    BBMaterialFactory *pMaterialFactory = new BBMaterialFactory(pObject, pParent);
-//    addFactory("Material", pMaterialFactory, 1);
+    m_pRenderableObject = pObject;
+    QString materialPath = BBMaterialFileManager::getMaterialPath(pObject->getMaterial());
+    BBDragAcceptedFactory *pMaterialFactory = new BBDragAcceptedFactory(BB_PATH_RESOURCE_ICON(material5.png),
+                                                                        materialPath, pParent);
+    pMaterialFactory->setFilter(BBFileSystemDataManager::m_MaterialSuffixs);
+    addFactory("Material", pMaterialFactory, 1);
+    QObject::connect(pMaterialFactory, SIGNAL(currentFilePathChanged(QString)),
+                     this, SLOT(changeMaterial(QString)));
+}
+
+void BBRenderManager::changeMaterial(const QString &filePath)
+{
+    m_pRenderableObject->setCurrentMaterial(BBMaterialFileManager::loadMaterial(filePath));
 }

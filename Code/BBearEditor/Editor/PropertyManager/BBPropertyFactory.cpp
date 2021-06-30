@@ -359,3 +359,56 @@ void BBTextureFactory::changeCurrentFilePath(const QString &filePath)
     emit setSampler2D(m_UniformName, filePath);
 }
 
+
+/**
+ * @brief BBDragAcceptedFactory::BBDragAcceptedFactory
+ * @param pParent
+ */
+BBDragAcceptedFactory::BBDragAcceptedFactory(const QString &iconPath, const QString &filePath, QWidget *pParent)
+    : QWidget(pParent)
+{
+    QHBoxLayout *pLayout = new QHBoxLayout(this);
+    pLayout->setMargin(0);
+
+    m_pIconLabel = new QPushButton(this);
+    m_pIconLabel->setStyleSheet("image: url(" + iconPath + ");");
+    pLayout->addWidget(m_pIconLabel);
+    m_pDragAcceptedEdit = new BBDragAcceptedEdit(this);
+    pLayout->addWidget(m_pDragAcceptedEdit, 1);
+    changeCurrentFilePath(filePath);
+
+    QObject::connect(m_pDragAcceptedEdit, SIGNAL(currentFilePathChanged(QString)),
+                     this, SLOT(changeCurrentFilePath(QString)));
+}
+
+BBDragAcceptedFactory::~BBDragAcceptedFactory()
+{
+    BB_SAFE_DELETE(m_pIconLabel);
+    BB_SAFE_DELETE(m_pDragAcceptedEdit);
+}
+
+void BBDragAcceptedFactory::setFilter(const QStringList &acceptableSuffixs)
+{
+    m_pDragAcceptedEdit->setFilter(acceptableSuffixs);
+}
+
+void BBDragAcceptedFactory::changeCurrentFilePath(const QString &filePath)
+{
+    if (filePath.isEmpty())
+    {
+        m_pDragAcceptedEdit->setText("None");
+    }
+    else
+    {
+        QFileInfo fileInfo(filePath);
+        if (fileInfo.exists())
+        {
+            m_pDragAcceptedEdit->setText(fileInfo.baseName());
+            emit currentFilePathChanged(filePath);
+        }
+        else
+        {
+            m_pDragAcceptedEdit->setText("Missing");
+        }
+    }
+}

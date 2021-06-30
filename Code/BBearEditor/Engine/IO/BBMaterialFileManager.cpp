@@ -50,6 +50,11 @@ BBMaterial* BBMaterialFileManager::loadMaterial(const QString &filePath)
     return pMaterial;
 }
 
+QString BBMaterialFileManager::getMaterialPath(BBMaterial *pMaterial)
+{
+    return m_CachedMaterials.key(pMaterial);
+}
+
 QStringList BBMaterialFileManager::loadShaderList(const QString &filter)
 {
     QStringList nameList;

@@ -201,6 +201,8 @@ BBDragAcceptedEdit::BBDragAcceptedEdit(QWidget *pParent)
     : QLineEdit(pParent)
 {
     setAcceptDrops(true);
+    setFocusPolicy(Qt::NoFocus);
+    setText("None");
 }
 
 void BBDragAcceptedEdit::dragEnterEvent(QDragEnterEvent *event)
@@ -243,9 +245,6 @@ BBIconLabel::BBIconLabel(QWidget *pParent)
     : BBDragAcceptedEdit(pParent)
 {
     setAlignment(Qt::AlignCenter);
-    // setFocusPolicy(Qt::NoFocus);
-    setEnabled(false);
-    setText("None");
     setMinimumSize(m_DefaultSize * devicePixelRatio());
     setMaximumSize(m_DefaultSize * devicePixelRatio());
     setStyleSheet("color: #d6dfeb; font: 9pt \"Arial\"; border-radius: 2px;");

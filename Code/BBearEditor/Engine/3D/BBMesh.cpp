@@ -20,7 +20,7 @@ BBMesh::BBMesh(float px, float py, float pz,
                float sx, float sy, float sz)
     : BBRenderableObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
-
+    setClassName(BB_CLASSNAME_MESH);
 }
 
 void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)

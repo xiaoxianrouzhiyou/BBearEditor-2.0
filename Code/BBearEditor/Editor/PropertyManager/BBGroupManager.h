@@ -127,8 +127,11 @@ class BBRenderManager : public BBGroupManager
 public:
     BBRenderManager(BBRenderableObject *pObject, QWidget *pParent = 0);
 
-private:
+private slots:
+    void changeMaterial(const QString &filePath);
 
+private:
+    BBRenderableObject *m_pRenderableObject;
 };
 
 

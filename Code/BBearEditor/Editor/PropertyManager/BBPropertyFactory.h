@@ -13,6 +13,7 @@ class BBColorButton;
 class BBLight;
 class QPushButton;
 class BBIconLabel;
+class BBDragAcceptedEdit;
 class BBRenderableObject;
 
 
@@ -180,6 +181,27 @@ private:
     QString m_UniformName;
 };
 
+
+class BBDragAcceptedFactory : public QWidget
+{
+    Q_OBJECT
+
+public:
+    BBDragAcceptedFactory(const QString &iconPath, const QString &filePath = "", QWidget *pParent = 0);
+    ~BBDragAcceptedFactory();
+
+    void setFilter(const QStringList &acceptableSuffixs);
+
+private slots:
+    void changeCurrentFilePath(const QString &filePath);
+
+signals:
+    void currentFilePathChanged(const QString &filePath);
+
+private:
+    QPushButton *m_pIconLabel;
+    BBDragAcceptedEdit *m_pDragAcceptedEdit;
+};
 
 #endif // BBPROPERTYFACTORY_H
 
