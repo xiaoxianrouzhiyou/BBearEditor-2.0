@@ -62,15 +62,11 @@ void BBDrawCall::switchRenderingSettings(int nIndex)
     switch (nIndex) {
     case 0:
         m_DrawFunc = &BBDrawCall::forwardRendering;
-        BBSceneManager::getScene()->enableFBO(false);
-        BBSceneManager::getScene()->enableSkyBox(true);
-        BBSceneManager::getScene()->enableHorizontalPlane(true);
+        BBSceneManager::enableDeferredRendering(false);
         break;
     case 1:
         m_DrawFunc = &BBDrawCall::deferredRendering;
-        BBSceneManager::getScene()->enableFBO(true);
-        BBSceneManager::getScene()->enableSkyBox(false);
-        BBSceneManager::getScene()->enableHorizontalPlane(false);
+        BBSceneManager::enableDeferredRendering(true);
         break;
     default:
         break;

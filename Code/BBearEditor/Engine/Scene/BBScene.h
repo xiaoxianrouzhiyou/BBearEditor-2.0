@@ -34,7 +34,8 @@ public:
 
     /* FBO */
     inline BBFrameBufferObject* getFBO() { return m_pFBO; }
-    inline void enableFBO(bool bEnable) { m_bEnableFBO = bEnable; }
+    void enableFBO(bool bEnable) { m_bEnableFBO = bEnable; }
+    void enableFullScreenQuad(bool bEnable) { m_bEnableFullScreenQuad = bEnable; }
 
     void setSkyBox(const QString &path);
     void enableSkyBox(bool bEnable) { m_bEnableSkyBox = bEnable; }
@@ -80,6 +81,7 @@ private:
     bool m_bHorizontalPlane;
     BBTransformCoordinateSystem *m_pTransformCoordinateSystem;
     BBFullScreenQuad *m_pFullScreenQuad;
+    bool m_bEnableFullScreenQuad;
 
     QList<BBGameObject*> m_Models;
     QList<BBGameObject*> m_Lights;

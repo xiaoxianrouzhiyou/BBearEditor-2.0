@@ -33,6 +33,7 @@ BBScene::BBScene()
     m_pSelectionRegion = NULL;
     m_pTransformCoordinateSystem = NULL;
     m_pFullScreenQuad = NULL;
+    m_bEnableFullScreenQuad = false;
 
 //    particle = new Particle();
 //    fogSwitch = false;
@@ -126,11 +127,11 @@ void BBScene::render()
 
     unbindFBO();
 
-//    if (m_bEnableFBO)
-//    {
-//        m_pFullScreenQuad->setTexture(m_pFBO->getBuffer(m_ColorBufferName));
-//        m_pFullScreenQuad->render(m_pCamera);
-//    }
+    if (m_bEnableFullScreenQuad)
+    {
+        m_pFullScreenQuad->setTexture(m_pFBO->getBuffer(m_ColorBufferName));
+        m_pFullScreenQuad->render(m_pCamera);
+    }
 
     // 2D camera mode
     m_pCamera->switchTo2D();

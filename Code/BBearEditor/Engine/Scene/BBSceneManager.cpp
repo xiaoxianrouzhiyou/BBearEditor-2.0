@@ -211,6 +211,14 @@ void BBSceneManager::removeScene()
     m_CurrentSceneFilePath.clear();
 }
 
+void BBSceneManager::enableDeferredRendering(bool bEnable)
+{
+    m_pScene->enableFBO(bEnable);
+    m_pScene->enableSkyBox(!bEnable);
+    m_pScene->enableHorizontalPlane(!bEnable);
+    m_pScene->enableFullScreenQuad(bEnable);
+}
+
 void BBSceneManager::setVector3f(const QVector3D &value, BBSerializer::BBVector3f *&pOutVector3f)
 {
     pOutVector3f->set_x(value.x());

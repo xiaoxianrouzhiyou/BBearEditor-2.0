@@ -34,6 +34,8 @@ public:
     static void saveScene(const QString &filePath = m_CurrentSceneFilePath);
     static void removeScene();
 
+    static void enableDeferredRendering(bool bEnable);
+
 private:
     static void setVector3f(const QVector3D &value, BBSerializer::BBVector3f *&pOutVector3f);
 
