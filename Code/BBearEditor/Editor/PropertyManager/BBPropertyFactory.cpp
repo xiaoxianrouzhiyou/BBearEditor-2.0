@@ -190,6 +190,7 @@ BBEnumFactory::BBEnumFactory(const QString &name, const QStringList &comboBoxIte
     pLayout->addWidget(m_pComboBox, comboBoxStretch);
 
     QObject::connect(m_pComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCurrentItem(int)));
+    QObject::connect(m_pComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(changeCurrentItem(QString)));
 }
 
 BBEnumFactory::~BBEnumFactory()
@@ -201,6 +202,11 @@ BBEnumFactory::~BBEnumFactory()
 void BBEnumFactory::changeCurrentItem(int nIndex)
 {
     emit currentItemChanged(nIndex);
+}
+
+void BBEnumFactory::changeCurrentItem(const QString &text)
+{
+    emit currentItemChanged(text);
 }
 
 

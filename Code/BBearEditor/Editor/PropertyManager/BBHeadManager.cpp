@@ -168,6 +168,11 @@ BBMaterialManager::BBMaterialManager(const QString &filePath, QWidget *pParent)
     pInfoLayout->addWidget(m_pFShaderEnumFactory);
     pBaseInfoLayout->addWidget(pInfoWidget, 3);
     pLayout->addWidget(pBaseInfoWidget);
+
+    QObject::connect(m_pVShaderEnumFactory, SIGNAL(currentItemChanged(QString)),
+                     this, SLOT(changeCurrentVShader(QString)));
+    QObject::connect(m_pFShaderEnumFactory, SIGNAL(currentItemChanged(QString)),
+                     this, SLOT(changeCurrentFShader(QString)));
 }
 
 BBMaterialManager::~BBMaterialManager()
@@ -175,6 +180,16 @@ BBMaterialManager::~BBMaterialManager()
     BB_SAFE_DELETE(m_pIcon);
     BB_SAFE_DELETE(m_pVShaderEnumFactory);
     BB_SAFE_DELETE(m_pFShaderEnumFactory);
+}
+
+void BBMaterialManager::changeCurrentVShader(const QString &name)
+{
+    BBMaterialFileManager::changeVShader(m_pMaterial, name + ".vert");
+}
+
+void BBMaterialManager::changeCurrentFShader(const QString &name)
+{
+    BBMaterialFileManager::changeFShader(m_pMaterial, name + ".frag");
 }
 
 void BBMaterialManager::setIcon()

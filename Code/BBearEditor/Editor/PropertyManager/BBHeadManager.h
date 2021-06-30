@@ -70,6 +70,10 @@ public:
 
     inline BBMaterial* getMaterial() { return m_pMaterial; }
 
+private slots:
+    void changeCurrentVShader(const QString &name);
+    void changeCurrentFShader(const QString &name);
+
 private:
     void setIcon();
     void setShaderEnumFactory(QWidget *pParent);

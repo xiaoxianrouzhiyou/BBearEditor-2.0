@@ -2,18 +2,12 @@
 #include <QDir>
 #include "Utils/BBUtils.h"
 #include <QDirIterator>
-#include "Serializer/BBMaterial.pb.h"
 #include "Render/BBMaterial.h"
 #include "Render/BBPreviewOpenGLWidget.h"
 
 
 BBPreviewOpenGLWidget* BBMaterialFileManager::m_pPreviewOpenGLWidget = nullptr;
 QMap<QString, BBMaterial*> BBMaterialFileManager::m_CachedMaterials;
-
-BBMaterialFileManager::BBMaterialFileManager()
-{
-
-}
 
 QStringList BBMaterialFileManager::loadVShaderList()
 {
@@ -31,10 +25,7 @@ void BBMaterialFileManager::saveDefaultMaterial(const QString &filePath)
     material.set_shadername("diffuse");
     material.set_vshaderpath(BB_PATH_RESOURCE_SHADER(diffuse.vert));
     material.set_fshaderpath(BB_PATH_RESOURCE_SHADER(diffuse.frag));
-    int nLength = material.ByteSizeLong() + 1;
-    char szBuffer[nLength] = {0};
-    material.SerializeToArray(szBuffer, nLength);
-    BBUtils::saveToFile(filePath.toStdString().c_str(), szBuffer, nLength);
+    serialize(material, filePath);
 }
 
 BBMaterial* BBMaterialFileManager::loadMaterial(const QString &filePath)
@@ -53,6 +44,50 @@ BBMaterial* BBMaterialFileManager::loadMaterial(const QString &filePath)
 QString BBMaterialFileManager::getMaterialPath(BBMaterial *pMaterial)
 {
     return m_CachedMaterials.key(pMaterial);
+}
+
+void BBMaterialFileManager::changeVShader(BBMaterial *pMaterial, const QString &name)
+{
+    QString materialPath = m_CachedMaterials.key(pMaterial);
+    BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
+    BBSerializer::BBMaterial material = deserialize(materialPath);
+    material.set_vshaderpath(getShaderFilePath(name));
+    serialize(material, materialPath);
+}
+
+void BBMaterialFileManager::changeFShader(BBMaterial *pMaterial, const QString &name)
+{
+    QString materialPath = m_CachedMaterials.key(pMaterial);
+    BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
+    BBSerializer::BBMaterial material = deserialize(materialPath);
+    material.set_fshaderpath(getShaderFilePath(name));
+    serialize(material, materialPath);
+}
+
+void BBMaterialFileManager::serialize(BBSerializer::BBMaterial material, const QString &filePath)
+{
+    int nLength = material.ByteSizeLong() + 1;
+    char szBuffer[nLength] = {0};
+    material.SerializeToArray(szBuffer, nLength);
+    BBUtils::saveToFile(filePath.toStdString().c_str(), szBuffer, nLength);
+}
+
+BBSerializer::BBMaterial BBMaterialFileManager::deserialize(const QString &filePath)
+{
+    BBSerializer::BBMaterial material;
+    int nLength = -1;
+    char *pData = BBUtils::loadFileContent(filePath.toStdString().c_str(), nLength);
+    if (!pData)
+        return material;
+    material.ParseFromArray(pData, nLength);
+    BB_SAFE_DELETE_ARRAY(pData);
+    return material;
+}
+
+std::string BBMaterialFileManager::getShaderFilePath(const QString &name)
+{
+    QString filePath = BB_PATH_RESOURCE_SHADER() + name;
+    return filePath.toStdString().c_str();
 }
 
 QStringList BBMaterialFileManager::loadShaderList(const QString &filter)
@@ -78,11 +113,7 @@ QStringList BBMaterialFileManager::loadShaderList(const QString &filter)
 
 void BBMaterialFileManager::loadMaterialContent(const QString &filePath, BBMaterial *pMaterial)
 {
-    int nLength = -1;
-    char *pData = BBUtils::loadFileContent(filePath.toStdString().c_str(), nLength);
-    BB_PROCESS_ERROR_RETURN(pData);
-    BBSerializer::BBMaterial material;
-    material.ParseFromArray(pData, nLength);
+    BBSerializer::BBMaterial material = deserialize(filePath);
     pMaterial->init(material.shadername().data(),
                     QString::fromStdString(material.vshaderpath()),
                     QString::fromStdString(material.fshaderpath()));

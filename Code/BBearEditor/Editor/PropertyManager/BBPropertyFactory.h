@@ -95,9 +95,11 @@ public:
 
 private slots:
     void changeCurrentItem(int nIndex);
+    void changeCurrentItem(const QString &text);
 
 signals:
     void currentItemChanged(int nIndex);
+    void currentItemChanged(const QString &text);
 
 private:
     QLabel *m_pLabel;
