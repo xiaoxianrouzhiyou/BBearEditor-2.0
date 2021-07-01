@@ -38,6 +38,7 @@ void BBSkyBoxSide::render(BBCamera *pCamera)
 {
     QMatrix4x4 modelMatrix;
     modelMatrix.translate(pCamera->getPosition());
+    m_pCurrentMaterial->setMatrix4(NAME_MODELMATRIX, modelMatrix.data());
     BBRenderableObject::render(modelMatrix, pCamera);
 }
 
@@ -100,6 +101,16 @@ void BBSkyBox::change(const QString &path)
     m_pRight->change(path + "right");
     m_pTop->change(path + "top");
     m_pBottom->change(path + "bottom");
+}
+
+void BBSkyBox::setVisibility(bool bVisible)
+{
+    m_pFront->setVisibility(bVisible);
+    m_pBack->setVisibility(bVisible);
+    m_pLeft->setVisibility(bVisible);
+    m_pRight->setVisibility(bVisible);
+    m_pTop->setVisibility(bVisible);
+    m_pBottom->setVisibility(bVisible);
 }
 
 void BBSkyBox::initFront()

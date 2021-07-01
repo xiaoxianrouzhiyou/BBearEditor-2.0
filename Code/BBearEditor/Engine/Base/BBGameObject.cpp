@@ -329,6 +329,11 @@ void BBGameObject::setCurrentMaterial(BBMaterial *pMaterial)
     Q_UNUSED(pMaterial);
 }
 
+void BBGameObject::restoreMaterial()
+{
+
+}
+
 bool BBGameObject::hit(const BBRay &ray, float &fDistance)
 {
     Q_UNUSED(ray);

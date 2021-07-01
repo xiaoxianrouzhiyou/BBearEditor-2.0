@@ -22,7 +22,9 @@ private slots:
     void removeMaterialPreview();
 
 private:
+    void initializeGL() override;
     void createSphere();
+
     BBModel *m_pSphere;
 };
 

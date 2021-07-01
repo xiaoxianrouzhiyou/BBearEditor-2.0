@@ -62,6 +62,7 @@ public:
 
     virtual void setCurrentMaterial(int nIndex);
     virtual void setCurrentMaterial(BBMaterial *pMaterial);
+    virtual void restoreMaterial();
 
     virtual bool hit(const BBRay &ray, float &fDistance);
     virtual bool belongToSelectionRegion(const QVector3D &left1, const QVector3D &left2, const QVector3D &left3,

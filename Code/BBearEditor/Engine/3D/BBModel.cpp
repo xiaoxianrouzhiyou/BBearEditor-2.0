@@ -61,6 +61,11 @@ void BBModel::setCurrentMaterial(BBMaterial *pMaterial)
     m_pMesh->setCurrentMaterial(pMaterial);
 }
 
+void BBModel::restoreMaterial()
+{
+    m_pMesh->restoreMaterial();
+}
+
 void BBModel::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
 {
     BBGameObject::setPosition(position, bUpdateLocalTransform);

@@ -8,6 +8,7 @@
 
 BBPreviewOpenGLWidget* BBMaterialFileManager::m_pPreviewOpenGLWidget = nullptr;
 QMap<QString, BBMaterial*> BBMaterialFileManager::m_CachedMaterials;
+BBMaterial* BBMaterialFileManager::m_pDeferredRenderingMaterial = nullptr;
 
 QStringList BBMaterialFileManager::loadVShaderList()
 {
@@ -51,7 +52,7 @@ void BBMaterialFileManager::changeVShader(BBMaterial *pMaterial, const QString &
     QString materialPath = m_CachedMaterials.key(pMaterial);
     BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
     BBSerializer::BBMaterial material = deserialize(materialPath);
-    material.set_vshaderpath(getShaderFilePath(name));
+    material.set_vshaderpath(getShaderFilePath(name).toStdString().c_str());
     serialize(material, materialPath);
 }
 
@@ -60,8 +61,23 @@ void BBMaterialFileManager::changeFShader(BBMaterial *pMaterial, const QString &
     QString materialPath = m_CachedMaterials.key(pMaterial);
     BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
     BBSerializer::BBMaterial material = deserialize(materialPath);
-    material.set_fshaderpath(getShaderFilePath(name));
+    material.set_fshaderpath(getShaderFilePath(name).toStdString().c_str());
     serialize(material, materialPath);
+}
+
+QString BBMaterialFileManager::getShaderFilePath(const QString &name)
+{
+    QString filePath = BB_PATH_RESOURCE_SHADER() + name;
+    return filePath;
+}
+
+BBMaterial* BBMaterialFileManager::getDeferredRenderingMaterial()
+{
+    if (!m_pDeferredRenderingMaterial)
+    {
+        createDeferredRenderingMaterial();
+    }
+    return m_pDeferredRenderingMaterial;
 }
 
 void BBMaterialFileManager::serialize(BBSerializer::BBMaterial material, const QString &filePath)
@@ -82,12 +98,6 @@ BBSerializer::BBMaterial BBMaterialFileManager::deserialize(const QString &fileP
     material.ParseFromArray(pData, nLength);
     BB_SAFE_DELETE_ARRAY(pData);
     return material;
-}
-
-std::string BBMaterialFileManager::getShaderFilePath(const QString &name)
-{
-    QString filePath = BB_PATH_RESOURCE_SHADER() + name;
-    return filePath.toStdString().c_str();
 }
 
 QStringList BBMaterialFileManager::loadShaderList(const QString &filter)
@@ -122,4 +132,12 @@ void BBMaterialFileManager::loadMaterialContent(const QString &filePath, BBMater
     float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};
     pMaterial->setVector4(NAME_LIGHT_POSITION, pLightPosition);
     pMaterial->setVector4(NAME_LIGHT_COLOR, pLightColor);
+}
+
+void BBMaterialFileManager::createDeferredRenderingMaterial()
+{
+    m_pDeferredRenderingMaterial = new BBMaterial();
+    m_pDeferredRenderingMaterial->init("DefferedPosition",
+                                       BB_PATH_RESOURCE_SHADER(DefferedPosition.vert),
+                                       BB_PATH_RESOURCE_SHADER(DefferedPosition.frag));
 }

@@ -22,18 +22,16 @@ QString BBScene::m_ColorBufferName = "color";
 
 BBScene::BBScene()
 {
+    m_RenderingFunc = &BBScene::defaultRender;
     m_fUpdateRate = (float) BB_CONSTANT_UPDATE_RATE / 1000;
     m_pFBO = NULL;
     m_bEnableFBO = false;
     m_pCamera = NULL;
     m_pSkyBox = NULL;
-    m_bEnableSkyBox = true;
     m_pHorizontalPlane = NULL;
-    m_bHorizontalPlane = true;
     m_pSelectionRegion = NULL;
     m_pTransformCoordinateSystem = NULL;
     m_pFullScreenQuad = NULL;
-    m_bEnableFullScreenQuad = false;
 
 //    particle = new Particle();
 //    fogSwitch = false;
@@ -82,17 +80,14 @@ void BBScene::init()
     m_pHorizontalPlane->init();
     m_pTransformCoordinateSystem->init();
     m_pFullScreenQuad->init();
-
-//    //粒子
-//    particle->init();
-
-//    //2D
-//    sprite.setImage("../../../../BBearEngine/resources/textures/1158133.png");
-//    //sprite.setImage("../../../../BBearEngine/resources/textures/face.jpg");
-//    sprite.setRect(0.0f, 0.0f, 100.0f, 100.0f);
 }
 
 void BBScene::render()
+{
+    (this->*m_RenderingFunc)();
+}
+
+void BBScene::defaultRender()
 {
     // 3D camera mode
     m_pCamera->switchTo3D();
@@ -108,11 +103,8 @@ void BBScene::render()
 //        model->setShadowMap(mFBO->getBuffer("depth"));
 //    }
 
-    // Render the skybox at first
-    if (m_bEnableSkyBox)
-        m_pSkyBox->render(m_pCamera);
-    if (m_bHorizontalPlane)
-        m_pHorizontalPlane->render(m_pCamera);
+    m_pSkyBox->render(m_pCamera);
+    m_pHorizontalPlane->render(m_pCamera);
 
     // render dropped model
     QList<BBGameObject*> objects = m_Models + m_Lights;
@@ -127,18 +119,17 @@ void BBScene::render()
 
     unbindFBO();
 
-    if (m_bEnableFullScreenQuad)
-    {
-        m_pFullScreenQuad->setTexture(m_pFBO->getBuffer(m_ColorBufferName));
-        m_pFullScreenQuad->render(m_pCamera);
-    }
+//    if (m_bEnableFullScreenQuad)
+//    {
+//        m_pFullScreenQuad->setTexture(m_pFBO->getBuffer(m_ColorBufferName));
+//        m_pFullScreenQuad->render(m_pCamera);
+//    }
 
     // 2D camera mode
     m_pCamera->switchTo2D();
 
     m_pSelectionRegion->render();
 
-//    //实心？   会导致选框绘制不出
 //    glEnable(GL_TEXTURE_2D);
 //    glBindTexture(GL_TEXTURE_2D, mFBO->getBuffer("depth"));
 //    glBegin(GL_QUADS);
@@ -151,6 +142,33 @@ void BBScene::render()
 //    glTexCoord2f(0.0f, 1.0f);
 //    glVertex3f(-50, 50, 0);
 //    glEnd();
+}
+
+void BBScene::deferredRender()
+{
+    // 3D camera mode
+    m_pCamera->switchTo3D();
+    // refresh camera position and direction, update pos and ..., Convenient for subsequent use
+    m_pCamera->update(m_fUpdateRate);
+
+    bindFBO();
+
+    // render dropped model
+    QList<BBGameObject*> objects = m_Models + m_Lights;
+            //+ audios;
+    for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
+    {
+        BBGameObject *pObject = *itr;
+        pObject->render(m_pCamera);
+    }
+
+    unbindFBO();
+
+    m_pFullScreenQuad->setTexture(m_pFBO->getBuffer(m_ColorBufferName));
+    m_pFullScreenQuad->render(m_pCamera);
+
+    // 2D camera mode
+    m_pCamera->switchTo2D();
 }
 
 void BBScene::resize(float width, float height)
@@ -169,6 +187,16 @@ void BBScene::resize(float width, float height)
 void BBScene::setSkyBox(const QString &path)
 {
     m_pSkyBox->change(path);
+}
+
+void BBScene::enableSkyBox(bool bEnable)
+{
+    m_pSkyBox->setVisibility(bEnable);
+}
+
+void BBScene::enableHorizontalPlane(bool bEnable)
+{
+    m_pHorizontalPlane->setVisibility(bEnable);
 }
 
 BBModel* BBScene::createModel(const QString &filePath, int x, int y)

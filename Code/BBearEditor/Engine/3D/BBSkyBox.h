@@ -26,19 +26,22 @@ public:
     void render(BBCamera *pCamera) override;
     void change(const QString &path);
 
+    void setVisibility(bool bVisible) override;
+
 private:
-    BBSkyBoxSide *m_pFront;
-    BBSkyBoxSide *m_pBack;
-    BBSkyBoxSide *m_pLeft;
-    BBSkyBoxSide *m_pRight;
-    BBSkyBoxSide *m_pTop;
-    BBSkyBoxSide *m_pBottom;
     void initFront();
     void initBack();
     void initLeft();
     void initRight();
     void initTop();
     void initBottom();
+
+    BBSkyBoxSide *m_pFront;
+    BBSkyBoxSide *m_pBack;
+    BBSkyBoxSide *m_pLeft;
+    BBSkyBoxSide *m_pRight;
+    BBSkyBoxSide *m_pTop;
+    BBSkyBoxSide *m_pBottom;
 };
 
 

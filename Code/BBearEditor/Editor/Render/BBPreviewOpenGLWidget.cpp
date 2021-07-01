@@ -44,6 +44,13 @@ void BBPreviewOpenGLWidget::removeMaterialPreview()
     update();
 }
 
+void BBPreviewOpenGLWidget::initializeGL()
+{
+    BBOpenGLWidget::initializeGL();
+    m_pScene->enableSkyBox(false);
+    m_pScene->enableHorizontalPlane(false);
+}
+
 void BBPreviewOpenGLWidget::createSphere()
 {
     m_pSphere = m_pScene->createModelForPreview(BB_PATH_RESOURCE_MESH(sphere.obj));

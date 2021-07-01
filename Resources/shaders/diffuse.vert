@@ -4,7 +4,6 @@ attribute vec4 texcoord;
 attribute vec4 normal;
 
 varying vec4 V_Color;
-varying vec4 V_Texcoord;
 
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
@@ -20,6 +19,5 @@ vec4 getLightColor()
 void main()
 {
     V_Color = color * getLightColor();
-    V_Texcoord = texcoord;
     gl_Position = projectionMatrix * viewMatrix * modelMatrix * position;
 }

@@ -18,6 +18,10 @@ class BBSelectionRegion;
 class BBRay;
 class BBTransformCoordinateSystem;
 class BBFullScreenQuad;
+class BBScene;
+
+typedef void (BBScene::*BBRenderingFunc)();
+
 class BBScene
 {
 public:
@@ -25,21 +29,27 @@ public:
     virtual ~BBScene();
 
     void init();
+
     void render();
+    void setRenderingFunc(const BBRenderingFunc &renderingFunc) { m_RenderingFunc = renderingFunc; }
+    void defaultRender();
+    void deferredRender();
+
     void resize(float width, float height);
 
     inline BBCamera* getCamera() { return m_pCamera; }
     inline BBTransformCoordinateSystem* getTransformCoordinateSystem() { return m_pTransformCoordinateSystem; }
+    inline QList<BBGameObject*> getModels() { return m_Models; }
     inline QList<BBGameObject*> getLights() { return m_Lights; }
 
     /* FBO */
     inline BBFrameBufferObject* getFBO() { return m_pFBO; }
     void enableFBO(bool bEnable) { m_bEnableFBO = bEnable; }
-    void enableFullScreenQuad(bool bEnable) { m_bEnableFullScreenQuad = bEnable; }
 
     void setSkyBox(const QString &path);
-    void enableSkyBox(bool bEnable) { m_bEnableSkyBox = bEnable; }
-    void enableHorizontalPlane(bool bEnable) { m_bHorizontalPlane = bEnable; }
+    void enableSkyBox(bool bEnable);
+
+    void enableHorizontalPlane(bool bEnable);
 
     BBModel* createModel(const QString &filePath, int x, int y);
     BBModel* createModel(const QString &filePath,
@@ -72,16 +82,15 @@ private:
     static QString m_ColorBufferName;
 
 private:
+    BBRenderingFunc m_RenderingFunc;
+
     float m_fUpdateRate;
 
     BBCamera *m_pCamera;
     BBSkyBox *m_pSkyBox;
-    bool m_bEnableSkyBox;
     BBHorizontalPlane *m_pHorizontalPlane;
-    bool m_bHorizontalPlane;
     BBTransformCoordinateSystem *m_pTransformCoordinateSystem;
     BBFullScreenQuad *m_pFullScreenQuad;
-    bool m_bEnableFullScreenQuad;
 
     QList<BBGameObject*> m_Models;
     QList<BBGameObject*> m_Lights;

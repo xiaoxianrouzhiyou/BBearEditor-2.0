@@ -27,13 +27,13 @@ BBRenderableObject::BBRenderableObject(const QVector3D &position, const QVector3
 BBRenderableObject::BBRenderableObject(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz)
     : BBGameObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
-    m_pDrawCalls = NULL;
+    m_pDrawCalls = nullptr;
     m_bVisible = true;
-    m_Materials.append(new BBMaterial());
-    m_pCurrentMaterial = m_Materials[0];
-    m_pVBO = NULL;
-    m_pEBO = NULL;
-    m_pIndexes = NULL;
+    m_pCurrentMaterial = new BBMaterial();
+    m_pPreviousMaterial = nullptr;
+    m_pVBO = nullptr;
+    m_pEBO = nullptr;
+    m_pIndexes = nullptr;
     m_nIndexCount = 0;
     m_nVertexCount = 0;
     m_DefaultColor = QVector3D(1.0f, 1.0f, 1.0f);
@@ -41,7 +41,6 @@ BBRenderableObject::BBRenderableObject(float px, float py, float pz, float rx, f
 
 BBRenderableObject::~BBRenderableObject()
 {
-    qDeleteAll(m_Materials);
     BB_SAFE_DELETE(m_pVBO);
     BB_SAFE_DELETE(m_pEBO);
     BB_SAFE_DELETE_ARRAY(m_pIndexes);
@@ -49,6 +48,7 @@ BBRenderableObject::~BBRenderableObject()
 
 void BBRenderableObject::init()
 {
+    m_pCurrentMaterial->setMatrix4(NAME_MODELMATRIX, m_ModelMatrix.data());
     m_pVBO->submitData();
     if (m_nIndexCount > 0)
     {
@@ -66,19 +66,31 @@ void BBRenderableObject::render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera
 {
     if (m_bActive && m_bVisible)
     {
-        m_pCurrentMaterial->setMatrix4(NAME_MODELMATRIX, modelMatrix.data());
         m_pDrawCalls->draw(pCamera);
     }
 }
 
-void BBRenderableObject::setCurrentMaterial(int nIndex)
+void BBRenderableObject::setModelMatrix(float px, float py, float pz,
+                                        const QQuaternion &r,
+                                        float sx, float sy, float sz)
 {
-    m_pCurrentMaterial = m_Materials[nIndex];
+    BBGameObject::setModelMatrix(px, py, pz, r, sx, sy, sz);
+    m_pCurrentMaterial->setMatrix4(NAME_MODELMATRIX, m_ModelMatrix.data());
 }
 
 void BBRenderableObject::setCurrentMaterial(BBMaterial *pMaterial)
 {
+    m_pPreviousMaterial = m_pCurrentMaterial;
     m_pCurrentMaterial = pMaterial;
+    m_pCurrentMaterial->setMatrix4(NAME_MODELMATRIX, m_ModelMatrix.data());
+    m_pDrawCalls->setMaterial(m_pCurrentMaterial);
+}
+
+void BBRenderableObject::restoreMaterial()
+{
+    m_pCurrentMaterial = m_pPreviousMaterial;
+    m_pPreviousMaterial = nullptr;
+    m_pCurrentMaterial->setMatrix4(NAME_MODELMATRIX, m_ModelMatrix.data());
     m_pDrawCalls->setMaterial(m_pCurrentMaterial);
 }
 

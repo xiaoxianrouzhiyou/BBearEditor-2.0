@@ -6,6 +6,7 @@
 #include "BBScene.h"
 #include "Base/BBGameObject.h"
 #include "SceneManager/BBHierarchyTreeWidget.h"
+#include "IO/BBMaterialFileManager.h"
 
 
 QMap<QTreeWidgetItem*, BBGameObject*> BBSceneManager::m_ObjectMap;
@@ -213,10 +214,26 @@ void BBSceneManager::removeScene()
 
 void BBSceneManager::enableDeferredRendering(bool bEnable)
 {
-    m_pScene->enableFBO(bEnable);
-    m_pScene->enableSkyBox(!bEnable);
-    m_pScene->enableHorizontalPlane(!bEnable);
-    m_pScene->enableFullScreenQuad(bEnable);
+    if (bEnable)
+    {
+        m_pScene->enableFBO(true);
+        QList<BBGameObject*> models = m_pScene->getModels();
+        for (int i = 0; i < models.count(); i++)
+        {
+            models[i]->setCurrentMaterial(BBMaterialFileManager::getDeferredRenderingMaterial());
+        }
+        m_pScene->setRenderingFunc(&BBScene::deferredRender);
+    }
+    else
+    {
+        m_pScene->enableFBO(false);
+        QList<BBGameObject*> models = m_pScene->getModels();
+        for (int i = 0; i < models.count(); i++)
+        {
+            models[i]->restoreMaterial();
+        }
+        m_pScene->setRenderingFunc(&BBScene::defaultRender);
+    }
 }
 
 void BBSceneManager::setVector3f(const QVector3D &value, BBSerializer::BBVector3f *&pOutVector3f)
