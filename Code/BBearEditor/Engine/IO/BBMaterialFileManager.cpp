@@ -137,15 +137,15 @@ void BBMaterialFileManager::loadMaterialContent(const QString &filePath, BBMater
 void BBMaterialFileManager::createDeferredRenderingMaterial()
 {
     m_pDeferredRenderingMaterial[0] = new BBMaterial();
-    m_pDeferredRenderingMaterial[0]->init("DefferedPosition",
-                                          BB_PATH_RESOURCE_SHADER(DefferedPosition.vert),
-                                          BB_PATH_RESOURCE_SHADER(DefferedPosition.frag));
+    m_pDeferredRenderingMaterial[0]->init("DeferredPosition",
+                                          BB_PATH_RESOURCE_SHADER(DeferredPosition.vert),
+                                          BB_PATH_RESOURCE_SHADER(DeferredPosition.frag));
     m_pDeferredRenderingMaterial[1] = new BBMaterial();
-    m_pDeferredRenderingMaterial[1]->init("DefferedNormal",
-                                          BB_PATH_RESOURCE_SHADER(DefferedNormal.vert),
-                                          BB_PATH_RESOURCE_SHADER(DefferedNormal.frag));
+    m_pDeferredRenderingMaterial[1]->init("DeferredNormal",
+                                          BB_PATH_RESOURCE_SHADER(DeferredNormal.vert),
+                                          BB_PATH_RESOURCE_SHADER(DeferredNormal.frag));
     m_pDeferredRenderingMaterial[2] = new BBMaterial();
-    m_pDeferredRenderingMaterial[2]->init("DefferedColor",
-                                          BB_PATH_RESOURCE_SHADER(DefferedColor.vert),
-                                          BB_PATH_RESOURCE_SHADER(DefferedColor.frag));
+    m_pDeferredRenderingMaterial[2]->init("DeferredColor",
+                                          BB_PATH_RESOURCE_SHADER(DeferredColor.vert),
+                                          BB_PATH_RESOURCE_SHADER(DeferredColor.frag));
 }
