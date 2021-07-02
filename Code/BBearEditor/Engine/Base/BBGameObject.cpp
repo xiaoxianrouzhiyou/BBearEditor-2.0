@@ -334,6 +334,12 @@ void BBGameObject::restoreMaterial()
 
 }
 
+void BBGameObject::setTexture(const std::string &uniformName, GLuint textureName)
+{
+    Q_UNUSED(uniformName);
+    Q_UNUSED(textureName);
+}
+
 bool BBGameObject::hit(const BBRay &ray, float &fDistance)
 {
     Q_UNUSED(ray);

@@ -29,6 +29,8 @@ public:
     void setCurrentMaterial(BBMaterial *pMaterial) override;
     void restoreMaterial() override;
 
+    void setTexture(const std::string &uniformName, GLuint textureName) override;
+
     inline BBMaterial* getMaterial() { return m_pCurrentMaterial; }
     inline BBVertexBufferObject* getVBO() { return m_pVBO; }
     inline BBElementBufferObject* getEBO() { return m_pEBO; }

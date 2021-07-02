@@ -34,7 +34,7 @@ BBScene::BBScene()
     m_pHorizontalPlane = NULL;
     m_pSelectionRegion = NULL;
     m_pTransformCoordinateSystem = NULL;
-    m_pFullScreenQuad = NULL;
+    m_pTiledFullScreenQuad = NULL;
 
 //    particle = new Particle();
 //    fogSwitch = false;
@@ -58,7 +58,7 @@ BBScene::~BBScene()
     BB_SAFE_DELETE(m_pHorizontalPlane);
     BB_SAFE_DELETE(m_pSelectionRegion);
     BB_SAFE_DELETE(m_pTransformCoordinateSystem);
-    BB_SAFE_DELETE(m_pFullScreenQuad);
+    BB_SAFE_DELETE(m_pTiledFullScreenQuad);
     QList<BBGameObject*> objects = m_Models + m_Lights;
     QList<BBGameObject*>::Iterator itr;
     for (itr = objects.begin(); itr != objects.end(); itr++)
@@ -77,14 +77,14 @@ void BBScene::init()
     m_pHorizontalPlane = new BBHorizontalPlane();
     m_pSelectionRegion = new BBSelectionRegion();
     m_pTransformCoordinateSystem = new BBTransformCoordinateSystem();
-    m_pFullScreenQuad = new BBFullScreenQuad();
+    m_pTiledFullScreenQuad = new BBTiledFullScreenQuad();
 
     m_pCamera->setViewportSize(800.0f, 600.0f);
 
     m_pSkyBox->init(QString(BB_PATH_RESOURCE) + "skyboxs/1/");
     m_pHorizontalPlane->init();
     m_pTransformCoordinateSystem->init();
-    m_pFullScreenQuad->init();
+    m_pTiledFullScreenQuad->init();
 }
 
 void BBScene::render()
@@ -171,10 +171,10 @@ void BBScene::deferredRender()
         m_pFBO[i]->unbind();
     }
 
-    m_pFullScreenQuad->setTexture(NAME_TEXTURE(0), m_pFBO[0]->getBuffer(m_ColorBufferName));
-    m_pFullScreenQuad->setTexture(NAME_TEXTURE(1), m_pFBO[1]->getBuffer(m_ColorBufferName));
-    m_pFullScreenQuad->setTexture(NAME_TEXTURE(2), m_pFBO[2]->getBuffer(m_ColorBufferName));
-    m_pFullScreenQuad->render(m_pCamera);
+    m_pTiledFullScreenQuad->setTexture(NAME_TEXTURE(0), m_pFBO[0]->getBuffer(m_ColorBufferName));
+    m_pTiledFullScreenQuad->setTexture(NAME_TEXTURE(1), m_pFBO[1]->getBuffer(m_ColorBufferName));
+    m_pTiledFullScreenQuad->setTexture(NAME_TEXTURE(2), m_pFBO[2]->getBuffer(m_ColorBufferName));
+    m_pTiledFullScreenQuad->render(m_pCamera);
 
     // 2D camera mode
     m_pCamera->switchTo2D();

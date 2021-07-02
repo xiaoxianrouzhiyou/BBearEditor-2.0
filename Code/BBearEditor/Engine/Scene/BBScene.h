@@ -17,7 +17,7 @@ class BBLight;
 class BBSelectionRegion;
 class BBRay;
 class BBTransformCoordinateSystem;
-class BBFullScreenQuad;
+class BBTiledFullScreenQuad;
 class BBScene;
 
 typedef void (BBScene::*BBRenderingFunc)();
@@ -88,7 +88,7 @@ private:
     BBSkyBox *m_pSkyBox;
     BBHorizontalPlane *m_pHorizontalPlane;
     BBTransformCoordinateSystem *m_pTransformCoordinateSystem;
-    BBFullScreenQuad *m_pFullScreenQuad;
+    BBTiledFullScreenQuad *m_pTiledFullScreenQuad;
 
     QList<BBGameObject*> m_Models;
     QList<BBGameObject*> m_Lights;

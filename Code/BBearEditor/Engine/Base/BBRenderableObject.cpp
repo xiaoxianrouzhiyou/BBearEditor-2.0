@@ -90,6 +90,11 @@ void BBRenderableObject::restoreMaterial()
     setCurrentMaterial(m_pDefaultMaterial);
 }
 
+void BBRenderableObject::setTexture(const std::string &uniformName, GLuint textureName)
+{
+    m_pCurrentMaterial->getBaseRenderPass()->setSampler2D(uniformName, textureName);
+}
+
 void BBRenderableObject::appendDrawCall(BBDrawCall *pDrawCall)
 {
     if (m_pDrawCalls == nullptr)
