@@ -23,8 +23,10 @@ public:
     void unbind();
 
     void setBlendState(bool bEnable);
+    void setBlendFunc(unsigned int src, unsigned int dst);
     void setZTestState(bool bEnable);
     void setZFunc(unsigned int func);
+    void setZMask(bool bEnable);
     void setLineWidth(float fWidth);
 
     void setMatrix4(const std::string &uniformName, const float *pMatrix4);

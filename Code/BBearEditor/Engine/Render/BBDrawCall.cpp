@@ -76,18 +76,26 @@ void BBDrawCall::switchRenderingSettings(int nIndex)
 void BBDrawCall::onePassRendering(BBCamera *pCamera)
 {
     m_pVBO->bind();
-    m_pMaterial->getBaseRenderPass()->bind(pCamera);
-    if (m_pEBO == nullptr)
+
+    BBRenderPass *pBaseRenderPass = m_pMaterial->getBaseRenderPass();
+
+    QList<BBGameObject*> lights = collectLights();
+    for (int i = 0; i < lights.count(); i++)
     {
-        m_pVBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
+        ((BBLight*)lights[i])->setRenderPass(pBaseRenderPass);
+        pBaseRenderPass->bind(pCamera);
+        if (m_pEBO == nullptr)
+        {
+            m_pVBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
+        }
+        else
+        {
+            m_pEBO->bind();
+            m_pEBO->draw(m_eDrawPrimitiveType, m_nIndexCount, m_nDrawStartIndex);
+            m_pEBO->unbind();
+        }
     }
-    else
-    {
-        m_pEBO->bind();
-        m_pEBO->draw(m_eDrawPrimitiveType, m_nIndexCount, m_nDrawStartIndex);
-        m_pEBO->unbind();
-    }
-    m_pMaterial->getBaseRenderPass()->unbind();
+    pBaseRenderPass->unbind();
     m_pVBO->unbind();
 }
 

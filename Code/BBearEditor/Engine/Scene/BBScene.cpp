@@ -168,13 +168,12 @@ void BBScene::deferredRender()
             pObject->render(m_pCamera);
         }
 
-        m_pTransformCoordinateSystem->render(m_pCamera);
-
         m_pFBO[i]->unbind();
     }
 
     m_pFullScreenQuad->setTexture(NAME_TEXTURE(0), m_pFBO[0]->getBuffer(m_ColorBufferName));
     m_pFullScreenQuad->setTexture(NAME_TEXTURE(1), m_pFBO[1]->getBuffer(m_ColorBufferName));
+    m_pFullScreenQuad->setTexture(NAME_TEXTURE(2), m_pFBO[2]->getBuffer(m_ColorBufferName));
     m_pFullScreenQuad->render(m_pCamera);
 
     // 2D camera mode

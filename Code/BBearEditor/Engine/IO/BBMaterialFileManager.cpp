@@ -144,4 +144,8 @@ void BBMaterialFileManager::createDeferredRenderingMaterial()
     m_pDeferredRenderingMaterial[1]->init("DefferedNormal",
                                           BB_PATH_RESOURCE_SHADER(DefferedNormal.vert),
                                           BB_PATH_RESOURCE_SHADER(DefferedNormal.frag));
+    m_pDeferredRenderingMaterial[2] = new BBMaterial();
+    m_pDeferredRenderingMaterial[2]->init("DefferedColor",
+                                          BB_PATH_RESOURCE_SHADER(DefferedColor.vert),
+                                          BB_PATH_RESOURCE_SHADER(DefferedColor.frag));
 }

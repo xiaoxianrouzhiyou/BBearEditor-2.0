@@ -77,6 +77,12 @@ void BBRenderPass::setBlendState(bool bEnable)
     m_RenderState.m_bBlend = bEnable;
 }
 
+void BBRenderPass::setBlendFunc(unsigned int src, unsigned int dst)
+{
+    m_RenderState.m_SRCBlendFunc = src;
+    m_RenderState.m_DSTBlendFunc = dst;
+}
+
 void BBRenderPass::setZTestState(bool bEnable)
 {
     m_RenderState.m_bZTest = bEnable;
@@ -85,6 +91,11 @@ void BBRenderPass::setZTestState(bool bEnable)
 void BBRenderPass::setZFunc(unsigned int func)
 {
     m_RenderState.m_ZTestFunc = func;
+}
+
+void BBRenderPass::setZMask(bool bEnable)
+{
+    m_RenderState.m_bWriteZ = bEnable;
 }
 
 void BBRenderPass::setLineWidth(float fWidth)
