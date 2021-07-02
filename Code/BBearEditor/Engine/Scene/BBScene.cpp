@@ -16,6 +16,7 @@
 #include "Render/Light/BBDirectionalLight.h"
 #include "Render/Light/BBPointLight.h"
 #include "Render/Light/BBSpotLight.h"
+#include "IO/BBMaterialFileManager.h"
 
 
 QString BBScene::m_ColorBufferName = "color";
@@ -24,8 +25,10 @@ BBScene::BBScene()
 {
     m_RenderingFunc = &BBScene::defaultRender;
     m_fUpdateRate = (float) BB_CONSTANT_UPDATE_RATE / 1000;
-    m_pFBO = NULL;
-    m_bEnableFBO = false;
+    for (int i = 0; i < 3; i++)
+    {
+        m_pFBO[i] = NULL;
+    }
     m_pCamera = NULL;
     m_pSkyBox = NULL;
     m_pHorizontalPlane = NULL;
@@ -46,15 +49,17 @@ BBScene::BBScene()
 
 BBScene::~BBScene()
 {
-    BB_SAFE_DELETE(m_pFBO);
+    for (int i = 0; i < 3; i++)
+    {
+        BB_SAFE_DELETE(m_pFBO[i]);
+    }
     BB_SAFE_DELETE(m_pCamera);
     BB_SAFE_DELETE(m_pSkyBox);
     BB_SAFE_DELETE(m_pHorizontalPlane);
     BB_SAFE_DELETE(m_pSelectionRegion);
     BB_SAFE_DELETE(m_pTransformCoordinateSystem);
     BB_SAFE_DELETE(m_pFullScreenQuad);
-    QList<BBGameObject*> objects = m_Models;
-//    + directionLights + pointLights + spotLights + audios;
+    QList<BBGameObject*> objects = m_Models + m_Lights;
     QList<BBGameObject*>::Iterator itr;
     for (itr = objects.begin(); itr != objects.end(); itr++)
     {
@@ -151,20 +156,25 @@ void BBScene::deferredRender()
     // refresh camera position and direction, update pos and ..., Convenient for subsequent use
     m_pCamera->update(m_fUpdateRate);
 
-    bindFBO();
-
-    // render dropped model
-    QList<BBGameObject*> objects = m_Models + m_Lights;
-            //+ audios;
-    for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
+    for (int i = 0; i < 2; i++)
     {
-        BBGameObject *pObject = *itr;
-        pObject->render(m_pCamera);
+        m_pFBO[i]->bind();
+
+        QList<BBGameObject*> objects = m_Models;
+        for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
+        {
+            BBGameObject *pObject = *itr;
+            pObject->setCurrentMaterial(BBMaterialFileManager::getDeferredRenderingMaterial(i));
+            pObject->render(m_pCamera);
+        }
+
+        m_pTransformCoordinateSystem->render(m_pCamera);
+
+        m_pFBO[i]->unbind();
     }
 
-    unbindFBO();
-
-    m_pFullScreenQuad->setTexture(m_pFBO->getBuffer(m_ColorBufferName));
+    m_pFullScreenQuad->setTexture(NAME_TEXTURE(0), m_pFBO[0]->getBuffer(m_ColorBufferName));
+    m_pFullScreenQuad->setTexture(NAME_TEXTURE(1), m_pFBO[1]->getBuffer(m_ColorBufferName));
     m_pFullScreenQuad->render(m_pCamera);
 
     // 2D camera mode
@@ -176,12 +186,15 @@ void BBScene::resize(float width, float height)
     // 3D camera, resize
     m_pCamera->setViewportSize(width, height);
 
-    if (!m_pFBO)
-        BB_SAFE_DELETE(m_pFBO);
-    m_pFBO = new BBFrameBufferObject;
-    m_pFBO->attachColorBuffer(m_ColorBufferName, GL_COLOR_ATTACHMENT0, width, height);
-    m_pFBO->attachDepthBuffer("depth", width, height);
-    m_pFBO->finish();
+    for (int i = 0; i < 3; i++)
+    {
+        if (!m_pFBO[i])
+            BB_SAFE_DELETE(m_pFBO[i]);
+        m_pFBO[i] = new BBFrameBufferObject;
+        m_pFBO[i]->attachColorBuffer(m_ColorBufferName, GL_COLOR_ATTACHMENT0, width, height);
+        m_pFBO[i]->attachDepthBuffer("depth", width, height);
+        m_pFBO[i]->finish();
+    }
 }
 
 void BBScene::setSkyBox(const QString &path)
@@ -419,18 +432,18 @@ void BBScene::clear()
 
 void BBScene::bindFBO()
 {
-    if (m_bEnableFBO && m_pFBO)
-    {
-        m_pFBO->bind();
-    }
+//    if (m_bEnableFBO && m_pFBO)
+//    {
+//        m_pFBO->bind();
+//    }
 }
 
 void BBScene::unbindFBO()
 {
-    if (m_bEnableFBO && m_pFBO)
-    {
-        m_pFBO->unbind();
-    }
+//    if (m_bEnableFBO && m_pFBO)
+//    {
+//        m_pFBO->unbind();
+//    }
 }
 
 

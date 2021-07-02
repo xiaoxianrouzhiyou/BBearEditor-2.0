@@ -41,7 +41,7 @@ void BBFullScreenQuad::render(BBCamera *pCamera)
     m_pDrawCalls->onePassRendering(pCamera);
 }
 
-void BBFullScreenQuad::setTexture(GLuint textureName)
+void BBFullScreenQuad::setTexture(const std::string &uniformName, GLuint textureName)
 {
-    m_pCurrentMaterial->getBaseRenderPass()->setSampler2D(NAME_TEXTURE, textureName);
+    m_pCurrentMaterial->getBaseRenderPass()->setSampler2D(uniformName, textureName);
 }

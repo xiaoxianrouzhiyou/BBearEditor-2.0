@@ -25,24 +25,9 @@
 #define NAME_MODELMATRIX "modelMatrix"
 #define NAME_ITMODELMATRIX "IT_modelMatrix"
 #define NAME_CAMERA_POSITION "cameraPosition"
-#define NAME_TEXTURE "texture0"
+#define NAME_TEXTURE(x) "texture"#x
 #define NAME_LIGHT_POSITION "lightPosition"
 #define NAME_LIGHT_COLOR "lightColor"
-
-//QString Light::directionLightPositionUniformLocationName = "directionLightPositionUniform";
-//QString Light::directionLightColorUniformLocationName = "directionLightColorUniform";
-//QString Light::pointLightPositionUniformLocationName = "pointLightPositionUniform";
-//QString Light::pointLightColorUniformLocationName = "pointLightColorUniform";
-//QString Light::pointLightOptionUniformLocationName = "pointLightOptionUniform";
-//QString Light::spotLightPositionUniformLocationName = "spotLightPositionUniform";
-//QString Light::spotLightDirectionUniformLocationName = "spotLightDirectionUniform";
-//QString Light::spotLightColorUniformLocationName = "spotLightColorUniform";
-//QString Light::spotLightOptionUniformLocationName = "spotLightOptionUniform";
-//QString Light::spotLightOption2UniformLocationName = "spotLightOption2Uniform";
-//QString Light::lightAmbientUniformLocationName = "lightAmbientUniform";
-//QString Light::lightSpecularUniformLocationName = "lightSpecularUniform";
-//QString Light::lightOptionUniformLocationName = "lightOptionUniform";
-//QString Light::lightCountUniformLocationName = "lightCountUniform";
 
 
 class BBBaseRenderComponent : protected QOpenGLExtraFunctions

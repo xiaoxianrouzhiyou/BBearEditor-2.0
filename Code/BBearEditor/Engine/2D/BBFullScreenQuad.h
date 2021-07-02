@@ -12,7 +12,7 @@ public:
     void init() override;
     void render(BBCamera *pCamera) override;
 
-    void setTexture(GLuint textureName);
+    void setTexture(const std::string &uniformName, GLuint textureName);
 };
 
 #endif // BBFULLSCREENQUAD_H

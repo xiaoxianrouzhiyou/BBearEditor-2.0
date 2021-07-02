@@ -38,7 +38,7 @@ protected:
 
     BBDrawCall *m_pDrawCalls;
     BBMaterial *m_pCurrentMaterial;
-    BBMaterial *m_pPreviousMaterial;
+    BBMaterial *m_pDefaultMaterial;
     BBVertexBufferObject *m_pVBO;
     BBElementBufferObject *m_pEBO;
     unsigned short *m_pIndexes;

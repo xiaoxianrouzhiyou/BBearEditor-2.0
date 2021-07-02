@@ -6,7 +6,6 @@
 #include "BBScene.h"
 #include "Base/BBGameObject.h"
 #include "SceneManager/BBHierarchyTreeWidget.h"
-#include "IO/BBMaterialFileManager.h"
 
 
 QMap<QTreeWidgetItem*, BBGameObject*> BBSceneManager::m_ObjectMap;
@@ -216,17 +215,10 @@ void BBSceneManager::enableDeferredRendering(bool bEnable)
 {
     if (bEnable)
     {
-        m_pScene->enableFBO(true);
-        QList<BBGameObject*> models = m_pScene->getModels();
-        for (int i = 0; i < models.count(); i++)
-        {
-            models[i]->setCurrentMaterial(BBMaterialFileManager::getDeferredRenderingMaterial());
-        }
         m_pScene->setRenderingFunc(&BBScene::deferredRender);
     }
     else
     {
-        m_pScene->enableFBO(false);
         QList<BBGameObject*> models = m_pScene->getModels();
         for (int i = 0; i < models.count(); i++)
         {

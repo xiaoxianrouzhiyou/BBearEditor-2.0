@@ -45,7 +45,7 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
     m_pCurrentMaterial->setVector4(NAME_LIGHT_POSITION, pLightPosition);
     m_pCurrentMaterial->setVector4(NAME_LIGHT_COLOR, pLightColor);
     BBTexture texture;
-    m_pCurrentMaterial->setSampler2D(NAME_TEXTURE, texture.createTexture2D());
+    m_pCurrentMaterial->setSampler2D(NAME_TEXTURE(0), texture.createTexture2D());
 
     BBRenderableObject::init();
 

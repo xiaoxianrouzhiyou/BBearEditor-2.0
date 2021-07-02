@@ -43,8 +43,7 @@ public:
     inline QList<BBGameObject*> getLights() { return m_Lights; }
 
     /* FBO */
-    inline BBFrameBufferObject* getFBO() { return m_pFBO; }
-    void enableFBO(bool bEnable) { m_bEnableFBO = bEnable; }
+
 
     void setSkyBox(const QString &path);
     void enableSkyBox(bool bEnable);
@@ -77,8 +76,7 @@ public:
 private:
     void bindFBO();
     void unbindFBO();
-    BBFrameBufferObject *m_pFBO;
-    bool m_bEnableFBO;
+    BBFrameBufferObject *m_pFBO[3];
     static QString m_ColorBufferName;
 
 private:

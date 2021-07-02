@@ -8,7 +8,7 @@
 
 BBPreviewOpenGLWidget* BBMaterialFileManager::m_pPreviewOpenGLWidget = nullptr;
 QMap<QString, BBMaterial*> BBMaterialFileManager::m_CachedMaterials;
-BBMaterial* BBMaterialFileManager::m_pDeferredRenderingMaterial = nullptr;
+BBMaterial* BBMaterialFileManager::m_pDeferredRenderingMaterial[3] = {0};
 
 QStringList BBMaterialFileManager::loadVShaderList()
 {
@@ -71,13 +71,13 @@ QString BBMaterialFileManager::getShaderFilePath(const QString &name)
     return filePath;
 }
 
-BBMaterial* BBMaterialFileManager::getDeferredRenderingMaterial()
+BBMaterial* BBMaterialFileManager::getDeferredRenderingMaterial(int nIndex)
 {
-    if (!m_pDeferredRenderingMaterial)
+    if (!m_pDeferredRenderingMaterial[0])
     {
         createDeferredRenderingMaterial();
     }
-    return m_pDeferredRenderingMaterial;
+    return m_pDeferredRenderingMaterial[nIndex];
 }
 
 void BBMaterialFileManager::serialize(BBSerializer::BBMaterial material, const QString &filePath)
@@ -136,8 +136,12 @@ void BBMaterialFileManager::loadMaterialContent(const QString &filePath, BBMater
 
 void BBMaterialFileManager::createDeferredRenderingMaterial()
 {
-    m_pDeferredRenderingMaterial = new BBMaterial();
-    m_pDeferredRenderingMaterial->init("DefferedPosition",
-                                       BB_PATH_RESOURCE_SHADER(DefferedPosition.vert),
-                                       BB_PATH_RESOURCE_SHADER(DefferedPosition.frag));
+    m_pDeferredRenderingMaterial[0] = new BBMaterial();
+    m_pDeferredRenderingMaterial[0]->init("DefferedPosition",
+                                          BB_PATH_RESOURCE_SHADER(DefferedPosition.vert),
+                                          BB_PATH_RESOURCE_SHADER(DefferedPosition.frag));
+    m_pDeferredRenderingMaterial[1] = new BBMaterial();
+    m_pDeferredRenderingMaterial[1]->init("DefferedNormal",
+                                          BB_PATH_RESOURCE_SHADER(DefferedNormal.vert),
+                                          BB_PATH_RESOURCE_SHADER(DefferedNormal.frag));
 }

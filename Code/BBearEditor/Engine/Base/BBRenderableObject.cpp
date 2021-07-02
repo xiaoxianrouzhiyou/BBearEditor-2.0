@@ -29,8 +29,8 @@ BBRenderableObject::BBRenderableObject(float px, float py, float pz, float rx, f
 {
     m_pDrawCalls = nullptr;
     m_bVisible = true;
-    m_pCurrentMaterial = new BBMaterial();
-    m_pPreviousMaterial = nullptr;
+    m_pDefaultMaterial = new BBMaterial();
+    m_pCurrentMaterial = m_pDefaultMaterial;
     m_pVBO = nullptr;
     m_pEBO = nullptr;
     m_pIndexes = nullptr;
@@ -80,7 +80,6 @@ void BBRenderableObject::setModelMatrix(float px, float py, float pz,
 
 void BBRenderableObject::setCurrentMaterial(BBMaterial *pMaterial)
 {
-    m_pPreviousMaterial = m_pCurrentMaterial;
     m_pCurrentMaterial = pMaterial;
     m_pCurrentMaterial->setMatrix4(NAME_MODELMATRIX, m_ModelMatrix.data());
     m_pDrawCalls->setMaterial(m_pCurrentMaterial);
@@ -88,10 +87,7 @@ void BBRenderableObject::setCurrentMaterial(BBMaterial *pMaterial)
 
 void BBRenderableObject::restoreMaterial()
 {
-    m_pCurrentMaterial = m_pPreviousMaterial;
-    m_pPreviousMaterial = nullptr;
-    m_pCurrentMaterial->setMatrix4(NAME_MODELMATRIX, m_ModelMatrix.data());
-    m_pDrawCalls->setMaterial(m_pCurrentMaterial);
+    setCurrentMaterial(m_pDefaultMaterial);
 }
 
 void BBRenderableObject::appendDrawCall(BBDrawCall *pDrawCall)

@@ -23,7 +23,7 @@ void BBSkyBoxSide::init(const QString &path)
                              BB_PATH_RESOURCE_SHADER(texture.vert),
                              BB_PATH_RESOURCE_SHADER(texture.frag));
     BBTexture texture;
-    m_pCurrentMaterial->setSampler2D(NAME_TEXTURE, texture.createTexture2DFromBMP(path.toStdString().c_str()), path);
+    m_pCurrentMaterial->setSampler2D(NAME_TEXTURE(0), texture.createTexture2DFromBMP(path.toStdString().c_str()), path);
     m_pCurrentMaterial->setZTestState(false);
 
     BBRenderableObject::init();
