@@ -31,6 +31,9 @@ public:
 
     void setTexture(const std::string &uniformName, GLuint textureName) override;
 
+    void openLight() override;
+    void closeLight() override;
+
     inline BBMaterial* getMaterial() { return m_pCurrentMaterial; }
     inline BBVertexBufferObject* getVBO() { return m_pVBO; }
     inline BBElementBufferObject* getEBO() { return m_pEBO; }

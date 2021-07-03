@@ -6,6 +6,7 @@ uniform sampler2D texture2;
 
 uniform vec4 lightPosition;
 uniform vec4 lightColor;
+uniform vec4 lightSettings;
 
 void main(void)
 {
@@ -15,20 +16,30 @@ void main(void)
     vec4 normal_data = texture2D(texture1, V_Texcoord.xy);
     vec3 normal = normal_data.xyz * 2.0 - vec3(1.0);
 
-//    vec4 color_data = texture2D(texture2, V_Texcoord.xy);
-//    vec3 color = color_data.rgb;
+    vec4 color_data = texture2D(texture2, V_Texcoord.xy);
+    vec3 color = color_data.rgb;
 
     float intensity = 0.0;
-    if (lightPosition.w == 0.0)
+    vec3 final_color = vec3(0.0);
+    if (lightSettings.x != 0.0)
     {
-        // directional light
-        vec3 object_to_light_source = normalize(lightPosition.xyz);
-        intensity = dot(object_to_light_source, normal);
+        // there is a light
+        if (lightPosition.w == 0.0)
+        {
+            // directional light
+            vec3 object_to_light_source = normalize(lightPosition.xyz);
+            intensity = dot(object_to_light_source, normal);
+        }
+        else
+        {
+            // other types
+        }
+        final_color = color * lightColor.xyz * intensity;
     }
     else
     {
-        // other types
+        final_color = color;
     }
 
-    gl_FragColor = vec4(lightColor.xyz * intensity, 1.0);
+    gl_FragColor = vec4(final_color, 1.0);
 }

@@ -66,6 +66,9 @@ public:
 
     virtual void setTexture(const std::string &uniformName, GLuint textureName);
 
+    virtual void openLight();
+    virtual void closeLight();
+
     virtual bool hit(const BBRay &ray, float &fDistance);
     virtual bool belongToSelectionRegion(const QVector3D &left1, const QVector3D &left2, const QVector3D &left3,
                                          const QVector3D &top1, const QVector3D &top2, const QVector3D &top3,

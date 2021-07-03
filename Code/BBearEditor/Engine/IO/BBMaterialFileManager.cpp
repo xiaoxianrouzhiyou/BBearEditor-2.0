@@ -130,8 +130,8 @@ void BBMaterialFileManager::loadMaterialContent(const QString &filePath, BBMater
     // default
     float *pLightPosition = new float[4] {1.0f, 1.0f, 0.0f, 0.0f};
     float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};
-    pMaterial->setVector4(NAME_LIGHT_POSITION, pLightPosition);
-    pMaterial->setVector4(NAME_LIGHT_COLOR, pLightColor);
+    pMaterial->setVector4(LOCATION_LIGHT_POSITION, pLightPosition);
+    pMaterial->setVector4(LOCATION_LIGHT_COLOR, pLightColor);
 }
 
 void BBMaterialFileManager::createDeferredRenderingMaterial()
@@ -148,4 +148,7 @@ void BBMaterialFileManager::createDeferredRenderingMaterial()
     m_pDeferredRenderingMaterial[2]->init("DeferredColor",
                                           BB_PATH_RESOURCE_SHADER(DeferredColor.vert),
                                           BB_PATH_RESOURCE_SHADER(DeferredColor.frag));
+    // default
+    float *pTextureSettings = new float[4] {0.0f, 0.0f, 0.0f, 0.0f};
+    m_pDeferredRenderingMaterial[2]->setVector4(LOCATION_TEXTURE_SETTING0, pTextureSettings);
 }

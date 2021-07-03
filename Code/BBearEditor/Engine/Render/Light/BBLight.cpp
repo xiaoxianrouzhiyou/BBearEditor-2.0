@@ -92,8 +92,8 @@ bool BBLight::belongToSelectionRegion(const QVector3D &left1, const QVector3D &l
 
 void BBLight::setRenderPass(BBRenderPass *pRenderPass)
 {
-    pRenderPass->setVector4(NAME_LIGHT_POSITION, m_HomogeneousPosition);
-    pRenderPass->setVector4(NAME_LIGHT_COLOR, m_Diffuse);
+    pRenderPass->setVector4(LOCATION_LIGHT_POSITION, m_HomogeneousPosition);
+    pRenderPass->setVector4(LOCATION_LIGHT_COLOR, m_Diffuse);
 }
 
 void BBLight::setAmbientColor(float r, float g, float b, float a)

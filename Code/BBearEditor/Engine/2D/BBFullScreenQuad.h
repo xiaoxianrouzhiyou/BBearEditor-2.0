@@ -4,6 +4,8 @@
 
 #include "Base/BBRenderableObject.h"
 
+class BBLight;
+
 class BBFullScreenQuad : public BBRenderableObject
 {
 public:
@@ -17,6 +19,7 @@ private:
     float m_fScale;
     float m_fOffsetX;
     float m_fOffsetY;
+    QList<BBLight*> m_Lights;
 };
 
 
@@ -31,8 +34,12 @@ public:
 
     void setTexture(const std::string &uniformName, GLuint textureName) override;
 
+    void openLight() override;
+    void closeLight() override;
+
 private:
     BBFullScreenQuad *m_pFullScreenQuad[4];
+    int m_nQuadCount;
 };
 
 #endif // BBFULLSCREENQUAD_H

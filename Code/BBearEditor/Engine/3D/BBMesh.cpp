@@ -42,10 +42,10 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
     // default
     float *pLightPosition = new float[4] {1.0f, 1.0f, 0.0f, 0.0f};
     float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};
-    m_pCurrentMaterial->setVector4(NAME_LIGHT_POSITION, pLightPosition);
-    m_pCurrentMaterial->setVector4(NAME_LIGHT_COLOR, pLightColor);
+    m_pCurrentMaterial->setVector4(LOCATION_LIGHT_POSITION, pLightPosition);
+    m_pCurrentMaterial->setVector4(LOCATION_LIGHT_COLOR, pLightColor);
     BBTexture texture;
-    m_pCurrentMaterial->setSampler2D(NAME_TEXTURE(0), texture.createTexture2D());
+    m_pCurrentMaterial->setSampler2D(LOCATION_TEXTURE(0), texture.createTexture2D());
 
     BBRenderableObject::init();
 

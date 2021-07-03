@@ -90,6 +90,6 @@ void BBHorizontalPlane::render(BBCamera *pCamera)
     while (height / ratio != 0);
     modelMatrix.scale(ratio / 10);
 
-    m_pCurrentMaterial->setMatrix4(NAME_MODELMATRIX, modelMatrix.data());
+    m_pCurrentMaterial->setMatrix4(LOCATION_MODELMATRIX, modelMatrix.data());
     BBRenderableObject::render(modelMatrix, pCamera);
 }

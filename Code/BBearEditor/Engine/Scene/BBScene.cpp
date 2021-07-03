@@ -156,7 +156,7 @@ void BBScene::deferredRender()
     // refresh camera position and direction, update pos and ..., Convenient for subsequent use
     m_pCamera->update(m_fUpdateRate);
 
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 3; i++)
     {
         m_pFBO[i]->bind();
 
@@ -171,9 +171,9 @@ void BBScene::deferredRender()
         m_pFBO[i]->unbind();
     }
 
-    m_pTiledFullScreenQuad->setTexture(NAME_TEXTURE(0), m_pFBO[0]->getBuffer(m_ColorBufferName));
-    m_pTiledFullScreenQuad->setTexture(NAME_TEXTURE(1), m_pFBO[1]->getBuffer(m_ColorBufferName));
-    m_pTiledFullScreenQuad->setTexture(NAME_TEXTURE(2), m_pFBO[2]->getBuffer(m_ColorBufferName));
+    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(0), m_pFBO[0]->getBuffer(m_ColorBufferName));
+    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(1), m_pFBO[1]->getBuffer(m_ColorBufferName));
+    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(2), m_pFBO[2]->getBuffer(m_ColorBufferName));
     m_pTiledFullScreenQuad->render(m_pCamera);
 
     // 2D camera mode
@@ -300,6 +300,10 @@ BBLight* BBScene::createLight(const QString &fileName, const QVector3D &position
     {
         m_pTransformCoordinateSystem->setSelectedObject(pLight);
     }
+
+    // open light for materials
+    m_pTiledFullScreenQuad->openLight();
+
     return pLight;
 }
 
@@ -352,6 +356,11 @@ void BBScene::deleteGameObject(BBGameObject *pGameObject)
              || pGameObject->getClassName() == BB_CLASSNAME_SPOT_LIGHT)
     {
         m_Lights.removeOne(pGameObject);
+
+        if (m_Lights.count() == 0)
+        {
+            m_pTiledFullScreenQuad->closeLight();
+        }
     }
 //    else if (object->getClassName() == TerrainClassName)
 //    {

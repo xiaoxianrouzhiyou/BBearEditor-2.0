@@ -16,18 +16,20 @@
 #include "Utils/BBUtils.h"
 
 
-#define NAME_POSITION "position"
-#define NAME_COLOR "color"
-#define NAME_TEXCOORD "texcoord"
-#define NAME_NORMAL "normal"
-#define NAME_PROJECTIONMATRIX "projectionMatrix"
-#define NAME_VIEWMATRIX "viewMatrix"
-#define NAME_MODELMATRIX "modelMatrix"
-#define NAME_ITMODELMATRIX "IT_modelMatrix"
-#define NAME_CAMERA_POSITION "cameraPosition"
-#define NAME_TEXTURE(x) "texture"#x
-#define NAME_LIGHT_POSITION "lightPosition"
-#define NAME_LIGHT_COLOR "lightColor"
+#define LOCATION_POSITION "position"
+#define LOCATION_COLOR "color"
+#define LOCATION_TEXCOORD "texcoord"
+#define LOCATION_NORMAL "normal"
+#define LOCATION_PROJECTIONMATRIX "projectionMatrix"
+#define LOCATION_VIEWMATRIX "viewMatrix"
+#define LOCATION_MODELMATRIX "modelMatrix"
+#define LOCATION_ITMODELMATRIX "IT_modelMatrix"
+#define LOCATION_CAMERA_POSITION "cameraPosition"
+#define LOCATION_TEXTURE(x) "texture"#x
+#define LOCATION_TEXTURE_SETTING0 "textureSettings"
+#define LOCATION_LIGHT_POSITION "lightPosition"
+#define LOCATION_LIGHT_COLOR "lightColor"
+#define LOCATION_LIGHT_SETTING0 "lightSettings"
 
 
 class BBBaseRenderComponent : protected QOpenGLExtraFunctions

@@ -94,19 +94,19 @@ void BBShader::initAttributes()
             nBasicDataType = GL_FLOAT;
         }
         int nDataOffset = 0;
-        if (strcmp(attribName, NAME_POSITION) == 0)
+        if (strcmp(attribName, LOCATION_POSITION) == 0)
         {
             nDataOffset = 0;
         }
-        else if (strcmp(attribName, NAME_COLOR) == 0)
+        else if (strcmp(attribName, LOCATION_COLOR) == 0)
         {
             nDataOffset = sizeof(float) * 4;
         }
-        else if (strcmp(attribName, NAME_TEXCOORD) == 0)
+        else if (strcmp(attribName, LOCATION_TEXCOORD) == 0)
         {
             nDataOffset = sizeof(float) * 8;
         }
-        else if (strcmp(attribName, NAME_NORMAL) == 0)
+        else if (strcmp(attribName, LOCATION_NORMAL) == 0)
         {
             nDataOffset = sizeof(float) * 12;
         }
@@ -159,17 +159,17 @@ BBUniformUpdater* BBShader::initUniformMatrix4(GLint location, const char *pUnif
     BBUpdateUniformFunc updateUniformFunc = &BBUniformUpdater::updateMatrix4;
     BBMatrix4MaterialProperty *pProperty = NULL;
     BBMaterialUniformPropertyType uniformType = BBMaterialUniformPropertyType::Matrix4;
-    if (strcmp(pUniformName, NAME_PROJECTIONMATRIX) == 0)
+    if (strcmp(pUniformName, LOCATION_PROJECTIONMATRIX) == 0)
     {
         updateUniformFunc = &BBUniformUpdater::updateCameraProjectionMatrix;
         uniformType = BBMaterialUniformPropertyType::CameraProjectionMatrix;
     }
-    else if (strcmp(pUniformName, NAME_VIEWMATRIX) == 0)
+    else if (strcmp(pUniformName, LOCATION_VIEWMATRIX) == 0)
     {
         updateUniformFunc = &BBUniformUpdater::updateCameraViewMatrix;
         uniformType = BBMaterialUniformPropertyType::CameraViewMatrix;
     }
-    else if (strcmp(pUniformName, NAME_MODELMATRIX) == 0)
+    else if (strcmp(pUniformName, LOCATION_MODELMATRIX) == 0)
     {
         pProperty = new BBMatrix4MaterialProperty(pUniformName);
         m_Properties.insert(pUniformName, pProperty);

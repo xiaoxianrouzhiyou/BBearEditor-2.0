@@ -340,6 +340,16 @@ void BBGameObject::setTexture(const std::string &uniformName, GLuint textureName
     Q_UNUSED(textureName);
 }
 
+void BBGameObject::openLight()
+{
+
+}
+
+void BBGameObject::closeLight()
+{
+
+}
+
 bool BBGameObject::hit(const BBRay &ray, float &fDistance)
 {
     Q_UNUSED(ray);

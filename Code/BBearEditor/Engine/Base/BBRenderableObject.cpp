@@ -48,7 +48,7 @@ BBRenderableObject::~BBRenderableObject()
 
 void BBRenderableObject::init()
 {
-    m_pCurrentMaterial->setMatrix4(NAME_MODELMATRIX, m_ModelMatrix.data());
+    m_pCurrentMaterial->setMatrix4(LOCATION_MODELMATRIX, m_ModelMatrix.data());
     m_pVBO->submitData();
     if (m_nIndexCount > 0)
     {
@@ -75,13 +75,13 @@ void BBRenderableObject::setModelMatrix(float px, float py, float pz,
                                         float sx, float sy, float sz)
 {
     BBGameObject::setModelMatrix(px, py, pz, r, sx, sy, sz);
-    m_pCurrentMaterial->setMatrix4(NAME_MODELMATRIX, m_ModelMatrix.data());
+    m_pCurrentMaterial->setMatrix4(LOCATION_MODELMATRIX, m_ModelMatrix.data());
 }
 
 void BBRenderableObject::setCurrentMaterial(BBMaterial *pMaterial)
 {
     m_pCurrentMaterial = pMaterial;
-    m_pCurrentMaterial->setMatrix4(NAME_MODELMATRIX, m_ModelMatrix.data());
+    m_pCurrentMaterial->setMatrix4(LOCATION_MODELMATRIX, m_ModelMatrix.data());
     m_pDrawCalls->setMaterial(m_pCurrentMaterial);
 }
 
@@ -93,6 +93,19 @@ void BBRenderableObject::restoreMaterial()
 void BBRenderableObject::setTexture(const std::string &uniformName, GLuint textureName)
 {
     m_pCurrentMaterial->getBaseRenderPass()->setSampler2D(uniformName, textureName);
+}
+
+void BBRenderableObject::openLight()
+{
+    // x: is there a light
+    float *pLightSettings = new float[4] {1.0f, 0.0f, 0.0f, 0.0f};
+    m_pCurrentMaterial->setVector4(LOCATION_LIGHT_SETTING0, pLightSettings);
+}
+
+void BBRenderableObject::closeLight()
+{
+    float *pLightSettings = new float[4] {0.0f, 0.0f, 0.0f, 0.0f};
+    m_pCurrentMaterial->setVector4(LOCATION_LIGHT_SETTING0, pLightSettings);
 }
 
 void BBRenderableObject::appendDrawCall(BBDrawCall *pDrawCall)

@@ -44,8 +44,9 @@ void BBFullScreenQuad::init()
     // default
     float *pLightPosition = new float[4] {1.0f, 1.0f, 0.0f, 0.0f};
     float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};
-    m_pCurrentMaterial->setVector4(NAME_LIGHT_POSITION, pLightPosition);
-    m_pCurrentMaterial->setVector4(NAME_LIGHT_COLOR, pLightColor);
+    m_pCurrentMaterial->setVector4(LOCATION_LIGHT_POSITION, pLightPosition);
+    m_pCurrentMaterial->setVector4(LOCATION_LIGHT_COLOR, pLightColor);
+    closeLight();
 
     BBRenderableObject::init();
 
@@ -67,6 +68,7 @@ void BBFullScreenQuad::render(BBCamera *pCamera)
 BBTiledFullScreenQuad::BBTiledFullScreenQuad()
     : BBGameObject()
 {
+    m_nQuadCount = 4;
     m_pFullScreenQuad[0] = new BBFullScreenQuad(0.5f, -0.5f, -0.5f);
     m_pFullScreenQuad[1] = new BBFullScreenQuad(0.5f, 0.5f, -0.5f);
     m_pFullScreenQuad[2] = new BBFullScreenQuad(0.5f, -0.5f, 0.5f);
@@ -75,7 +77,7 @@ BBTiledFullScreenQuad::BBTiledFullScreenQuad()
 
 BBTiledFullScreenQuad::~BBTiledFullScreenQuad()
 {
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < m_nQuadCount; i++)
     {
         BB_SAFE_DELETE(m_pFullScreenQuad[i]);
     }
@@ -83,7 +85,7 @@ BBTiledFullScreenQuad::~BBTiledFullScreenQuad()
 
 void BBTiledFullScreenQuad::init()
 {
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < m_nQuadCount; i++)
     {
         m_pFullScreenQuad[i]->init();
     }
@@ -91,7 +93,7 @@ void BBTiledFullScreenQuad::init()
 
 void BBTiledFullScreenQuad::render(BBCamera *pCamera)
 {
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < m_nQuadCount; i++)
     {
         m_pFullScreenQuad[i]->render(pCamera);
     }
@@ -99,8 +101,24 @@ void BBTiledFullScreenQuad::render(BBCamera *pCamera)
 
 void BBTiledFullScreenQuad::setTexture(const std::string &uniformName, GLuint textureName)
 {
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < m_nQuadCount; i++)
     {
         m_pFullScreenQuad[i]->setTexture(uniformName, textureName);
+    }
+}
+
+void BBTiledFullScreenQuad::openLight()
+{
+    for (int i = 0; i < m_nQuadCount; i++)
+    {
+        m_pFullScreenQuad[i]->openLight();
+    }
+}
+
+void BBTiledFullScreenQuad::closeLight()
+{
+    for (int i = 0; i < m_nQuadCount; i++)
+    {
+        m_pFullScreenQuad[i]->closeLight();
     }
 }

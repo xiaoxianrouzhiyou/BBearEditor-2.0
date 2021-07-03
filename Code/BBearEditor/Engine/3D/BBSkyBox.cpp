@@ -7,10 +7,11 @@
 #include "Render/BBDrawCall.h"
 #include "Utils/BBUtils.h"
 
-//--------------------
-// BBSkyBoxSide
-//--------------------
 
+/**
+ * @brief BBSkyBoxSide::BBSkyBoxSide
+ * @param pVBO
+ */
 BBSkyBoxSide::BBSkyBoxSide(BBVertexBufferObject *pVBO)
     : BBRenderableObject()
 {
@@ -23,7 +24,7 @@ void BBSkyBoxSide::init(const QString &path)
                              BB_PATH_RESOURCE_SHADER(texture.vert),
                              BB_PATH_RESOURCE_SHADER(texture.frag));
     BBTexture texture;
-    m_pCurrentMaterial->setSampler2D(NAME_TEXTURE(0), texture.createTexture2DFromBMP(path.toStdString().c_str()), path);
+    m_pCurrentMaterial->setSampler2D(LOCATION_TEXTURE(0), texture.createTexture2DFromBMP(path.toStdString().c_str()), path);
     m_pCurrentMaterial->setZTestState(false);
 
     BBRenderableObject::init();
@@ -38,7 +39,7 @@ void BBSkyBoxSide::render(BBCamera *pCamera)
 {
     QMatrix4x4 modelMatrix;
     modelMatrix.translate(pCamera->getPosition());
-    m_pCurrentMaterial->setMatrix4(NAME_MODELMATRIX, modelMatrix.data());
+    m_pCurrentMaterial->setMatrix4(LOCATION_MODELMATRIX, modelMatrix.data());
     BBRenderableObject::render(modelMatrix, pCamera);
 }
 
@@ -48,10 +49,9 @@ void BBSkyBoxSide::change(const QString &path)
 }
 
 
-//--------------------
-// BBSkyBox
-//--------------------
-
+/**
+ * @brief BBSkyBox::BBSkyBox
+ */
 BBSkyBox::BBSkyBox()
     : BBGameObject()
 {
