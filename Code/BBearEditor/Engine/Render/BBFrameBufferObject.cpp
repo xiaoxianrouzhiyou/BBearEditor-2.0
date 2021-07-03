@@ -68,7 +68,7 @@ void BBFrameBufferObject::bind()
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_PreFrameBufferObject);
     glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferObject);
     // all the things rendered afterwards will be drawn to this FBO
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

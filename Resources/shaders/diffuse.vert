@@ -13,11 +13,13 @@ uniform vec4 lightColor;
 
 vec4 getLightColor()
 {
-    return dot(lightPosition.xyz, normal.xyz) * lightColor;
+    vec3 light_pos_normalized = normalize(lightPosition.xyz);
+    vec3 normal_normalized = normalize(normal.xyz);
+    return dot(light_pos_normalized, normal_normalized) * lightColor;
 }
 
 void main()
 {
-    V_Color = color * getLightColor();
+    V_Color = color * 0.5 * (getLightColor() + vec4(1.0)) + vec4(0.1);
     gl_Position = projectionMatrix * viewMatrix * modelMatrix * position;
 }

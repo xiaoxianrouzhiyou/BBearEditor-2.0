@@ -1,4 +1,5 @@
 #include "BBPointLight.h"
+#include "3D/BBLightIndicator.h"
 
 
 BBPointLight::BBPointLight(BBScene *pScene)
@@ -17,4 +18,5 @@ BBPointLight::BBPointLight(BBScene *pScene, const QVector3D &position, const QVe
     : BBLight(pScene, position, rotation, QVector3D(1, 1, 1))
 {
     m_eType = Point;
+    m_pIndicator = new BBPointLightIndicator(position);
 }

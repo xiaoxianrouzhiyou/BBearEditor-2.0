@@ -28,6 +28,7 @@ public:
 public:
     static void switchRenderingSettings(int nIndex);
     void onePassRendering(BBCamera *pCamera);
+    void onePassRendering(BBCamera *pCamera, QList<BBGameObject*> lights);
     void forwardRendering(BBCamera *pCamera);
     void deferredRendering(BBCamera *pCamera);
 

@@ -75,11 +75,14 @@ void BBDrawCall::switchRenderingSettings(int nIndex)
 
 void BBDrawCall::onePassRendering(BBCamera *pCamera)
 {
-    m_pVBO->bind();
-
-    BBRenderPass *pBaseRenderPass = m_pMaterial->getBaseRenderPass();
-
     QList<BBGameObject*> lights = collectLights();
+    onePassRendering(pCamera, lights);
+}
+
+void BBDrawCall::onePassRendering(BBCamera *pCamera, QList<BBGameObject*> lights)
+{
+    m_pVBO->bind();
+    BBRenderPass *pBaseRenderPass = m_pMaterial->getBaseRenderPass();
     for (int i = 0; i < lights.count(); i++)
     {
         ((BBLight*)lights[i])->setRenderPass(pBaseRenderPass);

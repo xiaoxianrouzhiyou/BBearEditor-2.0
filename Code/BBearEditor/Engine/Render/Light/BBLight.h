@@ -77,64 +77,11 @@ protected:
 #endif // BBLIGHT_H
 
 
-
-//class Circle : public RenderableObject
-//{
-//public:
-//    Circle();
-//    Circle(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz);
-//    void init() override;
-
-//private:
-//    void draw() override;
-//    unsigned short *mIndexes;
-//    int mIndexCount;
-//};
-
-//class PointLightIndicator : public Indicator
-//{
-//public:
-//    PointLightIndicator();
-//    PointLightIndicator(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz);
-//    void init() override;
-//    void render(Camera camera) override;
-//    void resize(float width, float height) override;
-//    void setVisible(bool isVisible) override;
-
-//private:
-//    void draw() override;
-//    Circle *mCircle;
-//};
-
 //class SpotLightIndicator : public Indicator
 //{
-//public:
-//    SpotLightIndicator();
-//    SpotLightIndicator(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz);
-//    void init() override;
 //    void setSpotAngle(float angle);
-
-//private:
-//    void draw() override;
 //};
 
-
-
-//class DirectionLight : public Light
-//{
-//public:
-//    DirectionLight(Scene *scene);
-//    DirectionLight(Scene *scene, float px, float py, float pz,
-//                   float rx, float ry, float rz, float sx, float sy, float sz);
-//    QVector4D getHomogeneousPosition();
-//    void setRotation(int angle, QVector3D axis, bool isUpdateLocalTransform = true) override;
-//    void setRotation(QVector3D rotation, bool isUpdateLocalTransform = true) override;
-
-//private:
-//    void setHomogeneousPosition();
-//    void setColor(int r, int g, int b) override;
-//    QVector4D homogeneousPosition;
-//};
 
 //class PointLight : public Light
 //{

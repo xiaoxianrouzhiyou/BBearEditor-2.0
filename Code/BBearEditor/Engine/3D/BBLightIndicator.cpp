@@ -81,7 +81,7 @@ void BBDirectionalLightIndicator::init()
 
     BBLightIndicator::init();
 
-    BBDrawCall *pDrawCall = new BBDrawCall;
+    BBDrawCall *pDrawCall = new BBDrawCall();
     pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO);
     pDrawCall->setEBO(m_pEBO, GL_LINES, m_nIndexCount, 0);
@@ -96,5 +96,84 @@ void BBDirectionalLightIndicator::render(BBCamera *pCamera)
     float fDistance = (pCamera->getPosition() - m_Position).length();
     modelMatrix.scale(fDistance / 12);
     modelMatrix.rotate(m_Quaternion);
+    BBLightIndicator::render(modelMatrix, pCamera);
+}
+
+
+/**
+ * @brief BBPointLightIndicator::BBPointLightIndicator
+ */
+BBPointLightIndicator::BBPointLightIndicator()
+    : BBPointLightIndicator(QVector3D(0, 0, 0))
+{
+
+}
+
+BBPointLightIndicator::BBPointLightIndicator(const QVector3D &position)
+    : BBLightIndicator(position, QVector3D(0, 0, 0))
+{
+
+}
+
+void BBPointLightIndicator::init()
+{
+    m_pVBO = new BBVertexBufferObject(144);
+    for (int i = 0; i < 48; i++)
+    {
+        float c = cosf(0.1309f * i);
+        float s = sinf(0.1309f * i);
+
+        m_pVBO->setPosition(i, c, 0.0f, s);
+        m_pVBO->setNormal(i, c, 0.0f, s);
+        m_pVBO->setColor(i, 0.909804f, 0.337255f, 0.333333f);
+
+        m_pVBO->setPosition(i + 48, 0.0f, c, s);
+        m_pVBO->setNormal(i + 48, 0.0f, c, s);
+        m_pVBO->setColor(i + 48, 0.909804f, 0.337255f, 0.333333f);
+
+        m_pVBO->setPosition(i + 96, c, s, 0.0f);
+        m_pVBO->setNormal(i + 96, c, s, 0.0f);
+        m_pVBO->setColor(i + 96, 0.909804f, 0.337255f, 0.333333f);
+    }
+
+    m_nIndexCount = 288;
+    m_pIndexes = new unsigned short[m_nIndexCount];
+    for (int i = 0; i < 48; i++)
+    {
+        m_pIndexes[2 * i] = i;
+        m_pIndexes[2 * i + 1] = i + 1;
+        m_pIndexes[2 * i + 96] = i + 48;
+        m_pIndexes[2 * i + 97] = i + 49;
+        m_pIndexes[2 * i + 192] = i + 96;
+        m_pIndexes[2 * i + 193] = i + 97;
+    }
+    m_pIndexes[95] = 0;
+    m_pIndexes[191] = 48;
+    m_pIndexes[287] = 96;
+
+    m_pCurrentMaterial->init("diffuse",
+                             BB_PATH_RESOURCE_SHADER(diffuse.vert),
+                             BB_PATH_RESOURCE_SHADER(diffuse.frag));
+    m_pCurrentMaterial->getBaseRenderPass()->setZTestState(false);
+    // default
+    float *pLightPosition = new float[4] {1.0f, 1.0f, 0.0f, 0.0f};
+    float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};
+    m_pCurrentMaterial->setVector4(LOCATION_LIGHT_POSITION, pLightPosition);
+    m_pCurrentMaterial->setVector4(LOCATION_LIGHT_COLOR, pLightColor);
+
+    BBRenderableObject::init();
+
+    BBDrawCall *pDrawCall = new BBDrawCall();
+    pDrawCall->setMaterial(m_pCurrentMaterial);
+    pDrawCall->setVBO(m_pVBO);
+    pDrawCall->setEBO(m_pEBO, GL_LINES, m_nIndexCount, 0);
+    appendDrawCall(pDrawCall);
+}
+
+void BBPointLightIndicator::render(BBCamera *pCamera)
+{
+    QMatrix4x4 modelMatrix;
+    modelMatrix.translate(m_Position);
+    modelMatrix.scale(m_Scale);
     BBLightIndicator::render(modelMatrix, pCamera);
 }

@@ -145,130 +145,6 @@ void BBLight::setHomogeneousPosition(const QVector3D &value, float w)
 }
 
 
-//void Circle::init()
-//{
-//    mVertexBuffer = new VertexBuffer();
-//    mVertexBuffer->setSize(48);
-//    for (int i = 0; i < mVertexBuffer->mVertexCount; i++)
-//    {
-//        float c = cosf(0.1309f * i);
-//        float s = sinf(0.1309f * i);
-//        mVertexBuffer->setPosition(i, c, s, 0.0f);
-//        mVertexBuffer->setColor(i, 0.909804f, 0.337255f, 0.333333f);
-//    }
-
-//    mIndexCount = 96;
-//    mIndexes = new unsigned short[mIndexCount];
-//    for (int i = 0; i < 48; i++)
-//    {
-//        mIndexes[2 * i] = i;
-//        mIndexes[2 * i + 1] = i + 1;
-//    }
-//    mIndexes[95] = 0;
-
-//    mShader.init("../../../../BBearEngine/resources/shaders/base.vert",
-//                 "../../../../BBearEngine/resources/shaders/base.frag", mIndexes, mIndexCount);
-//}
-
-//void Circle::draw()
-//{
-//    glEnable(GL_DEPTH_TEST);
-//    glLineWidth(2);
-//    glDrawElements(GL_LINES, mIndexCount, GL_UNSIGNED_SHORT, 0);
-//}
-
-
-///*************************
-// * PointLightIndicator
-// * ************************/
-
-//PointLightIndicator::PointLightIndicator()
-//    : PointLightIndicator(0, 0, 0, 0, 0, 0, 1, 1, 1)
-//{
-
-//}
-
-//PointLightIndicator::PointLightIndicator(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz)
-//    : Indicator(px, py, pz, rx, ry, rz, sx, sy, sz)
-//{
-//    mCircle = new Circle(px, py, pz, rx, ry, rz, sx, sy, sz);
-//}
-
-//void PointLightIndicator::init()
-//{
-//    mVertexBuffer = new VertexBuffer();
-//    mVertexBuffer->setSize(144);
-//    for (int i = 0; i < 48; i++)
-//    {
-//        float c = cosf(0.1309f * i);
-//        float s = sinf(0.1309f * i);
-
-//        mVertexBuffer->setPosition(i, c, 0.0f, s);
-//        mVertexBuffer->setNormal(i, c, 0.0f, s);
-//        mVertexBuffer->setColor(i, 0.909804f, 0.337255f, 0.333333f);
-
-//        mVertexBuffer->setPosition(i + 48, 0.0f, c, s);
-//        mVertexBuffer->setNormal(i + 48, 0.0f, c, s);
-//        mVertexBuffer->setColor(i + 48, 0.909804f, 0.337255f, 0.333333f);
-
-//        mVertexBuffer->setPosition(i + 96, c, s, 0.0f);
-//        mVertexBuffer->setNormal(i + 96, c, s, 0.0f);
-//        mVertexBuffer->setColor(i + 96, 0.909804f, 0.337255f, 0.333333f);
-//    }
-
-//    mIndexCount = 288;
-//    mIndexes = new unsigned short[mIndexCount];
-//    for (int i = 0; i < 48; i++)
-//    {
-//        mIndexes[2 * i] = i;
-//        mIndexes[2 * i + 1] = i + 1;
-//        mIndexes[2 * i + 96] = i + 48;
-//        mIndexes[2 * i + 97] = i + 49;
-//        mIndexes[2 * i + 192] = i + 96;
-//        mIndexes[2 * i + 193] = i + 97;
-//    }
-//    mIndexes[95] = 0;
-//    mIndexes[191] = 48;
-//    mIndexes[287] = 96;
-
-//    mShader.init("../../../../BBearEngine/resources/shaders/standard.vert",
-//                 "../../../../BBearEngine/resources/shaders/diffusewithcamera.frag", mIndexes, mIndexCount);
-
-//    mCircle->init();
-//}
-
-//void PointLightIndicator::render(Camera camera)
-//{
-//    QMatrix4x4 modelMatrix;
-//    modelMatrix.translate(mPosition);
-//    modelMatrix.scale(mScale);
-//    RenderableObject::render(modelMatrix, camera);
-//    //跟着视点变化的轮廓圈
-//    modelMatrix.rotate(QQuaternion::fromDirection(camera.pos - mPosition, QVector3D(0, 1, 0)));
-//    mCircle->render(modelMatrix, camera);
-//}
-
-//void PointLightIndicator::resize(float width, float height)
-//{
-//    RenderableObject::resize(width, height);
-//    mCircle->resize(width, height);
-//}
-
-//void PointLightIndicator::draw()
-//{
-//    glEnable(GL_BLEND);
-//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//    glEnable(GL_DEPTH_TEST);
-//    glLineWidth(2);
-//    glDrawElements(GL_LINES, mIndexCount, GL_UNSIGNED_SHORT, 0);
-//    glDisable(GL_BLEND);
-//}
-
-//void PointLightIndicator::setVisible(bool isVisible)
-//{
-//    RenderableObject::setVisible(isVisible);
-//    mCircle->setVisible(isVisible);
-//}
 
 //void SpotLightIndicator::init()
 //{
@@ -317,70 +193,10 @@ void BBLight::setHomogeneousPosition(const QVector3D &value, float w)
 //void SpotLightIndicator::draw()
 //{
 //    glEnable(GL_DEPTH_TEST);
-//    glLineWidth(2);
 //    glDrawElements(GL_LINES, mIndexCount, GL_UNSIGNED_SHORT, 0);
 //}
 
-///*************************
-// * Light
-// * ************************/
 
-
-//Light::Light(Scene *scene, float px, float py, float pz,
-//             float rx, float ry, float rz, float sx, float sy, float sz)
-//    : GameObject(px, py, pz, rx, ry, rz, sx, sy, sz)
-//{
-//    //初始化为白光
-//    setColor(255, 255, 255);
-//}
-
-//void Light::setColor(int r, int g, int b)
-//{
-//    mColor = QColor(r, g, b);
-//    mColorVector4f = QVector4D(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
-//}
-
-//DirectionLight::DirectionLight(Scene *scene, float px, float py, float pz,
-//                               float rx, float ry, float rz, float sx, float sy, float sz)
-//    : Light(scene, px, py, pz, rx, ry, rz, sx, sy, sz)
-//{
-//    mIndicator = new DirectionLightIndicator(px, py, pz, rx, ry, rz, 1, 1, 1);
-
-//    QMatrix4x4 matrix;
-//    matrix.rotate(mQuaternion);
-//    QVector3D pos = matrix * QVector3D(0, 1, 0);
-//    homogeneousPosition = QVector4D(pos, 0);
-//}
-
-//void DirectionLight::setHomogeneousPosition()
-//{
-//    //平行光的旋转矩阵
-//    QMatrix4x4 matrix;
-//    matrix.rotate(mQuaternion);
-//    //转化为位置向量 没有旋转的平行光是向下射的
-//    QVector3D pos = matrix * QVector3D(0, 1, 0);
-//    //变为齐次坐标为0的四维向量 表示无穷远
-//    homogeneousPosition = QVector4D(pos, 0);
-//    //更新场景中的灯光
-//    mScene->updateDirectionLightPosition();
-//}
-
-//QVector4D DirectionLight::getHomogeneousPosition()
-//{
-//    return homogeneousPosition;
-//}
-
-//void DirectionLight::setRotation(int angle, QVector3D axis, bool isUpdateLocalTransform)
-//{
-//    Light::setRotation(angle, axis, isUpdateLocalTransform);
-//    setHomogeneousPosition();
-//}
-
-//void DirectionLight::setRotation(QVector3D rotation, bool isUpdateLocalTransform)
-//{
-//    Light::setRotation(rotation, isUpdateLocalTransform);
-//    setHomogeneousPosition();
-//}
 
 //void DirectionLight::setColor(int r, int g, int b)
 //{
@@ -400,12 +216,6 @@ void BBLight::setHomogeneousPosition(const QVector3D &value, float w)
 
 
 //float PointLight::attenuationThreshold = 0.2f;
-
-//PointLight::PointLight(Scene *scene)
-//    : PointLight(scene, 0, 0, 0, 0, 0, 0, 1, 1, 1)
-//{
-
-//}
 
 //PointLight::PointLight(Scene *scene, float px, float py, float pz,
 //                       float rx, float ry, float rz, float sx, float sy, float sz)

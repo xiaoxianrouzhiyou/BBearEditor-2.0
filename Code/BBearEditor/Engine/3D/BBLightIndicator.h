@@ -24,4 +24,15 @@ public:
     void render(BBCamera *pCamera) override;
 };
 
+
+class BBPointLightIndicator : public BBLightIndicator
+{
+public:
+    BBPointLightIndicator();
+    BBPointLightIndicator(const QVector3D &position);
+
+    void init() override;
+    void render(BBCamera *pCamera) override;
+};
+
 #endif // BBLIGHTINDICATOR_H
