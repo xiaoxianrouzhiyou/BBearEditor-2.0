@@ -65,6 +65,12 @@ void BBMaterial::setMatrix4(const std::string &uniformName, const float *pMatrix
     }
 }
 
+void BBMaterial::setVector4(const std::string &uniformName, float x, float y, float z, float w)
+{
+    float value[4] = {x, y, z, w};
+    setVector4(uniformName, value);
+}
+
 void BBMaterial::setVector4(const std::string &uniformName, const float *pVector4)
 {
     if (m_pBaseRenderPass != nullptr)

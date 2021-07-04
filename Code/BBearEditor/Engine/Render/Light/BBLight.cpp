@@ -22,6 +22,9 @@ BBLight::BBLight(BBScene *pScene, const QVector3D &position, const QVector3D &ro
     // default
     setDiffuseColor(0.976f, 0.804f, 0.678f, 1.0f);
     setHomogeneousPosition(position, 1.0f);
+
+    // m_Setting0[0] : there is a light
+    setSetting0(1.0f, 0.0f, 0.0f, 0.0f);
 }
 
 BBLight::~BBLight()
@@ -96,6 +99,8 @@ void BBLight::setRenderPass(BBRenderPass *pRenderPass)
 {
     pRenderPass->setVector4(LOCATION_LIGHT_POSITION, m_HomogeneousPosition);
     pRenderPass->setVector4(LOCATION_LIGHT_COLOR, m_Diffuse);
+    pRenderPass->setVector4(LOCATION_LIGHT_SETTINGS(0), m_Setting0);
+    pRenderPass->setVector4(LOCATION_LIGHT_SETTINGS(1), m_Setting1);
 }
 
 void BBLight::setAmbientColor(float r, float g, float b, float a)
@@ -204,123 +209,6 @@ void BBLight::setHomogeneousPosition(const QVector3D &value, float w)
 //}
 
 
-
-//void DirectionLight::setColor(int r, int g, int b)
-//{
-//    mColor = QColor(r, g, b);
-//    //直射光的颜色需要调节hsl 否则对场景颜色的影响太大
-//    //mColorVector4f为调节hsl后的 对场景产生影响 mColor为调节之前的 颜色按钮还是指定颜色
-//    QColor color = QColor::fromHslF(mColor.hueF(), mColor.saturationF(), 0.85f);
-//    mColorVector4f = QVector4D(color.redF(), color.greenF(), color.blueF(), 1.0f);
-//    //更新场景渲染
-//    mScene->updateDirectionLightColor();
-//}
-
-
-///*************************
-// * PointLight
-// * ************************/
-
-
-//float PointLight::attenuationThreshold = 0.2f;
-
-//PointLight::PointLight(Scene *scene, float px, float py, float pz,
-//                       float rx, float ry, float rz, float sx, float sy, float sz)
-//    : Light(scene, px, py, pz, rx, ry, rz, sx, sy, sz)
-//{
-//    mIndicator = new PointLightIndicator(px, py, pz, rx, ry, rz, 1, 1, 1);
-//    constantFactor = 2.0f;
-//    linearFactor = 0.5f;
-//    quadricFactor = 0.2f;
-//    mIntensity = 1.0f;
-//    updateValidRange();
-//}
-
-//void PointLight::setConstantFactor(float value)
-//{
-//    constantFactor = value;
-//    mScene->updatePointLightOption();
-//    updateValidRange();
-//}
-
-//float PointLight::getConstantFactor()
-//{
-//    return constantFactor;
-//}
-
-//void PointLight::setLinearFactor(float value)
-//{
-//    linearFactor = value;
-//    mScene->updatePointLightOption();
-//    updateValidRange();
-//}
-
-//float PointLight::getLinearFactor()
-//{
-//    return linearFactor;
-//}
-
-//void PointLight::setQuadricFactor(float value)
-//{
-//    quadricFactor = value;
-//    mScene->updatePointLightOption();
-//    updateValidRange();
-//}
-
-//float PointLight::getQuadricFactor()
-//{
-//    return quadricFactor;
-//}
-
-//QVector4D PointLight::getOptionVector4f()
-//{
-//    return QVector4D(constantFactor, linearFactor, quadricFactor, mIntensity);
-//}
-
-//void PointLight::updateValidRange()
-//{
-//    //当衰减度小于阈值时 认为在范围外 指示器需要指示出范围
-//    float range = (1 / attenuationThreshold - constantFactor) / (linearFactor + quadricFactor * quadricFactor);
-//    if (range < 0)
-//        range = 0;
-//    mIndicator->setScale(QVector3D(range, range, range));
-//}
-
-//int PointLight::getIntensity()
-//{
-//    return mIntensity;
-//}
-
-//void PointLight::setIntensity(int intensity)
-//{
-//    mIntensity = intensity;
-//    mScene->updatePointLightOption();
-//}
-
-//void PointLight::setPosition(QVector3D position, bool isUpdateLocalTransform)
-//{
-//    Light::setPosition(position, isUpdateLocalTransform);
-//    mScene->updatePointLightPosition();
-//}
-
-//void PointLight::setColor(int r, int g, int b)
-//{
-//    Light::setColor(r, g, b);
-//    mScene->updatePointLightColor();
-//}
-
-
-///*************************
-// * SpotLight
-// * ************************/
-
-
-//SpotLight::SpotLight(Scene *scene)
-//    : SpotLight(scene, 0, 0, 0, 0, 0, 0, 1, 1, 1)
-//{
-
-//}
-
 //SpotLight::SpotLight(Scene *scene, float px, float py, float pz,
 //                     float rx, float ry, float rz, float sx, float sy, float sz)
 //    : PointLight(scene, px, py, pz, rx, ry, rz, sx, sy, sz)
@@ -335,31 +223,6 @@ void BBLight::setHomogeneousPosition(const QVector3D &value, float w)
 //    updateValidRange();
 //}
 
-//void SpotLight::setConstantFactor(float value)
-//{
-//    constantFactor = value;
-//    mScene->updateSpotLightOption();
-//    updateValidRange();
-//}
-
-//void SpotLight::setLinearFactor(float value)
-//{
-//    linearFactor = value;
-//    mScene->updateSpotLightOption();
-//    updateValidRange();
-//}
-
-//void SpotLight::setQuadricFactor(float value)
-//{
-//    quadricFactor = value;
-//    mScene->updateSpotLightOption();
-//    updateValidRange();
-//}
-
-//QVector4D SpotLight::getOptionVector4f()
-//{
-//    return QVector4D(constantFactor, linearFactor, quadricFactor, spotAngle);
-//}
 
 //QVector4D SpotLight::getOption2Vector4f()
 //{

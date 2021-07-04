@@ -55,6 +55,7 @@ void BBRenderableObject::init()
         m_pEBO = new BBElementBufferObject(m_nIndexCount);
         m_pEBO->submitData(m_pIndexes, m_nIndexCount);
     }
+    closeLight();
 }
 
 void BBRenderableObject::render(BBCamera *pCamera)
@@ -98,14 +99,14 @@ void BBRenderableObject::setTexture(const std::string &uniformName, GLuint textu
 void BBRenderableObject::openLight()
 {
     // x: is there a light
-    float *pLightSettings = new float[4] {1.0f, 0.0f, 0.0f, 0.0f};
-    m_pCurrentMaterial->setVector4(LOCATION_LIGHT_SETTING0, pLightSettings);
+    m_pCurrentMaterial->setVector4(LOCATION_LIGHT_SETTINGS(0), 1.0f, 0.0f, 0.0f, 0.0f);
+    m_pCurrentMaterial->setVector4(LOCATION_LIGHT_SETTINGS(1), 0.0f, 0.0f, 0.0f, 0.0f);
 }
 
 void BBRenderableObject::closeLight()
 {
-    float *pLightSettings = new float[4] {0.0f, 0.0f, 0.0f, 0.0f};
-    m_pCurrentMaterial->setVector4(LOCATION_LIGHT_SETTING0, pLightSettings);
+    m_pCurrentMaterial->setVector4(LOCATION_LIGHT_SETTINGS(0), 0.0f, 0.0f, 0.0f, 0.0f);
+    m_pCurrentMaterial->setVector4(LOCATION_LIGHT_SETTINGS(1), 0.0f, 0.0f, 0.0f, 0.0f);
 }
 
 void BBRenderableObject::appendDrawCall(BBDrawCall *pDrawCall)

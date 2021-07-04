@@ -29,7 +29,7 @@
 #define LOCATION_TEXTURE_SETTING0 "textureSettings"
 #define LOCATION_LIGHT_POSITION "lightPosition"
 #define LOCATION_LIGHT_COLOR "lightColor"
-#define LOCATION_LIGHT_SETTING0 "lightSettings"
+#define LOCATION_LIGHT_SETTINGS(x) "lightSettings"#x
 
 
 class BBBaseRenderComponent : protected QOpenGLExtraFunctions

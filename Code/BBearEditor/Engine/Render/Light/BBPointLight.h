@@ -15,7 +15,14 @@ public:
     void setRotation(const QVector3D &rotation, bool bUpdateLocalTransform = true) override;
 
     void setRadius(float fRadius);
-    float getRadius() { return m_Setting0[0]; }
+    void setConstantFactor(float fValue) { m_Setting1[1] = fValue; }
+    void setLinearFactor(float fValue) { m_Setting1[2] = fValue; }
+    void setQuadricFactor(float fValue) { m_Setting1[3] = fValue; }
+
+    inline float getRadius() { return m_Setting1[0]; }
+    inline float getConstantFactor() { return m_Setting1[1]; }
+    inline float getLinearFactor() { return m_Setting1[2]; }
+    inline float getQuadricFactor() { return m_Setting1[3]; }
 
     void calculateLightGeometryOnScreenSpace(BBCamera *pCamera) override;
 };

@@ -646,60 +646,6 @@ void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 //}
 
 
-////------------------PointLightManager---------------------
-
-
-//PointLightManager::PointLightManager(PointLight *light, QWidget *parent, QString name, QString iconPath)
-//    : GroupManager(parent, name, iconPath)
-//{
-//    mLight = light;
-//    LightColorFactory *colorFactory = new LightColorFactory(light);
-//    addProperty("Color", colorFactory, 1);
-//    LineEditFactory *constantFactory = addProperty("Constant Factor", light->getConstantFactor());
-//    LineEditFactory *linearFactory = addProperty("Linear Factor", light->getLinearFactor());
-//    LineEditFactory *quadricFactory = addProperty("Quadric Factor", light->getQuadricFactor());
-//    QObject::connect(constantFactory, SIGNAL(valueChanged(float)), this, SLOT(changeConstantFactory(float)));
-//    QObject::connect(linearFactory, SIGNAL(valueChanged(float)), this, SLOT(changeLinearFactory(float)));
-//    QObject::connect(quadricFactory, SIGNAL(valueChanged(float)), this, SLOT(changeQuadricFactory(float)));
-//    //限制因子编辑框的取值范围
-//    constantFactory->setRegExp("^([0]|[1-9][0-9]{0,0})(?:\\.\\d{1,3})?$|(^\\t?$)");
-//    linearFactory->setRegExp("^([0]|[1-9][0-9]{0,0})(?:\\.\\d{1,3})?$|(^\\t?$)");
-//    quadricFactory->setRegExp("^([0]|[1-9][0-9]{0,0})(?:\\.\\d{1,3})?$|(^\\t?$)");
-//    //限制因子滑动的取值范围
-//    constantFactory->setSliderRange(0, 10);
-//    linearFactory->setSliderRange(0, 10);
-//    quadricFactory->setSliderRange(0, 10);
-//    //设置因子滑动的步长
-//    constantFactory->setSliderStep(0.005f);
-//    linearFactory->setSliderStep(0.005f);
-//    quadricFactory->setSliderStep(0.005f);
-
-//    SliderFactory *intensitySliderFactory = new SliderFactory(light->getIntensity(), 1, 10);
-//    addProperty("Intensity", intensitySliderFactory);
-//    QObject::connect(intensitySliderFactory, SIGNAL(valueChangedSignal(int)), this, SLOT(changeIntensity(int)));
-//}
-
-//void PointLightManager::changeConstantFactory(float value)
-//{
-//    mLight->setConstantFactor(value);
-//}
-
-//void PointLightManager::changeLinearFactory(float value)
-//{
-//    mLight->setLinearFactor(value);
-//}
-
-//void PointLightManager::changeQuadricFactory(float value)
-//{
-//    mLight->setQuadricFactor(value);
-//}
-
-//void PointLightManager::changeIntensity(int value)
-//{
-//    mLight->setIntensity(value);
-//}
-
-
 ////------------------SpotLightManager----------------------
 
 

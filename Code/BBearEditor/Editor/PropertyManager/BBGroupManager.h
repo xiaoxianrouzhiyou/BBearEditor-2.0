@@ -145,6 +145,9 @@ public:
 
 protected slots:
     void setRadius(float fRadius);
+    void setConstantFactor(float fValue);
+    void setLinearFactor(float fValue);
+    void setQuadricFactor(float fValue);
 
 private:
     BBPointLight *m_pPointLight;
