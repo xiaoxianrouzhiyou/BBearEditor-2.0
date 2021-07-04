@@ -4,6 +4,9 @@
 #include "Render/BBDrawCall.h"
 #include "Render/BBRenderPass.h"
 #include "Render/BBTexture.h"
+#include "Scene/BBScene.h"
+#include "Scene/BBSceneManager.h"
+#include "Render/Light/BBPointLight.h"
 
 
 /**
@@ -58,7 +61,25 @@ void BBFullScreenQuad::init()
 
 void BBFullScreenQuad::render(BBCamera *pCamera)
 {
-    m_pDrawCalls->onePassRendering(pCamera);
+    QList<BBGameObject*> lights = BBSceneManager::getScene()->getLights();
+    QList<BBGameObject*> culledLights;
+    for (int i = 0; i < lights.count(); i++)
+    {
+        if (!((BBPointLight*)lights[i])->cull(pCamera, m_AABB))
+        {
+            culledLights.append(lights[i]);
+        }
+    }
+
+    m_pDrawCalls->onePassRendering(pCamera, culledLights);
+}
+
+void BBFullScreenQuad::setAABB(float fWidth, float fHeight)
+{
+    m_AABB = QRectF(m_pVBO->getPosition(2).x() * fWidth / 2.0f,
+                    m_pVBO->getPosition(2).y() * fHeight / 2.0f,
+                    (m_pVBO->getPosition(1).x() - m_pVBO->getPosition(0).x()) * fWidth / 2.0f,
+                    (m_pVBO->getPosition(2).y() - m_pVBO->getPosition(0).y()) * fHeight / 2.0f);
 }
 
 
@@ -96,6 +117,14 @@ void BBTiledFullScreenQuad::render(BBCamera *pCamera)
     for (int i = 0; i < m_nQuadCount; i++)
     {
         m_pFullScreenQuad[i]->render(pCamera);
+    }
+}
+
+void BBTiledFullScreenQuad::setTiledAABB(float fWidth, float fHeight)
+{
+    for (int i = 0; i < m_nQuadCount; i++)
+    {
+        m_pFullScreenQuad[i]->setAABB(fWidth, fHeight);
     }
 }
 

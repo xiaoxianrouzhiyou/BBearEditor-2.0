@@ -1638,7 +1638,6 @@ BBTransformCoordinateSystem::~BBTransformCoordinateSystem()
     BB_SAFE_DELETE(m_pPositionCoordinateSystem);
     BB_SAFE_DELETE(m_pRotationCoordinateSystem);
     BB_SAFE_DELETE(m_pScaleCoordinateSystem);
-    BB_SAFE_DELETE(m_pSelectedObject);
 }
 
 void BBTransformCoordinateSystem::init()

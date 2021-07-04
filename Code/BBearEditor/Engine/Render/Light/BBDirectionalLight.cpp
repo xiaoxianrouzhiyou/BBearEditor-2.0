@@ -36,6 +36,11 @@ void BBDirectionalLight::setRotation(const QVector3D &rotation, bool bUpdateLoca
     setHomogeneousPosition();
 }
 
+bool BBDirectionalLight::cull(BBCamera *pCamera, const QRectF &displayBox)
+{
+
+}
+
 void BBDirectionalLight::setHomogeneousPosition()
 {
     BBLight::setHomogeneousPosition(m_Quaternion * QVector3D(0, 1, 0), 0.0f);

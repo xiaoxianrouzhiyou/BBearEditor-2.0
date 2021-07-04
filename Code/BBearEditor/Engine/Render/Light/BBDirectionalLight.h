@@ -14,6 +14,8 @@ public:
     void setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform = true) override;
     void setRotation(const QVector3D &rotation, bool bUpdateLocalTransform = true) override;
 
+    bool cull(BBCamera *pCamera, const QRectF &displayBox) override;
+
 private:
     void setHomogeneousPosition();
 };

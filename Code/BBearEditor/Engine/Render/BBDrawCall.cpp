@@ -85,7 +85,8 @@ void BBDrawCall::onePassRendering(BBCamera *pCamera, QList<BBGameObject*> lights
     BBRenderPass *pBaseRenderPass = m_pMaterial->getBaseRenderPass();
     for (int i = 0; i < lights.count(); i++)
     {
-        ((BBLight*)lights[i])->setRenderPass(pBaseRenderPass);
+        BBLight *pLight = (BBLight*)lights[i];
+        pLight->setRenderPass(pBaseRenderPass);
         pBaseRenderPass->bind(pCamera);
         if (m_pEBO == nullptr)
         {
@@ -112,7 +113,8 @@ void BBDrawCall::forwardRendering(BBCamera *pCamera)
     if (lights.count() > 0)
     {
         // render the first light
-        ((BBLight*)lights[0])->setRenderPass(m_pMaterial->getBaseRenderPass());
+        BBLight *pLight = (BBLight*)lights[0];
+        pLight->setRenderPass(m_pMaterial->getBaseRenderPass());
     }
     m_pMaterial->getBaseRenderPass()->bind(pCamera);
     if (m_pEBO == nullptr)
@@ -133,7 +135,8 @@ void BBDrawCall::forwardRendering(BBCamera *pCamera)
     {
         for (int i = 1; i < lights.count(); i++)
         {
-            ((BBLight*)lights[i])->setRenderPass(pAdditiveRenderPass);
+            BBLight *pLight = (BBLight*)lights[i];
+            pLight->setRenderPass(pAdditiveRenderPass);
             pAdditiveRenderPass->bind(pCamera);
             if (m_pEBO == nullptr)
             {

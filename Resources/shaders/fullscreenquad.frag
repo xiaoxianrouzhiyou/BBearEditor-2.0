@@ -6,7 +6,8 @@ uniform sampler2D texture2;
 
 uniform vec4 lightPosition;
 uniform vec4 lightColor;
-uniform vec4 lightSettings;
+uniform vec4 lightSettings0;
+uniform vec4 lightSettings1;
 
 void main(void)
 {
@@ -21,7 +22,7 @@ void main(void)
 
     float intensity = 0.0;
     vec3 final_color = vec3(0.0);
-    if (lightSettings.x != 0.0)
+    if (lightSettings0.x != 0.0)
     {
         // there is a light
         if (lightPosition.w == 0.0)
@@ -29,12 +30,21 @@ void main(void)
             // directional light
             vec3 object_to_light_source = normalize(lightPosition.xyz);
             intensity = dot(object_to_light_source, normal);
+            final_color = color * lightColor.xyz * intensity;
         }
         else
         {
-            // other types
+            // point light
+            float constant_factor = lightSettings1.y;
+            float linear_factor = lightSettings1.z;
+            float quadric_factor = lightSettings1.w;
+            vec3 L = lightPosition.xyz - world_pos.xyz;
+            float distance = length(L);
+            float attenuation = 1.0 / (constant_factor + linear_factor * distance + quadric_factor * quadric_factor * distance);
+            L = normalize(L);
+            float intensity = max(0.0, dot(L, normal));
+            final_color = color * lightColor.xyz * intensity * attenuation;
         }
-        final_color = color * lightColor.xyz * intensity;
     }
     else
     {

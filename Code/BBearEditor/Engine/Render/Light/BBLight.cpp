@@ -75,8 +75,6 @@ void BBLight::render(BBCamera *pCamera)
 
     m_pIcon->render(pCamera);
     m_pIndicator->render(pCamera);
-
-    calculateLightGeometryOnScreenSpace(pCamera);
 }
 
 bool BBLight::hit(const BBRay &ray, float &fDistance)
@@ -141,11 +139,6 @@ void BBLight::setSetting1(float x, float y, float z, float w)
     m_Setting1[1] = y;
     m_Setting1[2] = z;
     m_Setting1[3] = w;
-}
-
-void BBLight::calculateLightGeometryOnScreenSpace(BBCamera *pCamera)
-{
-    Q_UNUSED(pCamera);
 }
 
 void BBLight::setHomogeneousPosition(const QVector3D &value, float w)

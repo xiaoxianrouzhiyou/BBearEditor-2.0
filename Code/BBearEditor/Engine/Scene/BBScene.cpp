@@ -185,6 +185,8 @@ void BBScene::resize(float width, float height)
     // 3D camera, resize
     m_pCamera->setViewportSize(width, height);
 
+    m_pTiledFullScreenQuad->setTiledAABB(width, height);
+
     for (int i = 0; i < 3; i++)
     {
         if (!m_pFBO[i])

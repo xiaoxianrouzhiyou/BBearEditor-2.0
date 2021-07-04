@@ -24,7 +24,7 @@ public:
     inline float getLinearFactor() { return m_Setting1[2]; }
     inline float getQuadricFactor() { return m_Setting1[3]; }
 
-    void calculateLightGeometryOnScreenSpace(BBCamera *pCamera) override;
+    bool cull(BBCamera *pCamera, const QRectF &displayBox) override;
 };
 
 #endif // BBPOINTLIGHT_H

@@ -12,3 +12,8 @@ BBSpotLight::BBSpotLight(BBScene *pScene, const QVector3D &position, const QVect
 {
     m_eType = Spot;
 }
+
+bool BBSpotLight::cull(BBCamera *pCamera, const QRectF &displayBox)
+{
+
+}

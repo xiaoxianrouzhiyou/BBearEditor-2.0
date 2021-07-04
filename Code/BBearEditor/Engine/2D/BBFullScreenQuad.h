@@ -15,11 +15,13 @@ public:
     void init() override;
     void render(BBCamera *pCamera) override;
 
+    void setAABB(float fWidth, float fHeight);
+
 private:
     float m_fScale;
     float m_fOffsetX;
     float m_fOffsetY;
-    QList<BBLight*> m_Lights;
+    QRectF m_AABB;
 };
 
 
@@ -31,6 +33,8 @@ public:
 
     void init() override;
     void render(BBCamera *pCamera) override;
+
+    void setTiledAABB(float fWidth, float fHeight);
 
     void setTexture(const std::string &uniformName, GLuint textureName) override;
 
