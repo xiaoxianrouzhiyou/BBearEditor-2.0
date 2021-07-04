@@ -19,4 +19,25 @@ BBPointLight::BBPointLight(BBScene *pScene, const QVector3D &position, const QVe
 {
     m_eType = Point;
     m_pIndicator = new BBPointLightIndicator(position);
+    // m_Setting0[0] : radius
+    setRadius(1.0f);
+}
+
+void BBPointLight::setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform)
+{
+    Q_UNUSED(nAngle);
+    Q_UNUSED(axis);
+    Q_UNUSED(bUpdateLocalTransform);
+}
+
+void BBPointLight::setRotation(const QVector3D &rotation, bool bUpdateLocalTransform)
+{
+    Q_UNUSED(rotation);
+    Q_UNUSED(bUpdateLocalTransform);
+}
+
+void BBPointLight::setRadius(float fRadius)
+{
+    m_Setting0[0] = fRadius;
+    m_pIndicator->setScale(fRadius);
 }

@@ -114,32 +114,6 @@ private:
 //    Model* mModel;
 //};
 
-
-////左侧滑块 右侧滑块值编辑框
-//class SliderFactory : public QWidget
-//{
-//    Q_OBJECT
-
-//public:
-//    SliderFactory(int value = 50, int min = 0, int max = 100, QWidget *parent = 0);
-//    void setRange(int min, int max);
-//    void setValue(int value);
-
-//signals:
-//    void valueChangedSignal(int value);
-
-//private slots:
-//    void valueChanged(int value);
-//    void valueChanged(QString value);
-
-//private:
-//    int mMin;
-//    int mMax;
-//    QSlider *slider;
-//    QLineEdit *valueEdit;
-//};
-
-
 //class AnimFactory : public QComboBox
 //{
 //    Q_OBJECT

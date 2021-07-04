@@ -5,6 +5,7 @@
 #include <QWidget>
 
 
+class BBLineEditFactory;
 class QToolButton;
 class QPushButton;
 class QMenu;
@@ -15,6 +16,7 @@ class BBEnumFactory;
 class BBPreviewOpenGLWidget;
 class BBMaterial;
 class BBRenderableObject;
+class BBPointLight;
 
 
 // Manage a group of property
@@ -27,9 +29,7 @@ public:
 
     void addFactory(const QString &name, QWidget *pFactory, int nStretch = 1);
     void addFactory(QWidget *pFactory);
-    //    void addProperty(QWidget *factory);
-    //    LineEditFactory *addProperty(QString name, float value);
-    //    void removeProperty(int index);
+    BBLineEditFactory* addFactory(const QString &name, float fValue);
 
 public slots:
     void setContainerExpanded(bool bExpanded);
@@ -132,6 +132,22 @@ private slots:
 
 private:
     BBRenderableObject *m_pRenderableObject;
+};
+
+
+class BBPointLightManager : public BBGroupManager
+{
+    Q_OBJECT
+
+public:
+    BBPointLightManager(BBPointLight *pLight, QWidget *pParent = 0);
+    ~BBPointLightManager();
+
+protected slots:
+    void setRadius(float fRadius);
+
+private:
+    BBPointLight *m_pPointLight;
 };
 
 

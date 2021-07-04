@@ -18,6 +18,7 @@
 #include "Base/BBRenderableObject.h"
 #include "3D/BBMesh.h"
 #include "IO/BBMaterialFileManager.h"
+#include "Render/Light/BBPointLight.h"
 
 
 /**
@@ -98,6 +99,14 @@ void BBGroupManager::addFactory(QWidget *pFactory)
     pFactory->setParent(pWidget);
     pLayout->addWidget(pFactory);
     m_pContainer->layout()->addWidget(pWidget);
+}
+
+BBLineEditFactory* BBGroupManager::addFactory(const QString &name, float fValue)
+{
+    // add BBLineEditFactory
+    BBLineEditFactory *pLineEditFactory = new BBLineEditFactory(name, fValue, m_pContainer, 1, 1);
+    m_pContainer->layout()->addWidget(pLineEditFactory);
+    return pLineEditFactory;
 }
 
 void BBGroupManager::setContainerExpanded(bool bExpanded)
@@ -445,4 +454,34 @@ BBRenderManager::BBRenderManager(BBRenderableObject *pObject, QWidget *pParent)
 void BBRenderManager::changeMaterial(const QString &filePath)
 {
     m_pRenderableObject->setCurrentMaterial(BBMaterialFileManager::loadMaterial(filePath));
+}
+
+
+/**
+ * @brief BBPointLightManager::BBPointLightManager
+ * @param pLight
+ * @param pParent
+ */
+BBPointLightManager::BBPointLightManager(BBPointLight *pLight, QWidget *pParent)
+    : BBGroupManager("Render", BB_PATH_RESOURCE_ICON(render.png), pParent)
+{
+    m_pPointLight = pLight;
+
+    BBLightColorFactory *pColorFactory = new BBLightColorFactory(pLight);
+    addFactory("Color", pColorFactory, 1);
+
+    BBLineEditFactory *pRadiusFactory = addFactory("Radius", pLight->getRadius());
+    pRadiusFactory->setSlideStep(0.001f);
+    pRadiusFactory->setRange(0, 1000);
+    QObject::connect(pRadiusFactory, SIGNAL(valueChanged(float)), this, SLOT(setRadius(float)));
+}
+
+BBPointLightManager::~BBPointLightManager()
+{
+
+}
+
+void BBPointLightManager::setRadius(float fRadius)
+{
+    m_pPointLight->setRadius(fRadius);
 }

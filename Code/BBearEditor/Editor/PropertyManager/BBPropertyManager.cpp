@@ -5,6 +5,8 @@
 #include "BBPropertyFactory.h"
 #include "Base/BBGameObject.h"
 #include "Render/Light/BBDirectionalLight.h"
+#include "Render/Light/BBPointLight.h"
+#include "Render/Light/BBSpotLight.h"
 #include "BBHeadManager.h"
 #include "3D/BBModel.h"
 
@@ -68,6 +70,11 @@ void BBPropertyManager::showGameObjectProperty(BBGameObject *pGameObject)
         BBLightColorFactory *pColorFactory = new BBLightColorFactory((BBDirectionalLight*)pGameObject);
         pRenderManager->addFactory("Color", pColorFactory, 1);
     }
+    else if (pGameObject->getClassName() == BB_CLASSNAME_POINT_LIGHT)
+    {
+        BBPointLight *pLight = (BBPointLight*)pGameObject;
+        layout()->addWidget(new BBPointLightManager(pLight, this));
+    }
 
 //    if (gameObject->getClassName() == ModelClassName || gameObject->getClassName() == TerrainClassName)
 //    {
@@ -86,13 +93,6 @@ void BBPropertyManager::showGameObjectProperty(BBGameObject *pGameObject)
 //            HeightMapFactory *heightMapFactory = new HeightMapFactory(model);
 //            renderManager->addProperty("HeightMap", heightMapFactory, 0);
 //        }
-//    }
-//    else if (gameObject->getClassName() == PointLightClassName)
-//    {
-//        PointLight *light = (PointLight*) gameObject;
-//        PointLightManager *renderManager = new PointLightManager(light, this, "Render",
-//                                                                 ":/icon/resources/icons/render.png");
-//        layout()->addWidget(renderManager);
 //    }
 //    else if (gameObject->getClassName() == SpotLightClassName)
 //    {
@@ -222,47 +222,6 @@ void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 
 
 
-////------------------MaterialColorFactory-------------------
-
-
-//MaterialColorFactory::MaterialColorFactory(QColor color, QString filePath, QWidget *parent)
-//    : ColorFactory(color, parent)
-//{
-//    material = Material::mtlMap.value(filePath);
-//}
-
-//void MaterialColorFactory::finishCatchColor(int r, int g, int b)
-//{
-//    ColorFactory::finishCatchColor(r, g, b);
-//    //更新材质
-//    material->setDiffuseColor(r, g, b);
-//    //更新材质浏览图的显示 如图标
-//    updateMaterialPreview();
-//}
-
-
-
-////------------------TextureFactory-----------------------
-
-
-//TextureFactory::TextureFactory(QString texturePath, QString materialPath, QWidget *parent)
-//    : IconFactory(parent)
-//{
-//    material = Material::mtlMap.value(materialPath);
-//    //从文件读取的纹理
-//    setTexture(texturePath);
-//    //设置图标控件可拖入的文件后缀类型
-//    QList<QString> suffixs;
-//    suffixs.append("bmp");
-//    suffixs.append("png");
-//    suffixs.append("jpg");
-//    labelIcon->setAcceptableSuffixs(suffixs);
-
-//    QObject::connect(buttonRemove, SIGNAL(clicked()), this, SLOT(removeTexture()));
-//    QObject::connect(labelIcon, SIGNAL(changeValue(QString)), this, SLOT(changeTexture(QString)));
-//}
-
-
 //void TextureFactory::removeTexture()
 //{
 //    if (labelIcon->text() == "None")
@@ -292,42 +251,6 @@ void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 ////------------------MaterialFactory----------------------
 
 
-//MaterialFactory::MaterialFactory(Model* model, QWidget *parent)
-//    : IconFactory(parent)
-//{
-//    mModel = model;
-//    //设置图标控件可拖入的文件后缀类型
-//    QList<QString> suffixs;
-//    suffixs.append("mtl");
-//    labelIcon->setAcceptableSuffixs(suffixs);
-
-//    setMaterial();
-
-//    QObject::connect(buttonRemove, SIGNAL(clicked()), this, SLOT(removeMaterial()));
-//    QObject::connect(labelIcon, SIGNAL(changeValue(QString)), this, SLOT(changeMaterial(QString)));
-//}
-
-//void MaterialFactory::setMaterial()
-//{
-
-//    if (mModel->getMaterial())
-//    {
-//        //可能无材质
-//        labelIcon->setText("");
-//        QString path = engineResourcesPicturesPath + materialPreviewName;
-//        //将材质的浏览图暂存在engine目录下
-//        mModel->getMaterial()->getPreview().save(path);
-//        //设置图片
-//        labelIcon->setStyleSheet("color: #d6dfeb; font: 10pt \"Arial\"; "
-//                                 "border-image: url(" + path + "); border-radius: 2px;");
-//    }
-//    else
-//    {
-//        labelIcon->setText("None");
-//        labelIcon->setStyleSheet("color: #d6dfeb; font: 10pt \"Arial\"; border-radius: 2px;");
-//    }
-
-//}
 
 //void MaterialFactory::removeMaterial()
 //{
@@ -384,65 +307,6 @@ void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 //    QString path = mModel->getTerrainMesh()->getHeightMapPath();
 //    labelIcon->setStyleSheet("color: #d6dfeb; font: 10pt \"Arial\"; "
 //                             "border-image: url(" + path + "); border-radius: 2px;");
-//}
-
-
-////------------------SliderFactory-------------------------
-
-
-//SliderFactory::SliderFactory(int value, int min, int max, QWidget *parent)
-//    : QWidget(parent)
-//{
-//    QHBoxLayout *l = new QHBoxLayout(this);
-//    l->setMargin(0);
-//    slider = new QSlider(Qt::Horizontal, this);
-//    l->addWidget(slider);
-//    valueEdit = new QLineEdit(this);
-//    valueEdit->setMaximumWidth(50);
-//    QRegExp rx("[0-9]+$");
-//    QValidator *validator = new QRegExpValidator(rx, valueEdit);
-//    valueEdit->setValidator(validator);
-//    l->addWidget(valueEdit);
-
-//    setRange(min, max);
-//    setValue(value);
-
-//    QObject::connect(slider, SIGNAL(valueChanged(int)), this, SLOT(valueChanged(int)));
-//    QObject::connect(valueEdit, SIGNAL(textEdited(QString)), this, SLOT(valueChanged(QString)));
-//}
-
-//void SliderFactory::setRange(int min, int max)
-//{
-//    mMin = min;
-//    mMax = max;
-//    slider->setRange(min, max);
-//}
-
-//void SliderFactory::setValue(int value)
-//{
-//    slider->setValue(value);
-//    valueEdit->setText(QString::number(value));
-//}
-
-//void SliderFactory::valueChanged(int value)
-//{
-//    valueEdit->setText(QString::number(value));
-//    valueChangedSignal(value);
-//}
-
-//void SliderFactory::valueChanged(QString value)
-//{
-//    int valueInt = value.toInt();
-//    slider->setValue(valueInt);
-//    if (!value.isEmpty())
-//    {
-//        //否则不能清空编辑框
-//        if (valueInt > mMax)
-//            valueInt = mMax;
-//        if (valueInt < mMin)
-//            valueInt = mMin;
-//        valueEdit->setText(QString::number(valueInt));
-//    }
 //}
 
 
@@ -522,28 +386,6 @@ void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 
 
 ////------------------GroupManager-------------------------
-
-
-
-//void GroupManager::addProperty(QWidget *factory)
-//{
-//    //向一组属性的容器中添加一行属性 左侧没有属性名
-//    QWidget *w = new QWidget(container);
-//    QHBoxLayout *l = new QHBoxLayout(w);
-//    l->setMargin(0);
-//    //整行factory
-//    factory->setParent(w);
-//    l->addWidget(factory);
-//    container->layout()->addWidget(w);
-//}
-
-//LineEditFactory *GroupManager::addProperty(QString name, float value)
-//{
-//    //向一组属性的容器中添加一行LineEditFactory
-//    LineEditFactory *lineEditFactory = new LineEditFactory(container, name, value, 1, 1);
-//    container->layout()->addWidget(lineEditFactory);
-//    return lineEditFactory;
-//}
 
 //void GroupManager::removeProperty(int index)
 //{
@@ -938,25 +780,6 @@ void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 ////------------------PropertyManager----------------------
 
 
-//void PropertyManager::bindPreview(BaseOpenGLWidget *preview)
-//{
-//    mPreview = preview;
-//}
-
-//void PropertyManager::showMaterialProperty(QString filePath)
-//{
-//    clear();
-//    if (!filePath.isNull())
-//    {
-//        //currentObject = new Object();
-//        //显示材质的属性
-//        MaterialManager *materialManager = new MaterialManager(this, filePath, mPreview);
-//        layout()->addWidget(materialManager);
-//        QObject::connect(materialManager, SIGNAL(updatePreviewInOtherWidget(QString)),
-//                         this, SLOT(updateMaterialPreviewInOtherWidget(QString)));
-//    }
-//}
-
 //void PropertyManager::showFbxProperty(QString filePath)
 //{
 //    clear();
@@ -966,14 +789,6 @@ void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 //        layout()->addWidget(fbxFileManager);
 //    }
 //}
-
-//void PropertyManager::showSceneProperty(Scene *scene)
-//{
-//    clear();
-//    SceneManager *sceneManager = new SceneManager(scene, this);
-//    layout()->addWidget(sceneManager);
-//}
-
 
 //void PropertyManager::renameGameObject(GameObject *gameObject, QString newName)
 //{

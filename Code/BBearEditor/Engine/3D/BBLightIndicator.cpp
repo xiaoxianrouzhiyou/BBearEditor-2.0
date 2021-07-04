@@ -27,7 +27,6 @@ void BBLightIndicator::init()
                              BB_PATH_RESOURCE_SHADER(base.vert),
                              BB_PATH_RESOURCE_SHADER(base.frag));
     m_pCurrentMaterial->getBaseRenderPass()->setZTestState(false);
-    m_pCurrentMaterial->getBaseRenderPass()->setLineWidth(1.5f);
 
     BBRenderableObject::init();
 }
@@ -151,8 +150,8 @@ void BBPointLightIndicator::init()
     m_pIndexes[191] = 48;
     m_pIndexes[287] = 96;
 
-    m_pCurrentMaterial->init("diffuse",
-                             BB_PATH_RESOURCE_SHADER(diffuse.vert),
+    m_pCurrentMaterial->init("diffuse_indicator",
+                             BB_PATH_RESOURCE_SHADER(diffuse_indicator.vert),
                              BB_PATH_RESOURCE_SHADER(diffuse.frag));
     m_pCurrentMaterial->getBaseRenderPass()->setZTestState(false);
     // default

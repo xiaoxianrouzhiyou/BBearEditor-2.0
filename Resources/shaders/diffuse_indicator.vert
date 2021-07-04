@@ -20,6 +20,6 @@ vec4 getLightColor()
 
 void main()
 {
-    V_Color = color * getLightColor();
+    V_Color = color * 0.5 * (getLightColor() + vec4(1.0)) + vec4(0.1);
     gl_Position = projectionMatrix * viewMatrix * modelMatrix * position;
 }

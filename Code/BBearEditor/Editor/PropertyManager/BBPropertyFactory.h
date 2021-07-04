@@ -15,6 +15,7 @@ class QPushButton;
 class BBIconLabel;
 class BBDragAcceptedEdit;
 class BBRenderableObject;
+class QSlider;
 
 
 /**
@@ -203,6 +204,35 @@ signals:
 private:
     QPushButton *m_pIconLabel;
     BBDragAcceptedEdit *m_pDragAcceptedEdit;
+};
+
+
+/**
+ * @brief The BBSliderFactory class         slider in the left and editor in the right
+ */
+class BBSliderFactory : public QWidget
+{
+    Q_OBJECT
+
+public:
+    BBSliderFactory(int nValue = 50, int nMin = 0, int nMax = 100, QWidget *pParent = 0);
+    ~BBSliderFactory();
+
+    void setRange(int nMin, int nMax);
+    void setValue(int value);
+
+private slots:
+    void changeSliderValue(int value);
+    void changeEditorValue(const QString &value);
+
+signals:
+    void valueChanged(int value);
+
+private:
+    int m_nMin;
+    int m_nMax;
+    QSlider *m_pSlider;
+    QLineEdit *m_pEditor;
 };
 
 #endif // BBPROPERTYFACTORY_H

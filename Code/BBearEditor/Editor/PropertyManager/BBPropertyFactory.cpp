@@ -418,3 +418,71 @@ void BBDragAcceptedFactory::changeCurrentFilePath(const QString &filePath)
         }
     }
 }
+
+
+/**
+ * @brief BBSliderFactory::BBSliderFactory
+ * @param nValue
+ * @param nMin
+ * @param nMax
+ * @param pParent
+ */
+BBSliderFactory::BBSliderFactory(int nValue, int nMin, int nMax, QWidget *pParent)
+    : QWidget(pParent)
+{
+    QHBoxLayout *pLayout = new QHBoxLayout(this);
+    pLayout->setMargin(0);
+    m_pSlider = new QSlider(Qt::Horizontal, this);
+    pLayout->addWidget(m_pSlider);
+    m_pEditor = new QLineEdit(this);
+    m_pEditor->setMaximumWidth(50);
+    QRegExp re("[0-9]+$");
+    QValidator *pValidator = new QRegExpValidator(re, m_pEditor);
+    m_pEditor->setValidator(pValidator);
+    pLayout->addWidget(m_pEditor);
+
+    setRange(nMin, nMax);
+    setValue(nValue);
+
+    QObject::connect(m_pSlider, SIGNAL(valueChanged(int)), this, SLOT(changeSliderValue(int)));
+    QObject::connect(m_pEditor, SIGNAL(textChanged(QString)), this, SLOT(changeEditorValue(QString)));
+}
+
+BBSliderFactory::~BBSliderFactory()
+{
+    BB_SAFE_DELETE(m_pSlider);
+    BB_SAFE_DELETE(m_pEditor);
+}
+
+void BBSliderFactory::setRange(int nMin, int nMax)
+{
+    m_nMin = nMin;
+    m_nMax = nMax;
+    m_pSlider->setRange(nMin, nMax);
+}
+
+void BBSliderFactory::setValue(int value)
+{
+    m_pSlider->setValue(value);
+    m_pEditor->setText(QString::number(value));
+}
+
+void BBSliderFactory::changeSliderValue(int value)
+{
+    m_pEditor->setText(QString::number(value));
+    valueChanged(value);
+}
+
+void BBSliderFactory::changeEditorValue(const QString &value)
+{
+    int nValue = value.toInt();
+    m_pSlider->setValue(nValue);
+    if (!value.isEmpty())
+    {
+        if (nValue > m_nMax)
+            nValue = m_nMax;
+        if (nValue < m_nMin)
+            nValue = m_nMin;
+        m_pEditor->setText(QString::number(nValue));
+    }
+}

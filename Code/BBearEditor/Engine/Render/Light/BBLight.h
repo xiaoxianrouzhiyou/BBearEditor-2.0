@@ -67,9 +67,6 @@ protected:
     float m_Specular[4];
     unsigned int m_nCullingMask;
 
-    /**
-     * @brief       point radius ...
-     */
     float m_Setting0[4];
     float m_Setting1[4];
 };
