@@ -16,6 +16,8 @@ public:
 
     void setRadius(float fRadius);
     float getRadius() { return m_Setting0[0]; }
+
+    void calculateLightGeometryOnScreenSpace(BBCamera *pCamera) override;
 };
 
 #endif // BBPOINTLIGHT_H

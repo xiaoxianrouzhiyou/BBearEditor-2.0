@@ -182,6 +182,27 @@ BBRay BBCamera::createRayFromScreen(int x, int y)
     return ray;
 }
 
+QVector3D BBCamera::projectPointToScreenSpace(const QVector3D &point)
+{
+    QVector3D posOnNdcSpace = m_ProjectionMatrix * point;
+    return QVector3D(posOnNdcSpace.x() * m_nViewportWidth / 2.0f,
+                     posOnNdcSpace.y() * m_nViewportHeight / 2.0f,
+                     0.0f);
+}
+
+QVector4D BBCamera::projectPointToScreenSpace(const QVector4D &point)
+{
+    QVector4D posOnClipSpace = m_ProjectionMatrix * point;
+    QVector4D posOnNdcSpace = QVector4D(posOnClipSpace.x() / posOnClipSpace.w(),
+                                        posOnClipSpace.y() / posOnClipSpace.w(),
+                                        posOnClipSpace.z() / posOnClipSpace.w(),
+                                        posOnClipSpace.w());
+    return QVector4D(posOnNdcSpace.x() * m_nViewportWidth / 2.0f,
+                     posOnNdcSpace.y() * m_nViewportHeight / 2.0f,
+                     0.0f,
+                     1.0f);
+}
+
 void BBCamera::rotateView(float fAngle, float x, float y, float z)
 {
     // Rotate an angle around an axis, the change of view

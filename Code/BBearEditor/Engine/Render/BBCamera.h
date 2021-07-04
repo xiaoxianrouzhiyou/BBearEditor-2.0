@@ -22,6 +22,8 @@ public:
     void setMoveSpeed(int dir);
     void lookAt(BBGameObject *pGameObject);
     BBRay createRayFromScreen(int x, int y);
+    QVector3D projectPointToScreenSpace(const QVector3D &point);
+    QVector4D projectPointToScreenSpace(const QVector4D &point);
 
     inline void setPosition(const QVector3D &position) { m_Position = position; }
     inline QVector3D getPosition() { return m_Position; }

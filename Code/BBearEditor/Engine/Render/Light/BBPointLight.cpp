@@ -1,5 +1,6 @@
 #include "BBPointLight.h"
 #include "3D/BBLightIndicator.h"
+#include "Render/BBCamera.h"
 
 
 BBPointLight::BBPointLight(BBScene *pScene)
@@ -40,4 +41,13 @@ void BBPointLight::setRadius(float fRadius)
 {
     m_Setting0[0] = fRadius;
     m_pIndicator->setScale(fRadius);
+}
+
+void BBPointLight::calculateLightGeometryOnScreenSpace(BBCamera *pCamera)
+{
+    QVector3D pointLightPosOnViewSpace = pCamera->getViewMatrix() * m_Position;
+    QVector3D pointOnSpherePosOnViewSpace = pointLightPosOnViewSpace + QVector3D(getRadius(), 0.0f, 0.0f);
+    QVector3D pointLightPosOnOpenGLScreenSpace = pCamera->projectPointToScreenSpace(pointLightPosOnViewSpace);
+    QVector3D pointOnSpherePosOnOpenGLScreenSpace = pCamera->projectPointToScreenSpace(pointOnSpherePosOnViewSpace);
+    qDebug() << pointLightPosOnOpenGLScreenSpace << pointOnSpherePosOnOpenGLScreenSpace;
 }

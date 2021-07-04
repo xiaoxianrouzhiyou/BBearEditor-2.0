@@ -50,6 +50,8 @@ public:
     void setSetting0(float x, float y, float z, float w);
     void setSetting1(float x, float y, float z, float w);
 
+    virtual void calculateLightGeometryOnScreenSpace(BBCamera *pCamera);
+
 public:
     inline float* getDiffuseColor() { return m_Diffuse; }
 
