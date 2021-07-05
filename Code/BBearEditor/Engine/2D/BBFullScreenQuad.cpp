@@ -6,6 +6,7 @@
 #include "Render/BBTexture.h"
 #include "Scene/BBScene.h"
 #include "Scene/BBSceneManager.h"
+#include "Render/Light/BBLight.h"
 #include "Render/Light/BBPointLight.h"
 
 
@@ -64,7 +65,14 @@ void BBFullScreenQuad::render(BBCamera *pCamera)
     QList<BBGameObject*> culledLights;
     for (int i = 0; i < lights.count(); i++)
     {
-        if (!((BBPointLight*)lights[i])->cull(pCamera, m_AABB))
+        if (lights[i]->getClassName() == BB_CLASSNAME_POINT_LIGHT)
+        {
+            if (!((BBPointLight*)lights[i])->cull(pCamera, m_AABB))
+            {
+                culledLights.append(lights[i]);
+            }
+        }
+        else
         {
             culledLights.append(lights[i]);
         }
