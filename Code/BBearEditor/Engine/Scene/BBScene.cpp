@@ -411,7 +411,7 @@ QList<BBGameObject*> BBScene::getSelectedObjects(QPoint start, QPoint end)
 
     // Two rays form a plane
     // 4 planes, object in the middle of top bottom left right planes is selected
-    QList<BBGameObject*> objects = m_Models;// + directionLights + pointLights + spotLights + audios;
+    QList<BBGameObject*> objects = m_Models + m_Lights;
     for (int i = 0; i < objects.count(); i++)
     {
         // whether the bounding box of object is placed in the middle of 4 planes

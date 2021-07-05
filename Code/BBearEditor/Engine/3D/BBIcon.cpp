@@ -85,15 +85,15 @@ bool BBIcon::belongToSelectionRegion(const QVector3D &left1, const QVector3D &le
                                      const QVector3D &right1, const QVector3D &right2, const QVector3D &right3,
                                      const QVector3D &bottom1, const QVector3D &bottom2, const QVector3D &bottom3)
 {
-//    //包围盒中心点在外侧的排除
-//    QVector3D boundingBoxCenter = getModelMatrix() * mBoundingBox->getCenter();
-//    if (boundingBoxCenter.distanceToPlane(left1, left2, left3) < 0)
-//        return false;
-//    if (boundingBoxCenter.distanceToPlane(top1, top2, top3) < 0)
-//        return false;
-//    if (boundingBoxCenter.distanceToPlane(right1, right2, right3) < 0)
-//        return false;
-//    if (boundingBoxCenter.distanceToPlane(bottom1, bottom2, bottom3) < 0)
-//        return false;
-//    return true;
+    // Eliminate objects whose the center point of the bounding box is on the outside
+    QVector3D center = getModelMatrix() * m_pBoundingBox2D->getCenter();
+    if (center.distanceToPlane(left1, left2, left3) < 0)
+        return false;
+    if (center.distanceToPlane(top1, top2, top3) < 0)
+        return false;
+    if (center.distanceToPlane(right1, right2, right3) < 0)
+        return false;
+    if (center.distanceToPlane(bottom1, bottom2, bottom3) < 0)
+        return false;
+    return true;
 }

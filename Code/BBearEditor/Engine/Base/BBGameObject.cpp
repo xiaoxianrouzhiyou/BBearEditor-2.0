@@ -76,16 +76,7 @@ void BBGameObject::setRotation(int nAngle, const QVector3D &axis, bool bUpdateLo
     m_Quaternion = rot * m_Quaternion;
     // Turn to Euler Angle
     m_Rotation = m_Quaternion.toEulerAngles();
-    // test
-//    float temp = round(m_Rotation.x());
-//    if (temp - m_Rotation.x() < 0.001)
-//        m_Rotation.setX(temp);
-//    temp = round(m_Rotation.y());
-//    if (temp - m_Rotation.y() < 0.001)
-//        m_Rotation.setY(temp);
-//    temp = round(m_Rotation.z());
-//    if (temp - m_Rotation.z() < 0.001)
-//        m_Rotation.setZ(temp);
+
     setModelMatrix(m_Position.x(), m_Position.y(), m_Position.z(),
                    m_Quaternion,
                    m_Scale.x(), m_Scale.y(), m_Scale.z());

@@ -9,10 +9,10 @@
 
 using namespace Eigen;
 
-//--------------------
-// BBBoundingBox
-//--------------------
 
+/**
+ * @brief BBBoundingBox::BBBoundingBox
+ */
 BBBoundingBox::BBBoundingBox()
     : BBBoundingBox(0, 0, 0, 0, 0, 0, 1, 1, 1)
 {
@@ -60,10 +60,15 @@ void BBBoundingBox::setModelMatrix(float px, float py, float pz,
 }
 
 
-//--------------------
-// BBRectBoundingBox2D
-//--------------------
-
+/**
+ * @brief BBRectBoundingBox2D::BBRectBoundingBox2D
+ * @param fCenterX
+ * @param fCenterY
+ * @param fCenterZ
+ * @param fHalfLengthX
+ * @param fHalfLengthY
+ * @param fHalfLengthZ
+ */
 BBRectBoundingBox2D::BBRectBoundingBox2D(float fCenterX, float fCenterY, float fCenterZ,
                                          float fHalfLengthX, float fHalfLengthY, float fHalfLengthZ)
     : BBBoundingBox()
@@ -126,10 +131,12 @@ bool BBRectBoundingBox2D::hit(const BBRay &ray, float &fDistance)
 }
 
 
-//--------------------
-// BBTriangleBoundingBox2D
-//--------------------
-
+/**
+ * @brief BBTriangleBoundingBox2D::BBTriangleBoundingBox2D
+ * @param point1
+ * @param point2
+ * @param point3
+ */
 BBTriangleBoundingBox2D::BBTriangleBoundingBox2D(const QVector3D &point1,
                                                  const QVector3D &point2,
                                                  const QVector3D &point3)
@@ -165,10 +172,14 @@ bool BBTriangleBoundingBox2D::hit(const BBRay &ray, float &fDistance)
 }
 
 
-//--------------------
-// BBQuarterCircleBoundingBox2D
-//--------------------
-
+/**
+ * @brief BBQuarterCircleBoundingBox2D::BBQuarterCircleBoundingBox2D
+ * @param fCenterX
+ * @param fCenterY
+ * @param fCenterZ
+ * @param fRadius
+ * @param ePlaneName
+ */
 BBQuarterCircleBoundingBox2D::BBQuarterCircleBoundingBox2D(float fCenterX, float fCenterY, float fCenterZ,
                                                            float fRadius, const BBPlaneName &ePlaneName)
     : BBBoundingBox()
@@ -218,10 +229,10 @@ bool BBQuarterCircleBoundingBox2D::hit(const BBRay &ray, float &fDistance)
 }
 
 
-//--------------------
-// BBBoundingBox3D
-//--------------------
-
+/**
+ * @brief BBBoundingBox3D::BBBoundingBox3D
+ * @param vertexes
+ */
 BBBoundingBox3D::BBBoundingBox3D(const QList<QVector4D> &vertexes)
     : BBBoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, vertexes)
 {
@@ -409,10 +420,10 @@ void BBBoundingBox3D::computeBoxVertexes(const QList<QVector4D> &vertexes)
 }
 
 
-//--------------------
-// BBAABBBoundingBox3D
-//--------------------
-
+/**
+ * @brief BBAABBBoundingBox3D::BBAABBBoundingBox3D
+ * @param vertexes
+ */
 BBAABBBoundingBox3D::BBAABBBoundingBox3D(const QList<QVector4D> &vertexes)
     : BBAABBBoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, vertexes)
 {
@@ -461,23 +472,6 @@ void BBAABBBoundingBox3D::computeBoxVertexes(const QList<QVector4D> &vertexes)
 
 
 
-
-///****************
-// * OBBBoundingBox3D
-// *
-// *****************/
-
-//OBBBoundingBox3D::OBBBoundingBox3D()
-//    : BoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1)
-//{
-
-//}
-
-//OBBBoundingBox3D::OBBBoundingBox3D(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz)
-//    : BoundingBox3D(px, py, pz, rx, ry, rz, sx, sy, sz)
-//{
-
-//}
 
 //void OBBBoundingBox3D::computeBoundingBox()
 //{
