@@ -192,7 +192,7 @@ void BBScene::resize(float width, float height)
         if (!m_pFBO[i])
             BB_SAFE_DELETE(m_pFBO[i]);
         m_pFBO[i] = new BBFrameBufferObject;
-        m_pFBO[i]->attachColorBuffer(m_ColorBufferName, GL_COLOR_ATTACHMENT0, width, height);
+        m_pFBO[i]->attachColorBuffer(m_ColorBufferName, GL_COLOR_ATTACHMENT0, width, height, GL_RGBA32F);
         m_pFBO[i]->attachDepthBuffer("depth", width, height);
         m_pFBO[i]->finish();
     }

@@ -6,7 +6,7 @@ BBFrameBufferObject::BBFrameBufferObject()
     glGenFramebuffers(1, &m_FrameBufferObject);
 }
 
-void BBFrameBufferObject::attachColorBuffer(const QString &bufferName, GLenum attachment, int nWidth, int nHeight)
+void BBFrameBufferObject::attachColorBuffer(const QString &bufferName, GLenum attachment, int nWidth, int nHeight, GLenum format)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferObject);
     GLuint colorBuffer;
@@ -17,7 +17,7 @@ void BBFrameBufferObject::attachColorBuffer(const QString &bufferName, GLenum at
     // open up space for texture objects on the GPU
     // The last parameter is NULL, only open up space in the GPU, and will not transfer data from the CPU.
     // The specific data is written by the GPU during rendering.
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, nWidth, nHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, format, nWidth, nHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
     glBindTexture(GL_TEXTURE_2D, 0);
     // give the color buffer to the attachment node
     glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, GL_TEXTURE_2D, colorBuffer, 0);

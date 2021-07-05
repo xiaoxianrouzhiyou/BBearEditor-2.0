@@ -10,7 +10,7 @@ public:
     BBFrameBufferObject();
 
     /* one or more */
-    void attachColorBuffer(const QString &bufferName, GLenum attachment, int nWidth, int nHeight);
+    void attachColorBuffer(const QString &bufferName, GLenum attachment, int nWidth, int nHeight, GLenum format = GL_RGBA);
     /* only one */
     void attachDepthBuffer(const QString &bufferName, int nWidth, int nHeight);
     /* make the settings take effect */

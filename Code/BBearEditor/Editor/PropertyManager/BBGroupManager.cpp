@@ -471,7 +471,7 @@ BBPointLightManager::BBPointLightManager(BBPointLight *pLight, QWidget *pParent)
     addFactory("Color", pColorFactory, 1);
 
     BBLineEditFactory *pRadiusFactory = addFactory("Radius", pLight->getRadius());
-    pRadiusFactory->setSlideStep(0.001f);
+    pRadiusFactory->setSlideStep(0.005f);
     pRadiusFactory->setRange(0, 1000);
     QObject::connect(pRadiusFactory, SIGNAL(valueChanged(float)), this, SLOT(setRadius(float)));
 
