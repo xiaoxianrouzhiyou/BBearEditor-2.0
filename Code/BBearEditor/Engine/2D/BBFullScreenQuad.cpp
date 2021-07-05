@@ -41,7 +41,6 @@ void BBFullScreenQuad::init()
     m_pCurrentMaterial->init("fullscreenquad",
                              BB_PATH_RESOURCE_SHADER(fullscreenquad.vert),
                              BB_PATH_RESOURCE_SHADER(fullscreenquad.frag));
-    m_pCurrentMaterial->getBaseRenderPass()->setZMask(false);
     m_pCurrentMaterial->getBaseRenderPass()->setBlendState(true);
     m_pCurrentMaterial->getBaseRenderPass()->setBlendFunc(GL_ONE, GL_ONE);
     // default

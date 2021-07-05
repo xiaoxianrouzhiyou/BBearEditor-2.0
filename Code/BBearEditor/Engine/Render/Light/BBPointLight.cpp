@@ -57,7 +57,7 @@ bool BBPointLight::cull(BBCamera *pCamera, const QRectF &displayBox)
     QVector3D pointOnSpherePosOnOpenGLScreenSpace = pCamera->projectPointToScreenSpace(pointOnSpherePosOnViewSpace);
     // calculate AABB of the light on the screen space
     float r = pointOnSpherePosOnOpenGLScreenSpace.x() - pointLightPosOnOpenGLScreenSpace.x();
-    QRectF lightBox = QRectF(pointLightPosOnOpenGLScreenSpace.x() - r, pointLightPosOnOpenGLScreenSpace.y() + r,
+    QRectF lightBox = QRectF(pointLightPosOnOpenGLScreenSpace.x() - r, pointLightPosOnOpenGLScreenSpace.y() - r,
                              2.0f * r, 2.0f * r);
     if (lightBox.intersects(displayBox))
     {

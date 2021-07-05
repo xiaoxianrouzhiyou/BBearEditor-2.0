@@ -45,18 +45,18 @@ void main(void)
             float distance = length(L);
             float attenuation = 1.0 / (constant_factor + linear_factor * distance + quadric_factor * quadric_factor * distance);
             L = normalize(L);
+            float delta = radius - distance;
             float intensity = 0.0;
-            if (distance <= radius)
+            if (delta >= 0)
             {
-                intensity = max(0.0, dot(L, normal));
+                intensity = max(0.0, dot(L, normal) * attenuation * delta / radius);
             }
-            final_color = color * lightColor.xyz * intensity * attenuation;
+            final_color = color * lightColor.xyz * intensity;
         }
     }
     else
     {
         final_color = color;
     }
-
     gl_FragColor = vec4(final_color, 1.0);
 }
