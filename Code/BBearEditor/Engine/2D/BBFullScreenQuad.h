@@ -15,13 +15,14 @@ public:
     void init() override;
     void render(BBCamera *pCamera) override;
 
-    void setAABB(float fWidth, float fHeight);
+//    void setAABB(float fWidth, float fHeight);
 
 private:
     float m_fScale;
     float m_fOffsetX;
     float m_fOffsetY;
-    QRectF m_AABB;
+    // projecting screen space is imprecise
+//    QRectF m_AABB;
 };
 
 
@@ -34,7 +35,7 @@ public:
     void init() override;
     void render(BBCamera *pCamera) override;
 
-    void setTiledAABB(float fWidth, float fHeight);
+//    void setTiledAABB(float fWidth, float fHeight);
 
     void setTexture(const std::string &uniformName, GLuint textureName) override;
 

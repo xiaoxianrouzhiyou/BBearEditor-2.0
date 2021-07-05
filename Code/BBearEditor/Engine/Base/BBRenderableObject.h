@@ -10,6 +10,7 @@ class BBMaterial;
 class BBCamera;
 class BBVertexBufferObject;
 class BBElementBufferObject;
+
 class BBRenderableObject : public BBGameObject
 {
 public:
@@ -23,6 +24,9 @@ public:
     void init() override;
     void render(BBCamera *pCamera) override;
     void render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera) override;
+    void insertInRenderQueue(BBRenderQueue *pQueue) override;
+    void removeFromRenderQueue(BBRenderQueue *pQueue) override;
+
     void setModelMatrix(float px, float py, float pz,
                         const QQuaternion &r,
                         float sx, float sy, float sz) override;

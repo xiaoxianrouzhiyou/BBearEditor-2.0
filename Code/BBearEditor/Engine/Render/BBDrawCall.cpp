@@ -9,6 +9,9 @@
 #include "Render/BBFrameBufferObject.h"
 
 
+/**
+ * @brief BBDrawCall::BBDrawCall
+ */
 BBDrawFunc BBDrawCall::m_DrawFunc = &BBDrawCall::forwardRendering;
 
 BBDrawCall::BBDrawCall()
@@ -50,6 +53,21 @@ void BBDrawCall::setEBO(BBElementBufferObject *pEBO, GLenum eDrawPrimitiveType, 
     m_eDrawPrimitiveType = eDrawPrimitiveType;
     m_nIndexCount = nIndexCount;
     m_nDrawStartIndex = nDrawStartIndex;
+}
+
+void BBDrawCall::bindRenderableObject(BBRenderableObject *pRenderableObject)
+{
+    m_pRenderableObject = pRenderableObject;
+
+    if (m_pNext != nullptr)
+    {
+        next<BBDrawCall>()->bindRenderableObject(pRenderableObject);
+    }
+}
+
+float BBDrawCall::getDistanceToCamera(BBCamera *pCamera)
+{
+    return 0.0f;
 }
 
 void BBDrawCall::draw(BBCamera *pCamera)
@@ -181,4 +199,129 @@ void BBDrawCall::deferredRendering(BBCamera *pCamera)
 QList<BBGameObject*> BBDrawCall::collectLights()
 {
     return BBSceneManager::getScene()->getLights();
+}
+
+
+/**
+ * @brief BBRenderQueue::BBRenderQueue
+ */
+BBRenderQueue::BBRenderQueue(BBCamera *pCamera)
+{
+    m_pCamera = pCamera;
+    m_pOpaqueDrawCall = nullptr;
+    m_pTransparentDrawCall = nullptr;
+    m_pUIDrawCall = nullptr;
+}
+
+BBRenderQueue::~BBRenderQueue()
+{
+    BB_SAFE_DELETE(m_pOpaqueDrawCall);
+    BB_SAFE_DELETE(m_pTransparentDrawCall);
+    BB_SAFE_DELETE(m_pUIDrawCall);
+}
+
+void BBRenderQueue::appendOpaqueDrawCall(BBDrawCall *pDC)
+{
+    if (m_pOpaqueDrawCall == nullptr)
+    {
+        m_pOpaqueDrawCall = pDC;
+    }
+    else
+    {
+        appendAscendingRenderQueue(m_pOpaqueDrawCall, pDC);
+    }
+}
+
+void BBRenderQueue::appendTransparentDrawCall(BBDrawCall *pDC)
+{
+    if (m_pTransparentDrawCall == nullptr)
+    {
+        m_pTransparentDrawCall = pDC;
+    }
+    else
+    {
+        appendAscendingRenderQueue(m_pTransparentDrawCall, pDC);
+    }
+}
+
+void BBRenderQueue::appendUIDrawCall(BBDrawCall *pDC)
+{
+
+}
+
+void BBRenderQueue::removeOpaqueDrawCall(BBDrawCall *pDC)
+{
+    BB_PROCESS_ERROR_RETURN(m_pOpaqueDrawCall);
+    if (m_pOpaqueDrawCall->isEnd())
+    {
+        m_pOpaqueDrawCall = nullptr;
+    }
+    else
+    {
+        m_pOpaqueDrawCall->remove(pDC);
+    }
+}
+
+void BBRenderQueue::removeTransparentDrawCall(BBDrawCall *pDC)
+{
+    BB_PROCESS_ERROR_RETURN(m_pTransparentDrawCall);
+    if (m_pTransparentDrawCall->isEnd())
+    {
+        m_pTransparentDrawCall = nullptr;
+    }
+    else
+    {
+        m_pTransparentDrawCall->remove(pDC);
+    }
+}
+
+void BBRenderQueue::removeUIDrawCall(BBDrawCall *pDC)
+{
+
+}
+
+void BBRenderQueue::render()
+{
+    renderOpaque();
+    renderTransparent();
+    renderUI();
+}
+
+void BBRenderQueue::renderOpaque()
+{
+    BB_PROCESS_ERROR_RETURN(m_pOpaqueDrawCall);
+    m_pOpaqueDrawCall->draw(m_pCamera);
+}
+
+void BBRenderQueue::renderTransparent()
+{
+    BB_PROCESS_ERROR_RETURN(m_pTransparentDrawCall);
+    m_pTransparentDrawCall->draw(m_pCamera);
+}
+
+void BBRenderQueue::renderUI()
+{
+    BB_PROCESS_ERROR_RETURN(m_pUIDrawCall);
+    m_pUIDrawCall->draw(m_pCamera);
+}
+
+void BBRenderQueue::appendAscendingRenderQueue(BBDrawCall *pHead, BBDrawCall *pNewNode)
+{
+    BBDrawCall *pCurrent = pHead;
+    BBDrawCall *pPrevious = pCurrent;
+    while (pCurrent != nullptr)
+    {
+        if (pNewNode->getDistanceToCamera(m_pCamera) <= pCurrent->getDistanceToCamera(m_pCamera))
+        {
+            pNewNode->insertAfter(pPrevious);
+            pPrevious = nullptr;
+            break;
+        }
+        pPrevious = pCurrent;
+        pCurrent = pCurrent->next<BBDrawCall>();
+    }
+    if (pPrevious != nullptr)
+    {
+        pPrevious->pushBack(pNewNode);
+    }
 }

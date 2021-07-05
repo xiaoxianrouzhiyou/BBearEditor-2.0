@@ -10,6 +10,7 @@ class BBVertexBufferObject;
 class BBElementBufferObject;
 class BBGameObject;
 class BBDrawCall;
+class BBRenderableObject;
 
 typedef void (BBDrawCall::*BBDrawFunc)(BBCamera *pCamera);
 
@@ -22,6 +23,9 @@ public:
     void setVBO(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType = GL_TRIANGLES,
                 int nDrawStartIndex = 0, int nDrawCount = 3);
     void setEBO(BBElementBufferObject *pEBO, GLenum eDrawPrimitiveType, int nIndexCount, int nDrawStartIndex);
+    void bindRenderableObject(BBRenderableObject *pRenderableObject);
+
+    float getDistanceToCamera(BBCamera *pCamera);
 
     void draw(BBCamera *pCamera);
 
@@ -46,6 +50,37 @@ private:
 
     BBElementBufferObject *m_pEBO;
     int m_nIndexCount;
+
+    BBRenderableObject *m_pRenderableObject;
+};
+
+
+class BBRenderQueue
+{
+public:
+    BBRenderQueue(BBCamera *pCamera);
+    ~BBRenderQueue();
+
+    void appendOpaqueDrawCall(BBDrawCall *pDC);
+    void appendTransparentDrawCall(BBDrawCall *pDC);
+    void appendUIDrawCall(BBDrawCall *pDC);
+
+    void removeOpaqueDrawCall(BBDrawCall *pDC);
+    void removeTransparentDrawCall(BBDrawCall *pDC);
+    void removeUIDrawCall(BBDrawCall *pDC);
+
+    void render();
+    void renderOpaque();
+    void renderTransparent();
+    void renderUI();
+
+private:
+    void appendAscendingRenderQueue(BBDrawCall *pHead, BBDrawCall *pNewNode);
+
+    BBCamera *m_pCamera;
+    BBDrawCall *m_pOpaqueDrawCall;
+    BBDrawCall *m_pTransparentDrawCall;
+    BBDrawCall *m_pUIDrawCall;
 };
 
 #endif // BBDRAWCALL_H

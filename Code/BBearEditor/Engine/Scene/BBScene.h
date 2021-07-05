@@ -18,6 +18,7 @@ class BBSelectionRegion;
 class BBRay;
 class BBTransformCoordinateSystem;
 class BBTiledFullScreenQuad;
+class BBRenderQueue;
 class BBScene;
 
 typedef void (BBScene::*BBRenderingFunc)();
@@ -81,6 +82,7 @@ private:
 
 private:
     BBRenderingFunc m_RenderingFunc;
+    BBRenderQueue *m_pRenderQueue;
 
     float m_fUpdateRate;
 
@@ -100,11 +102,6 @@ private:
 //    void renderShadowMap();
 //    Audio *createAudio(QString filePath, int x, int y, bool isSelect = true);
 //    Audio *createAudio(QString filePath, QVector3D position = QVector3D(0, 0, 0), bool isSelect = true);
-//    bool setModelMaterial(Model *model, QString mtlPath);
-//    void play();
-//    void stop();
-//    Sprite2D sprite;
-//    GLuint particleTexture;
 };
 
 #endif // BBSCENE_H

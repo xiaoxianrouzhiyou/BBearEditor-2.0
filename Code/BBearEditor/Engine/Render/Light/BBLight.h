@@ -35,6 +35,7 @@ public:
 
     void init(const QString &path) override;
     void render(BBCamera *pCamera) override;
+    void insertInRenderQueue(BBRenderQueue *pQueue) override;
 
     bool hit(const BBRay &ray, float &fDistance) override;
     bool belongToSelectionRegion(const QVector3D &left1, const QVector3D &left2, const QVector3D &left3,

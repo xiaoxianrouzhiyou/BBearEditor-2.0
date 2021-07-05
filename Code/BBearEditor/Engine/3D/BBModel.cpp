@@ -53,6 +53,16 @@ void BBModel::render(BBCamera *pCamera)
     }
 }
 
+void BBModel::insertInRenderQueue(BBRenderQueue *pQueue)
+{
+    m_pMesh->insertInRenderQueue(pQueue);
+}
+
+void BBModel::removeFromRenderQueue(BBRenderQueue *pQueue)
+{
+    m_pMesh->removeFromRenderQueue(pQueue);
+}
+
 void BBModel::setCurrentMaterial(BBMaterial *pMaterial)
 {
     m_pMesh->setCurrentMaterial(pMaterial);

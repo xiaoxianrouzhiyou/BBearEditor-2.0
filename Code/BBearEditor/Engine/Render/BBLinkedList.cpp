@@ -17,6 +17,12 @@ void BBLinkedList::pushBack(BBLinkedList *pNode)
     }
 }
 
+void BBLinkedList::insertAfter(BBLinkedList *pNode)
+{
+    m_pNext = pNode->m_pNext;
+    pNode->m_pNext = this;
+}
+
 void BBLinkedList::remove(BBLinkedList *pNode)
 {
     if (m_pNext == pNode)
@@ -28,4 +34,12 @@ void BBLinkedList::remove(BBLinkedList *pNode)
     {
         m_pNext->remove(pNode);
     }
+}
+
+bool BBLinkedList::isEnd()
+{
+    if (m_pNext == nullptr)
+        return true;
+    else
+        return false;
 }

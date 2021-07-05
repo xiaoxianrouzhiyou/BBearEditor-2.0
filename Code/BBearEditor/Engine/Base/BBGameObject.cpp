@@ -310,6 +310,16 @@ void BBGameObject::render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera)
     Q_UNUSED(pCamera);
 }
 
+void BBGameObject::insertInRenderQueue(BBRenderQueue *pQueue)
+{
+    Q_UNUSED(pQueue);
+}
+
+void BBGameObject::removeFromRenderQueue(BBRenderQueue *pQueue)
+{
+    Q_UNUSED(pQueue);
+}
+
 void BBGameObject::setCurrentMaterial(int nIndex)
 {
     Q_UNUSED(nIndex);

@@ -13,7 +13,9 @@ public:
     T* next() { return (T*)m_pNext; }
 
     void pushBack(BBLinkedList *pNode);
+    void insertAfter(BBLinkedList *pNode);
     void remove(BBLinkedList *pNode);
+    bool isEnd();
 
     BBLinkedList *m_pNext;
 };

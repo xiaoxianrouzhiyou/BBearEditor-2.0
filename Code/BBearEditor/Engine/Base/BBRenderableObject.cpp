@@ -56,6 +56,7 @@ void BBRenderableObject::init()
         m_pEBO->submitData(m_pIndexes, m_nIndexCount);
     }
     closeLight();
+//    m_pDrawCalls->bindRenderableObject(this);
 }
 
 void BBRenderableObject::render(BBCamera *pCamera)
@@ -69,6 +70,19 @@ void BBRenderableObject::render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera
     {
         m_pDrawCalls->draw(pCamera);
     }
+}
+
+void BBRenderableObject::insertInRenderQueue(BBRenderQueue *pQueue)
+{
+    if (m_bActive && m_bVisible)
+    {
+        pQueue->appendOpaqueDrawCall(m_pDrawCalls);
+    }
+}
+
+void BBRenderableObject::removeFromRenderQueue(BBRenderQueue *pQueue)
+{
+    pQueue->removeOpaqueDrawCall(m_pDrawCalls);
 }
 
 void BBRenderableObject::setModelMatrix(float px, float py, float pz,

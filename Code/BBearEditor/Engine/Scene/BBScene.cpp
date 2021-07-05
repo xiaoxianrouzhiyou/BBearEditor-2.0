@@ -12,6 +12,7 @@
 #include "3D/BBCoordinateSystem.h"
 #include "2D/BBFullScreenQuad.h"
 #include "Render/BBRenderState.h"
+#include "Render/BBDrawCall.h"
 #include "Render/Light/BBLight.h"
 #include "Render/Light/BBDirectionalLight.h"
 #include "Render/Light/BBPointLight.h"
@@ -24,27 +25,18 @@ QString BBScene::m_ColorBufferName = "color";
 BBScene::BBScene()
 {
     m_RenderingFunc = &BBScene::defaultRender;
+    m_pRenderQueue = nullptr;
     m_fUpdateRate = (float) BB_CONSTANT_UPDATE_RATE / 1000;
     for (int i = 0; i < 3; i++)
     {
-        m_pFBO[i] = NULL;
+        m_pFBO[i] = nullptr;
     }
-    m_pCamera = NULL;
-    m_pSkyBox = NULL;
-    m_pHorizontalPlane = NULL;
-    m_pSelectionRegion = NULL;
-    m_pTransformCoordinateSystem = NULL;
-    m_pTiledFullScreenQuad = NULL;
-
-//    particle = new Particle();
-//    fogSwitch = false;
-//    fogColor = QColor(128, 128, 128);
-//    fogStart = 0.1f;
-//    fogEnd = 100.0f;
-//    //1表示线性雾 2表示指数雾 3表示指数雾x
-//    fogMode = 0;
-//    fogDensity = 10;
-//    fogPower = 2.0f;
+    m_pCamera = nullptr;
+    m_pSkyBox = nullptr;
+    m_pHorizontalPlane = nullptr;
+    m_pSelectionRegion = nullptr;
+    m_pTransformCoordinateSystem = nullptr;
+    m_pTiledFullScreenQuad = nullptr;
 }
 
 BBScene::~BBScene()
@@ -72,8 +64,9 @@ void BBScene::init()
 {
     BBGlobalRenderState::init();
 
-    m_pCamera = new BBCamera;
-    m_pSkyBox = new BBSkyBox;
+    m_pCamera = new BBCamera();
+    m_pRenderQueue = new BBRenderQueue(m_pCamera);
+    m_pSkyBox = new BBSkyBox();
     m_pHorizontalPlane = new BBHorizontalPlane();
     m_pSelectionRegion = new BBSelectionRegion();
     m_pTransformCoordinateSystem = new BBTransformCoordinateSystem();
@@ -111,24 +104,12 @@ void BBScene::defaultRender()
     m_pSkyBox->render(m_pCamera);
     m_pHorizontalPlane->render(m_pCamera);
 
-    // render dropped model
-    QList<BBGameObject*> objects = m_Models + m_Lights;
-            //+ audios;
-    for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
-    {
-        BBGameObject *pObject = *itr;
-        pObject->render(m_pCamera);
-    }
+    // BBGameObject
+    m_pRenderQueue->render();
 
     m_pTransformCoordinateSystem->render(m_pCamera);
 
     unbindFBO();
-
-//    if (m_bEnableFullScreenQuad)
-//    {
-//        m_pFullScreenQuad->setTexture(m_pFBO->getBuffer(m_ColorBufferName));
-//        m_pFullScreenQuad->render(m_pCamera);
-//    }
 
     // 2D camera mode
     m_pCamera->switchTo2D();
@@ -185,7 +166,7 @@ void BBScene::resize(float width, float height)
     // 3D camera, resize
     m_pCamera->setViewportSize(width, height);
 
-    m_pTiledFullScreenQuad->setTiledAABB(width, height);
+//    m_pTiledFullScreenQuad->setTiledAABB(width, height);
 
     for (int i = 0; i < 3; i++)
     {
@@ -235,6 +216,7 @@ BBModel* BBScene::createModel(const QString &filePath,
         pModel->setBaseAttributes(QFileInfo(filePath).baseName(), BB_CLASSNAME_MODEL, "model");
     }
     pModel->init(filePath);
+    pModel->insertInRenderQueue(m_pRenderQueue);
     m_Models.append(pModel);
 
     return pModel;
@@ -352,6 +334,7 @@ void BBScene::deleteGameObject(BBGameObject *pGameObject)
     if (pGameObject->getClassName() == BB_CLASSNAME_MODEL)
     {
         m_Models.removeOne(pGameObject);
+        ((BBModel*)pGameObject)->removeFromRenderQueue(m_pRenderQueue);
     }
     else if (pGameObject->getClassName() == BB_CLASSNAME_DIRECTIONAL_LIGHT
              || pGameObject->getClassName() == BB_CLASSNAME_POINT_LIGHT

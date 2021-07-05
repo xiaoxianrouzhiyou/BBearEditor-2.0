@@ -23,6 +23,9 @@ public:
 
     void init(const QString &path) override;
     void render(BBCamera *pCamera) override;
+    void insertInRenderQueue(BBRenderQueue *pQueue) override;
+    void removeFromRenderQueue(BBRenderQueue *pQueue) override;
+
     void setCurrentMaterial(BBMaterial *pMaterial) override;
     void restoreMaterial() override;
 

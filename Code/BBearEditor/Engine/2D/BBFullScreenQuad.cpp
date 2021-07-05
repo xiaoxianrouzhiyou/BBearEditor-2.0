@@ -67,10 +67,12 @@ void BBFullScreenQuad::render(BBCamera *pCamera)
     {
         if (lights[i]->getClassName() == BB_CLASSNAME_POINT_LIGHT)
         {
-            if (!((BBPointLight*)lights[i])->cull(pCamera, m_AABB))
-            {
-                culledLights.append(lights[i]);
-            }
+//            if (!((BBPointLight*)lights[i])->cull(pCamera, m_AABB))
+//            {
+//                culledLights.append(lights[i]);
+//            }
+            // without culling
+            culledLights.append(lights[i]);
         }
         else
         {
@@ -81,13 +83,13 @@ void BBFullScreenQuad::render(BBCamera *pCamera)
     m_pDrawCalls->onePassRendering(pCamera, culledLights);
 }
 
-void BBFullScreenQuad::setAABB(float fWidth, float fHeight)
-{
-    m_AABB = QRectF(m_pVBO->getPosition(2).x() * fWidth / 2.0f,
-                    m_pVBO->getPosition(2).y() * fHeight / 2.0f,
-                    (m_pVBO->getPosition(1).x() - m_pVBO->getPosition(0).x()) * fWidth / 2.0f,
-                    (m_pVBO->getPosition(2).y() - m_pVBO->getPosition(0).y()) * fHeight / 2.0f);
-}
+//void BBFullScreenQuad::setAABB(float fWidth, float fHeight)
+//{
+//    m_AABB = QRectF(m_pVBO->getPosition(2).x() * fWidth / 2.0f,
+//                    m_pVBO->getPosition(2).y() * fHeight / 2.0f,
+//                    (m_pVBO->getPosition(1).x() - m_pVBO->getPosition(0).x()) * fWidth / 2.0f,
+//                    (m_pVBO->getPosition(2).y() - m_pVBO->getPosition(0).y()) * fHeight / 2.0f);
+//}
 
 
 /**
@@ -127,13 +129,13 @@ void BBTiledFullScreenQuad::render(BBCamera *pCamera)
     }
 }
 
-void BBTiledFullScreenQuad::setTiledAABB(float fWidth, float fHeight)
-{
-    for (int i = 0; i < m_nQuadCount; i++)
-    {
-        m_pFullScreenQuad[i]->setAABB(fWidth, fHeight);
-    }
-}
+//void BBTiledFullScreenQuad::setTiledAABB(float fWidth, float fHeight)
+//{
+//    for (int i = 0; i < m_nQuadCount; i++)
+//    {
+//        m_pFullScreenQuad[i]->setAABB(fWidth, fHeight);
+//    }
+//}
 
 void BBTiledFullScreenQuad::setTexture(const std::string &uniformName, GLuint textureName)
 {

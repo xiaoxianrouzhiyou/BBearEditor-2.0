@@ -77,6 +77,11 @@ void BBLight::render(BBCamera *pCamera)
     m_pIndicator->render(pCamera);
 }
 
+void BBLight::insertInRenderQueue(BBRenderQueue *pQueue)
+{
+    m_pIcon->insertInRenderQueue(pQueue);
+}
+
 bool BBLight::hit(const BBRay &ray, float &fDistance)
 {
     return m_pIcon->hit(ray, fDistance);
