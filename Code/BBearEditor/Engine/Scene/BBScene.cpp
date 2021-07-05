@@ -279,6 +279,7 @@ BBLight* BBScene::createLight(const QString &fileName, const QVector3D &position
         pLight->setBaseAttributes(fileName.split('.')[0], BB_CLASSNAME_SPOT_LIGHT, "light2");
     }
     pLight->init(fileName);
+    pLight->insertInRenderQueue(m_pRenderQueue);
     m_Lights.append(pLight);
     if (bSelect)
     {
@@ -346,6 +347,8 @@ void BBScene::deleteGameObject(BBGameObject *pGameObject)
         {
             m_pTiledFullScreenQuad->closeLight();
         }
+
+        ((BBLight*)pGameObject)->removeFromRenderQueue(m_pRenderQueue);
     }
 //    else if (object->getClassName() == TerrainClassName)
 //    {

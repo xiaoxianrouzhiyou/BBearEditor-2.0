@@ -56,7 +56,6 @@ void BBRenderableObject::init()
         m_pEBO->submitData(m_pIndexes, m_nIndexCount);
     }
     closeLight();
-//    m_pDrawCalls->bindRenderableObject(this);
 }
 
 void BBRenderableObject::render(BBCamera *pCamera)
@@ -125,6 +124,7 @@ void BBRenderableObject::closeLight()
 
 void BBRenderableObject::appendDrawCall(BBDrawCall *pDrawCall)
 {
+    pDrawCall->bindRenderableObject(this);
     if (m_pDrawCalls == nullptr)
     {
         m_pDrawCalls = pDrawCall;

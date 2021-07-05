@@ -7,6 +7,7 @@
 #include "Scene/BBScene.h"
 #include "Render/Light/BBLight.h"
 #include "Render/BBFrameBufferObject.h"
+#include "Base/BBRenderableObject.h"
 
 
 /**
@@ -55,19 +56,9 @@ void BBDrawCall::setEBO(BBElementBufferObject *pEBO, GLenum eDrawPrimitiveType, 
     m_nDrawStartIndex = nDrawStartIndex;
 }
 
-void BBDrawCall::bindRenderableObject(BBRenderableObject *pRenderableObject)
-{
-    m_pRenderableObject = pRenderableObject;
-
-    if (m_pNext != nullptr)
-    {
-        next<BBDrawCall>()->bindRenderableObject(pRenderableObject);
-    }
-}
-
 float BBDrawCall::getDistanceToCamera(BBCamera *pCamera)
 {
-    return 0.0f;
+    return m_pRenderableObject->getPosition().distanceToPoint(pCamera->getPosition());
 }
 
 void BBDrawCall::draw(BBCamera *pCamera)

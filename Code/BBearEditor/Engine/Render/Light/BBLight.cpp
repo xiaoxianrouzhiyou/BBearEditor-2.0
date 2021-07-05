@@ -82,6 +82,11 @@ void BBLight::insertInRenderQueue(BBRenderQueue *pQueue)
     m_pIcon->insertInRenderQueue(pQueue);
 }
 
+void BBLight::removeFromRenderQueue(BBRenderQueue *pQueue)
+{
+    m_pIcon->removeFromRenderQueue(pQueue);
+}
+
 bool BBLight::hit(const BBRay &ray, float &fDistance)
 {
     return m_pIcon->hit(ray, fDistance);

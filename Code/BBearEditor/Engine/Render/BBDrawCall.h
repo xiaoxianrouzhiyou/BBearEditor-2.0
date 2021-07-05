@@ -23,7 +23,7 @@ public:
     void setVBO(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType = GL_TRIANGLES,
                 int nDrawStartIndex = 0, int nDrawCount = 3);
     void setEBO(BBElementBufferObject *pEBO, GLenum eDrawPrimitiveType, int nIndexCount, int nDrawStartIndex);
-    void bindRenderableObject(BBRenderableObject *pRenderableObject);
+    void bindRenderableObject(BBRenderableObject *pRenderableObject) { m_pRenderableObject = pRenderableObject; }
 
     float getDistanceToCamera(BBCamera *pCamera);
 
