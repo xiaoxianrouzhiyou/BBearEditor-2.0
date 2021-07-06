@@ -5,6 +5,18 @@ BBLinkedList::BBLinkedList()
     m_pNext = nullptr;
 }
 
+int BBLinkedList::getCount()
+{
+    if (m_pNext == nullptr)
+    {
+        return 1;
+    }
+    else
+    {
+        return 1 + m_pNext->getCount();
+    }
+}
+
 void BBLinkedList::pushBack(BBLinkedList *pNode)
 {
     if (m_pNext == nullptr)

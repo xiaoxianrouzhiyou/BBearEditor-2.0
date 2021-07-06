@@ -465,11 +465,3 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
         event->ignore();
     }
 }
-
-
-
-//void OpenGLWidget::createLightDependParent(QString fileName)
-//{
-//    addGameObjectSignal(scene.createLight(fileName));
-//}
-

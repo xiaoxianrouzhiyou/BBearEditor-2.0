@@ -47,11 +47,9 @@ signals:
     // specified QTreeWidgetItem
     void addGameObject(BBGameObject *pGameObject, QTreeWidgetItem *pItem);
     void pickObject(BBGameObject *pGameObject);
-    void pickObjects(QList<BBGameObject*> gameObjects);
+    void pickObjects(const QList<BBGameObject*> &gameObjects);
     void updateMultipleSelectedObjects(BBGameObject *pGameObject);
     void updateTransformInPropertyManager(BBGameObject *pGameObject, char transformModeKey);
-
-//    void updateMaterialProperty(Model *model);
 
 private:
     void mousePressEvent(QMouseEvent *e) override;

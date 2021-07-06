@@ -60,7 +60,7 @@ void BBDrawCall::updateOrderInRenderQueue(const QVector3D &renderableObjectPosit
 {
     // for the time, only consider opaque
     BBRenderQueue *pRenderQueue = BBSceneManager::getRenderQueue();
-    pRenderQueue->updateOrder(pRenderQueue->getOpaqueDrawCall(), this);
+    pRenderQueue->updateOpaqueDrawCallOrder(this);
 }
 
 float BBDrawCall::getDistanceToCamera(BBCamera *pCamera)
@@ -303,30 +303,83 @@ void BBRenderQueue::renderUI()
     m_pUIDrawCall->draw(m_pCamera);
 }
 
-void BBRenderQueue::updateOrder(BBDrawCall *pHead, BBDrawCall *pNode)
+void BBRenderQueue::updateOrder()
 {
-    BB_PROCESS_ERROR_RETURN(pHead);
+    updateOpaqueDrawCallOrder();
+    // to do ...
+}
+
+void BBRenderQueue::updateOpaqueDrawCallOrder()
+{
+    BB_PROCESS_ERROR_RETURN(m_pOpaqueDrawCall);
+    // reorder the nodes in the pHead into another queue
     // There is only one node in this queue, so there is no need to update the order
-    if (!pHead->isEnd())
+    if (!m_pOpaqueDrawCall->isEnd())
     {
-        // remove the node from the queue
-        pHead->remove(pNode);
-        // reinsert in the new pos
-        appendAscendingRenderQueue(pHead, pNode);
+        BBDrawCall *pCurrent = m_pOpaqueDrawCall;
+        // remove pCurrent from old queue
+        BBDrawCall *pNext = pCurrent->removeSelf<BBDrawCall>();
+        BBDrawCall *pNewHead = pCurrent;
+        // start from the second in the old queue
+        pCurrent = pNext;
+        while (pCurrent)
+        {
+            pNext = pCurrent->removeSelf<BBDrawCall>();
+            // insert in new queue orderly
+            pNewHead = appendAscendingRenderQueue(pNewHead, pCurrent);
+            pCurrent = pNext;
+        }
+        m_pOpaqueDrawCall = pNewHead;
     }
 }
 
-void BBRenderQueue::appendAscendingRenderQueue(BBDrawCall *pHead, BBDrawCall *pNewNode)
+void BBRenderQueue::updateOpaqueDrawCallOrder(BBDrawCall *pNode)
+{
+    BB_PROCESS_ERROR_RETURN(m_pOpaqueDrawCall);
+    // There is only one node in this queue, so there is no need to update the order
+    if (!m_pOpaqueDrawCall->isEnd())
+    {
+        if (m_pOpaqueDrawCall == pNode)
+        {
+            // remove head and make next as head
+            m_pOpaqueDrawCall = pNode->removeSelf<BBDrawCall>();
+        }
+        else
+        {
+            // remove the node from the queue
+            m_pOpaqueDrawCall->remove(pNode);
+        }
+        // reinsert in the new pos
+        m_pOpaqueDrawCall = appendAscendingRenderQueue(m_pOpaqueDrawCall, pNode);
+    }
+}
+
+/**
+ * @brief BBRenderQueue::appendAscendingRenderQueue
+ * @param pHead
+ * @param pNewNode
+ * @return                                              new head
+ */
+BBDrawCall* BBRenderQueue::appendAscendingRenderQueue(BBDrawCall *pHead, BBDrawCall *pNewNode)
 {
     BBDrawCall *pCurrent = pHead;
-    BBDrawCall *pPrevious = pCurrent;
+    BBDrawCall *pPrevious = nullptr;
     while (pCurrent != nullptr)
     {
         if (pNewNode->getDistanceToCamera(m_pCamera) <= pCurrent->getDistanceToCamera(m_pCamera))
         {
-            pNewNode->insertAfter(pPrevious);
-            pPrevious = nullptr;
-            break;
+            if (pPrevious == nullptr)
+            {
+                // change head
+                pNewNode->pushBack(pCurrent);
+                return pNewNode;
+            }
+            else
+            {
+                pNewNode->insertAfter(pPrevious);
+                pPrevious = nullptr;
+                break;
+            }
         }
         pPrevious = pCurrent;
         pCurrent = pCurrent->next<BBDrawCall>();
@@ -335,4 +388,5 @@ void BBRenderQueue::appendAscendingRenderQueue(BBDrawCall *pHead, BBDrawCall *pN
     {
         pPrevious->pushBack(pNewNode);
     }
+    return pHead;
 }

@@ -60,9 +60,6 @@ public:
     BBRenderQueue(BBCamera *pCamera);
     ~BBRenderQueue();
 
-    inline BBDrawCall* getOpaqueDrawCall() { return m_pOpaqueDrawCall; }
-    inline BBDrawCall* getTransparentDrawCall() { return m_pTransparentDrawCall; }
-
     void appendOpaqueDrawCall(BBDrawCall *pDC);
     void appendTransparentDrawCall(BBDrawCall *pDC);
     void appendUIDrawCall(BBDrawCall *pDC);
@@ -76,10 +73,12 @@ public:
     void renderTransparent();
     void renderUI();
 
-    void updateOrder(BBDrawCall *pHead, BBDrawCall *pNode);
+    void updateOrder();
+    void updateOpaqueDrawCallOrder();
+    void updateOpaqueDrawCallOrder(BBDrawCall *pNode);
 
 private:
-    void appendAscendingRenderQueue(BBDrawCall *pHead, BBDrawCall *pNewNode);
+    BBDrawCall* appendAscendingRenderQueue(BBDrawCall *pHead, BBDrawCall *pNewNode);
 
     BBCamera *m_pCamera;
     BBDrawCall *m_pOpaqueDrawCall;

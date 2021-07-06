@@ -2,6 +2,8 @@
 #include "math.h"
 #include "Geometry/BBRay.h"
 #include "Base/BBGameObject.h"
+#include "Scene/BBSceneManager.h"
+#include "BBDrawCall.h"
 
 
 BBCamera::BBCamera()
@@ -17,6 +19,8 @@ BBCamera::BBCamera()
     }
 
     m_ProjectionMatrix.perspective(50.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
+
+    m_fDisplacement = 0.0f;
 }
 
 void BBCamera::resetMove()
@@ -41,31 +45,44 @@ void BBCamera::update(float fDeltaTime)
     {
         m_Position = m_Position - d * rightDirection;
         m_ViewCenter = m_ViewCenter - d * rightDirection;
+        m_fDisplacement += d;
     }
     else if (m_bMoveRight)
     {
         m_Position = m_Position + d * rightDirection;
         m_ViewCenter = m_ViewCenter + d * rightDirection;
+        m_fDisplacement += d;
     }
     if (m_bMoveForward)
     {
         m_Position = m_Position + d * forwardDirection;
         m_ViewCenter = m_ViewCenter + d * forwardDirection;
+        m_fDisplacement += d;
     }
     else if (m_bMoveBack)
     {
         m_Position = m_Position - d * forwardDirection;
         m_ViewCenter = m_ViewCenter - d * forwardDirection;
+        m_fDisplacement += d;
     }
     if (m_bMoveUp)
     {
         m_Position = m_Position + d * m_Up;
         m_ViewCenter = m_ViewCenter + d * m_Up;
+        m_fDisplacement += d;
     }
     else if (m_bMoveDown)
     {
         m_Position = m_Position - d * m_Up;
         m_ViewCenter = m_ViewCenter - d * m_Up;
+        m_fDisplacement += d;
+    }
+
+    // When the camera position changes, update render queue
+    if (m_fDisplacement >= 10.0f)
+    {
+        BBSceneManager::getRenderQueue()->updateOrder();
+        m_fDisplacement = 0.0f;
     }
 
     // Reset, eliminate the influence of the previous frame on the current matrix

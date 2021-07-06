@@ -55,6 +55,7 @@ private:
     GLint m_pViewport[4];
     QMatrix4x4 m_ViewMatrix;
     QMatrix4x4 m_ProjectionMatrix;
+    float m_fDisplacement;
 };
 
 #endif // BBCAMERA_H
