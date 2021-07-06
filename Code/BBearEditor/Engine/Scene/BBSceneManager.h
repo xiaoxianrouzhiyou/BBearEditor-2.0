@@ -7,6 +7,7 @@
 #include "Serializer/BBVector.pb.h"
 
 
+class BBRenderQueue;
 class QTreeWidgetItem;
 class BBGameObject;
 class BBEditViewOpenGLWidget;
@@ -18,6 +19,7 @@ class BBSceneManager
 public:
     static QString getCurrentSceneFilePath() { return m_CurrentSceneFilePath; }
     static BBScene* getScene() { return m_pScene; }
+    static BBRenderQueue* getRenderQueue();
     static void bindEditViewOpenGLWidget(BBEditViewOpenGLWidget *pWidget);
     static void bindHierarchyTreeWidget(BBHierarchyTreeWidget *pWidget) { m_pHierarchyTreeWidget = pWidget; }
 

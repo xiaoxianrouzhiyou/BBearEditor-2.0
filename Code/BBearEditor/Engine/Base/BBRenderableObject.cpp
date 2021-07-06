@@ -27,6 +27,7 @@ BBRenderableObject::BBRenderableObject(const QVector3D &position, const QVector3
 BBRenderableObject::BBRenderableObject(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz)
     : BBGameObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
+    m_bInRenderQueue = false;
     m_pDrawCalls = nullptr;
     m_bVisible = true;
     m_pDefaultMaterial = new BBMaterial();
@@ -76,12 +77,25 @@ void BBRenderableObject::insertInRenderQueue(BBRenderQueue *pQueue)
     if (m_bActive && m_bVisible)
     {
         pQueue->appendOpaqueDrawCall(m_pDrawCalls);
+        m_bInRenderQueue = true;
+        // init
+        m_pDrawCalls->updateOrderInRenderQueue(m_Position);
     }
 }
 
 void BBRenderableObject::removeFromRenderQueue(BBRenderQueue *pQueue)
 {
     pQueue->removeOpaqueDrawCall(m_pDrawCalls);
+    m_bInRenderQueue = false;
+}
+
+void BBRenderableObject::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
+{
+    BBGameObject::setPosition(position, bUpdateLocalTransform);
+    if (m_bInRenderQueue)
+    {
+        m_pDrawCalls->updateOrderInRenderQueue(m_Position);
+    }
 }
 
 void BBRenderableObject::setModelMatrix(float px, float py, float pz,
@@ -124,7 +138,6 @@ void BBRenderableObject::closeLight()
 
 void BBRenderableObject::appendDrawCall(BBDrawCall *pDrawCall)
 {
-    pDrawCall->bindRenderableObject(this);
     if (m_pDrawCalls == nullptr)
     {
         m_pDrawCalls = pDrawCall;

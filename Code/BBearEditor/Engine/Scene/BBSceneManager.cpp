@@ -15,6 +15,10 @@ BBScene* BBSceneManager::m_pScene = NULL;
 BBHierarchyTreeWidget* BBSceneManager::m_pHierarchyTreeWidget = NULL;
 bool BBSceneManager::m_bSceneChanged = true;
 
+BBRenderQueue* BBSceneManager::getRenderQueue()
+{
+    return m_pScene->getRenderQueue();
+}
 
 void BBSceneManager::bindEditViewOpenGLWidget(BBEditViewOpenGLWidget *pWidget)
 {

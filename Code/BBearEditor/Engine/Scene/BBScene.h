@@ -38,6 +38,7 @@ public:
 
     void resize(float width, float height);
 
+    inline BBRenderQueue* getRenderQueue() { return m_pRenderQueue; }
     inline BBCamera* getCamera() { return m_pCamera; }
     inline BBTransformCoordinateSystem* getTransformCoordinateSystem() { return m_pTransformCoordinateSystem; }
     inline QList<BBGameObject*> getModels() { return m_Models; }

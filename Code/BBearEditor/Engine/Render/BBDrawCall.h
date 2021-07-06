@@ -11,6 +11,7 @@ class BBElementBufferObject;
 class BBGameObject;
 class BBDrawCall;
 class BBRenderableObject;
+class BBRenderQueue;
 
 typedef void (BBDrawCall::*BBDrawFunc)(BBCamera *pCamera);
 
@@ -23,8 +24,8 @@ public:
     void setVBO(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType = GL_TRIANGLES,
                 int nDrawStartIndex = 0, int nDrawCount = 3);
     void setEBO(BBElementBufferObject *pEBO, GLenum eDrawPrimitiveType, int nIndexCount, int nDrawStartIndex);
-    void bindRenderableObject(BBRenderableObject *pRenderableObject) { m_pRenderableObject = pRenderableObject; }
 
+    void updateOrderInRenderQueue(const QVector3D &renderableObjectPosition);
     float getDistanceToCamera(BBCamera *pCamera);
 
     void draw(BBCamera *pCamera);
@@ -50,8 +51,6 @@ private:
 
     BBElementBufferObject *m_pEBO;
     int m_nIndexCount;
-
-    BBRenderableObject *m_pRenderableObject;
 };
 
 
@@ -60,6 +59,9 @@ class BBRenderQueue
 public:
     BBRenderQueue(BBCamera *pCamera);
     ~BBRenderQueue();
+
+    inline BBDrawCall* getOpaqueDrawCall() { return m_pOpaqueDrawCall; }
+    inline BBDrawCall* getTransparentDrawCall() { return m_pTransparentDrawCall; }
 
     void appendOpaqueDrawCall(BBDrawCall *pDC);
     void appendTransparentDrawCall(BBDrawCall *pDC);
@@ -73,6 +75,8 @@ public:
     void renderOpaque();
     void renderTransparent();
     void renderUI();
+
+    void updateOrder(BBDrawCall *pHead, BBDrawCall *pNode);
 
 private:
     void appendAscendingRenderQueue(BBDrawCall *pHead, BBDrawCall *pNewNode);

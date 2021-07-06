@@ -27,6 +27,7 @@ public:
     void insertInRenderQueue(BBRenderQueue *pQueue) override;
     void removeFromRenderQueue(BBRenderQueue *pQueue) override;
 
+    void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
     void setModelMatrix(float px, float py, float pz,
                         const QQuaternion &r,
                         float sx, float sy, float sz) override;
@@ -45,6 +46,7 @@ public:
 protected:
     void appendDrawCall(BBDrawCall *pDrawCall);
 
+    bool m_bInRenderQueue;
     BBDrawCall *m_pDrawCalls;
     BBMaterial *m_pCurrentMaterial;
     BBMaterial *m_pDefaultMaterial;

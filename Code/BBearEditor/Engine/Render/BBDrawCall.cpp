@@ -56,9 +56,16 @@ void BBDrawCall::setEBO(BBElementBufferObject *pEBO, GLenum eDrawPrimitiveType, 
     m_nDrawStartIndex = nDrawStartIndex;
 }
 
+void BBDrawCall::updateOrderInRenderQueue(const QVector3D &renderableObjectPosition)
+{
+    // for the time, only consider opaque
+    BBRenderQueue *pRenderQueue = BBSceneManager::getRenderQueue();
+    pRenderQueue->updateOrder(pRenderQueue->getOpaqueDrawCall(), this);
+}
+
 float BBDrawCall::getDistanceToCamera(BBCamera *pCamera)
 {
-    return m_pRenderableObject->getPosition().distanceToPoint(pCamera->getPosition());
+    return 0.0f;
 }
 
 void BBDrawCall::draw(BBCamera *pCamera)
@@ -219,7 +226,7 @@ void BBRenderQueue::appendOpaqueDrawCall(BBDrawCall *pDC)
     }
     else
     {
-        appendAscendingRenderQueue(m_pOpaqueDrawCall, pDC);
+        m_pOpaqueDrawCall->pushBack(pDC);
     }
 }
 
@@ -231,7 +238,7 @@ void BBRenderQueue::appendTransparentDrawCall(BBDrawCall *pDC)
     }
     else
     {
-        appendAscendingRenderQueue(m_pTransparentDrawCall, pDC);
+        m_pTransparentDrawCall->pushBack(pDC);
     }
 }
 
@@ -294,6 +301,19 @@ void BBRenderQueue::renderUI()
 {
     BB_PROCESS_ERROR_RETURN(m_pUIDrawCall);
     m_pUIDrawCall->draw(m_pCamera);
+}
+
+void BBRenderQueue::updateOrder(BBDrawCall *pHead, BBDrawCall *pNode)
+{
+    BB_PROCESS_ERROR_RETURN(pHead);
+    // There is only one node in this queue, so there is no need to update the order
+    if (!pHead->isEnd())
+    {
+        // remove the node from the queue
+        pHead->remove(pNode);
+        // reinsert in the new pos
+        appendAscendingRenderQueue(pHead, pNode);
+    }
 }
 
 void BBRenderQueue::appendAscendingRenderQueue(BBDrawCall *pHead, BBDrawCall *pNewNode)
