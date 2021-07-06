@@ -58,6 +58,7 @@ void BBDrawCall::setEBO(BBElementBufferObject *pEBO, GLenum eDrawPrimitiveType, 
 
 void BBDrawCall::updateOrderInRenderQueue(const QVector3D &renderableObjectPosition)
 {
+    m_RenderableObjectPosition = renderableObjectPosition;
     // for the time, only consider opaque
     BBRenderQueue *pRenderQueue = BBSceneManager::getRenderQueue();
     pRenderQueue->updateOpaqueDrawCallOrder(this);
@@ -65,7 +66,7 @@ void BBDrawCall::updateOrderInRenderQueue(const QVector3D &renderableObjectPosit
 
 float BBDrawCall::getDistanceToCamera(BBCamera *pCamera)
 {
-    return 0.0f;
+    return m_RenderableObjectPosition.distanceToPoint(pCamera->getPosition());
 }
 
 void BBDrawCall::draw(BBCamera *pCamera)
@@ -256,7 +257,14 @@ void BBRenderQueue::removeOpaqueDrawCall(BBDrawCall *pDC)
     }
     else
     {
-        m_pOpaqueDrawCall->remove(pDC);
+        if (m_pOpaqueDrawCall == pDC)
+        {
+            m_pOpaqueDrawCall = m_pOpaqueDrawCall->removeSelf<BBDrawCall>();
+        }
+        else
+        {
+            m_pOpaqueDrawCall->remove(pDC);
+        }
     }
 }
 

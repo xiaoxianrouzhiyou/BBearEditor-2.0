@@ -334,21 +334,21 @@ void BBScene::deleteGameObject(BBGameObject *pGameObject)
 {
     if (pGameObject->getClassName() == BB_CLASSNAME_MODEL)
     {
-        m_Models.removeOne(pGameObject);
         ((BBModel*)pGameObject)->removeFromRenderQueue(m_pRenderQueue);
+        m_Models.removeOne(pGameObject);
     }
     else if (pGameObject->getClassName() == BB_CLASSNAME_DIRECTIONAL_LIGHT
              || pGameObject->getClassName() == BB_CLASSNAME_POINT_LIGHT
              || pGameObject->getClassName() == BB_CLASSNAME_SPOT_LIGHT)
     {
+        ((BBLight*)pGameObject)->removeFromRenderQueue(m_pRenderQueue);
+
         m_Lights.removeOne(pGameObject);
 
         if (m_Lights.count() == 0)
         {
             m_pTiledFullScreenQuad->closeLight();
         }
-
-        ((BBLight*)pGameObject)->removeFromRenderQueue(m_pRenderQueue);
     }
 //    else if (object->getClassName() == TerrainClassName)
 //    {

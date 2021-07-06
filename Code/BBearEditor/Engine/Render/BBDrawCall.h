@@ -51,6 +51,8 @@ private:
 
     BBElementBufferObject *m_pEBO;
     int m_nIndexCount;
+
+    QVector3D m_RenderableObjectPosition;
 };
 
 
