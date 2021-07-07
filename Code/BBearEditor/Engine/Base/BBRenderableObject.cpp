@@ -106,6 +106,12 @@ void BBRenderableObject::setModelMatrix(float px, float py, float pz,
     m_pCurrentMaterial->setMatrix4(LOCATION_MODELMATRIX, m_ModelMatrix.data());
 }
 
+void BBRenderableObject::setVisibility(bool bVisible)
+{
+    BBGameObject::setVisibility(bVisible);
+    m_pDrawCalls->setVisibility(bVisible);
+}
+
 void BBRenderableObject::setCurrentMaterial(BBMaterial *pMaterial)
 {
     m_pCurrentMaterial = pMaterial;

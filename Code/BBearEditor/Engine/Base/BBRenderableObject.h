@@ -31,6 +31,7 @@ public:
     void setModelMatrix(float px, float py, float pz,
                         const QQuaternion &r,
                         float sx, float sy, float sz) override;
+    void setVisibility(bool bVisible) override;
     void setCurrentMaterial(BBMaterial *pMaterial) override;
     void restoreMaterial() override;
 

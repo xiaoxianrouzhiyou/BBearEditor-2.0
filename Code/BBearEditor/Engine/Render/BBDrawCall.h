@@ -24,6 +24,7 @@ public:
     void setVBO(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType = GL_TRIANGLES,
                 int nDrawStartIndex = 0, int nDrawCount = 3);
     void setEBO(BBElementBufferObject *pEBO, GLenum eDrawPrimitiveType, int nIndexCount, int nDrawStartIndex);
+    void setVisibility(bool bVisible) { m_bVisible = bVisible; }
 
     void updateOrderInRenderQueue(const QVector3D &renderableObjectPosition);
     float getDistanceToCamera(BBCamera *pCamera);
@@ -53,6 +54,7 @@ private:
     int m_nIndexCount;
 
     QVector3D m_RenderableObjectPosition;
+    bool m_bVisible;
 };
 
 
