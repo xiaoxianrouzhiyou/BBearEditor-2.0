@@ -18,7 +18,10 @@ BBCamera::BBCamera()
         m_pProjection[i] = 0;
     }
 
-    m_ProjectionMatrix.perspective(50.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
+    m_fNearPlane = 0.1f;
+    m_fFarPlane = 1000.0f;
+    m_fDepth = 1000.0f - 0.1f;
+    m_ProjectionMatrix.perspective(50.0f, 800.0f / 600.0f, m_fNearPlane, m_fFarPlane);
 
     m_fDisplacement = 0.0f;
 }
@@ -108,14 +111,14 @@ void BBCamera::setViewportSize(int nWidth, int nHeight)
     m_pViewport[3] = m_nViewportHeight;
 
     m_ProjectionMatrix.setToIdentity();
-    m_ProjectionMatrix.perspective(50.0f, (float) nWidth / nHeight, 0.1f, 1000.0f);
+    m_ProjectionMatrix.perspective(50.0f, (float) nWidth / nHeight, m_fNearPlane, m_fFarPlane);
 }
 
 void BBCamera::switchTo3D()
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(50.0f, (GLdouble) m_nViewportWidth / m_nViewportHeight, 0.1f, 1000.0f);
+    gluPerspective(50.0f, (GLdouble) m_nViewportWidth / m_nViewportHeight, m_fNearPlane, m_fFarPlane);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }

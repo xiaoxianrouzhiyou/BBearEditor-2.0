@@ -12,10 +12,13 @@ public:
 
     float distance(const QVector3D &point);
 
+    QVector3D getNormal() { return m_Normal; }
+
 private:
     QVector3D m_Point1;
     QVector3D m_Point2;
     QVector3D m_Point3;
+    QVector3D m_Normal;
 };
 
 #endif // BBPLANE_H

@@ -33,6 +33,9 @@ public:
     inline QMatrix4x4 getProjectionMatrix() { return m_ProjectionMatrix; }
     inline int getViewportWidth() { return m_nViewportWidth; }
     inline int getViewportHeight() { return m_nViewportHeight; }
+    inline float getNearPlane() { return m_fNearPlane; }
+    inline float getFarPlane() { return m_fFarPlane; }
+    inline float getDepth() { return m_fDepth; }
 
 private:
     void rotateView(float fAngle, float x, float y, float z);
@@ -56,6 +59,10 @@ private:
     QMatrix4x4 m_ViewMatrix;
     QMatrix4x4 m_ProjectionMatrix;
     float m_fDisplacement;
+
+    float m_fNearPlane;
+    float m_fFarPlane;
+    float m_fDepth;
 };
 
 #endif // BBCAMERA_H

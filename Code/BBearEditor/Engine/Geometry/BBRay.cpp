@@ -203,15 +203,7 @@ bool BBRay::computeIntersectWithQuarterCircle(const QVector3D &center, float fRa
     return false;
 }
 
-
-//bool Ray::equal(Ray ray)
-//{
-//    if (nearPoint == ray.nearPoint && farPoint == ray.farPoint)
-//    {
-//        return true;
-//    }
-//    else
-//    {
-//        return false;
-//    }
-//}
+QVector3D BBRay::getDirection()
+{
+    return (m_FarPoint - m_NearPoint).normalized();
+}

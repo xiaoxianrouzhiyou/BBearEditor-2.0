@@ -42,6 +42,8 @@ public:
                                            const BBPlaneName &ePlaneName, QVector3D &outIntersection,
                                            const QVector3D &quadrantFlag) const;
 
+    QVector3D getDirection();
+
     inline QVector3D getNearPoint() { return m_NearPoint; }
     inline QVector3D getFarPoint() { return m_FarPoint; }
 
@@ -49,20 +51,6 @@ private:
     QVector3D m_NearPoint;
     QVector3D m_FarPoint;
 };
-
-
-
-
-//class Ray
-//{
-//public:
-
-
-//    bool equal(Ray ray);
-
-
-
-//};
 
 
 #endif // BBRAY_H
