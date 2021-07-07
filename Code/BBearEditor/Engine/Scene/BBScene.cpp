@@ -383,17 +383,7 @@ QList<BBGameObject*> BBScene::getSelectedObjects(QPoint start, QPoint end)
     int y = start.y() > end.y() ? start.y() : end.y();
     int w = abs(start.x() - end.x());
     int h = abs(start.y() - end.y());
-    // 3D ray of the 4 vertexes in the selection region
-    BBRay topLeft = m_pCamera->createRayFromScreen(x, y - h);
-    BBRay topRight = m_pCamera->createRayFromScreen(x + w, y - h);
-    BBRay bottomRight = m_pCamera->createRayFromScreen(x + w, y);
-    BBRay bottomLeft = m_pCamera->createRayFromScreen(x, y);
-
-    // The top-left corner is origin, transform origin into the center
-    y = -y;
-    x = x - m_pCamera->getViewportWidth() / 2;
-    y = y + m_pCamera->getViewportHeight() / 2;
-    m_pSelectionRegion->setRect(x, y, w, h);
+    BBFrustum frustum(m_pCamera, x, y, w, h);
 
     // Two rays form a plane
     // 4 planes, object in the middle of top bottom left right planes is selected
@@ -401,15 +391,17 @@ QList<BBGameObject*> BBScene::getSelectedObjects(QPoint start, QPoint end)
     for (int i = 0; i < objects.count(); i++)
     {
         // whether the bounding box of object is placed in the middle of 4 planes
-        if (objects.at(i)->belongToSelectionRegion(
-                    topLeft.getNearPoint(), bottomLeft.getNearPoint(), topLeft.getFarPoint(),
-                    topLeft.getNearPoint(), topLeft.getFarPoint(), topRight.getNearPoint(),
-                    topRight.getNearPoint(), topRight.getFarPoint(), bottomRight.getNearPoint(),
-                    bottomLeft.getNearPoint(), bottomRight.getNearPoint(), bottomLeft.getFarPoint()))
+        if (objects.at(i)->belongToSelectionRegion(frustum))
         {
             result.append(objects.at(i));
         }
     }
+
+    // The top-left corner is origin, transform origin into the center
+    y = -y;
+    x = x - m_pCamera->getViewportWidth() / 2;
+    y = y + m_pCamera->getViewportHeight() / 2;
+    m_pSelectionRegion->setRect(x, y, w, h);
 
     // return all objects in the selection region
     return result;

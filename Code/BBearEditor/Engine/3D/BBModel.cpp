@@ -133,27 +133,14 @@ bool BBModel::hit(const BBRay &ray, float &fDistance)
     return false;
 }
 
-bool BBModel::belongToSelectionRegion(const QVector3D &left1, const QVector3D &left2, const QVector3D &left3,
-                                      const QVector3D &top1, const QVector3D &top2, const QVector3D &top3,
-                                      const QVector3D &right1, const QVector3D &right2, const QVector3D &right3,
-                                      const QVector3D &bottom1, const QVector3D &bottom2, const QVector3D &bottom3)
+bool BBModel::belongToSelectionRegion(const BBFrustum &frustum)
 {
     // Eliminate objects whose the center point of the bounding box is on the outside
     QVector3D center = getModelMatrix() * m_pBoundingBox->getCenter();
-    if (center.distanceToPlane(left1, left2, left3) < 0)
-        return false;
-    if (center.distanceToPlane(top1, top2, top3) < 0)
-        return false;
-    if (center.distanceToPlane(right1, right2, right3) < 0)
-        return false;
-    if (center.distanceToPlane(bottom1, bottom2, bottom3) < 0)
-        return false;
+    BB_PROCESS_ERROR_RETURN_FALSE(frustum.contain(center));
     // If the center point of the bounding box is inside,
     // further calculate whether each vertex of the bounding box is inside
-    return m_pBoundingBox->belongToSelectionRegion(left1, left2, left3,
-                                                   top1, top2, top3,
-                                                   right1, right2, right3,
-                                                   bottom1, bottom2, bottom3);
+    return m_pBoundingBox->belongToSelectionRegion(frustum);
 }
 
 void BBModel::showCloseUp(QVector3D &outPosition, QVector3D &outViewCenter, float fDistFactor)

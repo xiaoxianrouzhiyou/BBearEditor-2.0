@@ -368,21 +368,11 @@ bool BBBoundingBox3D::hit(const BBRay &ray, float &fDistance)
     return result;
 }
 
-bool BBBoundingBox3D::belongToSelectionRegion(const QVector3D &left1, const QVector3D &left2, const QVector3D &left3,
-                                              const QVector3D &top1, const QVector3D &top2, const QVector3D &top3,
-                                              const QVector3D &right1, const QVector3D &right2, const QVector3D &right3,
-                                              const QVector3D &bottom1, const QVector3D &bottom2, const QVector3D &bottom3)
+bool BBBoundingBox3D::belongToSelectionRegion(const BBFrustum &frustum)
 {
     for (int i = 0; i < m_nBoxVertexCount; i++)
     {
-        if (m_pTransformedBoxVertexes[i].distanceToPlane(left1, left2, left3) < 0)
-            return false;
-        if (m_pTransformedBoxVertexes[i].distanceToPlane(top1, top2, top3) < 0)
-            return false;
-        if (m_pTransformedBoxVertexes[i].distanceToPlane(right1, right2, right3) < 0)
-            return false;
-        if (m_pTransformedBoxVertexes[i].distanceToPlane(bottom1, bottom2, bottom3) < 0)
-            return false;
+        BB_PROCESS_ERROR_RETURN_FALSE(frustum.contain(m_pTransformedBoxVertexes[i]));
     }
     return true;
 }

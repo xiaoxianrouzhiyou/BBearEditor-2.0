@@ -358,23 +358,9 @@ bool BBGameObject::hit(const BBRay &ray, float &fDistance)
     return m_bActive;
 }
 
-bool BBGameObject::belongToSelectionRegion(const QVector3D &left1, const QVector3D &left2, const QVector3D &left3,
-                                           const QVector3D &top1, const QVector3D &top2, const QVector3D &top3,
-                                           const QVector3D &right1, const QVector3D &right2, const QVector3D &right3,
-                                           const QVector3D &bottom1, const QVector3D &bottom2, const QVector3D &bottom3)
+bool BBGameObject::belongToSelectionRegion(const BBFrustum &frustum)
 {
-    Q_UNUSED(left1);
-    Q_UNUSED(left2);
-    Q_UNUSED(left3);
-    Q_UNUSED(top1);
-    Q_UNUSED(top2);
-    Q_UNUSED(top3);
-    Q_UNUSED(right1);
-    Q_UNUSED(right2);
-    Q_UNUSED(right3);
-    Q_UNUSED(bottom1);
-    Q_UNUSED(bottom2);
-    Q_UNUSED(bottom3);
+    Q_UNUSED(frustum);
     // 4 planes, object in the middle of top bottom left right planes is selected
     // Whether the bounding box of object is placed in the middle of 4 planes
     // Eliminate objects whose the center point of the bounding box is on the outside

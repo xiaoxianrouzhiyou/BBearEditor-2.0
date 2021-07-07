@@ -6,6 +6,7 @@
 #include <QVector3D>
 #include <QQuaternion>
 #include <QMatrix4x4>
+#include "Geometry/BBFrustum.h"
 #include "Geometry/BBRay.h"
 
 
@@ -74,10 +75,7 @@ public:
     virtual void closeLight();
 
     virtual bool hit(const BBRay &ray, float &fDistance);
-    virtual bool belongToSelectionRegion(const QVector3D &left1, const QVector3D &left2, const QVector3D &left3,
-                                         const QVector3D &top1, const QVector3D &top2, const QVector3D &top3,
-                                         const QVector3D &right1, const QVector3D &right2, const QVector3D &right3,
-                                         const QVector3D &bottom1, const QVector3D &bottom2, const QVector3D &bottom3);
+    virtual bool belongToSelectionRegion(const BBFrustum &frustum);
     virtual void showCloseUp(QVector3D &outPosition, QVector3D &outViewCenter, float fDistFactor = 2.4);
 
 protected:

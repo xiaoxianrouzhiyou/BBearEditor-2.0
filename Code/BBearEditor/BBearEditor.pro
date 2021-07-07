@@ -96,7 +96,9 @@ SOURCES += \
     Editor/Render/BBPreviewOpenGLWidget.cpp \
     Engine/Serializer/BBMaterial.pb.cc \
     Engine/IO/BBMaterialFileManager.cpp \
-    Editor/PropertyManager/BBHeadManager.cpp
+    Editor/PropertyManager/BBHeadManager.cpp \
+    Engine/Geometry/BBPlane.cpp \
+    Engine/Geometry/BBFrustum.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -172,7 +174,9 @@ HEADERS += \
     Editor/Render/BBPreviewOpenGLWidget.h \
     Engine/Serializer/BBMaterial.pb.h \
     Engine/IO/BBMaterialFileManager.h \
-    Editor/PropertyManager/BBHeadManager.h
+    Editor/PropertyManager/BBHeadManager.h \
+    Engine/Geometry/BBPlane.h \
+    Engine/Geometry/BBFrustum.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
