@@ -385,7 +385,7 @@ QList<BBGameObject*> BBScene::getSelectedObjects(QPoint start, QPoint end)
     int y = start.y() > end.y() ? start.y() : end.y();
     int w = abs(start.x() - end.x());
     int h = abs(start.y() - end.y());
-    BBFrustum frustum(m_pCamera, x, y, w, h);
+    BBFrustum frustum(m_pCamera, x, y - h, w, h);
 
     // Two rays form a plane
     // 4 planes, object in the middle of top bottom left right planes is selected
@@ -508,30 +508,6 @@ void BBScene::unbindFBO()
 //    {
 //        //没有合法模型
 //        return false;
-//    }
-//}
-
-//void Scene::play()
-//{
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        //骨骼动画
-//        model->play();
-//        //开启脚本调用开关
-//        model->onLua();
-//    }
-//}
-
-//void Scene::stop()
-//{
-//    QList<GameObject*>::Iterator itr;
-//    for (itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        model->stop();
-//        model->offLua();
 //    }
 //}
 

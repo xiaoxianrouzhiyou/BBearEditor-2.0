@@ -10,8 +10,7 @@ public:
     BBPlane();
     BBPlane(const QVector3D &point1, const QVector3D &point2, const QVector3D &point3);
 
-    float distance(const QVector3D &point);
-    QVector3D invert();
+    float distance(const QVector3D &point) const;
 
     QVector3D getNormal() { return m_Normal; }
 

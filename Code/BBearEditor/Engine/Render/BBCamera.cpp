@@ -121,7 +121,7 @@ void BBCamera::setViewportSize(int nWidth, int nHeight)
 
     if (m_pFrustumCluster == nullptr)
     {
-        m_pFrustumCluster = new BBFrustumCluster(this, 0, m_nViewportHeight, m_nViewportWidth, m_nViewportHeight, 2, 2, 16);
+        m_pFrustumCluster = new BBFrustumCluster(this, 0, 0, m_nViewportWidth, m_nViewportHeight, 2, 2, 16);
     }
 }
 

@@ -8,22 +8,22 @@
 /**
  * @brief BBFrustum::BBFrustum
  * @param pCamera
- * @param x                             screen coordinate       bottom-left
+ * @param x                             screen coordinate       top-left
  * @param y                             original point is in the top-left
  * @param nWidth
  * @param nHeight
  */
 BBFrustum::BBFrustum(BBCamera *pCamera, int x, int y, int nWidth, int nHeight)
 {
-    m_nBottomLeftX = x;
-    m_nBottomLeftY = y;
+    m_nTopLeftX = x;
+    m_nTopLeftY = y;
     m_nWidth = nWidth;
     m_nHeight = nHeight;
     // 3D ray of the 4 vertexes
-    BBRay topLeft = pCamera->createRayFromScreen(x, y - nHeight);
-    BBRay topRight = pCamera->createRayFromScreen(x + nWidth, y - nHeight);
-    BBRay bottomRight = pCamera->createRayFromScreen(x + nWidth, y);
-    BBRay bottomLeft = pCamera->createRayFromScreen(x, y);
+    BBRay topLeft = pCamera->createRayFromScreen(x, y);
+    BBRay topRight = pCamera->createRayFromScreen(x + nWidth, y);
+    BBRay bottomRight = pCamera->createRayFromScreen(x + nWidth, y + nHeight);
+    BBRay bottomLeft = pCamera->createRayFromScreen(x, y + nHeight);
 
     m_pLeft = new BBPlane(topLeft.getNearPoint(), bottomLeft.getNearPoint(), topLeft.getFarPoint());
     m_pRight = new BBPlane(topRight.getNearPoint(), topRight.getFarPoint(), bottomRight.getNearPoint());
@@ -59,7 +59,7 @@ bool BBFrustum::contain(const QVector3D &point) const
 bool BBFrustum::contain(const BBPlane &left, const BBPlane &right,
                         const BBPlane &top, const BBPlane &bottom,
                         const BBPlane &front, const BBPlane &back,
-                        const QVector3D &point) const
+                        const QVector3D &point)
 {
     if (left.distance(point) < 0)
         return false;
@@ -114,7 +114,7 @@ BBFrustumCluster::~BBFrustumCluster()
 bool BBFrustumCluster::contain(int nIndexX, int nIndexY, int nIndexZ, const QVector3D &point)
 {
     BBPlane left = m_pXCrossSections[nIndexX];
-    BBPlane right = m_pXCrossSections[nIndexX + 1].invert();
+    BBPlane right = m_pXCrossSections[nIndexX + 1];
 }
 
 void BBFrustumCluster::calculateXCrossSections(BBCamera *pCamera, int nCount)
@@ -129,12 +129,12 @@ void BBFrustumCluster::calculateXCrossSections(BBCamera *pCamera, int nCount)
     // +2 save m_pLeft and m_pRight for more convenient calculation
     m_pXCrossSections = new BBPlane[nCount + 2];
     m_pXCrossSections[0] = *m_pLeft;
-    int x = m_nBottomLeftX;
+    int x = m_nTopLeftX;
     for (int i = 1; i < nCount + 1; i++)
     {
         x += nStep;
-        BBRay topRay = pCamera->createRayFromScreen(x, m_nBottomLeftY - m_nHeight);
-        BBRay bottomRay = pCamera->createRayFromScreen(x, m_nBottomLeftY);
+        BBRay topRay = pCamera->createRayFromScreen(x, m_nTopLeftY);
+        BBRay bottomRay = pCamera->createRayFromScreen(x, m_nTopLeftY + m_nHeight);
         // just save positive direction
         m_pXCrossSections[i] = BBPlane(topRay.getFarPoint(), topRay.getNearPoint(), bottomRay.getNearPoint());
     }
@@ -151,17 +151,17 @@ void BBFrustumCluster::calculateYCrossSections(BBCamera *pCamera, int nCount)
     }
 
     m_pYCrossSections = new BBPlane[nCount + 2];
-    m_pYCrossSections[0] = *m_pBottom;
-    int y = m_nBottomLeftY;
+    m_pYCrossSections[0] = *m_pTop;
+    int y = m_nTopLeftY;
     for (int i = 1; i < nCount + 1; i++)
     {
-        y -= nStep;
-        BBRay leftRay = pCamera->createRayFromScreen(m_nBottomLeftX, y);
-        BBRay rightRay = pCamera->createRayFromScreen(m_nBottomLeftX + m_nWidth, y);
+        y += nStep;
+        BBRay leftRay = pCamera->createRayFromScreen(m_nTopLeftX, y);
+        BBRay rightRay = pCamera->createRayFromScreen(m_nTopLeftX + m_nWidth, y);
         // just save positive direction
         m_pYCrossSections[i] = BBPlane(leftRay.getNearPoint(), rightRay.getNearPoint(), rightRay.getFarPoint());
     }
-    m_pYCrossSections[nCount + 1] = *m_pTop;
+    m_pYCrossSections[nCount + 1] = *m_pBottom;
 }
 
 void BBFrustumCluster::calculateZCrossSectionPoints(BBCamera *pCamera, int nCount)

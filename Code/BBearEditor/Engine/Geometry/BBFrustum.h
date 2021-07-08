@@ -20,11 +20,11 @@ public:
     static bool contain(const BBPlane &left, const BBPlane &right,
                         const BBPlane &top, const BBPlane &bottom,
                         const BBPlane &front, const BBPlane &back,
-                        const QVector3D &point) const;
+                        const QVector3D &point);
 
 protected:
-    int m_nBottomLeftX;
-    int m_nBottomLeftY;
+    int m_nTopLeftX;
+    int m_nTopLeftY;
     int m_nWidth;
     int m_nHeight;
 
