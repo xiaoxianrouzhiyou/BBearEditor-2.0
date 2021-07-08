@@ -8,6 +8,7 @@
 #include "Scene/BBSceneManager.h"
 #include "Render/Light/BBLight.h"
 #include "Render/Light/BBPointLight.h"
+#include "Render/BBCamera.h"
 
 
 /**
@@ -126,6 +127,15 @@ void BBTiledFullScreenQuad::render(BBCamera *pCamera)
     for (int i = 0; i < m_nQuadCount; i++)
     {
         m_pFullScreenQuad[i]->render(pCamera);
+    }
+    // test bottom left
+    QList<BBGameObject*> lights = BBSceneManager::getScene()->getLights();
+    for (int i = 0; i < lights.count(); i++)
+    {
+        if (lights[i]->getClassName() == BB_CLASSNAME_POINT_LIGHT)
+        {
+            qDebug() << pCamera->isFrustumContainPoint(0, 0, 0, lights[i]->getPosition());
+        }
     }
 }
 

@@ -16,6 +16,12 @@ public:
 
     bool contain(const QVector3D &point) const;
 
+public:
+    static bool contain(const BBPlane &left, const BBPlane &right,
+                        const BBPlane &top, const BBPlane &bottom,
+                        const BBPlane &front, const BBPlane &back,
+                        const QVector3D &point) const;
+
 protected:
     int m_nBottomLeftX;
     int m_nBottomLeftY;
@@ -34,9 +40,13 @@ protected:
 class BBFrustumCluster : public BBFrustum
 {
 public:
-    BBFrustumCluster(BBCamera *pCamera, int x, int y, int nWidth, int nHeight,
+    BBFrustumCluster(BBCamera *pCamera,
+                     int x, int y,
+                     int nWidth, int nHeight,
                      int nCountX, int nCountY, int nCountZ);
     ~BBFrustumCluster();
+
+    bool contain(int nIndexX, int nIndexY, int nIndexZ, const QVector3D &point);
 
 private:
     void calculateXCrossSections(BBCamera *pCamera, int nCount);

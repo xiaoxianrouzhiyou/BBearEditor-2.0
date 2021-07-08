@@ -46,6 +46,7 @@ BBScene::~BBScene()
         BB_SAFE_DELETE(m_pFBO[i]);
     }
     BB_SAFE_DELETE(m_pCamera);
+    BB_SAFE_DELETE(m_pRenderQueue);
     BB_SAFE_DELETE(m_pSkyBox);
     BB_SAFE_DELETE(m_pHorizontalPlane);
     BB_SAFE_DELETE(m_pSelectionRegion);
@@ -66,6 +67,7 @@ void BBScene::init()
 
     m_pCamera = new BBCamera();
     m_pRenderQueue = new BBRenderQueue(m_pCamera);
+
     m_pSkyBox = new BBSkyBox();
     m_pHorizontalPlane = new BBHorizontalPlane();
     m_pSelectionRegion = new BBSelectionRegion();

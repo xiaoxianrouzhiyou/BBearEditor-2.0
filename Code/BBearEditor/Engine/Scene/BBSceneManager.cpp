@@ -10,9 +10,9 @@
 
 QMap<QTreeWidgetItem*, BBGameObject*> BBSceneManager::m_ObjectMap;
 QString BBSceneManager::m_CurrentSceneFilePath;
-BBEditViewOpenGLWidget* BBSceneManager::m_pEditViewOpenGLWidget = NULL;
-BBScene* BBSceneManager::m_pScene = NULL;
-BBHierarchyTreeWidget* BBSceneManager::m_pHierarchyTreeWidget = NULL;
+BBEditViewOpenGLWidget* BBSceneManager::m_pEditViewOpenGLWidget = nullptr;
+BBScene* BBSceneManager::m_pScene = nullptr;
+BBHierarchyTreeWidget* BBSceneManager::m_pHierarchyTreeWidget = nullptr;
 bool BBSceneManager::m_bSceneChanged = true;
 
 BBRenderQueue* BBSceneManager::getRenderQueue()

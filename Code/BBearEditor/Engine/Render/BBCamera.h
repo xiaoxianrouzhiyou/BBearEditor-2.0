@@ -6,11 +6,14 @@
 
 class BBGameObject;
 class BBRay;
+class BBFrustumCluster;
 
 class BBCamera
 {
 public:
     BBCamera();
+    ~BBCamera();
+
     void resetMove();
     void update(float fDeltaTime);
     void setViewportSize(int nWidth, int nHeight);
@@ -24,6 +27,8 @@ public:
     BBRay createRayFromScreen(int x, int y);
     QVector3D projectPointToScreenSpace(const QVector3D &point);
     QVector4D projectPointToScreenSpace(const QVector4D &point);
+
+    bool isFrustumContainPoint(int nIndexX, int nIndexY, int nIndexZ, const QVector3D &point);
 
     inline void setPosition(const QVector3D &position) { m_Position = position; }
     inline QVector3D getPosition() { return m_Position; }
@@ -63,6 +68,8 @@ private:
     float m_fNearPlane;
     float m_fFarPlane;
     float m_fDepth;
+
+    BBFrustumCluster *m_pFrustumCluster;
 };
 
 #endif // BBCAMERA_H

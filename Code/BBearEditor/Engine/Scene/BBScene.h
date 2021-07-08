@@ -98,6 +98,7 @@ private:
 
     BBSelectionRegion *m_pSelectionRegion;
 
+
 //    QList<GameObject*> audios;
 
 //    void renderShadowMap();

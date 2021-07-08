@@ -56,6 +56,26 @@ bool BBFrustum::contain(const QVector3D &point) const
     return true;
 }
 
+bool BBFrustum::contain(const BBPlane &left, const BBPlane &right,
+                        const BBPlane &top, const BBPlane &bottom,
+                        const BBPlane &front, const BBPlane &back,
+                        const QVector3D &point) const
+{
+    if (left.distance(point) < 0)
+        return false;
+    if (right.distance(point) < 0)
+        return false;
+    if (top.distance(point) < 0)
+        return false;
+    if (bottom.distance(point) < 0)
+        return false;
+    if (front.distance(point) < 0)
+        return false;
+    if (back.distance(point) < 0)
+        return false;
+    return true;
+}
+
 
 /**
  * @brief BBFrustumCluster::BBFrustumCluster
@@ -64,7 +84,9 @@ bool BBFrustum::contain(const QVector3D &point) const
  * @param nCountY
  * @param nCountZ
  */
-BBFrustumCluster::BBFrustumCluster(BBCamera *pCamera, int x, int y, int nWidth, int nHeight,
+BBFrustumCluster::BBFrustumCluster(BBCamera *pCamera,
+                                   int x, int y,
+                                   int nWidth, int nHeight,
                                    int nCountX, int nCountY, int nCountZ)
     : BBFrustum(pCamera, x, y, nWidth, nHeight)
 {
@@ -81,6 +103,20 @@ BBFrustumCluster::~BBFrustumCluster()
     BB_SAFE_DELETE_ARRAY(m_pZCrossSectionPoints);
 }
 
+/**
+ * @brief BBFrustumCluster::contain         whether point is contained in the frustum specified by index
+ * @param nIndexX
+ * @param nIndexY
+ * @param nIndexZ
+ * @param point
+ * @return
+ */
+bool BBFrustumCluster::contain(int nIndexX, int nIndexY, int nIndexZ, const QVector3D &point)
+{
+    BBPlane left = m_pXCrossSections[nIndexX];
+    BBPlane right = m_pXCrossSections[nIndexX + 1].invert();
+}
+
 void BBFrustumCluster::calculateXCrossSections(BBCamera *pCamera, int nCount)
 {
     int nStep = m_nWidth / (nCount + 1);
@@ -90,9 +126,11 @@ void BBFrustumCluster::calculateXCrossSections(BBCamera *pCamera, int nCount)
         return;
     }
 
-    m_pXCrossSections = new BBPlane[nCount];
+    // +2 save m_pLeft and m_pRight for more convenient calculation
+    m_pXCrossSections = new BBPlane[nCount + 2];
+    m_pXCrossSections[0] = *m_pLeft;
     int x = m_nBottomLeftX;
-    for (int i = 0; i < nCount; i++)
+    for (int i = 1; i < nCount + 1; i++)
     {
         x += nStep;
         BBRay topRay = pCamera->createRayFromScreen(x, m_nBottomLeftY - m_nHeight);
@@ -100,6 +138,7 @@ void BBFrustumCluster::calculateXCrossSections(BBCamera *pCamera, int nCount)
         // just save positive direction
         m_pXCrossSections[i] = BBPlane(topRay.getFarPoint(), topRay.getNearPoint(), bottomRay.getNearPoint());
     }
+    m_pXCrossSections[nCount + 1] = *m_pRight;
 }
 
 void BBFrustumCluster::calculateYCrossSections(BBCamera *pCamera, int nCount)
@@ -111,9 +150,10 @@ void BBFrustumCluster::calculateYCrossSections(BBCamera *pCamera, int nCount)
         return;
     }
 
-    m_pYCrossSections = new BBPlane[nCount];
+    m_pYCrossSections = new BBPlane[nCount + 2];
+    m_pYCrossSections[0] = *m_pBottom;
     int y = m_nBottomLeftY;
-    for (int i = 0; i < nCount; i++)
+    for (int i = 1; i < nCount + 1; i++)
     {
         y -= nStep;
         BBRay leftRay = pCamera->createRayFromScreen(m_nBottomLeftX, y);
@@ -121,6 +161,7 @@ void BBFrustumCluster::calculateYCrossSections(BBCamera *pCamera, int nCount)
         // just save positive direction
         m_pYCrossSections[i] = BBPlane(leftRay.getNearPoint(), rightRay.getNearPoint(), rightRay.getFarPoint());
     }
+    m_pYCrossSections[nCount + 1] = *m_pTop;
 }
 
 void BBFrustumCluster::calculateZCrossSectionPoints(BBCamera *pCamera, int nCount)
@@ -134,9 +175,9 @@ void BBFrustumCluster::calculateZCrossSectionPoints(BBCamera *pCamera, int nCoun
 
     BBRay ray = pCamera->createRayFromScreen(pCamera->getViewportWidth() / 2, pCamera->getViewportHeight() / 2);
     QVector3D dir = ray.getDirection();
-    m_pZCrossSectionPoints = new QVector3D[nCount];
-    for (int i = 0; i < nCount; i++)
+    m_pZCrossSectionPoints = new QVector3D[nCount + 2];
+    for (int i = 0; i < nCount + 2; i++)
     {
-        m_pZCrossSectionPoints[i] = ray.getNearPoint() + nStep * (i + 1) * dir;
+        m_pZCrossSectionPoints[i] = ray.getNearPoint() + nStep * i * dir;
     }
 }
