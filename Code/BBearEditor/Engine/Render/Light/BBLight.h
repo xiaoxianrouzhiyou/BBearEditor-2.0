@@ -50,6 +50,7 @@ public:
     void setSetting1(float x, float y, float z, float w);
 
     virtual bool cull(BBCamera *pCamera, const QRectF &displayBox) = 0;
+    virtual bool cull(BBCamera *pCamera, int nFrustumIndexX, int nFrustumIndexY) = 0;
 
 public:
     inline float* getDiffuseColor() { return m_Diffuse; }

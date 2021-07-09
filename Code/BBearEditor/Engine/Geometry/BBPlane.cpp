@@ -18,3 +18,13 @@ float BBPlane::distance(const QVector3D &point) const
 {
     return point.distanceToPlane(m_Point1, m_Point2, m_Point3);
 }
+
+float BBPlane::distance(const QVector3D &pointOnPlane, const QVector3D &planeNormal, const QVector3D &point)
+{
+    return point.distanceToPlane(pointOnPlane, planeNormal);
+}
+
+BBPlane BBPlane::invert(const BBPlane &plane)
+{
+    return BBPlane(plane.getPoint3(), plane.getPoint2(), plane.getPoint1());
+}

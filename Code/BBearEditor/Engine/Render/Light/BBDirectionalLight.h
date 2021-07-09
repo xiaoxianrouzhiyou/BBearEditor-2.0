@@ -15,6 +15,7 @@ public:
     void setRotation(const QVector3D &rotation, bool bUpdateLocalTransform = true) override;
 
     bool cull(BBCamera *pCamera, const QRectF &displayBox) override;
+    bool cull(BBCamera *pCamera, int nFrustumIndexX, int nFrustumIndexY) override;
 
 private:
     void setHomogeneousPosition();

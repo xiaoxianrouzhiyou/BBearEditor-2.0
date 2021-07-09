@@ -11,6 +11,7 @@ public:
     BBSpotLight(BBScene *pScene, const QVector3D &position, const QVector3D &rotation);
 
     bool cull(BBCamera *pCamera, const QRectF &displayBox) override;
+    bool cull(BBCamera *pCamera, int nFrustumIndexX, int nFrustumIndexY) override;
 };
 
 #endif // BBSPOTLIGHT_H

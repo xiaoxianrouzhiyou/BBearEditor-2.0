@@ -17,3 +17,8 @@ bool BBSpotLight::cull(BBCamera *pCamera, const QRectF &displayBox)
 {
 
 }
+
+bool BBSpotLight::cull(BBCamera *pCamera, int nFrustumIndexX, int nFrustumIndexY)
+{
+
+}

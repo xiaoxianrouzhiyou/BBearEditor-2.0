@@ -28,7 +28,9 @@ public:
     QVector3D projectPointToScreenSpace(const QVector3D &point);
     QVector4D projectPointToScreenSpace(const QVector4D &point);
 
-    bool isFrustumContainPoint(int nIndexX, int nIndexY, int nIndexZ, const QVector3D &point);
+    bool isFrustumContainPoint(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ, const QVector3D &point);
+    bool isSphereContainFrustum(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ,
+                                const QVector3D &center, float fRadius);
 
     inline void setPosition(const QVector3D &position) { m_Position = position; }
     inline QVector3D getPosition() { return m_Position; }

@@ -5,6 +5,7 @@
 #include "Render/BBMaterial.h"
 #include "Render/BBDrawCall.h"
 #include <Eigen/Eigen>
+#include "Render/BBCamera.h"
 
 
 using namespace Eigen;
@@ -267,6 +268,17 @@ BBBoundingBox3D::BBBoundingBox3D(float px, float py, float pz,
     m_Axis[2][2] = 1;
 
     computeBoxVertexes(vertexes);
+}
+
+BBBoundingBox3D::BBBoundingBox3D(const QVector3D &position, const QVector3D &rotation, const QVector3D &scale,
+                                 const QVector3D &center, const QVector3D &halfLength)
+    : BBBoundingBox3D(position.x(), position.y(), position.z(),
+                      rotation.x(), rotation.y(), rotation.z(),
+                      scale.x(), scale.y(), scale.z(),
+                      center.x(), center.y(), center.z(),
+                      halfLength.x(), halfLength.y(), halfLength.z())
+{
+
 }
 
 BBBoundingBox3D::BBBoundingBox3D(float px, float py, float pz,

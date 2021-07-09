@@ -21,6 +21,10 @@ public:
                         const BBPlane &top, const BBPlane &bottom,
                         const BBPlane &front, const BBPlane &back,
                         const QVector3D &point);
+    bool containWithInvertedRightAndTop(const BBPlane &left, const BBPlane &right,
+                                        const BBPlane &top, const BBPlane &bottom,
+                                        const QVector3D &pointOnFront, const QVector3D &pointOnBack,
+                                        const QVector3D &point);
 
 protected:
     int m_nTopLeftX;
@@ -46,7 +50,9 @@ public:
                      int nCountX, int nCountY, int nCountZ);
     ~BBFrustumCluster();
 
-    bool contain(int nIndexX, int nIndexY, int nIndexZ, const QVector3D &point);
+    bool contain(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ, const QVector3D &point);
+    bool containedInSphere(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ,
+                           const QVector3D &sphereCenter, float fSphereRadius);
 
 private:
     void calculateXCrossSections(BBCamera *pCamera, int nCount);

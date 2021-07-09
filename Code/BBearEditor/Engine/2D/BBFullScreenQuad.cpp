@@ -15,17 +15,19 @@
  * @brief BBFullScreenQuad::BBFullScreenQuad
  */
 BBFullScreenQuad::BBFullScreenQuad()
-    : BBFullScreenQuad(1.0f, 0.0f, 0.0f)
+    : BBFullScreenQuad(1.0f, 0.0f, 0.0f, 0, 0)
 {
 
 }
 
-BBFullScreenQuad::BBFullScreenQuad(float fScale, float fOffsetX, float fOffsetY)
+BBFullScreenQuad::BBFullScreenQuad(float fScale, float fOffsetX, float fOffsetY, int nFrustumIndexX, int nFrustumIndexY)
     : BBRenderableObject()
 {
     m_fScale = fScale;
     m_fOffsetX = fOffsetX;
     m_fOffsetY = fOffsetY;
+    m_nFrustumIndexX = nFrustumIndexX;
+    m_nFrustumIndexY = nFrustumIndexY;
 }
 
 void BBFullScreenQuad::init()
@@ -72,8 +74,10 @@ void BBFullScreenQuad::render(BBCamera *pCamera)
 //            {
 //                culledLights.append(lights[i]);
 //            }
-            // without culling
-            culledLights.append(lights[i]);
+            if (!((BBPointLight*)lights[i])->cull(pCamera, m_nFrustumIndexX, m_nFrustumIndexY))
+            {
+                culledLights.append(lights[i]);
+            }
         }
         else
         {
@@ -100,10 +104,10 @@ BBTiledFullScreenQuad::BBTiledFullScreenQuad()
     : BBGameObject()
 {
     m_nQuadCount = 4;
-    m_pFullScreenQuad[0] = new BBFullScreenQuad(0.5f, -0.5f, -0.5f);
-    m_pFullScreenQuad[1] = new BBFullScreenQuad(0.5f, 0.5f, -0.5f);
-    m_pFullScreenQuad[2] = new BBFullScreenQuad(0.5f, -0.5f, 0.5f);
-    m_pFullScreenQuad[3] = new BBFullScreenQuad(0.5f, 0.5f, 0.5f);
+    m_pFullScreenQuad[0] = new BBFullScreenQuad(0.5f, -0.5f, -0.5f, 0, 1);
+    m_pFullScreenQuad[1] = new BBFullScreenQuad(0.5f, 0.5f, -0.5f, 1, 1);
+    m_pFullScreenQuad[2] = new BBFullScreenQuad(0.5f, -0.5f, 0.5f, 0, 0);
+    m_pFullScreenQuad[3] = new BBFullScreenQuad(0.5f, 0.5f, 0.5f, 1, 0);
 }
 
 BBTiledFullScreenQuad::~BBTiledFullScreenQuad()
@@ -127,15 +131,6 @@ void BBTiledFullScreenQuad::render(BBCamera *pCamera)
     for (int i = 0; i < m_nQuadCount; i++)
     {
         m_pFullScreenQuad[i]->render(pCamera);
-    }
-    // test bottom left
-    QList<BBGameObject*> lights = BBSceneManager::getScene()->getLights();
-    for (int i = 0; i < lights.count(); i++)
-    {
-        if (lights[i]->getClassName() == BB_CLASSNAME_POINT_LIGHT)
-        {
-            qDebug() << pCamera->isFrustumContainPoint(0, 0, 0, lights[i]->getPosition());
-        }
     }
 }
 

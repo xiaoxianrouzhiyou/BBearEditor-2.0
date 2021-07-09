@@ -41,6 +41,11 @@ bool BBDirectionalLight::cull(BBCamera *pCamera, const QRectF &displayBox)
 
 }
 
+bool BBDirectionalLight::cull(BBCamera *pCamera, int nFrustumIndexX, int nFrustumIndexY)
+{
+
+}
+
 void BBDirectionalLight::setHomogeneousPosition()
 {
     BBLight::setHomogeneousPosition(m_Quaternion * QVector3D(0, 1, 0), 0.0f);

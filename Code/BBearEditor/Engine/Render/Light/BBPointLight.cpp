@@ -1,6 +1,7 @@
 #include "BBPointLight.h"
 #include "3D/BBLightIndicator.h"
 #include "Render/BBCamera.h"
+#include "Geometry/BBBoundingBox.h"
 
 
 BBPointLight::BBPointLight(BBScene *pScene)
@@ -28,6 +29,11 @@ BBPointLight::BBPointLight(BBScene *pScene, const QVector3D &position, const QVe
     setLinearFactor(0.5f);
     // m_Setting1[3] : quadric factor
     setQuadricFactor(0.2f);
+}
+
+BBPointLight::~BBPointLight()
+{
+
 }
 
 void BBPointLight::setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform)
@@ -66,5 +72,20 @@ bool BBPointLight::cull(BBCamera *pCamera, const QRectF &displayBox)
     else
     {
         return true;
+    }
+}
+
+bool BBPointLight::cull(BBCamera *pCamera, int nFrustumIndexX, int nFrustumIndexY)
+{
+    // at first, detect center
+    if (pCamera->isFrustumContainPoint(nFrustumIndexX, nFrustumIndexY, 0, m_Position))
+    {
+        return false;
+    }
+    else
+    {
+        // detect bounding box
+        // whether the vertexes of the frustum is contained in the bounding box of the light
+        return !pCamera->isSphereContainFrustum(nFrustumIndexX, nFrustumIndexY, 0, m_Position, getRadius());
     }
 }

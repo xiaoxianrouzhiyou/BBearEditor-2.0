@@ -119,10 +119,11 @@ void BBCamera::setViewportSize(int nWidth, int nHeight)
     m_ProjectionMatrix.setToIdentity();
     m_ProjectionMatrix.perspective(50.0f, (float) nWidth / nHeight, m_fNearPlane, m_fFarPlane);
 
-    if (m_pFrustumCluster == nullptr)
+    if (m_pFrustumCluster)
     {
-        m_pFrustumCluster = new BBFrustumCluster(this, 0, 0, m_nViewportWidth, m_nViewportHeight, 2, 2, 16);
+        BB_SAFE_DELETE(m_pFrustumCluster);
     }
+    m_pFrustumCluster = new BBFrustumCluster(this, 0, 0, m_nViewportWidth, m_nViewportHeight, 2, 2, 1);
 }
 
 void BBCamera::switchTo3D()
@@ -234,9 +235,15 @@ QVector4D BBCamera::projectPointToScreenSpace(const QVector4D &point)
                      1.0f);
 }
 
-bool BBCamera::isFrustumContainPoint(int nIndexX, int nIndexY, int nIndexZ, const QVector3D &point)
+bool BBCamera::isFrustumContainPoint(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ, const QVector3D &point)
 {
-    m_pFrustumCluster->contain(nIndexX, nIndexY, nIndexZ, point);
+    m_pFrustumCluster->contain(nFrustumIndexX, nFrustumIndexY, nFrustumIndexZ, point);
+}
+
+bool BBCamera::isSphereContainFrustum(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ,
+                                      const QVector3D &center, float fRadius)
+{
+    m_pFrustumCluster->containedInSphere(nFrustumIndexX, nFrustumIndexY, nFrustumIndexZ, center, fRadius);
 }
 
 void BBCamera::rotateView(float fAngle, float x, float y, float z)

@@ -10,7 +10,7 @@ class BBFullScreenQuad : public BBRenderableObject
 {
 public:
     BBFullScreenQuad();
-    BBFullScreenQuad(float fScale, float fOffsetX, float fOffsetY);
+    BBFullScreenQuad(float fScale, float fOffsetX, float fOffsetY, int nFrustumIndexX, int nFrustumIndexY);
 
     void init() override;
     void render(BBCamera *pCamera) override;
@@ -21,6 +21,10 @@ private:
     float m_fScale;
     float m_fOffsetX;
     float m_fOffsetY;
+
+    int m_nFrustumIndexX;
+    int m_nFrustumIndexY;
+
     // projecting screen space is imprecise
 //    QRectF m_AABB;
 };

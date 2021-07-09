@@ -76,6 +76,37 @@ bool BBFrustum::contain(const BBPlane &left, const BBPlane &right,
     return true;
 }
 
+/**
+ * @brief BBFrustum::containWithInvertedRightAndBottom          invert direction of right and bottom
+ * @param left
+ * @param right
+ * @param top
+ * @param bottom
+ * @param front
+ * @param back
+ * @param point
+ * @return
+ */
+bool BBFrustum::containWithInvertedRightAndTop(const BBPlane &left, const BBPlane &right,
+                                               const BBPlane &top, const BBPlane &bottom,
+                                               const QVector3D &pointOnFront, const QVector3D &pointOnBack,
+                                               const QVector3D &point)
+{
+    if (left.distance(point) < 0)
+        return false;
+    if (right.distance(point) > 0)
+        return false;
+    if (top.distance(point) > 0)
+        return false;
+    if (bottom.distance(point) < 0)
+        return false;
+    if (BBPlane::distance(pointOnFront, m_pFront->getNormal(), point) < 0)
+        return false;
+    if (BBPlane::distance(pointOnBack, m_pBack->getNormal(), point) < 0)
+        return false;
+    return true;
+}
+
 
 /**
  * @brief BBFrustumCluster::BBFrustumCluster
@@ -90,6 +121,9 @@ BBFrustumCluster::BBFrustumCluster(BBCamera *pCamera,
                                    int nCountX, int nCountY, int nCountZ)
     : BBFrustum(pCamera, x, y, nWidth, nHeight)
 {
+    m_pXCrossSections = nullptr;
+    m_pYCrossSections = nullptr;
+    m_pZCrossSectionPoints = nullptr;
     // Divide pFrustum into nCountX parts along X and save nCountX-1 planes
     calculateXCrossSections(pCamera, nCountX - 1);
     calculateYCrossSections(pCamera, nCountY - 1);
@@ -111,24 +145,32 @@ BBFrustumCluster::~BBFrustumCluster()
  * @param point
  * @return
  */
-bool BBFrustumCluster::contain(int nIndexX, int nIndexY, int nIndexZ, const QVector3D &point)
+bool BBFrustumCluster::contain(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ, const QVector3D &point)
 {
-    BBPlane left = m_pXCrossSections[nIndexX];
-    BBPlane right = m_pXCrossSections[nIndexX + 1];
+    BBPlane left = m_pXCrossSections[nFrustumIndexX];
+    BBPlane right = m_pXCrossSections[nFrustumIndexX + 1];
+    BBPlane top = m_pYCrossSections[nFrustumIndexY];
+    BBPlane bottom = m_pYCrossSections[nFrustumIndexY + 1];
+    QVector3D pointOnFront = m_pZCrossSectionPoints[nFrustumIndexZ];
+    QVector3D pointOnBack = m_pZCrossSectionPoints[nFrustumIndexZ + 1];
+    return containWithInvertedRightAndTop(left, right, top, bottom, pointOnFront, pointOnBack, point);
+}
+
+bool BBFrustumCluster::containedInSphere(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ,
+                                         const QVector3D &sphereCenter, float fSphereRadius)
+{
+    // to do
+    return true;
 }
 
 void BBFrustumCluster::calculateXCrossSections(BBCamera *pCamera, int nCount)
 {
-    int nStep = m_nWidth / (nCount + 1);
-    if (nStep <= 0)
-    {
-        m_pXCrossSections = nullptr;
-        return;
-    }
-
     // +2 save m_pLeft and m_pRight for more convenient calculation
     m_pXCrossSections = new BBPlane[nCount + 2];
     m_pXCrossSections[0] = *m_pLeft;
+    m_pXCrossSections[nCount + 1] = BBPlane::invert(*m_pRight);
+
+    int nStep = m_nWidth / (nCount + 1);   
     int x = m_nTopLeftX;
     for (int i = 1; i < nCount + 1; i++)
     {
@@ -138,20 +180,16 @@ void BBFrustumCluster::calculateXCrossSections(BBCamera *pCamera, int nCount)
         // just save positive direction
         m_pXCrossSections[i] = BBPlane(topRay.getFarPoint(), topRay.getNearPoint(), bottomRay.getNearPoint());
     }
-    m_pXCrossSections[nCount + 1] = *m_pRight;
+
 }
 
 void BBFrustumCluster::calculateYCrossSections(BBCamera *pCamera, int nCount)
 {
-    int nStep = m_nHeight / (nCount + 1);
-    if (nStep <= 0)
-    {
-        m_pYCrossSections = nullptr;
-        return;
-    }
-
     m_pYCrossSections = new BBPlane[nCount + 2];
-    m_pYCrossSections[0] = *m_pTop;
+    m_pYCrossSections[0] = BBPlane::invert(*m_pTop);
+    m_pYCrossSections[nCount + 1] = *m_pBottom;
+
+    int nStep = m_nHeight / (nCount + 1);
     int y = m_nTopLeftY;
     for (int i = 1; i < nCount + 1; i++)
     {
@@ -161,17 +199,11 @@ void BBFrustumCluster::calculateYCrossSections(BBCamera *pCamera, int nCount)
         // just save positive direction
         m_pYCrossSections[i] = BBPlane(leftRay.getNearPoint(), rightRay.getNearPoint(), rightRay.getFarPoint());
     }
-    m_pYCrossSections[nCount + 1] = *m_pBottom;
 }
 
 void BBFrustumCluster::calculateZCrossSectionPoints(BBCamera *pCamera, int nCount)
 {
     int nStep = pCamera->getDepth() / (nCount + 1);
-    if (nStep <= 0)
-    {
-        m_pZCrossSectionPoints = nullptr;
-        return;
-    }
 
     BBRay ray = pCamera->createRayFromScreen(pCamera->getViewportWidth() / 2, pCamera->getViewportHeight() / 2);
     QVector3D dir = ray.getDirection();

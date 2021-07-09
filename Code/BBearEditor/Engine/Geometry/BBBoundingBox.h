@@ -83,6 +83,8 @@ public:
                     float rx, float ry, float rz,
                     float sx, float sy, float sz,
                     const QList<QVector4D> &vertexes = QList<QVector4D>());
+    BBBoundingBox3D(const QVector3D &position, const QVector3D &rotation, const QVector3D &scale,
+                    const QVector3D &center, const QVector3D &halfLength);
     BBBoundingBox3D(float px, float py, float pz,
                     float rx, float ry, float rz,
                     float sx, float sy, float sz,

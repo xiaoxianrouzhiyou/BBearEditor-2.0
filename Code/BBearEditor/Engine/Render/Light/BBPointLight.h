@@ -4,12 +4,15 @@
 
 #include "BBLight.h"
 
+class BBBoundingBox3D;
+
 class BBPointLight : public BBLight
 {
 public:
     BBPointLight(BBScene *pScene);
     BBPointLight(BBScene *pScene, const QVector3D &position);
     BBPointLight(BBScene *pScene, const QVector3D &position, const QVector3D &rotation);
+    ~BBPointLight();
 
     void setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform = true) override;
     void setRotation(const QVector3D &rotation, bool bUpdateLocalTransform = true) override;
@@ -25,6 +28,7 @@ public:
     inline float getQuadricFactor() { return m_Setting1[3]; }
 
     bool cull(BBCamera *pCamera, const QRectF &displayBox) override;
+    bool cull(BBCamera *pCamera, int nFrustumIndexX, int nFrustumIndexY) override;
 };
 
 #endif // BBPOINTLIGHT_H
