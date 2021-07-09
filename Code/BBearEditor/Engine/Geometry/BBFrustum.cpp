@@ -3,6 +3,7 @@
 #include "Render/BBCamera.h"
 #include "BBPlane.h"
 #include "BBRay.h"
+#include "BBBoundingBox.h"
 
 
 /**
@@ -137,6 +138,18 @@ BBFrustumCluster::~BBFrustumCluster()
     BB_SAFE_DELETE_ARRAY(m_pZCrossSectionPoints);
 }
 
+void BBFrustumCluster::collectPlanes(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ,
+                                     BBPlane &left, BBPlane &right, BBPlane &top, BBPlane &bottom,
+                                     QVector3D &pointOnFront, QVector3D &pointOnBack)
+{
+    left = m_pXCrossSections[nFrustumIndexX];
+    right = m_pXCrossSections[nFrustumIndexX + 1];
+    top = m_pYCrossSections[nFrustumIndexY];
+    bottom = m_pYCrossSections[nFrustumIndexY + 1];
+    pointOnFront = m_pZCrossSectionPoints[nFrustumIndexZ];
+    pointOnBack = m_pZCrossSectionPoints[nFrustumIndexZ + 1];
+}
+
 /**
  * @brief BBFrustumCluster::contain         whether point is contained in the frustum specified by index
  * @param nIndexX
@@ -147,12 +160,13 @@ BBFrustumCluster::~BBFrustumCluster()
  */
 bool BBFrustumCluster::contain(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ, const QVector3D &point)
 {
-    BBPlane left = m_pXCrossSections[nFrustumIndexX];
-    BBPlane right = m_pXCrossSections[nFrustumIndexX + 1];
-    BBPlane top = m_pYCrossSections[nFrustumIndexY];
-    BBPlane bottom = m_pYCrossSections[nFrustumIndexY + 1];
-    QVector3D pointOnFront = m_pZCrossSectionPoints[nFrustumIndexZ];
-    QVector3D pointOnBack = m_pZCrossSectionPoints[nFrustumIndexZ + 1];
+    BBPlane left;
+    BBPlane right;
+    BBPlane top;
+    BBPlane bottom;
+    QVector3D pointOnFront;
+    QVector3D pointOnBack;
+    collectPlanes(nFrustumIndexX, nFrustumIndexY, nFrustumIndexZ, left, right, top, bottom, pointOnFront, pointOnBack);
     return containWithInvertedRightAndTop(left, right, top, bottom, pointOnFront, pointOnBack, point);
 }
 
@@ -161,6 +175,33 @@ bool BBFrustumCluster::containedInSphere(int nFrustumIndexX, int nFrustumIndexY,
 {
     // to do
     return true;
+}
+
+bool BBFrustumCluster::computeIntersectWithAABB(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ,
+                                                BBAABBBoundingBox3D *pAABB)
+{
+    BBPlane left;
+    BBPlane right;
+    BBPlane top;
+    BBPlane bottom;
+    QVector3D pointOnFront;
+    QVector3D pointOnBack;
+    collectPlanes(nFrustumIndexX, nFrustumIndexY, nFrustumIndexZ, left, right, top, bottom, pointOnFront, pointOnBack);
+    // Determine whether the bounding box is outside or inside the plane
+    // right and top need to invert, since just saving positive direction
+    if (pAABB->computeIntersectWithPlane(left.getPoint1(), left.getNormal()))
+        return true;
+    if (pAABB->computeIntersectWithPlane(right.getPoint1(), -right.getNormal()))
+        return true;
+    if (pAABB->computeIntersectWithPlane(top.getPoint1(), -top.getNormal()))
+        return true;
+    if (pAABB->computeIntersectWithPlane(bottom.getPoint1(), bottom.getNormal()))
+        return true;
+    if (pAABB->computeIntersectWithPlane(pointOnFront, m_pFront->getNormal()))
+        return true;
+    if (pAABB->computeIntersectWithPlane(pointOnBack, m_pBack->getNormal()))
+        return true;
+    return false;
 }
 
 void BBFrustumCluster::calculateXCrossSections(BBCamera *pCamera, int nCount)

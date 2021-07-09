@@ -237,13 +237,19 @@ QVector4D BBCamera::projectPointToScreenSpace(const QVector4D &point)
 
 bool BBCamera::isFrustumContainPoint(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ, const QVector3D &point)
 {
-    m_pFrustumCluster->contain(nFrustumIndexX, nFrustumIndexY, nFrustumIndexZ, point);
+    return m_pFrustumCluster->contain(nFrustumIndexX, nFrustumIndexY, nFrustumIndexZ, point);
 }
 
 bool BBCamera::isSphereContainFrustum(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ,
                                       const QVector3D &center, float fRadius)
 {
-    m_pFrustumCluster->containedInSphere(nFrustumIndexX, nFrustumIndexY, nFrustumIndexZ, center, fRadius);
+    return m_pFrustumCluster->containedInSphere(nFrustumIndexX, nFrustumIndexY, nFrustumIndexZ, center, fRadius);
+}
+
+bool BBCamera::isFrustumIntersectWithAABB(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ,
+                                          BBAABBBoundingBox3D *pAABB)
+{
+    return m_pFrustumCluster->computeIntersectWithAABB(nFrustumIndexX, nFrustumIndexY, nFrustumIndexZ, pAABB);
 }
 
 void BBCamera::rotateView(float fAngle, float x, float y, float z)

@@ -7,6 +7,7 @@
 class BBGameObject;
 class BBRay;
 class BBFrustumCluster;
+class BBAABBBoundingBox3D;
 
 class BBCamera
 {
@@ -31,6 +32,8 @@ public:
     bool isFrustumContainPoint(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ, const QVector3D &point);
     bool isSphereContainFrustum(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ,
                                 const QVector3D &center, float fRadius);
+    bool isFrustumIntersectWithAABB(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ,
+                                    BBAABBBoundingBox3D *pAABB);
 
     inline void setPosition(const QVector3D &position) { m_Position = position; }
     inline QVector3D getPosition() { return m_Position; }

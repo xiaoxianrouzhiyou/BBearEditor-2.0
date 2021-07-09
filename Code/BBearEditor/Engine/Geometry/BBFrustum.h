@@ -7,6 +7,7 @@
 class BBCamera;
 class BBPlane;
 class BBGameObject;
+class BBAABBBoundingBox3D;
 
 class BBFrustum
 {
@@ -50,9 +51,13 @@ public:
                      int nCountX, int nCountY, int nCountZ);
     ~BBFrustumCluster();
 
+    void collectPlanes(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ,
+                       BBPlane &left, BBPlane &right, BBPlane &top, BBPlane &bottom,
+                       QVector3D &pointOnFront, QVector3D &pointOnBack);
     bool contain(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ, const QVector3D &point);
     bool containedInSphere(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ,
                            const QVector3D &sphereCenter, float fSphereRadius);
+    bool computeIntersectWithAABB(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ, BBAABBBoundingBox3D *pAABB);
 
 private:
     void calculateXCrossSections(BBCamera *pCamera, int nCount);

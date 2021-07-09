@@ -114,33 +114,16 @@ public:
                         float rx, float ry, float rz,
                         float sx, float sy, float sz,
                         const QList<QVector4D> &vertexes = QList<QVector4D>());
+    BBAABBBoundingBox3D(const QVector3D &position, const QVector3D &rotation, const QVector3D &scale,
+                        const QVector3D &center, const QVector3D &halfLength);
+
+    bool computeIntersectWithPlane(const QVector3D &point, const QVector3D &normal);
 
 private:
     void computeBoxVertexes(const QList<QVector4D> &vertexes) override;
+    QVector3D getMax();
+    QVector3D getMin();
 };
 
 
 #endif // BBBOUNDINGBOX_H
-
-
-
-
-
-
-
-
-
-
-
-
-//class OBBBoundingBox3D : public BoundingBox3D
-//{
-//public:
-//    OBBBoundingBox3D();
-//    OBBBoundingBox3D(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz);
-
-//private:
-//    void computeBoundingBox() override;
-//};
-
-

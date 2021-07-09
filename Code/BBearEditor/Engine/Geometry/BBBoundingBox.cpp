@@ -444,6 +444,41 @@ BBAABBBoundingBox3D::BBAABBBoundingBox3D(float px, float py, float pz,
     computeBoxVertexes(vertexes);
 }
 
+BBAABBBoundingBox3D::BBAABBBoundingBox3D(const QVector3D &position, const QVector3D &rotation, const QVector3D &scale,
+                                         const QVector3D &center, const QVector3D &halfLength)
+    : BBBoundingBox3D(position, rotation, scale, center, halfLength)
+{
+
+}
+
+bool BBAABBBoundingBox3D::computeIntersectWithPlane(const QVector3D &point, const QVector3D &normal)
+{
+    // The vertex closest to the plane
+    QVector3D p = getMin();
+    if (normal.x() >= 0)
+        p.setX(getMax().x());
+    if (normal.y() >= 0)
+        p.setY(getMax().y());
+    if (normal.z() >= 0)
+        p.setZ(getMax().z());
+    // The vertex of the farthest diagonal
+    QVector3D n = getMax();
+    if (normal.x() >= 0)
+        n.setX(getMin().x());
+    if (normal.y() >= 0)
+        n.setY(getMin().y());
+    if (normal.z() >= 0)
+        n.setZ(getMin().z());
+
+    if (p.distanceToPlane(point, normal) < 0)
+        return false;
+
+    if (n.distanceToPlane(point, normal) < 0)
+        return true;
+
+    return false;
+}
+
 void BBAABBBoundingBox3D::computeBoxVertexes(const QList<QVector4D> &vertexes)
 {
     int nVertexCount = vertexes.count();
@@ -470,6 +505,16 @@ void BBAABBBoundingBox3D::computeBoxVertexes(const QList<QVector4D> &vertexes)
     }
 
     BBBoundingBox3D::computeBoxVertexes(vertexes);
+}
+
+QVector3D BBAABBBoundingBox3D::getMax()
+{
+    return m_pTransformedBoxVertexes[0];
+}
+
+QVector3D BBAABBBoundingBox3D::getMin()
+{
+    return m_pTransformedBoxVertexes[6];
 }
 
 

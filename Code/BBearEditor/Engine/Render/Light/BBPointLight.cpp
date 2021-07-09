@@ -21,8 +21,10 @@ BBPointLight::BBPointLight(BBScene *pScene, const QVector3D &position, const QVe
 {
     m_eType = Point;
     m_pIndicator = new BBPointLightIndicator(position);
+    m_pAABBBoundingBox3D = new BBAABBBoundingBox3D(m_Position, m_Rotation, m_Scale,
+                                                   m_Position, QVector3D(1.0f, 1.0f, 1.0f));
     // m_Setting1[0] : radius
-    setRadius(10.0f);
+    setRadius(0.5f);
     // m_Setting1[1] : constant factor
     setConstantFactor(2.0f);
     // m_Setting1[2] : linear factor
@@ -33,7 +35,13 @@ BBPointLight::BBPointLight(BBScene *pScene, const QVector3D &position, const QVe
 
 BBPointLight::~BBPointLight()
 {
+    BB_SAFE_DELETE(m_pAABBBoundingBox3D);
+}
 
+void BBPointLight::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
+{
+    BBLight::setPosition(position, bUpdateLocalTransform);
+    m_pAABBBoundingBox3D->setPosition(position, bUpdateLocalTransform);
 }
 
 void BBPointLight::setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform)
@@ -53,6 +61,7 @@ void BBPointLight::setRadius(float fRadius)
 {
     m_Setting1[0] = fRadius;
     m_pIndicator->setScale(fRadius);
+    m_pAABBBoundingBox3D->setScale(fRadius);
 }
 
 bool BBPointLight::cull(BBCamera *pCamera, const QRectF &displayBox)
@@ -84,8 +93,7 @@ bool BBPointLight::cull(BBCamera *pCamera, int nFrustumIndexX, int nFrustumIndex
     }
     else
     {
-        // detect bounding box
-        // whether the vertexes of the frustum is contained in the bounding box of the light
-        return !pCamera->isSphereContainFrustum(nFrustumIndexX, nFrustumIndexY, 0, m_Position, getRadius());
+        // detect bounding box and frustum
+        return !pCamera->isFrustumIntersectWithAABB(nFrustumIndexX, nFrustumIndexY, 0, m_pAABBBoundingBox3D);
     }
 }

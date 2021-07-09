@@ -4,7 +4,7 @@
 
 #include "BBLight.h"
 
-class BBBoundingBox3D;
+class BBAABBBoundingBox3D;
 
 class BBPointLight : public BBLight
 {
@@ -14,6 +14,7 @@ public:
     BBPointLight(BBScene *pScene, const QVector3D &position, const QVector3D &rotation);
     ~BBPointLight();
 
+    void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
     void setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform = true) override;
     void setRotation(const QVector3D &rotation, bool bUpdateLocalTransform = true) override;
 
@@ -29,6 +30,9 @@ public:
 
     bool cull(BBCamera *pCamera, const QRectF &displayBox) override;
     bool cull(BBCamera *pCamera, int nFrustumIndexX, int nFrustumIndexY) override;
+
+private:
+    BBAABBBoundingBox3D *m_pAABBBoundingBox3D;
 };
 
 #endif // BBPOINTLIGHT_H
