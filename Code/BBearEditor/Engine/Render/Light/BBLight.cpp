@@ -80,11 +80,13 @@ void BBLight::render(BBCamera *pCamera)
 void BBLight::insertInRenderQueue(BBRenderQueue *pQueue)
 {
     m_pIcon->insertInRenderQueue(pQueue);
+    m_pIndicator->insertInRenderQueue(pQueue);
 }
 
 void BBLight::removeFromRenderQueue(BBRenderQueue *pQueue)
 {
     m_pIcon->removeFromRenderQueue(pQueue);
+    m_pIndicator->removeFromRenderQueue(pQueue);
 }
 
 bool BBLight::hit(const BBRay &ray, float &fDistance)
