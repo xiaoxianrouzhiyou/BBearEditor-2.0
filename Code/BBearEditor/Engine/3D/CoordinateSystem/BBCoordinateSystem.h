@@ -13,6 +13,13 @@ class BBBoundingBox3D;
 class BBGameObjectSet;
 
 
+enum BBCoordinateSystemSpaceMode
+{
+    Space2D = 0,
+    Space3D = 1
+};
+
+
 // base class of pos rot scale 3 Coordinate System
 class BBCoordinateSystem : public BBGameObject
 {
@@ -29,12 +36,15 @@ protected:
              float &fDistance);
     virtual void transform(const BBRay &ray) = 0;
 
+    BBCoordinateSystemSpaceMode m_eSpaceMode;
     BBAxisFlags m_SelectedAxis;
     QVector3D m_LastMousePos;
     BBGameObject *m_pSelectedObject;
     bool m_bTransforming;
 
 public:
+    void switchSpaceMode(const BBCoordinateSystemSpaceMode &eMode) { m_eSpaceMode = eMode; }
+
     inline BBAxisFlags getSelectedAxis() { return m_SelectedAxis; }
     void setSelectedObject(BBGameObject *pObject);
 
@@ -162,6 +172,10 @@ public:
     inline char getTransformModeKey() { return m_ModeKey; }
 
 private:
+    void switchSpaceMode(const BBCoordinateSystemSpaceMode &eMode);
+
+    BBCoordinateSystemSpaceMode m_eSpaceMode;
+
     BBPositionCoordinateSystem *m_pPositionCoordinateSystem;
     BBRotationCoordinateSystem *m_pRotationCoordinateSystem;
     BBScaleCoordinateSystem *m_pScaleCoordinateSystem;
@@ -175,7 +189,6 @@ private:
     QList<BBGameObject*> m_SelectedObjects;
     bool m_bTransforming;
 };
-
 
 
 #endif // BBCOORDINATE_H

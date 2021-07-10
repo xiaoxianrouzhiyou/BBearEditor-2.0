@@ -18,6 +18,8 @@ public:
     void setScale(const QVector3D &scale, bool bUpdateLocalTransform = true) override;
 
 private:
+    QList<BBGameObject*> filterSelectedObjects(const QList<BBGameObject*> &gameObjects);
+
     QList<BBGameObject*> m_GameObjectSet;
     QList<QVector3D> m_OriginalPositions;
     QList<QVector3D> m_OriginalScales;

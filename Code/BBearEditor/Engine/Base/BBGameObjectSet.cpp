@@ -5,23 +5,23 @@ BBGameObjectSet::BBGameObjectSet(const QList<BBGameObject*> &objects)
 {
     // compute center of all objects
     QVector3D centerPos;
-    for (int i = 0; i < objects.count(); i++)
+    for (int i = 0; i < m_GameObjectSet.count(); i++)
     {
-        centerPos += objects.at(i)->getPosition();
+        centerPos += m_GameObjectSet.at(i)->getPosition();
     }
-    centerPos /= objects.count();
+    centerPos /= m_GameObjectSet.count();
     BBGameObject::setPosition(centerPos);
 }
 
 BBGameObjectSet::BBGameObjectSet(const QList<BBGameObject*> &objects, const QVector3D &centerPos)
     : BBGameObject(centerPos, QVector3D(0, 0, 0), QVector3D(1, 1, 1))
 {
-    m_GameObjectSet = objects;
-    for (int i = 0; i < objects.count(); i++)
+    m_GameObjectSet = filterSelectedObjects(objects);
+    for (int i = 0; i < m_GameObjectSet.count(); i++)
     {
         // m_OriginalPosition is position before setRotation
-        m_OriginalPositions.append(objects.at(i)->getPosition());
-        m_OriginalScales.append(objects.at(i)->getScale());
+        m_OriginalPositions.append(m_GameObjectSet.at(i)->getPosition());
+        m_OriginalScales.append(m_GameObjectSet.at(i)->getScale());
     }
 }
 
@@ -84,5 +84,33 @@ void BBGameObjectSet::setScale(const QVector3D &scale, bool bUpdateLocalTransfor
         pObject->setScale(scale * m_OriginalScales.at(i), bUpdateLocalTransform);
         // change position at the same time
         pObject->setPosition(matrix * m_OriginalPositions.at(i), bUpdateLocalTransform);
+    }
+}
+
+QList<BBGameObject*> BBGameObjectSet::filterSelectedObjects(const QList<BBGameObject*> &gameObjects)
+{
+    QList<BBGameObject*> objectSet2D;
+    QList<BBGameObject*> objectSet3D;
+    int count = gameObjects.count();
+    for (int i = 0; i < count; i++)
+    {
+        BBGameObject *pObject = gameObjects[i];
+        if (pObject->getClassName() == BB_CLASSNAME_CANVAS)
+        {
+            objectSet2D.append(pObject);
+        }
+        else
+        {
+            objectSet3D.append(pObject);
+        }
+    }
+    // When there are UI and 3D objects at the same time, remove the UI
+    if (objectSet3D.count() > 0)
+    {
+        return objectSet3D;
+    }
+    else
+    {
+        return objectSet2D;
     }
 }

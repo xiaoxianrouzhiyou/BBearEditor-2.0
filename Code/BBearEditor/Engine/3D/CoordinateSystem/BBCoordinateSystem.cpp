@@ -761,6 +761,8 @@ BBTransformCoordinateSystem::BBTransformCoordinateSystem()
     m_ModeKey = m_PositionCoordinateSystemModeKey;
     m_pSelectedObject = nullptr;
     m_bTransforming = false;
+
+    switchSpaceMode(Space3D);
 }
 
 BBTransformCoordinateSystem::~BBTransformCoordinateSystem()
@@ -817,6 +819,16 @@ void BBTransformCoordinateSystem::setSelectedObject(BBGameObject *pObject)
     {
         // show bounding box and indicator of now operation object
         pObject->setVisibility(true);
+
+        // UI use 2D Coordinate System
+        if (pObject->getClassName() == BB_CLASSNAME_CANVAS)
+        {
+            switchSpaceMode(Space2D);
+        }
+        else
+        {
+            switchSpaceMode(Space3D);
+        }
     }
     m_pSelectedObject = pObject;
     setCoordinateSystem(m_ModeKey);
@@ -833,6 +845,7 @@ void BBTransformCoordinateSystem::setSelectedObjects(QList<BBGameObject*> gameOb
     {
         m_SelectedObjects.at(i)->setVisibility(false);
     }
+
     count = gameObjects.count();
     for (int i = 0; i < count; i++)
     {
@@ -863,9 +876,9 @@ bool BBTransformCoordinateSystem::mouseMoveEvent(const BBRay &ray, bool bMousePr
     return m_bTransforming;
 }
 
-void BBTransformCoordinateSystem::setCoordinateSystem(char key)
+void BBTransformCoordinateSystem::setCoordinateSystem(char modeKey)
 {
-    m_ModeKey = key;
+    m_ModeKey = modeKey;
 
     if (m_ModeKey == m_PositionCoordinateSystemModeKey)
     {
@@ -900,3 +913,12 @@ void BBTransformCoordinateSystem::update()
 {
     setCoordinateSystem(m_ModeKey);
 }
+
+void BBTransformCoordinateSystem::switchSpaceMode(const BBCoordinateSystemSpaceMode &eMode)
+{
+    m_eSpaceMode = eMode;
+    m_pPositionCoordinateSystem->switchSpaceMode(eMode);
+    m_pRotationCoordinateSystem->switchSpaceMode(eMode);
+    m_pScaleCoordinateSystem->switchSpaceMode(eMode);
+}
+
