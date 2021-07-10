@@ -21,7 +21,6 @@ BBSprite2D::BBSprite2D(int nCenterX, int nCenterY, int nWidth, int nHeight)
     m_nHalfWidth = nWidth / 2.0f;
     m_nHalfHeight = nHeight / 2.0f;
     m_pBoundingBox2D = new BBRectBoundingBox2D(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
-    m_pBoundingBox2D->init();
 
     setPosition(QVector3D(nCenterX, nCenterY, 0.0f));
     setScale(QVector3D(m_nHalfWidth, m_nHalfHeight, 0.0f));
@@ -65,6 +64,8 @@ void BBSprite2D::init()
     pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO, GL_QUADS, 0, 4);
     appendDrawCall(pDrawCall);
+
+    m_pBoundingBox2D->init();
 }
 
 void BBSprite2D::render(BBCamera *pCamera)
@@ -76,6 +77,7 @@ void BBSprite2D::render(BBCamera *pCamera)
 void BBSprite2D::resize(float fWidth, float fHeight)
 {
     m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, fWidth, fHeight, 0.0f, 0.0f);
+    m_pBoundingBox2D->getMaterial()->setVector4(LOCATION_SCREEN_PARAMETERS, fWidth, fHeight, 0.0f, 0.0f);
 }
 
 void BBSprite2D::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
@@ -112,4 +114,9 @@ void BBSprite2D::setActivity(bool bActive)
 void BBSprite2D::setVisibility(bool bVisible)
 {
     m_pBoundingBox2D->setVisibility(bVisible);
+}
+
+void BBSprite2D::bindCanvas(BBCanvas *pCanvas)
+{
+
 }

@@ -1,18 +1,18 @@
-#ifndef BBSPRITE2D_H
-#define BBSPRITE2D_H
+#ifndef BBCANVAS_H
+#define BBCANVAS_H
 
 
-#include "Base/BBRenderableObject.h"
+#include "Base/BBGameObject.h"
 
-class BBCanvas;
 class BBRectBoundingBox2D;
+class BBSprite2D;
 
-class BBSprite2D : public BBRenderableObject
+class BBCanvas : public BBGameObject
 {
 public:
-    BBSprite2D();
-    BBSprite2D(int nCenterX, int nCenterY, int nWidth, int nHeight);
-    ~BBSprite2D();
+    BBCanvas();
+    BBCanvas(int nCenterX, int nCenterY, int nWidth, int nHeight);
+    ~BBCanvas();
 
     void init() override;
     void render(BBCamera *pCamera) override;
@@ -27,12 +27,13 @@ public:
     void setVisibility(bool bVisible) override;
 
 public:
-    void bindCanvas(BBCanvas *pCanvas);
+    void addSprite2D(BBSprite2D *pSprite2D);
 
 private:
     int m_nHalfWidth;
     int m_nHalfHeight;
     BBRectBoundingBox2D *m_pBoundingBox2D;
+    QList<BBSprite2D*> m_Sprite2DSet;
 };
 
-#endif // BBSPRITE2D_H
+#endif // BBCANVAS_H

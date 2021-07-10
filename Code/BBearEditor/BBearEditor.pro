@@ -99,7 +99,8 @@ SOURCES += \
     Editor/PropertyManager/BBHeadManager.cpp \
     Engine/Geometry/BBPlane.cpp \
     Engine/Geometry/BBFrustum.cpp \
-    Engine/2D/BBSprite2D.cpp
+    Engine/2D/BBSprite2D.cpp \
+    Engine/2D/BBCanvas.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -178,7 +179,8 @@ HEADERS += \
     Editor/PropertyManager/BBHeadManager.h \
     Engine/Geometry/BBPlane.h \
     Engine/Geometry/BBFrustum.h \
-    Engine/2D/BBSprite2D.h
+    Engine/2D/BBSprite2D.h \
+    Engine/2D/BBCanvas.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
