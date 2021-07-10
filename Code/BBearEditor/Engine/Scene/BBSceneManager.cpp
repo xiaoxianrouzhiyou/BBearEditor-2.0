@@ -20,6 +20,11 @@ BBRenderQueue* BBSceneManager::getRenderQueue()
     return m_pScene->getRenderQueue();
 }
 
+BBCamera* BBSceneManager::getCamera()
+{
+    return m_pScene->getCamera();
+}
+
 void BBSceneManager::bindEditViewOpenGLWidget(BBEditViewOpenGLWidget *pWidget)
 {
     m_pEditViewOpenGLWidget = pWidget;

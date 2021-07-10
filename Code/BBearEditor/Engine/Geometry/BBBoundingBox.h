@@ -47,6 +47,8 @@ public:
 
     virtual ~BBRectBoundingBox2D();
 
+    void init() override;
+
     bool hit(const BBRay &ray, float &fDistance) override;
 };
 

@@ -12,6 +12,7 @@ class QTreeWidgetItem;
 class BBGameObject;
 class BBEditViewOpenGLWidget;
 class BBScene;
+class BBCamera;
 class BBHierarchyTreeWidget;
 
 class BBSceneManager
@@ -20,6 +21,7 @@ public:
     static QString getCurrentSceneFilePath() { return m_CurrentSceneFilePath; }
     static BBScene* getScene() { return m_pScene; }
     static BBRenderQueue* getRenderQueue();
+    static BBCamera* getCamera();
     static void bindEditViewOpenGLWidget(BBEditViewOpenGLWidget *pWidget);
     static void bindHierarchyTreeWidget(BBHierarchyTreeWidget *pWidget) { m_pHierarchyTreeWidget = pWidget; }
 

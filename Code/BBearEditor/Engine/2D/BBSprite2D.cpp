@@ -5,17 +5,17 @@
 #include "Render/BBMaterial.h"
 #include "Render/BBRenderPass.h"
 #include "Render/BBDrawCall.h"
+#include "Scene/BBSceneManager.h"
+#include "Render/BBCamera.h"
 
 
-BBSprite2D::BBSprite2D(int nTopLeftX, int nTopLeftY, int nWidth, int nHeight)
+BBSprite2D::BBSprite2D()
     : BBRenderableObject()
 {
-    m_nTopLeftX = nTopLeftX;
-    m_nTopLeftY = nTopLeftY;
-    m_nWidth = nWidth;
-    m_nHeight = nHeight;
+    m_nWidth = 100.0f;
+    m_nHeight = 100.0f;
     m_pBoundingBox2D = new BBRectBoundingBox2D(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
-    setPosition(QVector3D(nTopLeftX + nWidth * 1.0f / 2.0f, nTopLeftY + nHeight * 1.0f / 2.0f, 0.0f));
+    m_pBoundingBox2D->init();
 }
 
 BBSprite2D::~BBSprite2D()
@@ -43,7 +43,7 @@ void BBSprite2D::init()
                              BB_PATH_RESOURCE_SHADER(texture.vert),
                              BB_PATH_RESOURCE_SHADER(texture.frag));
     BBTexture texture;
-    QString texturePath = BB_PATH_RESOURCE_ICON(empty.png);
+    QString texturePath = BB_PATH_RESOURCE_ICON(empty2.png);
     m_pCurrentMaterial->getBaseRenderPass()->setSampler2D(LOCATION_TEXTURE(0), texture.createTexture2D(texturePath), texturePath);
     m_pCurrentMaterial->getBaseRenderPass()->setBlendState(true);
     m_pCurrentMaterial->getBaseRenderPass()->setZTestState(false);
@@ -54,6 +54,12 @@ void BBSprite2D::init()
     pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO, GL_QUADS, 0, 4);
     appendDrawCall(pDrawCall);
+}
+
+void BBSprite2D::render(BBCamera *pCamera)
+{
+    BBRenderableObject::render(pCamera);
+    m_pBoundingBox2D->render(pCamera);
 }
 
 void BBSprite2D::setPosition(const QVector3D &position, bool bUpdateLocalTransform)

@@ -28,6 +28,7 @@ BBBoundingBox::BBBoundingBox(float px, float py, float pz,
     m_nBoxVertexCount = 0;
     m_pOriginalBoxVertexes = NULL;
     m_pTransformedBoxVertexes = NULL;
+    m_DefaultColor = QVector3D(0.909804f, 0.337255f, 0.333333f);
 }
 
 BBBoundingBox::~BBBoundingBox()
@@ -112,6 +113,38 @@ BBRectBoundingBox2D::BBRectBoundingBox2D(float fCenterX, float fCenterY, float f
 BBRectBoundingBox2D::~BBRectBoundingBox2D()
 {
 
+}
+
+void BBRectBoundingBox2D::init()
+{
+    m_pVBO = new BBVertexBufferObject(m_nBoxVertexCount);
+    for (int i = 0; i < m_nBoxVertexCount; i++)
+    {
+        m_pVBO->setPosition(i, m_pOriginalBoxVertexes[i].x(),
+                               m_pOriginalBoxVertexes[i].y(),
+                               m_pOriginalBoxVertexes[i].z());
+        m_pVBO->setColor(i, m_DefaultColor);
+    }
+
+    m_nIndexCount = 8;
+    unsigned short indexes[] = {0, 1, 1, 2, 2, 3, 3, 0};
+    m_pIndexes = new unsigned short[m_nIndexCount];
+    for (int i = 0; i < m_nIndexCount; i++)
+    {
+        m_pIndexes[i] = indexes[i];
+    }
+
+    m_pCurrentMaterial->init("base",
+                             BB_PATH_RESOURCE_SHADER(base.vert),
+                             BB_PATH_RESOURCE_SHADER(base.frag));
+
+    BBRenderableObject::init();
+
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pCurrentMaterial);
+    pDrawCall->setVBO(m_pVBO);
+    pDrawCall->setEBO(m_pEBO, GL_LINES, m_nIndexCount, 0);
+    appendDrawCall(pDrawCall);
 }
 
 bool BBRectBoundingBox2D::hit(const BBRay &ray, float &fDistance)
@@ -297,7 +330,6 @@ BBBoundingBox3D::BBBoundingBox3D(float px, float py, float pz,
     m_pOriginalBoxVertexes = new QVector3D[m_nBoxVertexCount];
     m_pTransformedBoxVertexes = new QVector3D[m_nBoxVertexCount];
 
-    m_DefaultColor = QVector3D(0.909804f, 0.337255f, 0.333333f);
     m_Center[0] = fCenterX;
     m_Center[1] = fCenterY;
     m_Center[2] = fCenterZ;
@@ -333,7 +365,6 @@ void BBBoundingBox3D::init()
                                m_pOriginalBoxVertexes[i].z());
         m_pVBO->setColor(i, m_DefaultColor);
     }
-    m_pVBO->submitData();
 
     m_nIndexCount = 24;
     unsigned short indexes[] = {0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7};
@@ -344,8 +375,8 @@ void BBBoundingBox3D::init()
     }
 
     m_pCurrentMaterial->init("base",
-                         BB_PATH_RESOURCE_SHADER(base.vert),
-                         BB_PATH_RESOURCE_SHADER(base.frag));
+                             BB_PATH_RESOURCE_SHADER(base.vert),
+                             BB_PATH_RESOURCE_SHADER(base.frag));
 
     BBRenderableObject::init();
 
