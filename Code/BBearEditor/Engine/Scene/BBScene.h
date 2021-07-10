@@ -14,6 +14,7 @@ class BBHorizontalPlane;
 class BBGameObject;
 class BBModel;
 class BBLight;
+class BBCanvas;
 class BBSelectionRegion;
 class BBRay;
 class BBTransformCoordinateSystem;
@@ -66,6 +67,8 @@ public:
                          const QVector3D &rotation = QVector3D(0, 0, 0),
                          bool bSelect = true);
 
+    BBCanvas* createCanvas(int x, int y, bool bSelect = true);
+
     BBGameObject* pickObject(const BBRay &ray, bool bSelect = true);
     void lookAtGameObject(BBGameObject *pGameObject);
     void deleteGameObject(BBGameObject *pGameObject);
@@ -95,6 +98,7 @@ private:
 
     QList<BBGameObject*> m_Models;
     QList<BBGameObject*> m_Lights;
+    QList<BBGameObject*> m_Canvases;
 
     BBSelectionRegion *m_pSelectionRegion;
 

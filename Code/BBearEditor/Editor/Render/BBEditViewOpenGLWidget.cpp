@@ -12,6 +12,7 @@
 #include <QTreeWidgetItem>
 #include "Scene/BBSceneManager.h"
 #include "Render/Light/BBLight.h"
+#include "2D/BBCanvas.h"
 
 
 BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
@@ -303,6 +304,10 @@ void BBEditViewOpenGLWidget::dragEnterEvent(QDragEnterEvent *event)
 //            //创建地形
 //            prepareObject = scene.createModel(fileName, event->pos().x(), event->pos().y());
         }
+        else if (fileName == BB_CLASSNAME_CANVAS)
+        {
+            m_pPreviewObject = m_pScene->createCanvas(event->pos().x(), event->pos().y());
+        }
         else
         {
             // Create a temporary object to show drag effect
@@ -386,15 +391,14 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
     QByteArray data;
     if ((data = event->mimeData()->data(BB_MIMETYPE_BASEOBJECT)) != nullptr)
     {
-        // After dropping, the pre-created object becomes a formal object
-        // Set the position of the drop point
-        BBRay ray = m_pScene->getCamera()->createRayFromScreen(event->pos().x(), event->pos().y());
-        m_pPreviewObject->setPosition(ray.computeIntersectWithXOZPlane(0));
-        // Show item in hierarchical tree
-        // need the item so that set local coordinate
-        addGameObject(m_pPreviewObject);
-        // Set to empty for the next calculation
-        m_pPreviewObject = NULL;
+        if (m_pPreviewObject)
+        {
+            // Show item in hierarchical tree
+            // need the item so that set local coordinate
+            addGameObject(m_pPreviewObject);
+            // Set to empty for the next calculation
+            m_pPreviewObject = NULL;
+        }
         event->accept();
         setFocus();
     }

@@ -34,6 +34,7 @@
 #define BB_CLASSNAME_DIRECTIONAL_LIGHT "DirectionalLight"
 #define BB_CLASSNAME_POINT_LIGHT "PointLight"
 #define BB_CLASSNAME_SPOT_LIGHT "SpotLight"
+#define BB_CLASSNAME_CANVAS "Canvas"
 
 #define BB_USER_NAME "BigBugBear"
 #define BB_USER_PROJECT_NAME "BBearEditor"

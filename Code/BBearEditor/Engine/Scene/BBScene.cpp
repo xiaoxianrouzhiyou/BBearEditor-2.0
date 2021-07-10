@@ -18,6 +18,7 @@
 #include "Render/Light/BBPointLight.h"
 #include "Render/Light/BBSpotLight.h"
 #include "IO/BBMaterialFileManager.h"
+#include "2D/BBCanvas.h"
 
 
 QString BBScene::m_ColorBufferName = "color";
@@ -113,6 +114,11 @@ void BBScene::defaultRender()
 
     unbindFBO();
 
+    for (QList<BBGameObject*>::Iterator itr = m_Canvases.begin(); itr != m_Canvases.end(); itr++)
+    {
+        ((BBCanvas*)(*itr))->render(m_pCamera);
+    }
+
     // 2D camera mode
     m_pCamera->switchTo2D();
 
@@ -179,6 +185,11 @@ void BBScene::resize(float width, float height)
         m_pFBO[i]->attachDepthBuffer("depth", width, height);
         m_pFBO[i]->finish();
     }
+
+    for (QList<BBGameObject*>::Iterator itr = m_Canvases.begin(); itr != m_Canvases.end(); itr++)
+    {
+        ((BBCanvas*)(*itr))->resize(width, height);
+    }
 }
 
 void BBScene::setSkyBox(const QString &path)
@@ -207,7 +218,7 @@ BBModel* BBScene::createModel(const QString &filePath, int x, int y)
 BBModel* BBScene::createModel(const QString &filePath,
                               const QVector3D &position, const QVector3D &rotation, const QVector3D &scale)
 {
-    BBModel *pModel = NULL;
+    BBModel *pModel = nullptr;
     if (filePath == "terrain")
     {
 //        model->setBaseAttributes(QFileInfo(filePath).baseName(), TerrainClassName, "terrain");
@@ -264,7 +275,7 @@ BBLight* BBScene::createLight(const QString &fileName, int x, int y, bool bSelec
 
 BBLight* BBScene::createLight(const QString &fileName, const QVector3D &position, const QVector3D &rotation, bool bSelect)
 {
-    BBLight *pLight;
+    BBLight *pLight = nullptr;
     if (fileName == BB_FILENAME_DIRECTIONALLIGHT)
     {
         pLight = new BBDirectionalLight(this, position, QVector3D(0, -30, -30));
@@ -292,6 +303,16 @@ BBLight* BBScene::createLight(const QString &fileName, const QVector3D &position
     m_pTiledFullScreenQuad->openLight();
 
     return pLight;
+}
+
+BBCanvas* BBScene::createCanvas(int x, int y, bool bSelect)
+{
+    BBCanvas *pCanvas = new BBCanvas(x, y);
+    pCanvas->setBaseAttributes(BB_CLASSNAME_CANVAS, BB_CLASSNAME_CANVAS, "ground");
+    pCanvas->init();
+    pCanvas->resize(m_pCamera->getViewportWidth(), m_pCamera->getViewportHeight());
+    m_Canvases.append(pCanvas);
+    return pCanvas;
 }
 
 BBGameObject* BBScene::pickObject(const BBRay &ray, bool bSelect)

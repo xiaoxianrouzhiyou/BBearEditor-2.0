@@ -11,7 +11,7 @@ class BBCanvas : public BBGameObject
 {
 public:
     BBCanvas();
-    BBCanvas(int nCenterX, int nCenterY, int nWidth, int nHeight);
+    BBCanvas(int nCenterX, int nCenterY, int nWidth = 500, int nHeight = 500);
     ~BBCanvas();
 
     void init() override;
