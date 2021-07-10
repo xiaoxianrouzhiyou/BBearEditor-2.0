@@ -62,6 +62,7 @@ public:
     virtual void init(const QString &path);
     virtual void render(BBCamera *pCamera);
     virtual void render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera);
+    virtual void resize(float fWidth, float fHeight);
     virtual void insertInRenderQueue(BBRenderQueue *pQueue);
     virtual void removeFromRenderQueue(BBRenderQueue *pQueue);
 

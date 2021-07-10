@@ -310,6 +310,12 @@ void BBGameObject::render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera)
     Q_UNUSED(pCamera);
 }
 
+void BBGameObject::resize(float fWidth, float fHeight)
+{
+    Q_UNUSED(fWidth);
+    Q_UNUSED(fHeight);
+}
+
 void BBGameObject::insertInRenderQueue(BBRenderQueue *pQueue)
 {
     Q_UNUSED(pQueue);

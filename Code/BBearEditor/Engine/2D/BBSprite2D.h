@@ -10,10 +10,12 @@ class BBSprite2D : public BBRenderableObject
 {
 public:
     BBSprite2D();
+    BBSprite2D(int nCenterX, int nCenterY, int nWidth, int nHeight);
     ~BBSprite2D();
 
     void init() override;
     void render(BBCamera *pCamera) override;
+    void resize(float fWidth, float fHeight);
 
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
     void setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform = true) override;
@@ -24,8 +26,8 @@ public:
     void setVisibility(bool bVisible) override;
 
 private:
-    int m_nWidth;
-    int m_nHeight;
+    int m_nHalfWidth;
+    int m_nHalfHeight;
     BBRectBoundingBox2D *m_pBoundingBox2D;
 };
 

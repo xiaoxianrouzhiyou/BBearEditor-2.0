@@ -30,6 +30,7 @@
 #define LOCATION_LIGHT_POSITION "lightPosition"
 #define LOCATION_LIGHT_COLOR "lightColor"
 #define LOCATION_LIGHT_SETTINGS(x) "lightSettings"#x
+#define LOCATION_SCREEN_PARAMETERS "screenParameters"
 
 
 class BBBaseRenderComponent : protected QOpenGLExtraFunctions

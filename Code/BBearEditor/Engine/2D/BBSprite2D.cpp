@@ -10,12 +10,21 @@
 
 
 BBSprite2D::BBSprite2D()
+    : BBSprite2D(0, 0, 100, 100)
+{
+
+}
+
+BBSprite2D::BBSprite2D(int nCenterX, int nCenterY, int nWidth, int nHeight)
     : BBRenderableObject()
 {
-    m_nWidth = 100.0f;
-    m_nHeight = 100.0f;
+    m_nHalfWidth = nWidth / 2.0f;
+    m_nHalfHeight = nHeight / 2.0f;
     m_pBoundingBox2D = new BBRectBoundingBox2D(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
     m_pBoundingBox2D->init();
+
+    setPosition(QVector3D(nCenterX, nCenterY, 0.0f));
+    setScale(QVector3D(m_nHalfWidth, m_nHalfHeight, 0.0f));
 }
 
 BBSprite2D::~BBSprite2D()
@@ -39,14 +48,16 @@ void BBSprite2D::init()
         m_pVBO->setColor(i, 1.0f, 1.0f, 1.0f);
     }
 
-    m_pCurrentMaterial->init("texture",
-                             BB_PATH_RESOURCE_SHADER(texture.vert),
-                             BB_PATH_RESOURCE_SHADER(texture.frag));
+    m_pCurrentMaterial->init("UI",
+                             BB_PATH_RESOURCE_SHADER(UI.vert),
+                             BB_PATH_RESOURCE_SHADER(UI.frag));
     BBTexture texture;
     QString texturePath = BB_PATH_RESOURCE_ICON(empty2.png);
     m_pCurrentMaterial->getBaseRenderPass()->setSampler2D(LOCATION_TEXTURE(0), texture.createTexture2D(texturePath), texturePath);
     m_pCurrentMaterial->getBaseRenderPass()->setBlendState(true);
     m_pCurrentMaterial->getBaseRenderPass()->setZTestState(false);
+    m_pCurrentMaterial->setVector4(LOCATION_TEXTURE_SETTING0, 1.0f, 0.0f, 0.0f, 0.0f);
+    m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0f, 0.0f, 0.0f);
 
     BBRenderableObject::init();
 
@@ -60,6 +71,11 @@ void BBSprite2D::render(BBCamera *pCamera)
 {
     BBRenderableObject::render(pCamera);
     m_pBoundingBox2D->render(pCamera);
+}
+
+void BBSprite2D::resize(float fWidth, float fHeight)
+{
+    m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, fWidth, fHeight, 0.0f, 0.0f);
 }
 
 void BBSprite2D::setPosition(const QVector3D &position, bool bUpdateLocalTransform)

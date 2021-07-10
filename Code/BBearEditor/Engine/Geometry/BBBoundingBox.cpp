@@ -134,9 +134,11 @@ void BBRectBoundingBox2D::init()
         m_pIndexes[i] = indexes[i];
     }
 
-    m_pCurrentMaterial->init("base",
-                             BB_PATH_RESOURCE_SHADER(base.vert),
-                             BB_PATH_RESOURCE_SHADER(base.frag));
+    m_pCurrentMaterial->init("UI",
+                             BB_PATH_RESOURCE_SHADER(UI.vert),
+                             BB_PATH_RESOURCE_SHADER(UI.frag));
+    m_pCurrentMaterial->setVector4(LOCATION_TEXTURE_SETTING0, 0.0f, 0.0f, 0.0f, 0.0f);
+    m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0f, 0.0f, 0.0f);
 
     BBRenderableObject::init();
 

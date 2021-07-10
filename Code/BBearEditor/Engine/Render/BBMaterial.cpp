@@ -67,7 +67,7 @@ void BBMaterial::setMatrix4(const std::string &uniformName, const float *pMatrix
 
 void BBMaterial::setVector4(const std::string &uniformName, float x, float y, float z, float w)
 {
-    float value[4] = {x, y, z, w};
+    float *value = new float[4] {x, y, z, w};
     setVector4(uniformName, value);
 }
 
