@@ -5,10 +5,10 @@
 #include "Utils/BBUtils.h"
 #include "Base/BBGameObject.h"
 #include <QMimeData>
-#include "3D/BBModel.h"
+#include "3D/Model/BBModel.h"
 #include <QDrag>
 #include "Geometry/BBRay.h"
-#include "3D/BBCoordinateSystem.h"
+#include "3D/CoordinateSystem/BBCoordinateSystem.h"
 #include <QTreeWidgetItem>
 #include "Scene/BBSceneManager.h"
 #include "Render/Light/BBLight.h"

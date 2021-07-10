@@ -1,7 +1,7 @@
 #include "BBPreviewOpenGLWidget.h"
 #include "Scene/BBScene.h"
 #include "Utils/BBUtils.h"
-#include "3D/BBModel.h"
+#include "3D/Model/BBModel.h"
 #include "IO/BBMaterialFileManager.h"
 #include "Render/BBMaterial.h"
 

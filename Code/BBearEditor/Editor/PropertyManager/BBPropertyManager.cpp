@@ -8,7 +8,7 @@
 #include "Render/Light/BBPointLight.h"
 #include "Render/Light/BBSpotLight.h"
 #include "BBHeadManager.h"
-#include "3D/BBModel.h"
+#include "3D/Model/BBModel.h"
 
 
 BBPropertyManager::BBPropertyManager(QWidget *pParent)

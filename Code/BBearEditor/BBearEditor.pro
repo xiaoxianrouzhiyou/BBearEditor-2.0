@@ -47,10 +47,10 @@ SOURCES += \
     Editor/Render/BBEditViewOpenGLWidget.cpp \
     Editor/Render/BBOpenGLWidget.cpp \
     Editor/Common/NcFramelessHelper.cpp \
-    Engine/3D/BBMesh.cpp \
-    Engine/3D/BBModel.cpp \
+    Engine/3D/Model/BBMesh.cpp \
+    Engine/3D/Model/BBModel.cpp \
     Engine/3D/BBSkyBox.cpp \
-    Engine/3D/BBStaticMesh.cpp \
+    Engine/3D/Model/BBStaticMesh.cpp \
     Engine/Base/BBGameObject.cpp \
     Engine/Base/BBGameObjectSet.cpp \
     Engine/Base/BBRenderableObject.cpp \
@@ -87,7 +87,7 @@ SOURCES += \
     Engine/Render/Light/BBPointLight.cpp \
     Engine/Render/Light/BBSpotLight.cpp \
     Engine/3D/BBIcon.cpp \
-    Engine/3D/BBCoordinateSystem.cpp \
+    Engine/3D/CoordinateSystem/BBCoordinateSystem.cpp \
     Engine/3D/BBHorizontalPlane.cpp \
     Engine/2D/BBSelectionRegion.cpp \
     Engine/Utils/BBUtils.cpp \
@@ -100,7 +100,8 @@ SOURCES += \
     Engine/Geometry/BBPlane.cpp \
     Engine/Geometry/BBFrustum.cpp \
     Engine/2D/BBSprite2D.cpp \
-    Engine/2D/BBCanvas.cpp
+    Engine/2D/BBCanvas.cpp \
+    Engine/3D/CoordinateSystem/BBCoordinateComponent.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -125,10 +126,10 @@ HEADERS += \
     Editor/Render/BBEditViewOpenGLWidget.h \
     Editor/Render/BBOpenGLWidget.h \
     Editor/Common/NcFramelessHelper.h \
-    Engine/3D/BBMesh.h \
-    Engine/3D/BBModel.h \
+    Engine/3D/Model/BBMesh.h \
+    Engine/3D/Model/BBModel.h \
     Engine/3D/BBSkyBox.h \
-    Engine/3D/BBStaticMesh.h \
+    Engine/3D/Model/BBStaticMesh.h \
     Engine/Base/BBGameObject.h \
     Engine/Base/BBGameObjectSet.h \
     Engine/Base/BBRenderableObject.h \
@@ -167,7 +168,7 @@ HEADERS += \
     Engine/Render/Light/BBPointLight.h \
     Engine/Render/Light/BBSpotLight.h \
     Engine/3D/BBIcon.h \
-    Engine/3D/BBCoordinateSystem.h \
+    Engine/3D/CoordinateSystem/BBCoordinateSystem.h \
     Engine/3D/BBHorizontalPlane.h \
     Engine/2D/BBSelectionRegion.h \
     Engine/Utils/BBUtils.h \
@@ -180,7 +181,8 @@ HEADERS += \
     Engine/Geometry/BBPlane.h \
     Engine/Geometry/BBFrustum.h \
     Engine/2D/BBSprite2D.h \
-    Engine/2D/BBCanvas.h
+    Engine/2D/BBCanvas.h \
+    Engine/3D/CoordinateSystem/BBCoordinateComponent.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

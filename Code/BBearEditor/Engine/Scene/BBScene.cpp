@@ -5,11 +5,11 @@
 #include "3D/BBSkyBox.h"
 #include "3D/BBHorizontalPlane.h"
 #include "Base/BBGameObject.h"
-#include "3D/BBModel.h"
+#include "3D/Model/BBModel.h"
 #include "Geometry/BBRay.h"
 #include "2D/BBSelectionRegion.h"
 #include <cfloat>
-#include "3D/BBCoordinateSystem.h"
+#include "3D/CoordinateSystem/BBCoordinateSystem.h"
 #include "2D/BBFullScreenQuad.h"
 #include "Render/BBRenderState.h"
 #include "Render/BBDrawCall.h"
