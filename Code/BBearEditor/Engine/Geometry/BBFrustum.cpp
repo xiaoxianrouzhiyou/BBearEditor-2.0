@@ -14,17 +14,17 @@
  * @param nWidth
  * @param nHeight
  */
-BBFrustum::BBFrustum(BBCamera *pCamera, int x, int y, int nWidth, int nHeight)
+BBFrustum::BBFrustum(BBCamera *pCamera, int nTopLeftX, int nTopLeftY, int nWidth, int nHeight)
 {
-    m_nTopLeftX = x;
-    m_nTopLeftY = y;
+    m_nTopLeftX = nTopLeftX;
+    m_nTopLeftY = nTopLeftY;
     m_nWidth = nWidth;
     m_nHeight = nHeight;
     // 3D ray of the 4 vertexes
-    BBRay topLeft = pCamera->createRayFromScreen(x, y);
-    BBRay topRight = pCamera->createRayFromScreen(x + nWidth, y);
-    BBRay bottomRight = pCamera->createRayFromScreen(x + nWidth, y + nHeight);
-    BBRay bottomLeft = pCamera->createRayFromScreen(x, y + nHeight);
+    BBRay topLeft = pCamera->createRayFromScreen(nTopLeftX, nTopLeftY);
+    BBRay topRight = pCamera->createRayFromScreen(nTopLeftX + nWidth, nTopLeftY);
+    BBRay bottomRight = pCamera->createRayFromScreen(nTopLeftX + nWidth, nTopLeftY + nHeight);
+    BBRay bottomLeft = pCamera->createRayFromScreen(nTopLeftX, nTopLeftY + nHeight);
 
     m_pLeft = new BBPlane(topLeft.getNearPoint(), bottomLeft.getNearPoint(), topLeft.getFarPoint());
     m_pRight = new BBPlane(topRight.getNearPoint(), topRight.getFarPoint(), bottomRight.getNearPoint());

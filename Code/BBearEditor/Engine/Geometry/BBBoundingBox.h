@@ -41,8 +41,10 @@ protected:
 class BBRectBoundingBox2D : public BBBoundingBox
 {
 public:
+    BBRectBoundingBox2D(int nTopLeftX, int nTopLeftY, int nWidth, int nHeight);
     BBRectBoundingBox2D(float fCenterX, float fCenterY, float fCenterZ,
                         float fHalfLengthX, float fHalfLengthY, float fHalfLengthZ);
+
     virtual ~BBRectBoundingBox2D();
 
     bool hit(const BBRay &ray, float &fDistance) override;

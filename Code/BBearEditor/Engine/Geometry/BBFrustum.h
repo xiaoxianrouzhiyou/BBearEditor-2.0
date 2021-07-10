@@ -12,7 +12,7 @@ class BBAABBBoundingBox3D;
 class BBFrustum
 {
 public:
-    BBFrustum(BBCamera *pCamera, int x, int y, int nWidth, int nHeight);
+    BBFrustum(BBCamera *pCamera, int nTopLeftX, int nTopLeftY, int nWidth, int nHeight);
     ~BBFrustum();
 
     bool contain(const QVector3D &point) const;

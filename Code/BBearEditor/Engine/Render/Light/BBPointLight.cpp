@@ -24,7 +24,7 @@ BBPointLight::BBPointLight(BBScene *pScene, const QVector3D &position, const QVe
     m_pAABBBoundingBox3D = new BBAABBBoundingBox3D(m_Position, m_Rotation, m_Scale,
                                                    m_Position, QVector3D(1.0f, 1.0f, 1.0f));
     // m_Setting1[0] : radius
-    setRadius(0.5f);
+    setRadius(10.0f);
     // m_Setting1[1] : constant factor
     setConstantFactor(2.0f);
     // m_Setting1[2] : linear factor

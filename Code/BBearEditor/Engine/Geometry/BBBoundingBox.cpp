@@ -63,13 +63,18 @@ void BBBoundingBox::setModelMatrix(float px, float py, float pz,
 
 /**
  * @brief BBRectBoundingBox2D::BBRectBoundingBox2D
- * @param fCenterX
- * @param fCenterY
- * @param fCenterZ
- * @param fHalfLengthX
- * @param fHalfLengthY
- * @param fHalfLengthZ
+ * @param nTopLeftX
+ * @param nTopLeftY
+ * @param nWidth
+ * @param nHeight
  */
+BBRectBoundingBox2D::BBRectBoundingBox2D(int nTopLeftX, int nTopLeftY, int nWidth, int nHeight)
+    : BBRectBoundingBox2D(nTopLeftX + nWidth * 1.0f / 2.0f, nTopLeftY + nHeight * 1.0f / 2.0f, 0,
+                          nWidth * 1.0f / 2.0f, nHeight * 1.0f / 2.0f, 0.0f)
+{
+
+}
+
 BBRectBoundingBox2D::BBRectBoundingBox2D(float fCenterX, float fCenterY, float fCenterZ,
                                          float fHalfLengthX, float fHalfLengthY, float fHalfLengthZ)
     : BBBoundingBox()
