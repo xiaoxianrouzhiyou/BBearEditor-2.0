@@ -94,6 +94,9 @@ protected:
     QVector3D m_LocalScale;
     QMatrix4x4 m_ModelMatrix;
 
+    int m_nHalfWidth;
+    int m_nHalfHeight;
+
     bool m_bActive;
     bool m_bVisible;
 

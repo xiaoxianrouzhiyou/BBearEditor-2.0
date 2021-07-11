@@ -917,8 +917,12 @@ void BBTransformCoordinateSystem::update()
 void BBTransformCoordinateSystem::switchSpaceMode(const BBCoordinateSystemSpaceMode &eMode)
 {
     m_eSpaceMode = eMode;
-    m_pPositionCoordinateSystem->switchSpaceMode(eMode);
-    m_pRotationCoordinateSystem->switchSpaceMode(eMode);
-    m_pScaleCoordinateSystem->switchSpaceMode(eMode);
-}
+    if (m_eSpaceMode == Space3D)
+    {
 
+    }
+    else
+    {
+
+    }
+}

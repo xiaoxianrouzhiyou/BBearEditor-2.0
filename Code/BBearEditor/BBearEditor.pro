@@ -87,7 +87,7 @@ SOURCES += \
     Engine/Render/Light/BBPointLight.cpp \
     Engine/Render/Light/BBSpotLight.cpp \
     Engine/3D/BBIcon.cpp \
-    Engine/3D/CoordinateSystem/BBCoordinateSystem.cpp \
+    Engine/CoordinateSystem/BBCoordinateSystem.cpp \
     Engine/3D/BBHorizontalPlane.cpp \
     Engine/2D/BBSelectionRegion.cpp \
     Engine/Utils/BBUtils.cpp \
@@ -101,7 +101,9 @@ SOURCES += \
     Engine/Geometry/BBFrustum.cpp \
     Engine/2D/BBSprite2D.cpp \
     Engine/2D/BBCanvas.cpp \
-    Engine/3D/CoordinateSystem/BBCoordinateComponent.cpp
+    Engine/CoordinateSystem/BBCoordinateComponent.cpp \
+    Engine/CoordinateSystem/BBCoordinateSystem2D.cpp \
+    Engine/Base/BBRenderableObject2D.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -168,7 +170,7 @@ HEADERS += \
     Engine/Render/Light/BBPointLight.h \
     Engine/Render/Light/BBSpotLight.h \
     Engine/3D/BBIcon.h \
-    Engine/3D/CoordinateSystem/BBCoordinateSystem.h \
+    Engine/CoordinateSystem/BBCoordinateSystem.h \
     Engine/3D/BBHorizontalPlane.h \
     Engine/2D/BBSelectionRegion.h \
     Engine/Utils/BBUtils.h \
@@ -182,7 +184,9 @@ HEADERS += \
     Engine/Geometry/BBFrustum.h \
     Engine/2D/BBSprite2D.h \
     Engine/2D/BBCanvas.h \
-    Engine/3D/CoordinateSystem/BBCoordinateComponent.h
+    Engine/CoordinateSystem/BBCoordinateComponent.h \
+    Engine/CoordinateSystem/BBCoordinateSystem2D.h \
+    Engine/Base/BBRenderableObject2D.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

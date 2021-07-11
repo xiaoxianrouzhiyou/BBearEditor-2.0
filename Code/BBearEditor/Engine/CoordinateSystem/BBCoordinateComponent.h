@@ -3,20 +3,7 @@
 
 
 #include "Base/BBRenderableObject.h"
-
-enum BBAxisName
-{
-    AxisNULL = 0x01,
-    AxisX = 0x02,
-    AxisY = 0x04,
-    AxisZ = 0x08
-};
-
-
-// Type of bit operation result
-Q_DECLARE_FLAGS(BBAxisFlags, BBAxisName)
-// override | operator
-Q_DECLARE_OPERATORS_FOR_FLAGS(BBAxisFlags)
+#include "Utils/BBUtils.h"
 
 
 // The base class of each component to be rendered in the coordinate system

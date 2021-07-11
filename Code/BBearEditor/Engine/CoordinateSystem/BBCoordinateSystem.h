@@ -2,7 +2,7 @@
 #define BBCOORDINATE_H
 
 
-#include "3D/CoordinateSystem/BBCoordinateComponent.h"
+#include "CoordinateSystem/BBCoordinateComponent.h"
 
 
 class BBBoundingBox;
@@ -36,18 +36,13 @@ protected:
              float &fDistance);
     virtual void transform(const BBRay &ray) = 0;
 
-    BBCoordinateSystemSpaceMode m_eSpaceMode;
     BBAxisFlags m_SelectedAxis;
     QVector3D m_LastMousePos;
     BBGameObject *m_pSelectedObject;
     bool m_bTransforming;
 
 public:
-    void switchSpaceMode(const BBCoordinateSystemSpaceMode &eMode) { m_eSpaceMode = eMode; }
-
-    inline BBAxisFlags getSelectedAxis() { return m_SelectedAxis; }
     void setSelectedObject(BBGameObject *pObject);
-
     virtual void setSelectedAxis(const BBAxisFlags &axis) = 0;
     virtual bool mouseMoveEvent(const BBRay &ray, bool bMousePressed) = 0;
     void stopTransform();

@@ -9,7 +9,7 @@
 #include "Geometry/BBRay.h"
 #include "2D/BBSelectionRegion.h"
 #include <cfloat>
-#include "3D/CoordinateSystem/BBCoordinateSystem.h"
+#include "CoordinateSystem/BBCoordinateSystem.h"
 #include "2D/BBFullScreenQuad.h"
 #include "Render/BBRenderState.h"
 #include "Render/BBDrawCall.h"
