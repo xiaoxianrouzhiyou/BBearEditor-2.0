@@ -4,6 +4,8 @@
 
 #include "Base/BBGameObject.h"
 
+class BBPositionCoordinateComponent2D;
+
 class BBCoordinateSystem2D : public BBGameObject
 {
 protected:
@@ -32,12 +34,15 @@ public:
 
     void init() override;
     void render(BBCamera *pCamera) override;
+    void resize(float fWidth, float fHeight) override;
 
     void setSelectedAxis(const BBAxisFlags &axis) override;
     bool mouseMoveEvent(const BBRay &ray, bool bMousePressed) override;
 
 private:
     void transform(const BBRay &ray) override;
+
+    BBPositionCoordinateComponent2D *m_pCoordinateComponent;
 };
 
 #endif // BBCOORDINATESYSTEM2D_H
