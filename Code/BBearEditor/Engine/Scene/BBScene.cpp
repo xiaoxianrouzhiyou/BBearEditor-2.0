@@ -9,7 +9,7 @@
 #include "Geometry/BBRay.h"
 #include "2D/BBSelectionRegion.h"
 #include <cfloat>
-#include "CoordinateSystem/BBCoordinateSystem.h"
+#include "CoordinateSystem/BBTransformCoordinateSystem.h"
 #include "2D/BBFullScreenQuad.h"
 #include "Render/BBRenderState.h"
 #include "Render/BBDrawCall.h"
@@ -190,6 +190,8 @@ void BBScene::resize(float width, float height)
     {
         ((BBCanvas*)(*itr))->resize(width, height);
     }
+
+    m_pTransformCoordinateSystem->resize(width, height);
 }
 
 void BBScene::setSkyBox(const QString &path)

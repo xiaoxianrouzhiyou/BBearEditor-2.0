@@ -10,14 +10,6 @@ class BBRectBoundingBox2D;
 class BBTriangleBoundingBox2D;
 class BBQuarterCircleBoundingBox2D;
 class BBBoundingBox3D;
-class BBGameObjectSet;
-
-
-enum BBCoordinateSystemSpaceMode
-{
-    Space2D = 0,
-    Space3D = 1
-};
 
 
 // base class of pos rot scale 3 Coordinate System
@@ -143,46 +135,6 @@ private:
     BBTriangleBoundingBox2D *m_pBoundingBoxXYZ;
 
     QVector3D m_SelectedObjectOriginalScale;
-};
-
-
-// Class that manages the three Coordinate system
-class BBTransformCoordinateSystem : public BBGameObject
-{
-public:
-    BBTransformCoordinateSystem();
-    virtual ~BBTransformCoordinateSystem();
-
-    void init() override;
-    void render(BBCamera *pCamera) override;
-
-    void setSelectedObject(BBGameObject *pObject);
-    void setSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet);
-    bool mouseMoveEvent(const BBRay &ray, bool bMousePressed);
-    void setCoordinateSystem(char modeKey);
-    bool isTransforming() { return m_bTransforming; }
-    void stopTransform();
-    void update();
-    inline BBGameObject* getSelectedObject() { return m_pSelectedObject; }
-    inline char getTransformModeKey() { return m_ModeKey; }
-
-private:
-    void switchSpaceMode(const BBCoordinateSystemSpaceMode &eMode);
-
-    BBCoordinateSystemSpaceMode m_eSpaceMode;
-
-    BBPositionCoordinateSystem *m_pPositionCoordinateSystem;
-    BBRotationCoordinateSystem *m_pRotationCoordinateSystem;
-    BBScaleCoordinateSystem *m_pScaleCoordinateSystem;
-
-    char m_PositionCoordinateSystemModeKey = 'W';
-    char m_RotationCoordinateSystemModeKey = 'E';
-    char m_ScaleCoordinateSystemModeKey = 'R';
-    char m_ModeKey;
-
-    BBGameObject *m_pSelectedObject;
-    QList<BBGameObject*> m_SelectedObjects;
-    bool m_bTransforming;
 };
 
 

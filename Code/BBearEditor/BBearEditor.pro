@@ -103,7 +103,9 @@ SOURCES += \
     Engine/2D/BBCanvas.cpp \
     Engine/CoordinateSystem/BBCoordinateComponent.cpp \
     Engine/CoordinateSystem/BBCoordinateSystem2D.cpp \
-    Engine/Base/BBRenderableObject2D.cpp
+    Engine/Base/BBRenderableObject2D.cpp \
+    Engine/CoordinateSystem/BBCoordinateComponent2D.cpp \
+    Engine/CoordinateSystem/BBTransformCoordinateSystem.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -186,7 +188,9 @@ HEADERS += \
     Engine/2D/BBCanvas.h \
     Engine/CoordinateSystem/BBCoordinateComponent.h \
     Engine/CoordinateSystem/BBCoordinateSystem2D.h \
-    Engine/Base/BBRenderableObject2D.h
+    Engine/Base/BBRenderableObject2D.h \
+    Engine/CoordinateSystem/BBCoordinateComponent2D.h \
+    Engine/CoordinateSystem/BBTransformCoordinateSystem.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

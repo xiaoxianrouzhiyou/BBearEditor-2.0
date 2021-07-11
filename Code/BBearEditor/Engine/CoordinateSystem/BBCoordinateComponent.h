@@ -18,15 +18,6 @@ protected:
     void init() override;
 
     BBAxisFlags m_SelectedAxis;
-    static QVector3D m_Red;
-    static QVector4D m_RedTransparency;
-    static QVector3D m_Green;
-    static QVector4D m_GreenTransparency;
-    static QVector3D m_Blue;
-    static QVector4D m_BlueTransparency;
-    static QVector3D m_Yellow;
-    static QVector3D m_Gray;
-    static QVector4D m_GrayTransparency;
 
 public:
     void setSelectedAxis(const BBAxisFlags &axis);

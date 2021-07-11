@@ -41,6 +41,7 @@
 
 #include <QString>
 #include <QVector3D>
+#include <QVector4D>
 #include <QDebug>
 
 
@@ -114,6 +115,13 @@ Q_DECLARE_FLAGS(BBAxisFlags, BBAxisName)
 Q_DECLARE_OPERATORS_FOR_FLAGS(BBAxisFlags)
 
 
+enum BBCoordinateSystemSpaceMode
+{
+    Space2D = 0,
+    Space3D = 1
+};
+
+
 /**
  * @brief The BBStatic class        Ensure that static variables have been initialized before being used
  */
@@ -143,6 +151,16 @@ public:
     static QString BB_NAME_OVERVIEW_MAP;
     static QString BB_NAME_DEFAULT_SCENE;
     static QString BB_NAME_DEFAULT_MATERIAL;
+
+    static QVector3D m_Red;
+    static QVector4D m_RedTransparency;
+    static QVector3D m_Green;
+    static QVector4D m_GreenTransparency;
+    static QVector3D m_Blue;
+    static QVector4D m_BlueTransparency;
+    static QVector3D m_Yellow;
+    static QVector3D m_Gray;
+    static QVector4D m_GrayTransparency;
 };
 
 class BBUtils

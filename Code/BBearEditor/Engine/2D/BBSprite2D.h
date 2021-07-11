@@ -13,8 +13,13 @@ public:
     BBSprite2D(int nCenterX, int nCenterY, int nWidth, int nHeight);
     ~BBSprite2D();
 
+    void init() override;
+
 public:
     void bindCanvas(BBCanvas *pCanvas);
+
+private:
+    BBRectBoundingBox2D *m_pBoundingBox2D;
 };
 
 #endif // BBSPRITE2D_H

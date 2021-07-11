@@ -9,23 +9,6 @@
 /**
  * @brief BBCoordinateComponent::BBCoordinateComponent
  */
-QVector3D BBCoordinateComponent::m_Red = QVector3D(0.937255f, 0.378431f, 0.164706f);
-QVector4D BBCoordinateComponent::m_RedTransparency = QVector4D(0.937255f, 0.378431f, 0.164706f, 0.7f);
-QVector3D BBCoordinateComponent::m_Green = QVector3D(0.498039f, 0.827451f, 0.25098f);
-QVector4D BBCoordinateComponent::m_GreenTransparency = QVector4D(0.498039f, 0.827451f, 0.25098f, 0.7f);
-QVector3D BBCoordinateComponent::m_Blue = QVector3D(0.341176f, 0.662745f, 1.0f);
-QVector4D BBCoordinateComponent::m_BlueTransparency = QVector4D(0.341176f, 0.662745f, 1.0f, 0.7f);
-QVector3D BBCoordinateComponent::m_Yellow = QVector3D(1.0f, 1.0f, 0.305882f);
-QVector3D BBCoordinateComponent::m_Gray = QVector3D(0.8f, 0.8f, 0.8f);
-QVector4D BBCoordinateComponent::m_GrayTransparency = QVector4D(0.8f, 0.8f, 0.8f, 0.7f);
-//QVector3D BBCoordinateComponent::m_Red = QVector3D(0.909804f, 0.337255f, 0.333333f);
-//QVector4D BBCoordinateComponent::m_RedTransparency = QVector4D(0.909804f, 0.337255f, 0.333333f, 0.5f);
-//QVector3D BBCoordinateComponent::m_Green = QVector3D(0.356863f, 0.729412f, 0.619608f);
-//QVector4D BBCoordinateComponent::m_GreenTransparency = QVector4D(0.356863f, 0.729412f, 0.619608f, 0.5f);
-//QVector3D BBCoordinateComponent::m_Blue = QVector3D(0.384314f, 0.631373f, 0.847059f);
-//QVector4D BBCoordinateComponent::m_BlueTransparency = QVector4D(0.384314f, 0.631373f, 0.847059f, 0.5f);
-//QVector3D BBCoordinateComponent::m_Yellow = QVector3D(0.847059f, 0.603922f, 0.309804f);
-
 BBCoordinateComponent::BBCoordinateComponent()
     : BBCoordinateComponent(0, 0, 0, 0, 0, 0, 1, 1, 1)
 {
@@ -45,6 +28,7 @@ void BBCoordinateComponent::init()
     m_pCurrentMaterial->init("coordinate",
                              BB_PATH_RESOURCE_SHADER(coordinate.vert),
                              BB_PATH_RESOURCE_SHADER(coordinate.frag));
+    m_pCurrentMaterial->getBaseRenderPass()->setBlendState(true);
     m_pCurrentMaterial->getBaseRenderPass()->setZFunc(GL_ALWAYS);
 //    m_pCurrentMaterial->getBaseRenderPass()->setLineWidth(1.5f);
 
@@ -77,33 +61,33 @@ void BBCoordinateComponent::setVertexColor(const BBAxisFlags &axis, bool bSelect
     {
         if (bSelected)
         {
-            setVertexColor(0, count1, m_Yellow);
+            setVertexColor(0, count1, BBConstant::m_Yellow);
         }
         else
         {
-            setVertexColor(0, count1, m_Red);
+            setVertexColor(0, count1, BBConstant::m_Red);
         }
     }
     if (axis & BBAxisName::AxisY)
     {
         if (bSelected)
         {
-            setVertexColor(count1, count2, m_Yellow);
+            setVertexColor(count1, count2, BBConstant::m_Yellow);
         }
         else
         {
-            setVertexColor(count1, count2, m_Green);
+            setVertexColor(count1, count2, BBConstant::m_Green);
         }
     }
     if (axis & BBAxisName::AxisZ)
     {
         if (bSelected)
         {
-            setVertexColor(count2, count3, m_Yellow);
+            setVertexColor(count2, count3, BBConstant::m_Yellow);
         }
         else
         {
-            setVertexColor(count2, count3, m_Blue);
+            setVertexColor(count2, count3, BBConstant::m_Blue);
         }
     }
     // update
@@ -162,7 +146,7 @@ void BBCoordinateArrow::init()
     m_pVBO->setPosition(11, 0.85f, 0.05f, -0.086603f);
     m_pVBO->setPosition(12, 0.85f, 0.086603f, -0.05f);
     for (int i = 0; i < 13; i++)
-        m_pVBO->setColor(i, m_Red);
+        m_pVBO->setColor(i, BBConstant::m_Red);
 
     m_pVBO->setPosition(13, 0.0f, 1.2f, 0.0f);
     m_pVBO->setPosition(14, 0.1f, 0.85f, 0.0f);
@@ -178,7 +162,7 @@ void BBCoordinateArrow::init()
     m_pVBO->setPosition(24, 0.05f, 0.85f, -0.086603f);
     m_pVBO->setPosition(25, 0.086603f, 0.85f, -0.05f);
     for (int i = 13; i < 26; i++)
-        m_pVBO->setColor(i, m_Green);
+        m_pVBO->setColor(i, BBConstant::m_Green);
 
     m_pVBO->setPosition(26, 0.0f, 0.0f, 1.2f);
     m_pVBO->setPosition(27, 0.1f, 0.0f, 0.85f);
@@ -194,7 +178,7 @@ void BBCoordinateArrow::init()
     m_pVBO->setPosition(37, 0.05f, -0.086603f, 0.85f);
     m_pVBO->setPosition(38, 0.086603f, -0.05f, 0.85f);
     for (int i = 26; i < 39; i++)
-        m_pVBO->setColor(i, m_Blue);
+        m_pVBO->setColor(i, BBConstant::m_Blue);
 
     m_nIndexCount = 108;
     unsigned short indexes[] = {0, 1, 2, 0, 2, 3, 0, 3, 4,
@@ -257,15 +241,15 @@ void BBCoordinateAxis::init()
 
     for (int i = 0; i < 2; i++)
     {
-        m_pVBO->setColor(i, m_Red);
+        m_pVBO->setColor(i, BBConstant::m_Red);
     }
     for (int i = 2; i < 4; i++)
     {
-        m_pVBO->setColor(i, m_Green);
+        m_pVBO->setColor(i, BBConstant::m_Green);
     }
     for (int i = 4; i < 6; i++)
     {
-        m_pVBO->setColor(i, m_Blue);
+        m_pVBO->setColor(i, BBConstant::m_Blue);
     }
 
     BBCoordinateComponent::init();
@@ -332,27 +316,27 @@ void BBCoordinateRectFace::init()
 
     for (int i = 0; i < 4; i++)
     {
-        m_pVBO->setColor(i, m_RedTransparency);
+        m_pVBO->setColor(i, BBConstant::m_RedTransparency);
     }
     for (int i = 4; i < 8; i++)
     {
-        m_pVBO->setColor(i, m_GreenTransparency);
+        m_pVBO->setColor(i, BBConstant::m_GreenTransparency);
     }
     for (int i = 8; i < 12; i++)
     {
-        m_pVBO->setColor(i, m_BlueTransparency);
+        m_pVBO->setColor(i, BBConstant::m_BlueTransparency);
     }
     for (int i = 12; i < 16; i++)
     {
-        m_pVBO->setColor(i, m_Red);
+        m_pVBO->setColor(i, BBConstant::m_Red);
     }
     for (int i = 16; i < 20; i++)
     {
-        m_pVBO->setColor(i, m_Green);
+        m_pVBO->setColor(i, BBConstant::m_Green);
     }
     for (int i = 20; i < 24; i++)
     {
-        m_pVBO->setColor(i, m_Blue);
+        m_pVBO->setColor(i, BBConstant::m_Blue);
     }
 
     BBCoordinateComponent::init();
@@ -397,17 +381,17 @@ void BBCoordinateQuarterCircle::init()
         float c2 = 0.8f * c1;
         float s2 = 0.8f * s1;
         m_pVBO->setPosition(i, 0.0f, c1, s1);
-        m_pVBO->setColor(i, m_Red);
+        m_pVBO->setColor(i, BBConstant::m_Red);
         m_pVBO->setPosition(i + 13, 0.0f, c2, s2);
-        m_pVBO->setColor(i + 13, m_Red);
+        m_pVBO->setColor(i + 13, BBConstant::m_Red);
         m_pVBO->setPosition(i + 26, c1, 0.0f, s1);
-        m_pVBO->setColor(i + 26, m_Green);
+        m_pVBO->setColor(i + 26, BBConstant::m_Green);
         m_pVBO->setPosition(i + 39, c2, 0.0f, s2);
-        m_pVBO->setColor(i + 39, m_Green);
+        m_pVBO->setColor(i + 39, BBConstant::m_Green);
         m_pVBO->setPosition(i + 52, c1, s1, 0.0f);
-        m_pVBO->setColor(i + 52, m_Blue);
+        m_pVBO->setColor(i + 52, BBConstant::m_Blue);
         m_pVBO->setPosition(i + 65, c2, s2, 0.0f);
-        m_pVBO->setColor(i + 65, m_Blue);
+        m_pVBO->setColor(i + 65, BBConstant::m_Blue);
     }
 
     m_nIndexCount = 144;
@@ -471,9 +455,9 @@ void BBCoordinateCircle::init()
         float s2 = 0.8f * s1;
         // Circle
         m_pVBO->setPosition(2 * i, 0.0f, c1, s1);
-        m_pVBO->setColor(2 * i, m_Yellow);
+        m_pVBO->setColor(2 * i, BBConstant::m_Yellow);
         m_pVBO->setPosition(2 * i + 1, 0.0f, c2, s2);
-        m_pVBO->setColor(2 * i + 1, m_Yellow);
+        m_pVBO->setColor(2 * i + 1, BBConstant::m_Yellow);
     }
 
     m_nIndexCount = 192;
@@ -542,9 +526,9 @@ void BBCoordinateTickMark::init()
 
         // Circle
         m_pVBO->setPosition(2 * i, 0.0f, c1, s1);
-        m_pVBO->setColor(2 * i, m_Gray);
+        m_pVBO->setColor(2 * i, BBConstant::m_Gray);
         m_pVBO->setPosition(2 * i + 1, 0.0f, c2, s2);
-        m_pVBO->setColor(2 * i + 1, m_Gray);
+        m_pVBO->setColor(2 * i + 1, BBConstant::m_Gray);
     }
 
     BBCoordinateComponent::init();
@@ -579,14 +563,14 @@ void BBCoordinateSector::init()
     // +1 is center of circle
     m_pVBO = new BBVertexBufferObject(361);
     m_pVBO->setPosition(360, 0.0f, 0.0f, 0.0f);
-    m_pVBO->setColor(360, m_GrayTransparency);
+    m_pVBO->setColor(360, BBConstant::m_GrayTransparency);
     for (int i = 0; i < 360; i++)
     {
         float c = 0.8f * cosf(0.017453f * i);
         float s = 0.8f * sinf(0.017453f * i);
         // on the circle
         m_pVBO->setPosition(i, 0.0f, c, s);
-        m_pVBO->setColor(i, m_Gray);
+        m_pVBO->setColor(i, BBConstant::m_Gray);
     }
 
     m_nIndexCount = 1080;
@@ -694,15 +678,15 @@ void BBCoordinateCube::init()
         m_pVBO->setPosition(i, 1.0f + m_Sign[i].x() * m_fHalfLength,
                                       m_Sign[i].y() * m_fHalfLength,
                                       m_Sign[i].z() * m_fHalfLength);
-        m_pVBO->setColor(i, m_Red);
+        m_pVBO->setColor(i, BBConstant::m_Red);
         m_pVBO->setPosition(i + 8, m_Sign[i].x() * m_fHalfLength,
                             1.0f + m_Sign[i].y() * m_fHalfLength,
                                    m_Sign[i].z() * m_fHalfLength);
-        m_pVBO->setColor(i + 8, m_Green);
+        m_pVBO->setColor(i + 8, BBConstant::m_Green);
         m_pVBO->setPosition(i + 16, m_Sign[i].x() * m_fHalfLength,
                                     m_Sign[i].y() * m_fHalfLength,
                              1.0f + m_Sign[i].z() * m_fHalfLength);
-        m_pVBO->setColor(i + 16, m_Blue);
+        m_pVBO->setColor(i + 16, BBConstant::m_Blue);
     }
 
     m_nIndexCount = 72;
@@ -819,27 +803,27 @@ void BBCoordinateTriangleFace::init()
 
     for (int i = 0; i < 6; i++)
     {
-        m_pVBO->setColor(i, m_RedTransparency);
+        m_pVBO->setColor(i, BBConstant::m_RedTransparency);
     }
     for (int i = 6; i < 12; i++)
     {
-        m_pVBO->setColor(i, m_GreenTransparency);
+        m_pVBO->setColor(i, BBConstant::m_GreenTransparency);
     }
     for (int i = 12; i < 18; i++)
     {
-        m_pVBO->setColor(i, m_BlueTransparency);
+        m_pVBO->setColor(i, BBConstant::m_BlueTransparency);
     }
     for (int i = 18; i < 24; i++)
     {
-        m_pVBO->setColor(i, m_Red);
+        m_pVBO->setColor(i, BBConstant::m_Red);
     }
     for (int i = 24; i < 30; i++)
     {
-        m_pVBO->setColor(i, m_Green);
+        m_pVBO->setColor(i, BBConstant::m_Green);
     }
     for (int i = 30; i < 36; i++)
     {
-        m_pVBO->setColor(i, m_Blue);
+        m_pVBO->setColor(i, BBConstant::m_Blue);
     }
 
     BBCoordinateComponent::init();

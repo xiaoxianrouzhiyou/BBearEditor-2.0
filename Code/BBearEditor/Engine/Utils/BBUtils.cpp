@@ -18,6 +18,24 @@ QString BBConstant::BB_NAME_DEFAULT_SCENE = "new scene.bbscene";
 QString BBConstant::BB_NAME_DEFAULT_MATERIAL = "new material.bbmtl";
 
 
+QVector3D BBConstant::m_Red = QVector3D(0.937255f, 0.378431f, 0.164706f);
+QVector4D BBConstant::m_RedTransparency = QVector4D(0.937255f, 0.378431f, 0.164706f, 0.7f);
+QVector3D BBConstant::m_Green = QVector3D(0.498039f, 0.827451f, 0.25098f);
+QVector4D BBConstant::m_GreenTransparency = QVector4D(0.498039f, 0.827451f, 0.25098f, 0.7f);
+QVector3D BBConstant::m_Blue = QVector3D(0.341176f, 0.662745f, 1.0f);
+QVector4D BBConstant::m_BlueTransparency = QVector4D(0.341176f, 0.662745f, 1.0f, 0.7f);
+QVector3D BBConstant::m_Yellow = QVector3D(1.0f, 1.0f, 0.305882f);
+QVector3D BBConstant::m_Gray = QVector3D(0.8f, 0.8f, 0.8f);
+QVector4D BBConstant::m_GrayTransparency = QVector4D(0.8f, 0.8f, 0.8f, 0.7f);
+//QVector3D BBConstant::m_Red = QVector3D(0.909804f, 0.337255f, 0.333333f);
+//QVector4D BBConstant::m_RedTransparency = QVector4D(0.909804f, 0.337255f, 0.333333f, 0.5f);
+//QVector3D BBConstant::m_Green = QVector3D(0.356863f, 0.729412f, 0.619608f);
+//QVector4D BBConstant::m_GreenTransparency = QVector4D(0.356863f, 0.729412f, 0.619608f, 0.5f);
+//QVector3D BBConstant::m_Blue = QVector3D(0.384314f, 0.631373f, 0.847059f);
+//QVector4D BBConstant::m_BlueTransparency = QVector4D(0.384314f, 0.631373f, 0.847059f, 0.5f);
+//QVector3D BBConstant::m_Yellow = QVector3D(0.847059f, 0.603922f, 0.309804f);
+
+
 char *BBUtils::loadFileContent(const char *filePath, int &nFileSize)
 {
     FILE *pFile = NULL;
