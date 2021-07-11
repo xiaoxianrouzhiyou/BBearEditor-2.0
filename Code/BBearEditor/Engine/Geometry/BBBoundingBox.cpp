@@ -63,20 +63,20 @@ void BBBoundingBox::setModelMatrix(float px, float py, float pz,
 
 
 /**
- * @brief BBRectBoundingBox2D::BBRectBoundingBox2D
+ * @brief BBRectBoundingBox3D::BBRectBoundingBox3D
  * @param nTopLeftX
  * @param nTopLeftY
  * @param nWidth
  * @param nHeight
  */
-BBRectBoundingBox2D::BBRectBoundingBox2D(int nTopLeftX, int nTopLeftY, int nWidth, int nHeight)
-    : BBRectBoundingBox2D(nTopLeftX + nWidth * 1.0f / 2.0f, nTopLeftY + nHeight * 1.0f / 2.0f, 0,
+BBRectBoundingBox3D::BBRectBoundingBox3D(int nTopLeftX, int nTopLeftY, int nWidth, int nHeight)
+    : BBRectBoundingBox3D(nTopLeftX + nWidth * 1.0f / 2.0f, nTopLeftY + nHeight * 1.0f / 2.0f, 0,
                           nWidth * 1.0f / 2.0f, nHeight * 1.0f / 2.0f, 0.0f)
 {
 
 }
 
-BBRectBoundingBox2D::BBRectBoundingBox2D(float fCenterX, float fCenterY, float fCenterZ,
+BBRectBoundingBox3D::BBRectBoundingBox3D(float fCenterX, float fCenterY, float fCenterZ,
                                          float fHalfLengthX, float fHalfLengthY, float fHalfLengthZ)
     : BBBoundingBox()
 {
@@ -110,12 +110,12 @@ BBRectBoundingBox2D::BBRectBoundingBox2D(float fCenterX, float fCenterY, float f
     }
 }
 
-BBRectBoundingBox2D::~BBRectBoundingBox2D()
+BBRectBoundingBox3D::~BBRectBoundingBox3D()
 {
 
 }
 
-void BBRectBoundingBox2D::init()
+void BBRectBoundingBox3D::init()
 {
     m_pVBO = new BBVertexBufferObject(m_nBoxVertexCount);
     for (int i = 0; i < m_nBoxVertexCount; i++)
@@ -149,7 +149,7 @@ void BBRectBoundingBox2D::init()
     appendDrawCall(pDrawCall);
 }
 
-bool BBRectBoundingBox2D::hit(const BBRay &ray, float &fDistance)
+bool BBRectBoundingBox3D::hit(const BBRay &ray, float &fDistance)
 {
     // If it is not activated, no collision occurs
     if (!BBBoundingBox::hit(ray, fDistance))
@@ -173,12 +173,12 @@ bool BBRectBoundingBox2D::hit(const BBRay &ray, float &fDistance)
 
 
 /**
- * @brief BBTriangleBoundingBox2D::BBTriangleBoundingBox2D
+ * @brief BBTriangleBoundingBox3D::BBTriangleBoundingBox3D
  * @param point1
  * @param point2
  * @param point3
  */
-BBTriangleBoundingBox2D::BBTriangleBoundingBox2D(const QVector3D &point1,
+BBTriangleBoundingBox3D::BBTriangleBoundingBox3D(const QVector3D &point1,
                                                  const QVector3D &point2,
                                                  const QVector3D &point3)
     : BBBoundingBox()
@@ -192,7 +192,7 @@ BBTriangleBoundingBox2D::BBTriangleBoundingBox2D(const QVector3D &point1,
     m_pOriginalBoxVertexes[2] = point3;
 }
 
-bool BBTriangleBoundingBox2D::hit(const BBRay &ray, float &fDistance)
+bool BBTriangleBoundingBox3D::hit(const BBRay &ray, float &fDistance)
 {
     // If it is not activated, no collision occurs
     if (!BBBoundingBox::hit(ray, fDistance))
@@ -214,14 +214,14 @@ bool BBTriangleBoundingBox2D::hit(const BBRay &ray, float &fDistance)
 
 
 /**
- * @brief BBQuarterCircleBoundingBox2D::BBQuarterCircleBoundingBox2D
+ * @brief BBQuarterCircleBoundingBox3D::BBQuarterCircleBoundingBox3D
  * @param fCenterX
  * @param fCenterY
  * @param fCenterZ
  * @param fRadius
  * @param ePlaneName
  */
-BBQuarterCircleBoundingBox2D::BBQuarterCircleBoundingBox2D(float fCenterX, float fCenterY, float fCenterZ,
+BBQuarterCircleBoundingBox3D::BBQuarterCircleBoundingBox3D(float fCenterX, float fCenterY, float fCenterZ,
                                                            float fRadius, const BBPlaneName &ePlaneName)
     : BBBoundingBox()
 {
@@ -247,7 +247,7 @@ BBQuarterCircleBoundingBox2D::BBQuarterCircleBoundingBox2D(float fCenterX, float
     }
 }
 
-bool BBQuarterCircleBoundingBox2D::hit(const BBRay &ray, float &fDistance)
+bool BBQuarterCircleBoundingBox3D::hit(const BBRay &ray, float &fDistance)
 {
     // If it is not activated, no collision occurs
     if (!BBBoundingBox::hit(ray, fDistance))

@@ -38,14 +38,14 @@ protected:
 
 
 // Parallel to the coordinate plane
-class BBRectBoundingBox2D : public BBBoundingBox
+class BBRectBoundingBox3D : public BBBoundingBox
 {
 public:
-    BBRectBoundingBox2D(int nTopLeftX, int nTopLeftY, int nWidth, int nHeight);
-    BBRectBoundingBox2D(float fCenterX, float fCenterY, float fCenterZ,
+    BBRectBoundingBox3D(int nTopLeftX, int nTopLeftY, int nWidth, int nHeight);
+    BBRectBoundingBox3D(float fCenterX, float fCenterY, float fCenterZ,
                         float fHalfLengthX, float fHalfLengthY, float fHalfLengthZ);
 
-    virtual ~BBRectBoundingBox2D();
+    virtual ~BBRectBoundingBox3D();
 
     void init() override;
 
@@ -54,20 +54,20 @@ public:
 
 
 // Not necessarily parallel to the coordinate plane
-class BBTriangleBoundingBox2D : public BBBoundingBox
+class BBTriangleBoundingBox3D : public BBBoundingBox
 {
 public:
-    BBTriangleBoundingBox2D(const QVector3D &point1, const QVector3D &point2, const QVector3D &point3);
+    BBTriangleBoundingBox3D(const QVector3D &point1, const QVector3D &point2, const QVector3D &point3);
 
     bool hit(const BBRay &ray, float &fDistance) override;
 };
 
 
 // Parallel to the coordinate plane
-class BBQuarterCircleBoundingBox2D : public BBBoundingBox
+class BBQuarterCircleBoundingBox3D : public BBBoundingBox
 {
 public:
-    BBQuarterCircleBoundingBox2D(float fCenterX, float fCenterY, float fCenterZ,
+    BBQuarterCircleBoundingBox3D(float fCenterX, float fCenterY, float fCenterZ,
                                  float fRadius, const BBPlaneName &ePlaneName);
 
     bool hit(const BBRay &ray, float &fDistance) override;

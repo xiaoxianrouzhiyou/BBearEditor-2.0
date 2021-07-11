@@ -57,7 +57,7 @@ void BBSprite2D::init()
     pDrawCall->setVBO(m_pVBO, GL_QUADS, 0, 4);
     appendDrawCall(pDrawCall);
 
-    m_pBoundingBox2D->init();
+//    m_pBoundingBox2D->init();
 }
 
 void BBSprite2D::bindCanvas(BBCanvas *pCanvas)

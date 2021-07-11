@@ -19,7 +19,7 @@ public:
     void bindCanvas(BBCanvas *pCanvas);
 
 private:
-    BBRectBoundingBox2D *m_pBoundingBox2D;
+//    BBRectBoundingBox2D *m_pBoundingBox2D;
 };
 
 #endif // BBSPRITE2D_H

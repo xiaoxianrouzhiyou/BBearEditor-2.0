@@ -6,9 +6,9 @@
 
 
 class BBBoundingBox;
-class BBRectBoundingBox2D;
-class BBTriangleBoundingBox2D;
-class BBQuarterCircleBoundingBox2D;
+class BBRectBoundingBox3D;
+class BBTriangleBoundingBox3D;
+class BBQuarterCircleBoundingBox3D;
 class BBBoundingBox3D;
 
 
@@ -66,9 +66,9 @@ private:
     BBBoundingBox3D *m_pBoundingBoxX;
     BBBoundingBox3D *m_pBoundingBoxY;
     BBBoundingBox3D *m_pBoundingBoxZ;
-    BBRectBoundingBox2D *m_pBoundingBoxYOZ;
-    BBRectBoundingBox2D *m_pBoundingBoxXOZ;
-    BBRectBoundingBox2D *m_pBoundingBoxXOY;
+    BBRectBoundingBox3D *m_pBoundingBoxYOZ;
+    BBRectBoundingBox3D *m_pBoundingBoxXOZ;
+    BBRectBoundingBox3D *m_pBoundingBoxXOY;
 };
 
 
@@ -91,9 +91,9 @@ private:
     void transform(const BBRay &ray) override;
 
     BBCoordinateQuarterCircle *m_pCoordinateQuarterCircle;
-    BBQuarterCircleBoundingBox2D *m_pBoundingBoxYOZ;
-    BBQuarterCircleBoundingBox2D *m_pBoundingBoxXOZ;
-    BBQuarterCircleBoundingBox2D *m_pBoundingBoxXOY;
+    BBQuarterCircleBoundingBox3D *m_pBoundingBoxYOZ;
+    BBQuarterCircleBoundingBox3D *m_pBoundingBoxXOZ;
+    BBQuarterCircleBoundingBox3D *m_pBoundingBoxXOY;
     // when transforming, appear
     BBCoordinateCircle *m_pCoordinateCircle;
     BBCoordinateTickMark *m_pCoordinateTickMark;
@@ -129,10 +129,10 @@ private:
     BBBoundingBox3D *m_pBoundingBoxX;
     BBBoundingBox3D *m_pBoundingBoxY;
     BBBoundingBox3D *m_pBoundingBoxZ;
-    BBRectBoundingBox2D *m_pBoundingBoxYOZ;
-    BBRectBoundingBox2D *m_pBoundingBoxXOZ;
-    BBRectBoundingBox2D *m_pBoundingBoxXOY;
-    BBTriangleBoundingBox2D *m_pBoundingBoxXYZ;
+    BBRectBoundingBox3D *m_pBoundingBoxYOZ;
+    BBRectBoundingBox3D *m_pBoundingBoxXOZ;
+    BBRectBoundingBox3D *m_pBoundingBoxXOY;
+    BBTriangleBoundingBox3D *m_pBoundingBoxXYZ;
 
     QVector3D m_SelectedObjectOriginalScale;
 };

@@ -25,9 +25,9 @@ protected:
     BBGameObject *m_pSelectedObject;
     bool m_bTransforming;
 
-    BBRectBoundingBox2D *m_pBoundingBoxX;
-    BBRectBoundingBox2D *m_pBoundingBoxY;
-    BBRectBoundingBox2D *m_pBoundingBoxXOY;
+//    BBRectBoundingBox2D *m_pBoundingBoxX;
+//    BBRectBoundingBox2D *m_pBoundingBoxY;
+//    BBRectBoundingBox2D *m_pBoundingBoxXOY;
 
 public:
     void setSelectedObject(BBGameObject *pObject);

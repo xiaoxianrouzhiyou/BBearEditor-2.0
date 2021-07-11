@@ -4,7 +4,7 @@
 
 #include "Base/BBRenderableObject.h"
 
-class BBRectBoundingBox2D;
+class BBRectBoundingBox3D;
 
 class BBIcon : public BBRenderableObject
 {
@@ -22,7 +22,7 @@ public:
     bool belongToSelectionRegion(const BBFrustum &frustum) override;
 
 private:
-    BBRectBoundingBox2D *m_pBoundingBox2D;
+    BBRectBoundingBox3D *m_pBoundingBox;
 };
 
 #endif // BBICON_H

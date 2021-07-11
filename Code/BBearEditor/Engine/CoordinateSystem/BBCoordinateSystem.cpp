@@ -125,9 +125,9 @@ BBPositionCoordinateSystem::BBPositionCoordinateSystem()
     m_pBoundingBoxX = new BBBoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, 0.75f, 0.0f, 0.0f, 0.45f, 0.1f, 0.1f);
     m_pBoundingBoxY = new BBBoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, 0.0f, 0.75f, 0.0f, 0.1f, 0.45f, 0.1f);
     m_pBoundingBoxZ = new BBBoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, 0.0f, 0.0f, 0.75f, 0.1f, 0.1f, 0.45f);
-    m_pBoundingBoxYOZ = new BBRectBoundingBox2D(0.0f, 0.15f, 0.15f, 0.0f, 0.15f, 0.15f);
-    m_pBoundingBoxXOZ = new BBRectBoundingBox2D(0.15f, 0.0f, 0.15f, 0.15f, 0.0f, 0.15f);
-    m_pBoundingBoxXOY = new BBRectBoundingBox2D(0.15f, 0.15f, 0.0f, 0.15f, 0.15f, 0.0f);
+    m_pBoundingBoxYOZ = new BBRectBoundingBox3D(0.0f, 0.15f, 0.15f, 0.0f, 0.15f, 0.15f);
+    m_pBoundingBoxXOZ = new BBRectBoundingBox3D(0.15f, 0.0f, 0.15f, 0.15f, 0.0f, 0.15f);
+    m_pBoundingBoxXOY = new BBRectBoundingBox3D(0.15f, 0.15f, 0.0f, 0.15f, 0.15f, 0.0f);
 }
 
 BBPositionCoordinateSystem::~BBPositionCoordinateSystem()
@@ -299,9 +299,9 @@ BBRotationCoordinateSystem::BBRotationCoordinateSystem()
     : BBCoordinateSystem()
 {
     m_pCoordinateQuarterCircle = new BBCoordinateQuarterCircle();
-    m_pBoundingBoxYOZ = new BBQuarterCircleBoundingBox2D(0, 0, 0, 1, BBPlaneName::YOZ);
-    m_pBoundingBoxXOZ = new BBQuarterCircleBoundingBox2D(0, 0, 0, 1, BBPlaneName::XOZ);
-    m_pBoundingBoxXOY = new BBQuarterCircleBoundingBox2D(0, 0, 0, 1, BBPlaneName::XOY);
+    m_pBoundingBoxYOZ = new BBQuarterCircleBoundingBox3D(0, 0, 0, 1, BBPlaneName::YOZ);
+    m_pBoundingBoxXOZ = new BBQuarterCircleBoundingBox3D(0, 0, 0, 1, BBPlaneName::XOZ);
+    m_pBoundingBoxXOY = new BBQuarterCircleBoundingBox3D(0, 0, 0, 1, BBPlaneName::XOY);
     m_pCoordinateCircle = new BBCoordinateCircle();
     m_pCoordinateTickMark = new BBCoordinateTickMark();
     m_pCoordinateSector = new BBCoordinateSector();
@@ -504,10 +504,10 @@ BBScaleCoordinateSystem::BBScaleCoordinateSystem()
     m_pBoundingBoxX = new BBBoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, 0.69f, 0.0f, 0.0f, 0.39f, 0.08f, 0.08f);
     m_pBoundingBoxY = new BBBoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, 0.0f, 0.69f, 0.0f, 0.08f, 0.39f, 0.08f);
     m_pBoundingBoxZ = new BBBoundingBox3D(0, 0, 0, 0, 0, 0, 1, 1, 1, 0.0f, 0.0f, 0.69f, 0.08f, 0.08f, 0.39f);
-    m_pBoundingBoxYOZ = new BBRectBoundingBox2D(0.0f, 0.15f, 0.15f, 0.0f, 0.15f, 0.15f);
-    m_pBoundingBoxXOZ = new BBRectBoundingBox2D(0.15f, 0.0f, 0.15f, 0.15f, 0.0f, 0.15f);
-    m_pBoundingBoxXOY = new BBRectBoundingBox2D(0.15f, 0.15f, 0.0f, 0.15f, 0.15f, 0.0f);
-    m_pBoundingBoxXYZ = new BBTriangleBoundingBox2D(QVector3D(0.3f, 0.0f, 0.0f),
+    m_pBoundingBoxYOZ = new BBRectBoundingBox3D(0.0f, 0.15f, 0.15f, 0.0f, 0.15f, 0.15f);
+    m_pBoundingBoxXOZ = new BBRectBoundingBox3D(0.15f, 0.0f, 0.15f, 0.15f, 0.0f, 0.15f);
+    m_pBoundingBoxXOY = new BBRectBoundingBox3D(0.15f, 0.15f, 0.0f, 0.15f, 0.15f, 0.0f);
+    m_pBoundingBoxXYZ = new BBTriangleBoundingBox3D(QVector3D(0.3f, 0.0f, 0.0f),
                                                     QVector3D(0.0f, 0.3f, 0.0f),
                                                     QVector3D(0.0f, 0.0f, 0.3f));
 }

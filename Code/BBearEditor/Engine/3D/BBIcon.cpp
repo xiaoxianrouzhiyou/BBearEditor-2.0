@@ -16,31 +16,31 @@ BBIcon::BBIcon()
 BBIcon::BBIcon(const QVector3D &position, const QVector3D &rotation, const QVector3D &scale)
     : BBRenderableObject(position, rotation, scale)
 {
-    m_pBoundingBox2D = new BBRectBoundingBox2D(0.0f, 0.0f, 0.0f, 0.25f, 0.25f, 0.0f);
-    m_pBoundingBox2D->setPosition(position, false);
+    m_pBoundingBox = new BBRectBoundingBox3D(0.0f, 0.0f, 0.0f, 0.25f, 0.25f, 0.0f);
+    m_pBoundingBox->setPosition(position, false);
 }
 
 BBIcon::~BBIcon()
 {
-    BB_SAFE_DELETE(m_pBoundingBox2D);
+    BB_SAFE_DELETE(m_pBoundingBox);
 }
 
 void BBIcon::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
 {
     BBRenderableObject::setPosition(position, bUpdateLocalTransform);
-    m_pBoundingBox2D->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBox->setPosition(position, bUpdateLocalTransform);
 }
 
 void BBIcon::setRotation(const QQuaternion &quaternion, bool bUpdateLocalTransform)
 {
     BBRenderableObject::setRotation(quaternion, bUpdateLocalTransform);
-    m_pBoundingBox2D->setRotation(quaternion, bUpdateLocalTransform);
+    m_pBoundingBox->setRotation(quaternion, bUpdateLocalTransform);
 }
 
 void BBIcon::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
 {
     BBRenderableObject::setScale(scale, bUpdateLocalTransform);
-    m_pBoundingBox2D->setScale(scale, bUpdateLocalTransform);
+    m_pBoundingBox->setScale(scale, bUpdateLocalTransform);
 }
 
 void BBIcon::init(const QString &path)
@@ -77,12 +77,12 @@ void BBIcon::init(const QString &path)
 
 bool BBIcon::hit(const BBRay &ray, float &fDistance)
 {
-    return m_pBoundingBox2D->hit(ray, fDistance);
+    return m_pBoundingBox->hit(ray, fDistance);
 }
 
 bool BBIcon::belongToSelectionRegion(const BBFrustum &frustum)
 {
     // Eliminate objects whose the center point of the bounding box is on the outside
-    QVector3D center = getModelMatrix() * m_pBoundingBox2D->getCenter();
+    QVector3D center = getModelMatrix() * m_pBoundingBox->getCenter();
     return frustum.contain(center);
 }

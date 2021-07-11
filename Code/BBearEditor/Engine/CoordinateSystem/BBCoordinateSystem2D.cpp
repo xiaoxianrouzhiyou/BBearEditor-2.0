@@ -9,30 +9,30 @@
 BBCoordinateSystem2D::BBCoordinateSystem2D()
     : BBGameObject()
 {
-    m_pBoundingBoxX = new BBRectBoundingBox2D(0.75f, 0.0f, 0.0f, 0.45f, 0.1f, 0.0f);
-    m_pBoundingBoxY = new BBRectBoundingBox2D(0.0f, 0.75f, 0.0f, 0.1f, 0.45f, 0.0f);
-    m_pBoundingBoxXOY = new BBRectBoundingBox2D(0.15f, 0.15f, 0.0f, 0.15f, 0.15f, 0.0f);
+//    m_pBoundingBoxX = new BBRectBoundingBox2D(0.75f, 0.0f, 0.0f, 0.45f, 0.1f, 0.0f);
+//    m_pBoundingBoxY = new BBRectBoundingBox2D(0.0f, 0.75f, 0.0f, 0.1f, 0.45f, 0.0f);
+//    m_pBoundingBoxXOY = new BBRectBoundingBox2D(0.15f, 0.15f, 0.0f, 0.15f, 0.15f, 0.0f);
 }
 
 BBCoordinateSystem2D::~BBCoordinateSystem2D()
 {
-    BB_SAFE_DELETE(m_pBoundingBoxX);
-    BB_SAFE_DELETE(m_pBoundingBoxY);
-    BB_SAFE_DELETE(m_pBoundingBoxXOY);
+//    BB_SAFE_DELETE(m_pBoundingBoxX);
+//    BB_SAFE_DELETE(m_pBoundingBoxY);
+//    BB_SAFE_DELETE(m_pBoundingBoxXOY);
 }
 
 void BBCoordinateSystem2D::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
 {
-    m_pBoundingBoxX->setPosition(position, bUpdateLocalTransform);
-    m_pBoundingBoxY->setPosition(position, bUpdateLocalTransform);
-    m_pBoundingBoxXOY->setPosition(position, bUpdateLocalTransform);
+//    m_pBoundingBoxX->setPosition(position, bUpdateLocalTransform);
+//    m_pBoundingBoxY->setPosition(position, bUpdateLocalTransform);
+//    m_pBoundingBoxXOY->setPosition(position, bUpdateLocalTransform);
 }
 
 void BBCoordinateSystem2D::setScale(float scale, bool bUpdateLocalTransform)
 {
-    m_pBoundingBoxX->setScale(scale, bUpdateLocalTransform);
-    m_pBoundingBoxY->setScale(scale, bUpdateLocalTransform);
-    m_pBoundingBoxXOY->setScale(scale, bUpdateLocalTransform);
+//    m_pBoundingBoxX->setScale(scale, bUpdateLocalTransform);
+//    m_pBoundingBoxY->setScale(scale, bUpdateLocalTransform);
+//    m_pBoundingBoxXOY->setScale(scale, bUpdateLocalTransform);
 }
 
 bool BBCoordinateSystem2D::hitAxis(int x, int y, float &fDistance)
