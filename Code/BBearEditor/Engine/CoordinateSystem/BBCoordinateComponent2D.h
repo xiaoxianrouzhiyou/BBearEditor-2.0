@@ -7,7 +7,7 @@
 class BBCoordinateComponent2D : public BBRenderableObject2D
 {
 protected:
-    BBCoordinateComponent2D(int nCenterX, int nCenterY);
+    BBCoordinateComponent2D(int x, int y);
 
     void init() override;
 
@@ -17,7 +17,7 @@ protected:
 class BBPositionCoordinateComponent2D : public BBCoordinateComponent2D
 {
 public:
-    BBPositionCoordinateComponent2D(int nCenterX, int nCenterY);
+    BBPositionCoordinateComponent2D(int x, int y);
 
     void init() override;
 };

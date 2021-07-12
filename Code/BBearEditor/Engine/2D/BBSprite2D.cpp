@@ -14,8 +14,8 @@ BBSprite2D::BBSprite2D()
 
 }
 
-BBSprite2D::BBSprite2D(int nCenterX, int nCenterY, int nWidth, int nHeight)
-    : BBRenderableObject2D(nCenterX, nCenterY, nWidth, nHeight)
+BBSprite2D::BBSprite2D(int x, int y, int nWidth, int nHeight)
+    : BBRenderableObject2D(x, y, nWidth, nHeight)
 {
 
 }

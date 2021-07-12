@@ -210,7 +210,7 @@ void BBEditViewOpenGLWidget::mouseMoveEvent(QMouseEvent *e)
         {
             // do not perform selection operation
             BBRay ray = m_pScene->getCamera()->createRayFromScreen(e->pos().x(), e->pos().y());
-            if (m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(ray, true))
+            if (m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(e->pos().x(), e->pos().y(), ray, true))
             {
                 // update value in property manager
                 updateTransformInPropertyManager(m_pScene->getTransformCoordinateSystem()->getSelectedObject(),
@@ -233,7 +233,7 @@ void BBEditViewOpenGLWidget::mouseMoveEvent(QMouseEvent *e)
     {
         // move mouse without press mouse
         BBRay ray = m_pScene->getCamera()->createRayFromScreen(e->pos().x(), e->pos().y());
-        m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(ray, false);
+        m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(e->pos().x(), e->pos().y(), ray, false);
     }
 }
 
@@ -278,7 +278,7 @@ void BBEditViewOpenGLWidget::mouseReleaseEvent(QMouseEvent *e)
 
         // When the coordinate system is moved, the mouse leaves the coordinate system
         // If the ray is not updated when released, the selected coordinate axis cannot be restored to its original color
-        m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(ray, false);
+        m_pScene->getTransformCoordinateSystem()->mouseMoveEvent(e->pos().x(), e->pos().y(), ray, false);
 
         // Exit selection mode
         m_pScene->setSelectionRegionVisibility(false);

@@ -5,7 +5,7 @@
 #include "Base/BBGameObject.h"
 
 class BBPositionCoordinateComponent2D;
-class BBRectBoundingBox2D;
+class BBAABBBoundingBox2D;
 
 class BBCoordinateSystem2D : public BBGameObject
 {
@@ -16,8 +16,8 @@ protected:
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
     void setScale(float scale, bool bUpdateLocalTransform = true) override;
 
-    virtual bool hitAxis(int x, int y, float &fDistance);
-    virtual bool hitFace(int x, int y, float &fDistance);
+    virtual bool hitAxis(int x, int y);
+    virtual bool hitFace(int x, int y);
     virtual void transform(int x, int y) = 0;
 
     BBAxisFlags m_SelectedAxis;
@@ -25,9 +25,9 @@ protected:
     BBGameObject *m_pSelectedObject;
     bool m_bTransforming;
 
-//    BBRectBoundingBox2D *m_pBoundingBoxX;
-//    BBRectBoundingBox2D *m_pBoundingBoxY;
-//    BBRectBoundingBox2D *m_pBoundingBoxXOY;
+    BBAABBBoundingBox2D *m_pBoundingBoxX;
+    BBAABBBoundingBox2D *m_pBoundingBoxY;
+    BBAABBBoundingBox2D *m_pBoundingBoxXOY;
 
 public:
     void setSelectedObject(BBGameObject *pObject);

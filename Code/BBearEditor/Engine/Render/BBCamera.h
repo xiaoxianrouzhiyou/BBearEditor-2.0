@@ -26,6 +26,7 @@ public:
     void setMoveSpeed(int dir);
     void lookAt(BBGameObject *pGameObject);
     BBRay createRayFromScreen(int x, int y);
+    void switchCoordinate(int &x, int &y);
     QVector3D projectPointToScreenSpace(const QVector3D &point);
     QVector4D projectPointToScreenSpace(const QVector4D &point);
 

@@ -23,7 +23,7 @@ public:
 
     void setSelectedObject(BBGameObject *pObject);
     void setSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet);
-    bool mouseMoveEvent(const BBRay &ray, bool bMousePressed);
+    bool mouseMoveEvent(int x, int y, const BBRay &ray, bool bMousePressed);
     void setCoordinateSystem(char modeKey);
     bool isTransforming() { return m_bTransforming; }
     void stopTransform();

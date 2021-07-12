@@ -2,6 +2,8 @@
 #include "BBCoordinateSystem.h"
 #include "BBCoordinateSystem2D.h"
 #include "Base/BBGameObjectSet.h"
+#include "Scene/BBSceneManager.h"
+#include "Render/BBCamera.h"
 
 
 BBTransformCoordinateSystem::BBTransformCoordinateSystem()
@@ -119,21 +121,42 @@ void BBTransformCoordinateSystem::setSelectedObjects(QList<BBGameObject*> gameOb
     setCoordinateSystem(m_ModeKey);
 }
 
-bool BBTransformCoordinateSystem::mouseMoveEvent(const BBRay &ray, bool bMousePressed)
+/**
+ * @brief BBTransformCoordinateSystem::mouseMoveEvent
+ * @param x                                                     original point is the center of screen
+ * @param y
+ * @param ray
+ * @param bMousePressed
+ * @return
+ */
+bool BBTransformCoordinateSystem::mouseMoveEvent(int x, int y, const BBRay &ray, bool bMousePressed)
 {
     m_bTransforming = false;
-    if (m_ModeKey == m_PositionCoordinateSystemModeKey)
+
+    if (m_eSpaceMode == Space3D)
     {
-        m_bTransforming = m_pPositionCoordinateSystem->mouseMoveEvent(ray, bMousePressed);
+        if (m_ModeKey == m_PositionCoordinateSystemModeKey)
+        {
+            m_bTransforming = m_pPositionCoordinateSystem->mouseMoveEvent(ray, bMousePressed);
+        }
+        else if (m_ModeKey == m_RotationCoordinateSystemModeKey)
+        {
+            m_bTransforming = m_pRotationCoordinateSystem->mouseMoveEvent(ray, bMousePressed);
+        }
+        else if (m_ModeKey == m_ScaleCoordinateSystemModeKey)
+        {
+            m_bTransforming = m_pScaleCoordinateSystem->mouseMoveEvent(ray, bMousePressed);
+        }
     }
-    else if (m_ModeKey == m_RotationCoordinateSystemModeKey)
+    else
     {
-        m_bTransforming = m_pRotationCoordinateSystem->mouseMoveEvent(ray, bMousePressed);
+        BBSceneManager::getCamera()->switchCoordinate(x, y);
+        if (m_ModeKey == m_PositionCoordinateSystemModeKey)
+        {
+            m_bTransforming = m_pPositionCoordinateSystem2D->mouseMoveEvent(x, y, bMousePressed);
+        }
     }
-    else if (m_ModeKey == m_ScaleCoordinateSystemModeKey)
-    {
-        m_bTransforming = m_pScaleCoordinateSystem->mouseMoveEvent(ray, bMousePressed);
-    }
+
     // if false, other mouse events will be processed
     return m_bTransforming;
 }

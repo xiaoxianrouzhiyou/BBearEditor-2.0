@@ -94,8 +94,11 @@ protected:
     QVector3D m_LocalScale;
     QMatrix4x4 m_ModelMatrix;
 
-    int m_nHalfWidth;
-    int m_nHalfHeight;
+    // screen space
+    int m_nScreenX;
+    int m_nScreenY;
+    int m_nWidth;
+    int m_nHeight;
 
     bool m_bActive;
     bool m_bVisible;

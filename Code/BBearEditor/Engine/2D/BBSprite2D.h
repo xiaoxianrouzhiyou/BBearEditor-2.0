@@ -10,7 +10,7 @@ class BBSprite2D : public BBRenderableObject2D
 {
 public:
     BBSprite2D();
-    BBSprite2D(int nCenterX, int nCenterY, int nWidth, int nHeight);
+    BBSprite2D(int x, int y, int nWidth, int nHeight);
     ~BBSprite2D();
 
     void init() override;

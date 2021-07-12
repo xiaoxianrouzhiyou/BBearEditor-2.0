@@ -12,8 +12,8 @@
  * @param nWidth
  * @param nHeight
  */
-BBCoordinateComponent2D::BBCoordinateComponent2D(int nCenterX, int nCenterY)
-    : BBRenderableObject2D(nCenterX, nCenterY, 450, 450)
+BBCoordinateComponent2D::BBCoordinateComponent2D(int x, int y)
+    : BBRenderableObject2D(x, y, 120, 120)
 {
     m_SelectedAxis = BBAxisName::AxisNULL;
 }
@@ -33,8 +33,8 @@ void BBCoordinateComponent2D::init()
 /**
  * @brief BBPositionCoordinateComponent2D::BBPositionCoordinateComponent2D
  */
-BBPositionCoordinateComponent2D::BBPositionCoordinateComponent2D(int nCenterX, int nCenterY)
-    : BBCoordinateComponent2D(nCenterX, nCenterY)
+BBPositionCoordinateComponent2D::BBPositionCoordinateComponent2D(int x, int y)
+    : BBCoordinateComponent2D(x, y)
 {
 
 }

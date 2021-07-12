@@ -214,6 +214,15 @@ BBRay BBCamera::createRayFromScreen(int x, int y)
     return ray;
 }
 
+void BBCamera::switchCoordinate(int &x, int &y)
+{
+    // The coordinates of the origin in the upper left corner are converted
+    // into the coordinates of the origin in the middle of the screen
+    x -= m_nViewportWidth / 2.0f;
+    y -= m_nViewportHeight / 2.0f;
+    y = -y;
+}
+
 QVector3D BBCamera::projectPointToScreenSpace(const QVector3D &point)
 {
     QVector3D posOnNdcSpace = m_ProjectionMatrix * point;

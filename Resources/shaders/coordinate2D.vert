@@ -14,5 +14,5 @@ void main()
 
     // Scaling to NDC coordinates
     // Z is any value of -1 ~ 1
-    gl_Position = vec4(screen_pos.x / screenParameters.x, screen_pos.y / screenParameters.y, 0.0, 1.0);
+    gl_Position = vec4(screen_pos.x / screenParameters.x * 2.0, screen_pos.y / screenParameters.y * 2.0, 0.0, 1.0);
 }

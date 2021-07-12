@@ -41,7 +41,6 @@ protected:
 class BBRectBoundingBox3D : public BBBoundingBox
 {
 public:
-    BBRectBoundingBox3D(int nTopLeftX, int nTopLeftY, int nWidth, int nHeight);
     BBRectBoundingBox3D(float fCenterX, float fCenterY, float fCenterZ,
                         float fHalfLengthX, float fHalfLengthY, float fHalfLengthZ);
 

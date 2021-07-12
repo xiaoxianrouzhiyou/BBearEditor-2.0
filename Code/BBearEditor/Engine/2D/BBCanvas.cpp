@@ -13,15 +13,15 @@ BBCanvas::BBCanvas()
 
 }
 
-BBCanvas::BBCanvas(int nCenterX, int nCenterY, int nWidth, int nHeight)
+BBCanvas::BBCanvas(int x, int y, int nWidth, int nHeight)
     : BBGameObject()
 {
-    m_nHalfWidth = nWidth / 2.0f;
-    m_nHalfHeight = nHeight / 2.0f;
+//    m_nHalfWidth = nWidth / 2.0f;
+//    m_nHalfHeight = nHeight / 2.0f;
 //    m_pBoundingBox2D = new BBRectBoundingBox2D(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
 
-    setPosition(QVector3D(nCenterX, nCenterY, 0.0f));
-    setScale(QVector3D(m_nHalfWidth, m_nHalfHeight, 0.0f));
+//    setPosition(QVector3D(x, y, 0.0f));
+//    setScale(QVector3D(m_nHalfWidth, m_nHalfHeight, 0.0f));
 }
 
 BBCanvas::~BBCanvas()
