@@ -39,6 +39,19 @@ BBGameObject::BBGameObject(float px, float py, float pz,
     m_strIconName = "model";
 }
 
+/**
+ * @brief BBGameObject::BBGameObject            2D
+ * @param x
+ * @param y
+ * @param nWidth
+ * @param nHeight
+ */
+BBGameObject::BBGameObject(int x, int y, int nWidth, int nHeight)
+{
+    setSize(nWidth, nHeight);
+    setScreenCoordinate(x, y);
+}
+
 void BBGameObject::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
 {
     QVector3D displacement = position - m_Position;
@@ -380,6 +393,31 @@ void BBGameObject::showCloseUp(QVector3D &outPosition, QVector3D &outViewCenter,
     Q_UNUSED(fDistFactor);
     outViewCenter = m_Position + QVector3D(0, 0.5, 0);
     outPosition = outViewCenter + QVector3D(0, 0.5, 4);
+}
+
+void BBGameObject::setScreenCoordinateWithSwitchingOriginalPoint(int x, int y)
+{
+    BBSceneManager::getCamera()->switchCoordinate(x, y);
+    setScreenCoordinate(x, y);
+}
+
+void BBGameObject::setScreenCoordinate(int x, int y)
+{
+    m_nScreenX = x;
+    m_nScreenY = y;
+    setPosition(QVector3D(x, y, 0.0f));
+}
+
+void BBGameObject::setSize(int nWidth, int nHeight)
+{
+    m_nWidth = nWidth;
+    m_nHeight = nHeight;
+    setScale(QVector3D(m_nWidth, m_nHeight, 0));
+}
+
+void BBGameObject::translate(int nDeltaX, int nDeltaY)
+{
+    setScreenCoordinate(m_nScreenX + nDeltaX, m_nScreenY + nDeltaY);
 }
 
 void BBGameObject::setModelMatrix(float px, float py, float pz,

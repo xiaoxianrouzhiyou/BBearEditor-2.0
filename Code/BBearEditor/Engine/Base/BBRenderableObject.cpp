@@ -10,6 +10,9 @@
 #include "Render/BBRenderPass.h"
 
 
+/**
+ * @brief BBRenderableObject::BBRenderableObject            3D
+ */
 BBRenderableObject::BBRenderableObject()
     : BBRenderableObject(0, 0, 0, 0, 0, 0, 1, 1, 1)
 {
@@ -27,17 +30,20 @@ BBRenderableObject::BBRenderableObject(const QVector3D &position, const QVector3
 BBRenderableObject::BBRenderableObject(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz)
     : BBGameObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
-    m_bInRenderQueue = false;
-    m_pDrawCalls = nullptr;
-    m_bVisible = true;
-    m_pDefaultMaterial = new BBMaterial();
-    m_pCurrentMaterial = m_pDefaultMaterial;
-    m_pVBO = nullptr;
-    m_pEBO = nullptr;
-    m_pIndexes = nullptr;
-    m_nIndexCount = 0;
-    m_nVertexCount = 0;
-    m_DefaultColor = QVector3D(1.0f, 1.0f, 1.0f);
+    sharedInit();
+}
+
+/**
+ * @brief BBRenderableObject::BBRenderableObject            2D
+ * @param x
+ * @param y
+ * @param nWidth
+ * @param nHeight
+ */
+BBRenderableObject::BBRenderableObject(int x, int y, int nWidth, int nHeight)
+    : BBGameObject(x, y, nWidth, nHeight)
+{
+    sharedInit();
 }
 
 BBRenderableObject::~BBRenderableObject()
@@ -152,4 +158,19 @@ void BBRenderableObject::appendDrawCall(BBDrawCall *pDrawCall)
     {
         m_pDrawCalls->pushBack(pDrawCall);
     }
+}
+
+void BBRenderableObject::sharedInit()
+{
+    m_bInRenderQueue = false;
+    m_pDrawCalls = nullptr;
+    m_bVisible = true;
+    m_pDefaultMaterial = new BBMaterial();
+    m_pCurrentMaterial = m_pDefaultMaterial;
+    m_pVBO = nullptr;
+    m_pEBO = nullptr;
+    m_pIndexes = nullptr;
+    m_nIndexCount = 0;
+    m_nVertexCount = 0;
+    m_DefaultColor = QVector3D(1.0f, 1.0f, 1.0f);
 }

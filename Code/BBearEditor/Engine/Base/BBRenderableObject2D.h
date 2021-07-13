@@ -16,9 +16,6 @@ public:
     void init() override;
     void resize(float fWidth, float fHeight) override;
 
-    void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true);
-    void setSize(int nWidth, int nHeight);
-
     virtual bool hit(int x, int y);
 
 protected:

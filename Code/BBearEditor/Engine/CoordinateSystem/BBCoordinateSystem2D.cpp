@@ -9,9 +9,11 @@
 BBCoordinateSystem2D::BBCoordinateSystem2D()
     : BBGameObject()
 {
-    m_pBoundingBoxX = new BBAABBBoundingBox2D(0.75f, 0.0f, 0.45f, 0.1f, 120, 120);
-    m_pBoundingBoxY = new BBAABBBoundingBox2D(0.0f, 0.75f, 0.1f, 0.45f, 120, 120);
-    m_pBoundingBoxXOY = new BBAABBBoundingBox2D(0.15f, 0.15f, 0.15f, 0.15f, 120, 120);
+    m_pBoundingBoxX = new BBAABBBoundingBox2D(90, 0, 53, 12);
+    m_pBoundingBoxY = new BBAABBBoundingBox2D(0, 90, 12, 53);
+    m_pBoundingBoxXOY = new BBAABBBoundingBox2D(18, 18, 18, 18);
+    m_SelectedAxis = AxisNULL;
+    m_pSelectedObject = nullptr;
     m_bTransforming = false;
 }
 
@@ -22,11 +24,18 @@ BBCoordinateSystem2D::~BBCoordinateSystem2D()
     BB_SAFE_DELETE(m_pBoundingBoxXOY);
 }
 
-void BBCoordinateSystem2D::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
+void BBCoordinateSystem2D::setScreenCoordinate(int x, int y)
 {
-    m_pBoundingBoxX->setPosition(position, bUpdateLocalTransform);
-    m_pBoundingBoxY->setPosition(position, bUpdateLocalTransform);
-    m_pBoundingBoxXOY->setPosition(position, bUpdateLocalTransform);
+    m_pBoundingBoxX->setScreenCoordinate(x + 90, y);
+    m_pBoundingBoxY->setScreenCoordinate(x, y + 90);
+    m_pBoundingBoxXOY->setScreenCoordinate(x + 18, y + 18);
+}
+
+void BBCoordinateSystem2D::translate(int nDeltaX, int nDeltaY)
+{
+    m_pBoundingBoxX->translate(nDeltaX, nDeltaY);
+    m_pBoundingBoxY->translate(nDeltaX, nDeltaY);
+    m_pBoundingBoxXOY->translate(nDeltaX, nDeltaY);
 }
 
 void BBCoordinateSystem2D::setScale(float scale, bool bUpdateLocalTransform)
@@ -38,19 +47,51 @@ void BBCoordinateSystem2D::setScale(float scale, bool bUpdateLocalTransform)
 
 bool BBCoordinateSystem2D::hitAxis(int x, int y)
 {
-    BB_PROCESS_ERROR_RETURN_FALSE(m_pBoundingBoxX->hit(x, y));
-    BB_PROCESS_ERROR_RETURN_FALSE(m_pBoundingBoxY->hit(x, y));
-    return true;
+    BBAxisFlags axis = AxisNULL;
+    bool bRet = false;
+    if (m_pBoundingBoxX->hit(x, y))
+    {
+        axis |= AxisX;
+        bRet = true;
+    }
+    if (m_pBoundingBoxY->hit(x, y))
+    {
+        axis |= AxisY;
+        bRet = true;
+    }
+    setSelectedAxis(axis);
+    return bRet;
 }
 
 bool BBCoordinateSystem2D::hitFace(int x, int y)
 {
-    return m_pBoundingBoxXOY->hit(x, y);
+    bool bRet = m_pBoundingBoxXOY->hit(x, y);
+    if (bRet)
+    {
+        setSelectedAxis(AxisX | AxisY);
+    }
+    return bRet;
 }
 
 void BBCoordinateSystem2D::setSelectedObject(BBGameObject *pObject)
 {
+    m_pSelectedObject = pObject;
+    if (pObject != nullptr)
+    {
+        setScreenCoordinate(pObject->getScreenX(), pObject->getScreenY());
+        setRotation(pObject->getRotation());
+    }
+    else
+    {
+        setScreenCoordinate(0, 0);
+        setRotation(QVector3D(0, 0, 0));
+        setSelectedAxis(BBAxisName::AxisNULL);
+    }
+}
 
+void BBCoordinateSystem2D::setSelectedAxis(const BBAxisFlags &axis)
+{
+    m_SelectedAxis = axis;
 }
 
 bool BBCoordinateSystem2D::mouseMoveEvent(int x, int y, bool bMousePressed)
@@ -86,7 +127,7 @@ bool BBCoordinateSystem2D::mouseMoveEvent(int x, int y, bool bMousePressed)
 void BBCoordinateSystem2D::stopTransform()
 {
     // When no movement, reset mouse pos
-    QVector3D pos;
+    QPoint pos;
     m_LastMousePos = pos;
     m_bTransforming = false;
 }
@@ -121,12 +162,42 @@ void BBPositionCoordinateSystem2D::resize(float fWidth, float fHeight)
     m_pCoordinateComponent->resize(fWidth, fHeight);
 }
 
+void BBPositionCoordinateSystem2D::setScreenCoordinate(int x, int y)
+{
+    BBCoordinateSystem2D::setScreenCoordinate(x, y);
+    m_pCoordinateComponent->setScreenCoordinate(x, y);
+}
+
+void BBPositionCoordinateSystem2D::translate(int nDeltaX, int nDeltaY)
+{
+    BBCoordinateSystem2D::translate(nDeltaX, nDeltaY);
+    m_pCoordinateComponent->translate(nDeltaX, nDeltaY);
+}
+
 void BBPositionCoordinateSystem2D::setSelectedAxis(const BBAxisFlags &axis)
 {
-
+    BBCoordinateSystem2D::setSelectedAxis(axis);
+    m_pCoordinateComponent->setSelectedAxis(axis);
 }
 
 void BBPositionCoordinateSystem2D::transform(int x, int y)
 {
+    BB_PROCESS_ERROR_RETURN(m_bTransforming);
 
+    // displacement can be computed
+    if (!m_LastMousePos.isNull())
+    {
+        if (m_SelectedAxis & BBAxisName::AxisX)
+        {
+            translate(x - m_LastMousePos.x(), 0);
+        }
+        if (m_SelectedAxis & BBAxisName::AxisY)
+        {
+            translate(0, y - m_LastMousePos.y());
+        }
+        m_pSelectedObject->setScreenCoordinate(m_pCoordinateComponent->getScreenX(), m_pCoordinateComponent->getScreenY());
+    }
+
+    // record and wait the next frame
+    m_LastMousePos = QPoint(x, y);
 }

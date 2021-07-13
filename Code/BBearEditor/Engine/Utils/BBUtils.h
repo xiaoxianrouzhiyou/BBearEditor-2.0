@@ -102,10 +102,10 @@ namespace BBFileSystem
 
 enum BBAxisName
 {
-    AxisNULL = 0x01,
-    AxisX = 0x02,
-    AxisY = 0x04,
-    AxisZ = 0x08
+    AxisNULL = 0x00,
+    AxisX = 0x01,
+    AxisY = 0x02,
+    AxisZ = 0x04
 };
 
 

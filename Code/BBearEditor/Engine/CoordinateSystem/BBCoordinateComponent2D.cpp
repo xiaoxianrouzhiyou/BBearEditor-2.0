@@ -29,6 +29,21 @@ void BBCoordinateComponent2D::init()
     BBRenderableObject2D::init();
 }
 
+void BBCoordinateComponent2D::setSelectedAxis(const BBAxisFlags &axis)
+{
+    BB_PROCESS_ERROR_RETURN((axis ^ m_SelectedAxis));
+    // The axis that was selected last time returns to normal
+    if (m_SelectedAxis != BBAxisName::AxisNULL)
+    {
+        setVertexColor(m_SelectedAxis, false);
+    }
+    if (axis != BBAxisName::AxisNULL)
+    {
+        setVertexColor(axis, true);
+    }
+    m_SelectedAxis = axis;
+}
+
 
 /**
  * @brief BBPositionCoordinateComponent2D::BBPositionCoordinateComponent2D
@@ -99,4 +114,42 @@ void BBPositionCoordinateComponent2D::init()
     pDrawCall3->setMaterial(m_pCurrentMaterial);
     pDrawCall3->setVBO(m_pVBO, GL_QUADS, 14, 4);
     appendDrawCall(pDrawCall3);
+}
+
+void BBPositionCoordinateComponent2D::setVertexColor(const BBAxisFlags &axis, bool bSelected)
+{
+    QVector3D color;
+    if (axis & BBAxisName::AxisX)
+    {
+        if (bSelected)
+        {
+            color = BBConstant::m_Yellow;
+        }
+        else
+        {
+            color = BBConstant::m_Red;
+        }
+        m_pVBO->setColor(0, color);
+        m_pVBO->setColor(1, color);
+        m_pVBO->setColor(2, color);
+        m_pVBO->setColor(6, color);
+        m_pVBO->setColor(7, color);
+    }
+    if (axis & BBAxisName::AxisY)
+    {
+        if (bSelected)
+        {
+            color = BBConstant::m_Yellow;
+        }
+        else
+        {
+            color = BBConstant::m_Green;
+        }
+        m_pVBO->setColor(3, color);
+        m_pVBO->setColor(4, color);
+        m_pVBO->setColor(5, color);
+        m_pVBO->setColor(8, color);
+        m_pVBO->setColor(9, color);
+    }
+    m_pVBO->submitData();
 }

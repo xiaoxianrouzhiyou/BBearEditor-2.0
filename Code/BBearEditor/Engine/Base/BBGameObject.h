@@ -22,6 +22,7 @@ public:
     BBGameObject(float px, float py, float pz,
                  float rx, float ry, float rz,
                  float sx, float sy, float sz);
+    BBGameObject(int x, int y, int nWidth, int nHeight);
     virtual ~BBGameObject() {}
 
     inline QMatrix4x4 getModelMatrix() { return m_ModelMatrix; }
@@ -78,6 +79,14 @@ public:
     virtual bool hit(const BBRay &ray, float &fDistance);
     virtual bool belongToSelectionRegion(const BBFrustum &frustum);
     virtual void showCloseUp(QVector3D &outPosition, QVector3D &outViewCenter, float fDistFactor = 2.4);
+
+    void setScreenCoordinateWithSwitchingOriginalPoint(int x, int y);
+    virtual void setScreenCoordinate(int x, int y);
+    void setSize(int nWidth, int nHeight);
+    virtual void translate(int nDeltaX, int nDeltaY);
+    inline QPoint getScreenCoordinate() { return QPoint(m_nScreenX, m_nScreenY); }
+    inline int getScreenX() { return m_nScreenX; }
+    inline int getScreenY() { return m_nScreenY; }
 
 protected:
     virtual void setModelMatrix(float px, float py, float pz,

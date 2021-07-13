@@ -15,8 +15,8 @@ public:
 class BBAABBBoundingBox2D : public BBBoundingBox2D
 {
 public:
-    BBAABBBoundingBox2D(int x, int y, int nWidth, int nHeight);
     BBAABBBoundingBox2D(float fCenterX, float fCenterY, float fHalfLengthX, float fHalfLengthY, int nWidth, int nHeight);
+    BBAABBBoundingBox2D(int x, int y, int nHalfLengthX, int nHalfLengthY);
 
     bool hit(int x, int y) override;
 

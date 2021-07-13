@@ -14,14 +14,9 @@ BBCanvas::BBCanvas()
 }
 
 BBCanvas::BBCanvas(int x, int y, int nWidth, int nHeight)
-    : BBGameObject()
+    : BBGameObject(x, y, nWidth, nHeight)
 {
-//    m_nHalfWidth = nWidth / 2.0f;
-//    m_nHalfHeight = nHeight / 2.0f;
 //    m_pBoundingBox2D = new BBRectBoundingBox2D(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
-
-//    setPosition(QVector3D(x, y, 0.0f));
-//    setScale(QVector3D(m_nHalfWidth, m_nHalfHeight, 0.0f));
 }
 
 BBCanvas::~BBCanvas()
@@ -55,24 +50,28 @@ void BBCanvas::resize(float fWidth, float fHeight)
  */
 void BBCanvas::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
 {
+    BBGameObject::setPosition(position, bUpdateLocalTransform);
     IterateSprite2DSet((*itr)->setPosition(position, bUpdateLocalTransform));
 //    m_pBoundingBox2D->setPosition(position, bUpdateLocalTransform);
 }
 
 void BBCanvas::setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform)
 {
+    BBGameObject::setRotation(nAngle, axis, bUpdateLocalTransform);
     IterateSprite2DSet((*itr)->setRotation(nAngle, axis, bUpdateLocalTransform));
 //    m_pBoundingBox2D->setRotation(nAngle, axis, bUpdateLocalTransform);
 }
 
 void BBCanvas::setRotation(const QVector3D &rotation, bool bUpdateLocalTransform)
 {
+    BBGameObject::setRotation(rotation, bUpdateLocalTransform);
     IterateSprite2DSet((*itr)->setRotation(rotation, bUpdateLocalTransform));
 //    m_pBoundingBox2D->setRotation(rotation, bUpdateLocalTransform);
 }
 
 void BBCanvas::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
 {
+    BBGameObject::setScale(scale, bUpdateLocalTransform);
     IterateSprite2DSet((*itr)->setScale(scale, bUpdateLocalTransform));
 //    m_pBoundingBox2D->setScale(scale, bUpdateLocalTransform);
 }

@@ -19,6 +19,7 @@ public:
     BBRenderableObject(float px, float py, float pz,
                        float rx, float ry, float rz,
                        float sx, float sy, float sz);
+    BBRenderableObject(int x, int y, int nWidth, int nHeight);
     virtual ~BBRenderableObject();
 
     void init() override;
@@ -57,6 +58,9 @@ protected:
     int m_nIndexCount;
     int m_nVertexCount;
     QVector3D m_DefaultColor;
+
+private:
+    void sharedInit();
 };
 
 #endif // BBRENDERABLEOBJECT_H

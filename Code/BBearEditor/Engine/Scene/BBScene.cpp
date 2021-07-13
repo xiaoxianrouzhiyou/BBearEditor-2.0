@@ -309,6 +309,8 @@ BBLight* BBScene::createLight(const QString &fileName, const QVector3D &position
 
 BBCanvas* BBScene::createCanvas(int x, int y, bool bSelect)
 {
+    // change original point
+    m_pCamera->switchCoordinate(x, y);
     BBCanvas *pCanvas = new BBCanvas(x, y);
     pCanvas->setBaseAttributes(BB_CLASSNAME_CANVAS, BB_CLASSNAME_CANVAS, "ground");
     pCanvas->init();

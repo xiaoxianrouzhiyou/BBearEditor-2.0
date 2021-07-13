@@ -369,8 +369,15 @@ void BBEditViewOpenGLWidget::dragMoveEvent(QDragMoveEvent *event)
 {
     if (m_pPreviewObject)
     {
-        BBRay ray = m_pScene->getCamera()->createRayFromScreen(event->pos().x(), event->pos().y());
-        m_pPreviewObject->setPosition(ray.computeIntersectWithXOZPlane(0));
+        if (m_pPreviewObject->getClassName() == BB_CLASSNAME_MODEL)
+        {
+            BBRay ray = m_pScene->getCamera()->createRayFromScreen(event->pos().x(), event->pos().y());
+            m_pPreviewObject->setPosition(ray.computeIntersectWithXOZPlane(0));
+        }
+        else if (m_pPreviewObject->getClassName() == BB_CLASSNAME_CANVAS)
+        {
+            m_pPreviewObject->setScreenCoordinateWithSwitchingOriginalPoint(event->pos().x(), event->pos().y());
+        }
     }
     event->accept();
 }

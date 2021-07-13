@@ -19,19 +19,6 @@ BBBoundingBox2D::BBBoundingBox2D(int x, int y, int nWidth, int nHeight)
 
 /**
  * @brief BBAABBBoundingBox2D::BBAABBBoundingBox2D
- * @param nCenterX
- * @param nCenterY
- * @param nWidth
- * @param nHeight
- */
-BBAABBBoundingBox2D::BBAABBBoundingBox2D(int x, int y, int nWidth, int nHeight)
-    : BBBoundingBox2D(x, y, nWidth, nHeight)
-{
-
-}
-
-/**
- * @brief BBAABBBoundingBox2D::BBAABBBoundingBox2D
  * @param fCenterX                                              3D coordinate
  * @param fCenterY                                              3D coordinate
  * @param fHalfLengthX                                          3D coordinate
@@ -41,12 +28,17 @@ BBAABBBoundingBox2D::BBAABBBoundingBox2D(int x, int y, int nWidth, int nHeight)
  */
 BBAABBBoundingBox2D::BBAABBBoundingBox2D(float fCenterX, float fCenterY, float fHalfLengthX, float fHalfLengthY,
                                          int nWidth, int nHeight)
-    : BBBoundingBox2D()
+    : BBBoundingBox2D(fCenterX * nWidth, fCenterY * nHeight, nWidth, nHeight)
 {
-    setSize(nWidth, nHeight);
-    setPosition(QVector3D(fCenterX, fCenterY, 0.0f));
     m_nHalfLengthX = fHalfLengthX * nWidth;
     m_nHalfLengthY = fHalfLengthY * nHeight;
+}
+
+BBAABBBoundingBox2D::BBAABBBoundingBox2D(int x, int y, int nHalfLengthX, int nHalfLengthY)
+    : BBBoundingBox2D(x, y, nHalfLengthX * 2, nHalfLengthY * 2)
+{
+    m_nHalfLengthX = nHalfLengthX;
+    m_nHalfLengthY = nHalfLengthY;
 }
 
 bool BBAABBBoundingBox2D::hit(int x, int y)

@@ -91,7 +91,7 @@ bool BBCoordinateSystem::hit(const BBRay &ray,
 void BBCoordinateSystem::setSelectedObject(BBGameObject *pObject)
 {
     m_pSelectedObject = pObject;
-    if (pObject != NULL)
+    if (pObject != nullptr)
     {
         setPosition(pObject->getPosition());
         setRotation(pObject->getRotation());

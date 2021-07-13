@@ -13,7 +13,8 @@ protected:
     BBCoordinateSystem2D();
     ~BBCoordinateSystem2D();
 
-    void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
+    void setScreenCoordinate(int x, int y) override;
+    void translate(int nDeltaX, int nDeltaY) override;
     void setScale(float scale, bool bUpdateLocalTransform = true) override;
 
     virtual bool hitAxis(int x, int y);
@@ -21,7 +22,7 @@ protected:
     virtual void transform(int x, int y) = 0;
 
     BBAxisFlags m_SelectedAxis;
-    QVector3D m_LastMousePos;
+    QPoint m_LastMousePos;
     BBGameObject *m_pSelectedObject;
     bool m_bTransforming;
 
@@ -31,7 +32,7 @@ protected:
 
 public:
     void setSelectedObject(BBGameObject *pObject);
-    virtual void setSelectedAxis(const BBAxisFlags &axis) = 0;
+    virtual void setSelectedAxis(const BBAxisFlags &axis);
     bool mouseMoveEvent(int x, int y, bool bMousePressed);
     void stopTransform();
 };
@@ -46,6 +47,9 @@ public:
     void init() override;
     void render(BBCamera *pCamera) override;
     void resize(float fWidth, float fHeight) override;
+
+    void setScreenCoordinate(int x, int y) override;
+    void translate(int nDeltaX, int nDeltaY) override;
 
     void setSelectedAxis(const BBAxisFlags &axis) override;
 
