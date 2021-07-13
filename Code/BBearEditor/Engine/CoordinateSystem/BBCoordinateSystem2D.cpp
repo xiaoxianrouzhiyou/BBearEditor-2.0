@@ -19,13 +19,30 @@ BBCoordinateSystem2D::BBCoordinateSystem2D()
 
 BBCoordinateSystem2D::~BBCoordinateSystem2D()
 {
+    BB_SAFE_DELETE(m_pCoordinateComponent);
     BB_SAFE_DELETE(m_pBoundingBoxX);
     BB_SAFE_DELETE(m_pBoundingBoxY);
     BB_SAFE_DELETE(m_pBoundingBoxXOY);
 }
 
+void BBCoordinateSystem2D::init()
+{
+    m_pCoordinateComponent->init();
+}
+
+void BBCoordinateSystem2D::render(BBCamera *pCamera)
+{
+    m_pCoordinateComponent->render(pCamera);
+}
+
+void BBCoordinateSystem2D::resize(float fWidth, float fHeight)
+{
+    m_pCoordinateComponent->resize(fWidth, fHeight);
+}
+
 void BBCoordinateSystem2D::setScreenCoordinate(int x, int y)
 {
+    m_pCoordinateComponent->setScreenCoordinate(x, y);
     m_pBoundingBoxX->setScreenCoordinate(x + 90, y);
     m_pBoundingBoxY->setScreenCoordinate(x, y + 90);
     m_pBoundingBoxXOY->setScreenCoordinate(x + 18, y + 18);
@@ -33,6 +50,7 @@ void BBCoordinateSystem2D::setScreenCoordinate(int x, int y)
 
 void BBCoordinateSystem2D::translate(int nDeltaX, int nDeltaY)
 {
+    m_pCoordinateComponent->translate(nDeltaX, nDeltaY);
     m_pBoundingBoxX->translate(nDeltaX, nDeltaY);
     m_pBoundingBoxY->translate(nDeltaX, nDeltaY);
     m_pBoundingBoxXOY->translate(nDeltaX, nDeltaY);
@@ -92,6 +110,7 @@ void BBCoordinateSystem2D::setSelectedObject(BBGameObject *pObject)
 void BBCoordinateSystem2D::setSelectedAxis(const BBAxisFlags &axis)
 {
     m_SelectedAxis = axis;
+    m_pCoordinateComponent->setSelectedAxis(axis);
 }
 
 bool BBCoordinateSystem2D::mouseMoveEvent(int x, int y, bool bMousePressed)
@@ -140,44 +159,6 @@ BBPositionCoordinateSystem2D::BBPositionCoordinateSystem2D()
     : BBCoordinateSystem2D()
 {
     m_pCoordinateComponent = new BBPositionCoordinateComponent2D(0, 0);
-}
-
-BBPositionCoordinateSystem2D::~BBPositionCoordinateSystem2D()
-{
-    BB_SAFE_DELETE(m_pCoordinateComponent);
-}
-
-void BBPositionCoordinateSystem2D::init()
-{
-    m_pCoordinateComponent->init();
-}
-
-void BBPositionCoordinateSystem2D::render(BBCamera *pCamera)
-{
-    m_pCoordinateComponent->render(pCamera);
-}
-
-void BBPositionCoordinateSystem2D::resize(float fWidth, float fHeight)
-{
-    m_pCoordinateComponent->resize(fWidth, fHeight);
-}
-
-void BBPositionCoordinateSystem2D::setScreenCoordinate(int x, int y)
-{
-    BBCoordinateSystem2D::setScreenCoordinate(x, y);
-    m_pCoordinateComponent->setScreenCoordinate(x, y);
-}
-
-void BBPositionCoordinateSystem2D::translate(int nDeltaX, int nDeltaY)
-{
-    BBCoordinateSystem2D::translate(nDeltaX, nDeltaY);
-    m_pCoordinateComponent->translate(nDeltaX, nDeltaY);
-}
-
-void BBPositionCoordinateSystem2D::setSelectedAxis(const BBAxisFlags &axis)
-{
-    BBCoordinateSystem2D::setSelectedAxis(axis);
-    m_pCoordinateComponent->setSelectedAxis(axis);
 }
 
 void BBPositionCoordinateSystem2D::transform(int x, int y)

@@ -6,15 +6,14 @@
 
 class BBCoordinateComponent2D : public BBRenderableObject2D
 {
-protected:
+public:
     BBCoordinateComponent2D(int x, int y);
 
     void init() override;
-
-    BBAxisFlags m_SelectedAxis;
-
-public:
     void setSelectedAxis(const BBAxisFlags &axis);
+
+protected:
+    BBAxisFlags m_SelectedAxis;
 
 private:
     virtual void setVertexColor(const BBAxisFlags &axis, bool bSelected) = 0;
