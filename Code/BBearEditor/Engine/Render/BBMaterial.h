@@ -31,9 +31,13 @@ public:
     void setVector4(const std::string &uniformName, const float *pVector4);
     void setSampler2D(const std::string &uniformName, GLuint textureName, const QString &resourcePath = "");
 
+    BBMaterial* clone();
+
     void getEditableProperties(QList<std::string> &outNames, QList<BBMaterialProperty*> &outProperties);
 
+    void setBaseRenderPass(BBRenderPass *pRenderPass) { m_pBaseRenderPass = pRenderPass; }
     inline BBRenderPass* getBaseRenderPass() const { return m_pBaseRenderPass; }
+    void setAdditiveRenderPass(BBRenderPass *pRenderPass) { m_pAdditiveRenderPass = pRenderPass; }
     inline BBRenderPass* getAdditiveRenderPass() const { return m_pAdditiveRenderPass; }
     BBShader* getShader();
 

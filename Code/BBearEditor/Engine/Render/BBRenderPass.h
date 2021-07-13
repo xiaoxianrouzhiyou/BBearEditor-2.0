@@ -19,6 +19,8 @@ public:
     void setShader(BBShader *pShader);
     BBShader* getShader() { return m_pShader; }
 
+    void setRenderState(const BBRenderState &renderState) { m_RenderState = renderState; }
+
     void bind(BBCamera *pCamera);
     void unbind();
 
@@ -32,6 +34,8 @@ public:
     void setMatrix4(const std::string &uniformName, const float *pMatrix4);
     void setVector4(const std::string &uniformName, const float *pVector4);
     void setSampler2D(const std::string &uniformName, GLuint textureName, const QString &resourcePath = "");
+
+    BBRenderPass* clone();
 
     void getEditableProperties(QList<std::string> &outNames, QList<BBMaterialProperty*> &outProperties);
 

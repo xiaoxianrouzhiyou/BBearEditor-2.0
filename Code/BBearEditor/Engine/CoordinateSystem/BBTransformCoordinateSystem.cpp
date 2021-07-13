@@ -14,6 +14,8 @@ BBTransformCoordinateSystem::BBTransformCoordinateSystem()
     m_pScaleCoordinateSystem = new BBScaleCoordinateSystem();
 
     m_pPositionCoordinateSystem2D = new BBPositionCoordinateSystem2D();
+    m_pRotationCoordinateSystem2D = new BBRotationCoordinateSystem2D();
+    m_pScaleCoordinateSystem2D = new BBScaleCoordinateSystem2D();
 
     // default is m_pPositionCoordinateSystem
     m_ModeKey = m_PositionCoordinateSystemModeKey;
@@ -29,6 +31,8 @@ BBTransformCoordinateSystem::~BBTransformCoordinateSystem()
     BB_SAFE_DELETE(m_pRotationCoordinateSystem);
     BB_SAFE_DELETE(m_pScaleCoordinateSystem);
     BB_SAFE_DELETE(m_pPositionCoordinateSystem2D);
+    BB_SAFE_DELETE(m_pRotationCoordinateSystem2D);
+    BB_SAFE_DELETE(m_pScaleCoordinateSystem2D);
 }
 
 void BBTransformCoordinateSystem::init()
@@ -38,6 +42,8 @@ void BBTransformCoordinateSystem::init()
     m_pScaleCoordinateSystem->init();
 
     m_pPositionCoordinateSystem2D->init();
+    m_pRotationCoordinateSystem2D->init();
+    m_pScaleCoordinateSystem2D->init();
 }
 
 void BBTransformCoordinateSystem::render(BBCamera *pCamera)
@@ -54,12 +60,16 @@ void BBTransformCoordinateSystem::render(BBCamera *pCamera)
     else
     {
         m_pPositionCoordinateSystem2D->render(pCamera);
+        m_pRotationCoordinateSystem2D->render(pCamera);
+        m_pScaleCoordinateSystem2D->render(pCamera);
     }
 }
 
 void BBTransformCoordinateSystem::resize(float fWidth, float fHeight)
 {
     m_pPositionCoordinateSystem2D->resize(fWidth, fHeight);
+    m_pRotationCoordinateSystem2D->resize(fWidth, fHeight);
+    m_pScaleCoordinateSystem2D->resize(fWidth, fHeight);
 }
 
 void BBTransformCoordinateSystem::setSelectedObject(BBGameObject *pObject)
@@ -160,6 +170,14 @@ bool BBTransformCoordinateSystem::mouseMoveEvent(int x, int y, const BBRay &ray,
         {
             m_bTransforming = m_pPositionCoordinateSystem2D->mouseMoveEvent(x, y, bMousePressed);
         }
+        else if (m_ModeKey == m_RotationCoordinateSystemModeKey)
+        {
+            m_bTransforming = m_pRotationCoordinateSystem2D->mouseMoveEvent(x, y, bMousePressed);
+        }
+        else if (m_ModeKey == m_ScaleCoordinateSystemModeKey)
+        {
+            m_bTransforming = m_pScaleCoordinateSystem2D->mouseMoveEvent(x, y, bMousePressed);
+        }
     }
 
     // if false, other mouse events will be processed
@@ -196,14 +214,20 @@ void BBTransformCoordinateSystem::setCoordinateSystem(char modeKey)
         if (m_ModeKey == m_PositionCoordinateSystemModeKey)
         {
             m_pPositionCoordinateSystem2D->setSelectedObject(m_pSelectedObject);
+            m_pRotationCoordinateSystem2D->setSelectedObject(nullptr);
+            m_pScaleCoordinateSystem2D->setSelectedObject(nullptr);
         }
         else if (m_ModeKey == m_RotationCoordinateSystemModeKey)
         {
             m_pPositionCoordinateSystem2D->setSelectedObject(nullptr);
+            m_pRotationCoordinateSystem2D->setSelectedObject(m_pSelectedObject);
+            m_pScaleCoordinateSystem2D->setSelectedObject(nullptr);
         }
         else if (m_ModeKey == m_ScaleCoordinateSystemModeKey)
         {
             m_pPositionCoordinateSystem2D->setSelectedObject(nullptr);
+            m_pRotationCoordinateSystem2D->setSelectedObject(nullptr);
+            m_pScaleCoordinateSystem2D->setSelectedObject(m_pSelectedObject);
         }
     }
 }
@@ -215,6 +239,8 @@ void BBTransformCoordinateSystem::stopTransform()
     m_pScaleCoordinateSystem->stopTransform();
 
     m_pPositionCoordinateSystem2D->stopTransform();
+    m_pRotationCoordinateSystem2D->stopTransform();
+    m_pScaleCoordinateSystem2D->stopTransform();
 
     m_bTransforming = false;
 }

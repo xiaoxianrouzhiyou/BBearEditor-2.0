@@ -1,6 +1,7 @@
 #include "BBCoordinateSystem2D.h"
 #include "BBCoordinateComponent2D.h"
 #include "Geometry/BBBoundingBox2D.h"
+#include "IO/BBMaterialFileManager.h"
 
 
 /**
@@ -32,6 +33,8 @@ void BBCoordinateSystem2D::init()
 
 void BBCoordinateSystem2D::render(BBCamera *pCamera)
 {
+    if (m_pSelectedObject == nullptr)
+        return;
     m_pCoordinateComponent->render(pCamera);
 }
 
@@ -177,6 +180,140 @@ void BBPositionCoordinateSystem2D::transform(int x, int y)
             translate(0, y - m_LastMousePos.y());
         }
         m_pSelectedObject->setScreenCoordinate(m_pCoordinateComponent->getScreenX(), m_pCoordinateComponent->getScreenY());
+    }
+
+    // record and wait the next frame
+    m_LastMousePos = QPoint(x, y);
+}
+
+
+/**
+ * @brief BBRotationCoordinateSystem2D::BBRotationCoordinateSystem2D
+ */
+BBRotationCoordinateSystem2D::BBRotationCoordinateSystem2D()
+    : BBCoordinateSystem2D()
+{
+    m_pCoordinateComponent = new BBRotationCoordinateComponent2D(0, 0);
+    m_pBoundingBoxXOY = new BBQuarterCircleBoundingBox2D(0, 0, 135);
+    m_pCoordinateCircle = new BBCoordinateCircle2D(0, 0, 120, 120);
+    m_pCoordinateTickMark = new BBCoordinateTickMark2D(0, 0, 120, 120);
+    m_pCoordinateSector = new BBCoordinateSector2D(0, 0, 120, 120);
+}
+
+BBRotationCoordinateSystem2D::~BBRotationCoordinateSystem2D()
+{
+    BB_SAFE_DELETE(m_pCoordinateCircle);
+    BB_SAFE_DELETE(m_pCoordinateTickMark);
+    BB_SAFE_DELETE(m_pCoordinateSector);
+}
+
+void BBRotationCoordinateSystem2D::init()
+{
+    m_pCoordinateComponent->init();
+    m_pCoordinateCircle->init();
+    m_pCoordinateTickMark->init();
+    m_pCoordinateSector->init();
+}
+
+void BBRotationCoordinateSystem2D::render(BBCamera *pCamera)
+{
+    if (m_pSelectedObject == nullptr)
+        return;
+    m_pCoordinateComponent->render(pCamera);
+    if (m_bTransforming)
+    {
+        m_pCoordinateCircle->render(pCamera);
+        m_pCoordinateTickMark->render(pCamera);
+        m_pCoordinateSector->render(pCamera);
+    }
+}
+
+void BBRotationCoordinateSystem2D::resize(float fWidth, float fHeight)
+{
+    m_pCoordinateComponent->resize(fWidth, fHeight);
+    m_pCoordinateCircle->resize(fWidth, fHeight);
+    m_pCoordinateTickMark->resize(fWidth, fHeight);
+    m_pCoordinateSector->resize(fWidth, fHeight);
+}
+
+void BBRotationCoordinateSystem2D::setScreenCoordinate(int x, int y)
+{
+    m_pCoordinateComponent->setScreenCoordinate(x, y);
+    m_pCoordinateCircle->setScreenCoordinate(x, y);
+    m_pCoordinateTickMark->setScreenCoordinate(x, y);
+    m_pCoordinateSector->setScreenCoordinate(x, y);
+    m_pBoundingBoxX->setScreenCoordinate(x + 90, y);
+    m_pBoundingBoxY->setScreenCoordinate(x, y + 90);
+    m_pBoundingBoxXOY->setScreenCoordinate(x, y);
+}
+
+void BBRotationCoordinateSystem2D::transform(int x, int y)
+{
+    BB_PROCESS_ERROR_RETURN(m_bTransforming);
+
+    // displacement can be computed
+    if (!m_LastMousePos.isNull())
+    {
+        if (m_SelectedAxis & (BBAxisName::AxisX | BBAxisName::AxisY))
+        {
+            // compute the intersection angle between two of mouse pos dir
+            QVector3D mousePos(x, y, 0);
+            QVector3D mousePosDir = (mousePos - m_Position).normalized();
+            QVector3D lastMousePos(m_LastMousePos.x(), m_LastMousePos.y(), 0);
+            QVector3D lastMousePosDir = (lastMousePos - m_Position).normalized();
+            float c = QVector3D::dotProduct(lastMousePosDir, mousePosDir);
+            int nDeltaAngle = round(acosf(c) / 3.141593f * 180);
+            // compute the sign of angle
+            QVector3D crossResult = QVector3D::crossProduct(lastMousePosDir, mousePosDir);
+            float sign = crossResult.x() + crossResult.y() + crossResult.z();
+            sign = sign > 0 ? 1 : -1;
+            nDeltaAngle = sign * nDeltaAngle;
+
+            m_pCoordinateSector->setAngle(nDeltaAngle);
+            m_pSelectedObject->setRotation(nDeltaAngle, QVector3D(0, 0, 1));
+        }
+    }
+
+    // record and wait the next frame
+    m_LastMousePos = QPoint(x, y);
+}
+
+
+/**
+ * @brief BBScaleCoordinateSystem2D::BBScaleCoordinateSystem2D
+ */
+BBScaleCoordinateSystem2D::BBScaleCoordinateSystem2D()
+    : BBCoordinateSystem2D()
+{
+    m_pCoordinateComponent = new BBScaleCoordinateComponent2D(0, 0);
+    m_nDeltaX = 0;
+    m_nDeltaY = 0;
+}
+
+void BBScaleCoordinateSystem2D::stopTransform()
+{
+    BBCoordinateSystem2D::stopTransform();
+    m_nDeltaX = 0;
+    m_nDeltaY = 0;
+    ((BBScaleCoordinateComponent2D*)m_pCoordinateComponent)->reset();
+}
+
+void BBScaleCoordinateSystem2D::transform(int x, int y)
+{
+    BB_PROCESS_ERROR_RETURN(m_bTransforming);
+
+    // displacement can be computed
+    if (!m_LastMousePos.isNull())
+    {
+        if (m_SelectedAxis & BBAxisName::AxisX)
+        {
+            m_nDeltaX += x - m_LastMousePos.x();
+        }
+        if (m_SelectedAxis & BBAxisName::AxisY)
+        {
+            m_nDeltaY += y - m_LastMousePos.y();
+        }
+        ((BBScaleCoordinateComponent2D*)m_pCoordinateComponent)->scale(m_nDeltaX, m_nDeltaY);
     }
 
     // record and wait the next frame

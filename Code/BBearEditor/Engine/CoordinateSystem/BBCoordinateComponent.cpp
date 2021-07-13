@@ -413,7 +413,6 @@ void BBCoordinateQuarterCircle::init()
         m_pIndexes[i * 4 + 97] = i + 53;
         m_pIndexes[i * 4 + 98] = i + 66;
         m_pIndexes[i * 4 + 99] = i + 65;
-
     }
 
     BBCoordinateComponent::init();

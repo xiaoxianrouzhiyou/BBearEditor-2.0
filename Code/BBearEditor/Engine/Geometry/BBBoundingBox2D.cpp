@@ -53,3 +53,27 @@ bool BBAABBBoundingBox2D::hit(int x, int y)
         return false;
     return true;
 }
+
+
+/**
+ * @brief BBQuarterCircleBoundingBox2D::BBQuarterCircleBoundingBox2D
+ * @param x
+ * @param y
+ * @param nRadius
+ */
+BBQuarterCircleBoundingBox2D::BBQuarterCircleBoundingBox2D(int x, int y, int nRadius)
+    : BBBoundingBox2D(x, y, nRadius * 2, nRadius * 2)
+{
+    m_nRadius = nRadius;
+}
+
+bool BBQuarterCircleBoundingBox2D::hit(int x, int y)
+{
+    if (x < m_nScreenX)
+        return false;
+    if (y < m_nScreenY)
+        return false;
+    if (((x - m_nScreenX) * (x - m_nScreenX) + (y - m_nScreenY) * (y - m_nScreenY)) > m_nRadius * m_nRadius)
+        return false;
+    return true;
+}

@@ -95,6 +95,20 @@ void BBMaterial::setSampler2D(const std::string &uniformName, GLuint textureName
     }
 }
 
+BBMaterial* BBMaterial::clone()
+{
+    BBMaterial *pRet = new BBMaterial();
+    if (m_pBaseRenderPass != nullptr)
+    {
+        pRet->setBaseRenderPass(m_pBaseRenderPass->clone());
+    }
+    if (m_pAdditiveRenderPass != nullptr)
+    {
+        pRet->setAdditiveRenderPass(m_pAdditiveRenderPass->clone());
+    }
+    return pRet;
+}
+
 void BBMaterial::getEditableProperties(QList<std::string> &outNames, QList<BBMaterialProperty*> &outProperties)
 {
     if (m_pBaseRenderPass != nullptr)

@@ -328,7 +328,7 @@ void BBRotationCoordinateSystem::init()
 
 void BBRotationCoordinateSystem::render(BBCamera *pCamera)
 {
-    if (m_pSelectedObject == NULL)
+    if (m_pSelectedObject == nullptr)
         return;
 
     BBCoordinateSystem::render(pCamera);

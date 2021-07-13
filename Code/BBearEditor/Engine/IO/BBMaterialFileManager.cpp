@@ -4,11 +4,13 @@
 #include <QDirIterator>
 #include "Render/BBMaterial.h"
 #include "Render/BBPreviewOpenGLWidget.h"
+#include "Render/BBRenderPass.h"
 
 
 BBPreviewOpenGLWidget* BBMaterialFileManager::m_pPreviewOpenGLWidget = nullptr;
 QMap<QString, BBMaterial*> BBMaterialFileManager::m_CachedMaterials;
 BBMaterial* BBMaterialFileManager::m_pDeferredRenderingMaterial[3] = {0};
+BBMaterial* BBMaterialFileManager::m_pUIMaterial = nullptr;
 
 QStringList BBMaterialFileManager::loadVShaderList()
 {
@@ -78,6 +80,15 @@ BBMaterial* BBMaterialFileManager::getDeferredRenderingMaterial(int nIndex)
         createDeferredRenderingMaterial();
     }
     return m_pDeferredRenderingMaterial[nIndex];
+}
+
+BBMaterial* BBMaterialFileManager::getUIMaterial()
+{
+    if (!m_pUIMaterial)
+    {
+        createUIMaterial();
+    }
+    return m_pUIMaterial->clone();
 }
 
 void BBMaterialFileManager::serialize(BBSerializer::BBMaterial material, const QString &filePath)
@@ -151,4 +162,15 @@ void BBMaterialFileManager::createDeferredRenderingMaterial()
     // default
     float *pTextureSettings = new float[4] {0.0f, 0.0f, 0.0f, 0.0f};
     m_pDeferredRenderingMaterial[2]->setVector4(LOCATION_TEXTURE_SETTING0, pTextureSettings);
+}
+
+void BBMaterialFileManager::createUIMaterial()
+{
+    m_pUIMaterial = new BBMaterial();
+    m_pUIMaterial->init("coordinate2D",
+                        BB_PATH_RESOURCE_SHADER(coordinate2D.vert),
+                        BB_PATH_RESOURCE_SHADER(coordinate.frag));
+    m_pUIMaterial->getBaseRenderPass()->setBlendState(true);
+    m_pUIMaterial->getBaseRenderPass()->setZFunc(GL_ALWAYS);
+    m_pUIMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0f, 0.0f, 0.0f);
 }

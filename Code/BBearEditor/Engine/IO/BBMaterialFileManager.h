@@ -25,6 +25,7 @@ public:
     static QString getShaderFilePath(const QString &name);
 
     static BBMaterial* getDeferredRenderingMaterial(int nIndex);
+    static BBMaterial* getUIMaterial();
 
 private:
     static void serialize(BBSerializer::BBMaterial material, const QString &filePath);
@@ -34,12 +35,14 @@ private:
     static void loadMaterialContent(const QString &filePath, BBMaterial *pMaterial);
 
     static void createDeferredRenderingMaterial();
+    static void createUIMaterial();
 
 private:
     static BBPreviewOpenGLWidget *m_pPreviewOpenGLWidget;
     static QMap<QString, BBMaterial*> m_CachedMaterials;
 
     static BBMaterial *m_pDeferredRenderingMaterial[3];
+    static BBMaterial *m_pUIMaterial;
 };
 
 #endif // BBMATERIALFILEMANAGER_H

@@ -130,6 +130,14 @@ void BBRenderPass::setSampler2D(const std::string &uniformName, GLuint textureNa
     }
 }
 
+BBRenderPass* BBRenderPass::clone()
+{
+    BBRenderPass *pRet = new BBRenderPass();
+    pRet->setShader(m_pShader);
+    pRet->setRenderState(m_RenderState);
+    return pRet;
+}
+
 void BBRenderPass::getEditableProperties(QList<std::string> &outNames, QList<BBMaterialProperty*> &outProperties)
 {
     for (QMap<std::string, BBMaterialProperty*>::Iterator it = m_Properties.begin(); it != m_Properties.end(); it++)

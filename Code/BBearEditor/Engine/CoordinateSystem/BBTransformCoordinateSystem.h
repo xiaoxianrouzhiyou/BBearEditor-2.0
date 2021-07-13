@@ -9,6 +9,8 @@ class BBPositionCoordinateSystem;
 class BBRotationCoordinateSystem;
 class BBScaleCoordinateSystem;
 class BBPositionCoordinateSystem2D;
+class BBRotationCoordinateSystem2D;
+class BBScaleCoordinateSystem2D;
 
 // Class that manages the three Coordinate system
 class BBTransformCoordinateSystem : public BBGameObject
@@ -41,6 +43,8 @@ private:
     BBScaleCoordinateSystem *m_pScaleCoordinateSystem;
 
     BBPositionCoordinateSystem2D *m_pPositionCoordinateSystem2D;
+    BBRotationCoordinateSystem2D *m_pRotationCoordinateSystem2D;
+    BBScaleCoordinateSystem2D *m_pScaleCoordinateSystem2D;
 
     char m_PositionCoordinateSystemModeKey = 'W';
     char m_RotationCoordinateSystemModeKey = 'E';

@@ -25,4 +25,16 @@ private:
     int m_nHalfLengthY;
 };
 
+
+class BBQuarterCircleBoundingBox2D : public BBBoundingBox2D
+{
+public:
+    BBQuarterCircleBoundingBox2D(int x, int y, int nRadius);
+
+    bool hit(int x, int y) override;
+
+private:
+    int m_nRadius;
+};
+
 #endif // BBBOUNDINGBOX2D_H
