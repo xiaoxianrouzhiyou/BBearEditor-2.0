@@ -403,8 +403,6 @@ void BBGameObject::setScreenCoordinateWithSwitchingOriginalPoint(int x, int y)
 
 void BBGameObject::setScreenCoordinate(int x, int y)
 {
-    m_nScreenX = x;
-    m_nScreenY = y;
     setPosition(QVector3D(x, y, 0.0f));
 }
 
@@ -417,7 +415,7 @@ void BBGameObject::setSize(int nWidth, int nHeight)
 
 void BBGameObject::translate(int nDeltaX, int nDeltaY)
 {
-    setScreenCoordinate(m_nScreenX + nDeltaX, m_nScreenY + nDeltaY);
+    setScreenCoordinate(m_Position.x() + nDeltaX, m_Position.y() + nDeltaY);
 }
 
 void BBGameObject::setModelMatrix(float px, float py, float pz,

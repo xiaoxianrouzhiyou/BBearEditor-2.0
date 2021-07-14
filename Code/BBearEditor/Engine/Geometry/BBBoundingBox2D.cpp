@@ -70,13 +70,13 @@ void BBAABBBoundingBox2D::init()
 
 bool BBAABBBoundingBox2D::hit(int x, int y)
 {
-    if (x > m_nScreenX + m_nHalfLengthX)
+    if (x > m_Position.x() + m_nHalfLengthX)
         return false;
-    if (x < m_nScreenX - m_nHalfLengthX)
+    if (x < m_Position.x() - m_nHalfLengthX)
         return false;
-    if (y > m_nScreenY + m_nHalfLengthY)
+    if (y > m_Position.y() + m_nHalfLengthY)
         return false;
-    if (y < m_nScreenY - m_nHalfLengthY)
+    if (y < m_Position.y() - m_nHalfLengthY)
         return false;
     return true;
 }
@@ -96,11 +96,11 @@ BBQuarterCircleBoundingBox2D::BBQuarterCircleBoundingBox2D(int x, int y, int nRa
 
 bool BBQuarterCircleBoundingBox2D::hit(int x, int y)
 {
-    if (x < m_nScreenX)
+    if (x < m_Position.x())
         return false;
-    if (y < m_nScreenY)
+    if (y < m_Position.y())
         return false;
-    if (((x - m_nScreenX) * (x - m_nScreenX) + (y - m_nScreenY) * (y - m_nScreenY)) > m_nRadius * m_nRadius)
+    if (((x - m_Position.x()) * (x - m_Position.x()) + (y - m_Position.y()) * (y - m_Position.y())) > m_nRadius * m_nRadius)
         return false;
     return true;
 }

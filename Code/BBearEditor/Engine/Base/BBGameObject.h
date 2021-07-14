@@ -84,9 +84,9 @@ public:
     virtual void setScreenCoordinate(int x, int y);
     void setSize(int nWidth, int nHeight);
     virtual void translate(int nDeltaX, int nDeltaY);
-    inline QPoint getScreenCoordinate() { return QPoint(m_nScreenX, m_nScreenY); }
-    inline int getScreenX() { return m_nScreenX; }
-    inline int getScreenY() { return m_nScreenY; }
+    inline QPoint getScreenCoordinate() { return QPoint(m_Position.x(), m_Position.y()); }
+    inline int getScreenX() { return m_Position.x(); }
+    inline int getScreenY() { return m_Position.y(); }
 
 protected:
     virtual void setModelMatrix(float px, float py, float pz,
@@ -104,8 +104,6 @@ protected:
     QMatrix4x4 m_ModelMatrix;
 
     // screen space
-    int m_nScreenX;
-    int m_nScreenY;
     int m_nWidth;
     int m_nHeight;
 
