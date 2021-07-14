@@ -30,7 +30,7 @@ public:
 
     void setSelectedObject(BBGameObject *pObject);
     virtual void setSelectedAxis(const BBAxisFlags &axis);
-    bool mouseMoveEvent(int x, int y, bool bMousePressed);
+    virtual bool mouseMoveEvent(int x, int y, bool bMousePressed);
     virtual void stopTransform();
 
 protected:
@@ -68,6 +68,8 @@ public:
 
     void setScreenCoordinate(int x, int y) override;
 
+    void stopTransform() override;
+
 private:
     void transform(int x, int y) override;
 
@@ -81,6 +83,9 @@ class BBScaleCoordinateSystem2D : public BBCoordinateSystem2D
 {
 public:
     BBScaleCoordinateSystem2D();
+
+    void setRotation(const QVector3D &rotation, bool bUpdateLocalTransform = true) override;
+    bool mouseMoveEvent(int x, int y, bool bMousePressed) override;
     void stopTransform() override;
 
 private:

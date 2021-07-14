@@ -161,6 +161,7 @@ public:
     static QVector3D m_Yellow;
     static QVector3D m_Gray;
     static QVector4D m_GrayTransparency;
+    static QVector3D m_OrangeRed;
 };
 
 class BBUtils

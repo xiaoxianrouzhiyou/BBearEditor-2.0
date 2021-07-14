@@ -1,6 +1,6 @@
 #include "BBCanvas.h"
 #include "BBSprite2D.h"
-#include "Geometry/BBBoundingBox.h"
+#include "Geometry/BBBoundingBox2D.h"
 #include "Render/BBMaterial.h"
 
 
@@ -16,31 +16,31 @@ BBCanvas::BBCanvas()
 BBCanvas::BBCanvas(int x, int y, int nWidth, int nHeight)
     : BBGameObject(x, y, nWidth, nHeight)
 {
-//    m_pBoundingBox2D = new BBRectBoundingBox2D(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+    m_pAABBBoundingBox2D = new BBAABBBoundingBox2D(x, y, nWidth, nHeight);
 }
 
 BBCanvas::~BBCanvas()
 {
+    BB_SAFE_DELETE(m_pAABBBoundingBox2D);
     IterateSprite2DSet(delete *itr);
-//    BB_SAFE_DELETE(m_pBoundingBox2D);
 }
 
 void BBCanvas::init()
 {
+    m_pAABBBoundingBox2D->init();
     IterateSprite2DSet(init());
-//    m_pBoundingBox2D->init();
 }
 
 void BBCanvas::render(BBCamera *pCamera)
 {
+    m_pAABBBoundingBox2D->render(pCamera);
     IterateSprite2DSet((*itr)->render(pCamera));
-//    m_pBoundingBox2D->render(pCamera);
 }
 
 void BBCanvas::resize(float fWidth, float fHeight)
 {
+    m_pAABBBoundingBox2D->getMaterial()->setVector4(LOCATION_SCREEN_PARAMETERS, fWidth, fHeight, 0.0f, 0.0f);
     IterateSprite2DSet((*itr)->getMaterial()->setVector4(LOCATION_SCREEN_PARAMETERS, fWidth, fHeight, 0.0f, 0.0f));
-//    m_pBoundingBox2D->getMaterial()->setVector4(LOCATION_SCREEN_PARAMETERS, fWidth, fHeight, 0.0f, 0.0f);
 }
 
 /**
@@ -51,22 +51,23 @@ void BBCanvas::resize(float fWidth, float fHeight)
 void BBCanvas::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
 {
     BBGameObject::setPosition(position, bUpdateLocalTransform);
+    m_pAABBBoundingBox2D->setPosition(position, bUpdateLocalTransform);
     IterateSprite2DSet((*itr)->setPosition(position, bUpdateLocalTransform));
-//    m_pBoundingBox2D->setPosition(position, bUpdateLocalTransform);
 }
 
 void BBCanvas::setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform)
 {
     BBGameObject::setRotation(nAngle, axis, bUpdateLocalTransform);
+    BBGameObject::setRotation(QVector3D(0, 0, m_Rotation.z()));
+    m_pAABBBoundingBox2D->setRotation(nAngle, axis, bUpdateLocalTransform);
     IterateSprite2DSet((*itr)->setRotation(nAngle, axis, bUpdateLocalTransform));
-//    m_pBoundingBox2D->setRotation(nAngle, axis, bUpdateLocalTransform);
 }
 
 void BBCanvas::setRotation(const QVector3D &rotation, bool bUpdateLocalTransform)
 {
     BBGameObject::setRotation(rotation, bUpdateLocalTransform);
+    m_pAABBBoundingBox2D->setRotation(rotation, bUpdateLocalTransform);
     IterateSprite2DSet((*itr)->setRotation(rotation, bUpdateLocalTransform));
-//    m_pBoundingBox2D->setRotation(rotation, bUpdateLocalTransform);
 }
 
 void BBCanvas::setScale(const QVector3D &scale, bool bUpdateLocalTransform)

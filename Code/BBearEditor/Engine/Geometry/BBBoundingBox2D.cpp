@@ -1,4 +1,6 @@
 #include "BBBoundingBox2D.h"
+#include "Render/BBVertexBufferObject.h"
+#include "Render/BBDrawCall.h"
 
 
 /**
@@ -39,6 +41,31 @@ BBAABBBoundingBox2D::BBAABBBoundingBox2D(int x, int y, int nHalfLengthX, int nHa
 {
     m_nHalfLengthX = nHalfLengthX;
     m_nHalfLengthY = nHalfLengthY;
+}
+
+void BBAABBBoundingBox2D::init()
+{
+    m_pVBO = new BBVertexBufferObject(8);
+
+    m_pVBO->setPosition(0, 0.3f, 0.3f, 0.0f);
+    m_pVBO->setPosition(1, 0.0f, 0.3f, 0.0f);
+    m_pVBO->setPosition(2, 0.0f, 0.3f, 0.0f);
+    m_pVBO->setPosition(3, 0.0f, 0.0f, 0.0f);
+    m_pVBO->setPosition(4, 0.0f, 0.0f, 0.0f);
+    m_pVBO->setPosition(5, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(6, 0.3f, 0.0f, 0.0f);
+    m_pVBO->setPosition(7, 0.3f, 0.3f, 0.0f);
+    for (int i = 0; i < 8; i++)
+    {
+        m_pVBO->setColor(i, BBConstant::m_OrangeRed);
+    }
+
+    BBRenderableObject2D::init();
+
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pCurrentMaterial);
+    pDrawCall->setVBO(m_pVBO, GL_LINES, 0, 8);
+    appendDrawCall(pDrawCall);
 }
 
 bool BBAABBBoundingBox2D::hit(int x, int y)

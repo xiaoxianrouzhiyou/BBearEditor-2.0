@@ -18,6 +18,7 @@ public:
     BBAABBBoundingBox2D(float fCenterX, float fCenterY, float fHalfLengthX, float fHalfLengthY, int nWidth, int nHeight);
     BBAABBBoundingBox2D(int x, int y, int nHalfLengthX, int nHalfLengthY);
 
+    void init() override;
     bool hit(int x, int y) override;
 
 private:

@@ -24,6 +24,7 @@ BBRenderableObject2D::~BBRenderableObject2D()
 void BBRenderableObject2D::init()
 {
     m_pCurrentMaterial = BBMaterialFileManager::getUIMaterial();
+    m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0, 0.0f, 0.0f);
     BBRenderableObject::init();
 }
 

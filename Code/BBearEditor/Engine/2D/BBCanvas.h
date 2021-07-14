@@ -4,7 +4,7 @@
 
 #include "Base/BBGameObject.h"
 
-//class BBRectBoundingBox2D;
+class BBAABBBoundingBox2D;
 class BBSprite2D;
 
 class BBCanvas : public BBGameObject
@@ -30,7 +30,7 @@ public:
     void addSprite2D(BBSprite2D *pSprite2D);
 
 private:
-//    BBRectBoundingBox2D *m_pBoundingBox2D;
+    BBAABBBoundingBox2D *m_pAABBBoundingBox2D;
     QList<BBSprite2D*> m_Sprite2DSet;
 };
 

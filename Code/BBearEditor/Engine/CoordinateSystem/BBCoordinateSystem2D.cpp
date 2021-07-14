@@ -45,6 +45,7 @@ void BBCoordinateSystem2D::resize(float fWidth, float fHeight)
 
 void BBCoordinateSystem2D::setScreenCoordinate(int x, int y)
 {
+    BBGameObject::setScreenCoordinate(x, y);
     m_pCoordinateComponent->setScreenCoordinate(x, y);
     m_pBoundingBoxX->setScreenCoordinate(x + 90, y);
     m_pBoundingBoxY->setScreenCoordinate(x, y + 90);
@@ -238,6 +239,7 @@ void BBRotationCoordinateSystem2D::resize(float fWidth, float fHeight)
 
 void BBRotationCoordinateSystem2D::setScreenCoordinate(int x, int y)
 {
+    BBGameObject::setScreenCoordinate(x, y);
     m_pCoordinateComponent->setScreenCoordinate(x, y);
     m_pCoordinateCircle->setScreenCoordinate(x, y);
     m_pCoordinateTickMark->setScreenCoordinate(x, y);
@@ -245,6 +247,12 @@ void BBRotationCoordinateSystem2D::setScreenCoordinate(int x, int y)
     m_pBoundingBoxX->setScreenCoordinate(x + 90, y);
     m_pBoundingBoxY->setScreenCoordinate(x, y + 90);
     m_pBoundingBoxXOY->setScreenCoordinate(x, y);
+}
+
+void BBRotationCoordinateSystem2D::stopTransform()
+{
+    BBCoordinateSystem2D::stopTransform();
+    m_pCoordinateSector->reset();
 }
 
 void BBRotationCoordinateSystem2D::transform(int x, int y)
@@ -288,6 +296,22 @@ BBScaleCoordinateSystem2D::BBScaleCoordinateSystem2D()
     m_pCoordinateComponent = new BBScaleCoordinateComponent2D(0, 0);
     m_nDeltaX = 0;
     m_nDeltaY = 0;
+}
+
+void BBScaleCoordinateSystem2D::setRotation(const QVector3D &rotation, bool bUpdateLocalTransform)
+{
+    BBCoordinateSystem2D::setRotation(rotation, bUpdateLocalTransform);
+    m_pCoordinateComponent->setRotation(rotation, bUpdateLocalTransform);
+}
+
+bool BBScaleCoordinateSystem2D::mouseMoveEvent(int x, int y, bool bMousePressed)
+{
+    QVector3D point(x, y, 0);
+    point -= m_Position;
+    point = m_Quaternion.inverted() * point;
+    point += m_Position;
+
+    BBCoordinateSystem2D::mouseMoveEvent(point.x(), point.y(), bMousePressed);
 }
 
 void BBScaleCoordinateSystem2D::stopTransform()

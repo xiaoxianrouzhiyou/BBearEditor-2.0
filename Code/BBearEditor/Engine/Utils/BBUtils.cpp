@@ -34,6 +34,7 @@ QVector4D BBConstant::m_GrayTransparency = QVector4D(0.8f, 0.8f, 0.8f, 0.7f);
 //QVector3D BBConstant::m_Blue = QVector3D(0.384314f, 0.631373f, 0.847059f);
 //QVector4D BBConstant::m_BlueTransparency = QVector4D(0.384314f, 0.631373f, 0.847059f, 0.5f);
 //QVector3D BBConstant::m_Yellow = QVector3D(0.847059f, 0.603922f, 0.309804f);
+QVector3D BBConstant::m_OrangeRed = QVector3D(0.909804f, 0.337255f, 0.333333f);
 
 
 char *BBUtils::loadFileContent(const char *filePath, int &nFileSize)
