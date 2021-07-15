@@ -35,7 +35,7 @@
 #define BB_CLASSNAME_POINT_LIGHT "PointLight"
 #define BB_CLASSNAME_SPOT_LIGHT "SpotLight"
 #define BB_CLASSNAME_CANVAS "Canvas"
-#define BB_CLASSNAME_SPRITE2D "Sprite2D"
+#define BB_CLASSNAME_SPRITEOBJECT2D "SpriteObject2D"
 
 #define BB_USER_NAME "BigBugBear"
 #define BB_USER_PROJECT_NAME "BBearEditor"

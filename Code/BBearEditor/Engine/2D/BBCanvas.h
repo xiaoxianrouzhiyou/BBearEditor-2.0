@@ -5,7 +5,7 @@
 #include "Base/BBGameObject.h"
 
 class BBAABBBoundingBox2D;
-class BBSprite2D;
+class BBSpriteObject2D;
 
 class BBCanvas : public BBGameObject
 {
@@ -28,11 +28,11 @@ public:
     bool hit(int x, int y) override;
 
 public:
-    void addSprite2D(BBSprite2D *pSprite2D);
+    void addSpriteObject2D(BBSpriteObject2D *pSpriteObject2D);
 
 private:
     BBAABBBoundingBox2D *m_pAABBBoundingBox2D;
-    QList<BBSprite2D*> m_Sprite2DSet;
+    QList<BBSpriteObject2D*> m_SpriteObject2DSet;
 };
 
 #endif // BBCANVAS_H

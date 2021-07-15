@@ -15,7 +15,7 @@ class BBScene;
 class BBCamera;
 class BBHierarchyTreeWidget;
 class BBCanvas;
-class BBSprite2D;
+class BBSpriteObject2D;
 
 class BBSceneManager
 {
@@ -43,7 +43,7 @@ public:
 
     static void enableDeferredRendering(bool bEnable);
 
-    static void addSprite2DForCanvas(BBCanvas *pCanvas, BBSprite2D *pSprite2D);
+    static void addSpriteObject2DForCanvas(BBCanvas *pCanvas, BBSpriteObject2D *pSpriteObject2D);
 
 private:
     static void setVector3f(const QVector3D &value, BBSerializer::BBVector3f *&pOutVector3f);

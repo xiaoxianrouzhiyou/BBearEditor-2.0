@@ -106,7 +106,8 @@ SOURCES += \
     Engine/Base/BBRenderableObject2D.cpp \
     Engine/CoordinateSystem/BBCoordinateComponent2D.cpp \
     Engine/CoordinateSystem/BBTransformCoordinateSystem.cpp \
-    Engine/Geometry/BBBoundingBox2D.cpp
+    Engine/Geometry/BBBoundingBox2D.cpp \
+    Engine/2D/BBSpriteObject2D.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -192,7 +193,8 @@ HEADERS += \
     Engine/Base/BBRenderableObject2D.h \
     Engine/CoordinateSystem/BBCoordinateComponent2D.h \
     Engine/CoordinateSystem/BBTransformCoordinateSystem.h \
-    Engine/Geometry/BBBoundingBox2D.h
+    Engine/Geometry/BBBoundingBox2D.h \
+    Engine/2D/BBSpriteObject2D.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

@@ -1,11 +1,12 @@
 #include "BBCanvas.h"
-#include "BBSprite2D.h"
+#include "BBSpriteObject2D.h"
 #include "Geometry/BBBoundingBox2D.h"
 #include "Render/BBMaterial.h"
 #include "Scene/BBSceneManager.h"
 
 
-#define IterateSprite2DSet(x) for (QList<BBSprite2D*>::Iterator itr = m_Sprite2DSet.begin(); itr != m_Sprite2DSet.end(); itr++) {x;}
+#define IterateSprite2DSet(x) \
+for (QList<BBSpriteObject2D*>::Iterator itr = m_SpriteObject2DSet.begin(); itr != m_SpriteObject2DSet.end(); itr++) {x;}
 
 BBCanvas::BBCanvas(int x, int y, int nWidth, int nHeight)
     : BBGameObject(x, y, nWidth, nHeight)
@@ -87,7 +88,7 @@ bool BBCanvas::hit(int x, int y)
     return m_pAABBBoundingBox2D->hit(x, y);
 }
 
-void BBCanvas::addSprite2D(BBSprite2D *pSprite2D)
+void BBCanvas::addSpriteObject2D(BBSpriteObject2D *pSpriteObject2D)
 {
-    m_Sprite2DSet.append(pSprite2D);
+    m_SpriteObject2DSet.append(pSpriteObject2D);
 }

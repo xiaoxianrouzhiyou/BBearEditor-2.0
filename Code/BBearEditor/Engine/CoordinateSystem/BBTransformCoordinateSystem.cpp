@@ -100,7 +100,8 @@ void BBTransformCoordinateSystem::setSelectedObject(BBGameObject *pObject)
         pObject->setVisibility(true);
 
         // UI use 2D Coordinate System
-        if (pObject->getClassName() == BB_CLASSNAME_CANVAS)
+        if (pObject->getClassName() == BB_CLASSNAME_CANVAS
+                || pObject->getClassName() == BB_CLASSNAME_SPRITEOBJECT2D)
         {
             switchSpaceMode(Space2D);
         }

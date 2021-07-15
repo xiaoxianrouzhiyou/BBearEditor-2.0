@@ -4,7 +4,7 @@
     <model icon="../../resources/icons/empty2.png" file="Empty" name="Empty"> </model>
     <model icon="../../resources/icons/controller2.png" file="tauren.obj" name="Controller"> </model>
     <model icon="../../resources/icons/ground.png" file="Canvas" name="Canvas"> </model>
-    <model icon="../../resources/icons/ground.png" file="Sprite2D" name="Sprite2D"> </model>
+    <model icon="../../resources/icons/ground.png" file="SpriteObject2D" name="SpriteObject2D"> </model>
     <model icon="../../resources/icons/cube2.png" file="cube.obj" name="Cube"> </model>
     <model icon="../../resources/icons/plane2.png" file="plane.obj" name="Plane"> </model>
     <model icon="../../resources/icons/sphere2.png" file="sphere.obj" name="Sphere"> </model>

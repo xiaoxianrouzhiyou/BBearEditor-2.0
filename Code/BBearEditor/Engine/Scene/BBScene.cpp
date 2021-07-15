@@ -19,7 +19,7 @@
 #include "Render/Light/BBSpotLight.h"
 #include "IO/BBMaterialFileManager.h"
 #include "2D/BBCanvas.h"
-#include "2D/BBSprite2D.h"
+#include "2D/BBSpriteObject2D.h"
 
 
 QString BBScene::m_ColorBufferName = "color";
@@ -111,14 +111,14 @@ void BBScene::defaultRender()
     // BBGameObject
     m_pRenderQueue->render();
 
-    m_pTransformCoordinateSystem->render(m_pCamera);
-
     unbindFBO();
 
     for (QList<BBGameObject*>::Iterator itr = m_Canvases.begin(); itr != m_Canvases.end(); itr++)
     {
         ((BBCanvas*)(*itr))->render(m_pCamera);
     }
+
+    m_pTransformCoordinateSystem->render(m_pCamera);
 
     // 2D camera mode
     m_pCamera->switchTo2D();
@@ -320,15 +320,15 @@ BBCanvas* BBScene::createCanvas(int x, int y, bool bSelect)
     return pCanvas;
 }
 
-BBSprite2D* BBScene::createSprite2D(BBCanvas *pCanvas, int x, int y, bool bSelect)
+BBSpriteObject2D* BBScene::createSpriteObject2D(BBCanvas *pCanvas, int x, int y, bool bSelect)
 {
     m_pCamera->switchCoordinate(x, y);
-    BBSprite2D *pSprite2D = new BBSprite2D(x, y);
-    pSprite2D->setBaseAttributes(BB_CLASSNAME_SPRITE2D, BB_CLASSNAME_SPRITE2D, "ground");
-    pSprite2D->init();
-    pSprite2D->resize(m_pCamera->getViewportWidth(), m_pCamera->getViewportHeight());
-    pCanvas->addSprite2D(pSprite2D);
-    return pSprite2D;
+    BBSpriteObject2D *pSpriteObject2D = new BBSpriteObject2D(x, y);
+    pSpriteObject2D->setBaseAttributes(BB_CLASSNAME_SPRITEOBJECT2D, BB_CLASSNAME_SPRITEOBJECT2D, "ground");
+    pSpriteObject2D->init();
+    pSpriteObject2D->resize(m_pCamera->getViewportWidth(), m_pCamera->getViewportHeight());
+    pCanvas->addSpriteObject2D(pSpriteObject2D);
+    return pSpriteObject2D;
 }
 
 bool BBScene::hitCanvas(int x, int y, BBCanvas *&pOutCanvas)

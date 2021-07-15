@@ -15,7 +15,7 @@ class BBGameObject;
 class BBModel;
 class BBLight;
 class BBCanvas;
-class BBSprite2D;
+class BBSpriteObject2D;
 class BBSelectionRegion;
 class BBRay;
 class BBTransformCoordinateSystem;
@@ -70,7 +70,7 @@ public:
 
     BBCanvas* createCanvas(int x, int y, bool bSelect = true);
 
-    BBSprite2D* createSprite2D(BBCanvas *pCanvas, int x, int y, bool bSelect = true);
+    BBSpriteObject2D* createSpriteObject2D(BBCanvas *pCanvas, int x, int y, bool bSelect = true);
 
     bool hitCanvas(int x, int y, BBCanvas *&pOutCanvas);
     BBGameObject* pickObject(const BBRay &ray, bool bSelect = true);

@@ -13,7 +13,7 @@
 #include "Scene/BBSceneManager.h"
 #include "Render/Light/BBLight.h"
 #include "2D/BBCanvas.h"
-#include "2D/BBSprite2D.h"
+#include "2D/BBSpriteObject2D.h"
 
 
 BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
@@ -310,7 +310,7 @@ void BBEditViewOpenGLWidget::dragEnterEvent(QDragEnterEvent *event)
         {
             m_pPreviewObject = m_pScene->createCanvas(event->pos().x(), event->pos().y());
         }
-        else if (m_DragType == BB_CLASSNAME_SPRITE2D)
+        else if (m_DragType == BB_CLASSNAME_SPRITEOBJECT2D)
         {
 
         }
@@ -386,7 +386,7 @@ void BBEditViewOpenGLWidget::dragMoveEvent(QDragMoveEvent *event)
             m_pPreviewObject->setScreenCoordinateWithSwitchingOriginalPoint(event->pos().x(), event->pos().y());
         }
     }
-    else if (m_DragType == BB_CLASSNAME_SPRITE2D)
+    else if (m_DragType == BB_CLASSNAME_SPRITEOBJECT2D)
     {
         m_pCurrentCanvas = nullptr;
         if (!m_pScene->hitCanvas(event->pos().x(), event->pos().y(), m_pCurrentCanvas))
@@ -423,10 +423,10 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
         }
         else if (m_pCurrentCanvas)
         {
-            BBSprite2D *pSprite2D = m_pScene->createSprite2D(m_pCurrentCanvas, event->pos().x(), event->pos().y());
-            addGameObject(pSprite2D);
+            BBSpriteObject2D *pSpriteObject2D = m_pScene->createSpriteObject2D(m_pCurrentCanvas, event->pos().x(), event->pos().y());
+            addGameObject(pSpriteObject2D);
             // need to make Sprite2D be the child of canvas
-            BBSceneManager::addSprite2DForCanvas(m_pCurrentCanvas, pSprite2D);
+            BBSceneManager::addSpriteObject2DForCanvas(m_pCurrentCanvas, pSpriteObject2D);
             // Set to empty for the next calculation
             m_pCurrentCanvas = nullptr;
         }
