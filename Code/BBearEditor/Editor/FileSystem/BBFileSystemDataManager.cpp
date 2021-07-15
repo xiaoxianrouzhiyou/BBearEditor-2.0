@@ -13,7 +13,7 @@
 #include "Render/BBEditViewDockWidget.h"
 #include <fstream>
 #include "Window/BBConfirmationDialog.h"
-#include "IO/BBMaterialFileManager.h"
+#include "Scene/BBRendererManager.h"
 
 
 QList<QString> BBFileSystemDataManager::m_MeshSuffixs = {"obj", "fbx"};
@@ -253,7 +253,7 @@ bool BBFileSystemDataManager::newFile(const QString &parentPath, int nType, QLis
         break;
     case 1:
         bRet = newFile(parentPath, BBConstant::BB_NAME_DEFAULT_MATERIAL, filePath, pOutFileItem);
-        BBMaterialFileManager::saveDefaultMaterial(filePath);
+        BBRendererManager::saveDefaultMaterial(filePath);
         break;
     default:
         break;

@@ -1,4 +1,4 @@
-#include "BBMaterialFileManager.h"
+#include "BBRendererManager.h"
 #include <QDir>
 #include "Utils/BBUtils.h"
 #include <QDirIterator>
@@ -7,23 +7,23 @@
 #include "Render/BBRenderPass.h"
 
 
-BBPreviewOpenGLWidget* BBMaterialFileManager::m_pPreviewOpenGLWidget = nullptr;
-QMap<QString, BBMaterial*> BBMaterialFileManager::m_CachedMaterials;
-BBMaterial* BBMaterialFileManager::m_pDeferredRenderingMaterial[3] = {0};
-BBMaterial* BBMaterialFileManager::m_pCoordinateUIMaterial = nullptr;
-BBMaterial* BBMaterialFileManager::m_pUIMaterial = nullptr;
+BBPreviewOpenGLWidget* BBRendererManager::m_pPreviewOpenGLWidget = nullptr;
+QMap<QString, BBMaterial*> BBRendererManager::m_CachedMaterials;
+BBMaterial* BBRendererManager::m_pDeferredRenderingMaterial[3] = {0};
+BBMaterial* BBRendererManager::m_pCoordinateUIMaterial = nullptr;
+BBMaterial* BBRendererManager::m_pUIMaterial = nullptr;
 
-QStringList BBMaterialFileManager::loadVShaderList()
+QStringList BBRendererManager::loadVShaderList()
 {
     return loadShaderList("*.vert");
 }
 
-QStringList BBMaterialFileManager::loadFShaderList()
+QStringList BBRendererManager::loadFShaderList()
 {
     return loadShaderList("*.frag");
 }
 
-void BBMaterialFileManager::saveDefaultMaterial(const QString &filePath)
+void BBRendererManager::saveDefaultMaterial(const QString &filePath)
 {
     BBSerializer::BBMaterial material;
     material.set_shadername("diffuse");
@@ -32,7 +32,7 @@ void BBMaterialFileManager::saveDefaultMaterial(const QString &filePath)
     serialize(material, filePath);
 }
 
-BBMaterial* BBMaterialFileManager::loadMaterial(const QString &filePath)
+BBMaterial* BBRendererManager::loadMaterial(const QString &filePath)
 {
     auto it = m_CachedMaterials.find(filePath);
     if (it != m_CachedMaterials.end())
@@ -45,12 +45,12 @@ BBMaterial* BBMaterialFileManager::loadMaterial(const QString &filePath)
     return pMaterial;
 }
 
-QString BBMaterialFileManager::getMaterialPath(BBMaterial *pMaterial)
+QString BBRendererManager::getMaterialPath(BBMaterial *pMaterial)
 {
     return m_CachedMaterials.key(pMaterial);
 }
 
-void BBMaterialFileManager::changeVShader(BBMaterial *pMaterial, const QString &name)
+void BBRendererManager::changeVShader(BBMaterial *pMaterial, const QString &name)
 {
     QString materialPath = m_CachedMaterials.key(pMaterial);
     BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
@@ -59,7 +59,7 @@ void BBMaterialFileManager::changeVShader(BBMaterial *pMaterial, const QString &
     serialize(material, materialPath);
 }
 
-void BBMaterialFileManager::changeFShader(BBMaterial *pMaterial, const QString &name)
+void BBRendererManager::changeFShader(BBMaterial *pMaterial, const QString &name)
 {
     QString materialPath = m_CachedMaterials.key(pMaterial);
     BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
@@ -68,13 +68,13 @@ void BBMaterialFileManager::changeFShader(BBMaterial *pMaterial, const QString &
     serialize(material, materialPath);
 }
 
-QString BBMaterialFileManager::getShaderFilePath(const QString &name)
+QString BBRendererManager::getShaderFilePath(const QString &name)
 {
     QString filePath = BB_PATH_RESOURCE_SHADER() + name;
     return filePath;
 }
 
-BBMaterial* BBMaterialFileManager::getDeferredRenderingMaterial(int nIndex)
+BBMaterial* BBRendererManager::getDeferredRenderingMaterial(int nIndex)
 {
     if (!m_pDeferredRenderingMaterial[0])
     {
@@ -83,7 +83,7 @@ BBMaterial* BBMaterialFileManager::getDeferredRenderingMaterial(int nIndex)
     return m_pDeferredRenderingMaterial[nIndex];
 }
 
-BBMaterial* BBMaterialFileManager::getCoordinateUIMaterial()
+BBMaterial* BBRendererManager::getCoordinateUIMaterial()
 {
     if (!m_pCoordinateUIMaterial)
     {
@@ -92,7 +92,7 @@ BBMaterial* BBMaterialFileManager::getCoordinateUIMaterial()
     return m_pCoordinateUIMaterial->clone();
 }
 
-BBMaterial* BBMaterialFileManager::getUIMaterial()
+BBMaterial* BBRendererManager::getUIMaterial()
 {
     if (!m_pUIMaterial)
     {
@@ -101,7 +101,7 @@ BBMaterial* BBMaterialFileManager::getUIMaterial()
     return m_pUIMaterial->clone();
 }
 
-void BBMaterialFileManager::serialize(BBSerializer::BBMaterial material, const QString &filePath)
+void BBRendererManager::serialize(BBSerializer::BBMaterial material, const QString &filePath)
 {
     int nLength = material.ByteSizeLong() + 1;
     char szBuffer[nLength] = {0};
@@ -109,7 +109,7 @@ void BBMaterialFileManager::serialize(BBSerializer::BBMaterial material, const Q
     BBUtils::saveToFile(filePath.toStdString().c_str(), szBuffer, nLength);
 }
 
-BBSerializer::BBMaterial BBMaterialFileManager::deserialize(const QString &filePath)
+BBSerializer::BBMaterial BBRendererManager::deserialize(const QString &filePath)
 {
     BBSerializer::BBMaterial material;
     int nLength = -1;
@@ -121,7 +121,7 @@ BBSerializer::BBMaterial BBMaterialFileManager::deserialize(const QString &fileP
     return material;
 }
 
-QStringList BBMaterialFileManager::loadShaderList(const QString &filter)
+QStringList BBRendererManager::loadShaderList(const QString &filter)
 {
     QStringList nameList;
     QDir dir;
@@ -142,7 +142,7 @@ QStringList BBMaterialFileManager::loadShaderList(const QString &filter)
     return nameList;
 }
 
-void BBMaterialFileManager::loadMaterialContent(const QString &filePath, BBMaterial *pMaterial)
+void BBRendererManager::loadMaterialContent(const QString &filePath, BBMaterial *pMaterial)
 {
     BBSerializer::BBMaterial material = deserialize(filePath);
     pMaterial->init(material.shadername().data(),
@@ -155,7 +155,7 @@ void BBMaterialFileManager::loadMaterialContent(const QString &filePath, BBMater
     pMaterial->setVector4(LOCATION_LIGHT_COLOR, pLightColor);
 }
 
-void BBMaterialFileManager::createDeferredRenderingMaterial()
+void BBRendererManager::createDeferredRenderingMaterial()
 {
     m_pDeferredRenderingMaterial[0] = new BBMaterial();
     m_pDeferredRenderingMaterial[0]->init("DeferredPosition",
@@ -174,7 +174,7 @@ void BBMaterialFileManager::createDeferredRenderingMaterial()
     m_pDeferredRenderingMaterial[2]->setVector4(LOCATION_TEXTURE_SETTING0, pTextureSettings);
 }
 
-void BBMaterialFileManager::createCoordinateUIMaterial()
+void BBRendererManager::createCoordinateUIMaterial()
 {
     m_pCoordinateUIMaterial = new BBMaterial();
     m_pCoordinateUIMaterial->init("coordinate2D",
@@ -185,7 +185,7 @@ void BBMaterialFileManager::createCoordinateUIMaterial()
     m_pCoordinateUIMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0f, 0.0f, 0.0f);
 }
 
-void BBMaterialFileManager::createUIMaterial()
+void BBRendererManager::createUIMaterial()
 {
     m_pUIMaterial = new BBMaterial();
     m_pUIMaterial->init("UI", BB_PATH_RESOURCE_SHADER(UI.vert), BB_PATH_RESOURCE_SHADER(UI.frag));

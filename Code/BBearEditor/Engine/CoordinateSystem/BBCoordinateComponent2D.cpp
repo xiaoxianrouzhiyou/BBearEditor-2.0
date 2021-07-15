@@ -3,7 +3,7 @@
 #include "Render/BBRenderPass.h"
 #include "Render/BBVertexBufferObject.h"
 #include "Render/BBDrawCall.h"
-#include "IO/BBMaterialFileManager.h"
+#include "Scene/BBRendererManager.h"
 
 
 /**
@@ -21,7 +21,7 @@ BBCoordinateComponent2D::BBCoordinateComponent2D(int x, int y)
 
 void BBCoordinateComponent2D::init()
 {
-    m_pCurrentMaterial = BBMaterialFileManager::getCoordinateUIMaterial();
+    m_pCurrentMaterial = BBRendererManager::getCoordinateUIMaterial();
     m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0, 0.0f, 0.0f);
     BBRenderableObject::init();
 }
@@ -166,7 +166,7 @@ BBCoordinateCircle2D::BBCoordinateCircle2D(int x, int y, int nWidth, int nHeight
 void BBCoordinateCircle2D::init()
 {
     BBCoordinateCircle::init();
-    setCurrentMaterial(BBMaterialFileManager::getCoordinateUIMaterial());
+    setCurrentMaterial(BBRendererManager::getCoordinateUIMaterial());
     m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0f, 0.0f, 0.0f);
 }
 
@@ -190,7 +190,7 @@ BBCoordinateTickMark2D::BBCoordinateTickMark2D(int x, int y, int nWidth, int nHe
 void BBCoordinateTickMark2D::init()
 {
     BBCoordinateTickMark::init();
-    setCurrentMaterial(BBMaterialFileManager::getCoordinateUIMaterial());
+    setCurrentMaterial(BBRendererManager::getCoordinateUIMaterial());
     m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0f, 0.0f, 0.0f);
 }
 
@@ -214,7 +214,7 @@ BBCoordinateSector2D::BBCoordinateSector2D(int x, int y, int nWidth, int nHeight
 void BBCoordinateSector2D::init()
 {
     BBCoordinateSector::init();
-    setCurrentMaterial(BBMaterialFileManager::getCoordinateUIMaterial());
+    setCurrentMaterial(BBRendererManager::getCoordinateUIMaterial());
     m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0f, 0.0f, 0.0f);
 }
 

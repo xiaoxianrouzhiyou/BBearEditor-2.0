@@ -95,7 +95,6 @@ SOURCES += \
     Engine/2D/BBFullScreenQuad.cpp \
     Editor/Render/BBPreviewOpenGLWidget.cpp \
     Engine/Serializer/BBMaterial.pb.cc \
-    Engine/IO/BBMaterialFileManager.cpp \
     Editor/PropertyManager/BBHeadManager.cpp \
     Engine/Geometry/BBPlane.cpp \
     Engine/Geometry/BBFrustum.cpp \
@@ -107,7 +106,8 @@ SOURCES += \
     Engine/CoordinateSystem/BBCoordinateComponent2D.cpp \
     Engine/CoordinateSystem/BBTransformCoordinateSystem.cpp \
     Engine/Geometry/BBBoundingBox2D.cpp \
-    Engine/2D/BBSpriteObject2D.cpp
+    Engine/2D/BBSpriteObject2D.cpp \
+    Engine/Scene/BBRendererManager.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -182,7 +182,6 @@ HEADERS += \
     Engine/2D/BBFullScreenQuad.h \
     Editor/Render/BBPreviewOpenGLWidget.h \
     Engine/Serializer/BBMaterial.pb.h \
-    Engine/IO/BBMaterialFileManager.h \
     Editor/PropertyManager/BBHeadManager.h \
     Engine/Geometry/BBPlane.h \
     Engine/Geometry/BBFrustum.h \
@@ -194,7 +193,8 @@ HEADERS += \
     Engine/CoordinateSystem/BBCoordinateComponent2D.h \
     Engine/CoordinateSystem/BBTransformCoordinateSystem.h \
     Engine/Geometry/BBBoundingBox2D.h \
-    Engine/2D/BBSpriteObject2D.h
+    Engine/2D/BBSpriteObject2D.h \
+    Engine/Scene/BBRendererManager.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

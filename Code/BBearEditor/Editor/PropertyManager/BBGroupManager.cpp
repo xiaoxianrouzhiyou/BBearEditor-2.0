@@ -17,7 +17,7 @@
 #include "FileSystem/BBFileSystemDataManager.h"
 #include "Base/BBRenderableObject.h"
 #include "3D/Model/BBMesh.h"
-#include "IO/BBMaterialFileManager.h"
+#include "Scene/BBRendererManager.h"
 #include "Render/Light/BBPointLight.h"
 
 
@@ -442,7 +442,7 @@ BBRenderManager::BBRenderManager(BBRenderableObject *pObject, QWidget *pParent)
     : BBGroupManager("Render", BB_PATH_RESOURCE_ICON(render.png), pParent)
 {
     m_pRenderableObject = pObject;
-    QString materialPath = BBMaterialFileManager::getMaterialPath(pObject->getMaterial());
+    QString materialPath = BBRendererManager::getMaterialPath(pObject->getMaterial());
     BBDragAcceptedFactory *pMaterialFactory = new BBDragAcceptedFactory(BB_PATH_RESOURCE_ICON(material5.png),
                                                                         materialPath, pParent);
     pMaterialFactory->setFilter(BBFileSystemDataManager::m_MaterialSuffixs);
@@ -453,7 +453,7 @@ BBRenderManager::BBRenderManager(BBRenderableObject *pObject, QWidget *pParent)
 
 void BBRenderManager::changeMaterial(const QString &filePath)
 {
-    m_pRenderableObject->setCurrentMaterial(BBMaterialFileManager::loadMaterial(filePath));
+    m_pRenderableObject->setCurrentMaterial(BBRendererManager::loadMaterial(filePath));
 }
 
 

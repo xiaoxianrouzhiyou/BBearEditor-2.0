@@ -6,7 +6,7 @@
 #include "Base/BBGameObject.h"
 #include <QLineEdit>
 #include "BBPropertyFactory.h"
-#include "IO/BBMaterialFileManager.h"
+#include "Scene/BBRendererManager.h"
 #include "Render/BBMaterial.h"
 #include "Render/BBShader.h"
 #include <QFileInfo>
@@ -139,7 +139,7 @@ BBMaterialManager::BBMaterialManager(const QString &filePath, QWidget *pParent)
     : QWidget(pParent)
 {
     m_FilePath = filePath;
-    m_pMaterial = BBMaterialFileManager::loadMaterial(m_FilePath);
+    m_pMaterial = BBRendererManager::loadMaterial(m_FilePath);
 
     QVBoxLayout *pLayout = new QVBoxLayout(this);
     pLayout->setMargin(0);
@@ -184,12 +184,12 @@ BBMaterialManager::~BBMaterialManager()
 
 void BBMaterialManager::changeCurrentVShader(const QString &name)
 {
-    BBMaterialFileManager::changeVShader(m_pMaterial, name + ".vert");
+    BBRendererManager::changeVShader(m_pMaterial, name + ".vert");
 }
 
 void BBMaterialManager::changeCurrentFShader(const QString &name)
 {
-    BBMaterialFileManager::changeFShader(m_pMaterial, name + ".frag");
+    BBRendererManager::changeFShader(m_pMaterial, name + ".frag");
 }
 
 void BBMaterialManager::setIcon()
@@ -210,6 +210,6 @@ void BBMaterialManager::setShaderEnumFactory(QWidget *pParent)
     QString currentVName = QFileInfo(vShaderPath).baseName();
     QString currentFName = QFileInfo(fShaderPath).baseName();
 
-    m_pVShaderEnumFactory = new BBEnumFactory("V Shader", BBMaterialFileManager::loadVShaderList(), currentVName, pParent);
-    m_pFShaderEnumFactory = new BBEnumFactory("F Shader", BBMaterialFileManager::loadFShaderList(), currentFName, pParent);
+    m_pVShaderEnumFactory = new BBEnumFactory("V Shader", BBRendererManager::loadVShaderList(), currentVName, pParent);
+    m_pFShaderEnumFactory = new BBEnumFactory("F Shader", BBRendererManager::loadFShaderList(), currentFName, pParent);
 }

@@ -1,5 +1,5 @@
-#ifndef BBMATERIALFILEMANAGER_H
-#define BBMATERIALFILEMANAGER_H
+#ifndef BBRENDERERMANAGER_H
+#define BBRENDERERMANAGER_H
 
 
 #include <QStringList>
@@ -8,7 +8,7 @@
 class BBMaterial;
 class BBPreviewOpenGLWidget;
 
-class BBMaterialFileManager
+class BBRendererManager
 {
 public:
     static void bindPreviewOpenGLWidget(BBPreviewOpenGLWidget *pPreviewOpenGLWidget) { m_pPreviewOpenGLWidget = pPreviewOpenGLWidget; }
@@ -48,4 +48,4 @@ private:
     static BBMaterial *m_pUIMaterial;
 };
 
-#endif // BBMATERIALFILEMANAGER_H
+#endif // BBRENDERERMANAGER_H

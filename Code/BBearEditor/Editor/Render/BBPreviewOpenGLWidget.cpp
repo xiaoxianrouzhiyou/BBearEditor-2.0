@@ -2,14 +2,14 @@
 #include "Scene/BBScene.h"
 #include "Utils/BBUtils.h"
 #include "3D/Model/BBModel.h"
-#include "IO/BBMaterialFileManager.h"
+#include "Scene/BBRendererManager.h"
 #include "Render/BBMaterial.h"
 
 
 BBPreviewOpenGLWidget::BBPreviewOpenGLWidget(QWidget *pParent)
     : BBOpenGLWidget(pParent)
 {
-    BBMaterialFileManager::bindPreviewOpenGLWidget(this);
+    BBRendererManager::bindPreviewOpenGLWidget(this);
     // sphere for preview
     m_pSphere = NULL;
 }
@@ -27,7 +27,7 @@ void BBPreviewOpenGLWidget::showMaterialPreview(const QString &filePath)
     if (!m_pSphere)
     {
         createSphere();
-        m_pSphere->setCurrentMaterial(BBMaterialFileManager::loadMaterial(filePath));
+        m_pSphere->setCurrentMaterial(BBRendererManager::loadMaterial(filePath));
     }
     else
     {

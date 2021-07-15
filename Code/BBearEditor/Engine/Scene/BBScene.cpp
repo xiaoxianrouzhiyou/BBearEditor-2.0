@@ -17,7 +17,7 @@
 #include "Render/Light/BBDirectionalLight.h"
 #include "Render/Light/BBPointLight.h"
 #include "Render/Light/BBSpotLight.h"
-#include "IO/BBMaterialFileManager.h"
+#include "Scene/BBRendererManager.h"
 #include "2D/BBCanvas.h"
 #include "2D/BBSpriteObject2D.h"
 
@@ -154,7 +154,7 @@ void BBScene::deferredRender()
         for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
         {
             BBGameObject *pObject = *itr;
-            pObject->setCurrentMaterial(BBMaterialFileManager::getDeferredRenderingMaterial(i));
+            pObject->setCurrentMaterial(BBRendererManager::getDeferredRenderingMaterial(i));
             pObject->render(m_pCamera);
         }
 
