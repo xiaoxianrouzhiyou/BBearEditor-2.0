@@ -13,6 +13,7 @@
 #include "Scene/BBSceneManager.h"
 #include "Render/Light/BBLight.h"
 #include "2D/BBCanvas.h"
+#include "2D/BBSprite2D.h"
 
 
 BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
@@ -21,7 +22,8 @@ BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
     BBSceneManager::bindEditViewOpenGLWidget(this);
 
     m_bRightPressed = false;
-    m_pPreviewObject = NULL;
+    m_pCurrentCanvas = nullptr;
+    m_pPreviewObject = nullptr;
     setAcceptDrops(true);
     // Mouse events can be captured without pressing
     setMouseTracking(true);
@@ -297,22 +299,26 @@ void BBEditViewOpenGLWidget::dragEnterEvent(QDragEnterEvent *event)
     if ((data = event->mimeData()->data(BB_MIMETYPE_BASEOBJECT)) != nullptr)
     {
         QDataStream dataStream(&data, QIODevice::ReadOnly);
-        QString fileName;
-        dataStream >> fileName;
-        if (fileName == "terrain")
+        m_DragType.clear();
+        dataStream >> m_DragType;
+        if (m_DragType == "terrain")
         {
 //            //创建地形
 //            prepareObject = scene.createModel(fileName, event->pos().x(), event->pos().y());
         }
-        else if (fileName == BB_CLASSNAME_CANVAS)
+        else if (m_DragType == BB_CLASSNAME_CANVAS)
         {
             m_pPreviewObject = m_pScene->createCanvas(event->pos().x(), event->pos().y());
+        }
+        else if (m_DragType == BB_CLASSNAME_SPRITE2D)
+        {
+
         }
         else
         {
             // Create a temporary object to show drag effect
             // no need to create the corresponding item in the hierarchical tree
-            m_pPreviewObject = m_pScene->createModel(BB_PATH_RESOURCE_MESH() + fileName, event->pos().x(), event->pos().y());
+            m_pPreviewObject = m_pScene->createModel(BB_PATH_RESOURCE_MESH() + m_DragType, event->pos().x(), event->pos().y());
         }
         // Remove the selected state of the coordinate system
         setCoordinateSystemSelectedObject(NULL);
@@ -367,6 +373,7 @@ void BBEditViewOpenGLWidget::dragEnterEvent(QDragEnterEvent *event)
 
 void BBEditViewOpenGLWidget::dragMoveEvent(QDragMoveEvent *event)
 {
+    event->accept();
     if (m_pPreviewObject)
     {
         if (m_pPreviewObject->getClassName() == BB_CLASSNAME_MODEL)
@@ -379,7 +386,14 @@ void BBEditViewOpenGLWidget::dragMoveEvent(QDragMoveEvent *event)
             m_pPreviewObject->setScreenCoordinateWithSwitchingOriginalPoint(event->pos().x(), event->pos().y());
         }
     }
-    event->accept();
+    else if (m_DragType == BB_CLASSNAME_SPRITE2D)
+    {
+        m_pCurrentCanvas = nullptr;
+        if (!m_pScene->hitCanvas(event->pos().x(), event->pos().y(), m_pCurrentCanvas))
+        {
+            event->ignore();
+        }
+    }
 }
 
 void BBEditViewOpenGLWidget::dragLeaveEvent(QDragLeaveEvent *event)
@@ -388,8 +402,9 @@ void BBEditViewOpenGLWidget::dragLeaveEvent(QDragLeaveEvent *event)
     {
         // no longer show pre-created object
         m_pScene->deleteGameObject(m_pPreviewObject);
-        m_pPreviewObject = NULL;
+        m_pPreviewObject = nullptr;
     }
+
     event->accept();
 }
 
@@ -404,7 +419,16 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
             // need the item so that set local coordinate
             addGameObject(m_pPreviewObject);
             // Set to empty for the next calculation
-            m_pPreviewObject = NULL;
+            m_pPreviewObject = nullptr;
+        }
+        else if (m_pCurrentCanvas)
+        {
+            BBSprite2D *pSprite2D = m_pScene->createSprite2D(m_pCurrentCanvas, event->pos().x(), event->pos().y());
+            addGameObject(pSprite2D);
+            // need to make Sprite2D be the child of canvas
+            BBSceneManager::addSprite2DForCanvas(m_pCurrentCanvas, pSprite2D);
+            // Set to empty for the next calculation
+            m_pCurrentCanvas = nullptr;
         }
         event->accept();
         setFocus();

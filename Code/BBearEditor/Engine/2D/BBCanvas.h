@@ -10,8 +10,7 @@ class BBSprite2D;
 class BBCanvas : public BBGameObject
 {
 public:
-    BBCanvas();
-    BBCanvas(int x, int y, int nWidth = 500, int nHeight = 500);
+    BBCanvas(int x = 0, int y = 0, int nWidth = 630, int nHeight = 600);
     ~BBCanvas();
 
     void init() override;
@@ -25,6 +24,8 @@ public:
 
     void setActivity(bool bActive) override;
     void setVisibility(bool bVisible) override;
+
+    bool hit(int x, int y) override;
 
 public:
     void addSprite2D(BBSprite2D *pSprite2D);

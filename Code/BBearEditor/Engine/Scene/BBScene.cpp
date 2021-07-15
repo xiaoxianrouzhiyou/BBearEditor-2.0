@@ -19,6 +19,7 @@
 #include "Render/Light/BBSpotLight.h"
 #include "IO/BBMaterialFileManager.h"
 #include "2D/BBCanvas.h"
+#include "2D/BBSprite2D.h"
 
 
 QString BBScene::m_ColorBufferName = "color";
@@ -319,6 +320,32 @@ BBCanvas* BBScene::createCanvas(int x, int y, bool bSelect)
     return pCanvas;
 }
 
+BBSprite2D* BBScene::createSprite2D(BBCanvas *pCanvas, int x, int y, bool bSelect)
+{
+    m_pCamera->switchCoordinate(x, y);
+    BBSprite2D *pSprite2D = new BBSprite2D(x, y);
+    pSprite2D->setBaseAttributes(BB_CLASSNAME_SPRITE2D, BB_CLASSNAME_SPRITE2D, "ground");
+    pSprite2D->init();
+    pSprite2D->resize(m_pCamera->getViewportWidth(), m_pCamera->getViewportHeight());
+    pCanvas->addSprite2D(pSprite2D);
+    return pSprite2D;
+}
+
+bool BBScene::hitCanvas(int x, int y, BBCanvas *&pOutCanvas)
+{
+    m_pCamera->switchCoordinate(x, y);
+    pOutCanvas = nullptr;
+    for (QList<BBGameObject*>::Iterator itr = m_Canvases.begin(); itr != m_Canvases.end(); itr++)
+    {
+        if ((*itr)->hit(x, y))
+        {
+            pOutCanvas = (BBCanvas*)(*itr);
+            return true;
+        }
+    }
+    return false;
+}
+
 BBGameObject* BBScene::pickObject(const BBRay &ray, bool bSelect)
 {
     float fDistance = FLT_MAX;
@@ -376,6 +403,10 @@ void BBScene::deleteGameObject(BBGameObject *pGameObject)
         {
             m_pTiledFullScreenQuad->closeLight();
         }
+    }
+    else if (pGameObject->getClassName() == BB_CLASSNAME_CANVAS)
+    {
+        m_Canvases.removeOne(pGameObject);
     }
 //    else if (object->getClassName() == TerrainClassName)
 //    {

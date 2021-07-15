@@ -21,6 +21,9 @@ public:
     void init() override;
     bool hit(int x, int y) override;
 
+    int getHalfLengthX() { return m_nHalfLengthX; }
+    int getHalfLengthY() { return m_nHalfLengthY; }
+
 private:
     int m_nHalfLengthX;
     int m_nHalfLengthY;

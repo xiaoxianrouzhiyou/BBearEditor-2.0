@@ -47,14 +47,14 @@ void BBAABBBoundingBox2D::init()
 {
     m_pVBO = new BBVertexBufferObject(8);
 
-    m_pVBO->setPosition(0, 0.3f, 0.3f, 0.0f);
-    m_pVBO->setPosition(1, 0.0f, 0.3f, 0.0f);
-    m_pVBO->setPosition(2, 0.0f, 0.3f, 0.0f);
-    m_pVBO->setPosition(3, 0.0f, 0.0f, 0.0f);
-    m_pVBO->setPosition(4, 0.0f, 0.0f, 0.0f);
-    m_pVBO->setPosition(5, 0.3f, 0.0f, 0.0f);
-    m_pVBO->setPosition(6, 0.3f, 0.0f, 0.0f);
-    m_pVBO->setPosition(7, 0.3f, 0.3f, 0.0f);
+    m_pVBO->setPosition(0, 0.5f, 0.5f, 0.0f);
+    m_pVBO->setPosition(1, -0.5f, 0.5f, 0.0f);
+    m_pVBO->setPosition(2, -0.5f, 0.5f, 0.0f);
+    m_pVBO->setPosition(3, -0.5f, -0.5f, 0.0f);
+    m_pVBO->setPosition(4, -0.5f, -0.5f, 0.0f);
+    m_pVBO->setPosition(5, 0.5f, -0.5f, 0.0f);
+    m_pVBO->setPosition(6, 0.5f, -0.5f, 0.0f);
+    m_pVBO->setPosition(7, 0.5f, 0.5f, 0.0f);
     for (int i = 0; i < 8; i++)
     {
         m_pVBO->setColor(i, BBConstant::m_OrangeRed);

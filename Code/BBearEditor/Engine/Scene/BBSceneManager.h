@@ -14,6 +14,8 @@ class BBEditViewOpenGLWidget;
 class BBScene;
 class BBCamera;
 class BBHierarchyTreeWidget;
+class BBCanvas;
+class BBSprite2D;
 
 class BBSceneManager
 {
@@ -24,6 +26,7 @@ public:
     static BBCamera* getCamera();
     static void bindEditViewOpenGLWidget(BBEditViewOpenGLWidget *pWidget);
     static void bindHierarchyTreeWidget(BBHierarchyTreeWidget *pWidget) { m_pHierarchyTreeWidget = pWidget; }
+    static BBHierarchyTreeWidget* getHierarchyTreeWidget() { return m_pHierarchyTreeWidget; }
 
     static void insertObjectMap(QTreeWidgetItem *pItem, BBGameObject *pGameObject);
     static void removeObjectMap(QTreeWidgetItem *pItem);
@@ -39,6 +42,8 @@ public:
     static void removeScene();
 
     static void enableDeferredRendering(bool bEnable);
+
+    static void addSprite2DForCanvas(BBCanvas *pCanvas, BBSprite2D *pSprite2D);
 
 private:
     static void setVector3f(const QVector3D &value, BBSerializer::BBVector3f *&pOutVector3f);

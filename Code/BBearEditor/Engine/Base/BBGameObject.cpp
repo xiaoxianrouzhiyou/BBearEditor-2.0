@@ -377,6 +377,13 @@ bool BBGameObject::hit(const BBRay &ray, float &fDistance)
     return m_bActive;
 }
 
+bool BBGameObject::hit(int x, int y)
+{
+    Q_UNUSED(x);
+    Q_UNUSED(y);
+    return m_bActive;
+}
+
 bool BBGameObject::belongToSelectionRegion(const BBFrustum &frustum)
 {
     Q_UNUSED(frustum);

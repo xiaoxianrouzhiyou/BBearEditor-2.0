@@ -6,6 +6,8 @@
 #include "BBScene.h"
 #include "Base/BBGameObject.h"
 #include "SceneManager/BBHierarchyTreeWidget.h"
+#include "2D/BBCanvas.h"
+#include "2D/BBSprite2D.h"
 
 
 QMap<QTreeWidgetItem*, BBGameObject*> BBSceneManager::m_ObjectMap;
@@ -235,6 +237,16 @@ void BBSceneManager::enableDeferredRendering(bool bEnable)
         }
         m_pScene->setRenderingFunc(&BBScene::defaultRender);
     }
+}
+
+void BBSceneManager::addSprite2DForCanvas(BBCanvas *pCanvas, BBSprite2D *pSprite2D)
+{
+    QTreeWidgetItem *pCanvasItem = getSceneTreeItem(pCanvas);
+    QTreeWidgetItem *pSpriteItem = getSceneTreeItem(pSprite2D);
+    m_pHierarchyTreeWidget->takeTopLevelItem(m_pHierarchyTreeWidget->indexOfTopLevelItem(pSpriteItem));
+    pCanvasItem->addChild(pSpriteItem);
+    m_pHierarchyTreeWidget->setItemExpanded(pCanvasItem, true);
+    m_pHierarchyTreeWidget->setCurrentItem(pSpriteItem);
 }
 
 void BBSceneManager::setVector3f(const QVector3D &value, BBSerializer::BBVector3f *&pOutVector3f)

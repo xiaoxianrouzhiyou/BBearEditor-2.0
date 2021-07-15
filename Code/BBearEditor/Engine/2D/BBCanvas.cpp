@@ -2,21 +2,15 @@
 #include "BBSprite2D.h"
 #include "Geometry/BBBoundingBox2D.h"
 #include "Render/BBMaterial.h"
+#include "Scene/BBSceneManager.h"
 
 
 #define IterateSprite2DSet(x) for (QList<BBSprite2D*>::Iterator itr = m_Sprite2DSet.begin(); itr != m_Sprite2DSet.end(); itr++) {x;}
 
-
-BBCanvas::BBCanvas()
-    : BBCanvas(0, 0, 500, 500)
-{
-
-}
-
 BBCanvas::BBCanvas(int x, int y, int nWidth, int nHeight)
     : BBGameObject(x, y, nWidth, nHeight)
 {
-    m_pAABBBoundingBox2D = new BBAABBBoundingBox2D(x, y, nWidth, nHeight);
+    m_pAABBBoundingBox2D = new BBAABBBoundingBox2D(x, y, nWidth / 2.0, nHeight / 2.0);
 }
 
 BBCanvas::~BBCanvas()
@@ -40,7 +34,6 @@ void BBCanvas::render(BBCamera *pCamera)
 void BBCanvas::resize(float fWidth, float fHeight)
 {
     m_pAABBBoundingBox2D->getMaterial()->setVector4(LOCATION_SCREEN_PARAMETERS, fWidth, fHeight, 0.0f, 0.0f);
-    IterateSprite2DSet((*itr)->getMaterial()->setVector4(LOCATION_SCREEN_PARAMETERS, fWidth, fHeight, 0.0f, 0.0f));
 }
 
 /**
@@ -89,8 +82,12 @@ void BBCanvas::setVisibility(bool bVisible)
 //    m_pBoundingBox2D->setVisibility(bVisible);
 }
 
+bool BBCanvas::hit(int x, int y)
+{
+    return m_pAABBBoundingBox2D->hit(x, y);
+}
+
 void BBCanvas::addSprite2D(BBSprite2D *pSprite2D)
 {
-    pSprite2D->bindCanvas(this);
     m_Sprite2DSet.append(pSprite2D);
 }

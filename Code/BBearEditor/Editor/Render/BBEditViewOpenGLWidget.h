@@ -10,6 +10,8 @@ class QMouseEvent;
 class BBGameObject;
 class BBGameObjectSet;
 class QTreeWidgetItem;
+class BBCanvas;
+
 class BBEditViewOpenGLWidget : public BBOpenGLWidget
 {
     Q_OBJECT
@@ -65,11 +67,13 @@ private:
     // Whether the right mouse button is pressed
     bool m_bRightPressed;
     QPoint m_OriginalMousePos;
+    BBCanvas *m_pCurrentCanvas;
     BBGameObject *m_pPreviewObject;
 
     QPoint m_SelectionRegionStartingPoint;
     bool m_bRegionSelecting;
     bool m_bMultipleSelecting;
+    QString m_DragType;
 };
 
 #endif // BBEDITVIEWOPENGLWIDGET_H

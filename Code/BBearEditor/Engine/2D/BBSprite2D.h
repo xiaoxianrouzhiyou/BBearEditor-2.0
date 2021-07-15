@@ -2,24 +2,15 @@
 #define BBSPRITE2D_H
 
 
-#include "Base/BBRenderableObject2D.h"
+#include "Base/BBGameObject.h"
 
-class BBCanvas;
-
-class BBSprite2D : public BBRenderableObject2D
+class BBSprite2D : public BBGameObject
 {
 public:
-    BBSprite2D();
-    BBSprite2D(int x, int y, int nWidth, int nHeight);
+    BBSprite2D(int x = 0, int y = 0, int nWidth = 50, int nHeight = 50);
     ~BBSprite2D();
 
     void init() override;
-
-public:
-    void bindCanvas(BBCanvas *pCanvas);
-
-private:
-//    BBRectBoundingBox2D *m_pBoundingBox2D;
 };
 
 #endif // BBSPRITE2D_H

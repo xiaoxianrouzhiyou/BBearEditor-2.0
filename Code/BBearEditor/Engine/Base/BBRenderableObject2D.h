@@ -16,8 +16,6 @@ public:
     void init() override;
     void resize(float fWidth, float fHeight) override;
 
-    virtual bool hit(int x, int y);
-
 protected:
 
 };

@@ -77,6 +77,7 @@ public:
     virtual void closeLight();
 
     virtual bool hit(const BBRay &ray, float &fDistance);
+    virtual bool hit(int x, int y);
     virtual bool belongToSelectionRegion(const BBFrustum &frustum);
     virtual void showCloseUp(QVector3D &outPosition, QVector3D &outViewCenter, float fDistFactor = 2.4);
 

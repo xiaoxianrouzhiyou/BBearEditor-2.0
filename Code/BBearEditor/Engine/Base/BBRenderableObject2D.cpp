@@ -32,8 +32,3 @@ void BBRenderableObject2D::resize(float fWidth, float fHeight)
 {
     m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, fWidth, fHeight, 0.0f, 0.0f);
 }
-
-bool BBRenderableObject2D::hit(int x, int y)
-{
-    return true;
-}
