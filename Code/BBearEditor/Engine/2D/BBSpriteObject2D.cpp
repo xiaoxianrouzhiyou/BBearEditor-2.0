@@ -30,6 +30,28 @@ void BBSpriteObject2D::render(BBCanvas *pCanvas)
 
 void BBSpriteObject2D::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
 {
+    BBGameObject::setPosition(position, bUpdateLocalTransform);
     m_pSprite2D->setPosition(position, bUpdateLocalTransform);
     m_pAABBBoundingBox2D->setPosition(position, bUpdateLocalTransform);
+}
+
+void BBSpriteObject2D::setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform)
+{
+    BBGameObject::setRotation(nAngle, axis, bUpdateLocalTransform);
+    m_pSprite2D->setRotation(nAngle, axis, bUpdateLocalTransform);
+    m_pAABBBoundingBox2D->setRotation(nAngle, axis, bUpdateLocalTransform);
+}
+
+void BBSpriteObject2D::setRotation(const QVector3D &rotation, bool bUpdateLocalTransform)
+{
+    BBGameObject::setRotation(rotation, bUpdateLocalTransform);
+    m_pSprite2D->setRotation(rotation, bUpdateLocalTransform);
+    m_pAABBBoundingBox2D->setRotation(rotation, bUpdateLocalTransform);
+}
+
+void BBSpriteObject2D::setScale(const QVector3D &scale, bool bUpdateLocalTransform)
+{
+    BBGameObject::setScale(scale, bUpdateLocalTransform);
+    m_pSprite2D->setScale(scale, bUpdateLocalTransform);
+    m_pAABBBoundingBox2D->setScale(scale, bUpdateLocalTransform);
 }
