@@ -37,7 +37,6 @@ void BBSprite2D::init()
 
     BBRenderableObject2D::init();
     m_pCurrentMaterial->getBaseRenderPass()->setBlendState(true);
-    m_pCurrentMaterial->getBaseRenderPass()->setZTestState(false);
     m_pCurrentMaterial->setVector4(LOCATION_TEXTURE_SETTING0, 1.0f, 0.0f, 0.0f, 0.0f);
     BBTexture texture;
     QString texturePath = BB_PATH_RESOURCE_ICON(empty2.png);

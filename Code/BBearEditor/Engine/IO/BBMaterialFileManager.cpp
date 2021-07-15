@@ -10,6 +10,7 @@
 BBPreviewOpenGLWidget* BBMaterialFileManager::m_pPreviewOpenGLWidget = nullptr;
 QMap<QString, BBMaterial*> BBMaterialFileManager::m_CachedMaterials;
 BBMaterial* BBMaterialFileManager::m_pDeferredRenderingMaterial[3] = {0};
+BBMaterial* BBMaterialFileManager::m_pCoordinateUIMaterial = nullptr;
 BBMaterial* BBMaterialFileManager::m_pUIMaterial = nullptr;
 
 QStringList BBMaterialFileManager::loadVShaderList()
@@ -80,6 +81,15 @@ BBMaterial* BBMaterialFileManager::getDeferredRenderingMaterial(int nIndex)
         createDeferredRenderingMaterial();
     }
     return m_pDeferredRenderingMaterial[nIndex];
+}
+
+BBMaterial* BBMaterialFileManager::getCoordinateUIMaterial()
+{
+    if (!m_pCoordinateUIMaterial)
+    {
+        createCoordinateUIMaterial();
+    }
+    return m_pCoordinateUIMaterial->clone();
 }
 
 BBMaterial* BBMaterialFileManager::getUIMaterial()
@@ -164,13 +174,21 @@ void BBMaterialFileManager::createDeferredRenderingMaterial()
     m_pDeferredRenderingMaterial[2]->setVector4(LOCATION_TEXTURE_SETTING0, pTextureSettings);
 }
 
+void BBMaterialFileManager::createCoordinateUIMaterial()
+{
+    m_pCoordinateUIMaterial = new BBMaterial();
+    m_pCoordinateUIMaterial->init("coordinate2D",
+                                  BB_PATH_RESOURCE_SHADER(coordinate2D.vert),
+                                  BB_PATH_RESOURCE_SHADER(coordinate.frag));
+    m_pCoordinateUIMaterial->getBaseRenderPass()->setBlendState(true);
+    m_pCoordinateUIMaterial->getBaseRenderPass()->setZFunc(GL_ALWAYS);
+    m_pCoordinateUIMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0f, 0.0f, 0.0f);
+}
+
 void BBMaterialFileManager::createUIMaterial()
 {
     m_pUIMaterial = new BBMaterial();
-    m_pUIMaterial->init("coordinate2D",
-                        BB_PATH_RESOURCE_SHADER(coordinate2D.vert),
-                        BB_PATH_RESOURCE_SHADER(coordinate.frag));
+    m_pUIMaterial->init("UI", BB_PATH_RESOURCE_SHADER(UI.vert), BB_PATH_RESOURCE_SHADER(UI.frag));
     m_pUIMaterial->getBaseRenderPass()->setBlendState(true);
-    m_pUIMaterial->getBaseRenderPass()->setZFunc(GL_ALWAYS);
     m_pUIMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0f, 0.0f, 0.0f);
 }

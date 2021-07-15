@@ -10,11 +10,11 @@ class BBSpriteObject2D;
 class BBCanvas : public BBGameObject
 {
 public:
-    BBCanvas(int x = 0, int y = 0, int nWidth = 630, int nHeight = 600);
+    BBCanvas(int x = 0, int y = 0, int nWidth = 630, int nHeight = 400);
     ~BBCanvas();
 
     void init() override;
-    void render(BBCamera *pCamera) override;
+    void render() override;
     void resize(float fWidth, float fHeight);
 
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
@@ -27,12 +27,15 @@ public:
 
     bool hit(int x, int y) override;
 
+    const float* getUniformInfo() { return m_UniformInfo; }
+
 public:
     void addSpriteObject2D(BBSpriteObject2D *pSpriteObject2D);
 
 private:
     BBAABBBoundingBox2D *m_pAABBBoundingBox2D;
     QList<BBSpriteObject2D*> m_SpriteObject2DSet;
+    float m_UniformInfo[4];
 };
 
 #endif // BBCANVAS_H

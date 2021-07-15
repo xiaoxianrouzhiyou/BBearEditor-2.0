@@ -9,7 +9,7 @@
 /* must declare the class in advance */
 class BBUniformUpdater;
 
-typedef void (BBUniformUpdater::*BBUpdateUniformFunc)(GLint location, void *pCamera, void *pPropertyValue);
+typedef void (BBUniformUpdater::*BBUpdateUniformFunc)(GLint location, void *ptr, void *pPropertyValue);
 
 class BBUniformUpdater : public BBBaseRenderComponent, public BBLinkedList
 {
@@ -26,6 +26,7 @@ public:
     void updateUniform(GLint location, void *pCamera, void *pPropertyValue);
     void updateCameraProjectionMatrix(GLint location, void *pCamera, void *pPropertyValue);
     void updateCameraViewMatrix(GLint location, void *pCamera, void *pPropertyValue);
+    void updateCanvas(GLint location, void *pCanvas, void *pPropertyValue);
     void updateMatrix4(GLint location, void *pCamera, void *pPropertyValue);
     void updateVector4(GLint location, void *pCamera, void *pPropertyValue);
     void updateSampler2D(GLint location, void *pCamera, void *pPropertyValue);

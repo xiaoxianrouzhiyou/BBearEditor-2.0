@@ -200,6 +200,24 @@ void BBDrawCall::deferredRendering(BBCamera *pCamera)
     m_pVBO->unbind();
 }
 
+void BBDrawCall::uiRendering(BBCanvas *pCanvas)
+{
+    m_pVBO->bind();
+    m_pMaterial->getBaseRenderPass()->bind(pCanvas);
+    if (m_pEBO == nullptr)
+    {
+        m_pVBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
+    }
+    else
+    {
+        m_pEBO->bind();
+        m_pEBO->draw(m_eDrawPrimitiveType, m_nIndexCount, m_nDrawStartIndex);
+        m_pEBO->unbind();
+    }
+    m_pMaterial->getBaseRenderPass()->unbind();
+    m_pVBO->unbind();
+}
+
 QList<BBGameObject*> BBDrawCall::collectLights()
 {
     return BBSceneManager::getScene()->getLights();

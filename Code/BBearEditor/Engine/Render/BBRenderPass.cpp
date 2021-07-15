@@ -34,7 +34,7 @@ void BBRenderPass::setShader(BBShader *pShader)
     }
 }
 
-void BBRenderPass::bind(BBCamera *pCamera)
+void BBRenderPass::bind(void *ptr)
 {
     glUseProgram(m_pShader->getProgram());
 
@@ -61,7 +61,7 @@ void BBRenderPass::bind(BBCamera *pCamera)
         }
         else
         {
-            pUniformUpdater->updateUniform(pUniformUpdater->getLocation(), pCamera, pUniformUpdater->getTargetProperty());
+            pUniformUpdater->updateUniform(pUniformUpdater->getLocation(), ptr, pUniformUpdater->getTargetProperty());
         }
         pUniformUpdater = pUniformUpdater->next<BBUniformUpdater>();
     }

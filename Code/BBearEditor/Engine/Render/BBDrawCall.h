@@ -6,6 +6,7 @@
 #include "BBLinkedList.h"
 
 class BBCamera;
+class BBCanvas;
 class BBVertexBufferObject;
 class BBElementBufferObject;
 class BBGameObject;
@@ -37,6 +38,7 @@ public:
     void onePassRendering(BBCamera *pCamera, QList<BBGameObject*> lights);
     void forwardRendering(BBCamera *pCamera);
     void deferredRendering(BBCamera *pCamera);
+    void uiRendering(BBCanvas *pCanvas);
 
 private:
     QList<BBGameObject*> collectLights();

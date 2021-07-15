@@ -11,6 +11,7 @@
 
 
 class BBCamera;
+class BBCanvas;
 class BBMaterial;
 class BBRenderQueue;
 
@@ -61,7 +62,9 @@ public:
 
     virtual void init();
     virtual void init(const QString &path);
+    virtual void render();
     virtual void render(BBCamera *pCamera);
+    virtual void render(BBCanvas *pCanvas);
     virtual void render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera);
     virtual void resize(float fWidth, float fHeight);
     virtual void insertInRenderQueue(BBRenderQueue *pQueue);

@@ -115,7 +115,7 @@ void BBScene::defaultRender()
 
     for (QList<BBGameObject*>::Iterator itr = m_Canvases.begin(); itr != m_Canvases.end(); itr++)
     {
-        ((BBCanvas*)(*itr))->render(m_pCamera);
+        ((BBCanvas*)(*itr))->render();
     }
 
     m_pTransformCoordinateSystem->render(m_pCamera);
@@ -326,7 +326,6 @@ BBSpriteObject2D* BBScene::createSpriteObject2D(BBCanvas *pCanvas, int x, int y,
     BBSpriteObject2D *pSpriteObject2D = new BBSpriteObject2D(x, y);
     pSpriteObject2D->setBaseAttributes(BB_CLASSNAME_SPRITEOBJECT2D, BB_CLASSNAME_SPRITEOBJECT2D, "ground");
     pSpriteObject2D->init();
-    pSpriteObject2D->resize(m_pCamera->getViewportWidth(), m_pCamera->getViewportHeight());
     pCanvas->addSpriteObject2D(pSpriteObject2D);
     return pSpriteObject2D;
 }

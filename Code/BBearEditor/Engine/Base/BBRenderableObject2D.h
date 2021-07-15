@@ -4,7 +4,7 @@
 
 #include "Base/BBRenderableObject.h"
 
-class BBRectBoundingBox2D;
+class BBCanvas;
 
 class BBRenderableObject2D : public BBRenderableObject
 {
@@ -14,6 +14,8 @@ public:
     ~BBRenderableObject2D();
 
     void init() override;
+    void render(BBCamera *pCamera) override;
+    void render(BBCanvas *pCanvas) override;
     void resize(float fWidth, float fHeight) override;
 
 protected:

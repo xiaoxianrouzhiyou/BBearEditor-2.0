@@ -157,7 +157,7 @@ void BBShader::initUniforms()
 BBUniformUpdater* BBShader::initUniformMatrix4(GLint location, const char *pUniformName)
 {
     BBUpdateUniformFunc updateUniformFunc = &BBUniformUpdater::updateMatrix4;
-    BBMatrix4MaterialProperty *pProperty = NULL;
+    BBMatrix4MaterialProperty *pProperty = nullptr;
     BBMaterialUniformPropertyType uniformType = BBMaterialUniformPropertyType::Matrix4;
     if (strcmp(pUniformName, LOCATION_PROJECTIONMATRIX) == 0)
     {
@@ -179,9 +179,18 @@ BBUniformUpdater* BBShader::initUniformMatrix4(GLint location, const char *pUnif
 
 BBUniformUpdater* BBShader::initUniformVector4(GLint location, const char *pUniformName)
 {
-    BBVector4MaterialProperty *pProperty = new BBVector4MaterialProperty(pUniformName);
-    m_Properties.insert(pUniformName, pProperty);
-    return new BBUniformUpdater(location, &BBUniformUpdater::updateVector4, pProperty);
+    BBUpdateUniformFunc updateUniformFunc = &BBUniformUpdater::updateVector4;
+    BBVector4MaterialProperty *pProperty = nullptr;
+    if (strcmp(pUniformName, LOCATION_CANVAS) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updateCanvas;
+    }
+    else
+    {
+        pProperty = new BBVector4MaterialProperty(pUniformName);
+        m_Properties.insert(pUniformName, pProperty);
+    }
+    return new BBUniformUpdater(location, updateUniformFunc, pProperty);
 }
 
 BBUniformUpdater* BBShader::initUniformSampler2D(GLint location, const char *pUniformName)

@@ -312,9 +312,19 @@ void BBGameObject::init(const QString &path)
     m_strFilePath = path;
 }
 
+void BBGameObject::render()
+{
+
+}
+
 void BBGameObject::render(BBCamera *pCamera)
 {
     Q_UNUSED(pCamera);
+}
+
+void BBGameObject::render(BBCanvas *pCanvas)
+{
+    Q_UNUSED(pCanvas);
 }
 
 void BBGameObject::render(const QMatrix4x4 &modelMatrix, BBCamera *pCamera)

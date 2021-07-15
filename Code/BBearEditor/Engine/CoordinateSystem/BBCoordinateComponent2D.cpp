@@ -19,6 +19,13 @@ BBCoordinateComponent2D::BBCoordinateComponent2D(int x, int y)
     m_SelectedAxis = BBAxisName::AxisNULL;
 }
 
+void BBCoordinateComponent2D::init()
+{
+    m_pCurrentMaterial = BBMaterialFileManager::getCoordinateUIMaterial();
+    m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0, 0.0f, 0.0f);
+    BBRenderableObject::init();
+}
+
 void BBCoordinateComponent2D::setSelectedAxis(const BBAxisFlags &axis)
 {
     BB_PROCESS_ERROR_RETURN((axis ^ m_SelectedAxis));
@@ -88,7 +95,7 @@ void BBPositionCoordinateComponent2D::init()
     m_pVBO->setColor(16, BBConstant::m_BlueTransparency);
     m_pVBO->setColor(17, BBConstant::m_BlueTransparency);
 
-    BBRenderableObject2D::init();
+    BBCoordinateComponent2D::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
     pDrawCall->setMaterial(m_pCurrentMaterial);
@@ -159,7 +166,7 @@ BBCoordinateCircle2D::BBCoordinateCircle2D(int x, int y, int nWidth, int nHeight
 void BBCoordinateCircle2D::init()
 {
     BBCoordinateCircle::init();
-    setCurrentMaterial(BBMaterialFileManager::getUIMaterial());
+    setCurrentMaterial(BBMaterialFileManager::getCoordinateUIMaterial());
     m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0f, 0.0f, 0.0f);
 }
 
@@ -183,7 +190,7 @@ BBCoordinateTickMark2D::BBCoordinateTickMark2D(int x, int y, int nWidth, int nHe
 void BBCoordinateTickMark2D::init()
 {
     BBCoordinateTickMark::init();
-    setCurrentMaterial(BBMaterialFileManager::getUIMaterial());
+    setCurrentMaterial(BBMaterialFileManager::getCoordinateUIMaterial());
     m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0f, 0.0f, 0.0f);
 }
 
@@ -207,7 +214,7 @@ BBCoordinateSector2D::BBCoordinateSector2D(int x, int y, int nWidth, int nHeight
 void BBCoordinateSector2D::init()
 {
     BBCoordinateSector::init();
-    setCurrentMaterial(BBMaterialFileManager::getUIMaterial());
+    setCurrentMaterial(BBMaterialFileManager::getCoordinateUIMaterial());
     m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0f, 0.0f, 0.0f);
 }
 
@@ -255,7 +262,7 @@ void BBRotationCoordinateComponent2D::init()
         m_pIndexes[i * 4 + 3] = i + 13;
     }
 
-    BBRenderableObject2D::init();
+    BBCoordinateComponent2D::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
     pDrawCall->setMaterial(m_pCurrentMaterial);
@@ -345,7 +352,7 @@ void BBScaleCoordinateComponent2D::init()
     m_pVBO->setColor(18, BBConstant::m_Blue);
     m_pVBO->setColor(19, BBConstant::m_Blue);
 
-    BBRenderableObject2D::init();
+    BBCoordinateComponent2D::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
     pDrawCall->setMaterial(m_pCurrentMaterial);

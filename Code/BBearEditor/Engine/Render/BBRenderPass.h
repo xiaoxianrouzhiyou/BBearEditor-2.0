@@ -7,6 +7,7 @@
 
 class BBShader;
 class BBCamera;
+class BBCanvas;
 class BBUniformUpdater;
 class BBMaterialProperty;
 
@@ -21,7 +22,7 @@ public:
 
     void setRenderState(const BBRenderState &renderState) { m_RenderState = renderState; }
 
-    void bind(BBCamera *pCamera);
+    void bind(void *ptr);
     void unbind();
 
     void setBlendState(bool bEnable);

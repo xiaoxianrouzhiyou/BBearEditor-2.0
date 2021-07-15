@@ -25,6 +25,7 @@ public:
     static QString getShaderFilePath(const QString &name);
 
     static BBMaterial* getDeferredRenderingMaterial(int nIndex);
+    static BBMaterial* getCoordinateUIMaterial();
     static BBMaterial* getUIMaterial();
 
 private:
@@ -35,6 +36,7 @@ private:
     static void loadMaterialContent(const QString &filePath, BBMaterial *pMaterial);
 
     static void createDeferredRenderingMaterial();
+    static void createCoordinateUIMaterial();
     static void createUIMaterial();
 
 private:
@@ -42,6 +44,7 @@ private:
     static QMap<QString, BBMaterial*> m_CachedMaterials;
 
     static BBMaterial *m_pDeferredRenderingMaterial[3];
+    static BBMaterial *m_pCoordinateUIMaterial;
     static BBMaterial *m_pUIMaterial;
 };
 

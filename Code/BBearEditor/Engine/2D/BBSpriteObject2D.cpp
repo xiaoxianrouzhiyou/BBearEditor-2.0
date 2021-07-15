@@ -22,10 +22,10 @@ void BBSpriteObject2D::init()
     m_pAABBBoundingBox2D->init();
 }
 
-void BBSpriteObject2D::render(BBCamera *pCamera)
+void BBSpriteObject2D::render(BBCanvas *pCanvas)
 {
-    m_pSprite2D->render(pCamera);
-    m_pAABBBoundingBox2D->render(pCamera);
+    m_pSprite2D->render(pCanvas);
+    m_pAABBBoundingBox2D->render(pCanvas);
 }
 
 void BBSpriteObject2D::setPosition(const QVector3D &position, bool bUpdateLocalTransform)

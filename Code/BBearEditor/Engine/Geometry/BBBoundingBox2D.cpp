@@ -1,6 +1,7 @@
 #include "BBBoundingBox2D.h"
 #include "Render/BBVertexBufferObject.h"
 #include "Render/BBDrawCall.h"
+#include "IO/BBMaterialFileManager.h"
 
 
 /**
@@ -16,6 +17,12 @@ BBBoundingBox2D::BBBoundingBox2D(int x, int y, int nWidth, int nHeight)
     : BBRenderableObject2D(x, y, nWidth, nHeight)
 {
 
+}
+
+void BBBoundingBox2D::init()
+{
+    BBRenderableObject2D::init();
+    m_pCurrentMaterial->setVector4(LOCATION_TEXTURE_SETTING0, 0.0f, 0.0f, 0.0f, 0.0f);
 }
 
 
@@ -60,7 +67,7 @@ void BBAABBBoundingBox2D::init()
         m_pVBO->setColor(i, BBConstant::m_OrangeRed);
     }
 
-    BBRenderableObject2D::init();
+    BBBoundingBox2D::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
     pDrawCall->setMaterial(m_pCurrentMaterial);

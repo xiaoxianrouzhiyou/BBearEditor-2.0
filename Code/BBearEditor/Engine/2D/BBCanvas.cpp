@@ -12,6 +12,7 @@ BBCanvas::BBCanvas(int x, int y, int nWidth, int nHeight)
     : BBGameObject(x, y, nWidth, nHeight)
 {
     m_pAABBBoundingBox2D = new BBAABBBoundingBox2D(x, y, nWidth / 2.0, nHeight / 2.0);
+    resize(800.0f, 600.0f);
 }
 
 BBCanvas::~BBCanvas()
@@ -26,15 +27,18 @@ void BBCanvas::init()
     IterateSprite2DSet(init());
 }
 
-void BBCanvas::render(BBCamera *pCamera)
+void BBCanvas::render()
 {
-    m_pAABBBoundingBox2D->render(pCamera);
-    IterateSprite2DSet((*itr)->render(pCamera));
+    m_pAABBBoundingBox2D->render(this);
+    IterateSprite2DSet((*itr)->render(this));
 }
 
 void BBCanvas::resize(float fWidth, float fHeight)
 {
-    m_pAABBBoundingBox2D->getMaterial()->setVector4(LOCATION_SCREEN_PARAMETERS, fWidth, fHeight, 0.0f, 0.0f);
+    m_UniformInfo[0] = fWidth / 2.0f;
+    m_UniformInfo[1] = fHeight / 2.0f;
+    m_UniformInfo[2] = 0.0f;
+    m_UniformInfo[3] = 0.0f;
 }
 
 /**

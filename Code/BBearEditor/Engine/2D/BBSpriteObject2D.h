@@ -14,7 +14,7 @@ public:
     ~BBSpriteObject2D();
 
     void init() override;
-    void render(BBCamera *pCamera) override;
+    void render(BBCanvas *pCanvas) override;
 
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
 

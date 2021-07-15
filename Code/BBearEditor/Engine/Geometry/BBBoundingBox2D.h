@@ -9,6 +9,8 @@ class BBBoundingBox2D : public BBRenderableObject2D
 public:
     BBBoundingBox2D();
     BBBoundingBox2D(int x, int y, int nWidth, int nHeight);
+
+    void init() override;
 };
 
 

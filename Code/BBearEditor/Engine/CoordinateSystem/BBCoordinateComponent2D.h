@@ -10,6 +10,8 @@ class BBCoordinateComponent2D : public BBRenderableObject2D
 public:
     BBCoordinateComponent2D(int x, int y);
 
+    void init() override;
+
     void setSelectedAxis(const BBAxisFlags &axis);
 
 protected:

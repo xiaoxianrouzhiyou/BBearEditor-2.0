@@ -1,5 +1,6 @@
 #include "BBUniformUpdater.h"
 #include "BBCamera.h"
+#include "2D/BBCanvas.h"
 
 
 BBUniformUpdater::BBUniformUpdater(GLint location, const BBUpdateUniformFunc &updateFunc, BBMaterialProperty *pTargetProperty)
@@ -34,6 +35,11 @@ void BBUniformUpdater::updateCameraProjectionMatrix(GLint location, void *pCamer
 void BBUniformUpdater::updateCameraViewMatrix(GLint location, void *pCamera, void *pPropertyValue)
 {
     glUniformMatrix4fv(location, 1, GL_FALSE, ((BBCamera*)pCamera)->getViewMatrix().data());
+}
+
+void BBUniformUpdater::updateCanvas(GLint location, void *pCanvas, void *pPropertyValue)
+{
+    glUniform4fv(location, 1, ((BBCanvas*)pCanvas)->getUniformInfo());
 }
 
 void BBUniformUpdater::updateMatrix4(GLint location, void *pCamera, void *pPropertyValue)

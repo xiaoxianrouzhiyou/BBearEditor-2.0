@@ -2,6 +2,7 @@
 #include "Geometry/BBBoundingBox.h"
 #include "Render/BBMaterial.h"
 #include "IO/BBMaterialFileManager.h"
+#include "Render/BBDrawCall.h"
 
 
 BBRenderableObject2D::BBRenderableObject2D()
@@ -24,8 +25,21 @@ BBRenderableObject2D::~BBRenderableObject2D()
 void BBRenderableObject2D::init()
 {
     m_pCurrentMaterial = BBMaterialFileManager::getUIMaterial();
-    m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0, 0.0f, 0.0f);
+    m_pCurrentMaterial->setVector4(LOCATION_CANVAS, 800.0f, 600.0, 0.0f, 0.0f);
     BBRenderableObject::init();
+}
+
+void BBRenderableObject2D::render(BBCamera *pCamera)
+{
+    BBRenderableObject::render(pCamera);
+}
+
+void BBRenderableObject2D::render(BBCanvas *pCanvas)
+{
+    if (m_bActive && m_bVisible)
+    {
+        m_pDrawCalls->uiRendering(pCanvas);
+    }
 }
 
 void BBRenderableObject2D::resize(float fWidth, float fHeight)

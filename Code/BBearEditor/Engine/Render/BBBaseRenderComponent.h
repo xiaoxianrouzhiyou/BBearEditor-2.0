@@ -25,6 +25,7 @@
 #define LOCATION_MODELMATRIX "modelMatrix"
 #define LOCATION_ITMODELMATRIX "IT_modelMatrix"
 #define LOCATION_CAMERA_POSITION "cameraPosition"
+#define LOCATION_CANVAS "canvas"
 #define LOCATION_TEXTURE(x) "texture"#x
 #define LOCATION_TEXTURE_SETTING0 "textureSettings"
 #define LOCATION_LIGHT_POSITION "lightPosition"
