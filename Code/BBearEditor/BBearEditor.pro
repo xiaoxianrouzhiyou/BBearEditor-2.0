@@ -109,7 +109,8 @@ SOURCES += \
     Engine/2D/BBSpriteObject2D.cpp \
     Engine/Scene/BBRendererManager.cpp \
     Engine/2D/BBClipArea2D.cpp \
-    Engine/3D/Mesh/BBTerrain.cpp
+    Engine/3D/Mesh/BBTerrain.cpp \
+    Engine/Font/BBDynamicFont.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -198,7 +199,8 @@ HEADERS += \
     Engine/2D/BBSpriteObject2D.h \
     Engine/Scene/BBRendererManager.h \
     Engine/2D/BBClipArea2D.h \
-    Engine/3D/Mesh/BBTerrain.h
+    Engine/3D/Mesh/BBTerrain.h \
+    Engine/Font/BBDynamicFont.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
