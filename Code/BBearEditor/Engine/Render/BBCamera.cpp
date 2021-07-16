@@ -9,7 +9,7 @@
 BBCamera::BBCamera()
     : m_Position(0, 1, 10), m_ViewCenter(0, 1, 0), m_Up(0, 1, 0)
 {
-    m_fMoveSpeed = 10.0f;
+    m_fMoveSpeed = 30.0f;
     resetMove();
 
     for (int i = 0; i < 16; i++)

@@ -158,7 +158,6 @@ void BBOBJMesh::load(const QString &path, QList<QVector4D> &outPositions)
         temp = normals.at(vertexes[i].normalIndex - 1);
         m_pVBO->setNormal(i, temp);
     }
-    m_pVBO->submitData();
 
     // for creating bounding box
     outPositions = positions;

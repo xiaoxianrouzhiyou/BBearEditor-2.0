@@ -43,6 +43,7 @@ void BBRenderPass::bind(void *ptr)
     BBGlobalRenderState::updateBlendState(m_RenderState.m_bBlend);
     BBGlobalRenderState::updateBlendFunc(m_RenderState.m_SRCBlendFunc, m_RenderState.m_DSTBlendFunc);
     BBGlobalRenderState::updateZMask(m_RenderState.m_bWriteZ);
+    BBGlobalRenderState::updatePolygonMode(m_RenderState.m_DrawFace, m_RenderState.m_PolygonMode);
     BBGlobalRenderState::updateLineWidth(m_RenderState.m_fLineWidth);
 
     m_pShader->activeAttributes();
@@ -143,6 +144,12 @@ void BBRenderPass::setStencilMask(bool bEnable)
 void BBRenderPass::setUseStencil(bool bEnable)
 {
     m_RenderState.m_bUseStencil = bEnable;
+}
+
+void BBRenderPass::setPolygonMode(unsigned int face, unsigned int mode)
+{
+    m_RenderState.m_DrawFace = face;
+    m_RenderState.m_PolygonMode = mode;
 }
 
 void BBRenderPass::setLineWidth(float fWidth)

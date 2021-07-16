@@ -7,7 +7,7 @@
 #include <QPainter>
 #include "Render/BBPreviewOpenGLWidget.h"
 #include "Scene/BBScene.h"
-#include "3D/Model/BBModel.h"
+#include "3D/BBModel.h"
 #include "BBTreeWidget.h"
 #include "Scene/BBSceneManager.h"
 #include "Render/BBEditViewDockWidget.h"

@@ -54,8 +54,8 @@ public:
 
     void enableHorizontalPlane(bool bEnable);
 
-    BBModel* createModel(const QString &filePath, int x, int y);
-    BBModel* createModel(const QString &filePath,
+    BBModel* createModel(const QString &userData, int x, int y);
+    BBModel* createModel(const QString &userData,
                          const QVector3D &position = QVector3D(0, 0, 0),
                          const QVector3D &rotation = QVector3D(0, 0, 0),
                          const QVector3D &scale = QVector3D(1, 1, 1));

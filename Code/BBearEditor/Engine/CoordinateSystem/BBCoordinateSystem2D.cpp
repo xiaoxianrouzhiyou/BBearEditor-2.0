@@ -1,7 +1,6 @@
 #include "BBCoordinateSystem2D.h"
 #include "BBCoordinateComponent2D.h"
 #include "Geometry/BBBoundingBox2D.h"
-#include "IO/BBMaterialFileManager.h"
 
 
 /**

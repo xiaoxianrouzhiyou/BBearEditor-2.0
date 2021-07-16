@@ -16,7 +16,7 @@
 #include "Render/BBPreviewOpenGLWidget.h"
 #include "FileSystem/BBFileSystemDataManager.h"
 #include "Base/BBRenderableObject.h"
-#include "3D/Model/BBMesh.h"
+#include "3D/Mesh/BBMesh.h"
 #include "Scene/BBRendererManager.h"
 #include "Render/Light/BBPointLight.h"
 

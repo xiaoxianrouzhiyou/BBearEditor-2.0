@@ -10,7 +10,7 @@
     <model icon="../../resources/icons/sphere2.png" file="sphere.obj" name="Sphere"> </model>
     <model icon="../../resources/icons/cylinder2.png" file="cylinder.obj" name="Cylinder"> </model>
     <model icon="../../resources/icons/cone2.png" file="cone.obj" name="Cone"> </model>
-    <model icon="../../resources/icons/scene white.png" file="terrain" name="Terrain"> </model>
+    <model icon="../../resources/icons/scene white.png" file="Terrain" name="Terrain"> </model>
     <model icon="../../resources/icons/camera2.png" file="xxx" name="Camera"> </model>
     <model icon="../../resources/icons/trigger2.png" file="xxx" name="Trigger"> </model>
 

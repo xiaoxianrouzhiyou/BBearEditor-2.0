@@ -47,10 +47,10 @@ SOURCES += \
     Editor/Render/BBEditViewOpenGLWidget.cpp \
     Editor/Render/BBOpenGLWidget.cpp \
     Editor/Common/NcFramelessHelper.cpp \
-    Engine/3D/Model/BBMesh.cpp \
-    Engine/3D/Model/BBModel.cpp \
+    Engine/3D/Mesh/BBMesh.cpp \
+    Engine/3D/BBModel.cpp \
     Engine/3D/BBSkyBox.cpp \
-    Engine/3D/Model/BBStaticMesh.cpp \
+    Engine/3D/Mesh/BBStaticMesh.cpp \
     Engine/Base/BBGameObject.cpp \
     Engine/Base/BBGameObjectSet.cpp \
     Engine/Base/BBRenderableObject.cpp \
@@ -108,7 +108,8 @@ SOURCES += \
     Engine/Geometry/BBBoundingBox2D.cpp \
     Engine/2D/BBSpriteObject2D.cpp \
     Engine/Scene/BBRendererManager.cpp \
-    Engine/2D/BBClipArea2D.cpp
+    Engine/2D/BBClipArea2D.cpp \
+    Engine/3D/Mesh/BBTerrain.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -133,10 +134,10 @@ HEADERS += \
     Editor/Render/BBEditViewOpenGLWidget.h \
     Editor/Render/BBOpenGLWidget.h \
     Editor/Common/NcFramelessHelper.h \
-    Engine/3D/Model/BBMesh.h \
-    Engine/3D/Model/BBModel.h \
+    Engine/3D/Mesh/BBMesh.h \
+    Engine/3D/BBModel.h \
     Engine/3D/BBSkyBox.h \
-    Engine/3D/Model/BBStaticMesh.h \
+    Engine/3D/Mesh/BBStaticMesh.h \
     Engine/Base/BBGameObject.h \
     Engine/Base/BBGameObjectSet.h \
     Engine/Base/BBRenderableObject.h \
@@ -196,7 +197,8 @@ HEADERS += \
     Engine/Geometry/BBBoundingBox2D.h \
     Engine/2D/BBSpriteObject2D.h \
     Engine/Scene/BBRendererManager.h \
-    Engine/2D/BBClipArea2D.h
+    Engine/2D/BBClipArea2D.h \
+    Engine/3D/Mesh/BBTerrain.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

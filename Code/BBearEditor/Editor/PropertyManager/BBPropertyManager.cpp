@@ -8,7 +8,7 @@
 #include "Render/Light/BBPointLight.h"
 #include "Render/Light/BBSpotLight.h"
 #include "BBHeadManager.h"
-#include "3D/Model/BBModel.h"
+#include "3D/BBModel.h"
 
 
 BBPropertyManager::BBPropertyManager(QWidget *pParent)
@@ -59,7 +59,8 @@ void BBPropertyManager::showGameObjectProperty(BBGameObject *pGameObject)
     addBaseInformationManager(pGameObject);
     addTransformGroupManager(pGameObject);
 
-    if (pGameObject->getClassName() == BB_CLASSNAME_MODEL)
+    if (pGameObject->getClassName() == BB_CLASSNAME_MODEL
+            || pGameObject->getClassName() == BB_CLASSNAME_TERRAIN)
     {
         BBModel *pModel = (BBModel*)pGameObject;
         layout()->addWidget(new BBRenderManager(pModel->getMesh(), this));

@@ -5,7 +5,7 @@
 #include "3D/BBSkyBox.h"
 #include "3D/BBHorizontalPlane.h"
 #include "Base/BBGameObject.h"
-#include "3D/Model/BBModel.h"
+#include "3D/BBModel.h"
 #include "Geometry/BBRay.h"
 #include "2D/BBSelectionRegion.h"
 #include <cfloat>
@@ -210,28 +210,30 @@ void BBScene::enableHorizontalPlane(bool bEnable)
     m_pHorizontalPlane->setVisibility(bEnable);
 }
 
-BBModel* BBScene::createModel(const QString &filePath, int x, int y)
+BBModel* BBScene::createModel(const QString &userData, int x, int y)
 {
     BBRay ray = m_pCamera->createRayFromScreen(x, y);
     // ground y=0
     QVector3D hit = ray.computeIntersectWithXOZPlane(0);
-    return createModel(filePath, hit);
+    return createModel(userData, hit);
 }
 
-BBModel* BBScene::createModel(const QString &filePath,
+BBModel* BBScene::createModel(const QString &userData,
                               const QVector3D &position, const QVector3D &rotation, const QVector3D &scale)
 {
     BBModel *pModel = nullptr;
-    if (filePath == "terrain")
+    if (userData == BB_CLASSNAME_TERRAIN)
     {
-//        model->setBaseAttributes(QFileInfo(filePath).baseName(), TerrainClassName, "terrain");
+        pModel = new BBModel(position, rotation, scale, BBMeshType::TERRAIN);
+        pModel->setBaseAttributes(QFileInfo(userData).baseName(), BB_CLASSNAME_TERRAIN, BB_CLASSNAME_TERRAIN);
+        pModel->init(BB_PATH_RESOURCE_PICTURE(height.png));
     }
     else
     {
         pModel = new BBModel(position, rotation, scale, BBMeshType::OBJ);
-        pModel->setBaseAttributes(QFileInfo(filePath).baseName(), BB_CLASSNAME_MODEL, "model");
+        pModel->setBaseAttributes(QFileInfo(userData).baseName(), BB_CLASSNAME_MODEL, BB_CLASSNAME_MODEL);
+        pModel->init(BB_PATH_RESOURCE_MESH() + userData);
     }
-    pModel->init(filePath);
     pModel->insertInRenderQueue(m_pRenderQueue);
     m_Models.append(pModel);
 

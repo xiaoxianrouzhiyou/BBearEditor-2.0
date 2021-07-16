@@ -1,5 +1,6 @@
 #include "BBModel.h"
-#include "BBStaticMesh.h"
+#include "Mesh/BBStaticMesh.h"
+#include "Mesh/BBTerrain.h"
 #include "Utils/BBUtils.h"
 #include "Geometry/BBBoundingBox.h"
 #include <cfloat>
@@ -28,7 +29,13 @@ BBModel::BBModel(float px, float py, float pz,
 {
     setClassName(BB_CLASSNAME_MODEL);
     if (eType == BBMeshType::OBJ)
+    {
         m_pMesh = new BBOBJMesh(px, py, pz, rx, ry, rz, sx, sy, sz);
+    }
+    else if (eType == BBMeshType::TERRAIN)
+    {
+        m_pMesh = new BBTerrain(px, py, pz, rx, ry, rz, sx, sy, sz);
+    }
     m_pBoundingBox = nullptr;
 }
 

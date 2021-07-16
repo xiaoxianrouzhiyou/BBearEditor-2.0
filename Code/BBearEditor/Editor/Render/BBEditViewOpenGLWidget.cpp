@@ -5,7 +5,7 @@
 #include "Utils/BBUtils.h"
 #include "Base/BBGameObject.h"
 #include <QMimeData>
-#include "3D/Model/BBModel.h"
+#include "3D/BBModel.h"
 #include <QDrag>
 #include "Geometry/BBRay.h"
 #include "CoordinateSystem/BBTransformCoordinateSystem.h"
@@ -318,7 +318,7 @@ void BBEditViewOpenGLWidget::dragEnterEvent(QDragEnterEvent *event)
         {
             // Create a temporary object to show drag effect
             // no need to create the corresponding item in the hierarchical tree
-            m_pPreviewObject = m_pScene->createModel(BB_PATH_RESOURCE_MESH() + m_DragType, event->pos().x(), event->pos().y());
+            m_pPreviewObject = m_pScene->createModel(m_DragType, event->pos().x(), event->pos().y());
         }
         // Remove the selected state of the coordinate system
         setCoordinateSystemSelectedObject(NULL);
