@@ -19,6 +19,7 @@ struct BBRenderState
     bool m_bWriteA;
     bool m_bWriteZ;
     bool m_bWriteStencil;
+    bool m_bUseStencil;
     bool m_bCull;
     bool m_bEnablePointSprite;
     int m_CullFace;
@@ -44,11 +45,14 @@ public:
     static void updateZTestState(bool bEnable);
     static void updateAlphaTestState(bool bEnable);
     static void updateColorMask(bool r, bool g, bool b, bool a);
+    static void updateStencilMask(bool bEnable);
     static void updateZMask(bool bEnable);
     static void updateZFunc(unsigned int func);
     static void updatePolygonMode(unsigned int face, unsigned int mode);
     static void updateAlphaFunc(unsigned int func, float value);
     static void updateLineWidth(float fWidth);
+
+    static void clearStencil(int value);
 
 private:
     static BBRenderState m_RenderState;

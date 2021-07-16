@@ -107,7 +107,8 @@ SOURCES += \
     Engine/CoordinateSystem/BBTransformCoordinateSystem.cpp \
     Engine/Geometry/BBBoundingBox2D.cpp \
     Engine/2D/BBSpriteObject2D.cpp \
-    Engine/Scene/BBRendererManager.cpp
+    Engine/Scene/BBRendererManager.cpp \
+    Engine/2D/BBClipArea2D.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -194,7 +195,8 @@ HEADERS += \
     Engine/CoordinateSystem/BBTransformCoordinateSystem.h \
     Engine/Geometry/BBBoundingBox2D.h \
     Engine/2D/BBSpriteObject2D.h \
-    Engine/Scene/BBRendererManager.h
+    Engine/Scene/BBRendererManager.h \
+    Engine/2D/BBClipArea2D.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

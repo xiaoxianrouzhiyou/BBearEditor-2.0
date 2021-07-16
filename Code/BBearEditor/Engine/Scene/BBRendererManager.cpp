@@ -10,8 +10,6 @@
 BBPreviewOpenGLWidget* BBRendererManager::m_pPreviewOpenGLWidget = nullptr;
 QMap<QString, BBMaterial*> BBRendererManager::m_CachedMaterials;
 BBMaterial* BBRendererManager::m_pDeferredRenderingMaterial[3] = {0};
-BBMaterial* BBRendererManager::m_pCoordinateUIMaterial = nullptr;
-BBMaterial* BBRendererManager::m_pUIMaterial = nullptr;
 
 QStringList BBRendererManager::loadVShaderList()
 {
@@ -83,22 +81,35 @@ BBMaterial* BBRendererManager::getDeferredRenderingMaterial(int nIndex)
     return m_pDeferredRenderingMaterial[nIndex];
 }
 
-BBMaterial* BBRendererManager::getCoordinateUIMaterial()
+BBMaterial* BBRendererManager::createCoordinateUIMaterial()
 {
-    if (!m_pCoordinateUIMaterial)
-    {
-        createCoordinateUIMaterial();
-    }
-    return m_pCoordinateUIMaterial->clone();
+    BBMaterial *pMaterial = new BBMaterial();
+    pMaterial->init("coordinate2D", BB_PATH_RESOURCE_SHADER(coordinate2D.vert), BB_PATH_RESOURCE_SHADER(coordinate.frag));
+    pMaterial->getBaseRenderPass()->setBlendState(true);
+    pMaterial->getBaseRenderPass()->setZFunc(GL_ALWAYS);
+    pMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0f, 0.0f, 0.0f);
+    return pMaterial;
 }
 
-BBMaterial* BBRendererManager::getUIMaterial()
+BBMaterial* BBRendererManager::createUIMaterial()
 {
-    if (!m_pUIMaterial)
-    {
-        createUIMaterial();
-    }
-    return m_pUIMaterial->clone();
+    BBMaterial *pMaterial = new BBMaterial();
+    pMaterial->init("UI", BB_PATH_RESOURCE_SHADER(UI.vert), BB_PATH_RESOURCE_SHADER(UI.frag));
+    pMaterial->getBaseRenderPass()->setBlendState(true);
+    pMaterial->setVector4(LOCATION_CANVAS, 800.0f, 600.0, 0.0f, 0.0f);
+    return pMaterial;
+}
+
+BBMaterial* BBRendererManager::createStencilUIMaterial()
+{
+    BBMaterial *pMaterial = new BBMaterial();
+    pMaterial->init("stencilUI", BB_PATH_RESOURCE_SHADER(stencilUI.vert), BB_PATH_RESOURCE_SHADER(stencilUI.frag));
+    pMaterial->setBlendState(true);
+    pMaterial->setZTestState(false);
+    pMaterial->setZMask(false);
+    pMaterial->setStencilMask(true);
+    pMaterial->setBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    return pMaterial;
 }
 
 void BBRendererManager::serialize(BBSerializer::BBMaterial material, const QString &filePath)
@@ -172,23 +183,4 @@ void BBRendererManager::createDeferredRenderingMaterial()
     // default
     float *pTextureSettings = new float[4] {0.0f, 0.0f, 0.0f, 0.0f};
     m_pDeferredRenderingMaterial[2]->setVector4(LOCATION_TEXTURE_SETTING0, pTextureSettings);
-}
-
-void BBRendererManager::createCoordinateUIMaterial()
-{
-    m_pCoordinateUIMaterial = new BBMaterial();
-    m_pCoordinateUIMaterial->init("coordinate2D",
-                                  BB_PATH_RESOURCE_SHADER(coordinate2D.vert),
-                                  BB_PATH_RESOURCE_SHADER(coordinate.frag));
-    m_pCoordinateUIMaterial->getBaseRenderPass()->setBlendState(true);
-    m_pCoordinateUIMaterial->getBaseRenderPass()->setZFunc(GL_ALWAYS);
-    m_pCoordinateUIMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0f, 0.0f, 0.0f);
-}
-
-void BBRendererManager::createUIMaterial()
-{
-    m_pUIMaterial = new BBMaterial();
-    m_pUIMaterial->init("UI", BB_PATH_RESOURCE_SHADER(UI.vert), BB_PATH_RESOURCE_SHADER(UI.frag));
-    m_pUIMaterial->getBaseRenderPass()->setBlendState(true);
-    m_pUIMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0f, 0.0f, 0.0f);
 }

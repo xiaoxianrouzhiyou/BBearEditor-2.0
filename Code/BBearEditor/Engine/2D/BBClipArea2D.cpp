@@ -1,25 +1,16 @@
-#include "BBSprite2D.h"
-#include "Geometry/BBBoundingBox.h"
+#include "BBClipArea2D.h"
 #include "Render/BBVertexBufferObject.h"
-#include "Render/BBTexture.h"
-#include "Render/BBMaterial.h"
-#include "Render/BBRenderPass.h"
 #include "Render/BBDrawCall.h"
-#include "Render/BBCamera.h"
+#include "Scene/BBRendererManager.h"
 
 
-BBSprite2D::BBSprite2D(int x, int y, int nWidth, int nHeight)
+BBClipArea2D::BBClipArea2D(int x, int y, int nWidth, int nHeight)
     : BBRenderableObject2D(x, y, nWidth, nHeight)
 {
 
 }
 
-BBSprite2D::~BBSprite2D()
-{
-
-}
-
-void BBSprite2D::init()
+void BBClipArea2D::init()
 {
     m_pVBO = new BBVertexBufferObject(4);
     m_pVBO->setPosition(0, 1.0f, 1.0f, 0);
@@ -35,16 +26,11 @@ void BBSprite2D::init()
         m_pVBO->setColor(i, 1.0f, 1.0f, 1.0f);
     }
 
-    BBRenderableObject2D::init();
-    m_pCurrentMaterial->getBaseRenderPass()->setUseStencil(true);
-    m_pCurrentMaterial->setVector4(LOCATION_TEXTURE_SETTING0, 1.0f, 0.0f, 0.0f, 0.0f);
-    BBTexture texture;
-    QString texturePath = BB_PATH_RESOURCE_ICON(empty2.png);
-    m_pCurrentMaterial->setSampler2D(LOCATION_TEXTURE(0), texture.createTexture2D(texturePath), texturePath);
+    m_pCurrentMaterial = BBRendererManager::createStencilUIMaterial();
+    BBRenderableObject::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
     pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO, GL_QUADS, 0, 4);
     appendDrawCall(pDrawCall);
 }
-

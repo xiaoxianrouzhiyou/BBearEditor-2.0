@@ -24,7 +24,11 @@ public:
     void initMultiPass(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath);
 
     void setBlendState(bool bEnable);
+    void setBlendFunc(unsigned int src, unsigned int dst);
     void setZTestState(bool bEnable);
+    void setZFunc(unsigned int func);
+    void setZMask(bool bEnable);
+    void setStencilMask(bool bEnable);
 
     void setMatrix4(const std::string &uniformName, const float *pMatrix4);
     void setVector4(const std::string &uniformName, float x, float y, float z, float w);

@@ -12,7 +12,6 @@
 #include <QFile>
 #include <QFileInfo>
 #include "Render/BBMaterial.h"
-#include "IO/BBMaterialFileManager.h"
 
 
 /**

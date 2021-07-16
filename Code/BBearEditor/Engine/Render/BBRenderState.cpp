@@ -31,9 +31,9 @@ BBRenderState::BBRenderState()
     m_bWriteG = true;
     m_bWriteB = true;
     m_bWriteZ = true;
-    m_bWriteStencil = true;
-    m_bCull = true;
     m_bWriteStencil = false;
+    m_bUseStencil = false;
+    m_bCull = true;
     m_CullFace = GL_BACK;
     m_bEnablePointSprite = true;
     m_AlphaTestFunc = GL_GREATER;
@@ -130,6 +130,15 @@ void BBGlobalRenderState::updateColorMask(bool r, bool g, bool b, bool a)
     }
 }
 
+void BBGlobalRenderState::updateStencilMask(bool bEnable)
+{
+    if (m_RenderState.m_bWriteStencil != bEnable)
+    {
+        m_RenderState.m_bWriteStencil = bEnable;
+        glStencilMask(bEnable);
+    }
+}
+
 void BBGlobalRenderState::updateZMask(bool bEnable)
 {
     if (m_RenderState.m_bWriteZ != bEnable)
@@ -174,5 +183,14 @@ void BBGlobalRenderState::updateLineWidth(float fWidth)
     {
         m_RenderState.m_fLineWidth = fWidth;
         glLineWidth(m_RenderState.m_fLineWidth);
+    }
+}
+
+void BBGlobalRenderState::clearStencil(int value)
+{
+    if (m_RenderState.m_ClearStencilValue != value)
+    {
+        m_RenderState.m_ClearStencilValue = value;
+        glClearStencil(m_RenderState.m_ClearStencilValue);
     }
 }

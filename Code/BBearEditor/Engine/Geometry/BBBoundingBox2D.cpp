@@ -1,7 +1,6 @@
 #include "BBBoundingBox2D.h"
 #include "Render/BBVertexBufferObject.h"
 #include "Render/BBDrawCall.h"
-#include "IO/BBMaterialFileManager.h"
 
 
 /**

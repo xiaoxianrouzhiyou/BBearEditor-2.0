@@ -72,6 +72,43 @@ void BBRenderPass::unbind()
     glUseProgram(0);
 }
 
+void BBRenderPass::setupStencilBuffer()
+{
+    if (m_RenderState.m_bWriteStencil)
+    {
+        BBGlobalRenderState::clearStencil(0);
+        glClear(GL_STENCIL_BUFFER_BIT);
+        // pixels are written in the stencil
+        glEnable(GL_STENCIL_TEST);
+        glStencilFunc(GL_ALWAYS, 1, 1);
+        glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+        glColorMask(false, false, false, false);
+    }
+    else if (m_RenderState.m_bUseStencil)
+    {
+        glEnable(GL_STENCIL_TEST);
+        glStencilFunc(GL_EQUAL, 1, 1);
+        glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+    }
+    else
+    {
+        glDisable(GL_STENCIL_TEST);
+    }
+}
+
+void BBRenderPass::restoreStencilBuffer()
+{
+    if (m_RenderState.m_bWriteStencil)
+    {
+        glDisable(GL_STENCIL_TEST);
+        glColorMask(true, true, true, true);
+    }
+    else if (m_RenderState.m_bUseStencil)
+    {
+        glDisable(GL_STENCIL_TEST);
+    }
+}
+
 void BBRenderPass::setBlendState(bool bEnable)
 {
     m_RenderState.m_bBlend = bEnable;
@@ -96,6 +133,16 @@ void BBRenderPass::setZFunc(unsigned int func)
 void BBRenderPass::setZMask(bool bEnable)
 {
     m_RenderState.m_bWriteZ = bEnable;
+}
+
+void BBRenderPass::setStencilMask(bool bEnable)
+{
+    m_RenderState.m_bWriteStencil = bEnable;
+}
+
+void BBRenderPass::setUseStencil(bool bEnable)
+{
+    m_RenderState.m_bUseStencil = bEnable;
 }
 
 void BBRenderPass::setLineWidth(float fWidth)

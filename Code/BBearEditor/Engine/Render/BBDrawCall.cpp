@@ -203,7 +203,9 @@ void BBDrawCall::deferredRendering(BBCamera *pCamera)
 void BBDrawCall::uiRendering(BBCanvas *pCanvas)
 {
     m_pVBO->bind();
-    m_pMaterial->getBaseRenderPass()->bind(pCanvas);
+    BBRenderPass *pRenderPass = m_pMaterial->getBaseRenderPass();
+    pRenderPass->bind(pCanvas);
+    pRenderPass->setupStencilBuffer();
     if (m_pEBO == nullptr)
     {
         m_pVBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
@@ -214,7 +216,8 @@ void BBDrawCall::uiRendering(BBCanvas *pCanvas)
         m_pEBO->draw(m_eDrawPrimitiveType, m_nIndexCount, m_nDrawStartIndex);
         m_pEBO->unbind();
     }
-    m_pMaterial->getBaseRenderPass()->unbind();
+    pRenderPass->restoreStencilBuffer();
+    pRenderPass->unbind();
     m_pVBO->unbind();
 }
 

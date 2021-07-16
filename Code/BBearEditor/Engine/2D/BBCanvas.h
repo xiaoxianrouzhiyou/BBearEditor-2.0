@@ -5,6 +5,7 @@
 #include "Base/BBGameObject.h"
 
 class BBAABBBoundingBox2D;
+class BBClipArea2D;
 class BBSpriteObject2D;
 
 class BBCanvas : public BBGameObject
@@ -34,6 +35,7 @@ public:
 
 private:
     BBAABBBoundingBox2D *m_pAABBBoundingBox2D;
+    BBClipArea2D *m_pClipArea2D;
     QList<BBSpriteObject2D*> m_SpriteObject2DSet;
     float m_UniformInfo[4];
 };

@@ -41,6 +41,18 @@ void BBMaterial::setBlendState(bool bEnable)
     }
 }
 
+void BBMaterial::setBlendFunc(unsigned int src, unsigned int dst)
+{
+    if (m_pBaseRenderPass != nullptr)
+    {
+        m_pBaseRenderPass->setBlendFunc(src, dst);
+    }
+    if (m_pAdditiveRenderPass != nullptr)
+    {
+        m_pAdditiveRenderPass->setBlendFunc(src, dst);
+    }
+}
+
 void BBMaterial::setZTestState(bool bEnable)
 {
     if (m_pBaseRenderPass != nullptr)
@@ -50,6 +62,42 @@ void BBMaterial::setZTestState(bool bEnable)
     if (m_pAdditiveRenderPass != nullptr)
     {
         m_pAdditiveRenderPass->setZTestState(bEnable);
+    }
+}
+
+void BBMaterial::setZFunc(unsigned int func)
+{
+    if (m_pBaseRenderPass != nullptr)
+    {
+        m_pBaseRenderPass->setZFunc(func);
+    }
+    if (m_pAdditiveRenderPass != nullptr)
+    {
+        m_pAdditiveRenderPass->setZFunc(func);
+    }
+}
+
+void BBMaterial::setZMask(bool bEnable)
+{
+    if (m_pBaseRenderPass != nullptr)
+    {
+        m_pBaseRenderPass->setZMask(bEnable);
+    }
+    if (m_pAdditiveRenderPass != nullptr)
+    {
+        m_pAdditiveRenderPass->setZMask(bEnable);
+    }
+}
+
+void BBMaterial::setStencilMask(bool bEnable)
+{
+    if (m_pBaseRenderPass != nullptr)
+    {
+        m_pBaseRenderPass->setStencilMask(bEnable);
+    }
+    if (m_pAdditiveRenderPass != nullptr)
+    {
+        m_pAdditiveRenderPass->setStencilMask(bEnable);
     }
 }
 
