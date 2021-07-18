@@ -3,6 +3,9 @@
 #include "Utils/BBUtils.h"
 #include <QKeyEvent>
 #include "Scene/BBScene.h"
+#include "Tools/FBX2BBear/BBFBX2BBear.h"
+#include "FileSystem/BBFileSystemManager.h"
+#include "FileSystem/BBFileListWidget.h"
 
 
 BBMainWindow::BBMainWindow(QWidget *parent)
@@ -12,6 +15,7 @@ BBMainWindow::BBMainWindow(QWidget *parent)
     m_pUi->setupUi(this);
 
     setWindowLayout();
+    setMenu();
     setGameObjectDockWidget();
     setPreview();
     setConnect();
@@ -43,6 +47,11 @@ void BBMainWindow::switchGameObjectPage(int nIndex)
     m_pUi->stackedWidget->setCurrentIndex(nIndex);
 }
 
+void BBMainWindow::useToolFBX2BBear()
+{
+    BBFBX2BBear::loadFBXFile(m_pUi->dockProject->getFileSystemManager()->getFileListWidget()->currentItem());
+}
+
 void BBMainWindow::setWindowLayout()
 {
     // Allow nesting of docks
@@ -61,6 +70,17 @@ void BBMainWindow::setWindowLayout()
     m_pUi->dockGameObjectContents->updateSizeHint(QSize(250, 900));
     m_pUi->dockEditviewContents->updateSizeHint(QSize(1440, 900));
     m_pUi->dockPreviewContents->updateSizeHint(QSize(480, 300));
+}
+
+void BBMainWindow::setMenu()
+{
+    QMenu *pMenuTools = m_pUi->menuTools;
+    QAction *pActionFBX2BBear = new QAction(tr("FBX2BBear"));
+    pMenuTools->addAction(pActionFBX2BBear);
+    pMenuTools->addSeparator();
+    pMenuTools->addAction(new QAction(tr("Options...")));
+
+    QObject::connect(pActionFBX2BBear, SIGNAL(triggered()), this, SLOT(useToolFBX2BBear()));
 }
 
 void BBMainWindow::setGameObjectDockWidget()

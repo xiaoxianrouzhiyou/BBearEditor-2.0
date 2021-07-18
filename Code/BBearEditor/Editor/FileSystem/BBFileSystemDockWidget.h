@@ -29,6 +29,8 @@ public:
     void createProject();
     void openProject();
 
+    BBFileSystemManager* getFileSystemManager() { return m_pFileSystemManager; }
+
 private slots:
     void removeCurrentItem();
     void clickItemInFolderTree(const QString &filePath, QTreeWidgetItem *pItem);

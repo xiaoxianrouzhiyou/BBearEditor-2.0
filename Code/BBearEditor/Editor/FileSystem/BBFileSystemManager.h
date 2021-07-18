@@ -24,6 +24,8 @@ public:
                         BBFilePathBarWidget *pFilePathBarWidget);
     ~BBFileSystemManager();
 
+    BBFileListWidget* getFileListWidget() { return m_pFileListWidget; }
+
     void bindPreviewOpenGLWidget(BBPreviewOpenGLWidget *pPreviewOpenGLWidget);
     void createProject();
     void openProject();

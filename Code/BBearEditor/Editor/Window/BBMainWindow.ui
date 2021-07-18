@@ -439,6 +439,11 @@ BBFileListWidget::item:selected {
     <addaction name="separator"/>
     <addaction name="separator"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+   </widget>
    <widget class="QMenu" name="menuWindows">
     <property name="title">
      <string>Windows</string>
@@ -451,6 +456,7 @@ BBFileListWidget::item:selected {
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuTools"/>
    <addaction name="menuWindows"/>
    <addaction name="menuHelp"/>
   </widget>

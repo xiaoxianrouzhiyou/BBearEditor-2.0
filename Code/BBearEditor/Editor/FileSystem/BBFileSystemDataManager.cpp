@@ -1141,9 +1141,10 @@ QListWidgetItem* BBFileSystemDataManager::addFileItem(const QFileInfo &fileInfo,
         QString suffix = fileInfo.suffix();
         if (m_MeshSuffixs.contains(suffix))
         {
-            QString sourcePath = fileInfo.absoluteFilePath();
-            QIcon icon = getMeshOverviewMap(sourcePath);
-            pItem->setIcon(icon);
+//            QString sourcePath = fileInfo.absoluteFilePath();
+//            QIcon icon = getMeshOverviewMap(sourcePath);
+//            pItem->setIcon(icon);
+            pItem->setIcon(getIcon(BB_PATH_RESOURCE_ICON(model.png)));
             pOutFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Mesh));
         }
         else if (m_TextureSuffixs.contains(suffix))
@@ -1189,7 +1190,7 @@ QIcon BBFileSystemDataManager::getMeshOverviewMap(const QString &sourcePath)
     QFile file(overviewMapPath);
     if (!file.exists())
     {
-        createMeshOverviewMap(sourcePath, overviewMapPath);
+        //createMeshOverviewMap(sourcePath, overviewMapPath);
     }
     return getIcon(overviewMapPath);
 }
@@ -1327,7 +1328,7 @@ bool BBFileSystemDataManager::importFiles(const QFileInfo &fileInfo, const QStri
     {
         QString targetPath = getExclusiveFilePath(newPath);
         BB_PROCESS_ERROR_RETURN_FALSE(QFile::copy(fileInfo.absoluteFilePath(), targetPath));
-        createMeshOverviewMap(targetPath, getOverviewMapPath(targetPath));
+        //createMeshOverviewMap(targetPath, getOverviewMapPath(targetPath));
     }
     return true;
 }

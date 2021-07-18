@@ -21,12 +21,14 @@ private slots:
     void openProject();
     void showGlobalSettingsProperty();
     void switchGameObjectPage(int nIndex);
+    void useToolFBX2BBear();
 
 signals:
     void pressMultipleSelectionKey(bool);
 
 private:
     void setWindowLayout();
+    void setMenu();
     void setGameObjectDockWidget();
     void setPreview();
     void setConnect();

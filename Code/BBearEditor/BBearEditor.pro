@@ -110,7 +110,9 @@ SOURCES += \
     Engine/Scene/BBRendererManager.cpp \
     Engine/2D/BBClipArea2D.cpp \
     Engine/3D/Mesh/BBTerrain.cpp \
-    Engine/Font/BBDynamicFont.cpp
+    Engine/Font/BBDynamicFont.cpp \
+    Editor/Tools/FBX2BBear/BBFBX2BBear.cpp \
+    Editor/Tools/FBX2BBear/BBFBXSkeletonGPU.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -200,7 +202,9 @@ HEADERS += \
     Engine/Scene/BBRendererManager.h \
     Engine/2D/BBClipArea2D.h \
     Engine/3D/Mesh/BBTerrain.h \
-    Engine/Font/BBDynamicFont.h
+    Engine/Font/BBDynamicFont.h \
+    Editor/Tools/FBX2BBear/BBFBX2BBear.h \
+    Editor/Tools/FBX2BBear/BBFBXSkeletonGPU.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
@@ -219,9 +223,10 @@ INCLUDEPATH += \
     ../../External \
     ../../External/Eigen \
     ../../External/rapidxml \
-    ../../External/fbxsdk \
+    ../../External/FBX/include \
     ../../External/lua \
     ../../External/ProtoBuffer/src \
 
 LIBS += -lopengl32 -lglu32 -lglut \
     -L../../External/ProtoBuffer/lib -lprotobuf
+
