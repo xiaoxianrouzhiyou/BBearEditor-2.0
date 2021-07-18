@@ -112,7 +112,8 @@ SOURCES += \
     Engine/3D/Mesh/BBTerrain.cpp \
     Engine/Font/BBDynamicFont.cpp \
     Editor/Tools/FBX2BBear/BBFBX2BBear.cpp \
-    Editor/Tools/FBX2BBear/BBFBXSkeletonGPU.cpp
+    Editor/Tools/FBX2BBear/BBFBXSkeletonGPU.cpp \
+    Engine/RayTracing/BBRayTracingManager.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -204,7 +205,8 @@ HEADERS += \
     Engine/3D/Mesh/BBTerrain.h \
     Engine/Font/BBDynamicFont.h \
     Editor/Tools/FBX2BBear/BBFBX2BBear.h \
-    Editor/Tools/FBX2BBear/BBFBXSkeletonGPU.h
+    Editor/Tools/FBX2BBear/BBFBXSkeletonGPU.h \
+    Engine/RayTracing/BBRayTracingManager.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

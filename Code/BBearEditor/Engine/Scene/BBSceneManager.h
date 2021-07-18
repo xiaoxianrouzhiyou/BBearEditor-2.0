@@ -25,6 +25,7 @@ public:
     static BBRenderQueue* getRenderQueue();
     static BBCamera* getCamera();
     static void bindEditViewOpenGLWidget(BBEditViewOpenGLWidget *pWidget);
+    static BBEditViewOpenGLWidget* getEditViewOpenGLWidget() { return m_pEditViewOpenGLWidget; }
     static void bindHierarchyTreeWidget(BBHierarchyTreeWidget *pWidget) { m_pHierarchyTreeWidget = pWidget; }
     static BBHierarchyTreeWidget* getHierarchyTreeWidget() { return m_pHierarchyTreeWidget; }
 

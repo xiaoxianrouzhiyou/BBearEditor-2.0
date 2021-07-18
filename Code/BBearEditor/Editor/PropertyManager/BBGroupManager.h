@@ -17,6 +17,7 @@ class BBPreviewOpenGLWidget;
 class BBMaterial;
 class BBRenderableObject;
 class BBPointLight;
+class QCheckBox;
 
 
 // Manage a group of property
@@ -91,6 +92,7 @@ public:
 
 private slots:
     void changeCurrentRenderingAlgorithm(int nIndex);
+    void switchRayTracing(bool bEnable);
 
 private:
     void initRenderingAlgorithmEnumFactory();
@@ -98,6 +100,7 @@ private:
     static int m_nCurrentRenderingAlgorithmIndex;
     BBScene *m_pScene;
     BBEnumFactory *m_pRenderingAlgorithmEnumFactory;
+    QCheckBox *m_pTriggerRayTracing;
 };
 
 

@@ -19,6 +19,7 @@
 #include "3D/Mesh/BBMesh.h"
 #include "Scene/BBRendererManager.h"
 #include "Render/Light/BBPointLight.h"
+#include "RayTracing/BBRayTracingManager.h"
 
 
 /**
@@ -352,13 +353,18 @@ BBGlobalSettingsGroupManager::BBGlobalSettingsGroupManager(BBScene *pScene, QWid
     : BBGroupManager("Global Settings", BB_PATH_RESOURCE_ICON(earth.png), pParent)
 {
     m_pScene = pScene;
-    m_pRenderingAlgorithmEnumFactory = NULL;
+    m_pRenderingAlgorithmEnumFactory = nullptr;
     initRenderingAlgorithmEnumFactory();
+
+    m_pTriggerRayTracing = new QCheckBox(this);
+    QObject::connect(m_pTriggerRayTracing, SIGNAL(clicked(bool)), this, SLOT(switchRayTracing(bool)));
+    addFactory("Ray Tracing", m_pTriggerRayTracing);
 }
 
 BBGlobalSettingsGroupManager::~BBGlobalSettingsGroupManager()
 {
     BB_SAFE_DELETE(m_pRenderingAlgorithmEnumFactory);
+    BB_SAFE_DELETE(m_pTriggerRayTracing);
 }
 
 void BBGlobalSettingsGroupManager::changeCurrentRenderingAlgorithm(int nIndex)
@@ -367,6 +373,18 @@ void BBGlobalSettingsGroupManager::changeCurrentRenderingAlgorithm(int nIndex)
     // 1 Deferred Rendering
     BBDrawCall::switchRenderingSettings(nIndex);
     m_nCurrentRenderingAlgorithmIndex = nIndex;
+}
+
+void BBGlobalSettingsGroupManager::switchRayTracing(bool bEnable)
+{
+    if (bEnable)
+    {
+        BBRayTracingManager::open();
+    }
+    else
+    {
+        BBRayTracingManager::close();
+    }
 }
 
 void BBGlobalSettingsGroupManager::initRenderingAlgorithmEnumFactory()

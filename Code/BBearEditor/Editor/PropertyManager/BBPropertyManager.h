@@ -134,17 +134,6 @@ private:
 //};
 
 
-////材质各项属性
-//class MaterialManager : public QWidget
-//{
-
-//private slots:
-//    void updatePreview();
-//    void currentIndexChangedSlot(const QString &text);
-//    void smoothnessChanged(int value);
-
-//};
-
 
 ////场景各项属性
 //class SceneManager : public QWidget
@@ -204,18 +193,4 @@ private:
 //private:
 //    SpotLight *mLight;
 
-//};
-
-
-////fbx文件属性
-//class FbxFileManager : public QWidget
-//{
-//    Q_OBJECT
-
-//public:
-//    FbxFileManager(QString filePath, QWidget *parent = 0);
-
-//private slots:
-
-//private:
 //};
