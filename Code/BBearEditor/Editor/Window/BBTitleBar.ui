@@ -249,7 +249,7 @@ QPushButton:default {
          <item>
           <widget class="QLabel" name="introduction">
            <property name="text">
-            <string>我是聪明可爱的大熊！！</string>
+            <string>我是聪明可爱的大熊！！努力比天赋更重要！！</string>
            </property>
           </widget>
          </item>

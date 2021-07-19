@@ -43,6 +43,9 @@ public:
 //    void setTiledAABB(float fWidth, float fHeight);
 
     void setCurrentMaterial(BBMaterial *pMaterial) override;
+
+    void setMatrix4(const std::string &uniformName, const float *pMatrix4) override;
+    void setVector4(const std::string &uniformName, float x, float y, float z, float w) override;
     void setTexture(const std::string &uniformName, GLuint textureName) override;
 
     void openLight() override;

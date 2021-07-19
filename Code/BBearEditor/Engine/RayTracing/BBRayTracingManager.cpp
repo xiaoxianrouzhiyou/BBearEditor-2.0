@@ -12,9 +12,8 @@
 BBRayTracingManager::BBRayTracingManager(BBScene *pScene)
 {
     m_pScene = pScene;
-    m_nCurrentRenderedPixel = 0;
     BBCamera *pCamera = m_pScene->getCamera();
-    m_nTotalPixelCount = pCamera->getViewportWidth() * pCamera->getViewportHeight();
+    onWindowResize(pCamera->getViewportWidth(), pCamera->getViewportHeight());
 }
 
 void BBRayTracingManager::open()
@@ -35,7 +34,9 @@ void BBRayTracingManager::close()
 
 void BBRayTracingManager::onWindowResize(int nWidth, int nHeight)
 {
-    m_nTotalPixelCount = nWidth * nHeight;
+    m_nViewportWidth = nWidth;
+    m_nViewportHeight = nHeight;
+    updateWindow();
 }
 
 void BBRayTracingManager::updateWindow()
@@ -45,16 +46,5 @@ void BBRayTracingManager::updateWindow()
 
 void BBRayTracingManager::render()
 {
-    m_nCurrentRenderedPixel = 0;
-    while (m_nCurrentRenderedPixel < m_nTotalPixelCount)
-    {
-        renderOnePixel(m_nCurrentRenderedPixel);
-        m_nCurrentRenderedPixel++;
-    }
     updateWindow();
-}
-
-void BBRayTracingManager::renderOnePixel(int nPixelIndex)
-{
-
 }

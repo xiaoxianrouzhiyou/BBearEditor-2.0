@@ -74,6 +74,8 @@ public:
     virtual void setCurrentMaterial(BBMaterial *pMaterial);
     virtual void restoreMaterial();
 
+    virtual void setMatrix4(const std::string &uniformName, const float *pMatrix4);
+    virtual void setVector4(const std::string &uniformName, float x, float y, float z, float w);
     virtual void setTexture(const std::string &uniformName, GLuint textureName);
 
     virtual void openLight();

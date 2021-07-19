@@ -32,8 +32,8 @@ BBFullScreenQuad::BBFullScreenQuad(float fScale, float fOffsetX, float fOffsetY,
 
 void BBFullScreenQuad::init()
 {
-    m_pCurrentMaterial->init("fullscreenquad",
-                             BB_PATH_RESOURCE_SHADER(fullscreenquad.vert),
+    m_pCurrentMaterial->init("fullscreenquad_ray_tracing",
+                             BB_PATH_RESOURCE_SHADER(fullscreenquad_ray_tracing.vert),
                              BB_PATH_RESOURCE_SHADER(fullscreenquad_ray_tracing.frag));// fullscreenquad.frag
     m_pCurrentMaterial->getBaseRenderPass()->setBlendState(true);
     m_pCurrentMaterial->getBaseRenderPass()->setBlendFunc(GL_ONE, GL_ONE);
@@ -158,6 +158,22 @@ void BBTiledFullScreenQuad::setCurrentMaterial(BBMaterial *pMaterial)
     for (int i = 0; i < m_nQuadCount; i++)
     {
         m_pFullScreenQuad[i]->setCurrentMaterial(pMaterial);
+    }
+}
+
+void BBTiledFullScreenQuad::setMatrix4(const std::string &uniformName, const float *pMatrix4)
+{
+    for (int i = 0; i < m_nQuadCount; i++)
+    {
+        m_pFullScreenQuad[i]->setMatrix4(uniformName, pMatrix4);
+    }
+}
+
+void BBTiledFullScreenQuad::setVector4(const std::string &uniformName, float x, float y, float z, float w)
+{
+    for (int i = 0; i < m_nQuadCount; i++)
+    {
+        m_pFullScreenQuad[i]->setVector4(uniformName, x, y, z, w);
     }
 }
 

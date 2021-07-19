@@ -7,7 +7,9 @@
 enum BBMaterialUniformPropertyType
 {
     CameraProjectionMatrix,
+    CameraInverseProjectionMatrix,
     CameraViewMatrix,
+    CameraInverseViewMatrix,
     Matrix4,
     Vector4,
     Sampler2D,

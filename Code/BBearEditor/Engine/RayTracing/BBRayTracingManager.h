@@ -17,12 +17,11 @@ private:
     void updateWindow();
 
     void render();
-    void renderOnePixel(int nPixelIndex);
 
 private:
     BBScene *m_pScene;
-    int m_nTotalPixelCount;
-    int m_nCurrentRenderedPixel;
+    int m_nViewportWidth;
+    int m_nViewportHeight;
 };
 
 #endif // BBRAYTRACINGMANAGER_H

@@ -32,9 +32,19 @@ void BBUniformUpdater::updateCameraProjectionMatrix(GLint location, void *pCamer
     glUniformMatrix4fv(location, 1, GL_FALSE, ((BBCamera*)pCamera)->getProjectionMatrix().data());
 }
 
+void BBUniformUpdater::updateCameraInverseProjectionMatrix(GLint location, void *pCamera, void *pPropertyValue)
+{
+    glUniformMatrix4fv(location, 1, GL_FALSE, ((BBCamera*)pCamera)->getProjectionMatrix().inverted().data());
+}
+
 void BBUniformUpdater::updateCameraViewMatrix(GLint location, void *pCamera, void *pPropertyValue)
 {
     glUniformMatrix4fv(location, 1, GL_FALSE, ((BBCamera*)pCamera)->getViewMatrix().data());
+}
+
+void BBUniformUpdater::updateCameraInverseViewMatrix(GLint location, void *pCamera, void *pPropertyValue)
+{
+    glUniformMatrix4fv(location, 1, GL_FALSE, ((BBCamera*)pCamera)->getViewMatrix().inverted().data());
 }
 
 void BBUniformUpdater::updateCanvas(GLint location, void *pCanvas, void *pPropertyValue)

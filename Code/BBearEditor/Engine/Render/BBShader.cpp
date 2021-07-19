@@ -164,10 +164,20 @@ BBUniformUpdater* BBShader::initUniformMatrix4(GLint location, const char *pUnif
         updateUniformFunc = &BBUniformUpdater::updateCameraProjectionMatrix;
         uniformType = BBMaterialUniformPropertyType::CameraProjectionMatrix;
     }
+    else if (strcmp(pUniformName, LOCATION_PROJECTIONMATRIX_I) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updateCameraInverseProjectionMatrix;
+        uniformType = BBMaterialUniformPropertyType::CameraInverseProjectionMatrix;
+    }
     else if (strcmp(pUniformName, LOCATION_VIEWMATRIX) == 0)
     {
         updateUniformFunc = &BBUniformUpdater::updateCameraViewMatrix;
         uniformType = BBMaterialUniformPropertyType::CameraViewMatrix;
+    }
+    else if (strcmp(pUniformName, LOCATION_VIEWMATRIX_I) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updateCameraInverseViewMatrix;
+        uniformType = BBMaterialUniformPropertyType::CameraInverseViewMatrix;
     }
     else if (strcmp(pUniformName, LOCATION_MODELMATRIX) == 0)
     {

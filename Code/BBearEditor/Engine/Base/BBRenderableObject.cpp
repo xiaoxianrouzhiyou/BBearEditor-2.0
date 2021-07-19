@@ -130,6 +130,16 @@ void BBRenderableObject::restoreMaterial()
     setCurrentMaterial(m_pDefaultMaterial);
 }
 
+void BBRenderableObject::setMatrix4(const std::string &uniformName, const float *pMatrix4)
+{
+    m_pCurrentMaterial->setMatrix4(uniformName, pMatrix4);
+}
+
+void BBRenderableObject::setVector4(const std::string &uniformName, float x, float y, float z, float w)
+{
+    m_pCurrentMaterial->setVector4(uniformName, x, y, z, w);
+}
+
 void BBRenderableObject::setTexture(const std::string &uniformName, GLuint textureName)
 {
     m_pCurrentMaterial->setVector4(LOCATION_TEXTURE_SETTING0, 1.0f, 0.0f, 0.0f, 0.0f);

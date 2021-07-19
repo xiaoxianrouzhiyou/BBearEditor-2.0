@@ -364,6 +364,21 @@ void BBGameObject::restoreMaterial()
 
 }
 
+void BBGameObject::setMatrix4(const std::string &uniformName, const float *pMatrix4)
+{
+    Q_UNUSED(uniformName);
+    Q_UNUSED(pMatrix4);
+}
+
+void BBGameObject::setVector4(const std::string &uniformName, float x, float y, float z, float w)
+{
+    Q_UNUSED(uniformName);
+    Q_UNUSED(x);
+    Q_UNUSED(y);
+    Q_UNUSED(z);
+    Q_UNUSED(w);
+}
+
 void BBGameObject::setTexture(const std::string &uniformName, GLuint textureName)
 {
     Q_UNUSED(uniformName);
