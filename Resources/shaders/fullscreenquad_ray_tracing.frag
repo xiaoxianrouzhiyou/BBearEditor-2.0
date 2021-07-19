@@ -1,7 +1,7 @@
 varying vec4 V_Position;
 varying vec4 V_Texcoord;
 
-uniform sampler2D texture0;
+uniform sampler2D texture1;
 uniform mat4 projectionMatrix_I;
 uniform mat4 viewMatrix_I;
 
@@ -28,5 +28,12 @@ void main(void)
     if (ray_direction.z < 0.0)
         ray_direction.z = -ray_direction.z;
 
-    gl_FragColor = vec4(ray_direction.xyz, 1.0);
+    vec3 model_normal = texture2D(texture1, V_Texcoord.xy);
+    if (length(model_normal) != 0.0)
+    {
+        // 0~1
+        model_normal = model_normal * 0.5 + 0.5;
+    }
+
+    gl_FragColor = vec4(model_normal, 1.0);
 }

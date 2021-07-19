@@ -35,8 +35,8 @@ void BBFullScreenQuad::init()
     m_pCurrentMaterial->init("fullscreenquad_ray_tracing",
                              BB_PATH_RESOURCE_SHADER(fullscreenquad_ray_tracing.vert),
                              BB_PATH_RESOURCE_SHADER(fullscreenquad_ray_tracing.frag));// fullscreenquad.frag
-    m_pCurrentMaterial->getBaseRenderPass()->setBlendState(true);
-    m_pCurrentMaterial->getBaseRenderPass()->setBlendFunc(GL_ONE, GL_ONE);
+//    m_pCurrentMaterial->getBaseRenderPass()->setBlendState(true);
+//    m_pCurrentMaterial->getBaseRenderPass()->setBlendFunc(GL_ONE, GL_ONE);
     // default
     float *pLightPosition = new float[4] {1.0f, 1.0f, 0.0f, 0.0f};
     float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};

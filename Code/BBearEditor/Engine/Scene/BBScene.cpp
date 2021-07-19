@@ -178,18 +178,24 @@ void BBScene::rayTracingRender()
     // refresh camera position and direction, update pos and ..., Convenient for subsequent use
     m_pCamera->update(m_fUpdateRate);
 
-    m_pFBO[0]->bind();
-
-    QList<BBGameObject*> objects = m_Models;
-    for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
+    for (int i = 0; i < 3; i++)
     {
-        BBGameObject *pObject = *itr;
-        pObject->render(m_pCamera);
+        m_pFBO[i]->bind();
+
+        QList<BBGameObject*> objects = m_Models;
+        for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
+        {
+            BBGameObject *pObject = *itr;
+            pObject->setCurrentMaterial(BBRendererManager::getDeferredRenderingMaterial(i));
+            pObject->render(m_pCamera);
+        }
+
+        m_pFBO[i]->unbind();
     }
 
-    m_pFBO[0]->unbind();
-
     m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(0), m_pFBO[0]->getBuffer(m_ColorBufferName));
+    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(1), m_pFBO[1]->getBuffer(m_ColorBufferName));
+    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(2), m_pFBO[2]->getBuffer(m_ColorBufferName));
     m_pTiledFullScreenQuad->render(m_pCamera);
 }
 
