@@ -13,6 +13,7 @@ public:
     BBFullScreenQuad(float fScale, float fOffsetX, float fOffsetY, int nFrustumIndexX, int nFrustumIndexY);
 
     void init() override;
+    void init(BBMaterial *pMaterial);
     void render(BBCamera *pCamera) override;
 
 //    void setAABB(float fWidth, float fHeight);
@@ -41,6 +42,7 @@ public:
 
 //    void setTiledAABB(float fWidth, float fHeight);
 
+    void setCurrentMaterial(BBMaterial *pMaterial) override;
     void setTexture(const std::string &uniformName, GLuint textureName) override;
 
     void openLight() override;

@@ -32,19 +32,9 @@ BBFullScreenQuad::BBFullScreenQuad(float fScale, float fOffsetX, float fOffsetY,
 
 void BBFullScreenQuad::init()
 {
-    m_pVBO = new BBVertexBufferObject(4);
-    m_pVBO->setPosition(0, -1.0f * m_fScale + m_fOffsetX, -1.0f * m_fScale + m_fOffsetY, 0.0f);
-    m_pVBO->setPosition(1, 1.0f * m_fScale + m_fOffsetX, -1.0f * m_fScale + m_fOffsetY, 0.0f);
-    m_pVBO->setPosition(2, -1.0f * m_fScale + m_fOffsetX, 1.0f * m_fScale + m_fOffsetY, 0.0f);
-    m_pVBO->setPosition(3, 1.0f * m_fScale + m_fOffsetX, 1.0f * m_fScale + m_fOffsetY, 0.0f);
-    m_pVBO->setTexcoord(0, (m_pVBO->getPosition(0).x() + 1.0f) / 2.0f, (m_pVBO->getPosition(0).y() + 1.0f) / 2.0f);
-    m_pVBO->setTexcoord(1, (m_pVBO->getPosition(1).x() + 1.0f) / 2.0f, (m_pVBO->getPosition(1).y() + 1.0f) / 2.0f);
-    m_pVBO->setTexcoord(2, (m_pVBO->getPosition(2).x() + 1.0f) / 2.0f, (m_pVBO->getPosition(2).y() + 1.0f) / 2.0f);
-    m_pVBO->setTexcoord(3, (m_pVBO->getPosition(3).x() + 1.0f) / 2.0f, (m_pVBO->getPosition(3).y() + 1.0f) / 2.0f);
-
     m_pCurrentMaterial->init("fullscreenquad",
                              BB_PATH_RESOURCE_SHADER(fullscreenquad.vert),
-                             BB_PATH_RESOURCE_SHADER(fullscreenquad.frag));
+                             BB_PATH_RESOURCE_SHADER(fullscreenquad_ray_tracing.frag));// fullscreenquad.frag
     m_pCurrentMaterial->getBaseRenderPass()->setBlendState(true);
     m_pCurrentMaterial->getBaseRenderPass()->setBlendFunc(GL_ONE, GL_ONE);
     // default
@@ -52,6 +42,27 @@ void BBFullScreenQuad::init()
     float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};
     m_pCurrentMaterial->setVector4(LOCATION_LIGHT_POSITION, pLightPosition);
     m_pCurrentMaterial->setVector4(LOCATION_LIGHT_COLOR, pLightColor);
+    init(m_pCurrentMaterial);
+}
+
+void BBFullScreenQuad::init(BBMaterial *pMaterial)
+{
+    m_pCurrentMaterial = pMaterial;
+
+    m_pVBO = new BBVertexBufferObject(4);
+    m_pVBO->setPosition(0, -1.0f * m_fScale + m_fOffsetX, -1.0f * m_fScale + m_fOffsetY, 0.0f);
+    m_pVBO->setPosition(1, 1.0f * m_fScale + m_fOffsetX, -1.0f * m_fScale + m_fOffsetY, 0.0f);
+    m_pVBO->setPosition(2, -1.0f * m_fScale + m_fOffsetX, 1.0f * m_fScale + m_fOffsetY, 0.0f);
+    m_pVBO->setPosition(3, 1.0f * m_fScale + m_fOffsetX, 1.0f * m_fScale + m_fOffsetY, 0.0f);
+    m_pVBO->setColor(0, 1.0f, 1.0f, 1.0f);
+    m_pVBO->setColor(1, 1.0f, 1.0f, 1.0f);
+    m_pVBO->setColor(2, 1.0f, 1.0f, 1.0f);
+    m_pVBO->setColor(3, 1.0f, 1.0f, 1.0f);
+    m_pVBO->setTexcoord(0, (m_pVBO->getPosition(0).x() + 1.0f) / 2.0f, (m_pVBO->getPosition(0).y() + 1.0f) / 2.0f);
+    m_pVBO->setTexcoord(1, (m_pVBO->getPosition(1).x() + 1.0f) / 2.0f, (m_pVBO->getPosition(1).y() + 1.0f) / 2.0f);
+    m_pVBO->setTexcoord(2, (m_pVBO->getPosition(2).x() + 1.0f) / 2.0f, (m_pVBO->getPosition(2).y() + 1.0f) / 2.0f);
+    m_pVBO->setTexcoord(3, (m_pVBO->getPosition(3).x() + 1.0f) / 2.0f, (m_pVBO->getPosition(3).y() + 1.0f) / 2.0f);
+
     closeLight();
 
     BBRenderableObject::init();
@@ -141,6 +152,14 @@ void BBTiledFullScreenQuad::render(BBCamera *pCamera)
 //        m_pFullScreenQuad[i]->setAABB(fWidth, fHeight);
 //    }
 //}
+
+void BBTiledFullScreenQuad::setCurrentMaterial(BBMaterial *pMaterial)
+{
+    for (int i = 0; i < m_nQuadCount; i++)
+    {
+        m_pFullScreenQuad[i]->setCurrentMaterial(pMaterial);
+    }
+}
 
 void BBTiledFullScreenQuad::setTexture(const std::string &uniformName, GLuint textureName)
 {

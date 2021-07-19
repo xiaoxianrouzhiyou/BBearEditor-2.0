@@ -22,8 +22,11 @@ public:
 
     BBGameObject* createModel(const BBSerializer::BBGameObject &gameObject);
 
+public:
+    void startRenderThread();
+    void stopRenderThread();
+
 private:
-    void setRenderThread();
     QThread *m_pRenderThread;
     QTimer *m_pRenderTimer;
 

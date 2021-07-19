@@ -132,7 +132,8 @@ void BBRenderableObject::restoreMaterial()
 
 void BBRenderableObject::setTexture(const std::string &uniformName, GLuint textureName)
 {
-    m_pCurrentMaterial->getBaseRenderPass()->setSampler2D(uniformName, textureName);
+    m_pCurrentMaterial->setVector4(LOCATION_TEXTURE_SETTING0, 1.0f, 0.0f, 0.0f, 0.0f);
+    m_pCurrentMaterial->setSampler2D(uniformName, textureName);
 }
 
 void BBRenderableObject::openLight()

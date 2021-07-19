@@ -21,6 +21,7 @@ class BBRay;
 class BBTransformCoordinateSystem;
 class BBTiledFullScreenQuad;
 class BBRenderQueue;
+class BBRayTracingManager;
 class BBScene;
 
 typedef void (BBScene::*BBRenderingFunc)();
@@ -37,14 +38,17 @@ public:
     void setRenderingFunc(const BBRenderingFunc &renderingFunc) { m_RenderingFunc = renderingFunc; }
     void defaultRender();
     void deferredRender();
+    void rayTracingRender();
 
     void resize(float width, float height);
 
     inline BBRenderQueue* getRenderQueue() { return m_pRenderQueue; }
     inline BBCamera* getCamera() { return m_pCamera; }
     inline BBTransformCoordinateSystem* getTransformCoordinateSystem() { return m_pTransformCoordinateSystem; }
+    inline BBTiledFullScreenQuad* getTiledFullScreenQuad() { return m_pTiledFullScreenQuad; }
     inline QList<BBGameObject*> getModels() { return m_Models; }
     inline QList<BBGameObject*> getLights() { return m_Lights; }
+    inline BBRayTracingManager* getRayTracingManager() { return m_pRayTracingManager; }
 
     /* FBO */
 
@@ -105,6 +109,8 @@ private:
     QList<BBGameObject*> m_Canvases;
 
     BBSelectionRegion *m_pSelectionRegion;
+
+    BBRayTracingManager *m_pRayTracingManager;
 
 
 //    QList<GameObject*> audios;

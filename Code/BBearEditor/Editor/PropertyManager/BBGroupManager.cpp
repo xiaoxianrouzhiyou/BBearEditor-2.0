@@ -19,6 +19,7 @@
 #include "3D/Mesh/BBMesh.h"
 #include "Scene/BBRendererManager.h"
 #include "Render/Light/BBPointLight.h"
+#include "Scene/BBScene.h"
 #include "RayTracing/BBRayTracingManager.h"
 
 
@@ -379,11 +380,11 @@ void BBGlobalSettingsGroupManager::switchRayTracing(bool bEnable)
 {
     if (bEnable)
     {
-        BBRayTracingManager::open();
+        m_pScene->getRayTracingManager()->open();
     }
     else
     {
-        BBRayTracingManager::close();
+        m_pScene->getRayTracingManager()->close();
     }
 }
 

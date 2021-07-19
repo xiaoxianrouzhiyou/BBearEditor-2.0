@@ -20,6 +20,7 @@
 #include "Scene/BBRendererManager.h"
 #include "2D/BBCanvas.h"
 #include "2D/BBSpriteObject2D.h"
+#include "RayTracing/BBRayTracingManager.h"
 
 
 QString BBScene::m_ColorBufferName = "color";
@@ -39,6 +40,7 @@ BBScene::BBScene()
     m_pSelectionRegion = nullptr;
     m_pTransformCoordinateSystem = nullptr;
     m_pTiledFullScreenQuad = nullptr;
+    m_pRayTracingManager = nullptr;
 }
 
 BBScene::~BBScene()
@@ -54,6 +56,7 @@ BBScene::~BBScene()
     BB_SAFE_DELETE(m_pSelectionRegion);
     BB_SAFE_DELETE(m_pTransformCoordinateSystem);
     BB_SAFE_DELETE(m_pTiledFullScreenQuad);
+    BB_SAFE_DELETE(m_pRayTracingManager);
     QList<BBGameObject*> objects = m_Models + m_Lights;
     QList<BBGameObject*>::Iterator itr;
     for (itr = objects.begin(); itr != objects.end(); itr++)
@@ -75,6 +78,7 @@ void BBScene::init()
     m_pSelectionRegion = new BBSelectionRegion();
     m_pTransformCoordinateSystem = new BBTransformCoordinateSystem();
     m_pTiledFullScreenQuad = new BBTiledFullScreenQuad();
+    m_pRayTracingManager = new BBRayTracingManager(this);
 
     m_pCamera->setViewportSize(800.0f, 600.0f);
 
@@ -165,9 +169,28 @@ void BBScene::deferredRender()
     m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(1), m_pFBO[1]->getBuffer(m_ColorBufferName));
     m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(2), m_pFBO[2]->getBuffer(m_ColorBufferName));
     m_pTiledFullScreenQuad->render(m_pCamera);
+}
 
-    // 2D camera mode
-    m_pCamera->switchTo2D();
+void BBScene::rayTracingRender()
+{
+    // 3D camera mode
+    m_pCamera->switchTo3D();
+    // refresh camera position and direction, update pos and ..., Convenient for subsequent use
+    m_pCamera->update(m_fUpdateRate);
+
+    m_pFBO[0]->bind();
+
+    QList<BBGameObject*> objects = m_Models;
+    for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
+    {
+        BBGameObject *pObject = *itr;
+        pObject->render(m_pCamera);
+    }
+
+    m_pFBO[0]->unbind();
+
+    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(0), m_pFBO[0]->getBuffer(m_ColorBufferName));
+    m_pTiledFullScreenQuad->render(m_pCamera);
 }
 
 void BBScene::resize(float width, float height)
@@ -193,6 +216,8 @@ void BBScene::resize(float width, float height)
     }
 
     m_pTransformCoordinateSystem->resize(width, height);
+
+    m_pRayTracingManager->onWindowResize(width, height);
 }
 
 void BBScene::setSkyBox(const QString &path)
