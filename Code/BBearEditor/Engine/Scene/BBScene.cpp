@@ -21,6 +21,7 @@
 #include "2D/BBCanvas.h"
 #include "2D/BBSpriteObject2D.h"
 #include "RayTracing/BBRayTracingManager.h"
+#include "Render/BBTexture.h"
 
 
 QString BBScene::m_ColorBufferName = "color";
@@ -196,6 +197,9 @@ void BBScene::rayTracingRender()
     m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(0), m_pFBO[0]->getBuffer(m_ColorBufferName));
     m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(1), m_pFBO[1]->getBuffer(m_ColorBufferName));
     m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(2), m_pFBO[2]->getBuffer(m_ColorBufferName));
+    BBTexture texture;
+    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(3),
+                                       texture.createTexture2D(BB_PATH_RESOURCE_PICTURE(sky_bg2.jpeg), GL_RGBA));
     m_pTiledFullScreenQuad->render(m_pCamera);
 }
 

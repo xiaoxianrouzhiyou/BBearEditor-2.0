@@ -35,7 +35,7 @@ GLuint BBTexture::createTexture2D(unsigned char *pPixelData, int nWidth, int nHe
     return texture;
 }
 
-GLuint BBTexture::createTexture2D(const QString &path)
+GLuint BBTexture::createTexture2D(const QString &path, GLenum eType)
 {
     QImage image(path);
     if (image.isNull())
@@ -44,7 +44,7 @@ GLuint BBTexture::createTexture2D(const QString &path)
         image.fill(QColor(255, 255, 255));
     }
     image = image.mirrored(false, true);
-    return createTexture2D(image.bits(), image.width(), image.height(), GL_RGBA);
+    return createTexture2D(image.bits(), image.width(), image.height(), eType);
 }
 
 GLuint BBTexture::createTexture2DFromBMP(const char *path)
