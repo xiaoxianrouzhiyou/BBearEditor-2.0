@@ -5,6 +5,7 @@
 #include <QList>
 #include <QVector3D>
 #include <Serializer/BBGameObject.pb.h>
+#include "Render/BBBaseRenderComponent.h"
 
 
 class BBFrameBufferObject;
@@ -21,7 +22,7 @@ class BBRay;
 class BBTransformCoordinateSystem;
 class BBTiledFullScreenQuad;
 class BBRenderQueue;
-class BBRayTracingManager;
+class BBRayTracker;
 class BBScene;
 
 typedef void (BBScene::*BBRenderingFunc)();
@@ -48,7 +49,7 @@ public:
     inline BBTiledFullScreenQuad* getTiledFullScreenQuad() { return m_pTiledFullScreenQuad; }
     inline QList<BBGameObject*> getModels() { return m_Models; }
     inline QList<BBGameObject*> getLights() { return m_Lights; }
-    inline BBRayTracingManager* getRayTracingManager() { return m_pRayTracingManager; }
+    inline BBRayTracker* getRayTracker() { return m_pRayTracker; }
 
     /* FBO */
 
@@ -77,7 +78,10 @@ public:
     BBSpriteObject2D* createSpriteObject2D(BBCanvas *pCanvas, int x, int y, bool bSelect = true);
 
     bool hitCanvas(int x, int y, BBCanvas *&pOutCanvas);
-    BBGameObject* pickObject(const BBRay &ray, bool bSelect = true);
+    BBGameObject* pickObject(const QList<BBGameObject*> &alternativeObjects, const BBRay &ray, bool bSelect = true);
+    BBGameObject* pickObjectInAllObjects(const BBRay &ray, bool bSelect = true);
+    BBGameObject* pickObjectInModels(const BBRay &ray, bool bSelect = true);
+
     void lookAtGameObject(BBGameObject *pGameObject);
     void deleteGameObject(BBGameObject *pGameObject);
 
@@ -85,6 +89,9 @@ public:
     QList<BBGameObject*> getSelectedObjects(QPoint start, QPoint end);
 
     void clear();
+
+public:
+    void setFullScreenQuadTexture(const std::string &uniformName, GLuint textureName);
 
 private:
     void bindFBO();
@@ -110,7 +117,7 @@ private:
 
     BBSelectionRegion *m_pSelectionRegion;
 
-    BBRayTracingManager *m_pRayTracingManager;
+    BBRayTracker *m_pRayTracker;
 
 
 //    QList<GameObject*> audios;

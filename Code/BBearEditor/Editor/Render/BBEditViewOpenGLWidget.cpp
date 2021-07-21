@@ -262,7 +262,7 @@ void BBEditViewOpenGLWidget::mouseReleaseEvent(QMouseEvent *e)
         if (!m_pScene->getTransformCoordinateSystem()->isTransforming() && !m_bRegionSelecting)
         {
             // 3D pick objects
-            BBGameObject *pObject = m_pScene->pickObject(ray);
+            BBGameObject *pObject = m_pScene->pickObjectInAllObjects(ray);
             // send signals, show related imformation in Hierarchy tree and inspector
             if (m_bMultipleSelecting)
             {

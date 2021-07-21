@@ -35,6 +35,11 @@ GLuint BBTexture::createTexture2D(unsigned char *pPixelData, int nWidth, int nHe
     return texture;
 }
 
+GLuint BBTexture::createTexture2D(QImage image, GLenum eType)
+{
+    return createTexture2D(image.bits(), image.width(), image.height(), eType);
+}
+
 GLuint BBTexture::createTexture2D(const QString &path, GLenum eType)
 {
     QImage image(path);

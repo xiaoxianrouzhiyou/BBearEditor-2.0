@@ -20,7 +20,7 @@
 #include "Scene/BBRendererManager.h"
 #include "Render/Light/BBPointLight.h"
 #include "Scene/BBScene.h"
-#include "RayTracing/BBRayTracingManager.h"
+#include "RayTracing/BBRayTracker.h"
 
 
 /**
@@ -380,11 +380,11 @@ void BBGlobalSettingsGroupManager::switchRayTracing(bool bEnable)
 {
     if (bEnable)
     {
-        m_pScene->getRayTracingManager()->open();
+        m_pScene->getRayTracker()->open();
     }
     else
     {
-        m_pScene->getRayTracingManager()->close();
+        m_pScene->getRayTracker()->close();
     }
 }
 

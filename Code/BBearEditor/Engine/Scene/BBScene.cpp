@@ -20,7 +20,7 @@
 #include "Scene/BBRendererManager.h"
 #include "2D/BBCanvas.h"
 #include "2D/BBSpriteObject2D.h"
-#include "RayTracing/BBRayTracingManager.h"
+#include "RayTracing/BBRayTracker.h"
 #include "Render/BBTexture.h"
 
 
@@ -41,7 +41,7 @@ BBScene::BBScene()
     m_pSelectionRegion = nullptr;
     m_pTransformCoordinateSystem = nullptr;
     m_pTiledFullScreenQuad = nullptr;
-    m_pRayTracingManager = nullptr;
+    m_pRayTracker = nullptr;
 }
 
 BBScene::~BBScene()
@@ -57,7 +57,7 @@ BBScene::~BBScene()
     BB_SAFE_DELETE(m_pSelectionRegion);
     BB_SAFE_DELETE(m_pTransformCoordinateSystem);
     BB_SAFE_DELETE(m_pTiledFullScreenQuad);
-    BB_SAFE_DELETE(m_pRayTracingManager);
+    BB_SAFE_DELETE(m_pRayTracker);
     QList<BBGameObject*> objects = m_Models + m_Lights;
     QList<BBGameObject*>::Iterator itr;
     for (itr = objects.begin(); itr != objects.end(); itr++)
@@ -79,7 +79,7 @@ void BBScene::init()
     m_pSelectionRegion = new BBSelectionRegion();
     m_pTransformCoordinateSystem = new BBTransformCoordinateSystem();
     m_pTiledFullScreenQuad = new BBTiledFullScreenQuad();
-    m_pRayTracingManager = new BBRayTracingManager(this);
+    m_pRayTracker = new BBRayTracker(this);
 
     m_pCamera->setViewportSize(800.0f, 600.0f);
 
@@ -197,9 +197,6 @@ void BBScene::rayTracingRender()
     m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(0), m_pFBO[0]->getBuffer(m_ColorBufferName));
     m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(1), m_pFBO[1]->getBuffer(m_ColorBufferName));
     m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(2), m_pFBO[2]->getBuffer(m_ColorBufferName));
-    BBTexture texture;
-    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(3),
-                                       texture.createTexture2D(BB_PATH_RESOURCE_PICTURE(sky_bg2.jpeg), GL_RGBA));
     m_pTiledFullScreenQuad->render(m_pCamera);
 }
 
@@ -227,7 +224,7 @@ void BBScene::resize(float width, float height)
 
     m_pTransformCoordinateSystem->resize(width, height);
 
-    m_pRayTracingManager->onWindowResize(width, height);
+    m_pRayTracker->onWindowResize(width, height);
 }
 
 void BBScene::setSkyBox(const QString &path)
@@ -382,12 +379,12 @@ bool BBScene::hitCanvas(int x, int y, BBCanvas *&pOutCanvas)
     return false;
 }
 
-BBGameObject* BBScene::pickObject(const BBRay &ray, bool bSelect)
+BBGameObject* BBScene::pickObject(const QList<BBGameObject*> &alternativeObjects, const BBRay &ray, bool bSelect)
 {
     float fDistance = FLT_MAX;
     BBGameObject *pSelectedObject = nullptr;
     // traverse models and lights
-    QList<BBGameObject*> objects = m_Models + m_Lights;
+    QList<BBGameObject*> objects = alternativeObjects;
             //audios;
     QList<BBGameObject*>::Iterator itr;
     for (itr = objects.begin(); itr != objects.end(); itr++)
@@ -410,6 +407,16 @@ BBGameObject* BBScene::pickObject(const BBRay &ray, bool bSelect)
 //        transformCoordinate->setSelectedObject(selectedObject);
 //    }
     return pSelectedObject;
+}
+
+BBGameObject* BBScene::pickObjectInAllObjects(const BBRay &ray, bool bSelect)
+{
+    return pickObject(m_Models + m_Lights, ray, bSelect);
+}
+
+BBGameObject* BBScene::pickObjectInModels(const BBRay &ray, bool bSelect)
+{
+    return pickObject(m_Models, ray, bSelect);
 }
 
 void BBScene::lookAtGameObject(BBGameObject *pGameObject)
@@ -510,6 +517,11 @@ void BBScene::clear()
         BBGameObject *pObject = *itr;
         deleteGameObject(pObject);
     }
+}
+
+void BBScene::setFullScreenQuadTexture(const std::string &uniformName, GLuint textureName)
+{
+    m_pTiledFullScreenQuad->setTexture(uniformName, textureName);
 }
 
 void BBScene::bindFBO()

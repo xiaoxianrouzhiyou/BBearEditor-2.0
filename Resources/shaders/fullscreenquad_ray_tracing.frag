@@ -83,5 +83,5 @@ void main(void)
     // 0~1
     model_normal = model_normal * 0.5 + 0.5;
 
-    gl_FragColor = vec4(getWorldPosition(V_Texcoord.xy), 1.0);
+    gl_FragColor = vec4(texture2D(texture3, V_Texcoord.xy).xyz, 1.0);
 }
