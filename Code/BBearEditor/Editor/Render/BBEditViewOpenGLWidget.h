@@ -11,6 +11,7 @@ class BBGameObject;
 class BBGameObjectSet;
 class QTreeWidgetItem;
 class BBCanvas;
+class BBModel;
 
 class BBEditViewOpenGLWidget : public BBOpenGLWidget
 {
@@ -44,6 +45,7 @@ private slots:
     void deleteGameObject(BBGameObject *pGameObject);
     void copyGameObject(BBGameObject *pSourceObject, QTreeWidgetItem *pTranscriptItem);
     void lookAtGameObject(BBGameObject *pGameObject);
+    void createPreviewModel();
 
 signals:
     void updateEditViewTitle();
@@ -67,6 +69,13 @@ private:
     void dragLeaveEvent(QDragLeaveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
 
+private:
+    void openThreadToCreatePreviewModel(const QString &userData, int x, int y);
+    QString m_UserDataInThread;
+    int m_nXInThread;
+    int m_nYInThread;
+
+private:
     // Whether the right mouse button is pressed
     bool m_bRightPressed;
     QPoint m_OriginalMousePos;

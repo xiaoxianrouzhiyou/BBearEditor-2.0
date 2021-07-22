@@ -1017,6 +1017,26 @@ bool BBFileSystemDataManager::moveFile(const QString &oldPath, const QString &ne
     return true;
 }
 
+bool BBFileSystemDataManager::judgeFileType(const QString &filePath, const BBFileType &eReferenceFileType)
+{
+    QString fileName = getFileNameByPath(filePath);
+    QString suffix = getFileSuffix(fileName);
+    BBFileType eFileType = Other;
+    if (m_MeshSuffixs.contains(suffix))
+        eFileType = Mesh;
+    else if (m_TextureSuffixs.contains(suffix))
+        eFileType = Texture;
+    else if (m_AudioSuffixs.contains(suffix))
+        eFileType = Audio;
+    else if (m_SceneSuffixs.contains(suffix))
+        eFileType = Scene;
+    else if (m_ScriptSuffixs.contains(suffix))
+        eFileType = Script;
+    else if (m_MaterialSuffixs.contains(suffix))
+        eFileType = Material;
+    return eFileType == eReferenceFileType;
+}
+
 /**
  * @brief BBFileSystemDataManager::buildFileData
  * @param rootPath

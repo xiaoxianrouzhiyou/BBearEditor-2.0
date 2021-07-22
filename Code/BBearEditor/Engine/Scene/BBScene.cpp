@@ -264,7 +264,7 @@ BBModel* BBScene::createModel(const QString &userData,
     {
         pModel = new BBModel(position, rotation, scale, BBMeshType::OBJ);
         pModel->setBaseAttributes(QFileInfo(userData).baseName(), BB_CLASSNAME_MODEL, BB_CLASSNAME_MODEL);
-        pModel->init(BB_PATH_RESOURCE_MESH() + userData);
+        pModel->init(userData);
     }
     pModel->insertInRenderQueue(m_pRenderQueue);
     m_Models.append(pModel);

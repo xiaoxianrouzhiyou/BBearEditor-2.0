@@ -87,6 +87,7 @@ public:
     static bool isMovablePath(const QString &sourcePath, const QString &destParentPath);
     static bool moveFolder(const QString &oldPath, const QString &newPath, bool bCopy = false);
     static bool moveFile(const QString &oldPath, const QString &newPath, BBFileType eFileType, bool bCopy = false);
+    static bool judgeFileType(const QString &filePath, const BBFileType &eReferenceFileType);
 
     static QList<QString> m_MeshSuffixs;
     static QList<QString> m_TextureSuffixs;

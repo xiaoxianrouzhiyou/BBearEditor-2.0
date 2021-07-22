@@ -14,6 +14,7 @@
 #include "Render/Light/BBLight.h"
 #include "2D/BBCanvas.h"
 #include "2D/BBSpriteObject2D.h"
+#include "FileSystem/BBFileSystemDataManager.h"
 
 
 BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
@@ -173,6 +174,11 @@ void BBEditViewOpenGLWidget::lookAtGameObject(BBGameObject *pGameObject)
     m_pScene->lookAtGameObject(pGameObject);
 }
 
+void BBEditViewOpenGLWidget::createPreviewModel()
+{
+    m_pPreviewObject = m_pScene->createModel(m_UserDataInThread, m_nXInThread, m_nYInThread);
+}
+
 void BBEditViewOpenGLWidget::mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::RightButton)
@@ -306,12 +312,7 @@ void BBEditViewOpenGLWidget::dragEnterEvent(QDragEnterEvent *event)
         QDataStream dataStream(&data, QIODevice::ReadOnly);
         m_DragType.clear();
         dataStream >> m_DragType;
-        if (m_DragType == "terrain")
-        {
-//            //创建地形
-//            prepareObject = scene.createModel(fileName, event->pos().x(), event->pos().y());
-        }
-        else if (m_DragType == BB_CLASSNAME_CANVAS)
+        if (m_DragType == BB_CLASSNAME_CANVAS)
         {
             m_pPreviewObject = m_pScene->createCanvas(event->pos().x(), event->pos().y());
         }
@@ -319,11 +320,15 @@ void BBEditViewOpenGLWidget::dragEnterEvent(QDragEnterEvent *event)
         {
 
         }
+        else if (m_DragType == BB_CLASSNAME_TERRAIN)
+        {
+            openThreadToCreatePreviewModel(m_DragType, event->pos().x(), event->pos().y());
+        }
         else
         {
             // Create a temporary object to show drag effect
             // no need to create the corresponding item in the hierarchical tree
-            m_pPreviewObject = m_pScene->createModel(m_DragType, event->pos().x(), event->pos().y());
+            openThreadToCreatePreviewModel(BB_PATH_RESOURCE_MESH() + m_DragType, event->pos().x(), event->pos().y());
         }
         // Remove the selected state of the coordinate system
         setCoordinateSystemSelectedObject(NULL);
@@ -333,43 +338,21 @@ void BBEditViewOpenGLWidget::dragEnterEvent(QDragEnterEvent *event)
     {
         event->accept();
     }
-//    else if ((data = event->mimeData()->data(FileList::getMimeType())) != nullptr)
-//    {
-//        //拖入资源文件
-//        QDataStream dataStream(&data, QIODevice::ReadOnly);
-//        QString filePath;
-//        dataStream >> filePath;
-//        QString suffix = filePath.mid(filePath.lastIndexOf('.') + 1);
-//        if (FileList::meshSuffixs.contains(suffix))
-//        {
-//            //拖入obj模型文件 创建预览模型 无需在层级视图内创建对应的对象
-//            prepareObject = scene.createModel(filePath, event->pos().x(), event->pos().y());
-//            //移除坐标轴选中状态
-//            scene.transformCoordinate->setSelectedObject(nullptr);
-//            event->accept();
-//        }
-//        else if (suffix == "mtl")
-//        {
-//            //拖入材质
-//            event->accept();
-//        }
-//        else if (FileList::textureSuffixs.contains(suffix))
-//        {
-//            event->accept();
-//        }
-//        else if (FileList::audioSuffixs.contains(suffix))
-//        {
-//            event->accept();
-//        }
-//        else if (FileList::scriptSuffixs.contains(suffix))
-//        {
-//            event->accept();
-//        }
-//        else
-//        {
-//            event->ignore();
-//        }
-//    }
+    else if ((data = event->mimeData()->data(BB_MIMETYPE_FILELISTWIDGET)) != nullptr)
+    {
+        QDataStream dataStream(&data, QIODevice::ReadOnly);
+        QString filePath;
+        dataStream >> filePath;
+        if (BBFileSystemDataManager::judgeFileType(filePath, BBFileType::Mesh))
+        {
+            openThreadToCreatePreviewModel(filePath, event->pos().x(), event->pos().y());
+            event->accept();
+        }
+        else
+        {
+            event->ignore();
+        }
+    }
     else
     {
         event->ignore();
@@ -415,6 +398,8 @@ void BBEditViewOpenGLWidget::dragLeaveEvent(QDragLeaveEvent *event)
 
 void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
 {
+    event->accept();
+    setFocus();
     QByteArray data;
     if ((data = event->mimeData()->data(BB_MIMETYPE_BASEOBJECT)) != nullptr)
     {
@@ -435,8 +420,10 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
             // Set to empty for the next calculation
             m_pCurrentCanvas = nullptr;
         }
-        event->accept();
-        setFocus();
+        else
+        {
+            event->ignore();
+        }
     }
     else if ((data = event->mimeData()->data(BB_MIMETYPE_LIGHTOBJECT)) != nullptr)
     {
@@ -445,63 +432,31 @@ void BBEditViewOpenGLWidget::dropEvent(QDropEvent *event)
         dataStream >> fileName;
         BBGameObject *pLight = m_pScene->createLight(fileName, event->pos().x(), event->pos().y());
         addGameObject(pLight);
-        event->accept();
-        setFocus();
     }
-//    else if ((data = event->mimeData()->data(FileList::getMimeType())) != nullptr)
-//    {
-//        QDataStream dataStream(&data, QIODevice::ReadOnly);
-//        QString filePath;
-//        dataStream >> filePath;
-//        QString suffix = filePath.mid(filePath.lastIndexOf('.') + 1);
-//        if (FileList::meshSuffixs.contains(suffix))
-//        {
-//            if (prepareObject)
-//            {
-//                //落下后 预创建对象成为正式创建的对象 坐标轴选中它
-//                scene.transformCoordinate->setSelectedObject(prepareObject);
-//                //在层级视图中显示结点
-//                addGameObjectSignal(prepareObject);
-//                //设为空 用于下次计算
-//                prepareObject = NULL;
-//                event->accept();
-//            }
-//            else
-//            {
-//                event->ignore();
-//            }
-//        }
-//        else if (suffix == "mtl")
-//        {
-//            //材质文件
-//            //拾取落下位置的对象 赋予材质
-//            Model *model = scene.pickModel(event->pos().x(), event->pos().y());
-//            if (scene.setModelMaterial(model, filePath))
-//            {
-//                //修改对象属性栏的材质属性
-//                updateMaterialProperty(model);
-//                event->accept();
-//            }
-//            else
-//            {
-//                event->ignore();
-//            }
-//        }
-//        else if (FileList::audioSuffixs.contains(suffix))
-//        {
-//            Audio *audio = scene.createAudio(filePath, event->pos().x(), event->pos().y());
-//            addGameObjectSignal(audio);
-//            event->accept();
-//        }
-//        else
-//        {
-//            //拖入是其他文件
-//            qDebug() << "test";
-//            event->accept();
-//        }
-//    }
+    else if ((data = event->mimeData()->data(BB_MIMETYPE_FILELISTWIDGET)) != nullptr)
+    {
+        if (m_pPreviewObject)
+        {
+            addGameObject(m_pPreviewObject);
+            m_pPreviewObject = nullptr;
+        }
+        else
+        {
+            event->ignore();
+        }
+    }
     else
     {
         event->ignore();
     }
+}
+
+void BBEditViewOpenGLWidget::openThreadToCreatePreviewModel(const QString &userData, int x, int y)
+{
+    QThread *pThread = new QThread(this);
+    m_UserDataInThread = userData;
+    m_nXInThread = x;
+    m_nYInThread = y;
+    QObject::connect(pThread, SIGNAL(started()), this, SLOT(createPreviewModel()));
+    pThread->start();
 }
