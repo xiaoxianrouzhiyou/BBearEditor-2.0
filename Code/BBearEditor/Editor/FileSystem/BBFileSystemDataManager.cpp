@@ -12,7 +12,7 @@
 #include "Scene/BBSceneManager.h"
 #include "Render/BBEditViewDockWidget.h"
 #include <fstream>
-#include "Window/BBConfirmationDialog.h"
+#include "Dialog/BBConfirmationDialog.h"
 #include "Scene/BBRendererManager.h"
 
 
@@ -20,7 +20,7 @@ QList<QString> BBFileSystemDataManager::m_MeshSuffixs = {"obj", "fbx"};
 QList<QString> BBFileSystemDataManager::m_TextureSuffixs = {"png", "jpg", "jpeg", "bmp", "ico", "dds"};
 QList<QString> BBFileSystemDataManager::m_AudioSuffixs = {"mp3", "wav"};
 QList<QString> BBFileSystemDataManager::m_SceneSuffixs = {"bbscene"};
-QList<QString> BBFileSystemDataManager::m_ScriptSuffixs = {"lua"};
+QList<QString> BBFileSystemDataManager::m_ScriptSuffixs = {"py"};
 QList<QString> BBFileSystemDataManager::m_MaterialSuffixs = {"bbmtl"};
 
 QString BBFileSystemDataManager::m_MeshFileLogoColor = "#e85655";
@@ -1165,7 +1165,7 @@ QListWidgetItem* BBFileSystemDataManager::addFileItem(const QFileInfo &fileInfo,
         }
         else if (m_ScriptSuffixs.contains(suffix))
         {
-            pItem->setIcon(getIcon(BB_PATH_RESOURCE_ICON(lua.png)));
+            pItem->setIcon(getIcon(BB_PATH_RESOURCE_ICON(python.png)));
             pOutFolderContent->insert(pItem, new BBFileInfo(fileInfo.fileName(), BBFileType::Script));
         }
         else if (m_MaterialSuffixs.contains(suffix))

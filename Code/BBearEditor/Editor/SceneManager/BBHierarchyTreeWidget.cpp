@@ -131,6 +131,16 @@ bool BBHierarchyTreeWidget::moveItem()
     }
 }
 
+bool BBHierarchyTreeWidget::moveItemFromFileList(const QMimeData *pMimeData)
+{
+    BB_PROCESS_ERROR_RETURN_FALSE(m_pIndicatorItem);
+    QByteArray data;
+    QDataStream dataStream(&data, QIODevice::ReadOnly);
+    QString filePath;
+    dataStream >> filePath;
+    qDebug() << filePath;
+}
+
 bool BBHierarchyTreeWidget::moveItemFromOthers(const QMimeData *pMimeData)
 {
     QByteArray data;

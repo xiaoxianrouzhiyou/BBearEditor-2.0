@@ -22,6 +22,7 @@ private:
     void deleteOne(QTreeWidgetItem *pItem) override;
 
     bool moveItem() override;
+    bool moveItemFromFileList(const QMimeData *pMimeData) override;
     bool moveItemFromOthers(const QMimeData *pMimeData) override;
     void moveItemToIndicator();
     QIcon getClassIcon(const QString &className);

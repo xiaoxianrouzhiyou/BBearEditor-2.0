@@ -3,7 +3,7 @@
 #include <QMenu>
 #include <QHBoxLayout>
 #include <QLabel>
-#include "Window/BBConfirmationDialog.h"
+#include "Dialog/BBConfirmationDialog.h"
 #include <QMimeData>
 #include <QScrollBar>
 #include <QDrag>

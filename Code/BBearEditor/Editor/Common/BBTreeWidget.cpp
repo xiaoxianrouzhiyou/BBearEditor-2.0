@@ -6,7 +6,7 @@
 #include <QMenu>
 #include <QApplication>
 #include <QDesktopWidget>
-#include "Window/BBConfirmationDialog.h"
+#include "Dialog/BBConfirmationDialog.h"
 
 
 //--------------BBLineEdit

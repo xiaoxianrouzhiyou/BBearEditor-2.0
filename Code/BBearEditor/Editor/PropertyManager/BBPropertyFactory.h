@@ -197,9 +197,11 @@ public:
 
 private slots:
     void changeCurrentFilePath(const QString &filePath);
+    void clickIcon();
 
 signals:
     void currentFilePathChanged(const QString &filePath);
+    void iconClicked();
 
 private:
     QPushButton *m_pIconLabel;

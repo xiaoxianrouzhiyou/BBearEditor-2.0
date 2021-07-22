@@ -662,9 +662,6 @@ BBFileListWidget::item:selected {
                </property>
                <item row="0" column="0">
                 <widget class="BBObjectListWidget" name="listBaseGameObject" native="true">
-                 <property name="mouseTracking">
-                  <bool>true</bool>
-                 </property>
                  <property name="focusPolicy">
                   <enum>Qt::ClickFocus</enum>
                  </property>
@@ -1188,7 +1185,7 @@ BBFileListWidget::item:selected {
   <customwidget>
    <class>BBObjectListWidget</class>
    <extends>QListWidget</extends>
-   <header>Common/bbobjectlistwidget.h</header>
+   <header>ObjectList/bbobjectlistwidget.h</header>
   </customwidget>
   <customwidget>
    <class>BBHierarchyTreeWidget</class>

@@ -35,12 +35,12 @@ SOURCES += \
     Editor/PropertyManager/BBGroupManager.cpp \
     Editor/PropertyManager/BBPropertyFactory.cpp \
     Editor/PropertyManager/BBPropertyManager.cpp \
-    Editor/Window/BBConfirmationDialog.cpp \
-    Editor/Window/BBMainWindow.cpp \
-    Editor/Window/BBProjectDialog.cpp \
-    Editor/Window/BBTitleBar.cpp \
+    Editor/Dialog/BBConfirmationDialog.cpp \
+    Editor/MainInterface/BBMainWindow.cpp \
+    Editor/Dialog/BBProjectDialog.cpp \
+    Editor/MainInterface/BBTitleBar.cpp \
     Editor/SceneManager/BBHierarchyTreeWidget.cpp \
-    Editor/Common/BBObjectListWidget.cpp \
+    Editor/ObjectList/BBObjectListWidget.cpp \
     Editor/Common/BBResizableWidget.cpp \
     Editor/Common/BBTreeWidget.cpp \
     Editor/Render/BBEditViewDockWidget.cpp \
@@ -114,7 +114,8 @@ SOURCES += \
     Editor/Tools/FBX2BBear/BBFBX2BBear.cpp \
     Editor/Tools/FBX2BBear/BBFBXSkeletonGPU.cpp \
     Engine/RayTracing/BBRayTracker.cpp \
-    Engine/Python/BBPythonLoader.cpp
+    Engine/Python/BBPythonLoader.cpp \
+    Editor/Dialog/BBResourceDialog.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -127,12 +128,12 @@ HEADERS += \
     Editor/PropertyManager/BBGroupManager.h \
     Editor/PropertyManager/BBPropertyFactory.h \
     Editor/PropertyManager/BBPropertyManager.h \
-    Editor/Window/BBConfirmationDialog.h \
-    Editor/Window/BBMainWindow.h \
-    Editor/Window/BBProjectDialog.h \
-    Editor/Window/BBTitleBar.h \
+    Editor/Dialog/BBConfirmationDialog.h \
+    Editor/MainInterface/BBMainWindow.h \
+    Editor/Dialog/BBProjectDialog.h \
+    Editor/MainInterface/BBTitleBar.h \
     Editor/SceneManager/BBHierarchyTreeWidget.h \
-    Editor/Common/BBObjectListWidget.h \
+    Editor/ObjectList/BBObjectListWidget.h \
     Editor/Common/BBResizableWidget.h \
     Editor/Common/BBTreeWidget.h \
     Editor/Render/BBEditViewDockWidget.h \
@@ -208,14 +209,16 @@ HEADERS += \
     Editor/Tools/FBX2BBear/BBFBX2BBear.h \
     Editor/Tools/FBX2BBear/BBFBXSkeletonGPU.h \
     Engine/RayTracing/BBRayTracker.h \
-    Engine/Python/BBPythonLoader.h
+    Engine/Python/BBPythonLoader.h \
+    Editor/Dialog/BBResourceDialog.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
-    Editor/Window/BBConfirmationDialog.ui \
-    Editor/Window/BBMainWindow.ui \
-    Editor/Window/BBProjectDialog.ui \
-    Editor/Window/BBTitleBar.ui
+    Editor/Dialog/BBConfirmationDialog.ui \
+    Editor/MainInterface/BBMainWindow.ui \
+    Editor/Dialog/BBProjectDialog.ui \
+    Editor/MainInterface/BBTitleBar.ui \
+    Editor/Dialog/BBResourceDialog.ui
 
 INCLUDEPATH += \
     ../BBearEditor/Editor \

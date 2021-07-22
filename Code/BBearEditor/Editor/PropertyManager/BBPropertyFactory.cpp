@@ -382,6 +382,7 @@ BBDragAcceptedFactory::BBDragAcceptedFactory(const QString &iconPath, const QStr
     pLayout->addWidget(m_pDragAcceptedEdit, 1);
     changeCurrentFilePath(filePath);
 
+    QObject::connect(m_pIconLabel, SIGNAL(clicked()), this, SLOT(clickIcon()));
     QObject::connect(m_pDragAcceptedEdit, SIGNAL(currentFilePathChanged(QString)),
                      this, SLOT(changeCurrentFilePath(QString)));
 }
@@ -416,6 +417,11 @@ void BBDragAcceptedFactory::changeCurrentFilePath(const QString &filePath)
             m_pDragAcceptedEdit->setText("Missing");
         }
     }
+}
+
+void BBDragAcceptedFactory::clickIcon()
+{
+    emit iconClicked();
 }
 
 

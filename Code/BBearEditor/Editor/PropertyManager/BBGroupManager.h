@@ -132,6 +132,7 @@ public:
 
 private slots:
     void changeMaterial(const QString &filePath);
+    void popupResourceDialog();
 
 private:
     BBRenderableObject *m_pRenderableObject;

@@ -1,9 +1,9 @@
 #include <QApplication>
 #include "NcFramelessHelper.h"
 #include <QVBoxLayout>
-#include "Window/BBTitleBar.h"
-#include "Window/BBMainWindow.h"
-#include "Window/BBProjectDialog.h"
+#include "MainInterface/BBTitleBar.h"
+#include "MainInterface/BBMainWindow.h"
+#include "Dialog/BBProjectDialog.h"
 #include "Profiler/BBProfiler.h"
 #include <QDesktopWidget>
 #include <QStyleFactory>

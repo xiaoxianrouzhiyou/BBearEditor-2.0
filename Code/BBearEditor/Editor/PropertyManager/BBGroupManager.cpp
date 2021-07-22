@@ -21,6 +21,7 @@
 #include "Render/Light/BBPointLight.h"
 #include "Scene/BBScene.h"
 #include "RayTracing/BBRayTracker.h"
+#include "Dialog/BBResourceDialog.h"
 
 
 /**
@@ -466,6 +467,7 @@ BBRenderManager::BBRenderManager(BBRenderableObject *pObject, QWidget *pParent)
                                                                         materialPath, pParent);
     pMaterialFactory->setFilter(BBFileSystemDataManager::m_MaterialSuffixs);
     addFactory("Material", pMaterialFactory, 1);
+    QObject::connect(pMaterialFactory, SIGNAL(iconClicked()), this, SLOT(popupResourceDialog()));
     QObject::connect(pMaterialFactory, SIGNAL(currentFilePathChanged(QString)),
                      this, SLOT(changeMaterial(QString)));
 }
@@ -473,6 +475,15 @@ BBRenderManager::BBRenderManager(BBRenderableObject *pObject, QWidget *pParent)
 void BBRenderManager::changeMaterial(const QString &filePath)
 {
     m_pRenderableObject->setCurrentMaterial(BBRendererManager::loadMaterial(filePath));
+}
+
+void BBRenderManager::popupResourceDialog()
+{
+    BBResourceDialog dialog(this);
+    if (dialog.exec())
+    {
+
+    }
 }
 
 

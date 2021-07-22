@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>BBResourceDialog</class>
+ <widget name="BBResourceDialog" class="QDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+    background: rgb(14, 19, 25);
+}
+
+#labelTitle {
+    color: #d6dfeb;
+    font: 10pt &quot;Arial&quot;;
+}
+
+QPushButton {
+    border: none;
+    border-radius: 6px;
+    color: #d6dfeb;
+    font: 9pt &quot;Arial&quot;;
+}
+
+#buttonClose {
+    background-color: rgb(252, 98, 93);
+}
+
+#buttonClose:pressed {
+    background-color: rgb(239, 78, 73);
+}
+
+#bodyWidget {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #191f28, stop: 1 rgb(36, 43, 58));
+}
+
+QListWidget {
+    color: #d6dfeb;
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #191f28, stop: 1 rgb(36, 43, 58));
+    alternate-background-color: rgb(60, 64, 75);
+    border: none;
+}
+
+QListWidget::item:selected:!active {
+    background: #8193bc;
+    color: #d6dfeb;
+}
+
+QListWidget::item:selected:active {
+    background: #8193bc;
+    color: #d6dfeb;
+}
+
+QListWidget::item:hover {
+    /*background: #508193bc;*/
+    background: none;
+}
+
+QListWidget::item:focus {
+    background: transparent;
+}
+
+#buttonNo {
+    border-radius: 2px;
+    padding: 2px 12px;
+    background: #8193bc;
+}
+
+#buttonNo:hover {
+    background: #8c8193bc;
+}
+
+#buttonYes {
+    border-radius: 2px;
+    padding: 2px 12px;
+    background: #0ebf9c;
+}
+
+#buttonYes:hover {
+    background: #8c0ebf9c;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <property name="spacing">
+    <number>10</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>10</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>10</number>
+   </property>
+   <item alignment="Qt::AlignTop">
+    <widget class="QWidget" name="topWidget">
+     <layout class="QHBoxLayout" name="topWidgetLayout">
+      <property name="leftMargin">
+       <number>10</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>10</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item alignment="Qt::AlignLeft">
+       <widget class="QPushButton" name="buttonClose">
+        <property name="minimumSize">
+         <size>
+          <width>14</width>
+          <height>14</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>14</width>
+          <height>14</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="bodyWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>1</horstretch>
+       <verstretch>1</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QHBoxLayout" name="bodyWidgetLayout">
+      <property name="spacing">
+       <number>20</number>
+      </property>
+      <property name="leftMargin">
+       <number>20</number>
+      </property>
+      <property name="topMargin">
+       <number>10</number>
+      </property>
+      <property name="rightMargin">
+       <number>20</number>
+      </property>
+      <property name="bottomMargin">
+       <number>10</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QListWidget" name="resourceList" native="true">
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
+        <property name="alternatingRowColors" stdset="0">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item alignment="Qt::AlignBottom | Qt::AlignRight">
+    <widget class="QWidget" name="bottomWidget">
+     <layout class="QHBoxLayout" name="bottomWidgetLayout">
+      <property name="leftMargin">
+       <number>10</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>10</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="buttonNo">
+        <property name="text">
+         <string>No</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="buttonYes">
+        <property name="text">
+         <string>Yes</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonClose</sender>
+   <signal>clicked()</signal>
+   <receiver>BBResourceDialog</receiver>
+   <slot>reject()</slot>
+  </connection>
+  <connection>
+   <sender>buttonNo</sender>
+   <signal>clicked()</signal>
+   <receiver>BBResourceDialog</receiver>
+   <slot>reject()</slot>
+  </connection>
+  <connection>
+   <sender>buttonYes</sender>
+   <signal>clicked()</signal>
+   <receiver>BBResourceDialog</receiver>
+   <slot>accept()</slot>
+  </connection>
+ </connections>
+</ui>
