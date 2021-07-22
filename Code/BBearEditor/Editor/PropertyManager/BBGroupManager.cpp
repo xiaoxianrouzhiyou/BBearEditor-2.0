@@ -431,6 +431,7 @@ void BBMaterialPropertyGroupManager::setSampler2D(const QString &uniformName, co
     BBTexture texture;
     m_pMaterial->setSampler2D(uniformName.toStdString().c_str(), texture.createTexture2D(texturePath), texturePath);
     m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
+    BBRendererManager::changeTexture(m_pMaterial, texturePath);
 }
 
 void BBMaterialPropertyGroupManager::setPropertyItems()
@@ -479,7 +480,7 @@ void BBRenderManager::changeMaterial(const QString &filePath)
 
 void BBRenderManager::popupResourceDialog()
 {
-    BBResourceDialog dialog(this);
+    BBResourceDialog dialog(BB_PATH_RESOURCE_MATERIAL, this);
     if (dialog.exec())
     {
 

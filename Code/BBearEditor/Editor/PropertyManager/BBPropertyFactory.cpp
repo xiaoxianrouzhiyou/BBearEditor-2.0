@@ -319,7 +319,6 @@ BBIconFactory::~BBIconFactory()
     BB_SAFE_DELETE(m_pNameEdit);
 }
 
-
 void BBIconFactory::setContent(const QString &filePath)
 {
     if (filePath.isEmpty())

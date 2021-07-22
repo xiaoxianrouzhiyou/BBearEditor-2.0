@@ -154,12 +154,12 @@ public:
     BBIconFactory(QWidget *pParent = 0);
     ~BBIconFactory();
 
+    void setContent(const QString &filePath);
+
 public slots:
     virtual void changeCurrentFilePath(const QString &filePath) = 0;
 
 protected:
-    void setContent(const QString &filePath);
-
     QPushButton *m_pRemoveButton;
     QPushButton *m_pSelectButton;
     BBIconLabel *m_pIconLabel;

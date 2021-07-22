@@ -21,7 +21,15 @@ constexpr BBMaterial::BBMaterial(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : shadername_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , vshaderpath_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
-  , fshaderpath_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+  , fshaderpath_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , texture0path_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , texture1path_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , texture2path_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , texture3path_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , texture4path_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , texture5path_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , texture6path_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , texture7path_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
 struct BBMaterialDefaultTypeInternal {
   constexpr BBMaterialDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -45,12 +53,28 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_BBMaterial_2eproto::offsets[] 
   PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, shadername_),
   PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, vshaderpath_),
   PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, fshaderpath_),
+  PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, texture0path_),
+  PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, texture1path_),
+  PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, texture2path_),
+  PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, texture3path_),
+  PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, texture4path_),
+  PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, texture5path_),
+  PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, texture6path_),
+  PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, texture7path_),
   0,
   1,
   2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 8, sizeof(::BBSerializer::BBMaterial)},
+  { 0, 16, sizeof(::BBSerializer::BBMaterial)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -59,17 +83,26 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_BBMaterial_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\020BBMaterial.proto\022\014BBSerializer\032\016BBVect"
-  "or.proto\"\210\001\n\nBBMaterial\022\027\n\nshaderName\030\001 "
+  "or.proto\"\350\003\n\nBBMaterial\022\027\n\nshaderName\030\001 "
   "\001(\tH\000\210\001\001\022\030\n\013vShaderPath\030\002 \001(\tH\001\210\001\001\022\030\n\013fS"
-  "haderPath\030\003 \001(\tH\002\210\001\001B\r\n\013_shaderNameB\016\n\014_"
-  "vShaderPathB\016\n\014_fShaderPathb\006proto3"
+  "haderPath\030\003 \001(\tH\002\210\001\001\022\031\n\014texture0Path\030\004 \001"
+  "(\tH\003\210\001\001\022\031\n\014texture1Path\030\005 \001(\tH\004\210\001\001\022\031\n\014te"
+  "xture2Path\030\006 \001(\tH\005\210\001\001\022\031\n\014texture3Path\030\007 "
+  "\001(\tH\006\210\001\001\022\031\n\014texture4Path\030\010 \001(\tH\007\210\001\001\022\031\n\014t"
+  "exture5Path\030\t \001(\tH\010\210\001\001\022\031\n\014texture6Path\030\n"
+  " \001(\tH\t\210\001\001\022\031\n\014texture7Path\030\013 \001(\tH\n\210\001\001B\r\n\013"
+  "_shaderNameB\016\n\014_vShaderPathB\016\n\014_fShaderP"
+  "athB\017\n\r_texture0PathB\017\n\r_texture1PathB\017\n"
+  "\r_texture2PathB\017\n\r_texture3PathB\017\n\r_text"
+  "ure4PathB\017\n\r_texture5PathB\017\n\r_texture6Pa"
+  "thB\017\n\r_texture7Pathb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_BBMaterial_2eproto_deps[1] = {
   &::descriptor_table_BBVector_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_BBMaterial_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_BBMaterial_2eproto = {
-  false, false, 195, descriptor_table_protodef_BBMaterial_2eproto, "BBMaterial.proto", 
+  false, false, 547, descriptor_table_protodef_BBMaterial_2eproto, "BBMaterial.proto", 
   &descriptor_table_BBMaterial_2eproto_once, descriptor_table_BBMaterial_2eproto_deps, 1, 1,
   schemas, file_default_instances, TableStruct_BBMaterial_2eproto::offsets,
   file_level_metadata_BBMaterial_2eproto, file_level_enum_descriptors_BBMaterial_2eproto, file_level_service_descriptors_BBMaterial_2eproto,
@@ -95,6 +128,30 @@ class BBMaterial::_Internal {
   }
   static void set_has_fshaderpath(HasBits* has_bits) {
     (*has_bits)[0] |= 4u;
+  }
+  static void set_has_texture0path(HasBits* has_bits) {
+    (*has_bits)[0] |= 8u;
+  }
+  static void set_has_texture1path(HasBits* has_bits) {
+    (*has_bits)[0] |= 16u;
+  }
+  static void set_has_texture2path(HasBits* has_bits) {
+    (*has_bits)[0] |= 32u;
+  }
+  static void set_has_texture3path(HasBits* has_bits) {
+    (*has_bits)[0] |= 64u;
+  }
+  static void set_has_texture4path(HasBits* has_bits) {
+    (*has_bits)[0] |= 128u;
+  }
+  static void set_has_texture5path(HasBits* has_bits) {
+    (*has_bits)[0] |= 256u;
+  }
+  static void set_has_texture6path(HasBits* has_bits) {
+    (*has_bits)[0] |= 512u;
+  }
+  static void set_has_texture7path(HasBits* has_bits) {
+    (*has_bits)[0] |= 1024u;
   }
 };
 
@@ -123,6 +180,46 @@ BBMaterial::BBMaterial(const BBMaterial& from)
     fshaderpath_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_fshaderpath(), 
       GetArena());
   }
+  texture0path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (from._internal_has_texture0path()) {
+    texture0path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_texture0path(), 
+      GetArena());
+  }
+  texture1path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (from._internal_has_texture1path()) {
+    texture1path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_texture1path(), 
+      GetArena());
+  }
+  texture2path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (from._internal_has_texture2path()) {
+    texture2path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_texture2path(), 
+      GetArena());
+  }
+  texture3path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (from._internal_has_texture3path()) {
+    texture3path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_texture3path(), 
+      GetArena());
+  }
+  texture4path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (from._internal_has_texture4path()) {
+    texture4path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_texture4path(), 
+      GetArena());
+  }
+  texture5path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (from._internal_has_texture5path()) {
+    texture5path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_texture5path(), 
+      GetArena());
+  }
+  texture6path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (from._internal_has_texture6path()) {
+    texture6path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_texture6path(), 
+      GetArena());
+  }
+  texture7path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (from._internal_has_texture7path()) {
+    texture7path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_texture7path(), 
+      GetArena());
+  }
   // @@protoc_insertion_point(copy_constructor:BBSerializer.BBMaterial)
 }
 
@@ -130,6 +227,14 @@ void BBMaterial::SharedCtor() {
 shadername_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 vshaderpath_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 fshaderpath_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+texture0path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+texture1path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+texture2path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+texture3path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+texture4path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+texture5path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+texture6path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+texture7path_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 BBMaterial::~BBMaterial() {
@@ -143,6 +248,14 @@ void BBMaterial::SharedDtor() {
   shadername_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   vshaderpath_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   fshaderpath_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  texture0path_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  texture1path_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  texture2path_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  texture3path_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  texture4path_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  texture5path_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  texture6path_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  texture7path_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void BBMaterial::ArenaDtor(void* object) {
@@ -162,7 +275,7 @@ void BBMaterial::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  if (cached_has_bits & 0x000000ffu) {
     if (cached_has_bits & 0x00000001u) {
       shadername_.ClearNonDefaultToEmpty();
     }
@@ -171,6 +284,32 @@ void BBMaterial::Clear() {
     }
     if (cached_has_bits & 0x00000004u) {
       fshaderpath_.ClearNonDefaultToEmpty();
+    }
+    if (cached_has_bits & 0x00000008u) {
+      texture0path_.ClearNonDefaultToEmpty();
+    }
+    if (cached_has_bits & 0x00000010u) {
+      texture1path_.ClearNonDefaultToEmpty();
+    }
+    if (cached_has_bits & 0x00000020u) {
+      texture2path_.ClearNonDefaultToEmpty();
+    }
+    if (cached_has_bits & 0x00000040u) {
+      texture3path_.ClearNonDefaultToEmpty();
+    }
+    if (cached_has_bits & 0x00000080u) {
+      texture4path_.ClearNonDefaultToEmpty();
+    }
+  }
+  if (cached_has_bits & 0x00000700u) {
+    if (cached_has_bits & 0x00000100u) {
+      texture5path_.ClearNonDefaultToEmpty();
+    }
+    if (cached_has_bits & 0x00000200u) {
+      texture6path_.ClearNonDefaultToEmpty();
+    }
+    if (cached_has_bits & 0x00000400u) {
+      texture7path_.ClearNonDefaultToEmpty();
     }
   }
   _has_bits_.Clear();
@@ -208,6 +347,78 @@ const char* BBMaterial::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
           auto str = _internal_mutable_fshaderpath();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "BBSerializer.BBMaterial.fShaderPath"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string texture0Path = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+          auto str = _internal_mutable_texture0path();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "BBSerializer.BBMaterial.texture0Path"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string texture1Path = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
+          auto str = _internal_mutable_texture1path();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "BBSerializer.BBMaterial.texture1Path"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string texture2Path = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
+          auto str = _internal_mutable_texture2path();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "BBSerializer.BBMaterial.texture2Path"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string texture3Path = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 58)) {
+          auto str = _internal_mutable_texture3path();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "BBSerializer.BBMaterial.texture3Path"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string texture4Path = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 66)) {
+          auto str = _internal_mutable_texture4path();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "BBSerializer.BBMaterial.texture4Path"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string texture5Path = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 74)) {
+          auto str = _internal_mutable_texture5path();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "BBSerializer.BBMaterial.texture5Path"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string texture6Path = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 82)) {
+          auto str = _internal_mutable_texture6path();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "BBSerializer.BBMaterial.texture6Path"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string texture7Path = 11;
+      case 11:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 90)) {
+          auto str = _internal_mutable_texture7path();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "BBSerializer.BBMaterial.texture7Path"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -271,6 +482,86 @@ failure:
         3, this->_internal_fshaderpath(), target);
   }
 
+  // string texture0Path = 4;
+  if (_internal_has_texture0path()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_texture0path().data(), static_cast<int>(this->_internal_texture0path().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "BBSerializer.BBMaterial.texture0Path");
+    target = stream->WriteStringMaybeAliased(
+        4, this->_internal_texture0path(), target);
+  }
+
+  // string texture1Path = 5;
+  if (_internal_has_texture1path()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_texture1path().data(), static_cast<int>(this->_internal_texture1path().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "BBSerializer.BBMaterial.texture1Path");
+    target = stream->WriteStringMaybeAliased(
+        5, this->_internal_texture1path(), target);
+  }
+
+  // string texture2Path = 6;
+  if (_internal_has_texture2path()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_texture2path().data(), static_cast<int>(this->_internal_texture2path().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "BBSerializer.BBMaterial.texture2Path");
+    target = stream->WriteStringMaybeAliased(
+        6, this->_internal_texture2path(), target);
+  }
+
+  // string texture3Path = 7;
+  if (_internal_has_texture3path()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_texture3path().data(), static_cast<int>(this->_internal_texture3path().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "BBSerializer.BBMaterial.texture3Path");
+    target = stream->WriteStringMaybeAliased(
+        7, this->_internal_texture3path(), target);
+  }
+
+  // string texture4Path = 8;
+  if (_internal_has_texture4path()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_texture4path().data(), static_cast<int>(this->_internal_texture4path().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "BBSerializer.BBMaterial.texture4Path");
+    target = stream->WriteStringMaybeAliased(
+        8, this->_internal_texture4path(), target);
+  }
+
+  // string texture5Path = 9;
+  if (_internal_has_texture5path()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_texture5path().data(), static_cast<int>(this->_internal_texture5path().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "BBSerializer.BBMaterial.texture5Path");
+    target = stream->WriteStringMaybeAliased(
+        9, this->_internal_texture5path(), target);
+  }
+
+  // string texture6Path = 10;
+  if (_internal_has_texture6path()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_texture6path().data(), static_cast<int>(this->_internal_texture6path().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "BBSerializer.BBMaterial.texture6Path");
+    target = stream->WriteStringMaybeAliased(
+        10, this->_internal_texture6path(), target);
+  }
+
+  // string texture7Path = 11;
+  if (_internal_has_texture7path()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_texture7path().data(), static_cast<int>(this->_internal_texture7path().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "BBSerializer.BBMaterial.texture7Path");
+    target = stream->WriteStringMaybeAliased(
+        11, this->_internal_texture7path(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -288,7 +579,7 @@ size_t BBMaterial::ByteSizeLong() const {
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  if (cached_has_bits & 0x000000ffu) {
     // string shaderName = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
@@ -308,6 +599,64 @@ size_t BBMaterial::ByteSizeLong() const {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
           this->_internal_fshaderpath());
+    }
+
+    // string texture0Path = 4;
+    if (cached_has_bits & 0x00000008u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+          this->_internal_texture0path());
+    }
+
+    // string texture1Path = 5;
+    if (cached_has_bits & 0x00000010u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+          this->_internal_texture1path());
+    }
+
+    // string texture2Path = 6;
+    if (cached_has_bits & 0x00000020u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+          this->_internal_texture2path());
+    }
+
+    // string texture3Path = 7;
+    if (cached_has_bits & 0x00000040u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+          this->_internal_texture3path());
+    }
+
+    // string texture4Path = 8;
+    if (cached_has_bits & 0x00000080u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+          this->_internal_texture4path());
+    }
+
+  }
+  if (cached_has_bits & 0x00000700u) {
+    // string texture5Path = 9;
+    if (cached_has_bits & 0x00000100u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+          this->_internal_texture5path());
+    }
+
+    // string texture6Path = 10;
+    if (cached_has_bits & 0x00000200u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+          this->_internal_texture6path());
+    }
+
+    // string texture7Path = 11;
+    if (cached_has_bits & 0x00000400u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+          this->_internal_texture7path());
     }
 
   }
@@ -343,7 +692,7 @@ void BBMaterial::MergeFrom(const BBMaterial& from) {
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  if (cached_has_bits & 0x000000ffu) {
     if (cached_has_bits & 0x00000001u) {
       _internal_set_shadername(from._internal_shadername());
     }
@@ -352,6 +701,32 @@ void BBMaterial::MergeFrom(const BBMaterial& from) {
     }
     if (cached_has_bits & 0x00000004u) {
       _internal_set_fshaderpath(from._internal_fshaderpath());
+    }
+    if (cached_has_bits & 0x00000008u) {
+      _internal_set_texture0path(from._internal_texture0path());
+    }
+    if (cached_has_bits & 0x00000010u) {
+      _internal_set_texture1path(from._internal_texture1path());
+    }
+    if (cached_has_bits & 0x00000020u) {
+      _internal_set_texture2path(from._internal_texture2path());
+    }
+    if (cached_has_bits & 0x00000040u) {
+      _internal_set_texture3path(from._internal_texture3path());
+    }
+    if (cached_has_bits & 0x00000080u) {
+      _internal_set_texture4path(from._internal_texture4path());
+    }
+  }
+  if (cached_has_bits & 0x00000700u) {
+    if (cached_has_bits & 0x00000100u) {
+      _internal_set_texture5path(from._internal_texture5path());
+    }
+    if (cached_has_bits & 0x00000200u) {
+      _internal_set_texture6path(from._internal_texture6path());
+    }
+    if (cached_has_bits & 0x00000400u) {
+      _internal_set_texture7path(from._internal_texture7path());
     }
   }
 }
@@ -381,6 +756,14 @@ void BBMaterial::InternalSwap(BBMaterial* other) {
   shadername_.Swap(&other->shadername_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   vshaderpath_.Swap(&other->vshaderpath_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   fshaderpath_.Swap(&other->fshaderpath_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  texture0path_.Swap(&other->texture0path_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  texture1path_.Swap(&other->texture1path_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  texture2path_.Swap(&other->texture2path_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  texture3path_.Swap(&other->texture3path_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  texture4path_.Swap(&other->texture4path_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  texture5path_.Swap(&other->texture5path_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  texture6path_.Swap(&other->texture6path_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  texture7path_.Swap(&other->texture7path_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata BBMaterial::GetMetadata() const {

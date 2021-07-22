@@ -1,7 +1,13 @@
 #include "BBResourceDialog.h"
 #include "ui_BBResourceDialog.h"
+#include "Utils/BBUtils.h"
+#include <QDir>
 
-BBResourceDialog::BBResourceDialog(QWidget *pParent) :
+
+QSize BBResourceDialog::m_ItemSize = QSize(32, 32);
+
+BBResourceDialog::BBResourceDialog(const QString &folderPath, QWidget *pParent)
+    :
     QDialog(pParent),
     m_pUi(new Ui::BBResourceDialog)
 {
@@ -12,9 +18,27 @@ BBResourceDialog::BBResourceDialog(QWidget *pParent) :
     {
         move(pParent->mapToGlobal(QPoint(0, 0)));
     }
+
+    loadListItems(folderPath);
 }
 
 BBResourceDialog::~BBResourceDialog()
 {
     delete m_pUi;
+}
+
+bool BBResourceDialog::loadListItems(const QString &folderPath)
+{
+    QDir dir(folderPath);
+    dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
+    QFileInfoList fileInfoList = dir.entryInfoList();
+    foreach (QFileInfo fileInfo, fileInfoList)
+    {
+        QListWidgetItem *pItem = new QListWidgetItem;
+        pItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
+        pItem->setSizeHint(m_ItemSize);
+        pItem->setIcon(QIcon(BB_PATH_RESOURCE_ICON(material5)));
+        pItem->setText(fileInfo.baseName());
+        m_pUi->resourceList->addItem(pItem);
+    }
 }

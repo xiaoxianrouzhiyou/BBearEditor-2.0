@@ -5,6 +5,7 @@
 #include "Render/BBMaterial.h"
 #include "Render/BBPreviewOpenGLWidget.h"
 #include "Render/BBRenderPass.h"
+#include "Render/BBTexture.h"
 
 
 BBPreviewOpenGLWidget* BBRendererManager::m_pPreviewOpenGLWidget = nullptr;
@@ -63,6 +64,15 @@ void BBRendererManager::changeFShader(BBMaterial *pMaterial, const QString &name
     BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
     BBSerializer::BBMaterial material = deserialize(materialPath);
     material.set_fshaderpath(getShaderFilePath(name).toStdString().c_str());
+    serialize(material, materialPath);
+}
+
+void BBRendererManager::changeTexture(BBMaterial *pMaterial, const QString &texturePath)
+{
+    QString materialPath = m_CachedMaterials.key(pMaterial);
+    BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
+    BBSerializer::BBMaterial material = deserialize(materialPath);
+    material.set_texture0path(texturePath.toStdString().c_str());
     serialize(material, materialPath);
 }
 
@@ -159,6 +169,14 @@ void BBRendererManager::loadMaterialContent(const QString &filePath, BBMaterial 
     pMaterial->init(material.shadername().data(),
                     QString::fromStdString(material.vshaderpath()),
                     QString::fromStdString(material.fshaderpath()));
+
+    QString texture0path = QString::fromStdString(material.texture0path());
+    if (!texture0path.isEmpty())
+    {
+        BBTexture texture;
+        pMaterial->setSampler2D(LOCATION_TEXTURE(0), texture.createTexture2D(texture0path), texture0path);
+    }
+
     // default
     float *pLightPosition = new float[4] {1.0f, 1.0f, 0.0f, 0.0f};
     float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};

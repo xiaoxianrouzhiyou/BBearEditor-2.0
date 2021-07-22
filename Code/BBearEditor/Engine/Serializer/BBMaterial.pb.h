@@ -176,6 +176,14 @@ class BBMaterial PROTOBUF_FINAL :
     kShaderNameFieldNumber = 1,
     kVShaderPathFieldNumber = 2,
     kFShaderPathFieldNumber = 3,
+    kTexture0PathFieldNumber = 4,
+    kTexture1PathFieldNumber = 5,
+    kTexture2PathFieldNumber = 6,
+    kTexture3PathFieldNumber = 7,
+    kTexture4PathFieldNumber = 8,
+    kTexture5PathFieldNumber = 9,
+    kTexture6PathFieldNumber = 10,
+    kTexture7PathFieldNumber = 11,
   };
   // string shaderName = 1;
   bool has_shadername() const;
@@ -231,6 +239,150 @@ class BBMaterial PROTOBUF_FINAL :
   std::string* _internal_mutable_fshaderpath();
   public:
 
+  // string texture0Path = 4;
+  bool has_texture0path() const;
+  private:
+  bool _internal_has_texture0path() const;
+  public:
+  void clear_texture0path();
+  const std::string& texture0path() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_texture0path(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_texture0path();
+  std::string* release_texture0path();
+  void set_allocated_texture0path(std::string* texture0path);
+  private:
+  const std::string& _internal_texture0path() const;
+  void _internal_set_texture0path(const std::string& value);
+  std::string* _internal_mutable_texture0path();
+  public:
+
+  // string texture1Path = 5;
+  bool has_texture1path() const;
+  private:
+  bool _internal_has_texture1path() const;
+  public:
+  void clear_texture1path();
+  const std::string& texture1path() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_texture1path(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_texture1path();
+  std::string* release_texture1path();
+  void set_allocated_texture1path(std::string* texture1path);
+  private:
+  const std::string& _internal_texture1path() const;
+  void _internal_set_texture1path(const std::string& value);
+  std::string* _internal_mutable_texture1path();
+  public:
+
+  // string texture2Path = 6;
+  bool has_texture2path() const;
+  private:
+  bool _internal_has_texture2path() const;
+  public:
+  void clear_texture2path();
+  const std::string& texture2path() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_texture2path(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_texture2path();
+  std::string* release_texture2path();
+  void set_allocated_texture2path(std::string* texture2path);
+  private:
+  const std::string& _internal_texture2path() const;
+  void _internal_set_texture2path(const std::string& value);
+  std::string* _internal_mutable_texture2path();
+  public:
+
+  // string texture3Path = 7;
+  bool has_texture3path() const;
+  private:
+  bool _internal_has_texture3path() const;
+  public:
+  void clear_texture3path();
+  const std::string& texture3path() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_texture3path(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_texture3path();
+  std::string* release_texture3path();
+  void set_allocated_texture3path(std::string* texture3path);
+  private:
+  const std::string& _internal_texture3path() const;
+  void _internal_set_texture3path(const std::string& value);
+  std::string* _internal_mutable_texture3path();
+  public:
+
+  // string texture4Path = 8;
+  bool has_texture4path() const;
+  private:
+  bool _internal_has_texture4path() const;
+  public:
+  void clear_texture4path();
+  const std::string& texture4path() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_texture4path(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_texture4path();
+  std::string* release_texture4path();
+  void set_allocated_texture4path(std::string* texture4path);
+  private:
+  const std::string& _internal_texture4path() const;
+  void _internal_set_texture4path(const std::string& value);
+  std::string* _internal_mutable_texture4path();
+  public:
+
+  // string texture5Path = 9;
+  bool has_texture5path() const;
+  private:
+  bool _internal_has_texture5path() const;
+  public:
+  void clear_texture5path();
+  const std::string& texture5path() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_texture5path(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_texture5path();
+  std::string* release_texture5path();
+  void set_allocated_texture5path(std::string* texture5path);
+  private:
+  const std::string& _internal_texture5path() const;
+  void _internal_set_texture5path(const std::string& value);
+  std::string* _internal_mutable_texture5path();
+  public:
+
+  // string texture6Path = 10;
+  bool has_texture6path() const;
+  private:
+  bool _internal_has_texture6path() const;
+  public:
+  void clear_texture6path();
+  const std::string& texture6path() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_texture6path(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_texture6path();
+  std::string* release_texture6path();
+  void set_allocated_texture6path(std::string* texture6path);
+  private:
+  const std::string& _internal_texture6path() const;
+  void _internal_set_texture6path(const std::string& value);
+  std::string* _internal_mutable_texture6path();
+  public:
+
+  // string texture7Path = 11;
+  bool has_texture7path() const;
+  private:
+  bool _internal_has_texture7path() const;
+  public:
+  void clear_texture7path();
+  const std::string& texture7path() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_texture7path(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_texture7path();
+  std::string* release_texture7path();
+  void set_allocated_texture7path(std::string* texture7path);
+  private:
+  const std::string& _internal_texture7path() const;
+  void _internal_set_texture7path(const std::string& value);
+  std::string* _internal_mutable_texture7path();
+  public:
+
   // @@protoc_insertion_point(class_scope:BBSerializer.BBMaterial)
  private:
   class _Internal;
@@ -243,6 +395,14 @@ class BBMaterial PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr shadername_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr vshaderpath_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr fshaderpath_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr texture0path_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr texture1path_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr texture2path_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr texture3path_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr texture4path_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr texture5path_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr texture6path_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr texture7path_;
   friend struct ::TableStruct_BBMaterial_2eproto;
 };
 // ===================================================================
@@ -425,6 +585,462 @@ inline void BBMaterial::set_allocated_fshaderpath(std::string* fshaderpath) {
   fshaderpath_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), fshaderpath,
       GetArena());
   // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.fShaderPath)
+}
+
+// string texture0Path = 4;
+inline bool BBMaterial::_internal_has_texture0path() const {
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
+inline bool BBMaterial::has_texture0path() const {
+  return _internal_has_texture0path();
+}
+inline void BBMaterial::clear_texture0path() {
+  texture0path_.ClearToEmpty();
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline const std::string& BBMaterial::texture0path() const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.texture0Path)
+  return _internal_texture0path();
+}
+template <typename ArgT0, typename... ArgT>
+PROTOBUF_ALWAYS_INLINE
+inline void BBMaterial::set_texture0path(ArgT0&& arg0, ArgT... args) {
+ _has_bits_[0] |= 0x00000008u;
+ texture0path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.texture0Path)
+}
+inline std::string* BBMaterial::mutable_texture0path() {
+  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.texture0Path)
+  return _internal_mutable_texture0path();
+}
+inline const std::string& BBMaterial::_internal_texture0path() const {
+  return texture0path_.Get();
+}
+inline void BBMaterial::_internal_set_texture0path(const std::string& value) {
+  _has_bits_[0] |= 0x00000008u;
+  texture0path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+}
+inline std::string* BBMaterial::_internal_mutable_texture0path() {
+  _has_bits_[0] |= 0x00000008u;
+  return texture0path_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+}
+inline std::string* BBMaterial::release_texture0path() {
+  // @@protoc_insertion_point(field_release:BBSerializer.BBMaterial.texture0Path)
+  if (!_internal_has_texture0path()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000008u;
+  return texture0path_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void BBMaterial::set_allocated_texture0path(std::string* texture0path) {
+  if (texture0path != nullptr) {
+    _has_bits_[0] |= 0x00000008u;
+  } else {
+    _has_bits_[0] &= ~0x00000008u;
+  }
+  texture0path_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), texture0path,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.texture0Path)
+}
+
+// string texture1Path = 5;
+inline bool BBMaterial::_internal_has_texture1path() const {
+  bool value = (_has_bits_[0] & 0x00000010u) != 0;
+  return value;
+}
+inline bool BBMaterial::has_texture1path() const {
+  return _internal_has_texture1path();
+}
+inline void BBMaterial::clear_texture1path() {
+  texture1path_.ClearToEmpty();
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline const std::string& BBMaterial::texture1path() const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.texture1Path)
+  return _internal_texture1path();
+}
+template <typename ArgT0, typename... ArgT>
+PROTOBUF_ALWAYS_INLINE
+inline void BBMaterial::set_texture1path(ArgT0&& arg0, ArgT... args) {
+ _has_bits_[0] |= 0x00000010u;
+ texture1path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.texture1Path)
+}
+inline std::string* BBMaterial::mutable_texture1path() {
+  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.texture1Path)
+  return _internal_mutable_texture1path();
+}
+inline const std::string& BBMaterial::_internal_texture1path() const {
+  return texture1path_.Get();
+}
+inline void BBMaterial::_internal_set_texture1path(const std::string& value) {
+  _has_bits_[0] |= 0x00000010u;
+  texture1path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+}
+inline std::string* BBMaterial::_internal_mutable_texture1path() {
+  _has_bits_[0] |= 0x00000010u;
+  return texture1path_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+}
+inline std::string* BBMaterial::release_texture1path() {
+  // @@protoc_insertion_point(field_release:BBSerializer.BBMaterial.texture1Path)
+  if (!_internal_has_texture1path()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000010u;
+  return texture1path_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void BBMaterial::set_allocated_texture1path(std::string* texture1path) {
+  if (texture1path != nullptr) {
+    _has_bits_[0] |= 0x00000010u;
+  } else {
+    _has_bits_[0] &= ~0x00000010u;
+  }
+  texture1path_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), texture1path,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.texture1Path)
+}
+
+// string texture2Path = 6;
+inline bool BBMaterial::_internal_has_texture2path() const {
+  bool value = (_has_bits_[0] & 0x00000020u) != 0;
+  return value;
+}
+inline bool BBMaterial::has_texture2path() const {
+  return _internal_has_texture2path();
+}
+inline void BBMaterial::clear_texture2path() {
+  texture2path_.ClearToEmpty();
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline const std::string& BBMaterial::texture2path() const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.texture2Path)
+  return _internal_texture2path();
+}
+template <typename ArgT0, typename... ArgT>
+PROTOBUF_ALWAYS_INLINE
+inline void BBMaterial::set_texture2path(ArgT0&& arg0, ArgT... args) {
+ _has_bits_[0] |= 0x00000020u;
+ texture2path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.texture2Path)
+}
+inline std::string* BBMaterial::mutable_texture2path() {
+  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.texture2Path)
+  return _internal_mutable_texture2path();
+}
+inline const std::string& BBMaterial::_internal_texture2path() const {
+  return texture2path_.Get();
+}
+inline void BBMaterial::_internal_set_texture2path(const std::string& value) {
+  _has_bits_[0] |= 0x00000020u;
+  texture2path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+}
+inline std::string* BBMaterial::_internal_mutable_texture2path() {
+  _has_bits_[0] |= 0x00000020u;
+  return texture2path_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+}
+inline std::string* BBMaterial::release_texture2path() {
+  // @@protoc_insertion_point(field_release:BBSerializer.BBMaterial.texture2Path)
+  if (!_internal_has_texture2path()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000020u;
+  return texture2path_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void BBMaterial::set_allocated_texture2path(std::string* texture2path) {
+  if (texture2path != nullptr) {
+    _has_bits_[0] |= 0x00000020u;
+  } else {
+    _has_bits_[0] &= ~0x00000020u;
+  }
+  texture2path_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), texture2path,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.texture2Path)
+}
+
+// string texture3Path = 7;
+inline bool BBMaterial::_internal_has_texture3path() const {
+  bool value = (_has_bits_[0] & 0x00000040u) != 0;
+  return value;
+}
+inline bool BBMaterial::has_texture3path() const {
+  return _internal_has_texture3path();
+}
+inline void BBMaterial::clear_texture3path() {
+  texture3path_.ClearToEmpty();
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline const std::string& BBMaterial::texture3path() const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.texture3Path)
+  return _internal_texture3path();
+}
+template <typename ArgT0, typename... ArgT>
+PROTOBUF_ALWAYS_INLINE
+inline void BBMaterial::set_texture3path(ArgT0&& arg0, ArgT... args) {
+ _has_bits_[0] |= 0x00000040u;
+ texture3path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.texture3Path)
+}
+inline std::string* BBMaterial::mutable_texture3path() {
+  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.texture3Path)
+  return _internal_mutable_texture3path();
+}
+inline const std::string& BBMaterial::_internal_texture3path() const {
+  return texture3path_.Get();
+}
+inline void BBMaterial::_internal_set_texture3path(const std::string& value) {
+  _has_bits_[0] |= 0x00000040u;
+  texture3path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+}
+inline std::string* BBMaterial::_internal_mutable_texture3path() {
+  _has_bits_[0] |= 0x00000040u;
+  return texture3path_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+}
+inline std::string* BBMaterial::release_texture3path() {
+  // @@protoc_insertion_point(field_release:BBSerializer.BBMaterial.texture3Path)
+  if (!_internal_has_texture3path()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000040u;
+  return texture3path_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void BBMaterial::set_allocated_texture3path(std::string* texture3path) {
+  if (texture3path != nullptr) {
+    _has_bits_[0] |= 0x00000040u;
+  } else {
+    _has_bits_[0] &= ~0x00000040u;
+  }
+  texture3path_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), texture3path,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.texture3Path)
+}
+
+// string texture4Path = 8;
+inline bool BBMaterial::_internal_has_texture4path() const {
+  bool value = (_has_bits_[0] & 0x00000080u) != 0;
+  return value;
+}
+inline bool BBMaterial::has_texture4path() const {
+  return _internal_has_texture4path();
+}
+inline void BBMaterial::clear_texture4path() {
+  texture4path_.ClearToEmpty();
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline const std::string& BBMaterial::texture4path() const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.texture4Path)
+  return _internal_texture4path();
+}
+template <typename ArgT0, typename... ArgT>
+PROTOBUF_ALWAYS_INLINE
+inline void BBMaterial::set_texture4path(ArgT0&& arg0, ArgT... args) {
+ _has_bits_[0] |= 0x00000080u;
+ texture4path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.texture4Path)
+}
+inline std::string* BBMaterial::mutable_texture4path() {
+  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.texture4Path)
+  return _internal_mutable_texture4path();
+}
+inline const std::string& BBMaterial::_internal_texture4path() const {
+  return texture4path_.Get();
+}
+inline void BBMaterial::_internal_set_texture4path(const std::string& value) {
+  _has_bits_[0] |= 0x00000080u;
+  texture4path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+}
+inline std::string* BBMaterial::_internal_mutable_texture4path() {
+  _has_bits_[0] |= 0x00000080u;
+  return texture4path_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+}
+inline std::string* BBMaterial::release_texture4path() {
+  // @@protoc_insertion_point(field_release:BBSerializer.BBMaterial.texture4Path)
+  if (!_internal_has_texture4path()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000080u;
+  return texture4path_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void BBMaterial::set_allocated_texture4path(std::string* texture4path) {
+  if (texture4path != nullptr) {
+    _has_bits_[0] |= 0x00000080u;
+  } else {
+    _has_bits_[0] &= ~0x00000080u;
+  }
+  texture4path_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), texture4path,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.texture4Path)
+}
+
+// string texture5Path = 9;
+inline bool BBMaterial::_internal_has_texture5path() const {
+  bool value = (_has_bits_[0] & 0x00000100u) != 0;
+  return value;
+}
+inline bool BBMaterial::has_texture5path() const {
+  return _internal_has_texture5path();
+}
+inline void BBMaterial::clear_texture5path() {
+  texture5path_.ClearToEmpty();
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline const std::string& BBMaterial::texture5path() const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.texture5Path)
+  return _internal_texture5path();
+}
+template <typename ArgT0, typename... ArgT>
+PROTOBUF_ALWAYS_INLINE
+inline void BBMaterial::set_texture5path(ArgT0&& arg0, ArgT... args) {
+ _has_bits_[0] |= 0x00000100u;
+ texture5path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.texture5Path)
+}
+inline std::string* BBMaterial::mutable_texture5path() {
+  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.texture5Path)
+  return _internal_mutable_texture5path();
+}
+inline const std::string& BBMaterial::_internal_texture5path() const {
+  return texture5path_.Get();
+}
+inline void BBMaterial::_internal_set_texture5path(const std::string& value) {
+  _has_bits_[0] |= 0x00000100u;
+  texture5path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+}
+inline std::string* BBMaterial::_internal_mutable_texture5path() {
+  _has_bits_[0] |= 0x00000100u;
+  return texture5path_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+}
+inline std::string* BBMaterial::release_texture5path() {
+  // @@protoc_insertion_point(field_release:BBSerializer.BBMaterial.texture5Path)
+  if (!_internal_has_texture5path()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000100u;
+  return texture5path_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void BBMaterial::set_allocated_texture5path(std::string* texture5path) {
+  if (texture5path != nullptr) {
+    _has_bits_[0] |= 0x00000100u;
+  } else {
+    _has_bits_[0] &= ~0x00000100u;
+  }
+  texture5path_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), texture5path,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.texture5Path)
+}
+
+// string texture6Path = 10;
+inline bool BBMaterial::_internal_has_texture6path() const {
+  bool value = (_has_bits_[0] & 0x00000200u) != 0;
+  return value;
+}
+inline bool BBMaterial::has_texture6path() const {
+  return _internal_has_texture6path();
+}
+inline void BBMaterial::clear_texture6path() {
+  texture6path_.ClearToEmpty();
+  _has_bits_[0] &= ~0x00000200u;
+}
+inline const std::string& BBMaterial::texture6path() const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.texture6Path)
+  return _internal_texture6path();
+}
+template <typename ArgT0, typename... ArgT>
+PROTOBUF_ALWAYS_INLINE
+inline void BBMaterial::set_texture6path(ArgT0&& arg0, ArgT... args) {
+ _has_bits_[0] |= 0x00000200u;
+ texture6path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.texture6Path)
+}
+inline std::string* BBMaterial::mutable_texture6path() {
+  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.texture6Path)
+  return _internal_mutable_texture6path();
+}
+inline const std::string& BBMaterial::_internal_texture6path() const {
+  return texture6path_.Get();
+}
+inline void BBMaterial::_internal_set_texture6path(const std::string& value) {
+  _has_bits_[0] |= 0x00000200u;
+  texture6path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+}
+inline std::string* BBMaterial::_internal_mutable_texture6path() {
+  _has_bits_[0] |= 0x00000200u;
+  return texture6path_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+}
+inline std::string* BBMaterial::release_texture6path() {
+  // @@protoc_insertion_point(field_release:BBSerializer.BBMaterial.texture6Path)
+  if (!_internal_has_texture6path()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000200u;
+  return texture6path_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void BBMaterial::set_allocated_texture6path(std::string* texture6path) {
+  if (texture6path != nullptr) {
+    _has_bits_[0] |= 0x00000200u;
+  } else {
+    _has_bits_[0] &= ~0x00000200u;
+  }
+  texture6path_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), texture6path,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.texture6Path)
+}
+
+// string texture7Path = 11;
+inline bool BBMaterial::_internal_has_texture7path() const {
+  bool value = (_has_bits_[0] & 0x00000400u) != 0;
+  return value;
+}
+inline bool BBMaterial::has_texture7path() const {
+  return _internal_has_texture7path();
+}
+inline void BBMaterial::clear_texture7path() {
+  texture7path_.ClearToEmpty();
+  _has_bits_[0] &= ~0x00000400u;
+}
+inline const std::string& BBMaterial::texture7path() const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.texture7Path)
+  return _internal_texture7path();
+}
+template <typename ArgT0, typename... ArgT>
+PROTOBUF_ALWAYS_INLINE
+inline void BBMaterial::set_texture7path(ArgT0&& arg0, ArgT... args) {
+ _has_bits_[0] |= 0x00000400u;
+ texture7path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.texture7Path)
+}
+inline std::string* BBMaterial::mutable_texture7path() {
+  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.texture7Path)
+  return _internal_mutable_texture7path();
+}
+inline const std::string& BBMaterial::_internal_texture7path() const {
+  return texture7path_.Get();
+}
+inline void BBMaterial::_internal_set_texture7path(const std::string& value) {
+  _has_bits_[0] |= 0x00000400u;
+  texture7path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+}
+inline std::string* BBMaterial::_internal_mutable_texture7path() {
+  _has_bits_[0] |= 0x00000400u;
+  return texture7path_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+}
+inline std::string* BBMaterial::release_texture7path() {
+  // @@protoc_insertion_point(field_release:BBSerializer.BBMaterial.texture7Path)
+  if (!_internal_has_texture7path()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000400u;
+  return texture7path_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void BBMaterial::set_allocated_texture7path(std::string* texture7path) {
+  if (texture7path != nullptr) {
+    _has_bits_[0] |= 0x00000400u;
+  } else {
+    _has_bits_[0] &= ~0x00000400u;
+  }
+  texture7path_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), texture7path,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.texture7Path)
 }
 
 #ifdef __GNUC__
