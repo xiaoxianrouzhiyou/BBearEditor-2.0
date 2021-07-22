@@ -464,13 +464,18 @@ BBRenderManager::BBRenderManager(BBRenderableObject *pObject, QWidget *pParent)
 {
     m_pRenderableObject = pObject;
     QString materialPath = BBRendererManager::getMaterialPath(pObject->getMaterial());
-    BBDragAcceptedFactory *pMaterialFactory = new BBDragAcceptedFactory(BB_PATH_RESOURCE_ICON(material5.png),
+    m_pMaterialFactory = new BBDragAcceptedFactory(BB_PATH_RESOURCE_ICON(material5.png),
                                                                         materialPath, pParent);
-    pMaterialFactory->setFilter(BBFileSystemDataManager::m_MaterialSuffixs);
-    addFactory("Material", pMaterialFactory, 1);
-    QObject::connect(pMaterialFactory, SIGNAL(iconClicked()), this, SLOT(popupResourceDialog()));
-    QObject::connect(pMaterialFactory, SIGNAL(currentFilePathChanged(QString)),
+    m_pMaterialFactory->setFilter(BBFileSystemDataManager::m_MaterialSuffixs);
+    addFactory("Material", m_pMaterialFactory, 1);
+    QObject::connect(m_pMaterialFactory, SIGNAL(iconClicked()), this, SLOT(popupResourceDialog()));
+    QObject::connect(m_pMaterialFactory, SIGNAL(currentFilePathChanged(QString)),
                      this, SLOT(changeMaterial(QString)));
+}
+
+BBRenderManager::~BBRenderManager()
+{
+    BB_SAFE_DELETE(m_pMaterialFactory);
 }
 
 void BBRenderManager::changeMaterial(const QString &filePath)
@@ -483,7 +488,7 @@ void BBRenderManager::popupResourceDialog()
     BBResourceDialog dialog(BB_PATH_RESOURCE_MATERIAL, this);
     if (dialog.exec())
     {
-
+        m_pMaterialFactory->changeCurrentFilePath(dialog.getCurrentItemFilePath());
     }
 }
 

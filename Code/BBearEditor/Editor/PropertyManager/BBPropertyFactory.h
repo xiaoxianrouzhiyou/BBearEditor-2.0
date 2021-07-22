@@ -195,7 +195,7 @@ public:
 
     void setFilter(const QStringList &acceptableSuffixs);
 
-private slots:
+public slots:
     void changeCurrentFilePath(const QString &filePath);
     void clickIcon();
 

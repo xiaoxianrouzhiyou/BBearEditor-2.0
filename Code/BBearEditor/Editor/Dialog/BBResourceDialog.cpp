@@ -27,6 +27,19 @@ BBResourceDialog::~BBResourceDialog()
     delete m_pUi;
 }
 
+QString BBResourceDialog::getCurrentItemFilePath()
+{
+    int nIndex = m_pUi->resourceList->currentIndex().row();
+    if (nIndex < 0)
+    {
+        return "";
+    }
+    else
+    {
+        return m_ItemFilePaths.at(nIndex);
+    }
+}
+
 bool BBResourceDialog::loadListItems(const QString &folderPath)
 {
     QDir dir(folderPath);
@@ -40,5 +53,7 @@ bool BBResourceDialog::loadListItems(const QString &folderPath)
         pItem->setIcon(QIcon(BB_PATH_RESOURCE_ICON(material5)));
         pItem->setText(fileInfo.baseName());
         m_pUi->resourceList->addItem(pItem);
+        m_ItemFilePaths.append(fileInfo.filePath());
     }
+    return true;
 }

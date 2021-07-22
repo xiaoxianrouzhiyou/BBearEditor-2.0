@@ -15,11 +15,14 @@ public:
     explicit BBResourceDialog(const QString &folderPath, QWidget *pParent = 0);
     ~BBResourceDialog();
 
+    QString getCurrentItemFilePath();
+
 private:
     bool loadListItems(const QString &folderPath);
 
     Ui::BBResourceDialog *m_pUi;
     static QSize m_ItemSize;
+    QList<QString> m_ItemFilePaths;
 };
 
 #endif // BBRESOURCEDIALOG_H

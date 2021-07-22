@@ -18,6 +18,7 @@ class BBMaterial;
 class BBRenderableObject;
 class BBPointLight;
 class QCheckBox;
+class BBDragAcceptedFactory;
 
 
 // Manage a group of property
@@ -129,6 +130,7 @@ class BBRenderManager : public BBGroupManager
 
 public:
     BBRenderManager(BBRenderableObject *pObject, QWidget *pParent = 0);
+    ~BBRenderManager();
 
 private slots:
     void changeMaterial(const QString &filePath);
@@ -136,6 +138,7 @@ private slots:
 
 private:
     BBRenderableObject *m_pRenderableObject;
+    BBDragAcceptedFactory *m_pMaterialFactory;
 };
 
 
