@@ -67,12 +67,18 @@ void BBRendererManager::changeFShader(BBMaterial *pMaterial, const QString &name
     serialize(material, materialPath);
 }
 
-void BBRendererManager::changeTexture(BBMaterial *pMaterial, const QString &texturePath)
+void BBRendererManager::changeTexture(const QString &textureName, BBMaterial *pMaterial, const QString &texturePath)
 {
     QString materialPath = m_CachedMaterials.key(pMaterial);
     BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
     BBSerializer::BBMaterial material = deserialize(materialPath);
-    material.set_texture0path(texturePath.toStdString().c_str());
+    int nIndex = textureName.mid(textureName.length() - 1).toInt();
+    if (nIndex == 0)
+        material.set_texture0path(texturePath.toStdString().c_str());
+    else if (nIndex == 1)
+        material.set_texture1path(texturePath.toStdString().c_str());
+    else if (nIndex == 2)
+        material.set_texture2path(texturePath.toStdString().c_str());
     serialize(material, materialPath);
 }
 
@@ -170,11 +176,16 @@ void BBRendererManager::loadMaterialContent(const QString &filePath, BBMaterial 
                     QString::fromStdString(material.vshaderpath()),
                     QString::fromStdString(material.fshaderpath()));
 
-    QString texture0path = QString::fromStdString(material.texture0path());
-    if (!texture0path.isEmpty())
+    QList<QString> texturepaths;
+    texturepaths.append(QString::fromStdString(material.texture0path()));
+    texturepaths.append(QString::fromStdString(material.texture1path()));
+    texturepaths.append(QString::fromStdString(material.texture2path()));
+    for (int i = 0; i < texturepaths.count(); i++)
     {
         BBTexture texture;
-        pMaterial->setSampler2D(LOCATION_TEXTURE(0), texture.createTexture2D(texture0path), texture0path);
+        QString uniformName(LOCATION_TEXTURE());
+        uniformName += QString::number(i);
+        pMaterial->setSampler2D(uniformName.toStdString().c_str(), texture.createTexture2D(texturepaths[i]), texturepaths[i]);
     }
 
     // default

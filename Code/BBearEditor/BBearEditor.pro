@@ -260,7 +260,9 @@ DISTFILES += \
     ../../Resources/shaders/standard.vert \
     ../../Resources/shaders/stencilUI.vert \
     ../../Resources/shaders/texture.vert \
-    ../../Resources/shaders/UI.vert
+    ../../Resources/shaders/UI.vert \
+    ../../Resources/shaders/dissolve.frag \
+    ../../Resources/shaders/dissolve.vert
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../External/Python37-32/libs/ -lpython37
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../External/Python37-32/libs/ -lpython37d

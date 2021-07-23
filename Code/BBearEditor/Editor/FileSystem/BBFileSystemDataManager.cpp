@@ -908,7 +908,7 @@ QIcon BBFileSystemDataManager::getTextureIcon(const QString &path)
     QPixmap pix(path);
     int h = pix.height();
     int w = pix.width();
-    int size = h < w ? h : w;
+    int size = h > w ? h : w;
     pix = pix.copy((w - size) / 2, (h - size) / 2, size, size);
     // Transparent pictures need to add background
     // When the image is smaller than the icon size, use the icon size. The image is showed in the center

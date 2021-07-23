@@ -431,7 +431,7 @@ void BBMaterialPropertyGroupManager::setSampler2D(const QString &uniformName, co
     BBTexture texture;
     m_pMaterial->setSampler2D(uniformName.toStdString().c_str(), texture.createTexture2D(texturePath), texturePath);
     m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
-    BBRendererManager::changeTexture(m_pMaterial, texturePath);
+    BBRendererManager::changeTexture(uniformName, m_pMaterial, texturePath);
 }
 
 void BBMaterialPropertyGroupManager::setPropertyItems()
@@ -464,8 +464,7 @@ BBRenderManager::BBRenderManager(BBRenderableObject *pObject, QWidget *pParent)
 {
     m_pRenderableObject = pObject;
     QString materialPath = BBRendererManager::getMaterialPath(pObject->getMaterial());
-    m_pMaterialFactory = new BBDragAcceptedFactory(BB_PATH_RESOURCE_ICON(material5.png),
-                                                                        materialPath, pParent);
+    m_pMaterialFactory = new BBDragAcceptedFactory(BB_PATH_RESOURCE_ICON(material5.png), materialPath, pParent);
     m_pMaterialFactory->setFilter(BBFileSystemDataManager::m_MaterialSuffixs);
     addFactory("Material", m_pMaterialFactory, 1);
     QObject::connect(m_pMaterialFactory, SIGNAL(iconClicked()), this, SLOT(popupResourceDialog()));
