@@ -8,4 +8,4 @@ I referred to some code, learning resources, UI designs, and art resources. I'm 
 
 I really look forward to making friends with related interests, and we will share experience and learn together!
 
-![image](https://user-images.githubusercontent.com/31690363/123601936-d04f0e00-d82a-11eb-9ef9-b777fc1e2b1a.png)
+![8MCV01XW3BO6 60@1PB@4PB](https://user-images.githubusercontent.com/31690363/126805996-f83a3fab-08e2-4d91-bba5-e67df45a7e9a.png)
