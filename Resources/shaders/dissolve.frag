@@ -18,5 +18,5 @@ void main(void)
         discard;
     }
 
-    fragColor = texture(texture0, V_Texcoord.xy) + texture(texture1, V_Texcoord.xy);
+    fragColor = texture(texture0, V_Texcoord.xy) * texture(texture1, V_Texcoord.xy);
 }
