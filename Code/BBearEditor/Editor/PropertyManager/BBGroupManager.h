@@ -115,6 +115,7 @@ public:
 
 private slots:
     void setSampler2D(const QString &uniformName, const QString &texturePath);
+    void setFloat(const QString &uniformName, float fValue);
 
 private:
     void setPropertyItems();

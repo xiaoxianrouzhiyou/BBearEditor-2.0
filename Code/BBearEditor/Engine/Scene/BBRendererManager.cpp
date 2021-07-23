@@ -67,18 +67,27 @@ void BBRendererManager::changeFShader(BBMaterial *pMaterial, const QString &name
     serialize(material, materialPath);
 }
 
-void BBRendererManager::changeTexture(const QString &textureName, BBMaterial *pMaterial, const QString &texturePath)
+void BBRendererManager::changeTexture(BBMaterial *pMaterial, const QString &textureName, const QString &texturePath)
 {
     QString materialPath = m_CachedMaterials.key(pMaterial);
     BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
     BBSerializer::BBMaterial material = deserialize(materialPath);
-    int nIndex = textureName.mid(textureName.length() - 1).toInt();
-    if (nIndex == 0)
-        material.set_texture0path(texturePath.toStdString().c_str());
-    else if (nIndex == 1)
-        material.set_texture1path(texturePath.toStdString().c_str());
-    else if (nIndex == 2)
-        material.set_texture2path(texturePath.toStdString().c_str());
+
+    material.add_texturename(textureName.toStdString().c_str());
+    material.add_texturepath(texturePath.toStdString().c_str());
+
+    serialize(material, materialPath);
+}
+
+void BBRendererManager::changeFloat(BBMaterial *pMaterial, const QString &floatName, float fValue)
+{
+    QString materialPath = m_CachedMaterials.key(pMaterial);
+    BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
+    BBSerializer::BBMaterial material = deserialize(materialPath);
+
+    material.add_floatname(floatName.toStdString().c_str());
+    material.add_floatvalue(fValue);
+
     serialize(material, materialPath);
 }
 
@@ -176,19 +185,19 @@ void BBRendererManager::loadMaterialContent(const QString &filePath, BBMaterial 
                     QString::fromStdString(material.vshaderpath()),
                     QString::fromStdString(material.fshaderpath()));
 
-    QList<QString> texturepaths;
-    texturepaths.append(QString::fromStdString(material.texture0path()));
-    texturepaths.append(QString::fromStdString(material.texture1path()));
-    texturepaths.append(QString::fromStdString(material.texture2path()));
-    for (int i = 0; i < texturepaths.count(); i++)
+    int nTextureCount = material.texturename_size();
+    for (int i = 0; i < nTextureCount; i++)
     {
         BBTexture texture;
-        QString uniformName(LOCATION_TEXTURE());
-        uniformName += QString::number(i);
-        pMaterial->setSampler2D(uniformName.toStdString().c_str(), texture.createTexture2D(texturepaths[i]), texturepaths[i]);
+        QString texturePath = QString::fromStdString(material.texturepath(i));
+        pMaterial->setSampler2D(material.texturename(i), texture.createTexture2D(texturePath), texturePath);
     }
 
-    pMaterial->setFloat("clip", 0.4f);
+    int nFloatCount = material.floatname_size();
+    for (int i = 0; i < nFloatCount; i++)
+    {
+        pMaterial->setFloat(material.floatname(i), material.floatvalue(i));
+    }
 
     // default
     float *pLightPosition = new float[4] {1.0f, 1.0f, 0.0f, 0.0f};

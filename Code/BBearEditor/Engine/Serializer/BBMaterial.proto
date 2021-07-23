@@ -8,12 +8,8 @@ message BBMaterial
 	optional string shaderName = 1;
 	optional string vShaderPath = 2;
 	optional string fShaderPath = 3;
-	optional string texture0Path = 4;
-	optional string texture1Path = 5;
-	optional string texture2Path = 6;
-	optional string texture3Path = 7;
-	optional string texture4Path = 8;
-	optional string texture5Path = 9;
-	optional string texture6Path = 10;
-	optional string texture7Path = 11;
+	repeated string textureName = 4;
+	repeated string texturePath = 5;
+	repeated string floatName = 6;
+	repeated float floatValue = 7; 
 }

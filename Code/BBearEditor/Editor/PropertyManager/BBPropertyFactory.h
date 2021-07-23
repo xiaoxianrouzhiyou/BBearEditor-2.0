@@ -42,6 +42,7 @@ private slots:
 
 signals:
     void valueChanged(float fValue);
+    void valueChanged(const QString &name, float fValue);
 
 private:
     BBSliderLabel *m_pSliderLabel;
@@ -236,6 +237,32 @@ private:
     QSlider *m_pSlider;
     QLineEdit *m_pEditor;
 };
+
+
+//class BBSliderFFactory : public QWidget
+//{
+//    Q_OBJECT
+
+//public:
+//    BBSliderFFactory(float fValue = 0.5f, float fMin = 0.0f, float fMax = 1.0f, QWidget *pParent = 0);
+//    ~BBSliderFFactory();
+
+//    void setRange(float fMin, float fMax);
+//    void setValue(float value);
+
+//private slots:
+//    void changeSliderValue(float value);
+//    void changeEditorValue(const QString &value);
+
+//signals:
+//    void valueChanged(float value);
+
+//private:
+//    float m_fMin;
+//    float m_fMax;
+//    QSlider *m_pSlider;
+//    QLineEdit *m_pEditor;
+//};
 
 #endif // BBPROPERTYFACTORY_H
 

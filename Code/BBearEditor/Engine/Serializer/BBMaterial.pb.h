@@ -173,18 +173,108 @@ class BBMaterial PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kTextureNameFieldNumber = 4,
+    kTexturePathFieldNumber = 5,
+    kFloatNameFieldNumber = 6,
+    kFloatValueFieldNumber = 7,
     kShaderNameFieldNumber = 1,
     kVShaderPathFieldNumber = 2,
     kFShaderPathFieldNumber = 3,
-    kTexture0PathFieldNumber = 4,
-    kTexture1PathFieldNumber = 5,
-    kTexture2PathFieldNumber = 6,
-    kTexture3PathFieldNumber = 7,
-    kTexture4PathFieldNumber = 8,
-    kTexture5PathFieldNumber = 9,
-    kTexture6PathFieldNumber = 10,
-    kTexture7PathFieldNumber = 11,
   };
+  // repeated string textureName = 4;
+  int texturename_size() const;
+  private:
+  int _internal_texturename_size() const;
+  public:
+  void clear_texturename();
+  const std::string& texturename(int index) const;
+  std::string* mutable_texturename(int index);
+  void set_texturename(int index, const std::string& value);
+  void set_texturename(int index, std::string&& value);
+  void set_texturename(int index, const char* value);
+  void set_texturename(int index, const char* value, size_t size);
+  std::string* add_texturename();
+  void add_texturename(const std::string& value);
+  void add_texturename(std::string&& value);
+  void add_texturename(const char* value);
+  void add_texturename(const char* value, size_t size);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>& texturename() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>* mutable_texturename();
+  private:
+  const std::string& _internal_texturename(int index) const;
+  std::string* _internal_add_texturename();
+  public:
+
+  // repeated string texturePath = 5;
+  int texturepath_size() const;
+  private:
+  int _internal_texturepath_size() const;
+  public:
+  void clear_texturepath();
+  const std::string& texturepath(int index) const;
+  std::string* mutable_texturepath(int index);
+  void set_texturepath(int index, const std::string& value);
+  void set_texturepath(int index, std::string&& value);
+  void set_texturepath(int index, const char* value);
+  void set_texturepath(int index, const char* value, size_t size);
+  std::string* add_texturepath();
+  void add_texturepath(const std::string& value);
+  void add_texturepath(std::string&& value);
+  void add_texturepath(const char* value);
+  void add_texturepath(const char* value, size_t size);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>& texturepath() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>* mutable_texturepath();
+  private:
+  const std::string& _internal_texturepath(int index) const;
+  std::string* _internal_add_texturepath();
+  public:
+
+  // repeated string floatName = 6;
+  int floatname_size() const;
+  private:
+  int _internal_floatname_size() const;
+  public:
+  void clear_floatname();
+  const std::string& floatname(int index) const;
+  std::string* mutable_floatname(int index);
+  void set_floatname(int index, const std::string& value);
+  void set_floatname(int index, std::string&& value);
+  void set_floatname(int index, const char* value);
+  void set_floatname(int index, const char* value, size_t size);
+  std::string* add_floatname();
+  void add_floatname(const std::string& value);
+  void add_floatname(std::string&& value);
+  void add_floatname(const char* value);
+  void add_floatname(const char* value, size_t size);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>& floatname() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>* mutable_floatname();
+  private:
+  const std::string& _internal_floatname(int index) const;
+  std::string* _internal_add_floatname();
+  public:
+
+  // repeated float floatValue = 7;
+  int floatvalue_size() const;
+  private:
+  int _internal_floatvalue_size() const;
+  public:
+  void clear_floatvalue();
+  private:
+  float _internal_floatvalue(int index) const;
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
+      _internal_floatvalue() const;
+  void _internal_add_floatvalue(float value);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
+      _internal_mutable_floatvalue();
+  public:
+  float floatvalue(int index) const;
+  void set_floatvalue(int index, float value);
+  void add_floatvalue(float value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
+      floatvalue() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
+      mutable_floatvalue();
+
   // string shaderName = 1;
   bool has_shadername() const;
   private:
@@ -239,150 +329,6 @@ class BBMaterial PROTOBUF_FINAL :
   std::string* _internal_mutable_fshaderpath();
   public:
 
-  // string texture0Path = 4;
-  bool has_texture0path() const;
-  private:
-  bool _internal_has_texture0path() const;
-  public:
-  void clear_texture0path();
-  const std::string& texture0path() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_texture0path(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_texture0path();
-  std::string* release_texture0path();
-  void set_allocated_texture0path(std::string* texture0path);
-  private:
-  const std::string& _internal_texture0path() const;
-  void _internal_set_texture0path(const std::string& value);
-  std::string* _internal_mutable_texture0path();
-  public:
-
-  // string texture1Path = 5;
-  bool has_texture1path() const;
-  private:
-  bool _internal_has_texture1path() const;
-  public:
-  void clear_texture1path();
-  const std::string& texture1path() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_texture1path(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_texture1path();
-  std::string* release_texture1path();
-  void set_allocated_texture1path(std::string* texture1path);
-  private:
-  const std::string& _internal_texture1path() const;
-  void _internal_set_texture1path(const std::string& value);
-  std::string* _internal_mutable_texture1path();
-  public:
-
-  // string texture2Path = 6;
-  bool has_texture2path() const;
-  private:
-  bool _internal_has_texture2path() const;
-  public:
-  void clear_texture2path();
-  const std::string& texture2path() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_texture2path(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_texture2path();
-  std::string* release_texture2path();
-  void set_allocated_texture2path(std::string* texture2path);
-  private:
-  const std::string& _internal_texture2path() const;
-  void _internal_set_texture2path(const std::string& value);
-  std::string* _internal_mutable_texture2path();
-  public:
-
-  // string texture3Path = 7;
-  bool has_texture3path() const;
-  private:
-  bool _internal_has_texture3path() const;
-  public:
-  void clear_texture3path();
-  const std::string& texture3path() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_texture3path(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_texture3path();
-  std::string* release_texture3path();
-  void set_allocated_texture3path(std::string* texture3path);
-  private:
-  const std::string& _internal_texture3path() const;
-  void _internal_set_texture3path(const std::string& value);
-  std::string* _internal_mutable_texture3path();
-  public:
-
-  // string texture4Path = 8;
-  bool has_texture4path() const;
-  private:
-  bool _internal_has_texture4path() const;
-  public:
-  void clear_texture4path();
-  const std::string& texture4path() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_texture4path(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_texture4path();
-  std::string* release_texture4path();
-  void set_allocated_texture4path(std::string* texture4path);
-  private:
-  const std::string& _internal_texture4path() const;
-  void _internal_set_texture4path(const std::string& value);
-  std::string* _internal_mutable_texture4path();
-  public:
-
-  // string texture5Path = 9;
-  bool has_texture5path() const;
-  private:
-  bool _internal_has_texture5path() const;
-  public:
-  void clear_texture5path();
-  const std::string& texture5path() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_texture5path(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_texture5path();
-  std::string* release_texture5path();
-  void set_allocated_texture5path(std::string* texture5path);
-  private:
-  const std::string& _internal_texture5path() const;
-  void _internal_set_texture5path(const std::string& value);
-  std::string* _internal_mutable_texture5path();
-  public:
-
-  // string texture6Path = 10;
-  bool has_texture6path() const;
-  private:
-  bool _internal_has_texture6path() const;
-  public:
-  void clear_texture6path();
-  const std::string& texture6path() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_texture6path(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_texture6path();
-  std::string* release_texture6path();
-  void set_allocated_texture6path(std::string* texture6path);
-  private:
-  const std::string& _internal_texture6path() const;
-  void _internal_set_texture6path(const std::string& value);
-  std::string* _internal_mutable_texture6path();
-  public:
-
-  // string texture7Path = 11;
-  bool has_texture7path() const;
-  private:
-  bool _internal_has_texture7path() const;
-  public:
-  void clear_texture7path();
-  const std::string& texture7path() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_texture7path(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_texture7path();
-  std::string* release_texture7path();
-  void set_allocated_texture7path(std::string* texture7path);
-  private:
-  const std::string& _internal_texture7path() const;
-  void _internal_set_texture7path(const std::string& value);
-  std::string* _internal_mutable_texture7path();
-  public:
-
   // @@protoc_insertion_point(class_scope:BBSerializer.BBMaterial)
  private:
   class _Internal;
@@ -392,17 +338,13 @@ class BBMaterial PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> texturename_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> texturepath_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> floatname_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< float > floatvalue_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr shadername_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr vshaderpath_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr fshaderpath_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr texture0path_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr texture1path_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr texture2path_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr texture3path_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr texture4path_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr texture5path_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr texture6path_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr texture7path_;
   friend struct ::TableStruct_BBMaterial_2eproto;
 };
 // ===================================================================
@@ -587,460 +529,273 @@ inline void BBMaterial::set_allocated_fshaderpath(std::string* fshaderpath) {
   // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.fShaderPath)
 }
 
-// string texture0Path = 4;
-inline bool BBMaterial::_internal_has_texture0path() const {
-  bool value = (_has_bits_[0] & 0x00000008u) != 0;
-  return value;
+// repeated string textureName = 4;
+inline int BBMaterial::_internal_texturename_size() const {
+  return texturename_.size();
 }
-inline bool BBMaterial::has_texture0path() const {
-  return _internal_has_texture0path();
+inline int BBMaterial::texturename_size() const {
+  return _internal_texturename_size();
 }
-inline void BBMaterial::clear_texture0path() {
-  texture0path_.ClearToEmpty();
-  _has_bits_[0] &= ~0x00000008u;
+inline void BBMaterial::clear_texturename() {
+  texturename_.Clear();
 }
-inline const std::string& BBMaterial::texture0path() const {
-  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.texture0Path)
-  return _internal_texture0path();
+inline std::string* BBMaterial::add_texturename() {
+  // @@protoc_insertion_point(field_add_mutable:BBSerializer.BBMaterial.textureName)
+  return _internal_add_texturename();
 }
-template <typename ArgT0, typename... ArgT>
-PROTOBUF_ALWAYS_INLINE
-inline void BBMaterial::set_texture0path(ArgT0&& arg0, ArgT... args) {
- _has_bits_[0] |= 0x00000008u;
- texture0path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
-  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.texture0Path)
+inline const std::string& BBMaterial::_internal_texturename(int index) const {
+  return texturename_.Get(index);
 }
-inline std::string* BBMaterial::mutable_texture0path() {
-  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.texture0Path)
-  return _internal_mutable_texture0path();
+inline const std::string& BBMaterial::texturename(int index) const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.textureName)
+  return _internal_texturename(index);
 }
-inline const std::string& BBMaterial::_internal_texture0path() const {
-  return texture0path_.Get();
+inline std::string* BBMaterial::mutable_texturename(int index) {
+  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.textureName)
+  return texturename_.Mutable(index);
 }
-inline void BBMaterial::_internal_set_texture0path(const std::string& value) {
-  _has_bits_[0] |= 0x00000008u;
-  texture0path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+inline void BBMaterial::set_texturename(int index, const std::string& value) {
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.textureName)
+  texturename_.Mutable(index)->assign(value);
 }
-inline std::string* BBMaterial::_internal_mutable_texture0path() {
-  _has_bits_[0] |= 0x00000008u;
-  return texture0path_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+inline void BBMaterial::set_texturename(int index, std::string&& value) {
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.textureName)
+  texturename_.Mutable(index)->assign(std::move(value));
 }
-inline std::string* BBMaterial::release_texture0path() {
-  // @@protoc_insertion_point(field_release:BBSerializer.BBMaterial.texture0Path)
-  if (!_internal_has_texture0path()) {
-    return nullptr;
-  }
-  _has_bits_[0] &= ~0x00000008u;
-  return texture0path_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+inline void BBMaterial::set_texturename(int index, const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  texturename_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:BBSerializer.BBMaterial.textureName)
 }
-inline void BBMaterial::set_allocated_texture0path(std::string* texture0path) {
-  if (texture0path != nullptr) {
-    _has_bits_[0] |= 0x00000008u;
-  } else {
-    _has_bits_[0] &= ~0x00000008u;
-  }
-  texture0path_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), texture0path,
-      GetArena());
-  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.texture0Path)
+inline void BBMaterial::set_texturename(int index, const char* value, size_t size) {
+  texturename_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:BBSerializer.BBMaterial.textureName)
 }
-
-// string texture1Path = 5;
-inline bool BBMaterial::_internal_has_texture1path() const {
-  bool value = (_has_bits_[0] & 0x00000010u) != 0;
-  return value;
+inline std::string* BBMaterial::_internal_add_texturename() {
+  return texturename_.Add();
 }
-inline bool BBMaterial::has_texture1path() const {
-  return _internal_has_texture1path();
+inline void BBMaterial::add_texturename(const std::string& value) {
+  texturename_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.textureName)
 }
-inline void BBMaterial::clear_texture1path() {
-  texture1path_.ClearToEmpty();
-  _has_bits_[0] &= ~0x00000010u;
+inline void BBMaterial::add_texturename(std::string&& value) {
+  texturename_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.textureName)
 }
-inline const std::string& BBMaterial::texture1path() const {
-  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.texture1Path)
-  return _internal_texture1path();
+inline void BBMaterial::add_texturename(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  texturename_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:BBSerializer.BBMaterial.textureName)
 }
-template <typename ArgT0, typename... ArgT>
-PROTOBUF_ALWAYS_INLINE
-inline void BBMaterial::set_texture1path(ArgT0&& arg0, ArgT... args) {
- _has_bits_[0] |= 0x00000010u;
- texture1path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
-  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.texture1Path)
+inline void BBMaterial::add_texturename(const char* value, size_t size) {
+  texturename_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:BBSerializer.BBMaterial.textureName)
 }
-inline std::string* BBMaterial::mutable_texture1path() {
-  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.texture1Path)
-  return _internal_mutable_texture1path();
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
+BBMaterial::texturename() const {
+  // @@protoc_insertion_point(field_list:BBSerializer.BBMaterial.textureName)
+  return texturename_;
 }
-inline const std::string& BBMaterial::_internal_texture1path() const {
-  return texture1path_.Get();
-}
-inline void BBMaterial::_internal_set_texture1path(const std::string& value) {
-  _has_bits_[0] |= 0x00000010u;
-  texture1path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
-}
-inline std::string* BBMaterial::_internal_mutable_texture1path() {
-  _has_bits_[0] |= 0x00000010u;
-  return texture1path_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
-}
-inline std::string* BBMaterial::release_texture1path() {
-  // @@protoc_insertion_point(field_release:BBSerializer.BBMaterial.texture1Path)
-  if (!_internal_has_texture1path()) {
-    return nullptr;
-  }
-  _has_bits_[0] &= ~0x00000010u;
-  return texture1path_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-}
-inline void BBMaterial::set_allocated_texture1path(std::string* texture1path) {
-  if (texture1path != nullptr) {
-    _has_bits_[0] |= 0x00000010u;
-  } else {
-    _has_bits_[0] &= ~0x00000010u;
-  }
-  texture1path_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), texture1path,
-      GetArena());
-  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.texture1Path)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
+BBMaterial::mutable_texturename() {
+  // @@protoc_insertion_point(field_mutable_list:BBSerializer.BBMaterial.textureName)
+  return &texturename_;
 }
 
-// string texture2Path = 6;
-inline bool BBMaterial::_internal_has_texture2path() const {
-  bool value = (_has_bits_[0] & 0x00000020u) != 0;
-  return value;
+// repeated string texturePath = 5;
+inline int BBMaterial::_internal_texturepath_size() const {
+  return texturepath_.size();
 }
-inline bool BBMaterial::has_texture2path() const {
-  return _internal_has_texture2path();
+inline int BBMaterial::texturepath_size() const {
+  return _internal_texturepath_size();
 }
-inline void BBMaterial::clear_texture2path() {
-  texture2path_.ClearToEmpty();
-  _has_bits_[0] &= ~0x00000020u;
+inline void BBMaterial::clear_texturepath() {
+  texturepath_.Clear();
 }
-inline const std::string& BBMaterial::texture2path() const {
-  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.texture2Path)
-  return _internal_texture2path();
+inline std::string* BBMaterial::add_texturepath() {
+  // @@protoc_insertion_point(field_add_mutable:BBSerializer.BBMaterial.texturePath)
+  return _internal_add_texturepath();
 }
-template <typename ArgT0, typename... ArgT>
-PROTOBUF_ALWAYS_INLINE
-inline void BBMaterial::set_texture2path(ArgT0&& arg0, ArgT... args) {
- _has_bits_[0] |= 0x00000020u;
- texture2path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
-  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.texture2Path)
+inline const std::string& BBMaterial::_internal_texturepath(int index) const {
+  return texturepath_.Get(index);
 }
-inline std::string* BBMaterial::mutable_texture2path() {
-  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.texture2Path)
-  return _internal_mutable_texture2path();
+inline const std::string& BBMaterial::texturepath(int index) const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.texturePath)
+  return _internal_texturepath(index);
 }
-inline const std::string& BBMaterial::_internal_texture2path() const {
-  return texture2path_.Get();
+inline std::string* BBMaterial::mutable_texturepath(int index) {
+  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.texturePath)
+  return texturepath_.Mutable(index);
 }
-inline void BBMaterial::_internal_set_texture2path(const std::string& value) {
-  _has_bits_[0] |= 0x00000020u;
-  texture2path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+inline void BBMaterial::set_texturepath(int index, const std::string& value) {
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.texturePath)
+  texturepath_.Mutable(index)->assign(value);
 }
-inline std::string* BBMaterial::_internal_mutable_texture2path() {
-  _has_bits_[0] |= 0x00000020u;
-  return texture2path_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+inline void BBMaterial::set_texturepath(int index, std::string&& value) {
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.texturePath)
+  texturepath_.Mutable(index)->assign(std::move(value));
 }
-inline std::string* BBMaterial::release_texture2path() {
-  // @@protoc_insertion_point(field_release:BBSerializer.BBMaterial.texture2Path)
-  if (!_internal_has_texture2path()) {
-    return nullptr;
-  }
-  _has_bits_[0] &= ~0x00000020u;
-  return texture2path_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+inline void BBMaterial::set_texturepath(int index, const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  texturepath_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:BBSerializer.BBMaterial.texturePath)
 }
-inline void BBMaterial::set_allocated_texture2path(std::string* texture2path) {
-  if (texture2path != nullptr) {
-    _has_bits_[0] |= 0x00000020u;
-  } else {
-    _has_bits_[0] &= ~0x00000020u;
-  }
-  texture2path_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), texture2path,
-      GetArena());
-  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.texture2Path)
+inline void BBMaterial::set_texturepath(int index, const char* value, size_t size) {
+  texturepath_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:BBSerializer.BBMaterial.texturePath)
 }
-
-// string texture3Path = 7;
-inline bool BBMaterial::_internal_has_texture3path() const {
-  bool value = (_has_bits_[0] & 0x00000040u) != 0;
-  return value;
+inline std::string* BBMaterial::_internal_add_texturepath() {
+  return texturepath_.Add();
 }
-inline bool BBMaterial::has_texture3path() const {
-  return _internal_has_texture3path();
+inline void BBMaterial::add_texturepath(const std::string& value) {
+  texturepath_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.texturePath)
 }
-inline void BBMaterial::clear_texture3path() {
-  texture3path_.ClearToEmpty();
-  _has_bits_[0] &= ~0x00000040u;
+inline void BBMaterial::add_texturepath(std::string&& value) {
+  texturepath_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.texturePath)
 }
-inline const std::string& BBMaterial::texture3path() const {
-  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.texture3Path)
-  return _internal_texture3path();
+inline void BBMaterial::add_texturepath(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  texturepath_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:BBSerializer.BBMaterial.texturePath)
 }
-template <typename ArgT0, typename... ArgT>
-PROTOBUF_ALWAYS_INLINE
-inline void BBMaterial::set_texture3path(ArgT0&& arg0, ArgT... args) {
- _has_bits_[0] |= 0x00000040u;
- texture3path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
-  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.texture3Path)
+inline void BBMaterial::add_texturepath(const char* value, size_t size) {
+  texturepath_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:BBSerializer.BBMaterial.texturePath)
 }
-inline std::string* BBMaterial::mutable_texture3path() {
-  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.texture3Path)
-  return _internal_mutable_texture3path();
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
+BBMaterial::texturepath() const {
+  // @@protoc_insertion_point(field_list:BBSerializer.BBMaterial.texturePath)
+  return texturepath_;
 }
-inline const std::string& BBMaterial::_internal_texture3path() const {
-  return texture3path_.Get();
-}
-inline void BBMaterial::_internal_set_texture3path(const std::string& value) {
-  _has_bits_[0] |= 0x00000040u;
-  texture3path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
-}
-inline std::string* BBMaterial::_internal_mutable_texture3path() {
-  _has_bits_[0] |= 0x00000040u;
-  return texture3path_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
-}
-inline std::string* BBMaterial::release_texture3path() {
-  // @@protoc_insertion_point(field_release:BBSerializer.BBMaterial.texture3Path)
-  if (!_internal_has_texture3path()) {
-    return nullptr;
-  }
-  _has_bits_[0] &= ~0x00000040u;
-  return texture3path_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-}
-inline void BBMaterial::set_allocated_texture3path(std::string* texture3path) {
-  if (texture3path != nullptr) {
-    _has_bits_[0] |= 0x00000040u;
-  } else {
-    _has_bits_[0] &= ~0x00000040u;
-  }
-  texture3path_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), texture3path,
-      GetArena());
-  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.texture3Path)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
+BBMaterial::mutable_texturepath() {
+  // @@protoc_insertion_point(field_mutable_list:BBSerializer.BBMaterial.texturePath)
+  return &texturepath_;
 }
 
-// string texture4Path = 8;
-inline bool BBMaterial::_internal_has_texture4path() const {
-  bool value = (_has_bits_[0] & 0x00000080u) != 0;
-  return value;
+// repeated string floatName = 6;
+inline int BBMaterial::_internal_floatname_size() const {
+  return floatname_.size();
 }
-inline bool BBMaterial::has_texture4path() const {
-  return _internal_has_texture4path();
+inline int BBMaterial::floatname_size() const {
+  return _internal_floatname_size();
 }
-inline void BBMaterial::clear_texture4path() {
-  texture4path_.ClearToEmpty();
-  _has_bits_[0] &= ~0x00000080u;
+inline void BBMaterial::clear_floatname() {
+  floatname_.Clear();
 }
-inline const std::string& BBMaterial::texture4path() const {
-  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.texture4Path)
-  return _internal_texture4path();
+inline std::string* BBMaterial::add_floatname() {
+  // @@protoc_insertion_point(field_add_mutable:BBSerializer.BBMaterial.floatName)
+  return _internal_add_floatname();
 }
-template <typename ArgT0, typename... ArgT>
-PROTOBUF_ALWAYS_INLINE
-inline void BBMaterial::set_texture4path(ArgT0&& arg0, ArgT... args) {
- _has_bits_[0] |= 0x00000080u;
- texture4path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
-  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.texture4Path)
+inline const std::string& BBMaterial::_internal_floatname(int index) const {
+  return floatname_.Get(index);
 }
-inline std::string* BBMaterial::mutable_texture4path() {
-  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.texture4Path)
-  return _internal_mutable_texture4path();
+inline const std::string& BBMaterial::floatname(int index) const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.floatName)
+  return _internal_floatname(index);
 }
-inline const std::string& BBMaterial::_internal_texture4path() const {
-  return texture4path_.Get();
+inline std::string* BBMaterial::mutable_floatname(int index) {
+  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.floatName)
+  return floatname_.Mutable(index);
 }
-inline void BBMaterial::_internal_set_texture4path(const std::string& value) {
-  _has_bits_[0] |= 0x00000080u;
-  texture4path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+inline void BBMaterial::set_floatname(int index, const std::string& value) {
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.floatName)
+  floatname_.Mutable(index)->assign(value);
 }
-inline std::string* BBMaterial::_internal_mutable_texture4path() {
-  _has_bits_[0] |= 0x00000080u;
-  return texture4path_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+inline void BBMaterial::set_floatname(int index, std::string&& value) {
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.floatName)
+  floatname_.Mutable(index)->assign(std::move(value));
 }
-inline std::string* BBMaterial::release_texture4path() {
-  // @@protoc_insertion_point(field_release:BBSerializer.BBMaterial.texture4Path)
-  if (!_internal_has_texture4path()) {
-    return nullptr;
-  }
-  _has_bits_[0] &= ~0x00000080u;
-  return texture4path_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+inline void BBMaterial::set_floatname(int index, const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  floatname_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:BBSerializer.BBMaterial.floatName)
 }
-inline void BBMaterial::set_allocated_texture4path(std::string* texture4path) {
-  if (texture4path != nullptr) {
-    _has_bits_[0] |= 0x00000080u;
-  } else {
-    _has_bits_[0] &= ~0x00000080u;
-  }
-  texture4path_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), texture4path,
-      GetArena());
-  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.texture4Path)
+inline void BBMaterial::set_floatname(int index, const char* value, size_t size) {
+  floatname_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:BBSerializer.BBMaterial.floatName)
 }
-
-// string texture5Path = 9;
-inline bool BBMaterial::_internal_has_texture5path() const {
-  bool value = (_has_bits_[0] & 0x00000100u) != 0;
-  return value;
+inline std::string* BBMaterial::_internal_add_floatname() {
+  return floatname_.Add();
 }
-inline bool BBMaterial::has_texture5path() const {
-  return _internal_has_texture5path();
+inline void BBMaterial::add_floatname(const std::string& value) {
+  floatname_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.floatName)
 }
-inline void BBMaterial::clear_texture5path() {
-  texture5path_.ClearToEmpty();
-  _has_bits_[0] &= ~0x00000100u;
+inline void BBMaterial::add_floatname(std::string&& value) {
+  floatname_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.floatName)
 }
-inline const std::string& BBMaterial::texture5path() const {
-  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.texture5Path)
-  return _internal_texture5path();
+inline void BBMaterial::add_floatname(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  floatname_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:BBSerializer.BBMaterial.floatName)
 }
-template <typename ArgT0, typename... ArgT>
-PROTOBUF_ALWAYS_INLINE
-inline void BBMaterial::set_texture5path(ArgT0&& arg0, ArgT... args) {
- _has_bits_[0] |= 0x00000100u;
- texture5path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
-  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.texture5Path)
+inline void BBMaterial::add_floatname(const char* value, size_t size) {
+  floatname_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:BBSerializer.BBMaterial.floatName)
 }
-inline std::string* BBMaterial::mutable_texture5path() {
-  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.texture5Path)
-  return _internal_mutable_texture5path();
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
+BBMaterial::floatname() const {
+  // @@protoc_insertion_point(field_list:BBSerializer.BBMaterial.floatName)
+  return floatname_;
 }
-inline const std::string& BBMaterial::_internal_texture5path() const {
-  return texture5path_.Get();
-}
-inline void BBMaterial::_internal_set_texture5path(const std::string& value) {
-  _has_bits_[0] |= 0x00000100u;
-  texture5path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
-}
-inline std::string* BBMaterial::_internal_mutable_texture5path() {
-  _has_bits_[0] |= 0x00000100u;
-  return texture5path_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
-}
-inline std::string* BBMaterial::release_texture5path() {
-  // @@protoc_insertion_point(field_release:BBSerializer.BBMaterial.texture5Path)
-  if (!_internal_has_texture5path()) {
-    return nullptr;
-  }
-  _has_bits_[0] &= ~0x00000100u;
-  return texture5path_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-}
-inline void BBMaterial::set_allocated_texture5path(std::string* texture5path) {
-  if (texture5path != nullptr) {
-    _has_bits_[0] |= 0x00000100u;
-  } else {
-    _has_bits_[0] &= ~0x00000100u;
-  }
-  texture5path_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), texture5path,
-      GetArena());
-  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.texture5Path)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
+BBMaterial::mutable_floatname() {
+  // @@protoc_insertion_point(field_mutable_list:BBSerializer.BBMaterial.floatName)
+  return &floatname_;
 }
 
-// string texture6Path = 10;
-inline bool BBMaterial::_internal_has_texture6path() const {
-  bool value = (_has_bits_[0] & 0x00000200u) != 0;
-  return value;
+// repeated float floatValue = 7;
+inline int BBMaterial::_internal_floatvalue_size() const {
+  return floatvalue_.size();
 }
-inline bool BBMaterial::has_texture6path() const {
-  return _internal_has_texture6path();
+inline int BBMaterial::floatvalue_size() const {
+  return _internal_floatvalue_size();
 }
-inline void BBMaterial::clear_texture6path() {
-  texture6path_.ClearToEmpty();
-  _has_bits_[0] &= ~0x00000200u;
+inline void BBMaterial::clear_floatvalue() {
+  floatvalue_.Clear();
 }
-inline const std::string& BBMaterial::texture6path() const {
-  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.texture6Path)
-  return _internal_texture6path();
+inline float BBMaterial::_internal_floatvalue(int index) const {
+  return floatvalue_.Get(index);
 }
-template <typename ArgT0, typename... ArgT>
-PROTOBUF_ALWAYS_INLINE
-inline void BBMaterial::set_texture6path(ArgT0&& arg0, ArgT... args) {
- _has_bits_[0] |= 0x00000200u;
- texture6path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
-  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.texture6Path)
+inline float BBMaterial::floatvalue(int index) const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.floatValue)
+  return _internal_floatvalue(index);
 }
-inline std::string* BBMaterial::mutable_texture6path() {
-  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.texture6Path)
-  return _internal_mutable_texture6path();
+inline void BBMaterial::set_floatvalue(int index, float value) {
+  floatvalue_.Set(index, value);
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.floatValue)
 }
-inline const std::string& BBMaterial::_internal_texture6path() const {
-  return texture6path_.Get();
+inline void BBMaterial::_internal_add_floatvalue(float value) {
+  floatvalue_.Add(value);
 }
-inline void BBMaterial::_internal_set_texture6path(const std::string& value) {
-  _has_bits_[0] |= 0x00000200u;
-  texture6path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+inline void BBMaterial::add_floatvalue(float value) {
+  _internal_add_floatvalue(value);
+  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.floatValue)
 }
-inline std::string* BBMaterial::_internal_mutable_texture6path() {
-  _has_bits_[0] |= 0x00000200u;
-  return texture6path_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
+BBMaterial::_internal_floatvalue() const {
+  return floatvalue_;
 }
-inline std::string* BBMaterial::release_texture6path() {
-  // @@protoc_insertion_point(field_release:BBSerializer.BBMaterial.texture6Path)
-  if (!_internal_has_texture6path()) {
-    return nullptr;
-  }
-  _has_bits_[0] &= ~0x00000200u;
-  return texture6path_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
+BBMaterial::floatvalue() const {
+  // @@protoc_insertion_point(field_list:BBSerializer.BBMaterial.floatValue)
+  return _internal_floatvalue();
 }
-inline void BBMaterial::set_allocated_texture6path(std::string* texture6path) {
-  if (texture6path != nullptr) {
-    _has_bits_[0] |= 0x00000200u;
-  } else {
-    _has_bits_[0] &= ~0x00000200u;
-  }
-  texture6path_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), texture6path,
-      GetArena());
-  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.texture6Path)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
+BBMaterial::_internal_mutable_floatvalue() {
+  return &floatvalue_;
 }
-
-// string texture7Path = 11;
-inline bool BBMaterial::_internal_has_texture7path() const {
-  bool value = (_has_bits_[0] & 0x00000400u) != 0;
-  return value;
-}
-inline bool BBMaterial::has_texture7path() const {
-  return _internal_has_texture7path();
-}
-inline void BBMaterial::clear_texture7path() {
-  texture7path_.ClearToEmpty();
-  _has_bits_[0] &= ~0x00000400u;
-}
-inline const std::string& BBMaterial::texture7path() const {
-  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.texture7Path)
-  return _internal_texture7path();
-}
-template <typename ArgT0, typename... ArgT>
-PROTOBUF_ALWAYS_INLINE
-inline void BBMaterial::set_texture7path(ArgT0&& arg0, ArgT... args) {
- _has_bits_[0] |= 0x00000400u;
- texture7path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
-  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.texture7Path)
-}
-inline std::string* BBMaterial::mutable_texture7path() {
-  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.texture7Path)
-  return _internal_mutable_texture7path();
-}
-inline const std::string& BBMaterial::_internal_texture7path() const {
-  return texture7path_.Get();
-}
-inline void BBMaterial::_internal_set_texture7path(const std::string& value) {
-  _has_bits_[0] |= 0x00000400u;
-  texture7path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
-}
-inline std::string* BBMaterial::_internal_mutable_texture7path() {
-  _has_bits_[0] |= 0x00000400u;
-  return texture7path_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
-}
-inline std::string* BBMaterial::release_texture7path() {
-  // @@protoc_insertion_point(field_release:BBSerializer.BBMaterial.texture7Path)
-  if (!_internal_has_texture7path()) {
-    return nullptr;
-  }
-  _has_bits_[0] &= ~0x00000400u;
-  return texture7path_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-}
-inline void BBMaterial::set_allocated_texture7path(std::string* texture7path) {
-  if (texture7path != nullptr) {
-    _has_bits_[0] |= 0x00000400u;
-  } else {
-    _has_bits_[0] &= ~0x00000400u;
-  }
-  texture7path_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), texture7path,
-      GetArena());
-  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.texture7Path)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
+BBMaterial::mutable_floatvalue() {
+  // @@protoc_insertion_point(field_mutable_list:BBSerializer.BBMaterial.floatValue)
+  return _internal_mutable_floatvalue();
 }
 
 #ifdef __GNUC__

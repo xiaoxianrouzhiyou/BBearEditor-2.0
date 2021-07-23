@@ -81,6 +81,7 @@ QString BBLineEditFactory::setValue(float fValue)
 void BBLineEditFactory::changeEditText(const QString &text)
 {
     valueChanged(text.toFloat());
+    valueChanged(m_pSliderLabel->text(), text.toFloat());
 }
 
 void BBLineEditFactory::changeValueBySlider(int nDeltaX)
@@ -490,3 +491,4 @@ void BBSliderFactory::changeEditorValue(const QString &value)
         m_pEditor->setText(QString::number(nValue));
     }
 }
+

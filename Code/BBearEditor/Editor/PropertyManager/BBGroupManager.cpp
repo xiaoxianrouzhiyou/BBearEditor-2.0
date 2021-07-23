@@ -431,7 +431,14 @@ void BBMaterialPropertyGroupManager::setSampler2D(const QString &uniformName, co
     BBTexture texture;
     m_pMaterial->setSampler2D(uniformName.toStdString().c_str(), texture.createTexture2D(texturePath), texturePath);
     m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
-    BBRendererManager::changeTexture(uniformName, m_pMaterial, texturePath);
+    BBRendererManager::changeTexture(m_pMaterial, uniformName, texturePath);
+}
+
+void BBMaterialPropertyGroupManager::setFloat(const QString &uniformName, float fValue)
+{
+    m_pMaterial->setFloat(uniformName.toStdString().c_str(), fValue);
+    m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
+    BBRendererManager::changeFloat(m_pMaterial, uniformName, fValue);
 }
 
 void BBMaterialPropertyGroupManager::setPropertyItems()
@@ -441,7 +448,8 @@ void BBMaterialPropertyGroupManager::setPropertyItems()
     m_pMaterial->getEditableProperties(names, properties);
     for (int i = 0; i < properties.count(); i++)
     {
-        if (properties[i]->getType() == BBMaterialUniformPropertyType::Sampler2D)
+        BBMaterialUniformPropertyType eType = properties[i]->getType();
+        if (eType == BBMaterialUniformPropertyType::Sampler2D)
         {
             QString name = QString::fromStdString(names[i]);
             BBSampler2DMaterialProperty *pProperty = (BBSampler2DMaterialProperty*)properties[i];
@@ -449,6 +457,15 @@ void BBMaterialPropertyGroupManager::setPropertyItems()
             addFactory(name, pTextureFactory, 1);
             QObject::connect(pTextureFactory, SIGNAL(setSampler2D(QString, QString)),
                              this, SLOT(setSampler2D(QString, QString)));
+        }
+        else if (eType == BBMaterialUniformPropertyType::Float)
+        {
+            QString name = QString::fromStdString(names[i]);
+            BBFloatMaterialProperty *pProperty = (BBFloatMaterialProperty*)properties[i];
+            BBLineEditFactory *pFloatFactory = addFactory(name, pProperty->getPropertyValue());
+            pFloatFactory->setSlideStep(0.005f);
+            pFloatFactory->setRange(0, 1);
+            QObject::connect(pFloatFactory, SIGNAL(valueChanged(QString, float)), this, SLOT(setFloat(QString, float)));
         }
     }
 }
