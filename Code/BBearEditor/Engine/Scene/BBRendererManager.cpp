@@ -188,6 +188,8 @@ void BBRendererManager::loadMaterialContent(const QString &filePath, BBMaterial 
         pMaterial->setSampler2D(uniformName.toStdString().c_str(), texture.createTexture2D(texturepaths[i]), texturepaths[i]);
     }
 
+    pMaterial->setFloat("clip", 0.4f);
+
     // default
     float *pLightPosition = new float[4] {1.0f, 1.0f, 0.0f, 0.0f};
     float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};

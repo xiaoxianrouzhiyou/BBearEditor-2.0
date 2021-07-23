@@ -137,7 +137,11 @@ void BBShader::initUniforms()
         GLint location = glGetUniformLocation(m_Program, uniformName);
         BBUniformUpdater *pUniformUpdater = NULL;
 
-        if (type == GL_FLOAT_MAT4)
+        if (type == GL_FLOAT)
+        {
+            pUniformUpdater = initUniformFloat(location, uniformName);
+        }
+        else if (type == GL_FLOAT_MAT4)
         {
             pUniformUpdater = initUniformMatrix4(location, uniformName);
         }
@@ -152,6 +156,13 @@ void BBShader::initUniforms()
 
         appendUniformUpdater(pUniformUpdater);
     }
+}
+
+BBUniformUpdater* BBShader::initUniformFloat(GLint location, const char *pUniformName)
+{
+    BBFloatMaterialProperty *pProperty = new BBFloatMaterialProperty(pUniformName);
+    m_Properties.insert(pUniformName, pProperty);
+    return new BBUniformUpdater(location, &BBUniformUpdater::updateFloat, pProperty);
 }
 
 BBUniformUpdater* BBShader::initUniformMatrix4(GLint location, const char *pUniformName)

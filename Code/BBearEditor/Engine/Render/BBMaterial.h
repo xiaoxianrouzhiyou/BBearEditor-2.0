@@ -30,6 +30,7 @@ public:
     void setZMask(bool bEnable);
     void setStencilMask(bool bEnable);
 
+    void setFloat(const std::string &uniformName, const float fValue);
     void setMatrix4(const std::string &uniformName, const float *pMatrix4);
     void setVector4(const std::string &uniformName, float x, float y, float z, float w);
     void setVector4(const std::string &uniformName, const float *pVector4);

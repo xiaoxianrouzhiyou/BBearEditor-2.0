@@ -157,6 +157,15 @@ void BBRenderPass::setLineWidth(float fWidth)
     m_RenderState.m_fLineWidth = fWidth;
 }
 
+void BBRenderPass::setFloat(const std::string &uniformName, const float fValue)
+{
+    auto it = m_Properties.find(uniformName);
+    if (it != m_Properties.end())
+    {
+        ((BBFloatMaterialProperty*)it.value())->setPropertyValue(fValue);
+    }
+}
+
 void BBRenderPass::setMatrix4(const std::string &uniformName, const float *pMatrix4)
 {
     auto it = m_Properties.find(uniformName);

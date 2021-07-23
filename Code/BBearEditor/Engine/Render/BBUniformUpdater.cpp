@@ -52,6 +52,12 @@ void BBUniformUpdater::updateCanvas(GLint location, void *pCanvas, void *pProper
     glUniform4fv(location, 1, ((BBCanvas*)pCanvas)->getUniformInfo());
 }
 
+void BBUniformUpdater::updateFloat(GLint location, void *pCamera, void *pPropertyValue)
+{
+    BBFloatMaterialProperty *pProperty = (BBFloatMaterialProperty*)pPropertyValue;
+    glUniform1f(location, pProperty->getPropertyValue());
+}
+
 void BBUniformUpdater::updateMatrix4(GLint location, void *pCamera, void *pPropertyValue)
 {
     BBMatrix4MaterialProperty *pProperty = (BBMatrix4MaterialProperty*)pPropertyValue;

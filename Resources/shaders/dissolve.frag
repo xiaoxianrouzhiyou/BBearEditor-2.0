@@ -6,12 +6,14 @@ uniform sampler2D texture0;
 uniform sampler2D texture1;
 uniform sampler2D texture2;
 
+uniform float clip;
+
 out vec4 fragColor;
 
 void main(void)
 {
     vec4 dissolve_tex = texture(texture2, V_Texcoord.xy);
-    if (dissolve_tex.r < 0.5)
+    if (dissolve_tex.r < clip)
     {
         discard;
     }

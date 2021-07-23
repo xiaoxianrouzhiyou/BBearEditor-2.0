@@ -10,6 +10,7 @@ enum BBMaterialUniformPropertyType
     CameraInverseProjectionMatrix,
     CameraViewMatrix,
     CameraInverseViewMatrix,
+    Float,
     Matrix4,
     Vector4,
     Sampler2D,
@@ -30,6 +31,22 @@ public:
 protected:
     BBMaterialUniformPropertyType m_eType;
     char m_Name[64];
+};
+
+
+class BBFloatMaterialProperty : public BBMaterialProperty
+{
+public:
+    BBFloatMaterialProperty(const char *name);
+    ~BBFloatMaterialProperty();
+
+    BBMaterialProperty* clone() override;
+
+    inline void setPropertyValue(const float fPropertyValue) { m_fPropertyValue = fPropertyValue; }
+    inline const float getPropertyValue() { return m_fPropertyValue; }
+
+private:
+    float m_fPropertyValue;
 };
 
 

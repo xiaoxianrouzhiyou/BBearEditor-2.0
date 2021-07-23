@@ -38,6 +38,7 @@ public:
     void setPolygonMode(unsigned int face, unsigned int mode);
     void setLineWidth(float fWidth);
 
+    void setFloat(const std::string &uniformName, const float fValue);
     void setMatrix4(const std::string &uniformName, const float *pMatrix4);
     void setVector4(const std::string &uniformName, const float *pVector4);
     void setSampler2D(const std::string &uniformName, GLuint textureName, const QString &resourcePath = "");

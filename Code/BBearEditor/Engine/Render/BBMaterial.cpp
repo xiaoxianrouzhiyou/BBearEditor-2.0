@@ -101,6 +101,18 @@ void BBMaterial::setStencilMask(bool bEnable)
     }
 }
 
+void BBMaterial::setFloat(const std::string &uniformName, const float fValue)
+{
+    if (m_pBaseRenderPass != nullptr)
+    {
+        m_pBaseRenderPass->setFloat(uniformName, fValue);
+    }
+    if (m_pAdditiveRenderPass != nullptr)
+    {
+        m_pAdditiveRenderPass->setFloat(uniformName, fValue);
+    }
+}
+
 void BBMaterial::setMatrix4(const std::string &uniformName, const float *pMatrix4)
 {
     if (m_pBaseRenderPass != nullptr)

@@ -29,6 +29,7 @@ public:
     void updateCameraViewMatrix(GLint location, void *pCamera, void *pPropertyValue);
     void updateCameraInverseViewMatrix(GLint location, void *pCamera, void *pPropertyValue);
     void updateCanvas(GLint location, void *pCanvas, void *pPropertyValue);
+    void updateFloat(GLint location, void *pCamera, void *pPropertyValue);
     void updateMatrix4(GLint location, void *pCamera, void *pPropertyValue);
     void updateVector4(GLint location, void *pCamera, void *pPropertyValue);
     void updateSampler2D(GLint location, void *pCamera, void *pPropertyValue);

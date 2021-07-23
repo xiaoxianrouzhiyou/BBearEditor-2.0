@@ -31,6 +31,7 @@ public:
 private:
     void initAttributes();
     void initUniforms();
+    BBUniformUpdater* initUniformFloat(GLint location, const char *pUniformName);
     BBUniformUpdater* initUniformMatrix4(GLint location, const char *pUniformName);
     BBUniformUpdater* initUniformVector4(GLint location, const char *pUniformName);
     BBUniformUpdater* initUniformSampler2D(GLint location, const char *pUniformName);

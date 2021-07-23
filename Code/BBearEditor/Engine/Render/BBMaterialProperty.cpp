@@ -20,6 +20,29 @@ BBMaterialProperty::~BBMaterialProperty()
 
 
 /**
+ * @brief BBFloatMaterialProperty::BBFloatMaterialProperty
+ * @param name
+ */
+BBFloatMaterialProperty::BBFloatMaterialProperty(const char *name)
+    : BBMaterialProperty(Float, name)
+{
+    m_fPropertyValue = 0.0f;
+}
+
+BBFloatMaterialProperty::~BBFloatMaterialProperty()
+{
+
+}
+
+BBMaterialProperty* BBFloatMaterialProperty::clone()
+{
+    BBFloatMaterialProperty *pRet = new BBFloatMaterialProperty(m_Name);
+    pRet->setPropertyValue(m_fPropertyValue);
+    return pRet;
+}
+
+
+/**
  * @brief BBMatrix4MaterialProperty::BBMatrix4MaterialProperty
  */
 BBMatrix4MaterialProperty::BBMatrix4MaterialProperty(const char *name)
