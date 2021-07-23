@@ -22,7 +22,7 @@ BBPropertyManager::BBPropertyManager(QWidget *pParent)
     setWidgetStyle();
     // init a vertical layout
     QVBoxLayout *pLayout = new QVBoxLayout(this);
-    pLayout->setContentsMargins(0, 8, 10, 0);
+    pLayout->setContentsMargins(0, 8, 10, 10);
 }
 
 BBPropertyManager::~BBPropertyManager()
@@ -223,94 +223,6 @@ void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 
 
 
-//void TextureFactory::removeTexture()
-//{
-//    if (labelIcon->text() == "None")
-//    {
-//        //当面没有设置纹理 无需再次移除
-//        return;
-//    }
-//    //修改显示数据
-//    setTexture("");
-//    //修改材质对象的数据
-//    material->setDiffuseMapPath(DefaultTexturePath);
-//    //更新图标
-//    updateMaterialPreview();
-//}
-
-//void TextureFactory::changeTexture(QString path)
-//{
-//    //修改界面显示
-//    setTexture(path);
-//    //修改材质
-//    material->setDiffuseMapPath(path);
-//    //更新图标
-//    updateMaterialPreview();
-//}
-
-
-////------------------MaterialFactory----------------------
-
-
-
-//void MaterialFactory::removeMaterial()
-//{
-//    if (labelIcon->text() == "None")
-//    {
-//        //当面没有 无需再次移除
-//        return;
-//    }
-
-//    //给该对象设置默认材质
-//    mModel->removeMaterial();
-//    //修改界面显示
-//    setMaterial();
-//}
-
-//void MaterialFactory::changeMaterial(QString path)
-//{
-//    //给该对象设置该材质
-//    Material *material = Material::mtlMap.value(path);
-//    mModel->setMaterial(material);
-//    //修改界面显示
-//    setMaterial();
-//}
-
-
-////------------------HeightMapFactory-------------------------
-
-
-//HeightMapFactory::HeightMapFactory(Model* model, QWidget *parent)
-//    : IconFactory(parent)
-//{
-//    mModel = model;
-//    //设置图标控件可拖入的文件后缀类型
-//    QList<QString> suffixs;
-//    suffixs.append("bmp");
-//    suffixs.append("png");
-//    suffixs.append("jpg");
-//    labelIcon->setAcceptableSuffixs(suffixs);
-
-//    showHeightMap();
-
-//    QObject::connect(labelIcon, SIGNAL(changeValue(QString)), this, SLOT(changeHeight(QString)));
-//}
-
-//void HeightMapFactory::changeHeight(QString mapPath)
-//{
-//    mModel->changeTerrainHeightMap(mapPath);
-//    showHeightMap();
-//}
-
-//void HeightMapFactory::showHeightMap()
-//{
-//    labelIcon->setText("");
-//    QString path = mModel->getTerrainMesh()->getHeightMapPath();
-//    labelIcon->setStyleSheet("color: #d6dfeb; font: 10pt \"Arial\"; "
-//                             "border-image: url(" + path + "); border-radius: 2px;");
-//}
-
-
 ////------------------AnimFactory-------------------------
 
 
@@ -386,21 +298,6 @@ void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 //}
 
 
-////------------------GroupManager-------------------------
-
-//void GroupManager::removeProperty(int index)
-//{
-//    if (index < container->layout()->count())
-//    {
-//        //少了item的高度 造成不好的视觉效果
-//        container->setVisible(false);
-//        QLayoutItem *item = container->layout()->takeAt(index);
-//        container->layout()->removeWidget(item->widget());
-//        delete item->widget();
-//        container->setVisible(true);
-//    }
-//}
-
 
 ////------------------GameObjectBaseInfoManager----------------------
 
@@ -461,51 +358,6 @@ void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 //    QObject::connect(smoothnessFactory, SIGNAL(valueChangedSignal(int)), this, SLOT(smoothnessChanged(int)));
 //}
 
-//void MaterialManager::updatePreview()
-//{
-//    //利用浏览小窗 计算材质的浏览图
-//    Model *model = mPreviewWidget->scene.createModelForPreview(engineResourcesModelsPath + "sphere.obj", 1.4);
-//    model->previewMaterial(material);
-//    //截下浏览图
-//    QPixmap pix = QPixmap::grabWidget(mPreviewWidget);
-//    //删去浏览模型
-//    mPreviewWidget->scene.deleteGameObject(model);
-//    //裁剪成方形
-//    pix.setDevicePixelRatio(devicePixelRatio());
-//    int h = pix.height();
-//    int w = pix.width();
-//    int size = h < w ? h : w;
-//    pix = pix.copy((w - size) / 2, (h - size) / 2, size, size);
-//    //设置材质的浏览图
-//    material->setPreview(pix);
-
-//    //材质图标更新
-//    setIcon();
-//    //其他显示材质浏览图的地方更新
-//    updatePreviewInOtherWidget(mFilePath);
-//}
-
-//void MaterialManager::currentIndexChangedSlot(const QString &text)
-//{
-//    if (text == Material::StandardShader)
-//    {
-//        material->setShader(Material::StandardShader, engineResourcesShadersPath + "standard.vert",
-//                            engineResourcesShadersPath + "standard.frag");
-//    }
-//    else if (text == Material::BlinByVertexShader)
-//    {
-//        material->setShader(Material::BlinByVertexShader, engineResourcesShadersPath + "blin_by_vertex.vert",
-//                            engineResourcesShadersPath + "blin_by_vertex.frag");
-//    }
-
-//    updatePreview();
-//}
-
-//void MaterialManager::smoothnessChanged(int value)
-//{
-//    material->setSmoothness(value);
-//    updatePreview();
-//}
 
 
 ////------------------SceneManager---------------------
@@ -564,15 +416,6 @@ void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 //    QObject::connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(switchMode(int)));
 //}
 
-//void SceneManager::switchFog(bool b)
-//{
-//    mScene->switchFog(b);
-//}
-
-//void SceneManager::setFogColor(float r, float g, float b)
-//{
-//    mScene->setFogColor(r, g, b);
-//}
 
 //void SceneManager::switchMode(int id)
 //{
