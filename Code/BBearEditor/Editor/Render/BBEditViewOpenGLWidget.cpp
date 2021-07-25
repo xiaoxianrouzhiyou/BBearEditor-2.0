@@ -15,6 +15,7 @@
 #include "2D/BBCanvas.h"
 #include "2D/BBSpriteObject2D.h"
 #include "FileSystem/BBFileSystemDataManager.h"
+#include "Scene/BBRendererManager.h"
 
 
 BBEditViewOpenGLWidget::BBEditViewOpenGLWidget(QWidget *pParent)
@@ -348,6 +349,10 @@ void BBEditViewOpenGLWidget::dragEnterEvent(QDragEnterEvent *event)
             openThreadToCreatePreviewModel(filePath, event->pos().x(), event->pos().y());
             event->accept();
         }
+        else if (BBFileSystemDataManager::judgeFileType(filePath, BBFileType::Material))
+        {
+            event->accept();
+        }
         else
         {
             event->ignore();
@@ -361,6 +366,7 @@ void BBEditViewOpenGLWidget::dragEnterEvent(QDragEnterEvent *event)
 
 void BBEditViewOpenGLWidget::dragMoveEvent(QDragMoveEvent *event)
 {
+    QByteArray data;
     event->accept();
     if (m_pPreviewObject)
     {
@@ -378,6 +384,23 @@ void BBEditViewOpenGLWidget::dragMoveEvent(QDragMoveEvent *event)
     {
         m_pCurrentCanvas = nullptr;
         if (!m_pScene->hitCanvas(event->pos().x(), event->pos().y(), m_pCurrentCanvas))
+        {
+            event->ignore();
+        }
+    }
+    else if ((data = event->mimeData()->data(BB_MIMETYPE_FILELISTWIDGET)) != nullptr)
+    {
+        QDataStream dataStream(&data, QIODevice::ReadOnly);
+        QString filePath;
+        dataStream >> filePath;
+        // drag material file
+        BBRay ray = m_pScene->getCamera()->createRayFromScreen(event->pos().x(), event->pos().y());
+        BBModel *pModel = (BBModel*)m_pScene->pickObjectInModels(ray, false);
+        if (pModel)
+        {
+            pModel->setCurrentMaterial(BBRendererManager::loadMaterial(filePath));
+        }
+        else
         {
             event->ignore();
         }

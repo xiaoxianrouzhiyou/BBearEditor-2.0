@@ -400,12 +400,11 @@ BBGameObject* BBScene::pickObject(const QList<BBGameObject*> &alternativeObjects
             }
         }
     }
-//    // if (pSelectedObject != nullptr)
-//    if (bSelect)
+//    if (!bSelect)
 //    {
-//        //拾取并用坐标系将其选中 有时候只需要拾取 不需要选中
-//        transformCoordinate->setSelectedObject(selectedObject);
+//        m_pTransformCoordinateSystem->setSelectedObject(nullptr);
 //    }
+
     return pSelectedObject;
 }
 
