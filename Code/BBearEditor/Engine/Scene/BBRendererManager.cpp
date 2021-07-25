@@ -33,14 +33,14 @@ void BBRendererManager::saveDefaultMaterial(const QString &filePath)
 
 BBMaterial* BBRendererManager::loadMaterial(const QString &filePath)
 {
-    auto it = m_CachedMaterials.find(filePath);
-    if (it != m_CachedMaterials.end())
-    {
-        return it.value();
-    }
+//    auto it = m_CachedMaterials.find(filePath);
+//    if (it != m_CachedMaterials.end())
+//    {
+//        return it.value();
+//    }
     BBMaterial* pMaterial = new BBMaterial();
     loadMaterialContent(filePath, pMaterial);
-    m_CachedMaterials.insert(filePath, pMaterial);
+//    m_CachedMaterials.insert(filePath, pMaterial);
     return pMaterial;
 }
 

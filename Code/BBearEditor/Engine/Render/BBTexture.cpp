@@ -49,6 +49,7 @@ GLuint BBTexture::createTexture2D(const QString &path, GLenum eType)
         image.fill(QColor(255, 255, 255));
     }
     image = image.mirrored(false, true);
+    image = image.rgbSwapped();
     return createTexture2D(image.bits(), image.width(), image.height(), eType);
 }
 

@@ -35,11 +35,6 @@ BBDrawCall::BBDrawCall()
 void BBDrawCall::setMaterial(BBMaterial *pMaterial)
 {
     m_pMaterial = pMaterial;
-
-    if (m_pNext != nullptr)
-    {
-        next<BBDrawCall>()->setMaterial(pMaterial);
-    }
 }
 
 void BBDrawCall::setVBO(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount)
