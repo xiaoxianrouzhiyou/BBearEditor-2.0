@@ -29,9 +29,12 @@ public:
     explicit BBGroupManager(const QString &groupName, const QString &iconPath, QWidget *pParent = nullptr);
     ~BBGroupManager();
 
-    void addFactory(const QString &name, QWidget *pFactory, int nStretch = 1);
+    void addFactory(const QString &name, QWidget *pFactory, int nStretch = 1, const Qt::Alignment &alignment = Qt::Alignment());
+    void addFactory(const QString &name, QWidget *pFactory1, QWidget *pFactory2, int nStretch = 1);
     void addFactory(QWidget *pFactory);
     BBLineEditFactory* addFactory(const QString &name, float fValue);
+
+    void addMargin(int nHeight);
 
 public slots:
     void setContainerExpanded(bool bExpanded);
@@ -118,9 +121,15 @@ private slots:
     void setFloat(const QString &uniformName, float fValue);
 
 private:
-    void setPropertyItems();
+    void addBlendStateItem();
+    void addBlendFuncItem();
+    void addPropertyItems();
 
-    BBMaterial* m_pMaterial;
+private slots:
+    void switchBlendFuncItem(bool bEnable);
+
+private:
+    BBMaterial *m_pMaterial;
     BBPreviewOpenGLWidget *m_pPreviewOpenGLWidget;
 };
 

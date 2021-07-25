@@ -101,6 +101,21 @@ void BBMaterial::setStencilMask(bool bEnable)
     }
 }
 
+bool BBMaterial::getBlendState()
+{
+    return m_pBaseRenderPass->getBlendState();
+}
+
+unsigned int BBMaterial::getSRCBlendFunc()
+{
+    return m_pBaseRenderPass->getSRCBlendFunc();
+}
+
+unsigned int BBMaterial::getDSTBlendFunc()
+{
+    return m_pBaseRenderPass->getDSTBlendFunc();
+}
+
 void BBMaterial::setFloat(const std::string &uniformName, const float fValue)
 {
     if (m_pBaseRenderPass != nullptr)

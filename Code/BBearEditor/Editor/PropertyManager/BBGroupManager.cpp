@@ -78,10 +78,11 @@ BBGroupManager::~BBGroupManager()
     BB_SAFE_DELETE(m_pContainer);
 }
 
-void BBGroupManager::addFactory(const QString &name, QWidget *pFactory, int nStretch)
+void BBGroupManager::addFactory(const QString &name, QWidget *pFactory, int nStretch, const Qt::Alignment &alignment)
 {
     // Add a line of content to the container
     QWidget *pWidget = new QWidget(m_pContainer);
+    pWidget->setObjectName(name);
     QHBoxLayout *pLayout = new QHBoxLayout(pWidget);
     pLayout->setMargin(0);
     // name showed in the left side
@@ -90,7 +91,31 @@ void BBGroupManager::addFactory(const QString &name, QWidget *pFactory, int nStr
     pLayout->addWidget(pLabel, 1, Qt::AlignBottom);
     // factory showed in the right side
     pFactory->setParent(pWidget);
-    pLayout->addWidget(pFactory, nStretch);
+    pLayout->addWidget(pFactory, nStretch, alignment);
+    m_pContainer->layout()->addWidget(pWidget);
+}
+
+void BBGroupManager::addFactory(const QString &name, QWidget *pFactory1, QWidget *pFactory2, int nStretch)
+{
+    QWidget *pWidget = new QWidget(m_pContainer);
+    // set name for finding
+    pWidget->setObjectName(name);
+    QHBoxLayout *pLayout = new QHBoxLayout(pWidget);
+    pLayout->setMargin(0);
+
+    QLabel *pLabel = new QLabel(pWidget);
+    pLabel->setText(name);
+    pLayout->addWidget(pLabel, 1, Qt::AlignBottom);
+
+    QWidget *pFactoryParentWidget = new QWidget(pWidget);
+    QVBoxLayout *pFactoryLayout = new QVBoxLayout(pFactoryParentWidget);
+    pFactoryLayout->setMargin(0);
+    pFactory1->setParent(pFactoryParentWidget);
+    pFactoryLayout->addWidget(pFactory1);
+    pFactory2->setParent(pFactoryParentWidget);
+    pFactoryLayout->addWidget(pFactory2);
+    pLayout->addWidget(pFactoryParentWidget, nStretch);
+
     m_pContainer->layout()->addWidget(pWidget);
 }
 
@@ -110,6 +135,13 @@ BBLineEditFactory* BBGroupManager::addFactory(const QString &name, float fValue)
     BBLineEditFactory *pLineEditFactory = new BBLineEditFactory(name, fValue, m_pContainer, 1, 1);
     m_pContainer->layout()->addWidget(pLineEditFactory);
     return pLineEditFactory;
+}
+
+void BBGroupManager::addMargin(int nHeight)
+{
+    QLabel *pMargin = new QLabel(m_pContainer);
+    pMargin->setGeometry(0, 0, 1, nHeight);
+    m_pContainer->layout()->addWidget(pMargin);
 }
 
 void BBGroupManager::setContainerExpanded(bool bExpanded)
@@ -417,8 +449,11 @@ BBMaterialPropertyGroupManager::BBMaterialPropertyGroupManager(BBMaterial *pMate
     m_pMaterial = pMaterial;
     m_pPreviewOpenGLWidget = pPreviewOpenGLWidget;
 
+    addBlendStateItem();
+    addBlendFuncItem();
+    addMargin(10);
     // read BBMaterialProperty
-    setPropertyItems();
+    addPropertyItems();
 }
 
 BBMaterialPropertyGroupManager::~BBMaterialPropertyGroupManager()
@@ -441,7 +476,35 @@ void BBMaterialPropertyGroupManager::setFloat(const QString &uniformName, float 
     BBRendererManager::changeFloat(m_pMaterial, uniformName, fValue);
 }
 
-void BBMaterialPropertyGroupManager::setPropertyItems()
+void BBMaterialPropertyGroupManager::addBlendStateItem()
+{
+    QCheckBox *pBlendState = new QCheckBox(this);
+    addFactory("Blend State", pBlendState, 1, Qt::AlignRight);
+
+    // original value
+    bool bBlendState = m_pMaterial->getBlendState();
+    pBlendState->setChecked(bBlendState);
+    QObject::connect(pBlendState, SIGNAL(clicked(bool)), this, SLOT(switchBlendFuncItem(bool)));
+}
+
+void BBMaterialPropertyGroupManager::addBlendFuncItem()
+{
+    QStringList items = {"GL_ZERO",
+                         "GL_ONE",
+                         "GL_SRC_COLOR",
+                         "GL_ONE_MINUS_SRC_COLOR",
+                         "GL_SRC_ALPHA",
+                         "GL_ONE_MINUS_SRC_ALPHA",
+                         "GL_DST_ALPHA",
+                         "GL_ONE_MINUS_DST_ALPHA"};
+    BBEnumFactory *pSRCBlendFunc = new BBEnumFactory("src", items, "GL_SRC_ALPHA", this);
+    BBEnumFactory *pDSTBlendFunc = new BBEnumFactory("dst", items, "GL_ONE_MINUS_SRC_ALPHA", this);
+    addFactory("Blend Func", pSRCBlendFunc, pDSTBlendFunc);
+
+    switchBlendFuncItem(m_pMaterial->getBlendState());
+}
+
+void BBMaterialPropertyGroupManager::addPropertyItems()
 {
     QList<std::string> names;
     QList<BBMaterialProperty*> properties;
@@ -467,6 +530,17 @@ void BBMaterialPropertyGroupManager::setPropertyItems()
             pFloatFactory->setRange(0, 1);
             QObject::connect(pFloatFactory, SIGNAL(valueChanged(QString, float)), this, SLOT(setFloat(QString, float)));
         }
+    }
+}
+
+void BBMaterialPropertyGroupManager::switchBlendFuncItem(bool bEnable)
+{
+    QWidget* pWidget = findChild<QWidget*>("Blend Func");
+    if (pWidget)
+    {
+        m_pContainer->setVisible(false);
+        pWidget->setVisible(bEnable);
+        m_pContainer->setVisible(true);
     }
 }
 

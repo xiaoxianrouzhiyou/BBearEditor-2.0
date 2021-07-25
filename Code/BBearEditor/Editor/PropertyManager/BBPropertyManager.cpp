@@ -95,14 +95,6 @@ void BBPropertyManager::showGameObjectProperty(BBGameObject *pGameObject)
 //            renderManager->addProperty("HeightMap", heightMapFactory, 0);
 //        }
 //    }
-//    else if (gameObject->getClassName() == SpotLightClassName)
-//    {
-//        SpotLight *light = (SpotLight*) gameObject;
-//        SpotLightManager *renderManager = new SpotLightManager(light, this, "Render",
-//                                                               ":/icon/resources/icons/render.png");
-//        layout()->addWidget(renderManager);
-//    }
-
 }
 
 void BBPropertyManager::showGameObjectSetProperty(BBGameObject *pCenterGameObject,
@@ -157,7 +149,7 @@ void BBPropertyManager::setWidgetStyle()
     setStyleSheet("QToolButton {border: none; border-radius: 2px; color: #d6dfeb; background: transparent; font: 9pt \"Arial\"; font-weight: bold;}"
                   "QLineEdit {border: none; border-radius: 2px; color: #d6dfeb; font: 9pt \"Arial\"; background: rgb(60, 64, 75); selection-color: #d6dfeb; selection-background-color: #8193bc; padding-left: 3px; padding-right: 3px;}"
                   "QLabel {border: none; border-radius: 2px; color: #d6dfeb; font: 9pt \"Arial\";}"
-                  "QCheckBox {border: none; border-radius: 2px; color: #d6dfeb; font: 9pt \"Arial\"; background: none; padding-top: 1px; padding-bottom: 1px;}"
+                  "QCheckBox {border: none; border-radius: 2px; color: #d6dfeb; font: 9pt \"Arial\"; background: none; padding: 0px;}"
                   "QCheckBox::indicator:checked {border: none; border-radius: 2px; background: #0ebf9c;}"
                   "QCheckBox::indicator:unchecked {border: none; border-radius: 2px; background: rgb(60, 64, 75);}"
                   "QPushButton {border: none; border-radius: 2px; color: #d6dfeb; font: 9pt \"Arial\"; background: none;}"
@@ -246,24 +238,6 @@ void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 //    QObject::connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCurrentAnim(int)));
 //}
 
-//void AnimFactory::showPopup()
-//{
-//    mPreview->show();
-//    mPreviewModel = mPreview->scene.createModelForPreview(mModel->getFilePath());
-//    QComboBox::showPopup();
-//}
-
-//void AnimFactory::hidePopup()
-//{
-//    QComboBox::hidePopup();
-//    if (mPreviewModel)
-//    {
-//        mPreview->scene.deleteGameObject(mPreviewModel);
-//        mPreviewModel = NULL;
-//    }
-//    mPreview->hide();
-//}
-
 //bool AnimFactory::eventFilter(QObject *watched, QEvent *event)
 //{
 //    if (watched == view())
@@ -325,39 +299,6 @@ void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 //        }
 //    }
 //}
-
-
-////------------------MaterialManager----------------------
-
-
-//MaterialManager::MaterialManager(QWidget *parent, QString filePath, BaseOpenGLWidget *previewWidget)
-//    : QWidget(parent)
-//{
-//    mPreviewWidget = previewWidget;
-//    mFilePath = filePath;
-//    //找到材质对象
-//    material = Material::mtlMap.value(filePath);
-
-//    //main maps 属性组
-//    GroupManager *mainGroupManager = new GroupManager(this, "Main Maps", "");
-//    l->addWidget(mainGroupManager);
-//    //给main maps 属性组添加具体属性
-//    MaterialColorFactory *colorFactory = new MaterialColorFactory(material->getDiffuseColor(), filePath);
-//    mainGroupManager->addProperty("Base Color", colorFactory, 1);
-//    TextureFactory *textureFactory = new TextureFactory(material->getDiffuseMapPath(), filePath);
-//    mainGroupManager->addProperty("Base Texture", textureFactory, 0);
-//    SliderFactory *smoothnessFactory = new SliderFactory(material->getSmoothness(), 0, 100);
-//    mainGroupManager->addProperty("Smoothness", smoothnessFactory, 1);
-//    //进阶选项 属性组
-//    //GroupManager *advancedGroupManager = new GroupManager(this, "Advanced Options", "");
-//    //l->addWidget(advancedGroupManager);
-
-//    QObject::connect(textureFactory, SIGNAL(updateMaterialPreview()), this, SLOT(updatePreview()));
-//    QObject::connect(colorFactory, SIGNAL(updateMaterialPreview()), this, SLOT(updatePreview()));
-//    QObject::connect(enumFactory, SIGNAL(currentIndexChanged(QString)), this, SLOT(currentIndexChangedSlot(QString)));
-//    QObject::connect(smoothnessFactory, SIGNAL(valueChangedSignal(int)), this, SLOT(smoothnessChanged(int)));
-//}
-
 
 
 ////------------------SceneManager---------------------

@@ -28,6 +28,7 @@ public:
     void setupStencilBuffer();
     void restoreStencilBuffer();
 
+public:
     void setBlendState(bool bEnable);
     void setBlendFunc(unsigned int src, unsigned int dst);
     void setZTestState(bool bEnable);
@@ -38,6 +39,11 @@ public:
     void setPolygonMode(unsigned int face, unsigned int mode);
     void setLineWidth(float fWidth);
 
+    bool getBlendState() { return m_RenderState.m_bBlend; }
+    unsigned int getSRCBlendFunc() { return m_RenderState.m_SRCBlendFunc; }
+    unsigned int getDSTBlendFunc() { return m_RenderState.m_DSTBlendFunc; }
+
+public:
     void setFloat(const std::string &uniformName, const float fValue);
     void setMatrix4(const std::string &uniformName, const float *pMatrix4);
     void setVector4(const std::string &uniformName, const float *pVector4);
