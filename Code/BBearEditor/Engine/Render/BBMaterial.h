@@ -27,6 +27,8 @@ public:
 
 public:
     void setBlendState(bool bEnable);
+    void setSRCBlendFunc(unsigned int src);
+    void setDSTBlendFunc(unsigned int dst);
     void setBlendFunc(unsigned int src, unsigned int dst);
     void setZTestState(bool bEnable);
     void setZFunc(unsigned int func);

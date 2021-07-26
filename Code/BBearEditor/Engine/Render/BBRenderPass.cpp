@@ -115,6 +115,16 @@ void BBRenderPass::setBlendState(bool bEnable)
     m_RenderState.m_bBlend = bEnable;
 }
 
+void BBRenderPass::setSRCBlendFunc(unsigned int src)
+{
+    m_RenderState.m_SRCBlendFunc = src;
+}
+
+void BBRenderPass::setDSTBlendFunc(unsigned int dst)
+{
+    m_RenderState.m_DSTBlendFunc = dst;
+}
+
 void BBRenderPass::setBlendFunc(unsigned int src, unsigned int dst)
 {
     m_RenderState.m_SRCBlendFunc = src;

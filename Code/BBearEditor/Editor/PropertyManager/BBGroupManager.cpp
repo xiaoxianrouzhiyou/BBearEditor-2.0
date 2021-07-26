@@ -78,7 +78,7 @@ BBGroupManager::~BBGroupManager()
     BB_SAFE_DELETE(m_pContainer);
 }
 
-void BBGroupManager::addFactory(const QString &name, QWidget *pFactory, int nStretch, const Qt::Alignment &alignment)
+QWidget* BBGroupManager::addFactory(const QString &name, QWidget *pFactory, int nStretch, const Qt::Alignment &alignment)
 {
     // Add a line of content to the container
     QWidget *pWidget = new QWidget(m_pContainer);
@@ -93,9 +93,10 @@ void BBGroupManager::addFactory(const QString &name, QWidget *pFactory, int nStr
     pFactory->setParent(pWidget);
     pLayout->addWidget(pFactory, nStretch, alignment);
     m_pContainer->layout()->addWidget(pWidget);
+    return pWidget;
 }
 
-void BBGroupManager::addFactory(const QString &name, QWidget *pFactory1, QWidget *pFactory2, int nStretch)
+QWidget* BBGroupManager::addFactory(const QString &name, QWidget *pFactory1, QWidget *pFactory2, int nStretch)
 {
     QWidget *pWidget = new QWidget(m_pContainer);
     // set name for finding
@@ -117,9 +118,10 @@ void BBGroupManager::addFactory(const QString &name, QWidget *pFactory1, QWidget
     pLayout->addWidget(pFactoryParentWidget, nStretch);
 
     m_pContainer->layout()->addWidget(pWidget);
+    return pWidget;
 }
 
-void BBGroupManager::addFactory(QWidget *pFactory)
+QWidget* BBGroupManager::addFactory(QWidget *pFactory)
 {
     QWidget *pWidget = new QWidget(m_pContainer);
     QHBoxLayout *pLayout = new QHBoxLayout(pWidget);
@@ -127,6 +129,7 @@ void BBGroupManager::addFactory(QWidget *pFactory)
     pFactory->setParent(pWidget);
     pLayout->addWidget(pFactory);
     m_pContainer->layout()->addWidget(pWidget);
+    return pWidget;
 }
 
 BBLineEditFactory* BBGroupManager::addFactory(const QString &name, float fValue)
@@ -449,6 +452,7 @@ BBMaterialPropertyGroupManager::BBMaterialPropertyGroupManager(BBMaterial *pMate
     m_pMaterial = pMaterial;
     m_pPreviewOpenGLWidget = pPreviewOpenGLWidget;
 
+    addColorItem();
     addBlendStateItem();
     addBlendFuncItem();
     addMargin(10);
@@ -476,6 +480,11 @@ void BBMaterialPropertyGroupManager::setFloat(const QString &uniformName, float 
     BBRendererManager::changeFloat(m_pMaterial, uniformName, fValue);
 }
 
+void BBMaterialPropertyGroupManager::addColorItem()
+{
+
+}
+
 void BBMaterialPropertyGroupManager::addBlendStateItem()
 {
     QCheckBox *pBlendState = new QCheckBox(this);
@@ -499,7 +508,10 @@ void BBMaterialPropertyGroupManager::addBlendFuncItem()
                          "GL_ONE_MINUS_DST_ALPHA"};
     BBEnumFactory *pSRCBlendFunc = new BBEnumFactory("src", items, "GL_SRC_ALPHA", this);
     BBEnumFactory *pDSTBlendFunc = new BBEnumFactory("dst", items, "GL_ONE_MINUS_SRC_ALPHA", this);
-    addFactory("Blend Func", pSRCBlendFunc, pDSTBlendFunc);
+    QObject::connect(pSRCBlendFunc, SIGNAL(currentItemChanged(int)), this, SLOT(switchSRCBlendFunc(int)));
+    QObject::connect(pDSTBlendFunc, SIGNAL(currentItemChanged(int)), this, SLOT(switchDSTBlendFunc(int)));
+    QWidget *pWidget = addFactory("Blend Func", pSRCBlendFunc, pDSTBlendFunc);
+    pWidget->setVisible(m_pMaterial->getBlendState());
 }
 
 void BBMaterialPropertyGroupManager::addPropertyItems()
@@ -541,6 +553,50 @@ void BBMaterialPropertyGroupManager::enableBlendState(bool bEnable)
         pWidget->setVisible(bEnable);
         m_pContainer->setVisible(true);
     }
+}
+
+void BBMaterialPropertyGroupManager::switchSRCBlendFunc(int nIndex)
+{
+    m_pMaterial->setSRCBlendFunc(getBlendFunc(nIndex));
+}
+
+void BBMaterialPropertyGroupManager::switchDSTBlendFunc(int nIndex)
+{
+    m_pMaterial->setDSTBlendFunc(getBlendFunc(nIndex));
+}
+
+unsigned int BBMaterialPropertyGroupManager::getBlendFunc(int nIndex)
+{
+    unsigned int func = GL_ZERO;
+    switch (nIndex) {
+    case 0:
+        func = GL_ZERO;
+        break;
+    case 1:
+        func = GL_ONE;
+        break;
+    case 2:
+        func = GL_SRC_COLOR;
+        break;
+    case 3:
+        func = GL_ONE_MINUS_SRC_COLOR;
+        break;
+    case 4:
+        func = GL_SRC_ALPHA;
+        break;
+    case 5:
+        func = GL_ONE_MINUS_SRC_ALPHA;
+        break;
+    case 6:
+        func = GL_DST_ALPHA;
+        break;
+    case 7:
+        func = GL_ONE_MINUS_DST_ALPHA;
+        break;
+    default:
+        break;
+    }
+    return func;
 }
 
 

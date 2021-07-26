@@ -47,6 +47,30 @@ void BBMaterial::setBlendState(bool bEnable)
     }
 }
 
+void BBMaterial::setSRCBlendFunc(unsigned int src)
+{
+    if (m_pBaseRenderPass != nullptr)
+    {
+        m_pBaseRenderPass->setSRCBlendFunc(src);
+    }
+    if (m_pAdditiveRenderPass != nullptr)
+    {
+        m_pAdditiveRenderPass->setSRCBlendFunc(src);
+    }
+}
+
+void BBMaterial::setDSTBlendFunc(unsigned int dst)
+{
+    if (m_pBaseRenderPass != nullptr)
+    {
+        m_pBaseRenderPass->setDSTBlendFunc(dst);
+    }
+    if (m_pAdditiveRenderPass != nullptr)
+    {
+        m_pAdditiveRenderPass->setDSTBlendFunc(dst);
+    }
+}
+
 void BBMaterial::setBlendFunc(unsigned int src, unsigned int dst)
 {
     if (m_pBaseRenderPass != nullptr)
