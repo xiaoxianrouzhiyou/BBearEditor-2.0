@@ -2,12 +2,14 @@
 #include "BBCamera.h"
 #include "BBRenderPass.h"
 #include "BBShader.h"
+#include "BBDrawCall.h"
 
 
 BBMaterial::BBMaterial()
 {
     m_pBaseRenderPass = nullptr;
     m_pAdditiveRenderPass = nullptr;
+    m_pDrawCallInstance = nullptr;
 }
 
 BBMaterial::~BBMaterial()
@@ -38,6 +40,10 @@ void BBMaterial::setBlendState(bool bEnable)
     if (m_pAdditiveRenderPass != nullptr)
     {
         m_pAdditiveRenderPass->setBlendState(bEnable);
+    }
+    if (m_pDrawCallInstance)
+    {
+        m_pDrawCallInstance->updateMaterialBlendState(bEnable);
     }
 }
 

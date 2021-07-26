@@ -484,7 +484,7 @@ void BBMaterialPropertyGroupManager::addBlendStateItem()
     // original value
     bool bBlendState = m_pMaterial->getBlendState();
     pBlendState->setChecked(bBlendState);
-    QObject::connect(pBlendState, SIGNAL(clicked(bool)), this, SLOT(switchBlendFuncItem(bool)));
+    QObject::connect(pBlendState, SIGNAL(clicked(bool)), this, SLOT(enableBlendState(bool)));
 }
 
 void BBMaterialPropertyGroupManager::addBlendFuncItem()
@@ -500,8 +500,6 @@ void BBMaterialPropertyGroupManager::addBlendFuncItem()
     BBEnumFactory *pSRCBlendFunc = new BBEnumFactory("src", items, "GL_SRC_ALPHA", this);
     BBEnumFactory *pDSTBlendFunc = new BBEnumFactory("dst", items, "GL_ONE_MINUS_SRC_ALPHA", this);
     addFactory("Blend Func", pSRCBlendFunc, pDSTBlendFunc);
-
-    switchBlendFuncItem(m_pMaterial->getBlendState());
 }
 
 void BBMaterialPropertyGroupManager::addPropertyItems()
@@ -533,8 +531,9 @@ void BBMaterialPropertyGroupManager::addPropertyItems()
     }
 }
 
-void BBMaterialPropertyGroupManager::switchBlendFuncItem(bool bEnable)
+void BBMaterialPropertyGroupManager::enableBlendState(bool bEnable)
 {
+    m_pMaterial->setBlendState(bEnable);
     QWidget* pWidget = findChild<QWidget*>("Blend Func");
     if (pWidget)
     {

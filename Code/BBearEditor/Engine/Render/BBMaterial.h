@@ -13,6 +13,7 @@ class BBUniformUpdater;
 class BBMaterialProperty;
 class BBRenderPass;
 class BBShader;
+class BBDrawCall;
 
 class BBMaterial
 {
@@ -22,6 +23,7 @@ public:
 
     void init(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath);
     void initMultiPass(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath);
+    void bindDrawCallInstance(BBDrawCall *pDrawCall) { m_pDrawCallInstance = pDrawCall; }
 
 public:
     void setBlendState(bool bEnable);
@@ -55,6 +57,7 @@ public:
 private:
     BBRenderPass *m_pBaseRenderPass;
     BBRenderPass *m_pAdditiveRenderPass;
+    BBDrawCall *m_pDrawCallInstance;
 };
 
 #endif // BBMATERIAL_H

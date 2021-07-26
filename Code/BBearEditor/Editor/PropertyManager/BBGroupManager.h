@@ -126,7 +126,7 @@ private:
     void addPropertyItems();
 
 private slots:
-    void switchBlendFuncItem(bool bEnable);
+    void enableBlendState(bool bEnable);
 
 private:
     BBMaterial *m_pMaterial;

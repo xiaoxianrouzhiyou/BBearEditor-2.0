@@ -171,19 +171,24 @@ void BBRenderQueue::switchQueue(BBMaterial *pPrevious, BBMaterial *pCurrent, BBD
     bool bPreviousBlendState = pPrevious->getBlendState();
     bool bCurrentBlendState = pCurrent->getBlendState();
     BB_PROCESS_ERROR_RETURN(bPreviousBlendState != bCurrentBlendState);
-    if (bPreviousBlendState)
-    {
-        // true -> false
-        // transparent -> opaque
-        removeTransparentDrawCall(pDrawCall);
-        appendOpaqueDrawCall(pDrawCall);
-    }
-    else
+    switchQueue(!bPreviousBlendState, pDrawCall);
+}
+
+void BBRenderQueue::switchQueue(bool bEnableBlend, BBDrawCall *pDrawCall)
+{
+    if (bEnableBlend)
     {
         // false -> true
         // opaque -> transparent
         removeOpaqueDrawCall(pDrawCall);
         appendTransparentDrawCall(pDrawCall);
+    }
+    else
+    {
+        // true -> false
+        // transparent -> opaque
+        removeTransparentDrawCall(pDrawCall);
+        appendOpaqueDrawCall(pDrawCall);
     }
 }
 

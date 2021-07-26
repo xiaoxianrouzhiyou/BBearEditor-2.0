@@ -52,6 +52,21 @@ void BBDrawCall::setMaterial(BBMaterial *pMaterial)
     }
 
     m_pMaterial = pMaterial;
+    m_pMaterial->bindDrawCallInstance(this);
+}
+
+void BBDrawCall::updateMaterialBlendState(bool bEnable)
+{
+    BBRenderQueue *pRenderQueue = BBSceneManager::getRenderQueue();
+    pRenderQueue->switchQueue(bEnable, this);
+    if (bEnable)
+    {
+        m_UpdateOrderInRenderQueueFunc = &BBDrawCall::updateOrderInTransparentRenderQueue;
+    }
+    else
+    {
+        m_UpdateOrderInRenderQueueFunc = &BBDrawCall::updateOrderInOpaqueRenderQueue;
+    }
 }
 
 void BBDrawCall::setVBO(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount)

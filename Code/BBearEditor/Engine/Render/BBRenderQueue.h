@@ -31,6 +31,7 @@ public:
     void updateTransparentDrawCallOrder(BBDrawCall *pNode);
 
     void switchQueue(BBMaterial *pPrevious, BBMaterial *pCurrent, BBDrawCall *pDrawCall);
+    void switchQueue(bool bEnableBlend, BBDrawCall *pDrawCall);
 
 private:
     void updateAllOpaqueDrawCallOrder();
