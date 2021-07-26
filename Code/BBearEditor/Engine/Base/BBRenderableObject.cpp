@@ -8,6 +8,7 @@
 #include "Render/BBGLBuffers.h"
 #include "Render/BBUniformUpdater.h"
 #include "Render/BBRenderPass.h"
+#include "Render/BBRenderQueue.h"
 
 
 /**
@@ -82,7 +83,15 @@ void BBRenderableObject::insertInRenderQueue(BBRenderQueue *pQueue)
 {
     if (m_bActive && m_bVisible)
     {
-        pQueue->appendOpaqueDrawCall(m_pDrawCalls);
+        bool bTransparent = m_pDrawCalls->getMaterial()->getBlendState();
+        if (bTransparent)
+        {
+            pQueue->appendTransparentDrawCall(m_pDrawCalls);
+        }
+        else
+        {
+            pQueue->appendOpaqueDrawCall(m_pDrawCalls);
+        }
         m_bInRenderQueue = true;
         // init
         m_pDrawCalls->updateOrderInRenderQueue(m_Position);

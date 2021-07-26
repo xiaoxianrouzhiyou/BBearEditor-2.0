@@ -15,6 +15,7 @@ class BBRenderableObject;
 class BBRenderQueue;
 
 typedef void (BBDrawCall::*BBDrawFunc)(BBCamera *pCamera);
+typedef void (BBDrawCall::*BBUpdateOrderInRenderQueueFunc)();
 
 class BBDrawCall : public BBBaseRenderComponent, public BBLinkedList
 {
@@ -33,12 +34,20 @@ public:
     void draw(BBCamera *pCamera);
 
 public:
+    inline BBMaterial* getMaterial() { return m_pMaterial; }
+
+public:
     static void switchRenderingSettings(int nIndex);
     void onePassRendering(BBCamera *pCamera);
     void onePassRendering(BBCamera *pCamera, QList<BBGameObject*> lights);
     void forwardRendering(BBCamera *pCamera);
     void deferredRendering(BBCamera *pCamera);
     void uiRendering(BBCanvas *pCanvas);
+
+private:
+    void updateOrderInOpaqueRenderQueue();
+    void updateOrderInTransparentRenderQueue();
+    BBUpdateOrderInRenderQueueFunc m_UpdateOrderInRenderQueueFunc;
 
 private:
     QList<BBGameObject*> collectLights();
@@ -59,37 +68,5 @@ private:
     bool m_bVisible;
 };
 
-
-class BBRenderQueue
-{
-public:
-    BBRenderQueue(BBCamera *pCamera);
-    ~BBRenderQueue();
-
-    void appendOpaqueDrawCall(BBDrawCall *pDC);
-    void appendTransparentDrawCall(BBDrawCall *pDC);
-    void appendUIDrawCall(BBDrawCall *pDC);
-
-    void removeOpaqueDrawCall(BBDrawCall *pDC);
-    void removeTransparentDrawCall(BBDrawCall *pDC);
-    void removeUIDrawCall(BBDrawCall *pDC);
-
-    void render();
-    void renderOpaque();
-    void renderTransparent();
-    void renderUI();
-
-    void updateOrder();
-    void updateOpaqueDrawCallOrder();
-    void updateOpaqueDrawCallOrder(BBDrawCall *pNode);
-
-private:
-    BBDrawCall* appendAscendingRenderQueue(BBDrawCall *pHead, BBDrawCall *pNewNode);
-
-    BBCamera *m_pCamera;
-    BBDrawCall *m_pOpaqueDrawCall;
-    BBDrawCall *m_pTransparentDrawCall;
-    BBDrawCall *m_pUIDrawCall;
-};
 
 #endif // BBDRAWCALL_H

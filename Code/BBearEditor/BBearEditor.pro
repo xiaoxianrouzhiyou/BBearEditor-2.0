@@ -115,7 +115,8 @@ SOURCES += \
     Editor/Tools/FBX2BBear/BBFBXSkeletonGPU.cpp \
     Engine/RayTracing/BBRayTracker.cpp \
     Engine/Python/BBPythonLoader.cpp \
-    Editor/Dialog/BBResourceDialog.cpp
+    Editor/Dialog/BBResourceDialog.cpp \
+    Engine/Render/BBRenderQueue.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -210,7 +211,8 @@ HEADERS += \
     Editor/Tools/FBX2BBear/BBFBXSkeletonGPU.h \
     Engine/RayTracing/BBRayTracker.h \
     Engine/Python/BBPythonLoader.h \
-    Editor/Dialog/BBResourceDialog.h
+    Editor/Dialog/BBResourceDialog.h \
+    Engine/Render/BBRenderQueue.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
@@ -233,36 +235,6 @@ INCLUDEPATH += \
 
 LIBS += -lopengl32 -lglu32 -lglut \
     -L../../External/ProtoBuffer/lib -lprotobuf \
-
-DISTFILES += \
-    ../../Resources/shaders/base.frag \
-    ../../Resources/shaders/coordinate.frag \
-    ../../Resources/shaders/DeferredColor.frag \
-    ../../Resources/shaders/DeferredNormal.frag \
-    ../../Resources/shaders/DeferredPosition.frag \
-    ../../Resources/shaders/diffuse.frag \
-    ../../Resources/shaders/fullscreenquad.frag \
-    ../../Resources/shaders/fullscreenquad_ray_tracing.frag \
-    ../../Resources/shaders/standard.frag \
-    ../../Resources/shaders/stencilUI.frag \
-    ../../Resources/shaders/texture.frag \
-    ../../Resources/shaders/UI.frag \
-    ../../Resources/shaders/base.vert \
-    ../../Resources/shaders/coordinate.vert \
-    ../../Resources/shaders/coordinate2D.vert \
-    ../../Resources/shaders/DeferredColor.vert \
-    ../../Resources/shaders/DeferredNormal.vert \
-    ../../Resources/shaders/DeferredPosition.vert \
-    ../../Resources/shaders/diffuse.vert \
-    ../../Resources/shaders/diffuse_indicator.vert \
-    ../../Resources/shaders/fullscreenquad.vert \
-    ../../Resources/shaders/fullscreenquad_ray_tracing.vert \
-    ../../Resources/shaders/standard.vert \
-    ../../Resources/shaders/stencilUI.vert \
-    ../../Resources/shaders/texture.vert \
-    ../../Resources/shaders/UI.vert \
-    ../../Resources/shaders/dissolve.frag \
-    ../../Resources/shaders/dissolve.vert
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../External/Python37-32/libs/ -lpython37
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../External/Python37-32/libs/ -lpython37d

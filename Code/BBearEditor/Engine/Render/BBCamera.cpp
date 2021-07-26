@@ -4,6 +4,7 @@
 #include "Base/BBGameObject.h"
 #include "Scene/BBSceneManager.h"
 #include "BBDrawCall.h"
+#include "BBRenderQueue.h"
 
 
 BBCamera::BBCamera()
@@ -90,7 +91,7 @@ void BBCamera::update(float fDeltaTime)
     // When the camera position changes, update render queue
     if (m_fDisplacement >= 10.0f)
     {
-        BBSceneManager::getRenderQueue()->updateOrder();
+        BBSceneManager::getRenderQueue()->updateAllDrawCallOrder();
         m_fDisplacement = 0.0f;
     }
 

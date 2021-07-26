@@ -22,6 +22,7 @@
 #include "2D/BBSpriteObject2D.h"
 #include "RayTracing/BBRayTracker.h"
 #include "Render/BBTexture.h"
+#include "Render/BBRenderQueue.h"
 
 
 QString BBScene::m_ColorBufferName = "color";

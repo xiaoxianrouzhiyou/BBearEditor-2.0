@@ -40,7 +40,7 @@ BBMaterial* BBRendererManager::loadMaterial(const QString &filePath)
 //    }
     BBMaterial* pMaterial = new BBMaterial();
     loadMaterialContent(filePath, pMaterial);
-//    m_CachedMaterials.insert(filePath, pMaterial);
+    m_CachedMaterials.insert(filePath, pMaterial);
     return pMaterial;
 }
 
@@ -185,6 +185,11 @@ void BBRendererManager::loadMaterialContent(const QString &filePath, BBMaterial 
                     QString::fromStdString(material.vshaderpath()),
                     QString::fromStdString(material.fshaderpath()));
 
+    // render state
+    pMaterial->setBlendState(true);
+    pMaterial->setBlendFunc(GL_ONE, GL_ONE);
+
+    // uniform
     int nTextureCount = material.texturename_size();
     for (int i = 0; i < nTextureCount; i++)
     {
