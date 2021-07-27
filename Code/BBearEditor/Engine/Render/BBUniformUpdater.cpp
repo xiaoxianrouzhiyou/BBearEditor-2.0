@@ -1,6 +1,7 @@
 #include "BBUniformUpdater.h"
 #include "BBCamera.h"
 #include "2D/BBCanvas.h"
+#include <QDateTime>
 
 
 BBUniformUpdater::BBUniformUpdater(GLint location, const BBUpdateUniformFunc &updateFunc, BBMaterialProperty *pTargetProperty)
@@ -9,6 +10,7 @@ BBUniformUpdater::BBUniformUpdater(GLint location, const BBUpdateUniformFunc &up
     m_Location = location;
     m_UpdateUniformFunc = updateFunc;
     m_pTargetProperty = pTargetProperty;
+    m_LastTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
 }
 
 BBUniformUpdater::~BBUniformUpdater()
@@ -22,9 +24,9 @@ BBUniformUpdater* BBUniformUpdater::clone()
                                 m_pTargetProperty == nullptr ? nullptr : m_pTargetProperty->clone());
 }
 
-void BBUniformUpdater::updateUniform(GLint location, void *pCamera, void *pPropertyValue)
+void BBUniformUpdater::updateUniform(GLint location, void *pUserData, void *pPropertyValue)
 {
-    (this->*m_UpdateUniformFunc)(location, pCamera, pPropertyValue);
+    (this->*m_UpdateUniformFunc)(location, pUserData, pPropertyValue);
 }
 
 void BBUniformUpdater::updateCameraProjectionMatrix(GLint location, void *pCamera, void *pPropertyValue)
@@ -50,6 +52,15 @@ void BBUniformUpdater::updateCameraInverseViewMatrix(GLint location, void *pCame
 void BBUniformUpdater::updateCanvas(GLint location, void *pCanvas, void *pPropertyValue)
 {
     glUniform4fv(location, 1, ((BBCanvas*)pCanvas)->getUniformInfo());
+}
+
+void BBUniformUpdater::updateTime(GLint location, void *pUserData, void *pPropertyValue)
+{
+    qint64 currentTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+    float fDelta = currentTime - m_LastTime;
+    float *ptr = new float[4] {fDelta, currentTime, currentTime % 100000000, 0.0f};
+    glUniform4fv(location, 1, ptr);
+    m_LastTime = currentTime;
 }
 
 void BBUniformUpdater::updateFloat(GLint location, void *pCamera, void *pPropertyValue)

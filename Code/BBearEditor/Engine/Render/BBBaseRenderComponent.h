@@ -34,6 +34,7 @@
 #define LOCATION_LIGHT_COLOR "lightColor"
 #define LOCATION_LIGHT_SETTINGS(x) "lightSettings"#x
 #define LOCATION_SCREEN_PARAMETERS "screenParameters"
+#define LOCATION_TIME "time"
 
 
 class BBBaseRenderComponent : protected QOpenGLExtraFunctions

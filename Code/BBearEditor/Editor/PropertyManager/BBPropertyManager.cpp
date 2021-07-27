@@ -1,7 +1,8 @@
 #include "BBPropertyManager.h"
 #include "Utils/BBUtils.h"
 #include <QVBoxLayout>
-#include "BBGroupManager.h"
+#include "GroupManager/BBGroupManager.h"
+#include "GroupManager/BBMaterialPropertyGroupManager.h"
 #include "BBPropertyFactory.h"
 #include "Base/BBGameObject.h"
 #include "Render/Light/BBDirectionalLight.h"

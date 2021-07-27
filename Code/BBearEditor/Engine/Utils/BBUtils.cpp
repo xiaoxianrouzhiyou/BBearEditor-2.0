@@ -100,5 +100,3 @@ unsigned char* BBUtils::decodeBMP(unsigned char *pBmpFileData, int &nWidth, int 
     }
     return nullptr;
 }
-
-

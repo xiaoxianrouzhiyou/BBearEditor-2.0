@@ -206,6 +206,10 @@ BBUniformUpdater* BBShader::initUniformVector4(GLint location, const char *pUnif
     {
         updateUniformFunc = &BBUniformUpdater::updateCanvas;
     }
+    else if (strcmp(pUniformName, LOCATION_TIME) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updateTime;
+    }
     else
     {
         pProperty = new BBVector4MaterialProperty(pUniformName);
