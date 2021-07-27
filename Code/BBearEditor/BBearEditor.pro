@@ -32,7 +32,7 @@ SOURCES += \
     Editor/FileSystem/BBFileSystemManager.cpp \
     Editor/FileSystem/BBFolderTreeWidget.cpp \
     Editor/PropertyManager/BBFactoryComponent.cpp \
-    Editor/PropertyManager/BBGroupManager.cpp \
+    Editor/PropertyManager/GroupManager/BBGroupManager.cpp \
     Editor/PropertyManager/BBPropertyFactory.cpp \
     Editor/PropertyManager/BBPropertyManager.cpp \
     Editor/Dialog/BBConfirmationDialog.cpp \
@@ -116,7 +116,8 @@ SOURCES += \
     Engine/RayTracing/BBRayTracker.cpp \
     Engine/Python/BBPythonLoader.cpp \
     Editor/Dialog/BBResourceDialog.cpp \
-    Engine/Render/BBRenderQueue.cpp
+    Engine/Render/BBRenderQueue.cpp \
+    Editor/PropertyManager/GroupManager/BBMaterialPropertyGroupManager.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -126,7 +127,7 @@ HEADERS += \
     Editor/FileSystem/BBFileSystemManager.h \
     Editor/FileSystem/BBFolderTreeWidget.h \
     Editor/PropertyManager/BBFactoryComponent.h \
-    Editor/PropertyManager/BBGroupManager.h \
+    Editor/PropertyManager/GroupManager/BBGroupManager.h \
     Editor/PropertyManager/BBPropertyFactory.h \
     Editor/PropertyManager/BBPropertyManager.h \
     Editor/Dialog/BBConfirmationDialog.h \
@@ -212,7 +213,8 @@ HEADERS += \
     Engine/RayTracing/BBRayTracker.h \
     Engine/Python/BBPythonLoader.h \
     Editor/Dialog/BBResourceDialog.h \
-    Engine/Render/BBRenderQueue.h
+    Engine/Render/BBRenderQueue.h \
+    Editor/PropertyManager/GroupManager/BBMaterialPropertyGroupManager.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
