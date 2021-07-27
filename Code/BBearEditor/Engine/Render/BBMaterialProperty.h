@@ -18,6 +18,13 @@ enum BBMaterialUniformPropertyType
 };
 
 
+enum BBVector4MaterialPropertyFactoryType
+{
+    Default,
+    Color
+};
+
+
 class BBMaterialProperty
 {
 public:
@@ -27,10 +34,12 @@ public:
     virtual BBMaterialProperty* clone() = 0;
     BBMaterialUniformPropertyType getType() { return m_eType; }
     inline char* getName() { return m_Name; }
+    inline QString getNameInPropertyManager() { return m_NameInPropertyManager; }
 
 protected:
     BBMaterialUniformPropertyType m_eType;
     char m_Name[64];
+    QString m_NameInPropertyManager;
 };
 
 
@@ -77,10 +86,12 @@ public:
 
     inline void setPropertyValue(const float *pPropertyValue) { m_pPropertyValue = pPropertyValue; }
     inline const float* getPropertyValue() { return m_pPropertyValue; }
+    BBVector4MaterialPropertyFactoryType getFactoryType() { return m_eFactoryType; }
 
 private:
     // 智能指针 to do
     const float *m_pPropertyValue;
+    BBVector4MaterialPropertyFactoryType m_eFactoryType;
 };
 
 

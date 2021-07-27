@@ -91,6 +91,22 @@ void BBRendererManager::changeFloat(BBMaterial *pMaterial, const QString &floatN
     serialize(material, materialPath);
 }
 
+void BBRendererManager::changeVector4(BBMaterial *pMaterial, const std::string &name, float *fValue)
+{
+    QString materialPath = m_CachedMaterials.key(pMaterial);
+    BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
+    BBSerializer::BBMaterial material = deserialize(materialPath);
+
+    material.add_vec4name(name);
+    BBSerializer::BBVector4f *pVec4 = material.add_vec4value();
+    pVec4->set_x(fValue[0]);
+    pVec4->set_y(fValue[1]);
+    pVec4->set_z(fValue[2]);
+    pVec4->set_w(fValue[3]);
+
+    serialize(material, materialPath);
+}
+
 QString BBRendererManager::getShaderFilePath(const QString &name)
 {
     QString filePath = BB_PATH_RESOURCE_SHADER() + name;
@@ -202,6 +218,13 @@ void BBRendererManager::loadMaterialContent(const QString &filePath, BBMaterial 
     for (int i = 0; i < nFloatCount; i++)
     {
         pMaterial->setFloat(material.floatname(i), material.floatvalue(i));
+    }
+
+    int nVec4Count = material.vec4name_size();
+    for (int i = 0; i < nVec4Count; i++)
+    {
+        BBSerializer::BBVector4f vec4 = material.vec4value(i);
+        pMaterial->setVector4(material.vec4name(i), vec4.x(), vec4.y(), vec4.z(), vec4.w());
     }
 
     // default

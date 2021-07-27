@@ -23,6 +23,7 @@ public:
     static void changeFShader(BBMaterial *pMaterial, const QString &name);
     static void changeTexture(BBMaterial *pMaterial, const QString &textureName, const QString &texturePath);
     static void changeFloat(BBMaterial *pMaterial, const QString &floatName, float fValue);
+    static void changeVector4(BBMaterial *pMaterial, const std::string &name, float *fValue);
 
     static QString getShaderFilePath(const QString &name);
 

@@ -119,9 +119,9 @@ public:
 private slots:
     void setSampler2D(const QString &uniformName, const QString &texturePath);
     void setFloat(const QString &uniformName, float fValue);
+    void setColor(float r, float g, float b, float a, const std::string &uniformName);
 
 private:
-    void addColorItem();
     void addBlendStateItem();
     void addBlendFuncItem();
     void addPropertyItems();

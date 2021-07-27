@@ -71,7 +71,16 @@ BBMaterialProperty* BBMatrix4MaterialProperty::clone()
 BBVector4MaterialProperty::BBVector4MaterialProperty(const char *name)
     : BBMaterialProperty(Vector4, name)
 {
-    m_pPropertyValue = nullptr;
+    m_pPropertyValue = new float[4] {0, 0, 0, 1};
+    if (strncmp(name, "Color_", 6) == 0)
+    {
+        m_eFactoryType = Color;
+        m_NameInPropertyManager = QString(name).mid(6);
+    }
+    else
+    {
+        m_eFactoryType = Default;
+    }
 }
 
 BBVector4MaterialProperty::~BBVector4MaterialProperty()

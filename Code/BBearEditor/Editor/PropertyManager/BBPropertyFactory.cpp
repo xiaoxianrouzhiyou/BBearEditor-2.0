@@ -212,9 +212,24 @@ void BBEnumFactory::changeCurrentItem(const QString &text)
 
 /**
  * @brief BBColorFactory::BBColorFactory
- * @param color
+ * @param r
+ * @param g
+ * @param b
+ * @param a
  * @param pParent
  */
+BBColorFactory::BBColorFactory(float r, float g, float b, float a, QWidget *pParent)
+    : BBColorFactory(new float[4] {r, g, b, a}, pParent)
+{
+
+}
+
+BBColorFactory::BBColorFactory(const std::string &uniformName, float r, float g, float b, float a, QWidget *pParent)
+    : BBColorFactory(r, g, b, a, pParent)
+{
+    m_UniformName = uniformName;
+}
+
 BBColorFactory::BBColorFactory(float *color, QWidget *pParent)
     : QWidget(pParent)
 {
@@ -251,7 +266,7 @@ void BBColorFactory::catchColor()
 void BBColorFactory::finishCatchColor(float r, float g, float b)
 {
     m_pColorButton->setColor(r * 255, g * 255, b * 255);
-    emit colorChanged(r, g, b);
+    emit colorChanged(r, g, b, 1.0f, m_UniformName);
 }
 
 

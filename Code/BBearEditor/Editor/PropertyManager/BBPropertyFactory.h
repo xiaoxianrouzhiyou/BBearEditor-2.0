@@ -117,6 +117,8 @@ class BBColorFactory : public QWidget
     Q_OBJECT
 
 public:
+    BBColorFactory(float r, float g, float b, float a, QWidget *pParent = 0);
+    BBColorFactory(const std::string &uniformName, float r, float g, float b, float a, QWidget *pParent = 0);
     BBColorFactory(float *color, QWidget *pParent = 0);
     ~BBColorFactory();
 
@@ -125,10 +127,11 @@ protected slots:
     virtual void finishCatchColor(float r, float g, float b);
 
 signals:
-    void colorChanged(float r, float g, float b);
+    void colorChanged(float r, float g, float b, float a = 1.0f, const std::string &uniformName = "");
 
 protected:
     BBColorButton *m_pColorButton;
+    std::string m_UniformName;
 };
 
 

@@ -452,7 +452,6 @@ BBMaterialPropertyGroupManager::BBMaterialPropertyGroupManager(BBMaterial *pMate
     m_pMaterial = pMaterial;
     m_pPreviewOpenGLWidget = pPreviewOpenGLWidget;
 
-    addColorItem();
     addBlendStateItem();
     addBlendFuncItem();
     addMargin(10);
@@ -480,9 +479,12 @@ void BBMaterialPropertyGroupManager::setFloat(const QString &uniformName, float 
     BBRendererManager::changeFloat(m_pMaterial, uniformName, fValue);
 }
 
-void BBMaterialPropertyGroupManager::addColorItem()
+void BBMaterialPropertyGroupManager::setColor(float r, float g, float b, float a, const std::string &uniformName)
 {
-
+    m_pMaterial->setVector4(uniformName, r, g, b, a);
+    m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
+    float *ptr = new float[4] {r, g, b, a};
+    BBRendererManager::changeVector4(m_pMaterial, uniformName, ptr);
 }
 
 void BBMaterialPropertyGroupManager::addBlendStateItem()
@@ -522,23 +524,39 @@ void BBMaterialPropertyGroupManager::addPropertyItems()
     for (int i = 0; i < properties.count(); i++)
     {
         BBMaterialUniformPropertyType eType = properties[i]->getType();
-        if (eType == BBMaterialUniformPropertyType::Sampler2D)
+        QString name = QString::fromStdString(names[i]);
+        if (eType == BBMaterialUniformPropertyType::Vector4)
         {
-            QString name = QString::fromStdString(names[i]);
-            BBSampler2DMaterialProperty *pProperty = (BBSampler2DMaterialProperty*)properties[i];
-            BBTextureFactory *pTextureFactory = new BBTextureFactory(name, pProperty->getResourcePath(), this);
-            addFactory(name, pTextureFactory, 1);
-            QObject::connect(pTextureFactory, SIGNAL(setSampler2D(QString, QString)),
-                             this, SLOT(setSampler2D(QString, QString)));
+            BBVector4MaterialProperty *pProperty = (BBVector4MaterialProperty*)properties[i];
+            BBVector4MaterialPropertyFactoryType eFactoryType = pProperty->getFactoryType();
+            if (eFactoryType == Color)
+            {
+                const float *color = pProperty->getPropertyValue();
+                BBColorFactory *pColorFactory = new BBColorFactory(names[i], color[0], color[1], color[2], color[3], this);
+                addFactory(pProperty->getNameInPropertyManager(), pColorFactory, 1);
+                QObject::connect(pColorFactory, SIGNAL(colorChanged(float, float, float, float, std::string)),
+                                 this, SLOT(setColor(float, float, float, float, std::string)));
+            }
+            else
+            {
+
+            }
         }
         else if (eType == BBMaterialUniformPropertyType::Float)
         {
-            QString name = QString::fromStdString(names[i]);
             BBFloatMaterialProperty *pProperty = (BBFloatMaterialProperty*)properties[i];
             BBLineEditFactory *pFloatFactory = addFactory(name, pProperty->getPropertyValue());
             pFloatFactory->setSlideStep(0.005f);
             pFloatFactory->setRange(0, 1);
             QObject::connect(pFloatFactory, SIGNAL(valueChanged(QString, float)), this, SLOT(setFloat(QString, float)));
+        }
+        else if (eType == BBMaterialUniformPropertyType::Sampler2D)
+        {
+            BBSampler2DMaterialProperty *pProperty = (BBSampler2DMaterialProperty*)properties[i];
+            BBTextureFactory *pTextureFactory = new BBTextureFactory(name, pProperty->getResourcePath(), this);
+            addFactory(name, pTextureFactory, 1);
+            QObject::connect(pTextureFactory, SIGNAL(setSampler2D(QString, QString)),
+                             this, SLOT(setSampler2D(QString, QString)));
         }
     }
 }

@@ -11,5 +11,7 @@ message BBMaterial
 	repeated string textureName = 4;
 	repeated string texturePath = 5;
 	repeated string floatName = 6;
-	repeated float floatValue = 7; 
+	repeated float floatValue = 7;
+	repeated string vec4Name = 8;
+	repeated BBVector4f vec4Value = 9;
 }

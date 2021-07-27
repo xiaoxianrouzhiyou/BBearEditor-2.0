@@ -177,6 +177,9 @@ class BBMaterial PROTOBUF_FINAL :
     kTexturePathFieldNumber = 5,
     kFloatNameFieldNumber = 6,
     kFloatValueFieldNumber = 7,
+    kVec4NameFieldNumber = 8,
+    kVec4ValueFieldNumber = 9,
+    kVec4FactoryTypeFieldNumber = 10,
     kShaderNameFieldNumber = 1,
     kVShaderPathFieldNumber = 2,
     kFShaderPathFieldNumber = 3,
@@ -275,6 +278,72 @@ class BBMaterial PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
       mutable_floatvalue();
 
+  // repeated string vec4Name = 8;
+  int vec4name_size() const;
+  private:
+  int _internal_vec4name_size() const;
+  public:
+  void clear_vec4name();
+  const std::string& vec4name(int index) const;
+  std::string* mutable_vec4name(int index);
+  void set_vec4name(int index, const std::string& value);
+  void set_vec4name(int index, std::string&& value);
+  void set_vec4name(int index, const char* value);
+  void set_vec4name(int index, const char* value, size_t size);
+  std::string* add_vec4name();
+  void add_vec4name(const std::string& value);
+  void add_vec4name(std::string&& value);
+  void add_vec4name(const char* value);
+  void add_vec4name(const char* value, size_t size);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>& vec4name() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>* mutable_vec4name();
+  private:
+  const std::string& _internal_vec4name(int index) const;
+  std::string* _internal_add_vec4name();
+  public:
+
+  // repeated .BBSerializer.BBVector4f vec4Value = 9;
+  int vec4value_size() const;
+  private:
+  int _internal_vec4value_size() const;
+  public:
+  void clear_vec4value();
+  ::BBSerializer::BBVector4f* mutable_vec4value(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBVector4f >*
+      mutable_vec4value();
+  private:
+  const ::BBSerializer::BBVector4f& _internal_vec4value(int index) const;
+  ::BBSerializer::BBVector4f* _internal_add_vec4value();
+  public:
+  const ::BBSerializer::BBVector4f& vec4value(int index) const;
+  ::BBSerializer::BBVector4f* add_vec4value();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBVector4f >&
+      vec4value() const;
+
+  // repeated string vec4FactoryType = 10;
+  int vec4factorytype_size() const;
+  private:
+  int _internal_vec4factorytype_size() const;
+  public:
+  void clear_vec4factorytype();
+  const std::string& vec4factorytype(int index) const;
+  std::string* mutable_vec4factorytype(int index);
+  void set_vec4factorytype(int index, const std::string& value);
+  void set_vec4factorytype(int index, std::string&& value);
+  void set_vec4factorytype(int index, const char* value);
+  void set_vec4factorytype(int index, const char* value, size_t size);
+  std::string* add_vec4factorytype();
+  void add_vec4factorytype(const std::string& value);
+  void add_vec4factorytype(std::string&& value);
+  void add_vec4factorytype(const char* value);
+  void add_vec4factorytype(const char* value, size_t size);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>& vec4factorytype() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>* mutable_vec4factorytype();
+  private:
+  const std::string& _internal_vec4factorytype(int index) const;
+  std::string* _internal_add_vec4factorytype();
+  public:
+
   // string shaderName = 1;
   bool has_shadername() const;
   private:
@@ -342,6 +411,9 @@ class BBMaterial PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> texturepath_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> floatname_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< float > floatvalue_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> vec4name_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBVector4f > vec4value_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> vec4factorytype_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr shadername_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr vshaderpath_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr fshaderpath_;
@@ -796,6 +868,190 @@ inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
 BBMaterial::mutable_floatvalue() {
   // @@protoc_insertion_point(field_mutable_list:BBSerializer.BBMaterial.floatValue)
   return _internal_mutable_floatvalue();
+}
+
+// repeated string vec4Name = 8;
+inline int BBMaterial::_internal_vec4name_size() const {
+  return vec4name_.size();
+}
+inline int BBMaterial::vec4name_size() const {
+  return _internal_vec4name_size();
+}
+inline void BBMaterial::clear_vec4name() {
+  vec4name_.Clear();
+}
+inline std::string* BBMaterial::add_vec4name() {
+  // @@protoc_insertion_point(field_add_mutable:BBSerializer.BBMaterial.vec4Name)
+  return _internal_add_vec4name();
+}
+inline const std::string& BBMaterial::_internal_vec4name(int index) const {
+  return vec4name_.Get(index);
+}
+inline const std::string& BBMaterial::vec4name(int index) const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.vec4Name)
+  return _internal_vec4name(index);
+}
+inline std::string* BBMaterial::mutable_vec4name(int index) {
+  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.vec4Name)
+  return vec4name_.Mutable(index);
+}
+inline void BBMaterial::set_vec4name(int index, const std::string& value) {
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.vec4Name)
+  vec4name_.Mutable(index)->assign(value);
+}
+inline void BBMaterial::set_vec4name(int index, std::string&& value) {
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.vec4Name)
+  vec4name_.Mutable(index)->assign(std::move(value));
+}
+inline void BBMaterial::set_vec4name(int index, const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  vec4name_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:BBSerializer.BBMaterial.vec4Name)
+}
+inline void BBMaterial::set_vec4name(int index, const char* value, size_t size) {
+  vec4name_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:BBSerializer.BBMaterial.vec4Name)
+}
+inline std::string* BBMaterial::_internal_add_vec4name() {
+  return vec4name_.Add();
+}
+inline void BBMaterial::add_vec4name(const std::string& value) {
+  vec4name_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.vec4Name)
+}
+inline void BBMaterial::add_vec4name(std::string&& value) {
+  vec4name_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.vec4Name)
+}
+inline void BBMaterial::add_vec4name(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  vec4name_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:BBSerializer.BBMaterial.vec4Name)
+}
+inline void BBMaterial::add_vec4name(const char* value, size_t size) {
+  vec4name_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:BBSerializer.BBMaterial.vec4Name)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
+BBMaterial::vec4name() const {
+  // @@protoc_insertion_point(field_list:BBSerializer.BBMaterial.vec4Name)
+  return vec4name_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
+BBMaterial::mutable_vec4name() {
+  // @@protoc_insertion_point(field_mutable_list:BBSerializer.BBMaterial.vec4Name)
+  return &vec4name_;
+}
+
+// repeated .BBSerializer.BBVector4f vec4Value = 9;
+inline int BBMaterial::_internal_vec4value_size() const {
+  return vec4value_.size();
+}
+inline int BBMaterial::vec4value_size() const {
+  return _internal_vec4value_size();
+}
+inline ::BBSerializer::BBVector4f* BBMaterial::mutable_vec4value(int index) {
+  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.vec4Value)
+  return vec4value_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBVector4f >*
+BBMaterial::mutable_vec4value() {
+  // @@protoc_insertion_point(field_mutable_list:BBSerializer.BBMaterial.vec4Value)
+  return &vec4value_;
+}
+inline const ::BBSerializer::BBVector4f& BBMaterial::_internal_vec4value(int index) const {
+  return vec4value_.Get(index);
+}
+inline const ::BBSerializer::BBVector4f& BBMaterial::vec4value(int index) const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.vec4Value)
+  return _internal_vec4value(index);
+}
+inline ::BBSerializer::BBVector4f* BBMaterial::_internal_add_vec4value() {
+  return vec4value_.Add();
+}
+inline ::BBSerializer::BBVector4f* BBMaterial::add_vec4value() {
+  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.vec4Value)
+  return _internal_add_vec4value();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBVector4f >&
+BBMaterial::vec4value() const {
+  // @@protoc_insertion_point(field_list:BBSerializer.BBMaterial.vec4Value)
+  return vec4value_;
+}
+
+// repeated string vec4FactoryType = 10;
+inline int BBMaterial::_internal_vec4factorytype_size() const {
+  return vec4factorytype_.size();
+}
+inline int BBMaterial::vec4factorytype_size() const {
+  return _internal_vec4factorytype_size();
+}
+inline void BBMaterial::clear_vec4factorytype() {
+  vec4factorytype_.Clear();
+}
+inline std::string* BBMaterial::add_vec4factorytype() {
+  // @@protoc_insertion_point(field_add_mutable:BBSerializer.BBMaterial.vec4FactoryType)
+  return _internal_add_vec4factorytype();
+}
+inline const std::string& BBMaterial::_internal_vec4factorytype(int index) const {
+  return vec4factorytype_.Get(index);
+}
+inline const std::string& BBMaterial::vec4factorytype(int index) const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.vec4FactoryType)
+  return _internal_vec4factorytype(index);
+}
+inline std::string* BBMaterial::mutable_vec4factorytype(int index) {
+  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.vec4FactoryType)
+  return vec4factorytype_.Mutable(index);
+}
+inline void BBMaterial::set_vec4factorytype(int index, const std::string& value) {
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.vec4FactoryType)
+  vec4factorytype_.Mutable(index)->assign(value);
+}
+inline void BBMaterial::set_vec4factorytype(int index, std::string&& value) {
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.vec4FactoryType)
+  vec4factorytype_.Mutable(index)->assign(std::move(value));
+}
+inline void BBMaterial::set_vec4factorytype(int index, const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  vec4factorytype_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:BBSerializer.BBMaterial.vec4FactoryType)
+}
+inline void BBMaterial::set_vec4factorytype(int index, const char* value, size_t size) {
+  vec4factorytype_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:BBSerializer.BBMaterial.vec4FactoryType)
+}
+inline std::string* BBMaterial::_internal_add_vec4factorytype() {
+  return vec4factorytype_.Add();
+}
+inline void BBMaterial::add_vec4factorytype(const std::string& value) {
+  vec4factorytype_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.vec4FactoryType)
+}
+inline void BBMaterial::add_vec4factorytype(std::string&& value) {
+  vec4factorytype_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.vec4FactoryType)
+}
+inline void BBMaterial::add_vec4factorytype(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  vec4factorytype_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:BBSerializer.BBMaterial.vec4FactoryType)
+}
+inline void BBMaterial::add_vec4factorytype(const char* value, size_t size) {
+  vec4factorytype_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:BBSerializer.BBMaterial.vec4FactoryType)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
+BBMaterial::vec4factorytype() const {
+  // @@protoc_insertion_point(field_list:BBSerializer.BBMaterial.vec4FactoryType)
+  return vec4factorytype_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
+BBMaterial::mutable_vec4factorytype() {
+  // @@protoc_insertion_point(field_mutable_list:BBSerializer.BBMaterial.vec4FactoryType)
+  return &vec4factorytype_;
 }
 
 #ifdef __GNUC__
