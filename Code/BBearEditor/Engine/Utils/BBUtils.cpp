@@ -2,6 +2,7 @@
 #include <QDir>
 #include <QProcess>
 #include "FileSystem/BBFileListWidget.h"
+#include <GL/gl.h>
 
 
 QString BBConstant::BB_NAME_PROJECT = "";
@@ -99,4 +100,51 @@ unsigned char* BBUtils::decodeBMP(unsigned char *pBmpFileData, int &nWidth, int 
         return pPixelData;
     }
     return nullptr;
+}
+
+unsigned int BBUtils::getBlendFunc(int nIndex)
+{
+    unsigned int func = GL_ZERO;
+    switch (nIndex) {
+    case 0:
+        func = GL_ZERO;
+        break;
+    case 1:
+        func = GL_ONE;
+        break;
+    case 2:
+        func = GL_SRC_COLOR;
+        break;
+    case 3:
+        func = GL_ONE_MINUS_SRC_COLOR;
+        break;
+    case 4:
+        func = GL_SRC_ALPHA;
+        break;
+    case 5:
+        func = GL_ONE_MINUS_SRC_ALPHA;
+        break;
+    case 6:
+        func = GL_DST_ALPHA;
+        break;
+    case 7:
+        func = GL_ONE_MINUS_DST_ALPHA;
+        break;
+    default:
+        break;
+    }
+    return func;
+}
+
+QString BBUtils::getBlendFuncName(unsigned int func)
+{
+    QString name;
+    switch (func) {
+    case GL_ZERO:
+        name = "GL_ZERO";
+        break;
+    default:
+        break;
+    }
+    return name;
 }

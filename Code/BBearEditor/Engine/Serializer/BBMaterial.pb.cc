@@ -25,10 +25,12 @@ constexpr BBMaterial::BBMaterial(
   , floatvalue_()
   , vec4name_()
   , vec4value_()
-  , vec4factorytype_()
   , shadername_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , vshaderpath_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
-  , fshaderpath_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+  , fshaderpath_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , blendstate_(false)
+  , srcblendfunc_(0)
+  , dstblendfunc_(0){}
 struct BBMaterialDefaultTypeInternal {
   constexpr BBMaterialDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -58,7 +60,9 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_BBMaterial_2eproto::offsets[] 
   PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, floatvalue_),
   PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, vec4name_),
   PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, vec4value_),
-  PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, vec4factorytype_),
+  PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, blendstate_),
+  PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, srcblendfunc_),
+  PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, dstblendfunc_),
   0,
   1,
   2,
@@ -68,10 +72,12 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_BBMaterial_2eproto::offsets[] 
   ~0u,
   ~0u,
   ~0u,
-  ~0u,
+  3,
+  4,
+  5,
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 15, sizeof(::BBSerializer::BBMaterial)},
+  { 0, 17, sizeof(::BBSerializer::BBMaterial)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -80,22 +86,24 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_BBMaterial_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\020BBMaterial.proto\022\014BBSerializer\032\016BBVect"
-  "or.proto\"\261\002\n\nBBMaterial\022\027\n\nshaderName\030\001 "
+  "or.proto\"\230\003\n\nBBMaterial\022\027\n\nshaderName\030\001 "
   "\001(\tH\000\210\001\001\022\030\n\013vShaderPath\030\002 \001(\tH\001\210\001\001\022\030\n\013fS"
   "haderPath\030\003 \001(\tH\002\210\001\001\022\023\n\013textureName\030\004 \003("
   "\t\022\023\n\013texturePath\030\005 \003(\t\022\021\n\tfloatName\030\006 \003("
   "\t\022\022\n\nfloatValue\030\007 \003(\002\022\020\n\010vec4Name\030\010 \003(\t\022"
   "+\n\tvec4Value\030\t \003(\0132\030.BBSerializer.BBVect"
-  "or4f\022\027\n\017vec4FactoryType\030\n \003(\tB\r\n\013_shader"
-  "NameB\016\n\014_vShaderPathB\016\n\014_fShaderPathb\006pr"
-  "oto3"
+  "or4f\022\027\n\nblendState\030\n \001(\010H\003\210\001\001\022\031\n\014SRCBlen"
+  "dFunc\030\013 \001(\005H\004\210\001\001\022\031\n\014DSTBlendFunc\030\014 \001(\005H\005"
+  "\210\001\001B\r\n\013_shaderNameB\016\n\014_vShaderPathB\016\n\014_f"
+  "ShaderPathB\r\n\013_blendStateB\017\n\r_SRCBlendFu"
+  "ncB\017\n\r_DSTBlendFuncb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_BBMaterial_2eproto_deps[1] = {
   &::descriptor_table_BBVector_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_BBMaterial_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_BBMaterial_2eproto = {
-  false, false, 364, descriptor_table_protodef_BBMaterial_2eproto, "BBMaterial.proto", 
+  false, false, 467, descriptor_table_protodef_BBMaterial_2eproto, "BBMaterial.proto", 
   &descriptor_table_BBMaterial_2eproto_once, descriptor_table_BBMaterial_2eproto_deps, 1, 1,
   schemas, file_default_instances, TableStruct_BBMaterial_2eproto::offsets,
   file_level_metadata_BBMaterial_2eproto, file_level_enum_descriptors_BBMaterial_2eproto, file_level_service_descriptors_BBMaterial_2eproto,
@@ -122,6 +130,15 @@ class BBMaterial::_Internal {
   static void set_has_fshaderpath(HasBits* has_bits) {
     (*has_bits)[0] |= 4u;
   }
+  static void set_has_blendstate(HasBits* has_bits) {
+    (*has_bits)[0] |= 8u;
+  }
+  static void set_has_srcblendfunc(HasBits* has_bits) {
+    (*has_bits)[0] |= 16u;
+  }
+  static void set_has_dstblendfunc(HasBits* has_bits) {
+    (*has_bits)[0] |= 32u;
+  }
 };
 
 void BBMaterial::clear_vec4value() {
@@ -134,8 +151,7 @@ BBMaterial::BBMaterial(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   floatname_(arena),
   floatvalue_(arena),
   vec4name_(arena),
-  vec4value_(arena),
-  vec4factorytype_(arena) {
+  vec4value_(arena) {
   SharedCtor();
   RegisterArenaDtor(arena);
   // @@protoc_insertion_point(arena_constructor:BBSerializer.BBMaterial)
@@ -148,8 +164,7 @@ BBMaterial::BBMaterial(const BBMaterial& from)
       floatname_(from.floatname_),
       floatvalue_(from.floatvalue_),
       vec4name_(from.vec4name_),
-      vec4value_(from.vec4value_),
-      vec4factorytype_(from.vec4factorytype_) {
+      vec4value_(from.vec4value_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   shadername_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_shadername()) {
@@ -166,6 +181,9 @@ BBMaterial::BBMaterial(const BBMaterial& from)
     fshaderpath_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_fshaderpath(), 
       GetArena());
   }
+  ::memcpy(&blendstate_, &from.blendstate_,
+    static_cast<size_t>(reinterpret_cast<char*>(&dstblendfunc_) -
+    reinterpret_cast<char*>(&blendstate_)) + sizeof(dstblendfunc_));
   // @@protoc_insertion_point(copy_constructor:BBSerializer.BBMaterial)
 }
 
@@ -173,6 +191,10 @@ void BBMaterial::SharedCtor() {
 shadername_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 vshaderpath_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 fshaderpath_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&blendstate_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&dstblendfunc_) -
+    reinterpret_cast<char*>(&blendstate_)) + sizeof(dstblendfunc_));
 }
 
 BBMaterial::~BBMaterial() {
@@ -210,7 +232,6 @@ void BBMaterial::Clear() {
   floatvalue_.Clear();
   vec4name_.Clear();
   vec4value_.Clear();
-  vec4factorytype_.Clear();
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
@@ -222,6 +243,11 @@ void BBMaterial::Clear() {
     if (cached_has_bits & 0x00000004u) {
       fshaderpath_.ClearNonDefaultToEmpty();
     }
+  }
+  if (cached_has_bits & 0x00000038u) {
+    ::memset(&blendstate_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&dstblendfunc_) -
+        reinterpret_cast<char*>(&blendstate_)) + sizeof(dstblendfunc_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -339,18 +365,28 @@ const char* BBMaterial::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<74>(ptr));
         } else goto handle_unusual;
         continue;
-      // repeated string vec4FactoryType = 10;
+      // bool blendState = 10;
       case 10:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 82)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            auto str = _internal_add_vec4factorytype();
-            ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-            CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "BBSerializer.BBMaterial.vec4FactoryType"));
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<82>(ptr));
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 80)) {
+          _Internal::set_has_blendstate(&has_bits);
+          blendstate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 SRCBlendFunc = 11;
+      case 11:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 88)) {
+          _Internal::set_has_srcblendfunc(&has_bits);
+          srcblendfunc_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 DSTBlendFunc = 12;
+      case 12:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 96)) {
+          _Internal::set_has_dstblendfunc(&has_bits);
+          dstblendfunc_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
         } else goto handle_unusual;
         continue;
       default: {
@@ -466,14 +502,22 @@ failure:
       InternalWriteMessage(9, this->_internal_vec4value(i), target, stream);
   }
 
-  // repeated string vec4FactoryType = 10;
-  for (int i = 0, n = this->_internal_vec4factorytype_size(); i < n; i++) {
-    const auto& s = this->_internal_vec4factorytype(i);
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      s.data(), static_cast<int>(s.length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "BBSerializer.BBMaterial.vec4FactoryType");
-    target = stream->WriteString(10, s, target);
+  // bool blendState = 10;
+  if (_internal_has_blendstate()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(10, this->_internal_blendstate(), target);
+  }
+
+  // int32 SRCBlendFunc = 11;
+  if (_internal_has_srcblendfunc()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(11, this->_internal_srcblendfunc(), target);
+  }
+
+  // int32 DSTBlendFunc = 12;
+  if (_internal_has_dstblendfunc()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(12, this->_internal_dstblendfunc(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -543,16 +587,8 @@ size_t BBMaterial::ByteSizeLong() const {
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // repeated string vec4FactoryType = 10;
-  total_size += 1 *
-      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(vec4factorytype_.size());
-  for (int i = 0, n = vec4factorytype_.size(); i < n; i++) {
-    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-      vec4factorytype_.Get(i));
-  }
-
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  if (cached_has_bits & 0x0000003fu) {
     // string shaderName = 1;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
@@ -572,6 +608,25 @@ size_t BBMaterial::ByteSizeLong() const {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
           this->_internal_fshaderpath());
+    }
+
+    // bool blendState = 10;
+    if (cached_has_bits & 0x00000008u) {
+      total_size += 1 + 1;
+    }
+
+    // int32 SRCBlendFunc = 11;
+    if (cached_has_bits & 0x00000010u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+          this->_internal_srcblendfunc());
+    }
+
+    // int32 DSTBlendFunc = 12;
+    if (cached_has_bits & 0x00000020u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+          this->_internal_dstblendfunc());
     }
 
   }
@@ -612,9 +667,8 @@ void BBMaterial::MergeFrom(const BBMaterial& from) {
   floatvalue_.MergeFrom(from.floatvalue_);
   vec4name_.MergeFrom(from.vec4name_);
   vec4value_.MergeFrom(from.vec4value_);
-  vec4factorytype_.MergeFrom(from.vec4factorytype_);
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  if (cached_has_bits & 0x0000003fu) {
     if (cached_has_bits & 0x00000001u) {
       _internal_set_shadername(from._internal_shadername());
     }
@@ -624,6 +678,16 @@ void BBMaterial::MergeFrom(const BBMaterial& from) {
     if (cached_has_bits & 0x00000004u) {
       _internal_set_fshaderpath(from._internal_fshaderpath());
     }
+    if (cached_has_bits & 0x00000008u) {
+      blendstate_ = from.blendstate_;
+    }
+    if (cached_has_bits & 0x00000010u) {
+      srcblendfunc_ = from.srcblendfunc_;
+    }
+    if (cached_has_bits & 0x00000020u) {
+      dstblendfunc_ = from.dstblendfunc_;
+    }
+    _has_bits_[0] |= cached_has_bits;
   }
 }
 
@@ -655,10 +719,15 @@ void BBMaterial::InternalSwap(BBMaterial* other) {
   floatvalue_.InternalSwap(&other->floatvalue_);
   vec4name_.InternalSwap(&other->vec4name_);
   vec4value_.InternalSwap(&other->vec4value_);
-  vec4factorytype_.InternalSwap(&other->vec4factorytype_);
   shadername_.Swap(&other->shadername_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   vshaderpath_.Swap(&other->vshaderpath_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   fshaderpath_.Swap(&other->fshaderpath_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(BBMaterial, dstblendfunc_)
+      + sizeof(BBMaterial::dstblendfunc_)
+      - PROTOBUF_FIELD_OFFSET(BBMaterial, blendstate_)>(
+          reinterpret_cast<char*>(&blendstate_),
+          reinterpret_cast<char*>(&other->blendstate_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata BBMaterial::GetMetadata() const {

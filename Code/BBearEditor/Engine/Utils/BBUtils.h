@@ -173,6 +173,9 @@ public:
     static char *loadFileContent(const char *filePath, int &nFileSize);
     static bool saveToFile(const char *pFilePath, void *pBuffer, int nSize);
     static unsigned char* decodeBMP(unsigned char *pBmpFileData, int &nWidth, int &nHeight);
+
+    static unsigned int getBlendFunc(int nIndex);
+    static QString getBlendFuncName(unsigned int func);
 };
 
 #endif // BBUTILS_H

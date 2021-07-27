@@ -29,29 +29,6 @@ BBMaterialPropertyGroupManager::~BBMaterialPropertyGroupManager()
 
 }
 
-void BBMaterialPropertyGroupManager::setSampler2D(const QString &uniformName, const QString &texturePath)
-{
-    BBTexture texture;
-    m_pMaterial->setSampler2D(uniformName.toStdString().c_str(), texture.createTexture2D(texturePath), texturePath);
-    m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
-    BBRendererManager::changeTexture(m_pMaterial, uniformName, texturePath);
-}
-
-void BBMaterialPropertyGroupManager::setFloat(const QString &uniformName, float fValue)
-{
-    m_pMaterial->setFloat(uniformName.toStdString().c_str(), fValue);
-    m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
-    BBRendererManager::changeFloat(m_pMaterial, uniformName, fValue);
-}
-
-void BBMaterialPropertyGroupManager::setColor(float r, float g, float b, float a, const std::string &uniformName)
-{
-    m_pMaterial->setVector4(uniformName, r, g, b, a);
-    m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
-    float *ptr = new float[4] {r, g, b, a};
-    BBRendererManager::changeVector4(m_pMaterial, uniformName, ptr);
-}
-
 void BBMaterialPropertyGroupManager::addBlendStateItem()
 {
     QCheckBox *pBlendState = new QCheckBox(this);
@@ -73,12 +50,40 @@ void BBMaterialPropertyGroupManager::addBlendFuncItem()
                          "GL_ONE_MINUS_SRC_ALPHA",
                          "GL_DST_ALPHA",
                          "GL_ONE_MINUS_DST_ALPHA"};
-    BBEnumFactory *pSRCBlendFunc = new BBEnumFactory("src", items, "GL_SRC_ALPHA", this);
-    BBEnumFactory *pDSTBlendFunc = new BBEnumFactory("dst", items, "GL_ONE_MINUS_SRC_ALPHA", this);
+    BBEnumFactory *pSRCBlendFunc = new BBEnumFactory("src", items, BBUtils::getBlendFuncName(m_pMaterial->getSRCBlendFunc()), this);
+    BBEnumFactory *pDSTBlendFunc = new BBEnumFactory("dst", items, BBUtils::getBlendFuncName(m_pMaterial->getDSTBlendFunc()), this);
     QObject::connect(pSRCBlendFunc, SIGNAL(currentItemChanged(int)), this, SLOT(switchSRCBlendFunc(int)));
     QObject::connect(pDSTBlendFunc, SIGNAL(currentItemChanged(int)), this, SLOT(switchDSTBlendFunc(int)));
     QWidget *pWidget = addFactory("Blend Func", pSRCBlendFunc, pDSTBlendFunc);
     pWidget->setVisible(m_pMaterial->getBlendState());
+}
+
+void BBMaterialPropertyGroupManager::enableBlendState(bool bEnable)
+{
+    m_pMaterial->setBlendState(bEnable);
+    QWidget* pWidget = findChild<QWidget*>("Blend Func");
+    if (pWidget)
+    {
+        m_pContainer->setVisible(false);
+        pWidget->setVisible(bEnable);
+        m_pContainer->setVisible(true);
+    }
+    m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
+    BBRendererManager::changeBlendState(m_pMaterial, bEnable);
+}
+
+void BBMaterialPropertyGroupManager::switchSRCBlendFunc(int nIndex)
+{
+    m_pMaterial->setSRCBlendFunc(BBUtils::getBlendFunc(nIndex));
+    m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
+    BBRendererManager::changeSRCBlendFunc(m_pMaterial, nIndex);
+}
+
+void BBMaterialPropertyGroupManager::switchDSTBlendFunc(int nIndex)
+{
+    m_pMaterial->setDSTBlendFunc(BBUtils::getBlendFunc(nIndex));
+    m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
+    BBRendererManager::changeDSTBlendFunc(m_pMaterial, nIndex);
 }
 
 void BBMaterialPropertyGroupManager::addPropertyItems()
@@ -126,59 +131,25 @@ void BBMaterialPropertyGroupManager::addPropertyItems()
     }
 }
 
-void BBMaterialPropertyGroupManager::enableBlendState(bool bEnable)
+void BBMaterialPropertyGroupManager::setSampler2D(const QString &uniformName, const QString &texturePath)
 {
-    m_pMaterial->setBlendState(bEnable);
-    QWidget* pWidget = findChild<QWidget*>("Blend Func");
-    if (pWidget)
-    {
-        m_pContainer->setVisible(false);
-        pWidget->setVisible(bEnable);
-        m_pContainer->setVisible(true);
-    }
+    BBTexture texture;
+    m_pMaterial->setSampler2D(uniformName.toStdString().c_str(), texture.createTexture2D(texturePath), texturePath);
+    m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
+    BBRendererManager::changeTexture(m_pMaterial, uniformName, texturePath);
 }
 
-void BBMaterialPropertyGroupManager::switchSRCBlendFunc(int nIndex)
+void BBMaterialPropertyGroupManager::setFloat(const QString &uniformName, float fValue)
 {
-    m_pMaterial->setSRCBlendFunc(getBlendFunc(nIndex));
+    m_pMaterial->setFloat(uniformName.toStdString().c_str(), fValue);
+    m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
+    BBRendererManager::changeFloat(m_pMaterial, uniformName, fValue);
 }
 
-void BBMaterialPropertyGroupManager::switchDSTBlendFunc(int nIndex)
+void BBMaterialPropertyGroupManager::setColor(float r, float g, float b, float a, const std::string &uniformName)
 {
-    m_pMaterial->setDSTBlendFunc(getBlendFunc(nIndex));
+    m_pMaterial->setVector4(uniformName, r, g, b, a);
+    m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
+    float *ptr = new float[4] {r, g, b, a};
+    BBRendererManager::changeVector4(m_pMaterial, uniformName, ptr);
 }
-
-unsigned int BBMaterialPropertyGroupManager::getBlendFunc(int nIndex)
-{
-    unsigned int func = GL_ZERO;
-    switch (nIndex) {
-    case 0:
-        func = GL_ZERO;
-        break;
-    case 1:
-        func = GL_ONE;
-        break;
-    case 2:
-        func = GL_SRC_COLOR;
-        break;
-    case 3:
-        func = GL_ONE_MINUS_SRC_COLOR;
-        break;
-    case 4:
-        func = GL_SRC_ALPHA;
-        break;
-    case 5:
-        func = GL_ONE_MINUS_SRC_ALPHA;
-        break;
-    case 6:
-        func = GL_DST_ALPHA;
-        break;
-    case 7:
-        func = GL_ONE_MINUS_DST_ALPHA;
-        break;
-    default:
-        break;
-    }
-    return func;
-}
-

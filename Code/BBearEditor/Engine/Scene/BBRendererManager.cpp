@@ -107,6 +107,39 @@ void BBRendererManager::changeVector4(BBMaterial *pMaterial, const std::string &
     serialize(material, materialPath);
 }
 
+void BBRendererManager::changeBlendState(BBMaterial *pMaterial, bool bEnable)
+{
+    QString materialPath = m_CachedMaterials.key(pMaterial);
+    BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
+    BBSerializer::BBMaterial material = deserialize(materialPath);
+
+    material.set_blendstate(bEnable);
+
+    serialize(material, materialPath);
+}
+
+void BBRendererManager::changeSRCBlendFunc(BBMaterial *pMaterial, int src)
+{
+    QString materialPath = m_CachedMaterials.key(pMaterial);
+    BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
+    BBSerializer::BBMaterial material = deserialize(materialPath);
+
+    material.set_srcblendfunc(src);
+
+    serialize(material, materialPath);
+}
+
+void BBRendererManager::changeDSTBlendFunc(BBMaterial *pMaterial, int dst)
+{
+    QString materialPath = m_CachedMaterials.key(pMaterial);
+    BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
+    BBSerializer::BBMaterial material = deserialize(materialPath);
+
+    material.set_dstblendfunc(dst);
+
+    serialize(material, materialPath);
+}
+
 QString BBRendererManager::getShaderFilePath(const QString &name)
 {
     QString filePath = BB_PATH_RESOURCE_SHADER() + name;
@@ -202,8 +235,8 @@ void BBRendererManager::loadMaterialContent(const QString &filePath, BBMaterial 
                     QString::fromStdString(material.fshaderpath()));
 
     // render state
-    pMaterial->setBlendState(true);
-    pMaterial->setBlendFunc(GL_ONE, GL_ONE);
+    pMaterial->setBlendState(material.blendstate());
+    pMaterial->setBlendFunc(BBUtils::getBlendFunc(material.srcblendfunc()), BBUtils::getBlendFunc(material.dstblendfunc()));
 
     // uniform
     int nTextureCount = material.texturename_size();

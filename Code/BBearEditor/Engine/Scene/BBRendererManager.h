@@ -18,6 +18,7 @@ public:
     static BBMaterial* loadMaterial(const QString &filePath);
     static QString getMaterialPath(BBMaterial *pMaterial);
 
+public:
     /* change cached materials and save changes */
     static void changeVShader(BBMaterial *pMaterial, const QString &name);
     static void changeFShader(BBMaterial *pMaterial, const QString &name);
@@ -25,6 +26,11 @@ public:
     static void changeFloat(BBMaterial *pMaterial, const QString &floatName, float fValue);
     static void changeVector4(BBMaterial *pMaterial, const std::string &name, float *fValue);
 
+    static void changeBlendState(BBMaterial *pMaterial, bool bEnable);
+    static void changeSRCBlendFunc(BBMaterial *pMaterial, int src);
+    static void changeDSTBlendFunc(BBMaterial *pMaterial, int dst);
+
+public:
     static QString getShaderFilePath(const QString &name);
 
     static BBMaterial* getDeferredRenderingMaterial(int nIndex);

@@ -179,10 +179,12 @@ class BBMaterial PROTOBUF_FINAL :
     kFloatValueFieldNumber = 7,
     kVec4NameFieldNumber = 8,
     kVec4ValueFieldNumber = 9,
-    kVec4FactoryTypeFieldNumber = 10,
     kShaderNameFieldNumber = 1,
     kVShaderPathFieldNumber = 2,
     kFShaderPathFieldNumber = 3,
+    kBlendStateFieldNumber = 10,
+    kSRCBlendFuncFieldNumber = 11,
+    kDSTBlendFuncFieldNumber = 12,
   };
   // repeated string textureName = 4;
   int texturename_size() const;
@@ -320,30 +322,6 @@ class BBMaterial PROTOBUF_FINAL :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBVector4f >&
       vec4value() const;
 
-  // repeated string vec4FactoryType = 10;
-  int vec4factorytype_size() const;
-  private:
-  int _internal_vec4factorytype_size() const;
-  public:
-  void clear_vec4factorytype();
-  const std::string& vec4factorytype(int index) const;
-  std::string* mutable_vec4factorytype(int index);
-  void set_vec4factorytype(int index, const std::string& value);
-  void set_vec4factorytype(int index, std::string&& value);
-  void set_vec4factorytype(int index, const char* value);
-  void set_vec4factorytype(int index, const char* value, size_t size);
-  std::string* add_vec4factorytype();
-  void add_vec4factorytype(const std::string& value);
-  void add_vec4factorytype(std::string&& value);
-  void add_vec4factorytype(const char* value);
-  void add_vec4factorytype(const char* value, size_t size);
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>& vec4factorytype() const;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>* mutable_vec4factorytype();
-  private:
-  const std::string& _internal_vec4factorytype(int index) const;
-  std::string* _internal_add_vec4factorytype();
-  public:
-
   // string shaderName = 1;
   bool has_shadername() const;
   private:
@@ -398,6 +376,45 @@ class BBMaterial PROTOBUF_FINAL :
   std::string* _internal_mutable_fshaderpath();
   public:
 
+  // bool blendState = 10;
+  bool has_blendstate() const;
+  private:
+  bool _internal_has_blendstate() const;
+  public:
+  void clear_blendstate();
+  bool blendstate() const;
+  void set_blendstate(bool value);
+  private:
+  bool _internal_blendstate() const;
+  void _internal_set_blendstate(bool value);
+  public:
+
+  // int32 SRCBlendFunc = 11;
+  bool has_srcblendfunc() const;
+  private:
+  bool _internal_has_srcblendfunc() const;
+  public:
+  void clear_srcblendfunc();
+  ::PROTOBUF_NAMESPACE_ID::int32 srcblendfunc() const;
+  void set_srcblendfunc(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_srcblendfunc() const;
+  void _internal_set_srcblendfunc(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 DSTBlendFunc = 12;
+  bool has_dstblendfunc() const;
+  private:
+  bool _internal_has_dstblendfunc() const;
+  public:
+  void clear_dstblendfunc();
+  ::PROTOBUF_NAMESPACE_ID::int32 dstblendfunc() const;
+  void set_dstblendfunc(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_dstblendfunc() const;
+  void _internal_set_dstblendfunc(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:BBSerializer.BBMaterial)
  private:
   class _Internal;
@@ -413,10 +430,12 @@ class BBMaterial PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< float > floatvalue_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> vec4name_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBVector4f > vec4value_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> vec4factorytype_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr shadername_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr vshaderpath_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr fshaderpath_;
+  bool blendstate_;
+  ::PROTOBUF_NAMESPACE_ID::int32 srcblendfunc_;
+  ::PROTOBUF_NAMESPACE_ID::int32 dstblendfunc_;
   friend struct ::TableStruct_BBMaterial_2eproto;
 };
 // ===================================================================
@@ -980,78 +999,88 @@ BBMaterial::vec4value() const {
   return vec4value_;
 }
 
-// repeated string vec4FactoryType = 10;
-inline int BBMaterial::_internal_vec4factorytype_size() const {
-  return vec4factorytype_.size();
+// bool blendState = 10;
+inline bool BBMaterial::_internal_has_blendstate() const {
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  return value;
 }
-inline int BBMaterial::vec4factorytype_size() const {
-  return _internal_vec4factorytype_size();
+inline bool BBMaterial::has_blendstate() const {
+  return _internal_has_blendstate();
 }
-inline void BBMaterial::clear_vec4factorytype() {
-  vec4factorytype_.Clear();
+inline void BBMaterial::clear_blendstate() {
+  blendstate_ = false;
+  _has_bits_[0] &= ~0x00000008u;
 }
-inline std::string* BBMaterial::add_vec4factorytype() {
-  // @@protoc_insertion_point(field_add_mutable:BBSerializer.BBMaterial.vec4FactoryType)
-  return _internal_add_vec4factorytype();
+inline bool BBMaterial::_internal_blendstate() const {
+  return blendstate_;
 }
-inline const std::string& BBMaterial::_internal_vec4factorytype(int index) const {
-  return vec4factorytype_.Get(index);
+inline bool BBMaterial::blendstate() const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.blendState)
+  return _internal_blendstate();
 }
-inline const std::string& BBMaterial::vec4factorytype(int index) const {
-  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.vec4FactoryType)
-  return _internal_vec4factorytype(index);
+inline void BBMaterial::_internal_set_blendstate(bool value) {
+  _has_bits_[0] |= 0x00000008u;
+  blendstate_ = value;
 }
-inline std::string* BBMaterial::mutable_vec4factorytype(int index) {
-  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.vec4FactoryType)
-  return vec4factorytype_.Mutable(index);
+inline void BBMaterial::set_blendstate(bool value) {
+  _internal_set_blendstate(value);
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.blendState)
 }
-inline void BBMaterial::set_vec4factorytype(int index, const std::string& value) {
-  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.vec4FactoryType)
-  vec4factorytype_.Mutable(index)->assign(value);
+
+// int32 SRCBlendFunc = 11;
+inline bool BBMaterial::_internal_has_srcblendfunc() const {
+  bool value = (_has_bits_[0] & 0x00000010u) != 0;
+  return value;
 }
-inline void BBMaterial::set_vec4factorytype(int index, std::string&& value) {
-  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.vec4FactoryType)
-  vec4factorytype_.Mutable(index)->assign(std::move(value));
+inline bool BBMaterial::has_srcblendfunc() const {
+  return _internal_has_srcblendfunc();
 }
-inline void BBMaterial::set_vec4factorytype(int index, const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  vec4factorytype_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:BBSerializer.BBMaterial.vec4FactoryType)
+inline void BBMaterial::clear_srcblendfunc() {
+  srcblendfunc_ = 0;
+  _has_bits_[0] &= ~0x00000010u;
 }
-inline void BBMaterial::set_vec4factorytype(int index, const char* value, size_t size) {
-  vec4factorytype_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:BBSerializer.BBMaterial.vec4FactoryType)
+inline ::PROTOBUF_NAMESPACE_ID::int32 BBMaterial::_internal_srcblendfunc() const {
+  return srcblendfunc_;
 }
-inline std::string* BBMaterial::_internal_add_vec4factorytype() {
-  return vec4factorytype_.Add();
+inline ::PROTOBUF_NAMESPACE_ID::int32 BBMaterial::srcblendfunc() const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.SRCBlendFunc)
+  return _internal_srcblendfunc();
 }
-inline void BBMaterial::add_vec4factorytype(const std::string& value) {
-  vec4factorytype_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.vec4FactoryType)
+inline void BBMaterial::_internal_set_srcblendfunc(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000010u;
+  srcblendfunc_ = value;
 }
-inline void BBMaterial::add_vec4factorytype(std::string&& value) {
-  vec4factorytype_.Add(std::move(value));
-  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.vec4FactoryType)
+inline void BBMaterial::set_srcblendfunc(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_srcblendfunc(value);
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.SRCBlendFunc)
 }
-inline void BBMaterial::add_vec4factorytype(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  vec4factorytype_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:BBSerializer.BBMaterial.vec4FactoryType)
+
+// int32 DSTBlendFunc = 12;
+inline bool BBMaterial::_internal_has_dstblendfunc() const {
+  bool value = (_has_bits_[0] & 0x00000020u) != 0;
+  return value;
 }
-inline void BBMaterial::add_vec4factorytype(const char* value, size_t size) {
-  vec4factorytype_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:BBSerializer.BBMaterial.vec4FactoryType)
+inline bool BBMaterial::has_dstblendfunc() const {
+  return _internal_has_dstblendfunc();
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
-BBMaterial::vec4factorytype() const {
-  // @@protoc_insertion_point(field_list:BBSerializer.BBMaterial.vec4FactoryType)
-  return vec4factorytype_;
+inline void BBMaterial::clear_dstblendfunc() {
+  dstblendfunc_ = 0;
+  _has_bits_[0] &= ~0x00000020u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
-BBMaterial::mutable_vec4factorytype() {
-  // @@protoc_insertion_point(field_mutable_list:BBSerializer.BBMaterial.vec4FactoryType)
-  return &vec4factorytype_;
+inline ::PROTOBUF_NAMESPACE_ID::int32 BBMaterial::_internal_dstblendfunc() const {
+  return dstblendfunc_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 BBMaterial::dstblendfunc() const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.DSTBlendFunc)
+  return _internal_dstblendfunc();
+}
+inline void BBMaterial::_internal_set_dstblendfunc(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000020u;
+  dstblendfunc_ = value;
+}
+inline void BBMaterial::set_dstblendfunc(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_dstblendfunc(value);
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.DSTBlendFunc)
 }
 
 #ifdef __GNUC__
