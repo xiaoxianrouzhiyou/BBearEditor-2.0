@@ -112,6 +112,12 @@ void BBDrawCall::switchRenderingSettings(int nIndex)
         m_DrawFunc = &BBDrawCall::deferredRendering;
         BBSceneManager::enableDeferredRendering(true);
         break;
+    case 11:
+        m_DrawFunc = &BBDrawCall::forwardRendering;
+        break;
+    case 12:
+        m_DrawFunc = &BBDrawCall::fboRendering;
+        break;
     default:
         break;
     }
@@ -244,6 +250,12 @@ void BBDrawCall::uiRendering(BBCanvas *pCanvas)
     pRenderPass->restoreStencilBuffer();
     pRenderPass->unbind();
     m_pVBO->unbind();
+}
+
+void BBDrawCall::fboRendering(BBCamera *pCamera)
+{
+    BB_PROCESS_ERROR_RETURN(!m_pMaterial->isContainColorFBOUniform());
+    forwardRendering(pCamera);
 }
 
 void BBDrawCall::updateOrderInOpaqueRenderQueue()

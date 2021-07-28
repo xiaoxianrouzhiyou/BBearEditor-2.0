@@ -260,7 +260,7 @@ void BBRendererManager::loadMaterialContent(const QString &filePath, BBMaterial 
         pMaterial->setVector4(material.vec4name(i), vec4.x(), vec4.y(), vec4.z(), vec4.w());
     }
 
-    // default
+    // test
     float *pLightPosition = new float[4] {1.0f, 1.0f, 0.0f, 0.0f};
     float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};
     pMaterial->setVector4(LOCATION_LIGHT_POSITION, pLightPosition);

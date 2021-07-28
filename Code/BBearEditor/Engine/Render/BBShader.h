@@ -27,6 +27,7 @@ public:
     inline GLuint getProgram() const { return m_Program; }
     void activeAttributes();
     inline BBUniformUpdater* getUniforms() { return m_pUniforms; }
+    inline bool isContainColorFBOUniform() { return m_bContainColorFBOUniform; }
 
 private:
     void initAttributes();
@@ -48,6 +49,7 @@ private:
     BBAttribute *m_pAttributes;
     BBUniformUpdater *m_pUniforms;
     QMap<std::string, BBMaterialProperty*> m_Properties;
+    bool m_bContainColorFBOUniform;
 };
 
 

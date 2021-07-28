@@ -230,3 +230,8 @@ BBShader* BBMaterial::getShader()
     }
     return nullptr;
 }
+
+bool BBMaterial::isContainColorFBOUniform()
+{
+    return getShader()->isContainColorFBOUniform();
+}

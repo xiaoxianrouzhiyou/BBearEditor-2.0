@@ -44,6 +44,7 @@ public:
     void forwardRendering(BBCamera *pCamera);
     void deferredRendering(BBCamera *pCamera);
     void uiRendering(BBCanvas *pCanvas);
+    void fboRendering(BBCamera *pCamera);
 
 private:
     void updateOrderInOpaqueRenderQueue();

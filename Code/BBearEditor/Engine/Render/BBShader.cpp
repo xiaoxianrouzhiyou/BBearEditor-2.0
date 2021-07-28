@@ -12,6 +12,7 @@ BBShader::BBShader()
     m_pAttributes = NULL;
     m_pUniforms = NULL;
     m_Program = 0;
+    m_bContainColorFBOUniform = false;
 }
 
 BBShader::~BBShader()
@@ -230,6 +231,7 @@ BBUniformUpdater* BBShader::initUniformSampler2D(GLint location, const char *pUn
     if (strcmp(pUniformName, LOCATION_COLORFBO) == 0)
     {
         updateUniformFunc = &BBUniformUpdater::updateColorFBO;
+        m_bContainColorFBOUniform = true;
     }
     else if (strcmp(pUniformName, LOCATION_DEPTHFBO) == 0)
     {

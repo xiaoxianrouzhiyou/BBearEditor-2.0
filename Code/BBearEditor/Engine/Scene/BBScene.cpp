@@ -542,6 +542,7 @@ void BBScene::unbindFBO()
 
 void BBScene::writeFBO()
 {
+    BBDrawCall::switchRenderingSettings(12);
     m_pFBO[0]->bind();
 
     m_pSkyBox->render(m_pCamera);
@@ -550,6 +551,7 @@ void BBScene::writeFBO()
     m_pRenderQueue->render();
 
     m_pFBO[0]->unbind();
+    BBDrawCall::switchRenderingSettings(11);
 }
 
 

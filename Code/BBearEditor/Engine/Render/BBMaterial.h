@@ -55,6 +55,7 @@ public:
     void setAdditiveRenderPass(BBRenderPass *pRenderPass) { m_pAdditiveRenderPass = pRenderPass; }
     inline BBRenderPass* getAdditiveRenderPass() const { return m_pAdditiveRenderPass; }
     BBShader* getShader();
+    bool isContainColorFBOUniform();
 
 private:
     BBRenderPass *m_pBaseRenderPass;
