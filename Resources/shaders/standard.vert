@@ -13,11 +13,14 @@ uniform mat4 modelMatrix;
 uniform vec4 lightPosition;
 uniform vec4 lightColor;
 
-vec4 getDirectionalLightColor()
+vec4 getLambertDirectionalLightColor()
 {
     vec3 light_pos_normalized = normalize(lightPosition.xyz);
     vec3 normal_normalized = normalize(normal.xyz);
-    return dot(light_pos_normalized, normal_normalized) * lightColor;
+    vec4 light_color = dot(light_pos_normalized, normal_normalized) * lightColor;
+    // Ambient
+    light_color.xyz += vec3(0.2);
+    return light_color;
 }
 
 void main()
@@ -27,7 +30,7 @@ void main()
     V_Normal = normal;
     if (lightPosition.w == 0.0)
     {
-        V_Color = V_Color * getDirectionalLightColor();
+        V_Color = V_Color * getLambertDirectionalLightColor();
     }
     else
     {

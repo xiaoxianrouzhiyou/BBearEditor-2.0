@@ -111,6 +111,11 @@ void BBScene::defaultRender()
     // BBGameObject
     m_pRenderQueue->render();
 
+    for (QList<BBGameObject*>::Iterator itr = m_Lights.begin(); itr != m_Lights.end(); itr++)
+    {
+        ((BBLight*)(*itr))->render(m_pCamera);
+    }
+
     for (QList<BBGameObject*>::Iterator itr = m_Canvases.begin(); itr != m_Canvases.end(); itr++)
     {
         ((BBCanvas*)(*itr))->render();
@@ -330,7 +335,6 @@ BBLight* BBScene::createLight(const QString &fileName, const QVector3D &position
         pLight->setBaseAttributes(fileName.split('.')[0], BB_CLASSNAME_SPOT_LIGHT, "light2");
     }
     pLight->init(fileName);
-    pLight->insertInRenderQueue(m_pRenderQueue);
     m_Lights.append(pLight);
     if (bSelect)
     {
