@@ -49,21 +49,9 @@ void BBRenderPass::bind(void *ptr)
     m_pShader->activeAttributes();
 
     BBUniformUpdater *pUniformUpdater = m_pUniforms;
-    int nSlotIndex = 0;
     while (pUniformUpdater != nullptr)
     {
-        if (pUniformUpdater->getUpdateUniformFunc() == &BBUniformUpdater::updateSampler2D)
-        {
-            glActiveTexture(GL_TEXTURE0 + nSlotIndex);
-            BBSampler2DMaterialProperty *pProperty = (BBSampler2DMaterialProperty*) pUniformUpdater->getTargetProperty();
-            glBindTexture(GL_TEXTURE_2D, pProperty->getTextureName());
-            glUniform1i(pUniformUpdater->getLocation(), nSlotIndex);
-            nSlotIndex++;
-        }
-        else
-        {
-            pUniformUpdater->updateUniform(pUniformUpdater->getLocation(), ptr, pUniformUpdater->getTargetProperty());
-        }
+        pUniformUpdater->updateUniform(pUniformUpdater->getLocation(), ptr, pUniformUpdater->getTargetProperty());
         pUniformUpdater = pUniformUpdater->next<BBUniformUpdater>();
     }
 }

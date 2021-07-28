@@ -127,6 +127,7 @@ void BBShader::initUniforms()
 {
     GLint count = 0;
     glGetProgramiv(m_Program, GL_ACTIVE_UNIFORMS, &count);
+    int nSlotIndex = 2; // Reserved for FBO
     for (int i = 0; i < count; i++)
     {
         GLsizei length = 0;
@@ -151,7 +152,7 @@ void BBShader::initUniforms()
         }
         else if (type == GL_SAMPLER_2D)
         {
-            pUniformUpdater = initUniformSampler2D(location, uniformName);
+            pUniformUpdater = initUniformSampler2D(location, uniformName, nSlotIndex);
         }
 
         appendUniformUpdater(pUniformUpdater);
@@ -222,11 +223,26 @@ BBUniformUpdater* BBShader::initUniformVector4(GLint location, const char *pUnif
     return new BBUniformUpdater(location, updateUniformFunc, pProperty);
 }
 
-BBUniformUpdater* BBShader::initUniformSampler2D(GLint location, const char *pUniformName)
+BBUniformUpdater* BBShader::initUniformSampler2D(GLint location, const char *pUniformName, int &nSlotIndex)
 {
-    BBSampler2DMaterialProperty *pProperty = new BBSampler2DMaterialProperty(pUniformName);
-    m_Properties.insert(pUniformName, pProperty);
-    return new BBUniformUpdater(location, &BBUniformUpdater::updateSampler2D, pProperty);
+    BBUpdateUniformFunc updateUniformFunc = &BBUniformUpdater::updateSampler2D;
+    BBSampler2DMaterialProperty *pProperty = nullptr;
+    if (strcmp(pUniformName, LOCATION_COLORFBO) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updateColorFBO;
+    }
+    else if (strcmp(pUniformName, LOCATION_DEPTHFBO) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updateDepthFBO;
+    }
+    else
+    {
+        pProperty = new BBSampler2DMaterialProperty(pUniformName, nSlotIndex);
+        m_Properties.insert(pUniformName, pProperty);
+        nSlotIndex++;
+    }
+
+    return new BBUniformUpdater(location, updateUniformFunc, pProperty);
 }
 
 void BBShader::appendUniformUpdater(BBUniformUpdater *pUniformUpdater)

@@ -98,18 +98,20 @@ private:
 class BBSampler2DMaterialProperty : public BBMaterialProperty
 {
 public:
-    BBSampler2DMaterialProperty(const char *name);
+    BBSampler2DMaterialProperty(const char *name, int nSlotIndex);
     ~BBSampler2DMaterialProperty();
 
     BBMaterialProperty* clone() override;
 
     void setTextureName(GLuint textureName, const QString &resourcePath = "");
     inline GLuint getTextureName() const { return m_TextureName; }
+    inline int getSlotIndex() { return m_nSlotIndex; }
     inline QString getResourcePath() { return m_ResourcePath; }
 
 private:
     // 智能指针 to do
     GLuint m_TextureName;
+    int m_nSlotIndex;
     QString m_ResourcePath;
 };
 

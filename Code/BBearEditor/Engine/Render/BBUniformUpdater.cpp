@@ -2,6 +2,8 @@
 #include "BBCamera.h"
 #include "2D/BBCanvas.h"
 #include <QDateTime>
+#include "Scene/BBSceneManager.h"
+#include "Scene/BBScene.h"
 
 
 BBUniformUpdater::BBUniformUpdater(GLint location, const BBUpdateUniformFunc &updateFunc, BBMaterialProperty *pTargetProperty)
@@ -68,6 +70,20 @@ void BBUniformUpdater::updateTime(GLint location, void *pUserData, void *pProper
     m_LastTime = currentTime;
 }
 
+void BBUniformUpdater::updateColorFBO(GLint location, void *pCamera, void *pPropertyValue)
+{
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getColorFBO());
+    glUniform1i(location, 0);
+}
+
+void BBUniformUpdater::updateDepthFBO(GLint location, void *pCamera, void *pPropertyValue)
+{
+    glActiveTexture(GL_TEXTURE0 + 1);
+    glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getDepthFBO());
+    glUniform1i(location, 1);
+}
+
 void BBUniformUpdater::updateFloat(GLint location, void *pCamera, void *pPropertyValue)
 {
     BBFloatMaterialProperty *pProperty = (BBFloatMaterialProperty*)pPropertyValue;
@@ -89,5 +105,8 @@ void BBUniformUpdater::updateVector4(GLint location, void *pCamera, void *pPrope
 void BBUniformUpdater::updateSampler2D(GLint location, void *pCamera, void *pPropertyValue)
 {
     BBSampler2DMaterialProperty *pProperty = (BBSampler2DMaterialProperty*)pPropertyValue;
-    glUniform1i(location, pProperty->getTextureName());
+    int nSlotIndex = pProperty->getSlotIndex();
+    glActiveTexture(GL_TEXTURE0 + nSlotIndex);
+    glBindTexture(GL_TEXTURE_2D, pProperty->getTextureName());
+    glUniform1i(location, nSlotIndex);
 }

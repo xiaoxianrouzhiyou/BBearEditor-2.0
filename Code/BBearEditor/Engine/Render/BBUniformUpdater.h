@@ -31,6 +31,9 @@ public:
     void updateCanvas(GLint location, void *pCanvas, void *pPropertyValue);
     void updateScreenParameters(GLint location, void *pCamera, void *pPropertyValue);
     void updateTime(GLint location, void *pUserData, void *pPropertyValue);
+    void updateColorFBO(GLint location, void *pCamera, void *pPropertyValue);
+    void updateDepthFBO(GLint location, void *pCamera, void *pPropertyValue);
+
     void updateFloat(GLint location, void *pCamera, void *pPropertyValue);
     void updateMatrix4(GLint location, void *pCamera, void *pPropertyValue);
     void updateVector4(GLint location, void *pCamera, void *pPropertyValue);

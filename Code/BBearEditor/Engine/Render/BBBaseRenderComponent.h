@@ -35,6 +35,8 @@
 #define LOCATION_LIGHT_SETTINGS(x) "lightSettings"#x
 #define LOCATION_SCREEN_PARAMETERS "screenParameters"
 #define LOCATION_TIME "time"
+#define LOCATION_COLORFBO "ColorFBO"
+#define LOCATION_DEPTHFBO "DepthFBO"
 
 
 class BBBaseRenderComponent : protected QOpenGLExtraFunctions

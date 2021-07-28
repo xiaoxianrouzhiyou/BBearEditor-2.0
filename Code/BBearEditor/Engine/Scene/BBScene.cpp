@@ -26,6 +26,7 @@
 
 
 QString BBScene::m_ColorBufferName = "color";
+QString BBScene::m_DepthBufferName = "depth";
 
 BBScene::BBScene()
 {
@@ -102,22 +103,13 @@ void BBScene::defaultRender()
     // refresh camera position and direction, update pos and ..., Convenient for subsequent use
     m_pCamera->update(m_fUpdateRate);
 
-    bindFBO();
-//    renderShadowMap();
-//    //给模型添加高度图信息 用于阴影计算
-//    for (QList<GameObject*>::Iterator itr = models.begin(); itr != models.end(); itr++)
-//    {
-//        Model *model = (Model*)(*itr);
-//        model->setShadowMap(mFBO->getBuffer("depth"));
-//    }
+    writeFBO();
 
     m_pSkyBox->render(m_pCamera);
     m_pHorizontalPlane->render(m_pCamera);
 
     // BBGameObject
     m_pRenderQueue->render();
-
-    unbindFBO();
 
     for (QList<BBGameObject*>::Iterator itr = m_Canvases.begin(); itr != m_Canvases.end(); itr++)
     {
@@ -214,7 +206,7 @@ void BBScene::resize(float width, float height)
             BB_SAFE_DELETE(m_pFBO[i]);
         m_pFBO[i] = new BBFrameBufferObject;
         m_pFBO[i]->attachColorBuffer(m_ColorBufferName, GL_COLOR_ATTACHMENT0, width, height, GL_RGBA32F);
-        m_pFBO[i]->attachDepthBuffer("depth", width, height);
+        m_pFBO[i]->attachDepthBuffer(m_DepthBufferName, width, height);
         m_pFBO[i]->finish();
     }
 
@@ -224,6 +216,16 @@ void BBScene::resize(float width, float height)
     }
 
     m_pRayTracker->onWindowResize(width, height);
+}
+
+GLuint BBScene::getColorFBO()
+{
+    return m_pFBO[0]->getBuffer(m_ColorBufferName);
+}
+
+GLuint BBScene::getDepthFBO()
+{
+    return m_pFBO[0]->getBuffer(m_DepthBufferName);
 }
 
 void BBScene::setSkyBox(const QString &path)
@@ -538,6 +540,17 @@ void BBScene::unbindFBO()
 //    }
 }
 
+void BBScene::writeFBO()
+{
+    m_pFBO[0]->bind();
+
+    m_pSkyBox->render(m_pCamera);
+    m_pHorizontalPlane->render(m_pCamera);
+    // BBGameObject
+    m_pRenderQueue->render();
+
+    m_pFBO[0]->unbind();
+}
 
 
 
@@ -595,21 +608,5 @@ void BBScene::unbindFBO()
 //        transformCoordinate->setSelectedObject(audio);
 //    }
 //    return audio;
-//}
-
-//bool Scene::setModelMaterial(Model *model, QString mtlPath)
-//{
-//    if (model)
-//    {
-//        //模型设置材质
-//        Material *material = Material::mtlMap.value(mtlPath);
-//        model->setMaterial(material);
-//        return true;
-//    }
-//    else
-//    {
-//        //没有合法模型
-//        return false;
-//    }
 //}
 

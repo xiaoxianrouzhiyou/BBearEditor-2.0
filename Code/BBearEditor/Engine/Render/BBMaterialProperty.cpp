@@ -100,10 +100,11 @@ BBMaterialProperty* BBVector4MaterialProperty::clone()
  * @brief BBSampler2DMaterialProperty::BBSampler2DMaterialProperty
  * @param name
  */
-BBSampler2DMaterialProperty::BBSampler2DMaterialProperty(const char *name)
+BBSampler2DMaterialProperty::BBSampler2DMaterialProperty(const char *name, int nSlotIndex)
     : BBMaterialProperty(Sampler2D, name)
 {
     m_TextureName = 0;
+    m_nSlotIndex = nSlotIndex;
 }
 
 BBSampler2DMaterialProperty::~BBSampler2DMaterialProperty()
@@ -113,7 +114,7 @@ BBSampler2DMaterialProperty::~BBSampler2DMaterialProperty()
 
 BBMaterialProperty* BBSampler2DMaterialProperty::clone()
 {
-    BBSampler2DMaterialProperty *pRet = new BBSampler2DMaterialProperty(m_Name);
+    BBSampler2DMaterialProperty *pRet = new BBSampler2DMaterialProperty(m_Name, m_nSlotIndex);
     pRet->setTextureName(m_TextureName, m_ResourcePath);
     return pRet;
 }
