@@ -223,8 +223,6 @@ void BBScene::resize(float width, float height)
         ((BBCanvas*)(*itr))->resize(width, height);
     }
 
-    m_pTransformCoordinateSystem->resize(width, height);
-
     m_pRayTracker->onWindowResize(width, height);
 }
 

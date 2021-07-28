@@ -39,7 +39,6 @@ public:
     BBCoordinateCircle2D(int x, int y, int nWidth, int nHeight);
 
     void init() override;
-    void resize(float fWidth, float fHeight) override;
 };
 
 
@@ -49,7 +48,6 @@ public:
     BBCoordinateTickMark2D(int x, int y, int nWidth, int nHeight);
 
     void init() override;
-    void resize(float fWidth, float fHeight) override;
 };
 
 
@@ -59,7 +57,6 @@ public:
     BBCoordinateSector2D(int x, int y, int nWidth, int nHeight);
 
     void init() override;
-    void resize(float fWidth, float fHeight) override;
 };
 
 

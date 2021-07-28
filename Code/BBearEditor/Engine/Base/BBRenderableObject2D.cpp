@@ -40,8 +40,3 @@ void BBRenderableObject2D::render(BBCanvas *pCanvas)
         m_pDrawCalls->uiRendering(pCanvas);
     }
 }
-
-void BBRenderableObject2D::resize(float fWidth, float fHeight)
-{
-    m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, fWidth, fHeight, 0.0f, 0.0f);
-}

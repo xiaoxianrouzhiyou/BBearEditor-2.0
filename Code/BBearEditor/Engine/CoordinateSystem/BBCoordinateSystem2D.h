@@ -18,7 +18,6 @@ public:
 
     void init() override;
     void render(BBCamera *pCamera) override;
-    void resize(float fWidth, float fHeight) override;
 
     void setScreenCoordinate(int x, int y) override;
     void translate(int nDeltaX, int nDeltaY) override;
@@ -64,7 +63,6 @@ public:
 
     void init() override;
     void render(BBCamera *pCamera) override;
-    void resize(float fWidth, float fHeight) override;
 
     void setScreenCoordinate(int x, int y) override;
 

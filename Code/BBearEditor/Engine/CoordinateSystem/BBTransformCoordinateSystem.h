@@ -21,7 +21,6 @@ public:
 
     void init() override;
     void render(BBCamera *pCamera) override;
-    void resize(float fWidth, float fHeight) override;
 
     void setSelectedObject(BBGameObject *pObject);
     void setSelectedObjects(QList<BBGameObject*> gameObjects, BBGameObjectSet *pSet);

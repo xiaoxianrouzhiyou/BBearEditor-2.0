@@ -169,11 +169,6 @@ void BBCoordinateCircle2D::init()
     setCurrentMaterial(BBRendererManager::createCoordinateUIMaterial());
 }
 
-void BBCoordinateCircle2D::resize(float fWidth, float fHeight)
-{
-    m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, fWidth, fHeight, 0.0f, 0.0f);
-}
-
 
 /**
  * @brief BBCoordinateTickMark2D::BBCoordinateTickMark2D
@@ -192,11 +187,6 @@ void BBCoordinateTickMark2D::init()
     setCurrentMaterial(BBRendererManager::createCoordinateUIMaterial());
 }
 
-void BBCoordinateTickMark2D::resize(float fWidth, float fHeight)
-{
-    m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, fWidth, fHeight, 0.0f, 0.0f);
-}
-
 
 /**
  * @brief BBCoordinateSector2D::BBCoordinateSector2D
@@ -213,11 +203,6 @@ void BBCoordinateSector2D::init()
 {
     BBCoordinateSector::init();
     setCurrentMaterial(BBRendererManager::createCoordinateUIMaterial());
-}
-
-void BBCoordinateSector2D::resize(float fWidth, float fHeight)
-{
-    m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, fWidth, fHeight, 0.0f, 0.0f);
 }
 
 

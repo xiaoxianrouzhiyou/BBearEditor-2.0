@@ -16,7 +16,6 @@ public:
     void init() override;
     void render(BBCamera *pCamera) override;
     void render(BBCanvas *pCanvas) override;
-    void resize(float fWidth, float fHeight) override;
 
 protected:
 

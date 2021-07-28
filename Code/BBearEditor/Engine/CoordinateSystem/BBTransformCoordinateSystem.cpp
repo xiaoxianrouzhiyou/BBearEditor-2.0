@@ -65,13 +65,6 @@ void BBTransformCoordinateSystem::render(BBCamera *pCamera)
     }
 }
 
-void BBTransformCoordinateSystem::resize(float fWidth, float fHeight)
-{
-    m_pPositionCoordinateSystem2D->resize(fWidth, fHeight);
-    m_pRotationCoordinateSystem2D->resize(fWidth, fHeight);
-    m_pScaleCoordinateSystem2D->resize(fWidth, fHeight);
-}
-
 void BBTransformCoordinateSystem::setSelectedObject(BBGameObject *pObject)
 {
     // The selected operation object has not changed, no additional operation is required

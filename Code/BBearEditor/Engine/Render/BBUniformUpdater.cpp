@@ -54,6 +54,11 @@ void BBUniformUpdater::updateCanvas(GLint location, void *pCanvas, void *pProper
     glUniform4fv(location, 1, ((BBCanvas*)pCanvas)->getUniformInfo());
 }
 
+void BBUniformUpdater::updateScreenParameters(GLint location, void *pCamera, void *pPropertyValue)
+{
+    glUniform4fv(location, 1, ((BBCamera*)pCamera)->getCameraParameters());
+}
+
 void BBUniformUpdater::updateTime(GLint location, void *pUserData, void *pPropertyValue)
 {
     qint64 currentTime = QDateTime::currentDateTime().toMSecsSinceEpoch();

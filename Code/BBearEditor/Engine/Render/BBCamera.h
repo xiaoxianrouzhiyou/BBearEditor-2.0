@@ -47,6 +47,7 @@ public:
     inline float getNearPlane() { return m_fNearPlane; }
     inline float getFarPlane() { return m_fFarPlane; }
     inline float getDepth() { return m_fDepth; }
+    inline float* getCameraParameters() { return m_CameraParameters; }
 
 private:
     void rotateView(float fAngle, float x, float y, float z);
@@ -76,6 +77,8 @@ private:
     float m_fDepth;
 
     BBFrustumCluster *m_pFrustumCluster;
+
+    float m_CameraParameters[4];
 };
 
 #endif // BBCAMERA_H

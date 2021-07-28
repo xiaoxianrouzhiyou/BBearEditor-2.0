@@ -37,11 +37,6 @@ void BBCoordinateSystem2D::render(BBCamera *pCamera)
     m_pCoordinateComponent->render(pCamera);
 }
 
-void BBCoordinateSystem2D::resize(float fWidth, float fHeight)
-{
-    m_pCoordinateComponent->resize(fWidth, fHeight);
-}
-
 void BBCoordinateSystem2D::setScreenCoordinate(int x, int y)
 {
     BBGameObject::setScreenCoordinate(x, y);
@@ -226,14 +221,6 @@ void BBRotationCoordinateSystem2D::render(BBCamera *pCamera)
         m_pCoordinateTickMark->render(pCamera);
         m_pCoordinateSector->render(pCamera);
     }
-}
-
-void BBRotationCoordinateSystem2D::resize(float fWidth, float fHeight)
-{
-    m_pCoordinateComponent->resize(fWidth, fHeight);
-    m_pCoordinateCircle->resize(fWidth, fHeight);
-    m_pCoordinateTickMark->resize(fWidth, fHeight);
-    m_pCoordinateSector->resize(fWidth, fHeight);
 }
 
 void BBRotationCoordinateSystem2D::setScreenCoordinate(int x, int y)

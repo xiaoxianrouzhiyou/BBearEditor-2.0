@@ -26,6 +26,11 @@ BBCamera::BBCamera()
 
     m_fDisplacement = 0.0f;
     m_pFrustumCluster = nullptr;
+
+    m_CameraParameters[0] = 0.0f;
+    m_CameraParameters[1] = 0.0f;
+    m_CameraParameters[2] = 0.0f;
+    m_CameraParameters[3] = 0.0f;
 }
 
 BBCamera::~BBCamera()
@@ -116,6 +121,8 @@ void BBCamera::setViewportSize(int nWidth, int nHeight)
     m_pViewport[1] = 0;
     m_pViewport[2] = m_nViewportWidth;
     m_pViewport[3] = m_nViewportHeight;
+    m_CameraParameters[0] = m_nViewportWidth;
+    m_CameraParameters[1] = m_nViewportHeight;
 
     m_ProjectionMatrix.setToIdentity();
     m_ProjectionMatrix.perspective(50.0f, (float) nWidth / nHeight, m_fNearPlane, m_fFarPlane);
