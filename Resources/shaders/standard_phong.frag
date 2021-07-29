@@ -56,20 +56,12 @@ void main(void)
         vec3 L = normalize(lightPosition.xyz);
         float intensity = max(0.0, dot(L, normal));
         final_color = intensity * lightColor;
-        // // phong
-        // if (intensity > 0.0)
-        // {
-        //     vec3 view_dir = normalize(cameraPosition.xyz - V_world_pos.xyz);
-        //     vec3 reflect_dir = normalize(reflect(-L, normal));
-        //     float phong_intensity = pow(max(0.0, dot(reflect_dir, view_dir)), 4.0f);
-        //     final_color += phong_intensity * lightColor;
-        // }
-        // blinn-phong
+        // phong
         if (intensity > 0.0)
         {
             vec3 view_dir = normalize(cameraPosition.xyz - V_world_pos.xyz);
-            vec3 half_vector = normalize(L + view_dir);
-            float phong_intensity = pow(max(0.0, dot(normal, half_vector)), 4.0f);
+            vec3 reflect_dir = normalize(reflect(-L, normal));
+            float phong_intensity = pow(max(0.0, dot(reflect_dir, view_dir)), 4.0f);
             final_color += phong_intensity * lightColor;
         }
     }
