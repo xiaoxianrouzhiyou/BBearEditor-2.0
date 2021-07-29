@@ -105,6 +105,7 @@ void BBLight::setRenderPass(BBRenderPass *pRenderPass)
     pRenderPass->setVector4(LOCATION_LIGHT_COLOR, m_Diffuse);
     pRenderPass->setVector4(LOCATION_LIGHT_SETTINGS(0), m_Setting0);
     pRenderPass->setVector4(LOCATION_LIGHT_SETTINGS(1), m_Setting1);
+    pRenderPass->setVector4(LOCATION_LIGHT_SETTINGS(2), m_Setting2);
 }
 
 void BBLight::setAmbientColor(float r, float g, float b, float a)
@@ -147,6 +148,14 @@ void BBLight::setSetting1(float x, float y, float z, float w)
     m_Setting1[3] = w;
 }
 
+void BBLight::setSetting2(float x, float y, float z, float w)
+{
+    m_Setting2[0] = x;
+    m_Setting2[1] = y;
+    m_Setting2[2] = z;
+    m_Setting2[3] = w;
+}
+
 void BBLight::setHomogeneousPosition(const QVector3D &value, float w)
 {
     m_HomogeneousPosition[0] = value.x();
@@ -157,37 +166,6 @@ void BBLight::setHomogeneousPosition(const QVector3D &value, float w)
 
 
 
-//void SpotLightIndicator::init()
-//{
-//    mVertexBuffer = new VertexBuffer();
-//    mVertexBuffer->setSize(25);
-//    for (int i = 0; i < 24; i++)
-//    {
-//        float c = 0.267949f * cosf(0.261799f * i);
-//        float s = 0.267949f * sinf(0.261799f * i);
-//        mVertexBuffer->setPosition(i, c, -1.0f, s);
-//        mVertexBuffer->setColor(i, 0.909804f, 0.337255f, 0.333333f);
-//    }
-//    mVertexBuffer->setPosition(24, 0.0f, 0.0f, 0.0f);
-//    mVertexBuffer->setColor(24, 0.909804f, 0.337255f, 0.333333f);
-
-//    mIndexCount = 56;
-//    mIndexes = new unsigned short[mIndexCount];
-//    for (int i = 0; i < 24; i++)
-//    {
-//        mIndexes[2 * i] = i;
-//        mIndexes[2 * i + 1] = i + 1;
-//    }
-//    mIndexes[47] = 0;
-//    for (int i = 0; i < 4; i++)
-//    {
-//        mIndexes[2 * i + 48] = 24;
-//        mIndexes[2 * i + 49] = 6 * i;
-//    }
-
-//    mShader.init("../../../../BBearEngine/resources/shaders/base.vert",
-//                 "../../../../BBearEngine/resources/shaders/base.frag", mIndexes, mIndexCount);
-//}
 
 //void SpotLightIndicator::setSpotAngle(float angle)
 //{
@@ -200,13 +178,6 @@ void BBLight::setHomogeneousPosition(const QVector3D &value, float w)
 //        mVertexBuffer->setPosition(i, c, -1.0f, s);
 //    }
 //}
-
-//void SpotLightIndicator::draw()
-//{
-//    glEnable(GL_DEPTH_TEST);
-//    glDrawElements(GL_LINES, mIndexCount, GL_UNSIGNED_SHORT, 0);
-//}
-
 
 //SpotLight::SpotLight(Scene *scene, float px, float py, float pz,
 //                     float rx, float ry, float rz, float sx, float sy, float sz)
@@ -228,16 +199,6 @@ void BBLight::setHomogeneousPosition(const QVector3D &value, float w)
 //    return QVector4D(spotLevel, mIntensity, 0.0f, 0.0f);
 //}
 
-//QVector4D SpotLight::getLightDirection()
-//{
-//    return lightDirection;
-//}
-
-//float SpotLight::getSpotAngle()
-//{
-//    return spotAngle;
-//}
-
 //void SpotLight::setSpotAngle(float angle)
 //{
 //    spotAngle = angle;
@@ -245,43 +206,6 @@ void BBLight::setHomogeneousPosition(const QVector3D &value, float w)
 //    SpotLightIndicator *indicator = (SpotLightIndicator*)mIndicator;
 //    indicator->setSpotAngle(angle);
 //    mScene->updateSpotLightOption();
-//}
-
-//int SpotLight::getSpotLevel()
-//{
-//    return spotLevel;
-//}
-
-//void SpotLight::setSpotLevel(int level)
-//{
-//    spotLevel = level;
-//    mScene->updateSpotLightOption2();
-//}
-
-//void SpotLight::setIntensity(int intensity)
-//{
-//    mIntensity = intensity;
-//    mScene->updateSpotLightOption2();
-//}
-
-//void SpotLight::setPosition(QVector3D position, bool isUpdateLocalTransform)
-//{
-//    Light::setPosition(position, isUpdateLocalTransform);
-//    mScene->updateSpotLightPosition();
-//}
-
-//void SpotLight::setRotation(int angle, QVector3D axis, bool isUpdateLocalTransform)
-//{
-//    Light::setRotation(angle, axis, isUpdateLocalTransform);
-//    mScene->updateSpotLightDirection();
-//    setLightDirection();
-//}
-
-//void SpotLight::setRotation(QVector3D rotation, bool isUpdateLocalTransform)
-//{
-//    Light::setRotation(rotation, isUpdateLocalTransform);
-//    mScene->updateSpotLightDirection();
-//    setLightDirection();
 //}
 
 //void SpotLight::setLightDirection()
@@ -293,8 +217,3 @@ void BBLight::setHomogeneousPosition(const QVector3D &value, float w)
 //    lightDirection = matrix * QVector4D(0.0f, -1.0f, 0.0f, 1.0f);
 //}
 
-//void SpotLight::setColor(int r, int g, int b)
-//{
-//    Light::setColor(r, g, b);
-//    mScene->updateSpotLightColor();
-//}

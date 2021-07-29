@@ -176,3 +176,62 @@ void BBPointLightIndicator::render(BBCamera *pCamera)
     modelMatrix.scale(m_Scale);
     BBLightIndicator::render(modelMatrix, pCamera);
 }
+
+
+/**
+ * @brief BBSpotLightIndicator::BBSpotLightIndicator
+ */
+BBSpotLightIndicator::BBSpotLightIndicator()
+    : BBSpotLightIndicator(QVector3D(0, 0, 0), QVector3D(0, 0, 0))
+{
+
+}
+
+BBSpotLightIndicator::BBSpotLightIndicator(const QVector3D &position, const QVector3D &rotation)
+    : BBLightIndicator(position, rotation)
+{
+
+}
+
+void BBSpotLightIndicator::init()
+{
+    m_pVBO = new BBVertexBufferObject(25);
+    for (int i = 0; i < 24; i++)
+    {
+        float c = 0.267949f * cosf(0.261799f * i);
+        float s = 0.267949f * sinf(0.261799f * i);
+        m_pVBO->setPosition(i, c, -1.0f, s);
+        m_pVBO->setColor(i, 0.909804f, 0.337255f, 0.333333f);
+    }
+    m_pVBO->setPosition(24, 0.0f, 0.0f, 0.0f);
+    m_pVBO->setColor(24, 0.909804f, 0.337255f, 0.333333f);
+
+    m_nIndexCount = 56;
+    m_pIndexes = new unsigned short[m_nIndexCount];
+    for (int i = 0; i < 24; i++)
+    {
+        m_pIndexes[2 * i] = i;
+        m_pIndexes[2 * i + 1] = i + 1;
+    }
+    m_pIndexes[47] = 0;
+    for (int i = 0; i < 4; i++)
+    {
+        m_pIndexes[2 * i + 48] = 24;
+        m_pIndexes[2 * i + 49] = 6 * i;
+    }
+
+    BBLightIndicator::init();
+
+    BBDrawCall *pDrawCall = new BBDrawCall();
+    pDrawCall->setMaterial(m_pCurrentMaterial);
+    pDrawCall->setVBO(m_pVBO);
+    pDrawCall->setEBO(m_pEBO, GL_LINES, m_nIndexCount, 0);
+    appendDrawCall(pDrawCall);
+}
+
+void BBSpotLightIndicator::render(BBCamera *pCamera)
+{
+    QMatrix4x4 modelMatrix;
+    modelMatrix.translate(m_Position);
+    BBLightIndicator::render(modelMatrix, pCamera);
+}
