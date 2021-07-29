@@ -49,12 +49,14 @@ public:
     void setSetting0(float x, float y, float z, float w);
     void setSetting1(float x, float y, float z, float w);
     void setSetting2(float x, float y, float z, float w);
+    void setIntensity(float fValue) { m_Setting0[1] = fValue; }
 
     virtual bool cull(BBCamera *pCamera, const QRectF &displayBox) = 0;
     virtual bool cull(BBCamera *pCamera, int nFrustumIndexX, int nFrustumIndexY) = 0;
 
 public:
     inline float* getDiffuseColor() { return m_Diffuse; }
+    inline float getIntensity() { return m_Setting0[1]; }
 
 protected:
     void setHomogeneousPosition(const QVector3D &value, float w = 1.0f);

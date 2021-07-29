@@ -31,6 +31,8 @@ BBPointLight::BBPointLight(BBScene *pScene, const QVector3D &position, const QVe
     setLinearFactor(0.5f);
     // m_Setting1[3] : quadric factor
     setQuadricFactor(0.2f);
+    // m_Setting0[1] : Intensity
+    setIntensity(2.0f);
 }
 
 BBPointLight::~BBPointLight()

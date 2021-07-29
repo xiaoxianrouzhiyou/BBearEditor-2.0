@@ -117,7 +117,8 @@ SOURCES += \
     Engine/Python/BBPythonLoader.cpp \
     Editor/Dialog/BBResourceDialog.cpp \
     Engine/Render/BBRenderQueue.cpp \
-    Editor/PropertyManager/GroupManager/BBMaterialPropertyGroupManager.cpp
+    Editor/PropertyManager/GroupManager/BBMaterialPropertyGroupManager.cpp \
+    Editor/PropertyManager/GroupManager/BBLightManager.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -214,7 +215,8 @@ HEADERS += \
     Engine/Python/BBPythonLoader.h \
     Editor/Dialog/BBResourceDialog.h \
     Engine/Render/BBRenderQueue.h \
-    Editor/PropertyManager/GroupManager/BBMaterialPropertyGroupManager.h
+    Editor/PropertyManager/GroupManager/BBMaterialPropertyGroupManager.h \
+    Editor/PropertyManager/GroupManager/BBLightManager.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

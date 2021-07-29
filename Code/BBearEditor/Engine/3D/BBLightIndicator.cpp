@@ -26,7 +26,6 @@ void BBLightIndicator::init()
     m_pCurrentMaterial->init("base",
                              BB_PATH_RESOURCE_SHADER(base.vert),
                              BB_PATH_RESOURCE_SHADER(base.frag));
-    m_pCurrentMaterial->getBaseRenderPass()->setZTestState(false);
 
     BBRenderableObject::init();
 }
@@ -79,6 +78,7 @@ void BBDirectionalLightIndicator::init()
     }
 
     BBLightIndicator::init();
+    m_pCurrentMaterial->getBaseRenderPass()->setZTestState(false);
 
     BBDrawCall *pDrawCall = new BBDrawCall();
     pDrawCall->setMaterial(m_pCurrentMaterial);

@@ -14,7 +14,6 @@ class BBVector3DFactory;
 class BBScene;
 class BBEnumFactory;
 class BBRenderableObject;
-class BBPointLight;
 class QCheckBox;
 class BBDragAcceptedFactory;
 
@@ -122,25 +121,5 @@ private:
     BBRenderableObject *m_pRenderableObject;
     BBDragAcceptedFactory *m_pMaterialFactory;
 };
-
-
-class BBPointLightManager : public BBGroupManager
-{
-    Q_OBJECT
-
-public:
-    BBPointLightManager(BBPointLight *pLight, QWidget *pParent = 0);
-    ~BBPointLightManager();
-
-protected slots:
-    void setRadius(float fRadius);
-    void setConstantFactor(float fValue);
-    void setLinearFactor(float fValue);
-    void setQuadricFactor(float fValue);
-
-private:
-    BBPointLight *m_pPointLight;
-};
-
 
 #endif // BBGROUPMANAGER_H

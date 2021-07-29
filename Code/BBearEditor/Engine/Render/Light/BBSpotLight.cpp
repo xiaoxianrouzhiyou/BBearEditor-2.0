@@ -17,19 +17,35 @@ BBSpotLight::BBSpotLight(BBScene *pScene, const QVector3D &position, const QVect
     // Mark as spot light
     m_Setting0[0] = 2.0f;
 
-    // m_Setting0[1] : Angle
+    // m_Setting0[1] : Intensity
+    setIntensity(4.0f);
+
+    // m_Setting0[2] : Angle
     setAngle(30.0f);
-    // m_Setting0[2] : Level
+    // m_Setting0[3] : Level
     setLevel(48.0f);
 
     // m_Setting1[0] : radius
+    setRadius(5.0f);
     // m_Setting1[1] : constant factor
     // m_Setting1[2] : linear factor
     // m_Setting1[3] : quadric factor
 
     // The light shines downward
     // m_Setting2
-    setDirection(0.0f, -1.0f, 0.0f, 1.0f);
+    setDirection();
+}
+
+void BBSpotLight::setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform)
+{
+    BBLight::setRotation(nAngle, axis, bUpdateLocalTransform);
+    setDirection();
+}
+
+void BBSpotLight::setRotation(const QVector3D &rotation, bool bUpdateLocalTransform)
+{
+    BBLight::setRotation(rotation, bUpdateLocalTransform);
+    setDirection();
 }
 
 bool BBSpotLight::cull(BBCamera *pCamera, const QRectF &displayBox)
@@ -42,10 +58,11 @@ bool BBSpotLight::cull(BBCamera *pCamera, int nFrustumIndexX, int nFrustumIndexY
 
 }
 
-void BBSpotLight::setDirection(float x, float y, float z, float w)
+void BBSpotLight::setDirection()
 {
-    m_Setting2[0] = x;
-    m_Setting2[1] = y;
-    m_Setting2[2] = z;
-    m_Setting2[3] = w;
+    QVector3D dir = m_Quaternion * QVector3D(0.0f, -1.0f, 0.0f);
+    m_Setting2[0] = dir.x();
+    m_Setting2[1] = dir.y();
+    m_Setting2[2] = dir.z();
+    m_Setting2[3] = 1.0f;
 }

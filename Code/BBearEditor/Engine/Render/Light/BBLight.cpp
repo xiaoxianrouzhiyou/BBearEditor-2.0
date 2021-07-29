@@ -24,7 +24,9 @@ BBLight::BBLight(BBScene *pScene, const QVector3D &position, const QVector3D &ro
     setHomogeneousPosition(position, 1.0f);
 
     // m_Setting0[0] : there is a light
-    setSetting0(1.0f, 0.0f, 0.0f, 0.0f);
+    m_Setting0[0] = 1.0f;
+    // m_Setting0[1] : Intensity
+    setIntensity(1.0f);
 }
 
 BBLight::~BBLight()
@@ -179,25 +181,6 @@ void BBLight::setHomogeneousPosition(const QVector3D &value, float w)
 //    }
 //}
 
-//SpotLight::SpotLight(Scene *scene, float px, float py, float pz,
-//                     float rx, float ry, float rz, float sx, float sy, float sz)
-//    : PointLight(scene, px, py, pz, rx, ry, rz, sx, sy, sz)
-//{
-//    mIndicator = new SpotLightIndicator(px, py, pz, rx, ry, rz, 1, 1, 1);
-//    //初始聚光灯向下照射
-//    lightDirection = QVector4D(0.0f, -1.0f, 0.0f, 1.0f);
-//    //cutoff的2倍
-//    spotAngle = 30.0f;
-//    spotLevel = 48;
-//    mIntensity = 2;
-//    updateValidRange();
-//}
-
-
-//QVector4D SpotLight::getOption2Vector4f()
-//{
-//    return QVector4D(spotLevel, mIntensity, 0.0f, 0.0f);
-//}
 
 //void SpotLight::setSpotAngle(float angle)
 //{

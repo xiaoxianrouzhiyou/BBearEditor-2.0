@@ -28,12 +28,13 @@ float getLambertSpotLightIntensity(vec3 normal, float radius, float distance, fl
         // Cosine of the angle between the current point and the spotlight direction
         float current_cos = max(0.0, dot(-L, spot_direction));
         // cutoff cosine
-        float cutoff_radian = lightSettings0.y / 2 * 3.14 / 180.0;
+        float cutoff_radian = lightSettings0.z / 2 * 3.14 / 180.0;
         float cutoff_cos = cos(cutoff_radian);
         if (current_cos > cutoff_cos)
         {
             // Within the cutoff range
-            intensity = pow(current_cos, lightSettings0.z) * 2.0 * attenuation;
+            float delta = radius - distance;
+            intensity = pow(current_cos, lightSettings0.w) * 2.0 * attenuation * delta / radius;
         }
         else
         {
@@ -68,7 +69,7 @@ void main(void)
             // there is a point light
             intensity = getLambertPointLightIntensity(normal, radius, distance, attenuation, L);
         }
-        final_color = lightColor * intensity;
+        final_color = lightColor * intensity * lightSettings0.y;
     }
     gl_FragColor = final_color;
 }

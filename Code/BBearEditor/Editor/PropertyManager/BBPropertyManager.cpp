@@ -3,6 +3,7 @@
 #include <QVBoxLayout>
 #include "GroupManager/BBGroupManager.h"
 #include "GroupManager/BBMaterialPropertyGroupManager.h"
+#include "GroupManager/BBLightManager.h"
 #include "BBPropertyFactory.h"
 #include "Base/BBGameObject.h"
 #include "Render/Light/BBDirectionalLight.h"
@@ -77,7 +78,11 @@ void BBPropertyManager::showGameObjectProperty(BBGameObject *pGameObject)
         BBPointLight *pLight = (BBPointLight*)pGameObject;
         layout()->addWidget(new BBPointLightManager(pLight, this));
     }
-
+    else if (pGameObject->getClassName() == BB_CLASSNAME_SPOT_LIGHT)
+    {
+        BBSpotLight *pLight = (BBSpotLight*)pGameObject;
+        layout()->addWidget(new BBSpotLightManager(pLight, this));
+    }
 //    if (gameObject->getClassName() == ModelClassName || gameObject->getClassName() == TerrainClassName)
 //    {
 //        Model *model = (Model*) gameObject;
