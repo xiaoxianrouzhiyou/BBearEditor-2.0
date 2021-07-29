@@ -212,6 +212,10 @@ BBUniformUpdater* BBShader::initUniformVector4(GLint location, const char *pUnif
     {
         updateUniformFunc = &BBUniformUpdater::updateScreenParameters;
     }
+    else if (strcmp(pUniformName, LOCATION_CAMERA_POSITION) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updateCameraPosition;
+    }
     else if (strcmp(pUniformName, LOCATION_TIME) == 0)
     {
         updateUniformFunc = &BBUniformUpdater::updateTime;

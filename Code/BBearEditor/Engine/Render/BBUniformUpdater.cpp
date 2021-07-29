@@ -51,6 +51,12 @@ void BBUniformUpdater::updateCameraInverseViewMatrix(GLint location, void *pCame
     glUniformMatrix4fv(location, 1, GL_FALSE, ((BBCamera*)pCamera)->getViewMatrix().inverted().data());
 }
 
+void BBUniformUpdater::updateCameraPosition(GLint location, void *pCamera, void *pPropertyValue)
+{
+    QVector3D position = ((BBCamera*)pCamera)->getPosition();
+    glUniform4f(location, position.x(), position.y(), position.z(), 1.0f);
+}
+
 void BBUniformUpdater::updateCanvas(GLint location, void *pCanvas, void *pPropertyValue)
 {
     glUniform4fv(location, 1, ((BBCanvas*)pCanvas)->getUniformInfo());

@@ -28,6 +28,7 @@ public:
     void updateCameraInverseProjectionMatrix(GLint location, void *pCamera, void *pPropertyValue);
     void updateCameraViewMatrix(GLint location, void *pCamera, void *pPropertyValue);
     void updateCameraInverseViewMatrix(GLint location, void *pCamera, void *pPropertyValue);
+    void updateCameraPosition(GLint location, void *pCamera, void *pPropertyValue);
     void updateCanvas(GLint location, void *pCanvas, void *pPropertyValue);
     void updateScreenParameters(GLint location, void *pCamera, void *pPropertyValue);
     void updateTime(GLint location, void *pUserData, void *pPropertyValue);
