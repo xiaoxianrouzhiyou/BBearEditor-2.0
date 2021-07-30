@@ -52,8 +52,8 @@ public:
     inline BBRayTracker* getRayTracker() { return m_pRayTracker; }
 
     /* FBO */
-    GLuint getColorFBO();
-    GLuint getDepthFBO();
+    GLuint getColorFBO(int nIndex);
+    GLuint getDepthFBO(int nIndex);
 
     void setSkyBox(const QString &path);
     void enableSkyBox(bool bEnable);
@@ -97,7 +97,8 @@ public:
 private:
     void bindFBO();
     void unbindFBO();
-    void writeFBO();
+    void writeFBO(int nIndex);
+    void writeShadowMap(int nIndex);
 
     BBFrameBufferObject *m_pFBO[3];
     static QString m_ColorBufferName;

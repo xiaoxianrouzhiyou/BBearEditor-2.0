@@ -34,6 +34,9 @@ public:
     void updateTime(GLint location, void *pUserData, void *pPropertyValue);
     void updateColorFBO(GLint location, void *pCamera, void *pPropertyValue);
     void updateDepthFBO(GLint location, void *pCamera, void *pPropertyValue);
+    void updateShadowMap(GLint location, void *pCamera, void *pPropertyValue);
+    void updateLightProjectionMatrix(GLint location, void *pCamera, void *pPropertyValue);
+    void updateLightViewMatrix(GLint location, void *pCamera, void *pPropertyValue);
 
     void updateFloat(GLint location, void *pCamera, void *pPropertyValue);
     void updateMatrix4(GLint location, void *pCamera, void *pPropertyValue);

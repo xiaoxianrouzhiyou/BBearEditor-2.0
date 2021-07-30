@@ -60,6 +60,14 @@ void BBModel::render(BBCamera *pCamera)
     }
 }
 
+void BBModel::renderToShadowMap(BBCamera *pCamera)
+{
+    if (m_bActive)
+    {
+        m_pMesh->render(pCamera);
+    }
+}
+
 void BBModel::insertInRenderQueue(BBRenderQueue *pQueue)
 {
     m_pMesh->insertInRenderQueue(pQueue);

@@ -7,8 +7,8 @@
 #include "BBRenderQueue.h"
 
 
-BBCamera::BBCamera()
-    : m_Position(0, 1, 10), m_ViewCenter(0, 1, 0), m_Up(0, 1, 0)
+BBCamera::BBCamera(QVector3D position, QVector3D viewCenter, QVector3D up)
+    : m_Position(position), m_ViewCenter(viewCenter), m_Up(up)
 {
     m_fMoveSpeed = 30.0f;
     resetMove();

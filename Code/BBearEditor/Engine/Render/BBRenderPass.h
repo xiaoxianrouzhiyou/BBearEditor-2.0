@@ -40,6 +40,8 @@ public:
     void setUseStencil(bool bEnable);
     void setPolygonMode(unsigned int face, unsigned int mode);
     void setLineWidth(float fWidth);
+    void setCullState(bool bEnable);
+    void setCullFace(int face);
 
     bool getBlendState() { return m_RenderState.m_bBlend; }
     unsigned int getSRCBlendFunc() { return m_RenderState.m_SRCBlendFunc; }

@@ -118,6 +118,9 @@ void BBDrawCall::switchRenderingSettings(int nIndex)
     case 12:
         m_DrawFunc = &BBDrawCall::fboRendering;
         break;
+    case 13:
+        m_DrawFunc = &BBDrawCall::shadowMapRendering;
+        break;
     default:
         break;
     }
@@ -256,6 +259,51 @@ void BBDrawCall::fboRendering(BBCamera *pCamera)
 {
     BB_PROCESS_ERROR_RETURN(!m_pMaterial->isContainColorFBOUniform());
     forwardRendering(pCamera);
+}
+
+void BBDrawCall::shadowMapRendering(BBCamera *pCamera)
+{
+    QList<BBGameObject*> lights = collectLights();
+    BB_PROCESS_ERROR_RETURN(lights.count() > 0);
+
+    m_pVBO->bind();
+    BBRenderPass *pBaseRenderPass = m_pMaterial->getBaseRenderPass();
+    pBaseRenderPass->setCullState(true);
+    pBaseRenderPass->setCullFace(GL_FRONT);
+
+    // Only directional light is considered for the time
+    BBLight *pLight = (BBLight*)lights[0];
+    pLight->setRenderPass(pBaseRenderPass);
+    BBCamera *pLightPosCamera = new BBCamera();
+    QMatrix4x4 lightViewMatrix;
+    lightViewMatrix.lookAt(QVector3D(0, 5, 0), QVector3D(0, 0, 0), QVector3D(0, 0, -1));
+    lightViewMatrix.rotate(-pLight->getRotation().z(), 0, 0, 1);
+    lightViewMatrix.rotate(-pLight->getRotation().x(), 1, 0, 0);
+    lightViewMatrix.rotate(-pLight->getRotation().y(), 0, 1, 0);
+    QMatrix4x4 lightProjectionMatrix;
+    lightProjectionMatrix.ortho(-5, 5, -5, 5, -5, 5);
+    pLightPosCamera->setViewMatrix(lightViewMatrix);
+    pLightPosCamera->setProjectionMatrix(lightProjectionMatrix);
+    pLight->setViewMatrix(lightViewMatrix);
+    pLight->setProjectionMatrix(lightProjectionMatrix);
+
+    pBaseRenderPass->bind(pLightPosCamera);
+    if (m_pEBO == nullptr)
+    {
+        m_pVBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
+    }
+    else
+    {
+        m_pEBO->bind();
+        m_pEBO->draw(m_eDrawPrimitiveType, m_nIndexCount, m_nDrawStartIndex);
+        m_pEBO->unbind();
+    }
+
+    pBaseRenderPass->setCullState(false);
+    pBaseRenderPass->setCullFace(GL_BACK);
+    pBaseRenderPass->unbind();
+    BB_SAFE_DELETE(pLightPosCamera);
+    m_pVBO->unbind();
 }
 
 void BBDrawCall::updateOrderInOpaqueRenderQueue()

@@ -1,6 +1,7 @@
 varying vec4 V_world_pos;
 varying vec4 V_Color;
 varying vec4 V_Normal;
+varying vec4 V_world_pos_light_space;
 
 uniform vec4 lightSettings0;
 uniform vec4 lightSettings1;
@@ -8,6 +9,7 @@ uniform vec4 lightSettings2;
 uniform vec4 lightPosition;
 uniform vec4 lightColor;
 uniform vec4 cameraPosition;
+uniform sampler2D BBShadowMap;
 
 float getLambertPointLightIntensity(vec3 normal, float radius, float distance, float attenuation, vec3 L)
 {
@@ -45,6 +47,33 @@ float getLambertSpotLightIntensity(vec3 normal, float radius, float distance, fl
     return intensity;
 }
 
+// shadow
+float calculateShadow()
+{
+    vec3 pos = V_world_pos_light_space.xyz / V_world_pos_light_space.w;
+    // -1~1 -> 0~1
+    pos = pos * 0.5 + vec3(0.5);
+    // For the current fragment, get the corresponding depth from the depth map in the light viewport
+    // float depth_shadow_map = texture2D(BBShadowMap, uv).r;
+    // actual depth value of current fragment
+    float current_depth = pos.z;
+    current_depth = clamp(current_depth, 0.0, 1.0);
+    // PCF
+    vec2 texel_size = 1.0 / textureSize(BBShadowMap, 0);
+    float shadow = 0.0;
+    for (int y = -1; y <= 1; y++)
+    {
+        for (int x = -1; x <= 1; x++)
+        {
+            float depth_shadow_map = texture2D(BBShadowMap, pos.xy + texel_size * vec2(x, y)).r;
+            shadow += (current_depth - 0.004) > depth_shadow_map ? 1.0 : 0.0;
+        }
+    }
+    shadow /= 9.0;
+    // shadow = (current_depth - 0.004) > texture2D(BBShadowMap, pos.xy).r ? 1.0 : 0.0;
+    return shadow;
+}
+
 void main(void)
 {
     vec4 final_color = V_Color;
@@ -65,13 +94,13 @@ void main(void)
         //     final_color += phong_intensity * lightColor;
         // }
         // blinn-phong
-        if (intensity > 0.0)
-        {
-            vec3 view_dir = normalize(cameraPosition.xyz - V_world_pos.xyz);
-            vec3 half_vector = normalize(L + view_dir);
-            float phong_intensity = pow(max(0.0, dot(normal, half_vector)), 4.0f);
-            final_color += phong_intensity * lightColor;
-        }
+        // if (intensity > 0.0)
+        // {
+        //     vec3 view_dir = normalize(cameraPosition.xyz - V_world_pos.xyz);
+        //     vec3 half_vector = normalize(L + view_dir);
+        //     float phong_intensity = pow(max(0.0, dot(normal, half_vector)), 4.0f);
+        //     final_color += phong_intensity * lightColor;
+        // }
     }
     else if (lightPosition.w == 1.0)
     {
@@ -98,5 +127,7 @@ void main(void)
         final_color = lightColor * intensity * lightSettings0.y;
     }
     
+    // shadow
+    final_color = final_color * vec4(vec3(1.0 - calculateShadow()), 1.0);
     gl_FragColor = final_color;
 }

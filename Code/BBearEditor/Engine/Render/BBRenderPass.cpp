@@ -45,6 +45,8 @@ void BBRenderPass::bind(void *ptr)
     BBGlobalRenderState::updateZMask(m_RenderState.m_bWriteZ);
     BBGlobalRenderState::updatePolygonMode(m_RenderState.m_DrawFace, m_RenderState.m_PolygonMode);
     BBGlobalRenderState::updateLineWidth(m_RenderState.m_fLineWidth);
+    BBGlobalRenderState::updateCullState(m_RenderState.m_bCull);
+    BBGlobalRenderState::updateCullFace(m_RenderState.m_CullFace);
 
     m_pShader->activeAttributes();
 
@@ -153,6 +155,16 @@ void BBRenderPass::setPolygonMode(unsigned int face, unsigned int mode)
 void BBRenderPass::setLineWidth(float fWidth)
 {
     m_RenderState.m_fLineWidth = fWidth;
+}
+
+void BBRenderPass::setCullState(bool bEnable)
+{
+    m_RenderState.m_bCull = bEnable;
+}
+
+void BBRenderPass::setCullFace(int face)
+{
+    m_RenderState.m_CullFace = face;
 }
 
 void BBRenderPass::setFloat(const std::string &uniformName, const float fValue)

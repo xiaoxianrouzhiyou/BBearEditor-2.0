@@ -192,6 +192,16 @@ BBUniformUpdater* BBShader::initUniformMatrix4(GLint location, const char *pUnif
         updateUniformFunc = &BBUniformUpdater::updateCameraInverseViewMatrix;
         uniformType = BBMaterialUniformPropertyType::CameraInverseViewMatrix;
     }
+    else if (strcmp(pUniformName, LOCATION_LIGHT_PROJECTIONMATRIX) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updateLightProjectionMatrix;
+        uniformType = BBMaterialUniformPropertyType::LightProjectionMatrix;
+    }
+    else if (strcmp(pUniformName, LOCATION_LIGHT_VIEWMATRIX) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updateLightViewMatrix;
+        uniformType = BBMaterialUniformPropertyType::LightViewMatrix;
+    }
     else if (strcmp(pUniformName, LOCATION_MODELMATRIX) == 0)
     {
         pProperty = new BBMatrix4MaterialProperty(pUniformName);
@@ -240,6 +250,10 @@ BBUniformUpdater* BBShader::initUniformSampler2D(GLint location, const char *pUn
     else if (strcmp(pUniformName, LOCATION_DEPTHFBO) == 0)
     {
         updateUniformFunc = &BBUniformUpdater::updateDepthFBO;
+    }
+    else if (strcmp(pUniformName, LOCATION_SHADOWMap) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updateShadowMap;
     }
     else
     {

@@ -16,6 +16,11 @@ do { \
     bEnable? glEnable(GL_ALPHA_TEST) : glDisable(GL_ALPHA_TEST); \
 } while(0)
 
+#define SetCullState(bEnable) \
+do { \
+    bEnable? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE); \
+} while(0)
+
 
 /**
  * @brief BBRenderState::BBRenderState
@@ -33,7 +38,7 @@ BBRenderState::BBRenderState()
     m_bWriteZ = true;
     m_bWriteStencil = false;
     m_bUseStencil = false;
-    m_bCull = true;
+    m_bCull = false;
     m_CullFace = GL_BACK;
     m_bEnablePointSprite = true;
     m_AlphaTestFunc = GL_GREATER;
@@ -75,6 +80,8 @@ void BBGlobalRenderState::init()
     glPolygonMode(m_RenderState.m_DrawFace, m_RenderState.m_PolygonMode);
     glAlphaFunc(m_RenderState.m_AlphaTestFunc, m_RenderState.m_fAlphaTestValue);
     glLineWidth(m_RenderState.m_fLineWidth);
+    SetCullState(m_RenderState.m_bCull);
+    updateCullFace(m_RenderState.m_CullFace);
 }
 
 void BBGlobalRenderState::updateBlendState(bool bEnable)
@@ -183,6 +190,24 @@ void BBGlobalRenderState::updateLineWidth(float fWidth)
     {
         m_RenderState.m_fLineWidth = fWidth;
         glLineWidth(m_RenderState.m_fLineWidth);
+    }
+}
+
+void BBGlobalRenderState::updateCullState(bool bEnable)
+{
+    if (m_RenderState.m_bCull != bEnable)
+    {
+        m_RenderState.m_bCull = bEnable;
+        SetCullState(m_RenderState.m_bCull);
+    }
+}
+
+void BBGlobalRenderState::updateCullFace(int face)
+{
+    if (m_RenderState.m_CullFace != face)
+    {
+        m_RenderState.m_CullFace = face;
+        glCullFace(m_RenderState.m_CullFace);
     }
 }
 

@@ -12,7 +12,7 @@ class BBAABBBoundingBox3D;
 class BBCamera
 {
 public:
-    BBCamera();
+    BBCamera(QVector3D position = QVector3D(0, 1, 10), QVector3D viewCenter = QVector3D(0, 1, 0), QVector3D up = QVector3D(0, 1, 0));
     ~BBCamera();
 
     void resetMove();
@@ -40,7 +40,9 @@ public:
     inline QVector3D getPosition() { return m_Position; }
     inline void setViewCenter(const QVector3D &viewCenter) { m_ViewCenter = viewCenter; }
     inline QVector3D getViewCenter() { return m_ViewCenter; }
+    inline void setViewMatrix(QMatrix4x4 viewMatrix) { m_ViewMatrix = viewMatrix; }
     inline QMatrix4x4 getViewMatrix() { return m_ViewMatrix; }
+    inline void setProjectionMatrix(QMatrix4x4 projectionMatrix) { m_ProjectionMatrix = projectionMatrix; }
     inline QMatrix4x4 getProjectionMatrix() { return m_ProjectionMatrix; }
     inline int getViewportWidth() { return m_nViewportWidth; }
     inline int getViewportHeight() { return m_nViewportHeight; }

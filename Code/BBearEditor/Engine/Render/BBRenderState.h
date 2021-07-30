@@ -51,6 +51,8 @@ public:
     static void updatePolygonMode(unsigned int face, unsigned int mode);
     static void updateAlphaFunc(unsigned int func, float value);
     static void updateLineWidth(float fWidth);
+    static void updateCullState(bool bEnable);
+    static void updateCullFace(int face);
 
     static void clearStencil(int value);
 

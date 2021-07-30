@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include "Scene/BBSceneManager.h"
 #include "Scene/BBScene.h"
+#include "Render/Light/BBLight.h"
 
 
 BBUniformUpdater::BBUniformUpdater(GLint location, const BBUpdateUniformFunc &updateFunc, BBMaterialProperty *pTargetProperty)
@@ -79,15 +80,36 @@ void BBUniformUpdater::updateTime(GLint location, void *pUserData, void *pProper
 void BBUniformUpdater::updateColorFBO(GLint location, void *pCamera, void *pPropertyValue)
 {
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getColorFBO());
+    glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getColorFBO(0));
     glUniform1i(location, 0);
 }
 
 void BBUniformUpdater::updateDepthFBO(GLint location, void *pCamera, void *pPropertyValue)
 {
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getDepthFBO(0));
+    glUniform1i(location, 0);
+}
+
+void BBUniformUpdater::updateShadowMap(GLint location, void *pCamera, void *pPropertyValue)
+{
     glActiveTexture(GL_TEXTURE0 + 1);
-    glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getDepthFBO());
+    glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getDepthFBO(1));
     glUniform1i(location, 1);
+}
+
+void BBUniformUpdater::updateLightProjectionMatrix(GLint location, void *pCamera, void *pPropertyValue)
+{
+    QList<BBGameObject*> lights = BBSceneManager::getScene()->getLights();
+    BB_PROCESS_ERROR_RETURN(lights.count() > 0);
+    glUniformMatrix4fv(location, 1, GL_FALSE, ((BBLight*)lights[0])->getProjectionMatrix().data());
+}
+
+void BBUniformUpdater::updateLightViewMatrix(GLint location, void *pCamera, void *pPropertyValue)
+{
+    QList<BBGameObject*> lights = BBSceneManager::getScene()->getLights();
+    BB_PROCESS_ERROR_RETURN(lights.count() > 0);
+    glUniformMatrix4fv(location, 1, GL_FALSE, ((BBLight*)lights[0])->getViewMatrix().data());
 }
 
 void BBUniformUpdater::updateFloat(GLint location, void *pCamera, void *pPropertyValue)

@@ -10,6 +10,8 @@ enum BBMaterialUniformPropertyType
     CameraInverseProjectionMatrix,
     CameraViewMatrix,
     CameraInverseViewMatrix,
+    LightProjectionMatrix,
+    LightViewMatrix,
     Float,
     Matrix4,
     Vector4,

@@ -55,6 +55,12 @@ public:
     virtual bool cull(BBCamera *pCamera, int nFrustumIndexX, int nFrustumIndexY) = 0;
 
 public:
+    inline void setViewMatrix(QMatrix4x4 viewMatrix) { m_ViewMatrix = viewMatrix; }
+    inline QMatrix4x4 getViewMatrix() { return m_ViewMatrix; }
+    inline void setProjectionMatrix(QMatrix4x4 projectionMatrix) { m_ProjectionMatrix = projectionMatrix; }
+    inline QMatrix4x4 getProjectionMatrix() { return m_ProjectionMatrix; }
+
+public:
     inline float* getDiffuseColor() { return m_Diffuse; }
     inline float getIntensity() { return m_Setting0[1]; }
 
@@ -65,6 +71,10 @@ protected:
     BBScene *m_pScene;
     BBIcon *m_pIcon;
     BBLightIndicator *m_pIndicator;
+
+    // shadow
+    QMatrix4x4 m_ViewMatrix;
+    QMatrix4x4 m_ProjectionMatrix;
 
     float m_HomogeneousPosition[4];
     float m_Ambient[4];

@@ -103,7 +103,8 @@ void BBScene::defaultRender()
     // refresh camera position and direction, update pos and ..., Convenient for subsequent use
     m_pCamera->update(m_fUpdateRate);
 
-    writeFBO();
+    writeFBO(0);
+    writeShadowMap(1);
 
     m_pSkyBox->render(m_pCamera);
     m_pHorizontalPlane->render(m_pCamera);
@@ -223,14 +224,14 @@ void BBScene::resize(float width, float height)
     m_pRayTracker->onWindowResize(width, height);
 }
 
-GLuint BBScene::getColorFBO()
+GLuint BBScene::getColorFBO(int nIndex)
 {
-    return m_pFBO[0]->getBuffer(m_ColorBufferName);
+    return m_pFBO[nIndex]->getBuffer(m_ColorBufferName);
 }
 
-GLuint BBScene::getDepthFBO()
+GLuint BBScene::getDepthFBO(int nIndex)
 {
-    return m_pFBO[0]->getBuffer(m_DepthBufferName);
+    return m_pFBO[nIndex]->getBuffer(m_DepthBufferName);
 }
 
 void BBScene::setSkyBox(const QString &path)
@@ -544,41 +545,37 @@ void BBScene::unbindFBO()
 //    }
 }
 
-void BBScene::writeFBO()
+void BBScene::writeFBO(int nIndex)
 {
     BBDrawCall::switchRenderingSettings(12);
-    m_pFBO[0]->bind();
+    m_pFBO[nIndex]->bind();
 
     m_pSkyBox->render(m_pCamera);
-    m_pHorizontalPlane->render(m_pCamera);
     // BBGameObject
     m_pRenderQueue->render();
 
-    m_pFBO[0]->unbind();
+    m_pFBO[nIndex]->unbind();
     BBDrawCall::switchRenderingSettings(11);
 }
 
+void BBScene::writeShadowMap(int nIndex)
+{
+    BBDrawCall::switchRenderingSettings(13);
+    m_pFBO[nIndex]->bind();
+    // BBGameObject
+    for (QList<BBGameObject*>::Iterator it = m_Models.begin(); it != m_Models.end(); it++)
+    {
+        ((BBModel*)(*it))->renderToShadowMap(m_pCamera);
+    }
 
+    m_pFBO[nIndex]->unbind();
+    BBDrawCall::switchRenderingSettings(11);
+}
 
 //void Scene::renderShadowMap()
 //{
-//    //离屏渲染
-//    mFBO->bind();
-//    //只绘制背面 否则会产生自身阴影
-//    glEnable(GL_CULL_FACE);
-//    glCullFace(GL_FRONT);
-//    //高度图 阴影
-//    QVector3D lightPos(5, 5, -5);
-//    QMatrix4x4 lightView;
-//    lightView.lookAt(lightPos, QVector3D(5, 0, -5), QVector3D(0, 0, -1));
-//    QMatrix4x4 lightProjection;
-//    lightProjection.ortho(-10, 10, -10, 10, -10, 10);
-//    //第一盏平行光的方向
-//    if (directionLights.size() > 0)
-//    {
-//        lightView.rotate(-directionLights[0]->getRotation().z(), 0, 0, 1);
-//        lightView.rotate(-directionLights[0]->getRotation().x(), 1, 0, 0);
-//        lightView.rotate(-directionLights[0]->getRotation().y(), 0, 1, 0);
+
+
 //        if ((directionLights[0]->getQuaternion() * QVector3D(0, -1, 0)).y() < -0.01)
 //        {
 //            //从下射到上方的光 不要阴影
@@ -589,30 +586,5 @@ void BBScene::writeFBO()
 //            }
 //        }
 //    }
-//    glDisable(GL_CULL_FACE);
-//    mFBO->unbind();
-//}
-
-//Audio *Scene::createAudio(QString filePath, int x, int y, bool isSelect)
-//{
-//    Ray ray = camera.createRayFromScreen(x, y);
-//    //地面y=0
-//    QVector3D hit = ray.computeIntersectWithXOZPlane(0);
-//    return createAudio(filePath, hit, isSelect);
-//}
-
-//Audio *Scene::createAudio(QString filePath, QVector3D position, bool isSelect)
-//{
-//    Audio *audio;
-//    audio = new Audio(position.x(), position.y(), position.z());
-//    audio->setBaseAttributes(QFileInfo(filePath).baseName(), AudioClassName, "audio2");
-//    audios.append(audio);
-//    audio->init();
-//    audio->resize(camera.viewportWidth, camera.viewportHeight);
-//    if (isSelect)
-//    {
-//        transformCoordinate->setSelectedObject(audio);
-//    }
-//    return audio;
 //}
 

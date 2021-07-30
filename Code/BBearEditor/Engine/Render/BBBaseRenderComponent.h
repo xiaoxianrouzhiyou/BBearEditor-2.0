@@ -32,11 +32,14 @@
 #define LOCATION_TEXTURE_SETTING0 "textureSettings"
 #define LOCATION_LIGHT_POSITION "lightPosition"
 #define LOCATION_LIGHT_COLOR "lightColor"
+#define LOCATION_LIGHT_PROJECTIONMATRIX "BBLightProjectionMatrix"
+#define LOCATION_LIGHT_VIEWMATRIX "BBLightViewMatrix"
 #define LOCATION_LIGHT_SETTINGS(x) "lightSettings"#x
 #define LOCATION_SCREEN_PARAMETERS "screenParameters"
 #define LOCATION_TIME "time"
 #define LOCATION_COLORFBO "ColorFBO"
 #define LOCATION_DEPTHFBO "DepthFBO"
+#define LOCATION_SHADOWMap "BBShadowMap"
 
 
 class BBBaseRenderComponent : protected QOpenGLExtraFunctions

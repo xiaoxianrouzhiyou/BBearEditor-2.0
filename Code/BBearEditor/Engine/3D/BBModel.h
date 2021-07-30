@@ -23,6 +23,7 @@ public:
 
     void init(const QString &path) override;
     void render(BBCamera *pCamera) override;
+    void renderToShadowMap(BBCamera *pCamera);
     void insertInRenderQueue(BBRenderQueue *pQueue) override;
     void removeFromRenderQueue(BBRenderQueue *pQueue) override;
 
