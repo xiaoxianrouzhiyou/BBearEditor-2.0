@@ -202,7 +202,7 @@ BBUniformUpdater* BBShader::initUniformMatrix4(GLint location, const char *pUnif
         updateUniformFunc = &BBUniformUpdater::updateLightViewMatrix;
         uniformType = BBMaterialUniformPropertyType::LightViewMatrix;
     }
-    else if (strcmp(pUniformName, LOCATION_MODELMATRIX) == 0)
+    else
     {
         pProperty = new BBMatrix4MaterialProperty(pUniformName);
         m_Properties.insert(pUniformName, pProperty);

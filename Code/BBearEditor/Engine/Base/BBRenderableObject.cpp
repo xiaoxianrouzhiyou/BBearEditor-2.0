@@ -57,6 +57,7 @@ BBRenderableObject::~BBRenderableObject()
 void BBRenderableObject::init()
 {
     m_pCurrentMaterial->setMatrix4(LOCATION_MODELMATRIX, m_ModelMatrix.data());
+    m_pCurrentMaterial->setMatrix4(LOCATION_MODELMATRIX_IT, m_ModelMatrix.transposed().inverted().data());
     m_pVBO->submitData();
     if (m_nIndexCount > 0)
     {
@@ -119,6 +120,7 @@ void BBRenderableObject::setModelMatrix(float px, float py, float pz,
 {
     BBGameObject::setModelMatrix(px, py, pz, r, sx, sy, sz);
     m_pCurrentMaterial->setMatrix4(LOCATION_MODELMATRIX, m_ModelMatrix.data());
+    m_pCurrentMaterial->setMatrix4(LOCATION_MODELMATRIX_IT, m_ModelMatrix.transposed().inverted().data());
 }
 
 void BBRenderableObject::setVisibility(bool bVisible)
@@ -131,6 +133,7 @@ void BBRenderableObject::setCurrentMaterial(BBMaterial *pMaterial)
 {
     m_pCurrentMaterial = pMaterial;
     m_pCurrentMaterial->setMatrix4(LOCATION_MODELMATRIX, m_ModelMatrix.data());
+    m_pCurrentMaterial->setMatrix4(LOCATION_MODELMATRIX_IT, m_ModelMatrix.transposed().inverted().data());
     m_pDrawCalls->setMaterial(m_pCurrentMaterial);
 }
 
