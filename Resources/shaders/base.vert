@@ -1,14 +1,14 @@
-attribute vec4 position;
-attribute vec4 color;
+attribute vec4 BBPosition;
+attribute vec4 BBColor;
 
 varying vec4 V_Color;
 
-uniform mat4 projectionMatrix;
-uniform mat4 viewMatrix;
-uniform mat4 modelMatrix;
+uniform mat4 BBProjectionMatrix;
+uniform mat4 BBViewMatrix;
+uniform mat4 BBModelMatrix;
 
 void main()
 {
-    V_Color = color;
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * position;
+    V_Color = BBColor;
+    gl_Position = BBProjectionMatrix * BBViewMatrix * BBModelMatrix * BBPosition;
 }

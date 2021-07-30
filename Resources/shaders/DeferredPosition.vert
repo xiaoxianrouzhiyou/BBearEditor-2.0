@@ -1,13 +1,13 @@
-attribute vec4 position;
+attribute vec4 BBPosition;
 
 varying vec4 V_WorldPos;
 
-uniform mat4 projectionMatrix;
-uniform mat4 viewMatrix;
-uniform mat4 modelMatrix;
+uniform mat4 BBProjectionMatrix;
+uniform mat4 BBViewMatrix;
+uniform mat4 BBModelMatrix;
 
 void main()
 {
-    V_WorldPos = modelMatrix * position;
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * position;
+    V_WorldPos = BBModelMatrix * BBPosition;
+    gl_Position = BBProjectionMatrix * BBViewMatrix * BBModelMatrix * BBPosition;
 }

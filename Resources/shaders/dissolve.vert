@@ -1,17 +1,17 @@
 #version 450 core
 
-in vec4 position;
-in vec4 texcoord;
+in vec4 BBPosition;
+in vec4 BBTexcoord;
 
 out vec4 V_Texcoord;
 
-uniform mat4 projectionMatrix;
-uniform mat4 viewMatrix;
-uniform mat4 modelMatrix;
+uniform mat4 BBProjectionMatrix;
+uniform mat4 BBViewMatrix;
+uniform mat4 BBModelMatrix;
 
 void main()
 {
-    V_Texcoord = texcoord;
+    V_Texcoord = BBTexcoord;
 
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * position;
+    gl_Position = BBProjectionMatrix * BBViewMatrix * BBModelMatrix * BBPosition;
 }

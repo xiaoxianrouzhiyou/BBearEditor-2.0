@@ -3,12 +3,12 @@ varying vec4 V_Color;
 varying vec4 V_Normal;
 varying vec4 V_world_pos_light_space;
 
-uniform vec4 lightSettings0;
-uniform vec4 lightSettings1;
-uniform vec4 lightSettings2;
-uniform vec4 lightPosition;
-uniform vec4 lightColor;
-uniform vec4 cameraPosition;
+uniform vec4 BBLightSettings0;
+uniform vec4 BBLightSettings1;
+uniform vec4 BBLightSettings2;
+uniform vec4 BBLightPosition;
+uniform vec4 BBLightColor;
+uniform vec4 BBCameraPosition;
 uniform sampler2D BBShadowMap;
 
 float getLambertPointLightIntensity(vec3 normal, float radius, float distance, float attenuation, vec3 L)
@@ -27,17 +27,17 @@ float getLambertSpotLightIntensity(vec3 normal, float radius, float distance, fl
     float intensity = max(0.0, dot(L, normal));
     if (intensity > 0.0)
     {
-        vec3 spot_direction = normalize(lightSettings2.xyz);
+        vec3 spot_direction = normalize(BBLightSettings2.xyz);
         // Cosine of the angle between the current point and the spotlight direction
         float current_cos = max(0.0, dot(-L, spot_direction));
         // cutoff cosine
-        float cutoff_radian = lightSettings0.z / 2 * 3.14 / 180.0;
+        float cutoff_radian = BBLightSettings0.z / 2 * 3.14 / 180.0;
         float cutoff_cos = cos(cutoff_radian);
         if (current_cos > cutoff_cos)
         {
             // Within the cutoff range
             float delta = radius - distance;
-            intensity = pow(current_cos, lightSettings0.w) * 2.0 * attenuation * delta / radius;
+            intensity = pow(current_cos, BBLightSettings0.w) * 2.0 * attenuation * delta / radius;
         }
         else
         {
@@ -78,13 +78,13 @@ void main(void)
 {
     vec4 final_color = V_Color;
     vec3 normal = normalize(V_Normal.xyz);
-    if (lightPosition.w == 0.0)
+    if (BBLightPosition.w == 0.0)
     {
         // there is a directional light
         // Lambert
-        vec3 L = normalize(lightPosition.xyz);
+        vec3 L = normalize(BBLightPosition.xyz);
         float intensity = max(0.0, dot(L, normal));
-        final_color = intensity * lightColor;
+        final_color = intensity * BBLightColor;
         // // phong
         // if (intensity > 0.0)
         // {
@@ -102,19 +102,19 @@ void main(void)
         //     final_color += phong_intensity * lightColor;
         // }
     }
-    else if (lightPosition.w == 1.0)
+    else if (BBLightPosition.w == 1.0)
     {
-        float radius = lightSettings1.x;
-        float constant_factor = lightSettings1.y;
-        float linear_factor = lightSettings1.z;
-        float quadric_factor = lightSettings1.w;
-        vec3 L = lightPosition.xyz - V_world_pos.xyz;
+        float radius = BBLightSettings1.x;
+        float constant_factor = BBLightSettings1.y;
+        float linear_factor = BBLightSettings1.z;
+        float quadric_factor = BBLightSettings1.w;
+        vec3 L = BBLightPosition.xyz - V_world_pos.xyz;
         float distance = length(L);
         float attenuation = 1.0 / (constant_factor + linear_factor * distance + quadric_factor * quadric_factor * distance);
         L = normalize(L);
 
         float intensity;
-        if (lightSettings0.x == 2.0)
+        if (BBLightSettings0.x == 2.0)
         {
             // there is a spot light
             intensity = getLambertSpotLightIntensity(normal, radius, distance, attenuation, L);
@@ -124,7 +124,7 @@ void main(void)
             // there is a point light
             intensity = getLambertPointLightIntensity(normal, radius, distance, attenuation, L);
         }
-        final_color = lightColor * intensity * lightSettings0.y;
+        final_color = BBLightColor * intensity * BBLightSettings0.y;
     }
     
     // shadow
