@@ -96,10 +96,10 @@ void main(void)
         // blinn-phong
         // if (intensity > 0.0)
         // {
-        //     vec3 view_dir = normalize(cameraPosition.xyz - V_world_pos.xyz);
+        //     vec3 view_dir = normalize(BBCameraPosition.xyz - V_world_pos.xyz);
         //     vec3 half_vector = normalize(L + view_dir);
         //     float phong_intensity = pow(max(0.0, dot(normal, half_vector)), 4.0f);
-        //     final_color += phong_intensity * lightColor;
+        //     final_color += phong_intensity * BBLightColor;
         // }
     }
     else if (BBLightPosition.w == 1.0)
@@ -128,6 +128,6 @@ void main(void)
     }
     
     // shadow
-    final_color = final_color * vec4(vec3(1.0 - calculateShadow()), 1.0);
+    // final_color = final_color * vec4(vec3(1.0 - calculateShadow()), 1.0);
     gl_FragColor = final_color;
 }

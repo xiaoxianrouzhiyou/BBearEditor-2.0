@@ -21,7 +21,7 @@ void main()
 {
     V_world_pos = BBModelMatrix * BBPosition;
     V_Color = BBColor;
-    V_Normal = BBNormal;
+    V_Normal.xyz = mat3(transpose(inverse(BBModelMatrix))) * BBNormal.xyz;
     V_world_pos_light_space = BBLightProjectionMatrix * BBLightViewMatrix * V_world_pos;
     gl_Position = BBProjectionMatrix * BBViewMatrix * V_world_pos;
 }
