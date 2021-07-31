@@ -14,7 +14,7 @@ public:
     GLuint createTexture2D(const QString &path = "", GLenum eType = GL_RGBA);
     GLuint createTexture2DFromBMP(const char *path);
 
-    GLuint createTextureCube(const QString paths[], GLenum eType = GL_RGBA);
+    GLuint createTextureCube(const QString paths[], GLenum eType = GL_RGB);
 };
 
 #endif // BBTEXTURE_H

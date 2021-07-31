@@ -1,7 +1,6 @@
 attribute vec4 BBPosition;
-attribute vec4 BBTexcoord;
 
-varying vec4 V_Texcoord;
+varying vec4 V_Position;
 
 uniform mat4 BBProjectionMatrix;
 uniform mat4 BBViewMatrix;
@@ -9,6 +8,7 @@ uniform mat4 BBModelMatrix;
 
 void main()
 {
-    V_Texcoord = BBTexcoord;
+    V_Position = BBPosition;
+    V_Position.y = -V_Position.y;
     gl_Position = BBProjectionMatrix * BBViewMatrix * BBModelMatrix * BBPosition;
 }

@@ -23,6 +23,6 @@ message BBMaterial
 	optional int32 SRCBlendFunc = 11;
 	optional int32 DSTBlendFunc = 12;
 
-	repeated string cubeMapName = 13;
-	repeated BBCubeMap cubeMapPath = 14;
+	optional string cubeMapName = 13;
+	optional BBCubeMap cubeMapPaths = 14;
 }

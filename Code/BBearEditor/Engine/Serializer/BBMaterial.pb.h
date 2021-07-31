@@ -180,11 +180,11 @@ class BBMaterial PROTOBUF_FINAL :
     kFloatValueFieldNumber = 7,
     kVec4NameFieldNumber = 8,
     kVec4ValueFieldNumber = 9,
-    kCubeMapNameFieldNumber = 13,
-    kCubeMapPathFieldNumber = 14,
     kShaderNameFieldNumber = 1,
     kVShaderPathFieldNumber = 2,
     kFShaderPathFieldNumber = 3,
+    kCubeMapNameFieldNumber = 13,
+    kCubeMapPathsFieldNumber = 14,
     kBlendStateFieldNumber = 10,
     kSRCBlendFuncFieldNumber = 11,
     kDSTBlendFuncFieldNumber = 12,
@@ -325,48 +325,6 @@ class BBMaterial PROTOBUF_FINAL :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBVector4f >&
       vec4value() const;
 
-  // repeated string cubeMapName = 13;
-  int cubemapname_size() const;
-  private:
-  int _internal_cubemapname_size() const;
-  public:
-  void clear_cubemapname();
-  const std::string& cubemapname(int index) const;
-  std::string* mutable_cubemapname(int index);
-  void set_cubemapname(int index, const std::string& value);
-  void set_cubemapname(int index, std::string&& value);
-  void set_cubemapname(int index, const char* value);
-  void set_cubemapname(int index, const char* value, size_t size);
-  std::string* add_cubemapname();
-  void add_cubemapname(const std::string& value);
-  void add_cubemapname(std::string&& value);
-  void add_cubemapname(const char* value);
-  void add_cubemapname(const char* value, size_t size);
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>& cubemapname() const;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>* mutable_cubemapname();
-  private:
-  const std::string& _internal_cubemapname(int index) const;
-  std::string* _internal_add_cubemapname();
-  public:
-
-  // repeated .BBSerializer.BBCubeMap cubeMapPath = 14;
-  int cubemappath_size() const;
-  private:
-  int _internal_cubemappath_size() const;
-  public:
-  void clear_cubemappath();
-  ::BBSerializer::BBCubeMap* mutable_cubemappath(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBCubeMap >*
-      mutable_cubemappath();
-  private:
-  const ::BBSerializer::BBCubeMap& _internal_cubemappath(int index) const;
-  ::BBSerializer::BBCubeMap* _internal_add_cubemappath();
-  public:
-  const ::BBSerializer::BBCubeMap& cubemappath(int index) const;
-  ::BBSerializer::BBCubeMap* add_cubemappath();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBCubeMap >&
-      cubemappath() const;
-
   // string shaderName = 1;
   bool has_shadername() const;
   private:
@@ -420,6 +378,42 @@ class BBMaterial PROTOBUF_FINAL :
   void _internal_set_fshaderpath(const std::string& value);
   std::string* _internal_mutable_fshaderpath();
   public:
+
+  // string cubeMapName = 13;
+  bool has_cubemapname() const;
+  private:
+  bool _internal_has_cubemapname() const;
+  public:
+  void clear_cubemapname();
+  const std::string& cubemapname() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_cubemapname(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_cubemapname();
+  std::string* release_cubemapname();
+  void set_allocated_cubemapname(std::string* cubemapname);
+  private:
+  const std::string& _internal_cubemapname() const;
+  void _internal_set_cubemapname(const std::string& value);
+  std::string* _internal_mutable_cubemapname();
+  public:
+
+  // .BBSerializer.BBCubeMap cubeMapPaths = 14;
+  bool has_cubemappaths() const;
+  private:
+  bool _internal_has_cubemappaths() const;
+  public:
+  void clear_cubemappaths();
+  const ::BBSerializer::BBCubeMap& cubemappaths() const;
+  ::BBSerializer::BBCubeMap* release_cubemappaths();
+  ::BBSerializer::BBCubeMap* mutable_cubemappaths();
+  void set_allocated_cubemappaths(::BBSerializer::BBCubeMap* cubemappaths);
+  private:
+  const ::BBSerializer::BBCubeMap& _internal_cubemappaths() const;
+  ::BBSerializer::BBCubeMap* _internal_mutable_cubemappaths();
+  public:
+  void unsafe_arena_set_allocated_cubemappaths(
+      ::BBSerializer::BBCubeMap* cubemappaths);
+  ::BBSerializer::BBCubeMap* unsafe_arena_release_cubemappaths();
 
   // bool blendState = 10;
   bool has_blendstate() const;
@@ -475,11 +469,11 @@ class BBMaterial PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< float > floatvalue_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> vec4name_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBVector4f > vec4value_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> cubemapname_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBCubeMap > cubemappath_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr shadername_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr vshaderpath_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr fshaderpath_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr cubemapname_;
+  ::BBSerializer::BBCubeMap* cubemappaths_;
   bool blendstate_;
   ::PROTOBUF_NAMESPACE_ID::int32 srcblendfunc_;
   ::PROTOBUF_NAMESPACE_ID::int32 dstblendfunc_;
@@ -1048,7 +1042,7 @@ BBMaterial::vec4value() const {
 
 // bool blendState = 10;
 inline bool BBMaterial::_internal_has_blendstate() const {
-  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  bool value = (_has_bits_[0] & 0x00000020u) != 0;
   return value;
 }
 inline bool BBMaterial::has_blendstate() const {
@@ -1056,7 +1050,7 @@ inline bool BBMaterial::has_blendstate() const {
 }
 inline void BBMaterial::clear_blendstate() {
   blendstate_ = false;
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline bool BBMaterial::_internal_blendstate() const {
   return blendstate_;
@@ -1066,7 +1060,7 @@ inline bool BBMaterial::blendstate() const {
   return _internal_blendstate();
 }
 inline void BBMaterial::_internal_set_blendstate(bool value) {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000020u;
   blendstate_ = value;
 }
 inline void BBMaterial::set_blendstate(bool value) {
@@ -1076,7 +1070,7 @@ inline void BBMaterial::set_blendstate(bool value) {
 
 // int32 SRCBlendFunc = 11;
 inline bool BBMaterial::_internal_has_srcblendfunc() const {
-  bool value = (_has_bits_[0] & 0x00000010u) != 0;
+  bool value = (_has_bits_[0] & 0x00000040u) != 0;
   return value;
 }
 inline bool BBMaterial::has_srcblendfunc() const {
@@ -1084,7 +1078,7 @@ inline bool BBMaterial::has_srcblendfunc() const {
 }
 inline void BBMaterial::clear_srcblendfunc() {
   srcblendfunc_ = 0;
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 BBMaterial::_internal_srcblendfunc() const {
   return srcblendfunc_;
@@ -1094,7 +1088,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 BBMaterial::srcblendfunc() const {
   return _internal_srcblendfunc();
 }
 inline void BBMaterial::_internal_set_srcblendfunc(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000040u;
   srcblendfunc_ = value;
 }
 inline void BBMaterial::set_srcblendfunc(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -1104,7 +1098,7 @@ inline void BBMaterial::set_srcblendfunc(::PROTOBUF_NAMESPACE_ID::int32 value) {
 
 // int32 DSTBlendFunc = 12;
 inline bool BBMaterial::_internal_has_dstblendfunc() const {
-  bool value = (_has_bits_[0] & 0x00000020u) != 0;
+  bool value = (_has_bits_[0] & 0x00000080u) != 0;
   return value;
 }
 inline bool BBMaterial::has_dstblendfunc() const {
@@ -1112,7 +1106,7 @@ inline bool BBMaterial::has_dstblendfunc() const {
 }
 inline void BBMaterial::clear_dstblendfunc() {
   dstblendfunc_ = 0;
-  _has_bits_[0] &= ~0x00000020u;
+  _has_bits_[0] &= ~0x00000080u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 BBMaterial::_internal_dstblendfunc() const {
   return dstblendfunc_;
@@ -1122,7 +1116,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 BBMaterial::dstblendfunc() const {
   return _internal_dstblendfunc();
 }
 inline void BBMaterial::_internal_set_dstblendfunc(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _has_bits_[0] |= 0x00000020u;
+  _has_bits_[0] |= 0x00000080u;
   dstblendfunc_ = value;
 }
 inline void BBMaterial::set_dstblendfunc(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -1130,114 +1124,140 @@ inline void BBMaterial::set_dstblendfunc(::PROTOBUF_NAMESPACE_ID::int32 value) {
   // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.DSTBlendFunc)
 }
 
-// repeated string cubeMapName = 13;
-inline int BBMaterial::_internal_cubemapname_size() const {
-  return cubemapname_.size();
+// string cubeMapName = 13;
+inline bool BBMaterial::_internal_has_cubemapname() const {
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  return value;
 }
-inline int BBMaterial::cubemapname_size() const {
-  return _internal_cubemapname_size();
+inline bool BBMaterial::has_cubemapname() const {
+  return _internal_has_cubemapname();
 }
 inline void BBMaterial::clear_cubemapname() {
-  cubemapname_.Clear();
+  cubemapname_.ClearToEmpty();
+  _has_bits_[0] &= ~0x00000008u;
 }
-inline std::string* BBMaterial::add_cubemapname() {
-  // @@protoc_insertion_point(field_add_mutable:BBSerializer.BBMaterial.cubeMapName)
-  return _internal_add_cubemapname();
-}
-inline const std::string& BBMaterial::_internal_cubemapname(int index) const {
-  return cubemapname_.Get(index);
-}
-inline const std::string& BBMaterial::cubemapname(int index) const {
+inline const std::string& BBMaterial::cubemapname() const {
   // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.cubeMapName)
-  return _internal_cubemapname(index);
+  return _internal_cubemapname();
 }
-inline std::string* BBMaterial::mutable_cubemapname(int index) {
+template <typename ArgT0, typename... ArgT>
+PROTOBUF_ALWAYS_INLINE
+inline void BBMaterial::set_cubemapname(ArgT0&& arg0, ArgT... args) {
+ _has_bits_[0] |= 0x00000008u;
+ cubemapname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArena());
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.cubeMapName)
+}
+inline std::string* BBMaterial::mutable_cubemapname() {
   // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.cubeMapName)
-  return cubemapname_.Mutable(index);
+  return _internal_mutable_cubemapname();
 }
-inline void BBMaterial::set_cubemapname(int index, const std::string& value) {
-  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.cubeMapName)
-  cubemapname_.Mutable(index)->assign(value);
+inline const std::string& BBMaterial::_internal_cubemapname() const {
+  return cubemapname_.Get();
 }
-inline void BBMaterial::set_cubemapname(int index, std::string&& value) {
-  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.cubeMapName)
-  cubemapname_.Mutable(index)->assign(std::move(value));
+inline void BBMaterial::_internal_set_cubemapname(const std::string& value) {
+  _has_bits_[0] |= 0x00000008u;
+  cubemapname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
 }
-inline void BBMaterial::set_cubemapname(int index, const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  cubemapname_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:BBSerializer.BBMaterial.cubeMapName)
+inline std::string* BBMaterial::_internal_mutable_cubemapname() {
+  _has_bits_[0] |= 0x00000008u;
+  return cubemapname_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
 }
-inline void BBMaterial::set_cubemapname(int index, const char* value, size_t size) {
-  cubemapname_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:BBSerializer.BBMaterial.cubeMapName)
+inline std::string* BBMaterial::release_cubemapname() {
+  // @@protoc_insertion_point(field_release:BBSerializer.BBMaterial.cubeMapName)
+  if (!_internal_has_cubemapname()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000008u;
+  return cubemapname_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
-inline std::string* BBMaterial::_internal_add_cubemapname() {
-  return cubemapname_.Add();
-}
-inline void BBMaterial::add_cubemapname(const std::string& value) {
-  cubemapname_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.cubeMapName)
-}
-inline void BBMaterial::add_cubemapname(std::string&& value) {
-  cubemapname_.Add(std::move(value));
-  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.cubeMapName)
-}
-inline void BBMaterial::add_cubemapname(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  cubemapname_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:BBSerializer.BBMaterial.cubeMapName)
-}
-inline void BBMaterial::add_cubemapname(const char* value, size_t size) {
-  cubemapname_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:BBSerializer.BBMaterial.cubeMapName)
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
-BBMaterial::cubemapname() const {
-  // @@protoc_insertion_point(field_list:BBSerializer.BBMaterial.cubeMapName)
-  return cubemapname_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
-BBMaterial::mutable_cubemapname() {
-  // @@protoc_insertion_point(field_mutable_list:BBSerializer.BBMaterial.cubeMapName)
-  return &cubemapname_;
+inline void BBMaterial::set_allocated_cubemapname(std::string* cubemapname) {
+  if (cubemapname != nullptr) {
+    _has_bits_[0] |= 0x00000008u;
+  } else {
+    _has_bits_[0] &= ~0x00000008u;
+  }
+  cubemapname_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), cubemapname,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.cubeMapName)
 }
 
-// repeated .BBSerializer.BBCubeMap cubeMapPath = 14;
-inline int BBMaterial::_internal_cubemappath_size() const {
-  return cubemappath_.size();
+// .BBSerializer.BBCubeMap cubeMapPaths = 14;
+inline bool BBMaterial::_internal_has_cubemappaths() const {
+  bool value = (_has_bits_[0] & 0x00000010u) != 0;
+  PROTOBUF_ASSUME(!value || cubemappaths_ != nullptr);
+  return value;
 }
-inline int BBMaterial::cubemappath_size() const {
-  return _internal_cubemappath_size();
+inline bool BBMaterial::has_cubemappaths() const {
+  return _internal_has_cubemappaths();
 }
-inline ::BBSerializer::BBCubeMap* BBMaterial::mutable_cubemappath(int index) {
-  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.cubeMapPath)
-  return cubemappath_.Mutable(index);
+inline const ::BBSerializer::BBCubeMap& BBMaterial::_internal_cubemappaths() const {
+  const ::BBSerializer::BBCubeMap* p = cubemappaths_;
+  return p != nullptr ? *p : reinterpret_cast<const ::BBSerializer::BBCubeMap&>(
+      ::BBSerializer::_BBCubeMap_default_instance_);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBCubeMap >*
-BBMaterial::mutable_cubemappath() {
-  // @@protoc_insertion_point(field_mutable_list:BBSerializer.BBMaterial.cubeMapPath)
-  return &cubemappath_;
+inline const ::BBSerializer::BBCubeMap& BBMaterial::cubemappaths() const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.cubeMapPaths)
+  return _internal_cubemappaths();
 }
-inline const ::BBSerializer::BBCubeMap& BBMaterial::_internal_cubemappath(int index) const {
-  return cubemappath_.Get(index);
+inline void BBMaterial::unsafe_arena_set_allocated_cubemappaths(
+    ::BBSerializer::BBCubeMap* cubemappaths) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(cubemappaths_);
+  }
+  cubemappaths_ = cubemappaths;
+  if (cubemappaths) {
+    _has_bits_[0] |= 0x00000010u;
+  } else {
+    _has_bits_[0] &= ~0x00000010u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:BBSerializer.BBMaterial.cubeMapPaths)
 }
-inline const ::BBSerializer::BBCubeMap& BBMaterial::cubemappath(int index) const {
-  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.cubeMapPath)
-  return _internal_cubemappath(index);
+inline ::BBSerializer::BBCubeMap* BBMaterial::release_cubemappaths() {
+  _has_bits_[0] &= ~0x00000010u;
+  ::BBSerializer::BBCubeMap* temp = cubemappaths_;
+  cubemappaths_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
 }
-inline ::BBSerializer::BBCubeMap* BBMaterial::_internal_add_cubemappath() {
-  return cubemappath_.Add();
+inline ::BBSerializer::BBCubeMap* BBMaterial::unsafe_arena_release_cubemappaths() {
+  // @@protoc_insertion_point(field_release:BBSerializer.BBMaterial.cubeMapPaths)
+  _has_bits_[0] &= ~0x00000010u;
+  ::BBSerializer::BBCubeMap* temp = cubemappaths_;
+  cubemappaths_ = nullptr;
+  return temp;
 }
-inline ::BBSerializer::BBCubeMap* BBMaterial::add_cubemappath() {
-  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.cubeMapPath)
-  return _internal_add_cubemappath();
+inline ::BBSerializer::BBCubeMap* BBMaterial::_internal_mutable_cubemappaths() {
+  _has_bits_[0] |= 0x00000010u;
+  if (cubemappaths_ == nullptr) {
+    auto* p = CreateMaybeMessage<::BBSerializer::BBCubeMap>(GetArena());
+    cubemappaths_ = p;
+  }
+  return cubemappaths_;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBCubeMap >&
-BBMaterial::cubemappath() const {
-  // @@protoc_insertion_point(field_list:BBSerializer.BBMaterial.cubeMapPath)
-  return cubemappath_;
+inline ::BBSerializer::BBCubeMap* BBMaterial::mutable_cubemappaths() {
+  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.cubeMapPaths)
+  return _internal_mutable_cubemappaths();
+}
+inline void BBMaterial::set_allocated_cubemappaths(::BBSerializer::BBCubeMap* cubemappaths) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(cubemappaths_);
+  }
+  if (cubemappaths) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(cubemappaths)->GetArena();
+    if (message_arena != submessage_arena) {
+      cubemappaths = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, cubemappaths, submessage_arena);
+    }
+    _has_bits_[0] |= 0x00000010u;
+  } else {
+    _has_bits_[0] &= ~0x00000010u;
+  }
+  cubemappaths_ = cubemappaths;
+  // @@protoc_insertion_point(field_set_allocated:BBSerializer.BBMaterial.cubeMapPaths)
 }
 
 #ifdef __GNUC__

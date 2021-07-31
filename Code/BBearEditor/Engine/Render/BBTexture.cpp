@@ -78,5 +78,39 @@ GLuint BBTexture::createTexture2DFromBMP(const char *path)
 
 GLuint BBTexture::createTextureCube(const QString paths[], GLenum eType)
 {
-    return 0;
+    GLuint texture = 0;
+    unsigned char *pBmpFileContent = NULL;
+
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
+
+    do
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            int nFileSize = 0;
+            pBmpFileContent = (unsigned char*) BBUtils::loadFileContent(paths[i].toStdString().c_str(), nFileSize);
+            BB_PROCESS_ERROR(pBmpFileContent);
+
+            int nBmpWidth = 0;
+            int nBmpHeight = 0;
+            unsigned char *pPixelData = BBUtils::decodeBMP(pBmpFileContent, nBmpWidth, nBmpHeight);
+            BB_PROCESS_ERROR(pPixelData);
+
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, eType, nBmpWidth, nBmpHeight, 0, eType, GL_UNSIGNED_BYTE, pPixelData);
+        }
+
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+
+    } while(0);
+
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+    BB_SAFE_DELETE(pBmpFileContent);
+
+    return texture;
 }
