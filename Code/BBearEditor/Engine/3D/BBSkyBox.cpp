@@ -24,7 +24,7 @@ void BBSkyBoxSide::init(const QString &path)
                              BB_PATH_RESOURCE_SHADER(texture.vert),
                              BB_PATH_RESOURCE_SHADER(texture.frag));
     BBTexture texture;
-    m_pCurrentMaterial->setSampler2D(LOCATION_TEXTURE(0), texture.createTexture2DFromBMP(path.toStdString().c_str()), path);
+    m_pCurrentMaterial->setSampler2D(LOCATION_TEXTURE(0), texture.createTexture2D(path.toStdString().c_str()), path);
     m_pCurrentMaterial->setZTestState(false);
 
     BBRenderableObject::init();
@@ -75,12 +75,12 @@ BBSkyBox::~BBSkyBox()
 
 void BBSkyBox::init(const QString &path)
 {
-    m_pFront->init(path + "front.bmp");
-    m_pBack->init(path + "back.bmp");
-    m_pLeft->init(path + "left.bmp");
-    m_pRight->init(path + "right.bmp");
-    m_pTop->init(path + "top.bmp");
-    m_pBottom->init(path + "bottom.bmp");
+    m_pFront->init(path + "front");
+    m_pBack->init(path + "back");
+    m_pLeft->init(path + "left");
+    m_pRight->init(path + "right");
+    m_pTop->init(path + "top");
+    m_pBottom->init(path + "bottom");
 }
 
 void BBSkyBox::render(BBCamera *pCamera)

@@ -12,7 +12,6 @@ uniform mat4 BBModelMatrix;
 void main()
 {
     V_Position = BBPosition;
-    // V_Position.y = -V_Position.y;
     V_world_pos = BBModelMatrix * BBPosition;
     V_Normal.xyz = mat3(transpose(inverse(BBModelMatrix))) * BBNormal.xyz;
     gl_Position = BBProjectionMatrix * BBViewMatrix * V_world_pos;

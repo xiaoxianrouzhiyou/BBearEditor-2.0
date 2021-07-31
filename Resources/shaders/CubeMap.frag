@@ -11,6 +11,7 @@ void main(void)
     vec3 V = normalize(BBCameraPosition.xyz - V_world_pos.xyz);
     vec3 N = normalize(V_Normal);
     vec3 R = reflect(-V, N);
+    R.y = -R.y;
 
     gl_FragColor = textureCube(Cube, R);
 }
