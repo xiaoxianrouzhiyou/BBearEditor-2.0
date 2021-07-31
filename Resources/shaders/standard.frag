@@ -24,12 +24,12 @@ float getLambertPointLightIntensity(vec3 normal, float radius, float distance, f
 
 float getLambertSpotLightIntensity(vec3 normal, float radius, float distance, float attenuation, vec3 L)
 {
-    float intensity = max(0.0, dot(L, normal));
+    float intensity = max(0.0, dot(normal, L));
     if (intensity > 0.0)
     {
         vec3 spot_direction = normalize(BBLightSettings2.xyz);
         // Cosine of the angle between the current point and the spotlight direction
-        float current_cos = max(0.0, dot(-L, spot_direction));
+        float current_cos = max(0.0, dot(spot_direction, -L));
         // cutoff cosine
         float cutoff_radian = BBLightSettings0.z / 2 * 3.14 / 180.0;
         float cutoff_cos = cos(cutoff_radian);
@@ -83,7 +83,7 @@ void main(void)
         // there is a directional light
         // Lambert
         vec3 L = normalize(BBLightPosition.xyz);
-        float intensity = max(0.0, dot(L, normal));
+        float intensity = max(0.0, dot(normal, L));
         final_color = intensity * BBLightColor;
         // // phong
         // if (intensity > 0.0)
