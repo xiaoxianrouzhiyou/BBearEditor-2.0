@@ -75,3 +75,8 @@ GLuint BBTexture::createTexture2DFromBMP(const char *path)
     BB_SAFE_DELETE(pBmpFileContent);
     return texture;
 }
+
+GLuint BBTexture::createTextureCube(const QString paths[], GLenum eType)
+{
+    return 0;
+}

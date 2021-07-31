@@ -36,6 +36,7 @@ private:
     BBUniformUpdater* initUniformMatrix4(GLint location, const char *pUniformName);
     BBUniformUpdater* initUniformVector4(GLint location, const char *pUniformName);
     BBUniformUpdater* initUniformSampler2D(GLint location, const char *pUniformName, int &nSlotIndex);
+    BBUniformUpdater* initUniformSamplerCube(GLint location, const char *pUniformName, int &nSlotIndex);
     void appendUniformUpdater(BBUniformUpdater *pUniformUpdater);
 
     GLuint compileShader(GLenum shaderType, const char *shaderCode);

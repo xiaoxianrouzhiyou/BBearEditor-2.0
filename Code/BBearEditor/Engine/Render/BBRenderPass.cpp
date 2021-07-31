@@ -203,6 +203,15 @@ void BBRenderPass::setSampler2D(const std::string &uniformName, GLuint textureNa
     }
 }
 
+void BBRenderPass::setSamplerCube(const std::string &uniformName, GLuint textureName, const QString resourcePaths[])
+{
+    auto it = m_Properties.find(uniformName);
+    if (it != m_Properties.end())
+    {
+        ((BBSamplerCubeMaterialProperty*)it.value())->setTextureName(textureName, resourcePaths);
+    }
+}
+
 BBRenderPass* BBRenderPass::clone()
 {
     BBRenderPass *pRet = new BBRenderPass();

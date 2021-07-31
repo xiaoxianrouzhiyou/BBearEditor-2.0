@@ -32,6 +32,7 @@
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/unknown_field_set.h>
 #include "BBVector.pb.h"
+#include "BBCubeMap.pb.h"
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_BBMaterial_2eproto
@@ -179,6 +180,8 @@ class BBMaterial PROTOBUF_FINAL :
     kFloatValueFieldNumber = 7,
     kVec4NameFieldNumber = 8,
     kVec4ValueFieldNumber = 9,
+    kCubeMapNameFieldNumber = 13,
+    kCubeMapPathFieldNumber = 14,
     kShaderNameFieldNumber = 1,
     kVShaderPathFieldNumber = 2,
     kFShaderPathFieldNumber = 3,
@@ -322,6 +325,48 @@ class BBMaterial PROTOBUF_FINAL :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBVector4f >&
       vec4value() const;
 
+  // repeated string cubeMapName = 13;
+  int cubemapname_size() const;
+  private:
+  int _internal_cubemapname_size() const;
+  public:
+  void clear_cubemapname();
+  const std::string& cubemapname(int index) const;
+  std::string* mutable_cubemapname(int index);
+  void set_cubemapname(int index, const std::string& value);
+  void set_cubemapname(int index, std::string&& value);
+  void set_cubemapname(int index, const char* value);
+  void set_cubemapname(int index, const char* value, size_t size);
+  std::string* add_cubemapname();
+  void add_cubemapname(const std::string& value);
+  void add_cubemapname(std::string&& value);
+  void add_cubemapname(const char* value);
+  void add_cubemapname(const char* value, size_t size);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>& cubemapname() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>* mutable_cubemapname();
+  private:
+  const std::string& _internal_cubemapname(int index) const;
+  std::string* _internal_add_cubemapname();
+  public:
+
+  // repeated .BBSerializer.BBCubeMap cubeMapPath = 14;
+  int cubemappath_size() const;
+  private:
+  int _internal_cubemappath_size() const;
+  public:
+  void clear_cubemappath();
+  ::BBSerializer::BBCubeMap* mutable_cubemappath(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBCubeMap >*
+      mutable_cubemappath();
+  private:
+  const ::BBSerializer::BBCubeMap& _internal_cubemappath(int index) const;
+  ::BBSerializer::BBCubeMap* _internal_add_cubemappath();
+  public:
+  const ::BBSerializer::BBCubeMap& cubemappath(int index) const;
+  ::BBSerializer::BBCubeMap* add_cubemappath();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBCubeMap >&
+      cubemappath() const;
+
   // string shaderName = 1;
   bool has_shadername() const;
   private:
@@ -430,6 +475,8 @@ class BBMaterial PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::RepeatedField< float > floatvalue_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> vec4name_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBVector4f > vec4value_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> cubemapname_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBCubeMap > cubemappath_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr shadername_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr vshaderpath_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr fshaderpath_;
@@ -1081,6 +1128,116 @@ inline void BBMaterial::_internal_set_dstblendfunc(::PROTOBUF_NAMESPACE_ID::int3
 inline void BBMaterial::set_dstblendfunc(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_dstblendfunc(value);
   // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.DSTBlendFunc)
+}
+
+// repeated string cubeMapName = 13;
+inline int BBMaterial::_internal_cubemapname_size() const {
+  return cubemapname_.size();
+}
+inline int BBMaterial::cubemapname_size() const {
+  return _internal_cubemapname_size();
+}
+inline void BBMaterial::clear_cubemapname() {
+  cubemapname_.Clear();
+}
+inline std::string* BBMaterial::add_cubemapname() {
+  // @@protoc_insertion_point(field_add_mutable:BBSerializer.BBMaterial.cubeMapName)
+  return _internal_add_cubemapname();
+}
+inline const std::string& BBMaterial::_internal_cubemapname(int index) const {
+  return cubemapname_.Get(index);
+}
+inline const std::string& BBMaterial::cubemapname(int index) const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.cubeMapName)
+  return _internal_cubemapname(index);
+}
+inline std::string* BBMaterial::mutable_cubemapname(int index) {
+  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.cubeMapName)
+  return cubemapname_.Mutable(index);
+}
+inline void BBMaterial::set_cubemapname(int index, const std::string& value) {
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.cubeMapName)
+  cubemapname_.Mutable(index)->assign(value);
+}
+inline void BBMaterial::set_cubemapname(int index, std::string&& value) {
+  // @@protoc_insertion_point(field_set:BBSerializer.BBMaterial.cubeMapName)
+  cubemapname_.Mutable(index)->assign(std::move(value));
+}
+inline void BBMaterial::set_cubemapname(int index, const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  cubemapname_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:BBSerializer.BBMaterial.cubeMapName)
+}
+inline void BBMaterial::set_cubemapname(int index, const char* value, size_t size) {
+  cubemapname_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:BBSerializer.BBMaterial.cubeMapName)
+}
+inline std::string* BBMaterial::_internal_add_cubemapname() {
+  return cubemapname_.Add();
+}
+inline void BBMaterial::add_cubemapname(const std::string& value) {
+  cubemapname_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.cubeMapName)
+}
+inline void BBMaterial::add_cubemapname(std::string&& value) {
+  cubemapname_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.cubeMapName)
+}
+inline void BBMaterial::add_cubemapname(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  cubemapname_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:BBSerializer.BBMaterial.cubeMapName)
+}
+inline void BBMaterial::add_cubemapname(const char* value, size_t size) {
+  cubemapname_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:BBSerializer.BBMaterial.cubeMapName)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
+BBMaterial::cubemapname() const {
+  // @@protoc_insertion_point(field_list:BBSerializer.BBMaterial.cubeMapName)
+  return cubemapname_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
+BBMaterial::mutable_cubemapname() {
+  // @@protoc_insertion_point(field_mutable_list:BBSerializer.BBMaterial.cubeMapName)
+  return &cubemapname_;
+}
+
+// repeated .BBSerializer.BBCubeMap cubeMapPath = 14;
+inline int BBMaterial::_internal_cubemappath_size() const {
+  return cubemappath_.size();
+}
+inline int BBMaterial::cubemappath_size() const {
+  return _internal_cubemappath_size();
+}
+inline ::BBSerializer::BBCubeMap* BBMaterial::mutable_cubemappath(int index) {
+  // @@protoc_insertion_point(field_mutable:BBSerializer.BBMaterial.cubeMapPath)
+  return cubemappath_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBCubeMap >*
+BBMaterial::mutable_cubemappath() {
+  // @@protoc_insertion_point(field_mutable_list:BBSerializer.BBMaterial.cubeMapPath)
+  return &cubemappath_;
+}
+inline const ::BBSerializer::BBCubeMap& BBMaterial::_internal_cubemappath(int index) const {
+  return cubemappath_.Get(index);
+}
+inline const ::BBSerializer::BBCubeMap& BBMaterial::cubemappath(int index) const {
+  // @@protoc_insertion_point(field_get:BBSerializer.BBMaterial.cubeMapPath)
+  return _internal_cubemappath(index);
+}
+inline ::BBSerializer::BBCubeMap* BBMaterial::_internal_add_cubemappath() {
+  return cubemappath_.Add();
+}
+inline ::BBSerializer::BBCubeMap* BBMaterial::add_cubemappath() {
+  // @@protoc_insertion_point(field_add:BBSerializer.BBMaterial.cubeMapPath)
+  return _internal_add_cubemappath();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::BBSerializer::BBCubeMap >&
+BBMaterial::cubemappath() const {
+  // @@protoc_insertion_point(field_list:BBSerializer.BBMaterial.cubeMapPath)
+  return cubemappath_;
 }
 
 #ifdef __GNUC__

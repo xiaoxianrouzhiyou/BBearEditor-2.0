@@ -67,14 +67,32 @@ void BBRendererManager::changeFShader(BBMaterial *pMaterial, const QString &name
     serialize(material, materialPath);
 }
 
-void BBRendererManager::changeTexture(BBMaterial *pMaterial, const QString &textureName, const QString &texturePath)
+void BBRendererManager::changeSampler2D(BBMaterial *pMaterial, const QString &uniformName, const QString &texturePath)
 {
     QString materialPath = m_CachedMaterials.key(pMaterial);
     BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
     BBSerializer::BBMaterial material = deserialize(materialPath);
 
-    material.add_texturename(textureName.toStdString().c_str());
+    material.add_texturename(uniformName.toStdString().c_str());
     material.add_texturepath(texturePath.toStdString().c_str());
+
+    serialize(material, materialPath);
+}
+
+void BBRendererManager::changeSamplerCube(BBMaterial *pMaterial, const QString &uniformName, const QString resourcePaths[])
+{
+    QString materialPath = m_CachedMaterials.key(pMaterial);
+    BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
+    BBSerializer::BBMaterial material = deserialize(materialPath);
+
+    material.add_cubemapname(uniformName.toStdString().c_str());
+    BBSerializer::BBCubeMap *pCubeMap = material.add_cubemappath();
+    pCubeMap->set_positivex(resourcePaths[0].toStdString().c_str());
+    pCubeMap->set_negativex(resourcePaths[1].toStdString().c_str());
+    pCubeMap->set_positivey(resourcePaths[2].toStdString().c_str());
+    pCubeMap->set_negativey(resourcePaths[3].toStdString().c_str());
+    pCubeMap->set_positivez(resourcePaths[4].toStdString().c_str());
+    pCubeMap->set_negativez(resourcePaths[5].toStdString().c_str());
 
     serialize(material, materialPath);
 }
@@ -245,6 +263,20 @@ void BBRendererManager::loadMaterialContent(const QString &filePath, BBMaterial 
         BBTexture texture;
         QString texturePath = QString::fromStdString(material.texturepath(i));
         pMaterial->setSampler2D(material.texturename(i), texture.createTexture2D(texturePath), texturePath);
+    }
+
+    int nSamplerCubeCount = material.cubemapname_size();
+    for (int i = 0; i < nSamplerCubeCount; i++)
+    {
+        BBTexture texture;
+        BBSerializer::BBCubeMap cubeMapPath = material.cubemappath(i);
+        QString path[6] = {QString::fromStdString(cubeMapPath.positivex()),
+                           QString::fromStdString(cubeMapPath.negativex()),
+                           QString::fromStdString(cubeMapPath.positivey()),
+                           QString::fromStdString(cubeMapPath.negativey()),
+                           QString::fromStdString(cubeMapPath.positivez()),
+                           QString::fromStdString(cubeMapPath.negativez())};
+        pMaterial->setSamplerCube(material.cubemapname(i), texture.createTextureCube(path), path);
     }
 
     int nFloatCount = material.floatname_size();

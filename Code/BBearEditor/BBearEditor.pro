@@ -118,7 +118,8 @@ SOURCES += \
     Editor/Dialog/BBResourceDialog.cpp \
     Engine/Render/BBRenderQueue.cpp \
     Editor/PropertyManager/GroupManager/BBMaterialPropertyGroupManager.cpp \
-    Editor/PropertyManager/GroupManager/BBLightManager.cpp
+    Editor/PropertyManager/GroupManager/BBLightManager.cpp \
+    Engine/Serializer/BBCubeMap.pb.cc
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -216,7 +217,8 @@ HEADERS += \
     Editor/Dialog/BBResourceDialog.h \
     Engine/Render/BBRenderQueue.h \
     Editor/PropertyManager/GroupManager/BBMaterialPropertyGroupManager.h \
-    Editor/PropertyManager/GroupManager/BBLightManager.h
+    Editor/PropertyManager/GroupManager/BBLightManager.h \
+    Engine/Serializer/BBCubeMap.pb.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

@@ -13,6 +13,8 @@ public:
     GLuint createTexture2D(QImage image, GLenum eType = GL_RGBA);
     GLuint createTexture2D(const QString &path = "", GLenum eType = GL_RGBA);
     GLuint createTexture2DFromBMP(const char *path);
+
+    GLuint createTextureCube(const QString paths[], GLenum eType = GL_RGBA);
 };
 
 #endif // BBTEXTURE_H

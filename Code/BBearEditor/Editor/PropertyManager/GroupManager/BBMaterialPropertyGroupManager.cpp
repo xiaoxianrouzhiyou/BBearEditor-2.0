@@ -128,6 +128,14 @@ void BBMaterialPropertyGroupManager::addPropertyItems()
             QObject::connect(pTextureFactory, SIGNAL(setSampler2D(QString, QString)),
                              this, SLOT(setSampler2D(QString, QString)));
         }
+        else if (eType == BBMaterialUniformPropertyType::SamplerCube)
+        {
+            BBSamplerCubeMaterialProperty *pProperty = (BBSamplerCubeMaterialProperty*)properties[i];
+            BBCubeMapFactory *pCubeMapFactory = new BBCubeMapFactory(name, pProperty->getResourcePaths(), this);
+            addFactory(pCubeMapFactory);
+            QObject::connect(pCubeMapFactory, SIGNAL(setSamplerCube(QString, QString*)),
+                             this, SLOT(setSamplerCube(QString, QString*)));
+        }
     }
 }
 
@@ -136,7 +144,15 @@ void BBMaterialPropertyGroupManager::setSampler2D(const QString &uniformName, co
     BBTexture texture;
     m_pMaterial->setSampler2D(uniformName.toStdString().c_str(), texture.createTexture2D(texturePath), texturePath);
     m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
-    BBRendererManager::changeTexture(m_pMaterial, uniformName, texturePath);
+    BBRendererManager::changeSampler2D(m_pMaterial, uniformName, texturePath);
+}
+
+void BBMaterialPropertyGroupManager::setSamplerCube(const QString &uniformName, QString *pResourcePaths)
+{
+    BBTexture texture;
+    m_pMaterial->setSamplerCube(uniformName.toStdString().c_str(), texture.createTextureCube(pResourcePaths), pResourcePaths);
+    m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
+    BBRendererManager::changeSamplerCube(m_pMaterial, uniformName, pResourcePaths);
 }
 
 void BBMaterialPropertyGroupManager::setFloat(const QString &uniformName, float fValue)

@@ -22,7 +22,8 @@ public:
     /* change cached materials and save changes */
     static void changeVShader(BBMaterial *pMaterial, const QString &name);
     static void changeFShader(BBMaterial *pMaterial, const QString &name);
-    static void changeTexture(BBMaterial *pMaterial, const QString &textureName, const QString &texturePath);
+    static void changeSampler2D(BBMaterial *pMaterial, const QString &uniformName, const QString &texturePath);
+    static void changeSamplerCube(BBMaterial *pMaterial, const QString &uniformName, const QString resourcePaths[]);
     static void changeFloat(BBMaterial *pMaterial, const QString &floatName, float fValue);
     static void changeVector4(BBMaterial *pMaterial, const std::string &name, float *fValue);
 

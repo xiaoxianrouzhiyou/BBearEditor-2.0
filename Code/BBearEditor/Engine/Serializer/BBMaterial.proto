@@ -2,19 +2,27 @@ syntax = "proto3";
 package BBSerializer;
 
 import "BBVector.proto";
+import "BBCubeMap.proto";
 
 message BBMaterial
 {
 	optional string shaderName = 1;
 	optional string vShaderPath = 2;
 	optional string fShaderPath = 3;
+
 	repeated string textureName = 4;
 	repeated string texturePath = 5;
+
 	repeated string floatName = 6;
 	repeated float floatValue = 7;
+
 	repeated string vec4Name = 8;
 	repeated BBVector4f vec4Value = 9;
+
 	optional bool blendState = 10;
 	optional int32 SRCBlendFunc = 11;
 	optional int32 DSTBlendFunc = 12;
+
+	repeated string cubeMapName = 13;
+	repeated BBCubeMap cubeMapPath = 14;
 }

@@ -1,0 +1,12 @@
+syntax = "proto3";
+package BBSerializer;
+
+message BBCubeMap
+{
+	optional string positiveX = 1;
+	optional string negativeX = 2;
+	optional string positiveY = 3;
+	optional string negativeY = 4;
+    optional string positiveZ = 5;
+    optional string negativeZ = 6;
+}

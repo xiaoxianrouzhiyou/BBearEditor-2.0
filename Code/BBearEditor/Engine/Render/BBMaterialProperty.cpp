@@ -124,3 +124,37 @@ void BBSampler2DMaterialProperty::setTextureName(GLuint textureName, const QStri
     m_TextureName = textureName;
     m_ResourcePath = resourcePath;
 }
+
+
+/**
+ * @brief BBSamplerCubeMaterialProperty::BBSamplerCubeMaterialProperty
+ * @param name
+ * @param nSlotIndex
+ */
+BBSamplerCubeMaterialProperty::BBSamplerCubeMaterialProperty(const char *name, int nSlotIndex)
+    : BBMaterialProperty(SamplerCube, name)
+{
+    m_TextureName = 0;
+    m_nSlotIndex = nSlotIndex;
+}
+
+BBSamplerCubeMaterialProperty::~BBSamplerCubeMaterialProperty()
+{
+
+}
+
+BBMaterialProperty* BBSamplerCubeMaterialProperty::clone()
+{
+    BBSamplerCubeMaterialProperty *pRet = new BBSamplerCubeMaterialProperty(m_Name, m_nSlotIndex);
+    pRet->setTextureName(m_TextureName, m_ResourcePath);
+    return pRet;
+}
+
+void BBSamplerCubeMaterialProperty::setTextureName(GLuint textureName, const QString resourcePath[])
+{
+    m_TextureName = textureName;
+    for (int i = 0; i < 6; i++)
+    {
+        m_ResourcePath[i] = resourcePath[i];
+    }
+}

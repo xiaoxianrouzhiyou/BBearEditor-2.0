@@ -365,10 +365,11 @@ void BBIconFactory::setContent(const QString &filePath)
  * @brief BBTextureFactory::BBTextureFactory
  * @param pParent
  */
-BBTextureFactory::BBTextureFactory(const QString &uniformName, const QString &originalIconPath, QWidget *pParent)
+BBTextureFactory::BBTextureFactory(const QString &uniformName, const QString &originalIconPath, QWidget *pParent, int nIndex)
     : BBIconFactory(pParent)
 {
     m_UniformName = uniformName;
+    m_nIndex = nIndex;
     m_pIconLabel->setFilter(BBFileSystemDataManager::m_TextureSuffixs);
     setContent(originalIconPath);
 }
@@ -376,7 +377,56 @@ BBTextureFactory::BBTextureFactory(const QString &uniformName, const QString &or
 void BBTextureFactory::changeCurrentFilePath(const QString &filePath)
 {
     setContent(filePath);
-    emit setSampler2D(m_UniformName, filePath);
+    emit setSampler2D(m_UniformName, filePath, m_nIndex);
+}
+
+
+/**
+ * @brief BBCubeMapFactory::BBCubeMapFactory
+ * @param uniformName
+ * @param originalIconPath
+ * @param pParent
+ */
+BBCubeMapFactory::BBCubeMapFactory(const QString &uniformName, const QString originalIconPath[], QWidget *pParent)
+    : QWidget(pParent)
+{
+    for (int i = 0; i < 6; i++)
+    {
+        m_ResourcePaths[i] = originalIconPath[i];
+    }
+
+    QVBoxLayout *pLayout = new QVBoxLayout(this);
+    pLayout->setMargin(0);
+
+    QString subName[6] = {"_Positive_X", "_Negative_X", "_Positive_Y", "_Negative_Y", "_Positive_Z", "_Negative_Z"};
+    for (int i = 0; i < 6; i++)
+    {
+        QWidget *pTextureFactoryWidget = new QWidget(this);
+        QHBoxLayout *pTextureFactoryLayout = new QHBoxLayout(pTextureFactoryWidget);
+        pTextureFactoryLayout->setMargin(0);
+        pTextureFactoryLayout->addWidget(new QLabel(uniformName + subName[i]), 1, Qt::AlignBottom);
+        m_pTextureFactory[i] = new BBTextureFactory(uniformName, originalIconPath[i], this, i);
+        pTextureFactoryLayout->addWidget(m_pTextureFactory[i], 1);
+        pLayout->addWidget(pTextureFactoryWidget);
+
+        QObject::connect(m_pTextureFactory[i], SIGNAL(setSampler2D(QString, QString, int)),
+                         this, SLOT(changeCurrentFilePath(QString, QString, int)));
+    }
+}
+
+BBCubeMapFactory::~BBCubeMapFactory()
+{
+    for (int i = 0; i < 6; i++)
+    {
+        BB_SAFE_DELETE(m_pTextureFactory[i]);
+    }
+}
+
+void BBCubeMapFactory::changeCurrentFilePath(const QString &uniformName, const QString &texturePath, int nFaceIndex)
+{
+    m_pTextureFactory[nFaceIndex]->setContent(texturePath);
+    m_ResourcePaths[nFaceIndex] = texturePath;
+    emit setSamplerCube(uniformName, m_ResourcePaths);
 }
 
 

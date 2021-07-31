@@ -176,16 +176,38 @@ class BBTextureFactory : public BBIconFactory
     Q_OBJECT
 
 public:
-    BBTextureFactory(const QString &uniformName, const QString &originalIconPath = "", QWidget *pParent = 0);
+    BBTextureFactory(const QString &uniformName, const QString &originalIconPath = "", QWidget *pParent = 0, int nIndex = 0);
 
 public slots:
     void changeCurrentFilePath(const QString &filePath) override;
 
 signals:
-    void setSampler2D(const QString &uniformName, const QString &texturePath);
+    void setSampler2D(const QString &uniformName, const QString &texturePath, int nIndex = 0);
 
 private:
     QString m_UniformName;
+    // if it is in a group
+    int m_nIndex;
+};
+
+
+class BBCubeMapFactory : public QWidget
+{
+    Q_OBJECT
+
+public:
+    BBCubeMapFactory(const QString &uniformName, const QString originalIconPath[] = {}, QWidget *pParent = 0);
+    ~BBCubeMapFactory();
+
+public slots:
+    void changeCurrentFilePath(const QString &uniformName, const QString &texturePath, int nFaceIndex);
+
+signals:
+    void setSamplerCube(const QString &uniformName, QString *pResourcePaths);
+
+private:
+    BBTextureFactory *m_pTextureFactory[6];
+    QString m_ResourcePaths[6];
 };
 
 
