@@ -29,8 +29,8 @@ void BBNormalIndicator::init(BBRenderableObject *pObject)
         QVector3D objectVertexNormal = pObjectVBO->getNormal(i);
         m_pVBO->setPosition(i * 2, objectVertexPosition);
         m_pVBO->setPosition(i * 2 + 1, objectVertexPosition + objectVertexNormal);
-        m_pVBO->setColor(i * 2, BBConstant::m_Gray);
-        m_pVBO->setColor(i * 2 + 1, BBConstant::m_Gray);
+        m_pVBO->setColor(i * 2, 0.514f, 0.686f, 0.608f);
+        m_pVBO->setColor(i * 2 + 1, 0.514f, 0.686f, 0.608f);
     }
 
     m_pCurrentMaterial = new BBMaterial();

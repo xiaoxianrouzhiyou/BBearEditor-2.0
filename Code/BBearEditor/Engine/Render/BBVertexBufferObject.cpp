@@ -148,6 +148,13 @@ void BBVertexBufferObject::setBiTangent(int index, const QVector3D &bitangent)
     setBiTangent(index, bitangent.x(), bitangent.y(), bitangent.z());
 }
 
+QVector3D BBVertexBufferObject::getTangent(int index)
+{
+    return QVector3D(m_pVertexes[index].m_fTangent[0],
+                     m_pVertexes[index].m_fTangent[1],
+                     m_pVertexes[index].m_fTangent[2]);
+}
+
 void BBVertexBufferObject::submitData()
 {
     updateData(GL_ARRAY_BUFFER, sizeof(BBVertex) * m_nVertexCount, m_pVertexes);

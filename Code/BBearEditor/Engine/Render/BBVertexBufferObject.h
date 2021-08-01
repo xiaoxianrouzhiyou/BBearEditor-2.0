@@ -43,6 +43,7 @@ public:
     void setTangent(int index, const QVector3D &tangent);
     void setBiTangent(int index, float x, float y, float z);
     void setBiTangent(int index, const QVector3D &bitangent);
+    QVector3D getTangent(int index);
 
     inline int getVertexCount() { return m_nVertexCount; }
 
