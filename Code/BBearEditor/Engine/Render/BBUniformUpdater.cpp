@@ -72,7 +72,7 @@ void BBUniformUpdater::updateTime(GLint location, void *pUserData, void *pProper
 {
     qint64 currentTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
     float fDelta = currentTime - m_LastTime;
-    float *ptr = new float[4] {fDelta, currentTime, currentTime % 100000000, 0.0f};
+    float *ptr = new float[4] {fDelta, currentTime, currentTime % 100000000, 0.0};
     glUniform4fv(location, 1, ptr);
     m_LastTime = currentTime;
 }
