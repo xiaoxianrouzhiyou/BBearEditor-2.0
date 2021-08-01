@@ -13,7 +13,7 @@ BBRenderPass::BBRenderPass()
 
 BBRenderPass::~BBRenderPass()
 {
-    BB_SAFE_DELETE(m_pShader);
+
 }
 
 void BBRenderPass::setShader(BBShader *pShader)

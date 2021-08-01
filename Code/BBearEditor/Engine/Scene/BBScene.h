@@ -23,6 +23,7 @@ class BBTransformCoordinateSystem;
 class BBTiledFullScreenQuad;
 class BBRenderQueue;
 class BBRayTracker;
+class BBNormalIndicator;
 class BBScene;
 
 typedef void (BBScene::*BBRenderingFunc)();
@@ -50,6 +51,7 @@ public:
     inline QList<BBGameObject*> getModels() { return m_Models; }
     inline QList<BBGameObject*> getLights() { return m_Lights; }
     inline BBRayTracker* getRayTracker() { return m_pRayTracker; }
+    inline BBNormalIndicator* getNormalIndicator() { return m_pNormalIndicator; }
 
     /* FBO */
     GLuint getColorFBO(int nIndex);
@@ -124,12 +126,7 @@ private:
 
     BBRayTracker *m_pRayTracker;
 
-
-//    QList<GameObject*> audios;
-
-//    void renderShadowMap();
-//    Audio *createAudio(QString filePath, int x, int y, bool isSelect = true);
-//    Audio *createAudio(QString filePath, QVector3D position = QVector3D(0, 0, 0), bool isSelect = true);
+    BBNormalIndicator *m_pNormalIndicator;
 };
 
 #endif // BBSCENE_H

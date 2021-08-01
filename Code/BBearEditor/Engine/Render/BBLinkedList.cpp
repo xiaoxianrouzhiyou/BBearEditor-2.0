@@ -55,3 +55,8 @@ bool BBLinkedList::isEnd()
     else
         return false;
 }
+
+void BBLinkedList::clear()
+{
+    // to do
+}

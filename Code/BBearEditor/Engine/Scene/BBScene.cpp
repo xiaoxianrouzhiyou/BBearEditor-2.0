@@ -23,6 +23,7 @@
 #include "RayTracing/BBRayTracker.h"
 #include "Render/BBTexture.h"
 #include "Render/BBRenderQueue.h"
+#include "3D/BBNormalIndicator.h"
 
 
 QString BBScene::m_ColorBufferName = "color";
@@ -44,6 +45,7 @@ BBScene::BBScene()
     m_pTransformCoordinateSystem = nullptr;
     m_pTiledFullScreenQuad = nullptr;
     m_pRayTracker = nullptr;
+    m_pNormalIndicator = nullptr;
 }
 
 BBScene::~BBScene()
@@ -60,6 +62,7 @@ BBScene::~BBScene()
     BB_SAFE_DELETE(m_pTransformCoordinateSystem);
     BB_SAFE_DELETE(m_pTiledFullScreenQuad);
     BB_SAFE_DELETE(m_pRayTracker);
+    BB_SAFE_DELETE(m_pNormalIndicator);
     QList<BBGameObject*> objects = m_Models + m_Lights;
     QList<BBGameObject*>::Iterator itr;
     for (itr = objects.begin(); itr != objects.end(); itr++)
@@ -82,6 +85,7 @@ void BBScene::init()
     m_pTransformCoordinateSystem = new BBTransformCoordinateSystem();
     m_pTiledFullScreenQuad = new BBTiledFullScreenQuad();
     m_pRayTracker = new BBRayTracker(this);
+    m_pNormalIndicator = new BBNormalIndicator();
 
     m_pCamera->setViewportSize(800.0f, 600.0f);
 
@@ -111,6 +115,8 @@ void BBScene::defaultRender()
 
     // BBGameObject
     m_pRenderQueue->render();
+
+    m_pNormalIndicator->render(m_pCamera);
 
     for (QList<BBGameObject*>::Iterator itr = m_Lights.begin(); itr != m_Lights.end(); itr++)
     {

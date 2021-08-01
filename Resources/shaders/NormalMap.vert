@@ -17,6 +17,6 @@ void main()
     vec3 B = normalize(vec3(BBModelMatrix * BBBiTangent));
     vec3 N = normalize(vec3(BBModelMatrix * BBTangent));
     V_TBN = mat3(T, B, N);
-    V_Texcoord = BBTexcoord;
+    V_Texcoord = BBTangent;
     gl_Position = BBProjectionMatrix * BBViewMatrix * BBModelMatrix * BBPosition;
 }

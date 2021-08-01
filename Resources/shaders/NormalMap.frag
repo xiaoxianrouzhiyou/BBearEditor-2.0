@@ -22,5 +22,5 @@ void main(void)
         intensity = max(0.0, dot(normal, L));
     }
 
-    gl_FragColor = vec4(intensity, intensity, intensity, 1.0);
+    gl_FragColor = V_Texcoord;
 }

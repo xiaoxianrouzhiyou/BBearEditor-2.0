@@ -18,6 +18,7 @@
 #include "Scene/BBScene.h"
 #include "RayTracing/BBRayTracker.h"
 #include "Dialog/BBResourceDialog.h"
+#include "3D/BBNormalIndicator.h"
 
 
 /**
@@ -444,12 +445,16 @@ BBRenderManager::BBRenderManager(BBRenderableObject *pObject, QWidget *pParent)
 {
     m_pRenderableObject = pObject;
     QString materialPath = BBRendererManager::getMaterialPath(pObject->getMaterial());
-    m_pMaterialFactory = new BBDragAcceptedFactory(BB_PATH_RESOURCE_ICON(material5.png), materialPath, pParent);
+
+    m_pMaterialFactory = new BBDragAcceptedFactory(BB_PATH_RESOURCE_ICON(material5.png), materialPath, this);
     m_pMaterialFactory->setFilter(BBFileSystemDataManager::m_MaterialSuffixs);
     addFactory("Material", m_pMaterialFactory, 1);
     QObject::connect(m_pMaterialFactory, SIGNAL(iconClicked()), this, SLOT(popupResourceDialog()));
-    QObject::connect(m_pMaterialFactory, SIGNAL(currentFilePathChanged(QString)),
-                     this, SLOT(changeMaterial(QString)));
+    QObject::connect(m_pMaterialFactory, SIGNAL(currentFilePathChanged(QString)), this, SLOT(changeMaterial(QString)));
+
+    QCheckBox *pNormalIndicatorTrigger = new QCheckBox(this);
+    addFactory("Normal Indicator", pNormalIndicatorTrigger, 1, Qt::AlignRight);
+    QObject::connect(pNormalIndicatorTrigger, SIGNAL(clicked(bool)), this, SLOT(triggerNormalIndicator(bool)));
 }
 
 BBRenderManager::~BBRenderManager()
@@ -468,5 +473,19 @@ void BBRenderManager::popupResourceDialog()
     if (dialog.exec())
     {
         m_pMaterialFactory->changeCurrentFilePath(dialog.getCurrentItemFilePath());
+    }
+}
+
+void BBRenderManager::triggerNormalIndicator(bool bEnable)
+{
+    BBNormalIndicator *pNormalIndicator = BBSceneManager::getScene()->getNormalIndicator();
+    if (bEnable)
+    {
+        pNormalIndicator->init(m_pRenderableObject);
+        pNormalIndicator->setActivity(true);
+    }
+    else
+    {
+        pNormalIndicator->setActivity(false);
     }
 }

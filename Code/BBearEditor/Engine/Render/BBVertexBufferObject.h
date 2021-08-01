@@ -36,6 +36,7 @@ public:
     void setNormal(int index, float x, float y, float z);
     void setNormal(int index, const QVector3D &normal);
     void setNormal(int index, const QVector4D &normal);
+    QVector3D getNormal(int index);
 
     void computeTangent(unsigned short *pVertexIndexes, int nIndexCount);
     void setTangent(int index, float x, float y, float z);
@@ -50,6 +51,9 @@ public:
 
 private:
     void setSize(int nVertexCount, GLenum hint = GL_STATIC_DRAW);
+    void _computeTangent(int nVertexIndex,
+                         const QVector3D &pos0, const QVector3D &pos1, const QVector3D &pos2,
+                         const QVector2D &uv0, const QVector2D &uv1, const QVector2D &uv2);
 
     BBVertex *m_pVertexes;
     int m_nVertexCount;

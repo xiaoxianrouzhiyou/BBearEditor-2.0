@@ -28,6 +28,8 @@ public:
     void remove(BBLinkedList *pNode);
     bool isEnd();
 
+    void clear();
+
     BBLinkedList *m_pNext;
 };
 

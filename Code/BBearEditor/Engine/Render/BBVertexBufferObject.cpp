@@ -91,6 +91,13 @@ void BBVertexBufferObject::setNormal(int index, const QVector4D &normal)
     setNormal(index, normal.x(), normal.y(), normal.z());
 }
 
+QVector3D BBVertexBufferObject::getNormal(int index)
+{
+    return QVector3D(m_pVertexes[index].m_fNormal[0],
+                     m_pVertexes[index].m_fNormal[1],
+                     m_pVertexes[index].m_fNormal[2]);
+}
+
 void BBVertexBufferObject::computeTangent(unsigned short *pVertexIndexes, int nIndexCount)
 {
     // For the time, only triangles with EBO are considered
@@ -109,29 +116,9 @@ void BBVertexBufferObject::computeTangent(unsigned short *pVertexIndexes, int nI
         QVector2D uv1 = getTexcoord(nIndex1);
         QVector2D uv2 = getTexcoord(nIndex2);
 
-        QVector3D e0 = pos1 - pos0;
-        QVector3D e1 = pos2 - pos0;
-        QVector2D deltaUV0 = uv1 - uv0;
-        QVector2D deltaUV1 = uv2 - uv0;
-
-        float f = 1.0f / (deltaUV0.x() * deltaUV1.y() - deltaUV1.x() * deltaUV0.y());
-        QVector3D tangent;
-        tangent.setX(f * (deltaUV1.y() * e0.x() - deltaUV0.y() * e1.x()));
-        tangent.setY(f * (deltaUV1.y() * e0.y() - deltaUV0.y() * e1.y()));
-        tangent.setZ(f * (deltaUV1.y() * e0.z() - deltaUV0.y() * e1.z()));
-        tangent.normalize();
-        setTangent(nIndex0, tangent);
-        setTangent(nIndex1, tangent);
-        setTangent(nIndex2, tangent);
-
-        QVector3D bitangent;
-        bitangent.setX(f * (-deltaUV1.x() * e0.x() - deltaUV0.x() * e1.x()));
-        bitangent.setY(f * (-deltaUV1.x() * e0.y() - deltaUV0.x() * e1.y()));
-        bitangent.setZ(f * (-deltaUV1.x() * e0.z() - deltaUV0.x() * e1.z()));
-        bitangent.normalize();
-        setBiTangent(nIndex0, bitangent);
-        setBiTangent(nIndex1, bitangent);
-        setBiTangent(nIndex2, bitangent);
+        _computeTangent(nIndex0, pos0, pos1, pos2, uv0, uv1, uv2);
+        _computeTangent(nIndex1, pos1, pos2, pos0, uv1, uv2, uv0);
+        _computeTangent(nIndex2, pos2, pos0, pos1, uv2, uv0, uv1);
     }
 }
 
@@ -177,4 +164,35 @@ void BBVertexBufferObject::setSize(int nVertexCount, GLenum hint)
     m_pVertexes = new BBVertex[m_nVertexCount];
     memset(m_pVertexes, 0, sizeof(BBVertex) * m_nVertexCount);
     m_Name = createBufferObject(GL_ARRAY_BUFFER, sizeof(BBVertex) * m_nVertexCount, hint, NULL);
+}
+
+void BBVertexBufferObject::_computeTangent(int nVertexIndex,
+                                           const QVector3D &pos0, const QVector3D &pos1, const QVector3D &pos2,
+                                           const QVector2D &uv0, const QVector2D &uv1, const QVector2D &uv2)
+{
+    QVector3D e0 = pos1 - pos0;
+    QVector3D e1 = pos2 - pos0;
+    QVector2D deltaUV0 = uv1 - uv0;
+    QVector2D deltaUV1 = uv2 - uv0;
+
+    float f = 1.0f / (deltaUV0.x() * deltaUV1.y() - deltaUV1.x() * deltaUV0.y());
+    QVector3D tangent;
+    tangent.setX(f * (deltaUV1.y() * e0.x() - deltaUV0.y() * e1.x()));
+    tangent.setY(f * (deltaUV1.y() * e0.y() - deltaUV0.y() * e1.y()));
+    tangent.setZ(f * (deltaUV1.y() * e0.z() - deltaUV0.y() * e1.z()));
+    tangent.normalize();
+    QVector3D bitangent;
+    bitangent.setX(f * (-deltaUV1.x() * e0.x() - deltaUV0.x() * e1.x()));
+    bitangent.setY(f * (-deltaUV1.x() * e0.y() - deltaUV0.x() * e1.y()));
+    bitangent.setZ(f * (-deltaUV1.x() * e0.z() - deltaUV0.x() * e1.z()));
+    bitangent.normalize();
+
+    QVector3D cross = QVector3D::crossProduct(tangent, bitangent);
+    if (QVector3D::dotProduct(cross, getNormal(nVertexIndex)) < 0.0f)
+    {
+        tangent = -tangent;
+    }
+
+    setTangent(nVertexIndex, tangent);
+    setBiTangent(nVertexIndex, bitangent);
 }
