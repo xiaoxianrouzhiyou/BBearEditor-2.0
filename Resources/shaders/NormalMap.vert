@@ -1,21 +1,22 @@
 attribute vec4 BBPosition;
 attribute vec4 BBTexcoord;
-
-varying vec4 V_Texcoord;
+attribute vec4 BBNormal;
+attribute vec4 BBTangent;
+attribute vec4 BBBiTangent;
 
 uniform mat4 BBProjectionMatrix;
 uniform mat4 BBViewMatrix;
 uniform mat4 BBModelMatrix;
 
+varying mat3 V_TBN;
+varying vec4 V_Texcoord;
+
 void main()
 {
+    vec3 T = normalize(vec3(BBModelMatrix * BBTangent));
+    vec3 B = normalize(vec3(BBModelMatrix * BBBiTangent));
+    vec3 N = normalize(vec3(BBModelMatrix * BBTangent));
+    V_TBN = mat3(T, B, N);
     V_Texcoord = BBTexcoord;
-    // vec3 world_normal = mat3(transpose(inverse(BBModelMatrix))) * BBNormal.xyz;
-    // vec3 world_tangent;
-    // vec3 world_binormal = cross();
-    // vec3 tangent_space0 = vec3(world_tangent.x, world_binormal.x, V_World_normal.x);
-    // vec3 tangent_space1 = vec3(world_tangent.y, world_binormal.y, V_World_normal.y);
-    // vec3 tangent_space2 = vec3(world_tangent.z, world_binormal.z, V_World_normal.z);
-
     gl_Position = BBProjectionMatrix * BBViewMatrix * BBModelMatrix * BBPosition;
 }

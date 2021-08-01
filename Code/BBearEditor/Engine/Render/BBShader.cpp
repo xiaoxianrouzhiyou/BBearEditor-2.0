@@ -111,6 +111,15 @@ void BBShader::initAttributes()
         {
             nDataOffset = sizeof(float) * 12;
         }
+        else if (strcmp(attribName, LOCATION_TANGENT) == 0)
+        {
+            nDataOffset = sizeof(float) * 16;
+        }
+        else if (strcmp(attribName, LOCATION_BITANGENT) == 0)
+        {
+            nDataOffset = sizeof(float) * 20;
+        }
+
         BBAttribute *pAttribute = new BBAttribute(location, nComponentCount, nBasicDataType,
                                                   GL_FALSE, sizeof(BBVertex), nDataOffset);
         if (m_pAttributes == nullptr)

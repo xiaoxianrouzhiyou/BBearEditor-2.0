@@ -47,6 +47,8 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
     BBTexture texture;
     m_pCurrentMaterial->setSampler2D(LOCATION_TEXTURE(0), texture.createTexture2D());
 
+    m_pVBO->computeTangent(m_pIndexes, m_nIndexCount);
+
     BBRenderableObject::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;

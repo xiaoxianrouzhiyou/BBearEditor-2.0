@@ -20,6 +20,8 @@
 #define LOCATION_COLOR "BBColor"
 #define LOCATION_TEXCOORD "BBTexcoord"
 #define LOCATION_NORMAL "BBNormal"
+#define LOCATION_TANGENT "BBTangent"
+#define LOCATION_BITANGENT "BBBiTangent"
 #define LOCATION_PROJECTIONMATRIX "BBProjectionMatrix"
 #define LOCATION_PROJECTIONMATRIX_I "BBProjectionMatrix_I"
 #define LOCATION_VIEWMATRIX "BBViewMatrix"

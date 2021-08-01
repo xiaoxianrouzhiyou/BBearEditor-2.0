@@ -57,13 +57,14 @@ BBRenderableObject::~BBRenderableObject()
 void BBRenderableObject::init()
 {
     m_pCurrentMaterial->setMatrix4(LOCATION_MODELMATRIX, m_ModelMatrix.data());
-    m_pVBO->submitData();
+
     if (m_nIndexCount > 0)
     {
         m_pEBO = new BBElementBufferObject(m_nIndexCount);
         m_pEBO->submitData(m_pIndexes, m_nIndexCount);
     }
     closeLight();
+    m_pVBO->submitData();
 }
 
 void BBRenderableObject::render(BBCamera *pCamera)

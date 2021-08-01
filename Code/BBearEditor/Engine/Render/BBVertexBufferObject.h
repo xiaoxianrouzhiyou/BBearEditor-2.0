@@ -10,6 +10,8 @@ struct BBVertex
     float m_fColor[4];
     float m_fTexcoord[4];
     float m_fNormal[4];
+    float m_fTangent[4];
+    float m_fBiTangent[4];
 };
 
 class BBVertexBufferObject : public BBBufferObject
@@ -29,10 +31,17 @@ public:
 
     void setTexcoord(int index, float u, float v);
     void setTexcoord(int index, const QVector2D &uv);
+    QVector2D getTexcoord(int index);
 
     void setNormal(int index, float x, float y, float z);
     void setNormal(int index, const QVector3D &normal);
     void setNormal(int index, const QVector4D &normal);
+
+    void computeTangent(unsigned short *pVertexIndexes, int nIndexCount);
+    void setTangent(int index, float x, float y, float z);
+    void setTangent(int index, const QVector3D &tangent);
+    void setBiTangent(int index, float x, float y, float z);
+    void setBiTangent(int index, const QVector3D &bitangent);
 
     inline int getVertexCount() { return m_nVertexCount; }
 
