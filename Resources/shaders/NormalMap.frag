@@ -16,7 +16,7 @@ void main(void)
     normal = normalize(normal);
 
     float intensity = 0.0;
-    if (BBLightPosition.w == 0.0)
+    if (BBLightSettings0.x == 1.0)
     {
         // Lambert
         vec3 L = normalize(BBLightPosition.xyz);
