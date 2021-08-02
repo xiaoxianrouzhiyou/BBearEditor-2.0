@@ -44,6 +44,7 @@ public:
     void setBiTangent(int index, float x, float y, float z);
     void setBiTangent(int index, const QVector3D &bitangent);
     QVector3D getTangent(int index);
+    QVector3D getBiTangent(int index);
 
     inline int getVertexCount() { return m_nVertexCount; }
 

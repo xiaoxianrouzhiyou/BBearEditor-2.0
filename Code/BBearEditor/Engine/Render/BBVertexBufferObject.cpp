@@ -32,9 +32,7 @@ void BBVertexBufferObject::setPosition(int index, const QVector4D &position)
 
 QVector3D BBVertexBufferObject::getPosition(int index)
 {
-    return QVector3D(m_pVertexes[index].m_fPosition[0],
-                     m_pVertexes[index].m_fPosition[1],
-                     m_pVertexes[index].m_fPosition[2]);
+    return QVector3D(m_pVertexes[index].m_fPosition[0], m_pVertexes[index].m_fPosition[1], m_pVertexes[index].m_fPosition[2]);
 }
 
 void BBVertexBufferObject::setColor(int index, float r, float g, float b, float a)
@@ -93,9 +91,7 @@ void BBVertexBufferObject::setNormal(int index, const QVector4D &normal)
 
 QVector3D BBVertexBufferObject::getNormal(int index)
 {
-    return QVector3D(m_pVertexes[index].m_fNormal[0],
-                     m_pVertexes[index].m_fNormal[1],
-                     m_pVertexes[index].m_fNormal[2]);
+    return QVector3D(m_pVertexes[index].m_fNormal[0], m_pVertexes[index].m_fNormal[1], m_pVertexes[index].m_fNormal[2]);
 }
 
 void BBVertexBufferObject::computeTangent(unsigned short *pVertexIndexes, int nIndexCount)
@@ -150,9 +146,12 @@ void BBVertexBufferObject::setBiTangent(int index, const QVector3D &bitangent)
 
 QVector3D BBVertexBufferObject::getTangent(int index)
 {
-    return QVector3D(m_pVertexes[index].m_fTangent[0],
-                     m_pVertexes[index].m_fTangent[1],
-                     m_pVertexes[index].m_fTangent[2]);
+    return QVector3D(m_pVertexes[index].m_fTangent[0], m_pVertexes[index].m_fTangent[1], m_pVertexes[index].m_fTangent[2]);
+}
+
+QVector3D BBVertexBufferObject::getBiTangent(int index)
+{
+    return QVector3D(m_pVertexes[index].m_fBiTangent[0], m_pVertexes[index].m_fBiTangent[1], m_pVertexes[index].m_fBiTangent[2]);
 }
 
 void BBVertexBufferObject::submitData()
@@ -189,16 +188,10 @@ void BBVertexBufferObject::_computeTangent(int nVertexIndex,
     tangent.setZ(f * (deltaUV1.y() * e0.z() - deltaUV0.y() * e1.z()));
     tangent.normalize();
     QVector3D bitangent;
-    bitangent.setX(f * (-deltaUV1.x() * e0.x() - deltaUV0.x() * e1.x()));
-    bitangent.setY(f * (-deltaUV1.x() * e0.y() - deltaUV0.x() * e1.y()));
-    bitangent.setZ(f * (-deltaUV1.x() * e0.z() - deltaUV0.x() * e1.z()));
+    bitangent.setX(f * (-deltaUV1.x() * e0.x() + deltaUV0.x() * e1.x()));
+    bitangent.setY(f * (-deltaUV1.x() * e0.y() + deltaUV0.x() * e1.y()));
+    bitangent.setZ(f * (-deltaUV1.x() * e0.z() + deltaUV0.x() * e1.z()));
     bitangent.normalize();
-
-    QVector3D cross = QVector3D::crossProduct(tangent, bitangent);
-    if (QVector3D::dotProduct(cross, getNormal(nVertexIndex)) < 0.0f)
-    {
-        tangent = -tangent;
-    }
 
     setTangent(nVertexIndex, tangent);
     setBiTangent(nVertexIndex, bitangent);

@@ -2,6 +2,7 @@ varying mat3 V_TBN;
 varying vec4 V_Texcoord;
 
 uniform sampler2D Normal_Map;
+uniform sampler2D Base_Map;
 uniform vec4 BBLightSettings0;
 uniform vec4 BBLightPosition;
 
@@ -22,5 +23,7 @@ void main(void)
         intensity = max(0.0, dot(normal, L));
     }
 
-    gl_FragColor = V_Texcoord;
+    vec4 final_color = texture2D(Base_Map, V_Texcoord.xy);
+    final_color.xyz *= intensity;
+    gl_FragColor = final_color;
 }
