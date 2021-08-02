@@ -43,6 +43,8 @@
 #define LOCATION_DEPTHFBO "BBDepthFBO"
 #define LOCATION_SHADOWMap "BBShadowMap"
 
+#define LOCATION_COLOR_PREFIX "BBColor_"
+#define LOCATION_COLOR_PREFIX_CHAR_COUNT 8
 
 class BBBaseRenderComponent : protected QOpenGLExtraFunctions
 {

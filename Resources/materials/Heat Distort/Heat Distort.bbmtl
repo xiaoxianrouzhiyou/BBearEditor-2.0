@@ -1,0 +1,444 @@
+
+diffuse7../../../BBearEditor/resources/shaders/HeatDistort.vert7../../../BBearEditor/resources/shaders/HeatDistort.frag"
+DistortTex"
+DistortTex"
+DistortTex"
+DistortTex"
+DistortTex"
+DistortTex"
+DistortTex"
+DistortTex"
+DistortTex"
+DistortTex*CD:/workspace/test workspace/New Project 1/contents/dissolveTex2.png*CD:/workspace/test workspace/New Project 1/contents/dissolveTex1.jpg*CD:/workspace/test workspace/New Project 1/contents/dissolveTex2.png*CD:/workspace/test workspace/New Project 1/contents/dissolveTex1.jpg*ND:/workspace/test workspace/New Project 1/contents/Special Effect/wave_003.png*ND:/workspace/test workspace/New Project 1/contents/Special Effect/wave_001.png*ND:/workspace/test workspace/New Project 1/contents/Special Effect/wave_002.png*ND:/workspace/test workspace/New Project 1/contents/Special Effect/wave_003.png*ND:/workspace/test workspace/New Project 1/contents/Special Effect/wave_001.png*ND:/workspace/test workspace/New Project 1/contents/Special Effect/wave_002.png2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort2Distort:§w
+◊£;
+◊£<ÕÃL=)\è=\è¬=ÆG·=   >öô>{.>§p=>ÆG>ˆ(\>ÆGa>◊£p>  Ä>\èÇ>∏Ö>Æá>q=ä>ÖÎë>öôô>R∏û>ÆG°>
+◊£>Ö´>◊£∞>ÏQ∏>§pΩ>  ¿>\è¬>∏≈>q= >ÕÃÃ>)\œ>·z‘>=
+◊>öôŸ>ˆ(‹>R∏ﬁ>◊£>33Û>ÆG?∏?ff?Æ?ÕÃ?)\?{?q=
+?Æ?∏?ÆG?H·˙>◊£>ÖÎ>ffÊ>ÆG·>ˆ(‹>=
+◊>·z‘>ÖÎ—>q= >\è¬>§pΩ>è¬µ>{Æ>Ö´>R∏û>=
+ó>Æá>◊£p>ÖÎQ>333>öô>   >è¬ı=\è¬=
+◊£=)\=è¬ı<
+◊£<
+◊#<
+◊£;                                                                                        è¬u<ÆGa==
+◊=√ı(>◊£p>R∏û>Æ«>◊£>Æ?ÖÎ?33?öô?H·?§p?   ?ÆG!?ff&?q=*?Ö+?ÕÃ,?{.?ÕÃ,?
+◊#?ÏQ?ÕÃ?
+◊?\è?{Ó>ÆG·>=
+◊>·z‘>ÖÎ—>)\œ>ÕÃÃ>q= >  ¿>ÏQ∏>◊£∞>{Æ>ff¶>öôô>q=ä>Æá>◊£p>ÆGa>=
+W>ÖÎQ>ÏQ8>√ı(>·z>ÖÎ={Æ=ÕÃL=è¬u<                                    ÕÃÃ<
+◊#=è¬u=
+◊£=ÕÃÃ=ÖÎ=q=
+>R∏>§p=>Ök>ÕÃå>R∏û>√ı®>Ö´>33≥>H·∫>\è¬>q= >ÕÃÃ>)\œ>=
+◊>ÆG·>ffÊ>33Û>   ?Æ?√ı?◊£?·z?ÏQ?§p?\è"?q=*?ÖÎ1?è¬5?öô9?§p=?\èB?ÆG?√ıH?ffF?\èB?H·:?·z4?ÕÃ,?
+◊#?\è"?è¬?33?ÖÎ?√ı?\è?ÏQ¯>√ıË>ˆ(‹>)\œ>H·∫>ÏQ∏>√ı®>ˆ(ú>)\è>\èÇ>è¬u>ˆ(\>ÕÃL>ÏQ8>√ı(>·z>   >ÆG·=ÕÃÃ=ÏQ∏=
+◊£=öôô=)\è=∏Ö=ÆGa=ÕÃL=
+◊#=è¬ı<è¬u<                                                    
+◊£;
+◊#<è¬u<
+◊£<è¬ı<)\=ÏQ8=ÕÃL=ÆGa=è¬u=)\è=öôô=
+◊£=ÏQ∏==
+◊=ÆG·=ÖÎ=è¬ı=   >q=
+>)\>·z>
+◊#>{.>333>ÏQ8>§p=>\èB>ÆG>ÖÎQ>ˆ(\>ÆGa>Ök>◊£p>è¬u>H·z>∏Ö>ÕÃå>)\è>·zî>R∏û>ff¶>Ö´>◊£∞>33≥>è¬µ>ÏQ∏>H·∫>§pΩ>  ¿>∏≈>q= >)\œ>=
+◊>ˆ(‹>R∏ﬁ>
+◊„>√ıË>◊£>è¬ı>H·˙>   ?
+◊?ff?√ı?)\?ÖÎ?·z?è¬?ÏQ?H·?§p?   ?\è"?
+◊#?Æ'?q=*?Ö+?)\/?333?=
+7?öô9?=
+7?ÖÎ1?ÕÃ,?√ı(?∏%?R∏?ÏQ?ÖÎ?◊£?Ö?Æ?
+◊?H·˙>ÖÎ>ˆ(‹>q= >è¬µ>ˆ(ú>öôô>H·z>fff>\èB>öô>ÆG·=
+◊£=ÆGa=
+◊#=ÕÃÃ<
+◊£;                                                                                                
+◊£;
+◊£<
+◊#=ÆGa=öôô=ÏQ∏=ÆG·=ÖÎ=∏>q=
+>)\>öô>R∏>
+◊#>√ı(>333>§p=>ÆG>ÖÎQ>ˆ(\>Ök>  Ä>∏Ö>q=ä>ÕÃå>·zî>ˆ(ú>
+◊£>ff¶>{Æ>33≥>è¬µ>§pΩ>  ¿>q= >ÖÎ—>=
+◊>öôŸ>R∏ﬁ>√ıË>◊£>33Û>è¬ı>H·˙>33Û>R∏ﬁ>ÕÃÃ>  ¿>H·∫>◊£∞>√ı®>ÆG°>R∏û>ˆ(ú>·zî>Æá>  Ä>Ök>ˆ(\>\èB>√ı(>)\>è¬ı==
+◊=\è¬=
+◊£=è¬u=
+◊#=)\=
+◊#<                                                                                    ÕÃÃ<
+◊£=   >
+◊#>\èB>ÆGa>\èÇ>ÕÃå>·zî>öôô>R∏û>ÆG°>√ı®>Ö´>{Æ>◊£∞>33≥>H·∫>∏≈>ÖÎ—>·z‘>R∏ﬁ>√ıË>ÖÎ>è¬ı>ÆG?Æ?ÕÃ?◊£?33?=
+?ˆ(?ÆG!?ff&?q=*?)\/?=
+7?\èB?∏E?{N?ÖÎQ?=
+W?R∏^?∏e?ÕÃl?ÖÎq?=
+w?öôy?ˆ(|?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?öôy?ÕÃl?Ök?H·Z?è¬U?·zT?)\O?ÖK?ÆG?  @?öô9?333?Ö+?\è"?è¬?ÕÃ?ÆG?◊£>{Ó>Æ«>§pΩ>è¬µ>R∏û>q=ä>Æá>ÕÃL>\èB>333>)\>ÖÎ=ÏQ∏=)\è=ÏQ8=ÕÃÃ<                                                                                                                                                                                    
+◊£;)\=
+◊#=ÆGa=∏Ö={Æ=ÕÃÃ=ÖÎ=   >q=
+>)\>·z>
+◊#>√ı(>{.>ÏQ8>§p=>\èB>ÕÃL>=
+W>ÆGa>fff>H·z>\èÇ>∏Ö>q=ä>ÕÃå>·zî>ˆ(ú>√ı®>◊£∞>è¬µ>§pΩ>  ¿>∏≈>q= >ÕÃÃ>)\œ>ÖÎ—>·z‘>=
+◊>ˆ(‹>R∏ﬁ>
+◊„>√ıË>{Ó>33Û>§p˝>\è?Æ?ÕÃ?{?◊£?)\?ff?ÏQ¯>√ıË>R∏ﬁ>=
+◊>ÕÃÃ>\è¬>  ¿>ÏQ∏>33≥>Ö´>ÆG°>·zî>Æá>∏Ö>ÆGa>§p=>·z>=
+◊=∏Ö=è¬u=
+◊#<                                                                                            
+◊£;è¬ı<)\=ÏQ∏=R∏>ÆGa>=
+ó>◊£∞>33≥>q= >·z‘>R∏ﬁ>ÆG·>ffÊ>√ıË>ÖÎ>33Û>\è?q=
+?Ö?33?=
+?ÏQ?öô?q=*?{.?◊£0?ˆ(<?\èB?ÆG?{N?33S?·zT?ÏQX?ÆGa?fff?√ıh?ÕÃl?)\o?◊£p?H·z?R∏~?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?§p}?H·z?◊£p?fff?§p]?è¬U?{N?ÕÃL?
+◊C?  @?è¬5?ÕÃ,?ff&?ÆG!?H·?=
+?◊£?√ı?\è?ÏQ¯>{Ó>ÆG·>=
+◊>)\œ>ÕÃÃ>  ¿>H·∫>ÏQ∏>33≥>è¬µ>H·∫>§pΩ>  ¿>)\œ>ˆ(‹>ffÊ>◊£>§p˝>∏?q=
+?)\?è¬?=
+?ÏQ?öô?H·?\è"?ÆG!?   ?R∏?§p?ˆ(?öô?=
+?è¬?·z?33?ÖÎ?◊£?)\?ÕÃ?Ö?√ı?Æ?∏?\è?   ?§p˝>H·˙>ÏQ¯>33Û>{Ó>√ıË>ffÊ>ÆG·>ˆ(‹>öôŸ>ÖÎ—>ÕÃÃ>q= >  ¿>H·∫>33≥>{Æ>√ı®>ÆG°>ˆ(ú>ÖÎë>q=ä>\èÇ>è¬u>Ök>ÆGa>ÕÃL>ÏQ8>333>·z>∏>=
+◊=ÏQ∏=
+◊£=∏Ö=ÏQ8=è¬ı<è¬u<
+◊#<                                                                    
+◊£;ÏQ8=ÕÃL=ÆG·=öô>ˆ(\>\èÇ>öôô>{Æ>  ¿>)\œ>ˆ(‹>ÆG·>
+◊„>ffÊ>ÖÎ>◊£>ÏQ¯>ÆG?√ı?)\?=
+?R∏?∏%?q=*?◊£0?=
+7?  @?∏E?q=J?ÕÃL?)\O?è¬U?R∏^?∏e?ÕÃl?è¬u?R∏~?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?R∏~?§p}?H·z?ÖÎq?\èb?)\O?  @?333?√ı(?   ?ÏQ?33?{?ÕÃ?Æ?∏?ÆG?H·˙>◊£>ffÊ>ÆG·>ˆ(‹>·z‘>)\œ>Æ«>§pΩ>è¬µ>◊£∞>{Æ>√ı®>ff¶>ÆG°>R∏û>ˆ(ú>öôô>=
+ó>·zî>ÖÎë>ÕÃå>q=ä>∏Ö>\èÇ>  Ä>H·z>◊£p>Ök>fff>ÆGa>=
+W>ÕÃL>ÆG>\èB>§p=>ÏQ8>{.>√ı(>
+◊#>öô>·z>q=
+>∏>è¬ı=ÖÎ=ÕÃÃ=\è¬={Æ=öôô=è¬u=ÆGa=ÕÃL=è¬ı<
+◊£<
+◊#<
+◊£;                        
+◊£;
+◊#<è¬u<
+◊£<ÕÃÃ<è¬ı<)\=
+◊#=)\=è¬ı<ÕÃÃ<
+◊£<è¬u<                                
+◊£;ÕÃÃ<
+◊#=ÏQ8=è¬u=)\è=öôô=
+◊£=öôô=∏Ö=ÆGa=ÕÃL=ÏQ8=
+◊#=)\=è¬ı<)\=
+◊#=ÏQ8=è¬u=∏Ö=)\è=∏Ö=è¬u=ÆGa=ÕÃL=ÏQ8=
+◊#=)\=è¬ı<ÕÃÃ<
+◊£<è¬u<
+◊#<                                    
+◊#<
+◊£<ÏQ8=)\è=öôô=
+◊£=ÖÎ=   >q=
+>öô>R∏>
+◊#>√ı(>{.>333>ÏQ8>§p=>\èB>ÆG>ÕÃL>ÖÎQ>ˆ(\>ÆGa>fff>◊£p>è¬u>  Ä>\èÇ>∏Ö>q=ä>ÕÃå>)\è>ÖÎë>·zî>=
+ó>öôô>ˆ(ú>R∏û>ÆG°>
+◊£>ff¶>Ö´>◊£∞>33≥>§pΩ>∏≈>Æ«>q= >ÕÃÃ>·z‘>=
+◊>ˆ(‹>ÆG·>ÖÎ>33Û>§p˝>
+◊?Æ?{?33?öô?   ?Æ'?◊£0?ÖÎ1?H·:?ˆ(<?
+◊C?√ıH?◊£P?ˆ(\?∏e?fff?)\o?·zt?H·z?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?=
+w?33s?=
+W?ÖK?ÏQ8?\è"?Ö?{Ó>√ıË>ÏQ∏>
+◊£>R∏û>è¬u>333>{.>q=
+>   >ÏQ∏=è¬u=)\=                                                                
+◊£<
+◊£=\è¬=è¬ı=R∏>§p=>ÖÎQ>ÆGa>Ök>  Ä>Æá>q=ä>ÕÃå>ÖÎë>=
+ó>öôô>R∏û>=
+ó>q=ä>H·z>fff>ˆ(\>ÖÎQ>ÆG>\èB>ÕÃL>ˆ(\>Ök>  Ä>\èÇ>  Ä>fff>ÆG>\èB>R∏>·z>   >ÆG·={Æ=
+◊£=ÏQ8=)\=ÕÃÃ<
+◊#<                            
+◊£;è¬u<
+◊£<ÏQ8=è¬u=ÕÃÃ=∏>·z>R∏>{.>ÆG>ÆGa>è¬u>\èÇ>q=ä>·zî>ÆG°>{Æ>ÏQ∏>Æ«>ÖÎ—>=
+◊>öôŸ>R∏ﬁ>ffÊ>ÆG·>R∏ﬁ>·z‘>\è¬>Ö´>=
+ó>Æá>∏Ö>fff>=
+W>§p=>ÏQ8>öô>)\>è¬ı=ÕÃÃ=
+◊£=ÆGa=è¬ı<è¬u<                                                                                                                                                                            
+◊#<è¬ı<ÏQ8=)\è=öôô=q=
+>öô>R∏>§p=>ÕÃL>ˆ(\>Ök>è¬u>  Ä>Æá>)\è>·zî>=
+ó>·zî>ÖÎë>)\è>q=ä>Æá>∏Ö>  Ä>H·z>è¬u>Ök>ÆGa>=
+W>ÆG>§p=>{.>
+◊#>öô>q=
+>   >ÖÎ=ÕÃÃ=\è¬=ÏQ∏={Æ=
+◊£=ÏQ∏=\è¬=ÕÃÃ==
+◊=ÆG·=ÖÎ=q=
+>)\>
+◊#>§p=>\èB>ÖÎQ>ˆ(\>ÆGa>◊£p>è¬u>  Ä>q=ä>·zî>öôô>ˆ(ú>R∏û>ˆ(ú>öôô>=
+ó>·zî>ÖÎë>)\è>Æá>\èÇ>è¬u>ÆGa>ÕÃL>ÏQ8>R∏>q=
+>ÖÎ=ÕÃÃ={Æ=
+◊£=è¬u=ÏQ8=
+◊£<                                                            è¬u<è¬ı<ÕÃL=è¬u=
+◊£=\è¬=ÕÃÃ=ÖÎ=)\>·z>R∏>{.>ÏQ8>§p=>\èB>ÕÃL>ˆ(\>Ök>◊£p>  Ä>\èÇ>∏Ö>ÕÃå>)\è>=
+ó>ˆ(ú>R∏û>ÆG°>
+◊£>ÆG°>ÖÎë>\èÇ>  Ä>§p=>
+◊#>   >{Æ=
+◊£=)\=
+◊£<                                                è¬u<ÕÃÃ<ÏQ8=è¬u=öôô={Æ=\è¬==
+◊=ÆG·=   >∏>)\>R∏>{.>333>§p=>\èB>ÖÎQ>=
+W>ÆGa>◊£p>  Ä>\èÇ>q=ä>ÕÃå>)\è>ÖÎë>=
+ó>öôô>ˆ(ú>R∏û>ff¶>√ı®>{Æ>◊£∞>ff¶>)\è>è¬u>ÖÎQ>\èB>333>R∏>)\>∏>è¬ı=ÖÎ=\è¬=öôô=ÆGa=)\=
+◊#<                                                        è¬u<ÕÃL=
+◊£=ÕÃÃ=   >∏>)\>öô>R∏>
+◊#>R∏>öô>·z>)\>q=
+>∏>   >ÆG·==
+◊=ÕÃÃ=ÏQ∏=)\è=è¬u=)\è=
+◊£=öôô=)\è=∏Ö=è¬u=∏Ö=)\è=öôô=\è¬==
+◊=ÆG·=ÖÎ=è¬ı=∏>q=
+>)\>·z>
+◊#>√ı(>{.>ÏQ8>§p=>ÕÃL>=
+W>ÆGa>fff>Ök>  Ä>q=ä>ÖÎë>=
+ó>R∏û>
+◊£>ff¶>Ö´>33≥>è¬µ>ÏQ∏>H·∫>  ¿>∏≈>q= >ÖÎ—>·z‘>öôŸ>R∏ﬁ>ÆG·>√ıË>{Ó>33Û>H·˙>   ?
+◊?Æ?q=
+?Ö?{?ÖÎ?·z?è¬?·z?ÖÎ?)\?ÕÃ?√ı?
+◊?\è?ÆG?   ?§p˝>ÏQ¯>è¬ı>◊£>{Ó>ÖÎ>√ıË>ÆG·>R∏ﬁ>
+◊„>{Ó>H·˙>\è?ff?Æ?{?◊£?33?=
+?öô?§p?ÆG!?\è"?
+◊#?√ı(?Ö+?{.?)\/?333?=
+7?öô9?ˆ(<?R∏>?\èB?ÆG?ÕÃL?ÖÎQ?·zT?öôY?§p]?ÆGa?
+◊c?∏e?fff?Æg?√ıh?q=j?{n?◊£p?ÖÎq?33s?ÏQx?§p}?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?R∏~?öôy?·zt?{n?∏e?R∏^?·zT?ÖK?ÆGA?ÏQ8?)\/?ff&?R∏?=
+?{?ff?§p˝>◊£>R∏ﬁ>)\œ>§pΩ>√ı®>ÖÎë>◊£p>\èB>R∏>=
+◊=∏Ö=è¬u=
+◊#<                                                                
+◊£<ÆGa=
+◊£=\è¬==
+◊=ÖÎ=   >)\>R∏>√ı(>333>ÏQ8>\èB>ÆG>§p=>ÏQ8>{.>√ı(>
+◊#>öô>·z>)\>∏>ÖÎ=ÆG·=\è¬=)\è=è¬ı<                                        
+◊£<è¬u=ÏQ∏=ÕÃÃ=∏>·z>{.>333>ÆG>fff>H·z>  Ä>Æá>q=ä>∏Ö>H·z>Ök>fff>ÆGa>ÖÎQ>ÕÃL>§p=>ÏQ8>{.>
+◊#>·z>q=
+>   >è¬ı=ÖÎ==
+◊=\è¬=öôô=è¬u=ÏQ8=è¬u<                                    è¬u<)\=ÆGa=è¬u={Æ=ÏQ∏=\è¬=ÕÃÃ=\è¬=ÏQ∏={Æ=
+◊£=è¬u=ÕÃL=ÏQ8=)\=ÕÃÃ<è¬u<
+◊#<                                                
+◊£;
+◊£<)\=ÕÃL=∏Ö=
+◊£=ÏQ∏=ÕÃÃ==
+◊=ÖÎ=è¬ı=ÖÎ=ÆG·==
+◊=ÕÃÃ=\è¬=
+◊£=∏Ö=ÏQ8=è¬ı<è¬u<
+◊#<è¬u<
+◊£<ÕÃÃ<è¬ı<
+◊#=ÆGa=)\è=öôô=)\è=∏Ö=è¬u=ÆGa=ÕÃL=ÏQ8=
+◊#=è¬ı<ÕÃÃ<
+◊£<
+◊£;                                                    
+◊#<ÕÃL=öôô=\è¬=è¬ı=q=
+>öô>
+◊#>√ı(>{.>333>ÏQ8>{.>öô>q=
+>ÆG·=\è¬=ÏQ∏={Æ=ÏQ∏=\è¬=ÕÃÃ=ÆG·=   >)\>·z>q=
+>è¬ı==
+◊=öôô=ÕÃL=)\=è¬u<                                                                            
+◊£<
+◊#=ÏQ8=ÆGa=)\è={Æ=
+◊£=)\è=è¬u=ÏQ8=è¬ı<ÕÃÃ<
+◊£<
+◊#<                                        
+◊£;
+◊#<è¬u<
+◊£<ÕÃÃ<)\=
+◊#=ÏQ8=ÕÃL=ÆGa=∏Ö=)\è=öôô=
+◊£={Æ=öôô=è¬u=ÏQ8=è¬u<
+◊#<                                    
+◊£;
+◊#<
+◊£<ÕÃÃ<è¬ı<)\=
+◊#=ÕÃL=è¬u=)\è={Æ=\è¬==
+◊=ÆG·==
+◊={Æ=)\è=ÆGa=ÕÃL=)\=è¬ı<ÕÃÃ<è¬u<
+◊£;                                                                                                                        è¬u<)\=ÆGa=)\è=ÕÃÃ=   >öô>{.>\èB>ÖÎQ>ˆ(\>ÆGa>ˆ(\>ÏQ8>öô>è¬ı=ÏQ∏={Æ=ÕÃL=)\=è¬ı<                                                                                                                                                                                                            è¬u<ÕÃL=
+◊£=ÕÃÃ=è¬ı=·z>R∏>{.>ÆG>=
+W>ÆGa>fff>◊£p>è¬u>H·z>  Ä>∏Ö>Æá>q=ä>)\è>·zî>ˆ(ú>ÆG°>√ı®>{Æ>33≥>{Æ>√ı®>
+◊£>ÆG°>R∏û>ˆ(ú>öôô>=
+ó>·zî>)\è>q=ä>Æá>\èÇ>H·z>è¬u>◊£p>Ök>fff>ˆ(\>ÆG>§p=>333>
+◊#>R∏>·z>)\>   >è¬ı=ÆG·=ÕÃÃ=ÏQ∏=)\è=è¬u=ÕÃL=)\=
+◊£<
+◊#<                                                
+◊£;è¬ı<ÏQ8=è¬u=)\è=öôô=
+◊£={Æ=ÏQ∏=\è¬=ÕÃÃ==
+◊=ÆG·=è¬ı=   >·z>
+◊#>√ı(>{.>333>ÏQ8>§p=>ÆG>ÕÃL>ÖÎQ>=
+W>ˆ(\>ÆGa>fff>Ök>◊£p>è¬u>H·z>  Ä>\èÇ>Æá>q=ä>ÕÃå>ÖÎë>·zî>öôô>ÆG°>ff¶>{Æ>è¬µ>H·∫>\è¬>q= >ÖÎ—>öôŸ>R∏ﬁ>ÆG·>ffÊ>ÖÎ>◊£>33Û>è¬ı>ÏQ¯>H·˙>§p˝>   ?\è?
+◊?∏?ff?Æ?√ı?Æ?ff?è¬ı>√ıË>ˆ(‹>q= >\è¬>  ¿>§pΩ>H·∫>è¬µ>◊£∞>Ö´>ff¶>R∏û>·zî>)\è>  Ä>Ök>fff>§p=>
+◊#>R∏>ÖÎ=\è¬=öôô=è¬ı<
+◊£<
+◊£;                                                    è¬u<ÏQ8=∏Ö={Æ=\è¬==
+◊=è¬ı=   >)\>öô>R∏>√ı(>ÏQ8>\èB>ÖÎQ>ˆ(\>=
+W>ÕÃL>ÆG>\èB>ÏQ8>333>{.>√ı(>
+◊#>öô>)\>   >è¬ı==
+◊={Æ=)\è=ÆGa=è¬ı<                                                
+◊#<ÏQ8=öôô=ÕÃÃ=   >öô>333>ÕÃL>ˆ(\>fff>◊£p>è¬u>H·z>  Ä>∏Ö>q=ä>ÕÃå>=
+ó>ˆ(ú>ÆG°>√ı®>Ö´>ÏQ∏>  ¿>Æ«>ÖÎ—>ÆG·>
+◊„>√ıË>ÖÎ>è¬ı>ÏQ¯>   ?\è?ff?Æ?ÕÃ?)\?◊£?·z?öô?H·?ˆ(?R∏?   ?ÆG!?∏%?ff&?Æ'?∏%?ˆ(?ÏQ?·z?33?ÖÎ?)\?Ö?√ı?ff?∏?\è?§p˝>33Û>◊£>√ıË>
+◊„>R∏ﬁ>=
+◊>ÕÃÃ>∏≈>§pΩ>è¬µ>Ö´>ff¶>R∏û>·zî>ÕÃå>q=ä>◊£p>ÆGa>ˆ(\>§p=>ÏQ8>öô>q=
+>   >=
+◊=ÏQ∏=)\è=ÆGa=ÏQ8=ÕÃÃ<
+◊#<                                                    
+◊£;è¬u<
+◊£<ÕÃÃ<
+◊#=ÕÃL=è¬u=∏Ö=)\è=öôô=
+◊£={Æ=ÏQ∏=ÕÃÃ==
+◊=ÆG·=è¬ı=   >q=
+>)\>·z>öô>R∏>öô>·z>)\>∏>   >è¬ı=ÆG·=ÕÃÃ=ÏQ∏={Æ=öôô=)\è=∏Ö=ÕÃL=
+◊#=ÕÃÃ<
+◊#<                                    
+◊£;
+◊#<ÕÃÃ<)\=ÏQ8=ÕÃL=ÆGa=∏Ö=)\è=öôô=ÏQ∏=ÕÃÃ=ÖÎ=   >q=
+>)\>öô>√ı(>{.>333>§p=>ÆG>ÖÎQ>ˆ(\>fff>◊£p>  Ä>∏Ö>q=ä>ÖÎë>öôô>R∏û>√ı®>◊£∞>ÏQ∏>  ¿>Æ«>ÖÎ—>öôŸ>R∏ﬁ>ÆG·>
+◊„>ffÊ>√ıË>{Ó>◊£>è¬ı>ÏQ¯>H·˙>ÏQ¯>ÖÎ>ÆG·>öôŸ>)\œ>Æ«>∏≈>ÏQ∏>33≥>{Æ>
+◊£>öôô>ÕÃå>H·z>è¬u>ÏQ8>öô>)\>
+◊£=ÏQ8=                                                                                è¬u<)\=ÏQ8=ÕÃL=è¬u=
+◊£=ÆG·=   >)\>
+◊#>ÏQ8>Ök>\èÇ>Æá>q=ä>=
+ó>R∏û>
+◊£>{Æ>◊£∞>H·∫>§pΩ>\è¬>q= >·z‘>öôŸ>ÆG·>ÖÎ>{Ó>◊£>33Û>{Ó>ÆG·>R∏ﬁ>∏≈>§pΩ>è¬µ>Ö´>
+◊£>öôô>·zî>ÕÃå>Æá>\èÇ>H·z>fff>ÕÃL>ÏQ8>R∏>öô>ÕÃÃ=öôô=ÏQ8=
+◊#<                                                                                    
+◊£;
+◊#<è¬u<
+◊£<ÕÃÃ<è¬ı<)\=
+◊#=ÏQ8=ÕÃL=ÆGa=è¬u=∏Ö=)\è=öôô=
+◊£=ÏQ∏=\è¬=ÕÃÃ==
+◊=ÆG·=ÖÎ=   >∏>q=
+>)\>·z>öô>
+◊#>√ı(>{.>333>ÏQ8>§p=>\èB>ÕÃL>ÖÎQ>=
+W>ˆ(\>ÆGa>Ök>◊£p>è¬u>◊£p>Ök>fff>ÆGa>ˆ(\>=
+W>ÖÎQ>ÕÃL>ÆG>\èB>§p=>ÏQ8>{.>
+◊#>R∏>·z>q=
+>   >ÖÎ=ÆG·==
+◊=ÕÃÃ=\è¬={Æ=
+◊£=öôô=)\è=∏Ö=è¬u=ÆGa=ÕÃL=
+◊#=è¬ı<
+◊£<
+◊#<                                
+◊#<
+◊£<)\=ÏQ8=ÆGa=)\è=
+◊£=ÏQ∏=\è¬=ÕÃÃ==
+◊=ÖÎ=è¬ı=   >q=
+>·z>öô>R∏>
+◊#>√ı(>{.>333>ÏQ8>§p=>\èB>ÖÎQ>=
+W>ˆ(\>ÆGa>fff>Ök>◊£p>è¬u>Ök>ÖÎQ>\èB>ÏQ8>√ı(>öô>·z>∏>   >ÖÎ==
+◊=ÕÃÃ={Æ=öôô=∏Ö=ÏQ8=)\=
+◊£<                                                                
+◊£;è¬ı<ÕÃL=ÆGa={Æ=ÏQ∏=ÖÎ=∏>)\>öô>R∏>333>ÏQ8>\èB>ÕÃL>ˆ(\>fff>Ök>◊£p>fff>ÆGa>ˆ(\>ÏQ8>333>{.>R∏>öô>)\>q=
+>∏>ÖÎ=ÕÃÃ=\è¬={Æ=)\è=è¬u=ÕÃL=
+◊#=
+◊£<
+◊#<                                                            
+◊#<
+◊£<)\=
+◊#=öôô=ÏQ∏==
+◊=ÖÎ=q=
+>·z>öô>R∏>
+◊#>√ı(>{.>333>ÏQ8>§p=>\èB>§p=>333>√ı(>R∏>öô>·z>q=
+>   >è¬ı=ÖÎ==
+◊=ÕÃÃ=ÏQ∏=
+◊£=öôô=∏Ö=è¬u=ÆGa=ÏQ8=
+◊#=)\=
+◊#=ÕÃL=è¬u=∏Ö=è¬u=ÕÃL=ÏQ8=
+◊#=ÕÃÃ<
+◊#<                                                                                                                                    
+◊£;è¬u<
+◊£<ÕÃÃ<)\=ÏQ8=ÆGa=è¬u=∏Ö=)\è=∏Ö=è¬u=ÆGa=ÕÃL=ÏQ8=
+◊#=)\=ÕÃÃ<
+◊#<
+◊£;    
+◊#<ÕÃÃ<)\=ÏQ8=
+◊#=)\=è¬ı<
+◊£<è¬u<
+◊#<
+◊£;                        è¬u<è¬ı<
+◊#=ÏQ8=)\=è¬ı<ÕÃÃ<
+◊£<è¬u<
+◊£<)\=ÏQ8=ÕÃL=ÆGa=ÕÃL=
+◊#=è¬ı<ÕÃÃ<
+◊£<è¬u<
+◊#<
+◊£;
+◊#<è¬u<è¬ı<
+◊#=è¬ı<ÕÃÃ<
+◊£<è¬u<
+◊#<
+◊£;                                            
+◊£;ÕÃÃ<è¬u==
+◊=·z>R∏>
+◊#>R∏>öô>   >=
+◊=ÏQ∏={Æ=öôô=è¬u=ÕÃL=ÏQ8=
+◊#=ÕÃL=è¬u=)\è=
+◊£={Æ=öôô=)\è=∏Ö=ÕÃL=
+◊#=)\=ÕÃÃ<è¬u<                            
+◊£;ÕÃÃ<)\=è¬ı<ÕÃÃ<è¬ı<
+◊#=ÏQ8=ÆGa=è¬u=∏Ö=)\è=
+◊£=ÏQ∏=\è¬==
+◊=è¬ı=·z>R∏>333>§p=>\èB>ÕÃL>ÆGa>Ök>◊£p>Ök>fff>ÆGa>ÖÎQ>ÕÃL>§p=>ÏQ8>{.>√ı(>{.>333>ÏQ8>=
+W>Ök>  Ä>\èÇ>∏Ö>Æá>ÕÃå>ÖÎë>ˆ(ú>ff¶>{Æ>33≥>§pΩ>∏≈>)\œ>ˆ(‹>ffÊ>◊£>§p˝>∏?√ı?ÕÃ?{?)\?◊£?)\?√ı?∏?\è?   ?H·˙>è¬ı>33Û>{Ó>√ıË>
+◊„>R∏ﬁ>·z‘>)\œ>ÖÎ—>·z‘>öôŸ>ˆ(‹>ÆG·>ffÊ>√ıË>33Û>§p˝>
+◊?√ı?)\?·z?öô?   ?Æ'?ÕÃ,?ÖÎ1?=
+7?H·:?R∏>?ÆGA?\èB?∏E?√ıH?{N?ÖÎQ?è¬U?=
+W?öôY?  `?
+◊c?√ıh?ÕÃl?{n?33s?è¬u?ÏQx?§p}?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?  Ä?H·z?)\o?Æg?R∏^?è¬U?q=J?  @?H·:?è¬5?333?ÖÎ1?ÕÃ,?Æ'?
+◊#?   ?H·?ff?ÏQ¯>ffÊ>öôŸ>ÕÃÃ>H·∫>
+◊£>=
+ó>Æá>fff>333>·z>)\>ÏQ∏=öôô=ÆGa=
+◊#=ÕÃÃ<è¬u<
+◊#<                                                                                        
+◊#<è¬u<ÕÃÃ<è¬ı<)\=ÕÃL=ÆGa=)\è=ÏQ∏=ÕÃÃ=ÆG·=ÕÃÃ=\è¬=öôô=ÏQ8=
+◊£;                                                                                                        
+◊#<
+◊£<è¬ı<)\=ÏQ8=ÆGa=∏Ö=öôô=\è¬==
+◊=ÆG·=ÖÎ=è¬ı=q=
+>·z>R∏>
+◊#>√ı(>333>ÏQ8>\èB>ÆG>ÕÃL>=
+W>ˆ(\>ÆGa>fff>◊£p>H·z>  Ä>\èÇ>∏Ö>ÕÃå>ÖÎë>=
+ó>ˆ(ú>ÆG°>√ı®>Ö´>{Æ>◊£∞>33≥>è¬µ>ÏQ∏>H·∫>  ¿>\è¬>∏≈>q= >)\œ>·z‘>öôŸ>R∏ﬁ>
+◊„>ffÊ>√ıË>ÖÎ>{Ó>◊£>è¬ı>ÏQ¯>H·˙>§p˝>   ?ÆG?   ?§p˝>H·˙>ÏQ¯>è¬ı>33Û>◊£>{Ó>ÖÎ>√ıË>ffÊ>ÆG·>R∏ﬁ>ˆ(‹>öôŸ>=
+◊>·z‘>ÖÎ—>)\œ>ÕÃÃ>q= >Æ«>∏≈>\è¬>  ¿>§pΩ>H·∫>ÏQ∏>è¬µ>33≥>◊£∞>{Æ>Ö´>√ı®>ff¶>
+◊£>ÆG°>R∏û>ˆ(ú>öôô>=
+ó>·zî>ÖÎë>)\è>ÕÃå>∏Ö>\èÇ>  Ä>H·z>è¬u>◊£p>fff>ÆGa>ˆ(\>=
+W>ÖÎQ>ÕÃL>ÆG>\èB>§p=>ÏQ8>{.>
+◊#>R∏>·z>)\>∏>   >ÖÎ==
+◊=ÕÃÃ=\è¬=ÏQ∏=
+◊£=öôô=)\è=∏Ö=è¬u=ÆGa=ÕÃL=
+◊#=)\=è¬ı<ÕÃÃ<è¬u<
+◊#<                    
+◊£;
+◊#<
+◊£<)\=
+◊#=ÏQ8=ÆGa=è¬u=)\è=öôô=
+◊£={Æ=ÏQ∏={Æ=ÕÃL=
+◊£<            
+◊£;
+◊#<è¬ı<ÕÃL=)\è=ÏQ∏=ÕÃÃ={Æ=∏Ö=è¬u=∏Ö=è¬u=ÏQ8=
+◊#=ÏQ8=)\è=ÕÃÃ==
+◊=∏>)\>·z>öô>R∏>
+◊#>√ı(>
+◊#>·z>è¬ı=ÖÎ=ÕÃL=)\=è¬ı<)\=è¬u=ÏQ∏=   >{.>ˆ(\>fff>è¬µ>ÕÃÃ>R∏ﬁ>√ıË>{Ó>◊£>ÖÎ>ÆG·>R∏ﬁ>◊£∞>ff¶>√ı®>◊£∞>  ¿>∏≈>ÆG·>
+◊„>ÖÎ—>H·∫>{Æ>√ı®>ÆG°>Æá>è¬u>=
+W>{.>∏>\è¬=ÏQ∏=è¬ı<
+◊£;                                                        è¬u<è¬ı<ÕÃÃ<
+◊#<        
+◊£;ÕÃÃ<è¬ı<ÆGa=è¬u=ÆGa=ÕÃL=ÏQ8=)\=ÕÃÃ<è¬u<
+◊#<
+◊£;    
+◊£;
+◊#<è¬ı<)\=è¬ı<ÕÃÃ<
+◊£<è¬u<
+◊#<
+◊£;è¬u<ÕÃÃ<)\=ÕÃÃ<                
+◊£;è¬u<
+◊£<
+◊#<
+◊£;
+◊#<
+◊£<ÕÃÃ<è¬ı<ÕÃÃ<
+◊£<è¬u<
+◊#<
+◊£;                                            
+◊£;è¬u<
+◊£<)\=
+◊#=ÏQ8=ÕÃL=ÆGa=è¬u=∏Ö=)\è=∏Ö=ÆGa=ÕÃL=ÏQ8=
+◊#=)\=è¬ı<
+◊£<
+◊#<                                                                            
+◊£;
+◊#<è¬u<
+◊£<ÕÃÃ<)\=ÏQ8=ÆGa=è¬u=∏Ö=öôô={Æ=ÏQ∏=ÕÃÃ==
+◊=ÆG·=ÖÎ=è¬ı=   >∏>   >è¬ı=ÖÎ=ÆG·==
+◊=ÕÃÃ=ÏQ∏={Æ=
+◊£=öôô=)\è=∏Ö=è¬u=ÆGa=ÕÃL=ÏQ8=
+◊#=)\=è¬ı<ÕÃÃ<
+◊£<è¬u<
+◊#<
+◊£;        
+◊£;
+◊£<ÕÃÃ<
+◊£<è¬u<
+◊#<è¬u<
+◊£<ÕÃÃ<è¬ı<)\=
+◊#=ÏQ8=P X` 

@@ -72,10 +72,10 @@ BBVector4MaterialProperty::BBVector4MaterialProperty(const char *name)
     : BBMaterialProperty(Vector4, name)
 {
     m_pPropertyValue = new float[4] {0, 0, 0, 1};
-    if (strncmp(name, "Color_", 6) == 0)
+    if (strncmp(name, LOCATION_COLOR_PREFIX, LOCATION_COLOR_PREFIX_CHAR_COUNT) == 0)
     {
         m_eFactoryType = Color;
-        m_NameInPropertyManager = QString(name).mid(6);
+        m_NameInPropertyManager = QString(name).mid(LOCATION_COLOR_PREFIX_CHAR_COUNT);
     }
     else
     {
