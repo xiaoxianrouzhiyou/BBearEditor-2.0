@@ -44,6 +44,19 @@ struct Surface
     float alpha;
 };
 
+GI lightingLambertGI(GIInput data, float occlusion, vec3 world_normal)
+{
+    GI gi;
+
+    gi.light = data.light;
+    // attenuation depends on shadow mask, to do ...
+    gi.light.color *= data.attenuation;
+
+    gi.indirect_light.diffuse *= occlusion;
+
+    return gi;
+}
+
 vec4 lightingLambert(Surface s, GI gi)
 {
     vec4 c = vec4(1.0);
@@ -70,12 +83,14 @@ void main(void)
     gi.indirect_light.diffuse = vec3(0.0);
     gi.indirect_light.specular = vec3(0.0);
 
-    GIInput input;
-    input.light = gi.light;
-    input.world_pos = V_World_pos.xyz;
-    input.world_view_dir = normalize(BBCameraPosition.xyz - V_World_pos.xyz);
-    input.attenuation = 1.0;
-    input.ambient = 0.0;
+    GIInput gi_input;
+    gi_input.light = gi.light;
+    gi_input.world_pos = V_World_pos.xyz;
+    gi_input.world_view_dir = normalize(BBCameraPosition.xyz - V_World_pos.xyz);
+    gi_input.attenuation = 1.0;
+    gi_input.ambient = 0.0;
+
+    gi = lightingLambertGI(gi_input, 1.0, s.normal);
 
     gl_FragColor = lightingLambert(s, gi);
 }
