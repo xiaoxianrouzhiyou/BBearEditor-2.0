@@ -28,6 +28,8 @@ public:
 
 protected:
     virtual void load(const QString &path, QList<QVector4D> &outPositions) = 0;
+
+    GLenum m_eDrawPrimitiveType;
 };
 
 #endif // BBMESH_H

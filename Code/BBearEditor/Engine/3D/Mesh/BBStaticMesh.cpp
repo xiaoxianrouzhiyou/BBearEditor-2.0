@@ -90,11 +90,17 @@ void BBOBJMesh::load(const QString &path, QList<QVector4D> &outPositions)
                 // face, What points are made of each face
                 std::stringstream ssOneLine(oneLine);
                 ssOneLine >> temp; // f...
-                std::string vertexStr;
                 // Triangle, 3 pieces of data per line, separated by spaces
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 4; i++)
                 {
+                    std::string vertexStr;
                     ssOneLine >> vertexStr;
+                    if (vertexStr.length() == 0)
+                    {
+                        // test
+                        m_eDrawPrimitiveType = GL_TRIANGLES;
+                        break;
+                    }
                     // The index value of pos and tex of each point, separated by /
                     size_t pos = vertexStr.find_first_of('/');
                     std::string posIndexStr = vertexStr.substr(0, pos);

@@ -21,6 +21,7 @@ BBMesh::BBMesh(float px, float py, float pz,
     : BBRenderableObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
     setClassName(BB_CLASSNAME_MESH);
+    m_eDrawPrimitiveType = GL_QUADS;
 }
 
 void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
@@ -54,7 +55,7 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
     BBDrawCall *pDrawCall = new BBDrawCall;
     pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO);
-    pDrawCall->setEBO(m_pEBO, GL_TRIANGLES, m_nIndexCount, 0);
+    pDrawCall->setEBO(m_pEBO, m_eDrawPrimitiveType, m_nIndexCount, 0);
     appendDrawCall(pDrawCall);
 }
 
@@ -117,36 +118,4 @@ bool BBMesh::hit(const BBRay &ray, float &fDistance)
 //        mVertexBuffer->setColor(i, mColor);
 //    }
 //    mFbx->closeLoad();
-//}
-
-//void Mesh::loadTerrain()
-//{
-//    mIndexes = mTerrain->getIndexes();
-//    mIndexCount = mTerrain->getIndexCount();
-//    //计算包围盒的数据
-//    mVertexPositions = mTerrain->getVertexPositions();
-//    //顶点数据
-//    QList<QVector2D> texcoords = mTerrain->getVertexTexcoords();
-//    QList<QVector4D> normals = mTerrain->getVertexNormals();
-//    //shader buffer
-//    mVertexCount = mVertexPositions.count();
-//    mVertexBuffer = new VertexBuffer();
-//    mVertexBuffer->setSize(mVertexCount);
-//    for (int i = 0; i < mVertexCount; i++)
-//    {
-//        mVertexBuffer->setPosition(i, mVertexPositions.at(i));
-//        mVertexBuffer->setTexcoord(i, texcoords.at(i));
-//        mVertexBuffer->setNormal(i, normals.at(i));
-//        mVertexBuffer->setColor(i, mColor);
-//    }
-//    mTerrain->closeLoad();
-//}
-
-
-
-//void Mesh::renderBuffer(QMatrix4x4 viewMatrix, QMatrix4x4 projectionMatrix, QVector3D cameraPos)
-//{
-//    mShader.setMatrix("lightViewUniform", viewMatrix);
-//    mShader.setMatrix("lightProjectionUniform", projectionMatrix);
-//    mShader.render([this]()->void { draw();}, mModelMatrix, viewMatrix, projectionMatrix, cameraPos, mVertexBuffer);
 //}
