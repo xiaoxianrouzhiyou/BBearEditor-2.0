@@ -257,7 +257,7 @@ void BBDrawCall::uiRendering(BBCanvas *pCanvas)
 
 void BBDrawCall::fboRendering(BBCamera *pCamera)
 {
-    BB_PROCESS_ERROR_RETURN(!m_pMaterial->isContainColorFBOUniform());
+    BB_PROCESS_ERROR_RETURN(m_pMaterial->isWriteFBO());
     forwardRendering(pCamera);
 }
 

@@ -243,7 +243,7 @@ BBShader* BBMaterial::getShader()
     return nullptr;
 }
 
-bool BBMaterial::isContainColorFBOUniform()
+bool BBMaterial::isWriteFBO()
 {
-    return getShader()->isContainColorFBOUniform();
+    return getShader()->isWriteFBO();
 }

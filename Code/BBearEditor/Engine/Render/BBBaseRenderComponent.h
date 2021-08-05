@@ -39,8 +39,8 @@
 #define LOCATION_LIGHT_SETTINGS(x) "BBLightSettings"#x
 #define LOCATION_SCREEN_PARAMETERS "BBScreenParameters"
 #define LOCATION_TIME "BBTime"
-#define LOCATION_COLORFBO "BBColorFBO"
-#define LOCATION_DEPTHFBO "BBDepthFBO"
+#define LOCATION_CAMERA_COLOR_TEXTURE "BBCameraColorTexture"
+#define LOCATION_CAMERA_DEPTH_TEXTURE "BBCameraDepthTexture"
 #define LOCATION_SHADOWMap "BBShadowMap"
 
 #define LOCATION_COLOR_PREFIX "BBColor_"

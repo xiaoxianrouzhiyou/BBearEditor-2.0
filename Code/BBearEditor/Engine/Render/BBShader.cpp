@@ -12,7 +12,7 @@ BBShader::BBShader()
     m_pAttributes = NULL;
     m_pUniforms = NULL;
     m_Program = 0;
-    m_bContainColorFBOUniform = false;
+    m_bWriteFBO = true;
 }
 
 BBShader::~BBShader()
@@ -255,14 +255,15 @@ BBUniformUpdater* BBShader::initUniformSampler2D(GLint location, const char *pUn
 {
     BBUpdateUniformFunc updateUniformFunc = &BBUniformUpdater::updateSampler2D;
     BBSampler2DMaterialProperty *pProperty = nullptr;
-    if (strcmp(pUniformName, LOCATION_COLORFBO) == 0)
+    if (strcmp(pUniformName, LOCATION_CAMERA_COLOR_TEXTURE) == 0)
     {
         updateUniformFunc = &BBUniformUpdater::updateColorFBO;
-        m_bContainColorFBOUniform = true;
+        m_bWriteFBO = false;
     }
-    else if (strcmp(pUniformName, LOCATION_DEPTHFBO) == 0)
+    else if (strcmp(pUniformName, LOCATION_CAMERA_DEPTH_TEXTURE) == 0)
     {
         updateUniformFunc = &BBUniformUpdater::updateDepthFBO;
+        m_bWriteFBO = false;
     }
     else if (strcmp(pUniformName, LOCATION_SHADOWMap) == 0)
     {
