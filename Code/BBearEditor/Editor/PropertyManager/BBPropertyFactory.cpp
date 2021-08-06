@@ -106,6 +106,53 @@ void BBLineEditFactory::showFromLeft()
 
 
 /**
+ * @brief BBVector2DFactory::BBVector2DFactory
+ * @param value
+ * @param pParent
+ */
+BBVector2DFactory::BBVector2DFactory(const QVector2D &value, QWidget *pParent)
+    : QWidget(pParent)
+{
+    m_Value = value;
+    QHBoxLayout *pLayout = new QHBoxLayout(this);
+    pLayout->setMargin(0);
+
+    m_pEditX = new BBLineEditFactory("X", value.x(), this);
+    m_pEditY = new BBLineEditFactory("Y", value.y(), this);
+    pLayout->addWidget(m_pEditX);
+    pLayout->addWidget(m_pEditY);
+
+    QObject::connect(m_pEditX, SIGNAL(valueChanged(float)), this, SLOT(setX(float)));
+    QObject::connect(m_pEditY, SIGNAL(valueChanged(float)), this, SLOT(setY(float)));
+}
+
+BBVector2DFactory::~BBVector2DFactory()
+{
+    BB_SAFE_DELETE(m_pEditX);
+    BB_SAFE_DELETE(m_pEditY);
+}
+
+void BBVector2DFactory::setValue(const QVector2D &value)
+{
+    m_Value = value;
+    m_pEditX->setValue(value.x());
+    m_pEditY->setValue(value.y());
+}
+
+void BBVector2DFactory::setX(float x)
+{
+    m_Value.setX(x);
+    valueChanged(m_Value);
+}
+
+void BBVector2DFactory::setY(float y)
+{
+    m_Value.setY(y);
+    valueChanged(m_Value);
+}
+
+
+/**
  * @brief BBVector3DFactory::BBVector3DFactory
  * @param value
  * @param pParent
@@ -299,19 +346,25 @@ BBIconFactory::BBIconFactory(QWidget *pParent)
     pLayout->setMargin(0);
 
     QWidget *pLeft = new QWidget(this);
-    QVBoxLayout *pLeftLayout = new QVBoxLayout(pLeft);
-    pLeftLayout->setMargin(0);
-    // button in the top-left
-    m_pRemoveButton = new QPushButton(pLeft);
+    m_pLeftLayout = new QGridLayout(pLeft);
+    m_pLeftLayout->setMargin(0);
+
+    QWidget *pBottomLeft = new QWidget(pLeft);
+    QHBoxLayout *pBottomLeftLayout = new QHBoxLayout(pBottomLeft);
+    pBottomLeftLayout->setMargin(0);
+    // Button
+    m_pRemoveButton = new QPushButton(pBottomLeft);
     m_pRemoveButton->setStyleSheet("image: url(../../resources/icons/return.png);");
-    pLeftLayout->addWidget(m_pRemoveButton, 0, Qt::AlignTop | Qt::AlignRight);
-    m_pSelectButton = new QPushButton(pLeft);
+    pBottomLeftLayout->addWidget(m_pRemoveButton, 0);
+    m_pSelectButton = new QPushButton(pBottomLeft);
     m_pSelectButton->setStyleSheet("image: url(../../resources/icons/more2.png);");
-    pLeftLayout->addWidget(m_pSelectButton, 0, Qt::AlignTop | Qt::AlignRight);
-    // name in the bottom-left
-    m_pNameEdit = new QLineEdit(pLeft);
+    pBottomLeftLayout->addWidget(m_pSelectButton, 0);
+    // name
+    m_pNameEdit = new QLineEdit(pBottomLeft);
     m_pNameEdit->setEnabled(false);
-    pLeftLayout->addWidget(m_pNameEdit, 0, Qt::AlignBottom);
+    pBottomLeftLayout->addWidget(m_pNameEdit, 1);
+    m_pLeftLayout->addWidget(pBottomLeft, 2, 0, 1, 1, Qt::AlignBottom);
+
     pLayout->addWidget(pLeft, 1);
 
     // picture in the right
@@ -321,14 +374,14 @@ BBIconFactory::BBIconFactory(QWidget *pParent)
     pFrameLayout->setMargin(1);
     m_pIconLabel = new BBIconLabel(pRight);
     pFrameLayout->addWidget(m_pIconLabel);
-    pLayout->addWidget(pRight, 0, Qt::AlignRight);
+    pLayout->addWidget(pRight);
 
-    QObject::connect(m_pIconLabel, SIGNAL(currentFilePathChanged(QString)),
-                     this, SLOT(changeCurrentFilePath(QString)));
+    QObject::connect(m_pIconLabel, SIGNAL(currentFilePathChanged(QString)), this, SLOT(changeCurrentFilePath(QString)));
 }
 
 BBIconFactory::~BBIconFactory()
 {
+    BB_SAFE_DELETE(m_pLeftLayout);
     BB_SAFE_DELETE(m_pRemoveButton);
     BB_SAFE_DELETE(m_pSelectButton);
     BB_SAFE_DELETE(m_pIconLabel);
@@ -372,12 +425,61 @@ BBTextureFactory::BBTextureFactory(const QString &uniformName, const QString &or
     m_nIndex = nIndex;
     m_pIconLabel->setFilter(BBFileSystemDataManager::m_TextureSuffixs);
     setContent(originalIconPath);
+
+    QWidget *pWidget = new QWidget(this);
+    pWidget->setObjectName("Tiling");
+    QHBoxLayout *pLayout = new QHBoxLayout(pWidget);
+    pLayout->setMargin(0);
+    pLayout->addWidget(new QLabel("Tiling"), 1);
+    m_pTilingFactory = new BBVector2DFactory(QVector2D(0, 0), this);
+    pLayout->addWidget(m_pTilingFactory, 2);
+    m_pLeftLayout->addWidget(pWidget, 0, 0, 1, 1, Qt::AlignTop);
+
+    pWidget = new QWidget(this);
+    pWidget->setObjectName("Offset");
+    pLayout = new QHBoxLayout(pWidget);
+    pLayout->setMargin(0);
+    pLayout->addWidget(new QLabel("Offset"), 1);
+    m_pOffsetFactory = new BBVector2DFactory(QVector2D(0, 0), this);
+    pLayout->addWidget(m_pOffsetFactory, 2);
+    m_pLeftLayout->addWidget(pWidget, 1, 0, 1, 1, Qt::AlignTop);
+
+    enableTilingAndOffset(false);
+
+    QObject::connect(m_pTilingFactory, SIGNAL(valueChanged(QVector2D)), this, SLOT(changeTiling(QVector2D)));
+    QObject::connect(m_pOffsetFactory, SIGNAL(valueChanged(QVector2D)), this, SLOT(changeOffset(QVector2D)));
+}
+
+void BBTextureFactory::enableTilingAndOffset(bool bEnable)
+{
+    findChild<QWidget*>("Tiling")->setVisible(bEnable);
+    findChild<QWidget*>("Offset")->setVisible(bEnable);
+}
+
+void BBTextureFactory::setTiling(float fTilingX, float fTilingY)
+{
+    m_pTilingFactory->setValue(QVector2D(fTilingX, fTilingY));
+}
+
+void BBTextureFactory::setOffset(float fOffsetX, float fOffsetY)
+{
+    m_pOffsetFactory->setValue(QVector2D(fOffsetX, fOffsetY));
 }
 
 void BBTextureFactory::changeCurrentFilePath(const QString &filePath)
 {
     setContent(filePath);
     emit setSampler2D(m_UniformName, filePath, m_nIndex);
+}
+
+void BBTextureFactory::changeTiling(const QVector2D &value)
+{
+    emit setTilingAndOffset(LOCATION_TILINGANDOFFSET_PREFIX + m_UniformName, value.x(), value.y(), m_pOffsetFactory->getX(), m_pOffsetFactory->getY());
+}
+
+void BBTextureFactory::changeOffset(const QVector2D &value)
+{
+    emit setTilingAndOffset(LOCATION_TILINGANDOFFSET_PREFIX + m_UniformName, m_pTilingFactory->getX(), m_pTilingFactory->getY(), value.x(), value.y());
 }
 
 

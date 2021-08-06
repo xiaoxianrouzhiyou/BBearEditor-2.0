@@ -2,6 +2,7 @@
 #define BBPROPERTYFACTORY_H
 
 #include <QWidget>
+#include <QVector2D>
 #include <QVector3D>
 
 
@@ -16,6 +17,7 @@ class BBIconLabel;
 class BBDragAcceptedEdit;
 class BBRenderableObject;
 class QSlider;
+class QGridLayout;
 
 
 /**
@@ -50,6 +52,33 @@ private:
     float m_fMaxValue;
     float m_fMinValue;
     float m_fSlideStep;
+};
+
+
+class BBVector2DFactory : public QWidget
+{
+    Q_OBJECT
+
+public:
+    BBVector2DFactory(const QVector2D &value = QVector2D(0, 0), QWidget *pParent = nullptr);
+    ~BBVector2DFactory();
+
+    void setValue(const QVector2D &value);
+
+    float getX() { return m_Value.x(); }
+    float getY() { return m_Value.y(); }
+
+public slots:
+    void setX(float x);
+    void setY(float y);
+
+signals:
+    void valueChanged(const QVector2D &value);
+
+private:
+    BBLineEditFactory *m_pEditX;
+    BBLineEditFactory *m_pEditY;
+    QVector2D m_Value;
 };
 
 
@@ -164,6 +193,8 @@ public slots:
     virtual void changeCurrentFilePath(const QString &filePath) = 0;
 
 protected:
+    // Widget except icon
+    QGridLayout *m_pLeftLayout;
     QPushButton *m_pRemoveButton;
     QPushButton *m_pSelectButton;
     BBIconLabel *m_pIconLabel;
@@ -178,13 +209,23 @@ class BBTextureFactory : public BBIconFactory
 public:
     BBTextureFactory(const QString &uniformName, const QString &originalIconPath = "", QWidget *pParent = 0, int nIndex = 0);
 
+    void enableTilingAndOffset(bool bEnable);
+    void setTiling(float fTilingX, float fTilingY);
+    void setOffset(float fOffsetX, float fOffsetY);
+
 public slots:
     void changeCurrentFilePath(const QString &filePath) override;
+    void changeTiling(const QVector2D &value);
+    void changeOffset(const QVector2D &value);
 
 signals:
     void setSampler2D(const QString &uniformName, const QString &texturePath, int nIndex = 0);
+    void setTilingAndOffset(const QString &uniformName, float fTilingX, float fTilingY, float fOffsetX, float fOffsetY);
 
 private:
+    BBVector2DFactory *m_pTilingFactory;
+    BBVector2DFactory *m_pOffsetFactory;
+
     QString m_UniformName;
     // if it is in a group
     int m_nIndex;

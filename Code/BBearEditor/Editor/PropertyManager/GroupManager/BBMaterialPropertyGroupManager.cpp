@@ -99,7 +99,7 @@ void BBMaterialPropertyGroupManager::addPropertyItems()
         {
             BBVector4MaterialProperty *pProperty = (BBVector4MaterialProperty*)properties[i];
             BBVector4MaterialPropertyFactoryType eFactoryType = pProperty->getFactoryType();
-            if (eFactoryType == Color)
+            if (eFactoryType == BBVector4MaterialPropertyFactoryType::Color)
             {
                 const float *color = pProperty->getPropertyValue();
                 BBColorFactory *pColorFactory = new BBColorFactory(names[i], color[0], color[1], color[2], color[3], this);
@@ -124,9 +124,32 @@ void BBMaterialPropertyGroupManager::addPropertyItems()
         {
             BBSampler2DMaterialProperty *pProperty = (BBSampler2DMaterialProperty*)properties[i];
             BBTextureFactory *pTextureFactory = new BBTextureFactory(name, pProperty->getResourcePath(), this);
-            addFactory(name, pTextureFactory, 1);
-            QObject::connect(pTextureFactory, SIGNAL(setSampler2D(QString, QString)),
-                             this, SLOT(setSampler2D(QString, QString)));
+            addFactory(name, pTextureFactory, 3);
+            QObject::connect(pTextureFactory, SIGNAL(setSampler2D(QString, QString)), this, SLOT(setSampler2D(QString, QString)));
+
+            // Find whether there are matching tiling and offset items
+            QString key = LOCATION_TILINGANDOFFSET_PREFIX + name;
+            int nIndex = names.indexOf(key.toStdString().c_str());
+            if (nIndex >= 0)
+            {
+                // whether the matching item is a TilingAndOffset, otherwise it will be invalid
+                BBMaterialProperty *pMatchingProperty = properties[nIndex];
+                if (pMatchingProperty->getType() == BBMaterialUniformPropertyType::Vector4)
+                {
+                    BBVector4MaterialProperty *pVecProperty = (BBVector4MaterialProperty*)pMatchingProperty;
+                    BBVector4MaterialPropertyFactoryType eFactoryType = pVecProperty->getFactoryType();
+                    if (eFactoryType == BBVector4MaterialPropertyFactoryType::TilingAndOffset)
+                    {
+                        pTextureFactory->enableTilingAndOffset(true);
+                        const float *pValue = pVecProperty->getPropertyValue();
+                        pTextureFactory->setTiling(pValue[0], pValue[1]);
+                        pTextureFactory->setOffset(pValue[2], pValue[3]);
+
+                        QObject::connect(pTextureFactory, SIGNAL(setTilingAndOffset(QString, float, float, float, float)),
+                                         this, SLOT(setTilingAndOffset(QString, float, float, float, float)));
+                    }
+                }
+            }
         }
         else if (eType == BBMaterialUniformPropertyType::SamplerCube)
         {
@@ -145,6 +168,14 @@ void BBMaterialPropertyGroupManager::setSampler2D(const QString &uniformName, co
     m_pMaterial->setSampler2D(uniformName.toStdString().c_str(), texture.createTexture2D(texturePath), texturePath);
     m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
     BBRendererManager::changeSampler2D(m_pMaterial, uniformName, texturePath);
+}
+
+void BBMaterialPropertyGroupManager::setTilingAndOffset(const QString &uniformName, float fTilingX, float fTilingY, float fOffsetX, float fOffsetY)
+{
+    m_pMaterial->setVector4(uniformName.toStdString().c_str(), fTilingX, fTilingY, fOffsetX, fOffsetY);
+    m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
+    float *ptr = new float[4] {fTilingX, fTilingY, fOffsetX, fOffsetY};
+    BBRendererManager::changeVector4(m_pMaterial, uniformName.toStdString().c_str(), ptr);
 }
 
 void BBMaterialPropertyGroupManager::setSamplerCube(const QString &uniformName, QString *pResourcePaths)

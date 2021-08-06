@@ -77,6 +77,11 @@ BBVector4MaterialProperty::BBVector4MaterialProperty(const char *name)
         m_eFactoryType = Color;
         m_NameInPropertyManager = QString(name).mid(LOCATION_COLOR_PREFIX_CHAR_COUNT);
     }
+    else if (strncmp(name, LOCATION_TILINGANDOFFSET_PREFIX, LOCATION_TILINGANDOFFSET_PREFIX_CHAR_COUNT) == 0)
+    {
+        m_eFactoryType = TilingAndOffset;
+        m_NameInPropertyManager = QString(name).mid(LOCATION_TILINGANDOFFSET_PREFIX_CHAR_COUNT);
+    }
     else
     {
         m_eFactoryType = Default;

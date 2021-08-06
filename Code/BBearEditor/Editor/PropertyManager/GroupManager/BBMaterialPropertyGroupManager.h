@@ -29,6 +29,7 @@ private:
 
 private slots:
     void setSampler2D(const QString &uniformName, const QString &texturePath);
+    void setTilingAndOffset(const QString &uniformName, float fTilingX, float fTilingY, float fOffsetX, float fOffsetY);
     void setSamplerCube(const QString &uniformName, QString *pResourcePaths);
     void setFloat(const QString &uniformName, float fValue);
     void setColor(float r, float g, float b, float a, const std::string &uniformName);

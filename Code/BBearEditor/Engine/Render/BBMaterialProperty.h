@@ -24,7 +24,8 @@ enum BBMaterialUniformPropertyType
 enum BBVector4MaterialPropertyFactoryType
 {
     Default,
-    Color
+    Color,
+    TilingAndOffset
 };
 
 

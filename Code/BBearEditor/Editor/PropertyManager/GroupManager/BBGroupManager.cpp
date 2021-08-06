@@ -85,7 +85,7 @@ QWidget* BBGroupManager::addFactory(const QString &name, QWidget *pFactory, int 
     // name showed in the left side
     QLabel *pLabel = new QLabel(pWidget);
     pLabel->setText(name);
-    pLayout->addWidget(pLabel, 1, Qt::AlignBottom);
+    pLayout->addWidget(pLabel, 1, Qt::AlignTop);
     // factory showed in the right side
     pFactory->setParent(pWidget);
     pLayout->addWidget(pFactory, nStretch, alignment);
@@ -103,7 +103,7 @@ QWidget* BBGroupManager::addFactory(const QString &name, QWidget *pFactory1, QWi
 
     QLabel *pLabel = new QLabel(pWidget);
     pLabel->setText(name);
-    pLayout->addWidget(pLabel, 1, Qt::AlignBottom);
+    pLayout->addWidget(pLabel, 1, Qt::AlignTop);
 
     QWidget *pFactoryParentWidget = new QWidget(pWidget);
     QVBoxLayout *pFactoryLayout = new QVBoxLayout(pFactoryParentWidget);
