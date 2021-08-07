@@ -86,16 +86,16 @@ void BBUniformUpdater::updateColorFBO(GLint location, void *pCamera, void *pProp
 
 void BBUniformUpdater::updateDepthFBO(GLint location, void *pCamera, void *pPropertyValue)
 {
-    glActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0 + 1);
     glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getDepthFBO(0));
-    glUniform1i(location, 0);
+    glUniform1i(location, 1);
 }
 
 void BBUniformUpdater::updateShadowMap(GLint location, void *pCamera, void *pPropertyValue)
 {
-    glActiveTexture(GL_TEXTURE0 + 1);
+    glActiveTexture(GL_TEXTURE0 + 2);
     glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getDepthFBO(1));
-    glUniform1i(location, 1);
+    glUniform1i(location, 2);
 }
 
 void BBUniformUpdater::updateLightProjectionMatrix(GLint location, void *pCamera, void *pPropertyValue)

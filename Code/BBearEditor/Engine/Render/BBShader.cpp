@@ -137,7 +137,7 @@ void BBShader::initUniforms()
 {
     GLint count = 0;
     glGetProgramiv(m_Program, GL_ACTIVE_UNIFORMS, &count);
-    int nSlotIndex = 2; // Reserved for FBO
+    int nSlotIndex = 3; // Reserved for FBO
     for (int i = 0; i < count; i++)
     {
         GLsizei length = 0;
