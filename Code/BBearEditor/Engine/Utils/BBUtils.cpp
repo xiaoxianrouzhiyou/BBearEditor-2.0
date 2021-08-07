@@ -143,6 +143,27 @@ QString BBUtils::getBlendFuncName(unsigned int func)
     case GL_ZERO:
         name = "GL_ZERO";
         break;
+    case GL_ONE:
+        name = "GL_ONE";
+        break;
+    case GL_SRC_COLOR:
+        name = "GL_SRC_COLOR";
+        break;
+    case GL_ONE_MINUS_SRC_COLOR:
+        name = "GL_ONE_MINUS_SRC_COLOR";
+        break;
+    case GL_SRC_ALPHA:
+        name = "GL_SRC_ALPHA";
+        break;
+    case GL_ONE_MINUS_SRC_ALPHA:
+        name = "GL_ONE_MINUS_SRC_ALPHA";
+        break;
+    case GL_DST_ALPHA:
+        name = "GL_DST_ALPHA";
+        break;
+    case GL_ONE_MINUS_DST_ALPHA:
+        name = "GL_ONE_MINUS_DST_ALPHA";
+        break;
     default:
         break;
     }
