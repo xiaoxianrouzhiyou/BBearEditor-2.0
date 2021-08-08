@@ -69,7 +69,11 @@ void BBMainWindow::setWindowLayout()
     // resize
     m_pUi->dockGameObjectContents->updateSizeHint(QSize(250, 900));
     m_pUi->dockEditviewContents->updateSizeHint(QSize(1440, 900));
-    m_pUi->dockPreviewContents->updateSizeHint(QSize(480, 300));
+    m_pUi->dockHierarchyContents->updateSizeHint(QSize(640, 300));
+    m_pUi->dockInspectorContents->updateSizeHint(QSize(640, 600));
+//    m_pUi->dockPreviewContents->updateSizeHint(QSize(480, 300));
+
+    m_pUi->dockPreview->setVisible(false);
 }
 
 void BBMainWindow::setMenu()

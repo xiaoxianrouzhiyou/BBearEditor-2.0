@@ -9,8 +9,9 @@ varying vec4 V_normal_uv;
 varying vec4 V_world_space_pos;
 varying vec4 V_world_space_normal;
 varying vec4 V_clip_space_pos;
-varying float V_view_space_z;
+varying vec4 V_view_space_pos;
 varying mat3 V_TBN;
+varying mat4 V_viewMatrix_I;
 
 uniform mat4 BBProjectionMatrix;
 uniform mat4 BBViewMatrix;
@@ -35,14 +36,15 @@ void main()
     V_normal_uv.xy = normal_uv + offset;
     V_normal_uv.zw = normal_uv + offset * vec2(-1.07, 1.35);
 
-    vec4 view_space_pos = BBViewMatrix * V_world_space_pos;
-    V_view_space_z = view_space_pos.z;
-    V_clip_space_pos = BBProjectionMatrix * view_space_pos;
+    V_view_space_pos = BBViewMatrix * V_world_space_pos;
+    V_clip_space_pos = BBProjectionMatrix * V_view_space_pos;
 
     vec3 T = normalize(vec3(BBModelMatrix * BBTangent));
     vec3 B = normalize(vec3(BBModelMatrix * BBBiTangent));
     vec3 N = normalize(vec3(BBModelMatrix * BBNormal));
     V_TBN = mat3(T, B, N);
+
+    V_viewMatrix_I = inverse(BBViewMatrix);
 
     gl_Position = V_clip_space_pos;
 }

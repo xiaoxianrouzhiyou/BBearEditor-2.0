@@ -506,7 +506,7 @@ BBCubeMapFactory::BBCubeMapFactory(const QString &uniformName, const QString ori
         QWidget *pTextureFactoryWidget = new QWidget(this);
         QHBoxLayout *pTextureFactoryLayout = new QHBoxLayout(pTextureFactoryWidget);
         pTextureFactoryLayout->setMargin(0);
-        pTextureFactoryLayout->addWidget(new QLabel(uniformName + subName[i]), 1, Qt::AlignBottom);
+        pTextureFactoryLayout->addWidget(new QLabel(uniformName + subName[i]), 1, Qt::AlignTop);
         m_pTextureFactory[i] = new BBTextureFactory(uniformName, originalIconPath[i], this, i);
         pTextureFactoryLayout->addWidget(m_pTextureFactory[i], 1);
         pLayout->addWidget(pTextureFactoryWidget);
