@@ -55,7 +55,8 @@ private:
     void setSize(int nVertexCount, GLenum hint = GL_STATIC_DRAW);
     void _computeTangent(int nVertexIndex,
                          const QVector3D &pos0, const QVector3D &pos1, const QVector3D &pos2,
-                         const QVector2D &uv0, const QVector2D &uv1, const QVector2D &uv2);
+                         const QVector2D &uv0, const QVector2D &uv1, const QVector2D &uv2,
+                         QVector3D &tangent, QVector3D &bitangent);
 
     BBVertex *m_pVertexes;
     int m_nVertexCount;

@@ -98,6 +98,13 @@ void BBVertexBufferObject::computeTangent(unsigned short *pVertexIndexes, int nI
 {
     // For the time, only triangles with EBO are considered
     BB_PROCESS_ERROR_RETURN(pVertexIndexes);
+
+    // record for calculating the average of vertices shared by multiple faces
+    // Indicates how many faces the i-th vertex has
+    int nFaceCount[m_nVertexCount] = {0};
+    QVector3D tangentSum[m_nVertexCount];
+    QVector3D bitangentSum[m_nVertexCount];
+
     for (int i = 0; i < nIndexCount; i += 3)
     {
         int nIndex0 = pVertexIndexes[i];
@@ -112,9 +119,26 @@ void BBVertexBufferObject::computeTangent(unsigned short *pVertexIndexes, int nI
         QVector2D uv1 = getTexcoord(nIndex1);
         QVector2D uv2 = getTexcoord(nIndex2);
 
-        _computeTangent(nIndex0, pos0, pos1, pos2, uv0, uv1, uv2);
-        _computeTangent(nIndex1, pos1, pos2, pos0, uv1, uv2, uv0);
-        _computeTangent(nIndex2, pos2, pos0, pos1, uv2, uv0, uv1);
+        QVector3D tangent;
+        QVector3D bitangent;
+        _computeTangent(nIndex0, pos0, pos1, pos2, uv0, uv1, uv2, tangent, bitangent);
+        nFaceCount[nIndex0] ++;
+        tangentSum[nIndex0] += tangent;
+        bitangentSum[nIndex0] += bitangent;
+        _computeTangent(nIndex1, pos1, pos2, pos0, uv1, uv2, uv0, tangent, bitangent);
+        nFaceCount[nIndex1] ++;
+        tangentSum[nIndex1] += tangent;
+        bitangentSum[nIndex1] += bitangent;
+        _computeTangent(nIndex2, pos2, pos0, pos1, uv2, uv0, uv1, tangent, bitangent);
+        nFaceCount[nIndex2] ++;
+        tangentSum[nIndex2] += tangent;
+        bitangentSum[nIndex2] += bitangent;
+    }
+
+    for (int i = 0; i < m_nVertexCount; i++)
+    {
+        setTangent(i, tangentSum[i] / nFaceCount[i]);
+        setBiTangent(i, bitangentSum[i] / nFaceCount[i]);
     }
 }
 
@@ -174,7 +198,8 @@ void BBVertexBufferObject::setSize(int nVertexCount, GLenum hint)
 
 void BBVertexBufferObject::_computeTangent(int nVertexIndex,
                                            const QVector3D &pos0, const QVector3D &pos1, const QVector3D &pos2,
-                                           const QVector2D &uv0, const QVector2D &uv1, const QVector2D &uv2)
+                                           const QVector2D &uv0, const QVector2D &uv1, const QVector2D &uv2,
+                                           QVector3D &tangent, QVector3D &bitangent)
 {
     QVector3D e0 = pos1 - pos0;
     QVector3D e1 = pos2 - pos0;
@@ -182,17 +207,12 @@ void BBVertexBufferObject::_computeTangent(int nVertexIndex,
     QVector2D deltaUV1 = uv2 - uv0;
 
     float f = 1.0f / (deltaUV0.x() * deltaUV1.y() - deltaUV1.x() * deltaUV0.y());
-    QVector3D tangent;
     tangent.setX(f * (deltaUV1.y() * e0.x() - deltaUV0.y() * e1.x()));
     tangent.setY(f * (deltaUV1.y() * e0.y() - deltaUV0.y() * e1.y()));
     tangent.setZ(f * (deltaUV1.y() * e0.z() - deltaUV0.y() * e1.z()));
     tangent.normalize();
-    QVector3D bitangent;
     bitangent.setX(f * (-deltaUV1.x() * e0.x() + deltaUV0.x() * e1.x()));
     bitangent.setY(f * (-deltaUV1.x() * e0.y() + deltaUV0.x() * e1.y()));
     bitangent.setZ(f * (-deltaUV1.x() * e0.z() + deltaUV0.x() * e1.z()));
     bitangent.normalize();
-
-    setTangent(nVertexIndex, tangent);
-    setBiTangent(nVertexIndex, bitangent);
 }
