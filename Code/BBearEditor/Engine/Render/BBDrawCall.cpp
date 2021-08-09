@@ -5,7 +5,7 @@
 #include "BBRenderPass.h"
 #include "Scene/BBSceneManager.h"
 #include "Scene/BBScene.h"
-#include "Render/Light/BBLight.h"
+#include "Lighting/GameObject/BBLight.h"
 #include "Render/BBFrameBufferObject.h"
 #include "Base/BBRenderableObject.h"
 #include "Render/BBRenderQueue.h"

@@ -4,7 +4,7 @@
 #include <QDateTime>
 #include "Scene/BBSceneManager.h"
 #include "Scene/BBScene.h"
-#include "Render/Light/BBLight.h"
+#include "Lighting/GameObject/BBLight.h"
 
 
 BBUniformUpdater::BBUniformUpdater(GLint location, const BBUpdateUniformFunc &updateFunc, BBMaterialProperty *pTargetProperty)

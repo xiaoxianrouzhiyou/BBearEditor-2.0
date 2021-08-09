@@ -1,7 +1,7 @@
 #include "BBLightManager.h"
-#include "Render/Light/BBPointLight.h"
+#include "Lighting/GameObject/BBPointLight.h"
 #include "../BBPropertyFactory.h"
-#include "Render/Light/BBSpotLight.h"
+#include "Lighting/GameObject/BBSpotLight.h"
 
 
 /**

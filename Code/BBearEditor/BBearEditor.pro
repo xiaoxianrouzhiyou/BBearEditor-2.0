@@ -80,12 +80,12 @@ SOURCES += \
     Engine/Render/BBDrawCall.cpp \
     Engine/Render/BBMaterialProperty.cpp \
     Engine/Render/BBRenderPass.cpp \
-    Engine/Render/Light/BBLight.cpp \
+    Engine/Lighting/GameObject/BBLight.cpp \
     Engine/Render/BBFrameBufferObject.cpp \
     Engine/Render/BBTexture.cpp \
-    Engine/Render/Light/BBDirectionalLight.cpp \
-    Engine/Render/Light/BBPointLight.cpp \
-    Engine/Render/Light/BBSpotLight.cpp \
+    Engine/Lighting/GameObject/BBDirectionalLight.cpp \
+    Engine/Lighting/GameObject/BBPointLight.cpp \
+    Engine/Lighting/GameObject/BBSpotLight.cpp \
     Engine/3D/BBIcon.cpp \
     Engine/CoordinateSystem/BBCoordinateSystem.cpp \
     Engine/3D/BBHorizontalPlane.cpp \
@@ -121,7 +121,9 @@ SOURCES += \
     Editor/PropertyManager/GroupManager/BBLightManager.cpp \
     Engine/Serializer/BBCubeMap.pb.cc \
     Engine/3D/BBNormalIndicator.cpp \
-    Editor/Debugger/BBConsoleDockWidget.cpp
+    Editor/Debugger/BBConsoleDockWidget.cpp \
+    Editor/PropertyManager/GroupManager/BBGlobalSettingsGroupManager.cpp \
+    Engine/Lighting/BBSphericalHarmonicLighting.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -181,12 +183,12 @@ HEADERS += \
     Engine/Render/BBDrawCall.h \
     Engine/Render/BBMaterialProperty.h \
     Engine/Render/BBRenderPass.h \
-    Engine/Render/Light/BBLight.h \
+    Engine/Lighting/GameObject/BBLight.h \
     Engine/Render/BBFrameBufferObject.h \
     Engine/Render/BBTexture.h \
-    Engine/Render/Light/BBDirectionalLight.h \
-    Engine/Render/Light/BBPointLight.h \
-    Engine/Render/Light/BBSpotLight.h \
+    Engine/Lighting/GameObject/BBDirectionalLight.h \
+    Engine/Lighting/GameObject/BBPointLight.h \
+    Engine/Lighting/GameObject/BBSpotLight.h \
     Engine/3D/BBIcon.h \
     Engine/CoordinateSystem/BBCoordinateSystem.h \
     Engine/3D/BBHorizontalPlane.h \
@@ -222,7 +224,9 @@ HEADERS += \
     Editor/PropertyManager/GroupManager/BBLightManager.h \
     Engine/Serializer/BBCubeMap.pb.h \
     Engine/3D/BBNormalIndicator.h \
-    Editor/Debugger/BBConsoleDockWidget.h
+    Editor/Debugger/BBConsoleDockWidget.h \
+    Editor/PropertyManager/GroupManager/BBGlobalSettingsGroupManager.h \
+    Engine/Lighting/BBSphericalHarmonicLighting.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

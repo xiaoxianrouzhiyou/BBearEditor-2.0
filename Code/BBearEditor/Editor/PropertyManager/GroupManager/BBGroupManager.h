@@ -83,29 +83,6 @@ private:
 };
 
 
-class BBGlobalSettingsGroupManager : public BBGroupManager
-{
-    Q_OBJECT
-
-public:
-    BBGlobalSettingsGroupManager(BBScene *pScene, QWidget *pParent = 0);
-    ~BBGlobalSettingsGroupManager();
-
-private slots:
-    void changeCurrentRenderingAlgorithm(int nIndex);
-    void switchRayTracing(bool bEnable);
-    void bakeSphericalHarmonicLightingMap();
-
-private:
-    void initRenderingAlgorithmEnumFactory();
-
-    static int m_nCurrentRenderingAlgorithmIndex;
-    BBScene *m_pScene;
-    BBEnumFactory *m_pRenderingAlgorithmEnumFactory;
-    QCheckBox *m_pTriggerRayTracing;
-};
-
-
 class BBRenderManager : public BBGroupManager
 {
     Q_OBJECT

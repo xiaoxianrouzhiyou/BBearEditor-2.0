@@ -6,8 +6,8 @@
 #include "Render/BBTexture.h"
 #include "Scene/BBScene.h"
 #include "Scene/BBSceneManager.h"
-#include "Render/Light/BBLight.h"
-#include "Render/Light/BBPointLight.h"
+#include "Lighting/GameObject/BBLight.h"
+#include "Lighting/GameObject/BBPointLight.h"
 #include "Render/BBCamera.h"
 
 

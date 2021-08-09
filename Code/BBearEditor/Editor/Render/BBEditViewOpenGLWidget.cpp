@@ -11,7 +11,7 @@
 #include "CoordinateSystem/BBTransformCoordinateSystem.h"
 #include <QTreeWidgetItem>
 #include "Scene/BBSceneManager.h"
-#include "Render/Light/BBLight.h"
+#include "Lighting/GameObject/BBLight.h"
 #include "2D/BBCanvas.h"
 #include "2D/BBSpriteObject2D.h"
 #include "FileSystem/BBFileSystemDataManager.h"

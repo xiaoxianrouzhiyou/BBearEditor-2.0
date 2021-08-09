@@ -7,7 +7,7 @@
 #include <QListView>
 #include <QLabel>
 #include <QComboBox>
-#include "Render/Light/BBLight.h"
+#include "Lighting/GameObject/BBLight.h"
 #include "FileSystem/BBFileSystemDataManager.h"
 #include <QFile>
 #include <QFileInfo>
