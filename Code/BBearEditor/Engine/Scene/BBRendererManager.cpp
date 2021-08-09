@@ -267,13 +267,13 @@ void BBRendererManager::loadMaterialContent(const QString &filePath, BBMaterial 
 
     BBTexture texture;
     BBSerializer::BBCubeMap cubeMapPath = material.cubemappaths();
-    QString path[6] = {QString::fromStdString(cubeMapPath.positivex()),
-                       QString::fromStdString(cubeMapPath.negativex()),
-                       QString::fromStdString(cubeMapPath.positivey()),
-                       QString::fromStdString(cubeMapPath.negativey()),
-                       QString::fromStdString(cubeMapPath.positivez()),
-                       QString::fromStdString(cubeMapPath.negativez())};
-    pMaterial->setSamplerCube(material.cubemapname(), texture.createTextureCube(path), path);
+    QString paths[6] = {QString::fromStdString(cubeMapPath.positivex()),
+                        QString::fromStdString(cubeMapPath.negativex()),
+                        QString::fromStdString(cubeMapPath.positivey()),
+                        QString::fromStdString(cubeMapPath.negativey()),
+                        QString::fromStdString(cubeMapPath.positivez()),
+                        QString::fromStdString(cubeMapPath.negativez())};
+    pMaterial->setSamplerCube(material.cubemapname(), texture.createTextureCube(paths), paths);
 
     int nFloatCount = material.floatname_size();
     for (int i = 0; i < nFloatCount; i++)

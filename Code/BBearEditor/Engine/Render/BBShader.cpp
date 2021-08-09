@@ -265,7 +265,7 @@ BBUniformUpdater* BBShader::initUniformSampler2D(GLint location, const char *pUn
         updateUniformFunc = &BBUniformUpdater::updateDepthFBO;
         m_bWriteFBO = false;
     }
-    else if (strcmp(pUniformName, LOCATION_SHADOWMap) == 0)
+    else if (strcmp(pUniformName, LOCATION_SHADOWMAP) == 0)
     {
         updateUniformFunc = &BBUniformUpdater::updateShadowMap;
     }

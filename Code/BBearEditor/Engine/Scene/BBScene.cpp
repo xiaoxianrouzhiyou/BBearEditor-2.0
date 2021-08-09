@@ -89,7 +89,7 @@ void BBScene::init()
 
     m_pCamera->setViewportSize(800.0f, 600.0f);
 
-    m_pSkyBox->init(QString(BB_PATH_RESOURCE) + "skyboxs/2/");
+    m_pSkyBox->init(QString(BB_PATH_RESOURCE) + "skyboxs/3/");
     m_pHorizontalPlane->init();
     m_pTransformCoordinateSystem->init();
     m_pTiledFullScreenQuad->init();
