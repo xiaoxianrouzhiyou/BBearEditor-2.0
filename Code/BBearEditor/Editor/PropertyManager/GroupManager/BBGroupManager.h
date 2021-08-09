@@ -94,6 +94,7 @@ public:
 private slots:
     void changeCurrentRenderingAlgorithm(int nIndex);
     void switchRayTracing(bool bEnable);
+    void bakeSphericalHarmonicLightingMap();
 
 private:
     void initRenderingAlgorithmEnumFactory();

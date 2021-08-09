@@ -220,21 +220,21 @@ void BBVector3DFactory::setZ(float z)
  * @param comboBoxStretch
  */
 BBEnumFactory::BBEnumFactory(const QString &name, const QStringList &comboBoxItems,
-                             const QString &currentText, QWidget *pParent,
-                             int labelStretch, int comboBoxStretch)
+                             const QString &currentText, QWidget *pParent, int labelStretch, int comboBoxStretch)
     : QWidget(pParent)
 {
-    QHBoxLayout *pLayout = new QHBoxLayout(this);
+    QGridLayout *pLayout = new QGridLayout(this);
     pLayout->setMargin(0);
     m_pLabel = new QLabel(name, this);
     m_pLabel->setFocusPolicy(Qt::NoFocus);
-    pLayout->addWidget(m_pLabel, labelStretch);
+    pLayout->addWidget(m_pLabel, 0, 0, 1, labelStretch);
+
     m_pComboBox = new QComboBox(this);
     m_pComboBox->addItems(comboBoxItems);
     // With this sentence, qss can take effect
     m_pComboBox->setView(new QListView());
     m_pComboBox->setCurrentText(currentText);
-    pLayout->addWidget(m_pComboBox, comboBoxStretch);
+    pLayout->addWidget(m_pComboBox, 0, 1, 1, comboBoxStretch);
 
     QObject::connect(m_pComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCurrentItem(int)));
     QObject::connect(m_pComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(changeCurrentItem(QString)));
@@ -254,6 +254,40 @@ void BBEnumFactory::changeCurrentItem(int nIndex)
 void BBEnumFactory::changeCurrentItem(const QString &text)
 {
     emit currentItemChanged(text);
+}
+
+
+/**
+ * @brief BBEnumAndButtonFactory
+ * @param name
+ * @param comboBoxItems
+ * @param buttonText
+ * @param currentText
+ * @param pParent
+ * @param labelStretch
+ * @param comboBoxStretch
+ */
+BBEnumAndButtonFactory::BBEnumAndButtonFactory(const QString &name, const QStringList &comboBoxItems, const QString &buttonText,
+                                               const QString &currentText, QWidget *pParent, int labelStretch, int comboBoxStretch)
+    : BBEnumFactory(name, comboBoxItems, currentText, pParent, labelStretch, comboBoxStretch)
+{
+    m_pButton = new QPushButton(buttonText);
+    m_pButton->setStyleSheet("QPushButton { border: none; border-radius: 2px; padding-left: 3px; padding-right: 3px; color: #d6dfeb; font: 9pt \"Arial\"; background: #0ebf9c; }"
+                             "QPushButton:hover { background: #8c0ebf9c; }");
+    QGridLayout *pLayout = (QGridLayout*)layout();
+    pLayout->addWidget(m_pButton, 1, 1, 1, 1, Qt::AlignRight);
+
+    QObject::connect(m_pButton, SIGNAL(clicked()), this, SLOT(clickButton()));
+}
+
+BBEnumAndButtonFactory::~BBEnumAndButtonFactory()
+{
+    BB_SAFE_DELETE(m_pButton);
+}
+
+void BBEnumAndButtonFactory::clickButton()
+{
+    emit buttonClicked();
 }
 
 

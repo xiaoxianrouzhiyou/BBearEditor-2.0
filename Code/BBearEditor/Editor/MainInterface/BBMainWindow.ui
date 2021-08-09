@@ -1052,7 +1052,7 @@ BBFileListWidget::item:selected {
     <number>4</number>
    </attribute>
   </widget>
-  <widget class="QDockWidget" name="dockConsole">
+  <widget class="BBConsoleDockWidget" name="dockConsole">
    <property name="styleSheet">
     <string notr="true"/>
    </property>
@@ -1221,6 +1221,11 @@ BBFileListWidget::item:selected {
    <class>BBFileSystemDockWidget</class>
    <extends>QDockWidget</extends>
    <header>FileSystem/BBFileSystemDockWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BBConsoleDockWidget</class>
+   <extends>QDockWidget</extends>
+   <header>Debugger/BBConsoleDockWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

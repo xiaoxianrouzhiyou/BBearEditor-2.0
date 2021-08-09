@@ -120,7 +120,8 @@ SOURCES += \
     Editor/PropertyManager/GroupManager/BBMaterialPropertyGroupManager.cpp \
     Editor/PropertyManager/GroupManager/BBLightManager.cpp \
     Engine/Serializer/BBCubeMap.pb.cc \
-    Engine/3D/BBNormalIndicator.cpp
+    Engine/3D/BBNormalIndicator.cpp \
+    Editor/Debugger/BBConsoleDockWidget.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -220,7 +221,8 @@ HEADERS += \
     Editor/PropertyManager/GroupManager/BBMaterialPropertyGroupManager.h \
     Editor/PropertyManager/GroupManager/BBLightManager.h \
     Engine/Serializer/BBCubeMap.pb.h \
-    Engine/3D/BBNormalIndicator.h
+    Engine/3D/BBNormalIndicator.h \
+    Editor/Debugger/BBConsoleDockWidget.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

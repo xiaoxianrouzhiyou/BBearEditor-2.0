@@ -393,6 +393,14 @@ BBGlobalSettingsGroupManager::BBGlobalSettingsGroupManager(BBScene *pScene, QWid
     m_pTriggerRayTracing = new QCheckBox(this);
     QObject::connect(m_pTriggerRayTracing, SIGNAL(clicked(bool)), this, SLOT(switchRayTracing(bool)));
     addFactory("Ray Tracing", m_pTriggerRayTracing);
+
+    QStringList sphericalHarmonicLightingAlgorithmName = {"The Gritty Details",
+                                                          "Irradiance Environment Maps"};
+    BBEnumAndButtonFactory *pSphericalHarmonicLightingFactory = new BBEnumAndButtonFactory("Spherical Harmonic Lighting",
+                                                                                           sphericalHarmonicLightingAlgorithmName,
+                                                                                           "Bake", "", this, 1, 1);
+    QObject::connect(pSphericalHarmonicLightingFactory, SIGNAL(buttonClicked()), this, SLOT(bakeSphericalHarmonicLightingMap()));
+    addFactory(pSphericalHarmonicLightingFactory);
 }
 
 BBGlobalSettingsGroupManager::~BBGlobalSettingsGroupManager()
@@ -419,6 +427,11 @@ void BBGlobalSettingsGroupManager::switchRayTracing(bool bEnable)
     {
         m_pScene->getRayTracker()->close();
     }
+}
+
+void BBGlobalSettingsGroupManager::bakeSphericalHarmonicLightingMap()
+{
+    qDebug() << "1";
 }
 
 void BBGlobalSettingsGroupManager::initRenderingAlgorithmEnumFactory()

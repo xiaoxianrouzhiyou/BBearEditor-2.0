@@ -1,35 +1,32 @@
 #include "BBPythonLoader.h"
 #include <Python.h>
-#include <QDebug>
+#include "Utils/BBUtils.h"
+#include <exception>
 
 
 void BBPythonLoader::runScript(const QString &path)
 {
+    // set home path for python
+    Py_SetPythonHome(L"./");
+
     Py_Initialize();
-    if (!Py_IsInitialized())
-    {
-        qDebug() << "init error";
-        return;
-    }
-    qDebug() << "init ok";
 
-    PyRun_SimpleString("import sys");
-    QString sysPath = "sys.path.append('" + path + "')";
-    PyRun_SimpleString(sysPath.toStdString().c_str());
-    PyObject *pObj = PyImport_ImportModule("testPy");
-    if (pObj == nullptr)
+    try
     {
-        qDebug() << "PyImport_ImportModule error";
-        return;
-    }
+        PyRun_SimpleString("print('Hello World!')");
+//        FILE *pFile = fopen(path.toStdString().c_str(), "r");
+//        if (!pFile)
+//        {
+//            throw 0;
+//        }
+//        PyRun_AnyFile(pFile, path.toStdString().c_str());
 
-    PyObject *pFunc = PyObject_GetAttrString(pObj, "printHello");
-    if (pFunc == nullptr)
+        Py_Finalize();
+    }
+    catch (int)
     {
-        qDebug() << "func error";
-        return;
+        Py_Finalize();
     }
 
-    PyEval_CallObject(pFunc, nullptr);
-    Py_Finalize();
+
 }

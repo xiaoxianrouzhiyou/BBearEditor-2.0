@@ -18,6 +18,7 @@ class BBDragAcceptedEdit;
 class BBRenderableObject;
 class QSlider;
 class QGridLayout;
+class QVBoxLayout;
 
 
 /**
@@ -120,8 +121,7 @@ class BBEnumFactory : public QWidget
 
 public:
     BBEnumFactory(const QString &name, const QStringList &comboBoxItems,
-                  const QString &currentText = "", QWidget *pParent = 0,
-                  int labelStretch = 0, int comboBoxStretch = 1);
+                  const QString &currentText = "", QWidget *pParent = 0, int labelStretch = 0, int comboBoxStretch = 1);
     ~BBEnumFactory();
 
 private slots:
@@ -135,6 +135,26 @@ signals:
 private:
     QLabel *m_pLabel;
     QComboBox *m_pComboBox;
+};
+
+
+class BBEnumAndButtonFactory : public BBEnumFactory
+{
+    Q_OBJECT
+
+public:
+    BBEnumAndButtonFactory(const QString &name, const QStringList &comboBoxItems, const QString &buttonText,
+                           const QString &currentText = "", QWidget *pParent = 0, int labelStretch = 0, int comboBoxStretch = 1);
+    ~BBEnumAndButtonFactory();
+
+private slots:
+    void clickButton();
+
+signals:
+    void buttonClicked();
+
+private:
+    QPushButton *m_pButton;
 };
 
 
