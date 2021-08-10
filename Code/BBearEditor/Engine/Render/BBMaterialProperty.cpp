@@ -102,6 +102,30 @@ BBMaterialProperty* BBVector4MaterialProperty::clone()
 
 
 /**
+ * @brief BBArrayVector4MaterialProperty::BBArrayVector4MaterialProperty
+ * @param name
+ */
+BBArrayVector4MaterialProperty::BBArrayVector4MaterialProperty(const char *name, int nArrayCount)
+    : BBMaterialProperty(ArrayVector4, name)
+{
+    m_pPropertyValue = nullptr;
+    m_nArrayCount = nArrayCount;
+}
+
+BBArrayVector4MaterialProperty::~BBArrayVector4MaterialProperty()
+{
+    BB_SAFE_DELETE(m_pPropertyValue);
+}
+
+BBMaterialProperty* BBArrayVector4MaterialProperty::clone()
+{
+    BBArrayVector4MaterialProperty *pRet = new BBArrayVector4MaterialProperty(m_Name, m_nArrayCount);
+    pRet->setPropertyValue(m_pPropertyValue);
+    return pRet;
+}
+
+
+/**
  * @brief BBSampler2DMaterialProperty::BBSampler2DMaterialProperty
  * @param name
  */

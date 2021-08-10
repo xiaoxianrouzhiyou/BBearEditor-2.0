@@ -5,6 +5,7 @@
 #include "Scene/BBSceneManager.h"
 #include "Scene/BBScene.h"
 #include "Lighting/GameObject/BBLight.h"
+#include "Lighting/BBSphericalHarmonicLighting.h"
 
 
 BBUniformUpdater::BBUniformUpdater(GLint location, const BBUpdateUniformFunc &updateFunc, BBMaterialProperty *pTargetProperty)
@@ -112,6 +113,19 @@ void BBUniformUpdater::updateLightViewMatrix(GLint location, void *pCamera, void
     glUniformMatrix4fv(location, 1, GL_FALSE, ((BBLight*)lights[0])->getViewMatrix().data());
 }
 
+void BBUniformUpdater::updateSphericalHarmonicLightingCoefficients(GLint location, void *pCamera, void *pPropertyValue)
+{
+    int nCount = BBSphericalHarmonicLighting::getCoefficientLCount();
+    if (nCount == 0)
+    {
+        qDebug() << "Please bake";
+    }
+    else
+    {
+        glUniform4fv(location, nCount, BBSphericalHarmonicLighting::getCoefficientL());
+    }
+}
+
 void BBUniformUpdater::updateFloat(GLint location, void *pCamera, void *pPropertyValue)
 {
     BBFloatMaterialProperty *pProperty = (BBFloatMaterialProperty*)pPropertyValue;
@@ -128,6 +142,11 @@ void BBUniformUpdater::updateVector4(GLint location, void *pCamera, void *pPrope
 {
     BBVector4MaterialProperty *pProperty = (BBVector4MaterialProperty*)pPropertyValue;
     glUniform4fv(location, 1, pProperty->getPropertyValue());
+}
+
+void BBUniformUpdater::updateArrayVector4(GLint location, void *pCamera, void *pPropertyValue)
+{
+
 }
 
 void BBUniformUpdater::updateSampler2D(GLint location, void *pCamera, void *pPropertyValue)

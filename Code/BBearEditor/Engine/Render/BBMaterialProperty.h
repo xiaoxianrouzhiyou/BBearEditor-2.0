@@ -15,6 +15,7 @@ enum BBMaterialUniformPropertyType
     Float,
     Matrix4,
     Vector4,
+    ArrayVector4,
     Sampler2D,
     SamplerCube,
     Count
@@ -96,6 +97,24 @@ private:
     // 智能指针 to do
     const float *m_pPropertyValue;
     BBVector4MaterialPropertyFactoryType m_eFactoryType;
+};
+
+
+class BBArrayVector4MaterialProperty : public BBMaterialProperty
+{
+public:
+    BBArrayVector4MaterialProperty(const char *name, int nArrayCount);
+    ~BBArrayVector4MaterialProperty();
+
+    BBMaterialProperty* clone() override;
+
+    inline void setPropertyValue(const float *pPropertyValue) { m_pPropertyValue = pPropertyValue; }
+    inline const float* getPropertyValue() { return m_pPropertyValue; }
+    inline int getArrayCount() { return m_nArrayCount; }
+
+private:
+    const float *m_pPropertyValue;
+    int m_nArrayCount;
 };
 
 

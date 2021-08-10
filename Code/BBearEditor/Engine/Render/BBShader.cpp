@@ -158,7 +158,14 @@ void BBShader::initUniforms()
         }
         else if (type == GL_FLOAT_VEC4)
         {
-            pUniformUpdater = initUniformVector4(location, uniformName);
+            if (size == 1)
+            {
+                pUniformUpdater = initUniformVector4(location, uniformName);
+            }
+            else
+            {
+                pUniformUpdater = initUniformArrayVector4(location, uniformName, size);
+            }
         }
         else if (type == GL_SAMPLER_2D)
         {
@@ -246,6 +253,22 @@ BBUniformUpdater* BBShader::initUniformVector4(GLint location, const char *pUnif
     else
     {
         pProperty = new BBVector4MaterialProperty(pUniformName);
+        m_Properties.insert(pUniformName, pProperty);
+    }
+    return new BBUniformUpdater(location, updateUniformFunc, pProperty);
+}
+
+BBUniformUpdater* BBShader::initUniformArrayVector4(GLint location, const char *pUniformName, int nArrayCount)
+{
+    BBUpdateUniformFunc updateUniformFunc = &BBUniformUpdater::updateArrayVector4;
+    BBArrayVector4MaterialProperty *pProperty = nullptr;
+    if (strcmp(pUniformName, LOCATION_SPHERICAL_HARMONIC_LIGHTING) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updateSphericalHarmonicLightingCoefficients;
+    }
+    else
+    {
+        pProperty = new BBArrayVector4MaterialProperty(pUniformName, nArrayCount);
         m_Properties.insert(pUniformName, pProperty);
     }
     return new BBUniformUpdater(location, updateUniformFunc, pProperty);

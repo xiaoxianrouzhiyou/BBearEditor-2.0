@@ -10,11 +10,13 @@ class BBSphericalHarmonicLighting
 public:
     static void computeLightingData(int nAlgorithmIndex);
 
-    static QList<QVector3D> getCoefficientL() { return m_CoefficientL; }
+    static const float* getCoefficientL();
+    static int getCoefficientLCount();
 
-private:
     static void bakeLightingMap();
     static void computeCoefficientL();
+
+private:
     static QImage* loadSkyBox();
     static float computeSphereSurfaceArea(double x, double y);
     static QVector3D cubeUV2XYZ(int nSkyBoxSideIndex, double u, double v);

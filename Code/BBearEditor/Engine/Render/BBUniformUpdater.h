@@ -37,10 +37,12 @@ public:
     void updateShadowMap(GLint location, void *pCamera, void *pPropertyValue);
     void updateLightProjectionMatrix(GLint location, void *pCamera, void *pPropertyValue);
     void updateLightViewMatrix(GLint location, void *pCamera, void *pPropertyValue);
+    void updateSphericalHarmonicLightingCoefficients(GLint location, void *pCamera, void *pPropertyValue);
 
     void updateFloat(GLint location, void *pCamera, void *pPropertyValue);
     void updateMatrix4(GLint location, void *pCamera, void *pPropertyValue);
     void updateVector4(GLint location, void *pCamera, void *pPropertyValue);
+    void updateArrayVector4(GLint location, void *pCamera, void *pPropertyValue);
     void updateSampler2D(GLint location, void *pCamera, void *pPropertyValue);
     void updateSamplerCube(GLint location, void *pCamera, void *pPropertyValue);
 

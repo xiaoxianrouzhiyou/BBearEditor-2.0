@@ -24,6 +24,24 @@ void BBSphericalHarmonicLighting::computeLightingData(int nAlgorithmIndex)
     }
 }
 
+const float* BBSphericalHarmonicLighting::getCoefficientL()
+{
+    float *L = new float[m_nDegree * 4];
+    for (int i = 0; i < m_nDegree; i++)
+    {
+        L[i * 4] = m_CoefficientL[i].x();
+        L[i * 4 + 1] = m_CoefficientL[i].y();
+        L[i * 4 + 2] = m_CoefficientL[i].z();
+        L[i * 4 + 3] = 0.0f;
+    }
+    return L;
+}
+
+int BBSphericalHarmonicLighting::getCoefficientLCount()
+{
+    return m_CoefficientL.count();
+}
+
 void BBSphericalHarmonicLighting::bakeLightingMap()
 {
     QImage *pSkyBoxSides = loadSkyBox();
