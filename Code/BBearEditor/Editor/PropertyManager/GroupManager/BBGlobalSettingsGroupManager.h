@@ -4,6 +4,8 @@
 
 #include "BBGroupManager.h"
 
+class BBEnumAndButtonFactory;
+
 class BBGlobalSettingsGroupManager : public BBGroupManager
 {
     Q_OBJECT
@@ -21,12 +23,15 @@ signals:
     void updateFileList();
 
 private:
-    void initRenderingAlgorithmEnumFactory();
+    void initRenderingAlgorithmFactory();
+    void initRayTracingFactory();
+    void initSphericalHarmonicLightingFactory();
 
     static int m_nCurrentRenderingAlgorithmIndex;
     BBScene *m_pScene;
-    BBEnumFactory *m_pRenderingAlgorithmEnumFactory;
+    BBEnumFactory *m_pRenderingAlgorithmFactory;
     QCheckBox *m_pTriggerRayTracing;
+    BBEnumAndButtonFactory *m_pSphericalHarmonicLightingFactory;
 };
 
 #endif // BBGLOBALSETTINGSGROUPMANAGER_H

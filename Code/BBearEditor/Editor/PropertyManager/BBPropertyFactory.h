@@ -124,6 +124,8 @@ public:
                   const QString &currentText = "", QWidget *pParent = 0, int labelStretch = 0, int comboBoxStretch = 1);
     ~BBEnumFactory();
 
+    int getCurrentItemIndex();
+
 private slots:
     void changeCurrentItem(int nIndex);
     void changeCurrentItem(const QString &text);

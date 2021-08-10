@@ -246,6 +246,11 @@ BBEnumFactory::~BBEnumFactory()
     BB_SAFE_DELETE(m_pComboBox);
 }
 
+int BBEnumFactory::getCurrentItemIndex()
+{
+    return m_pComboBox->currentIndex();
+}
+
 void BBEnumFactory::changeCurrentItem(int nIndex)
 {
     emit currentItemChanged(nIndex);

@@ -3,28 +3,29 @@
 
 
 #include <QVector3D>
+#include <QList>
 
 class BBSphericalHarmonicLighting
 {
 public:
-    BBSphericalHarmonicLighting();
+    static void computeLightingData(int nAlgorithmIndex);
 
-public:
-    static void bakeLightingMap();
+    static QList<QVector3D> getCoefficientL() { return m_CoefficientL; }
 
 private:
-    static void writeLightingMap(const QList<QVector3D> coefficients);
+    static void bakeLightingMap();
+    static void computeCoefficientL();
     static QImage* loadSkyBox();
     static float computeSphereSurfaceArea(double x, double y);
     static QVector3D cubeUV2XYZ(int nSkyBoxSideIndex, double u, double v);
-    static QList<float> getBasis(const QVector3D &pos);
-    static QVector3D computeFinalColor(const QVector3D &pos, const QList<QVector3D> coefficients);
-    static QList<float> getRenderBasis(const QVector3D &pos);
+    static QList<float> getYBasis(const QVector3D &normal);
 
 private:
     static int m_nDegree;
     static int m_nWidth;
     static int m_nHeight;
+
+    static QList<QVector3D> m_CoefficientL;
 };
 
 #endif // BBSPHERICALHARMONICLIGHTING_H

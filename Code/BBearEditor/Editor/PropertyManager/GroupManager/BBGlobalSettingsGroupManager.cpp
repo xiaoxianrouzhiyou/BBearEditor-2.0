@@ -13,28 +13,16 @@ BBGlobalSettingsGroupManager::BBGlobalSettingsGroupManager(BBScene *pScene, QWid
     : BBGroupManager("Global Settings", BB_PATH_RESOURCE_ICON(earth.png), pParent)
 {
     m_pScene = pScene;
-    m_pRenderingAlgorithmEnumFactory = nullptr;
-    initRenderingAlgorithmEnumFactory();
-
-
-    m_pTriggerRayTracing = new QCheckBox(this);
-    QObject::connect(m_pTriggerRayTracing, SIGNAL(clicked(bool)), this, SLOT(switchRayTracing(bool)));
-    addFactory("Ray Tracing", m_pTriggerRayTracing);
-
-
-    QStringList sphericalHarmonicLightingAlgorithmName = {"The Gritty Details",
-                                                          "Irradiance Environment Maps"};
-    BBEnumAndButtonFactory *pSphericalHarmonicLightingFactory = new BBEnumAndButtonFactory("Spherical Harmonic Lighting",
-                                                                                           sphericalHarmonicLightingAlgorithmName,
-                                                                                           "Bake", "", this, 1, 1);
-    QObject::connect(pSphericalHarmonicLightingFactory, SIGNAL(buttonClicked()), this, SLOT(bakeSphericalHarmonicLightingMap()));
-    addFactory(pSphericalHarmonicLightingFactory);
+    initRenderingAlgorithmFactory();
+    initRayTracingFactory();
+    initSphericalHarmonicLightingFactory();
 }
 
 BBGlobalSettingsGroupManager::~BBGlobalSettingsGroupManager()
 {
-    BB_SAFE_DELETE(m_pRenderingAlgorithmEnumFactory);
+    BB_SAFE_DELETE(m_pRenderingAlgorithmFactory);
     BB_SAFE_DELETE(m_pTriggerRayTracing);
+    BB_SAFE_DELETE(m_pSphericalHarmonicLightingFactory);
 }
 
 void BBGlobalSettingsGroupManager::changeCurrentRenderingAlgorithm(int nIndex)
@@ -59,19 +47,35 @@ void BBGlobalSettingsGroupManager::switchRayTracing(bool bEnable)
 
 void BBGlobalSettingsGroupManager::bakeSphericalHarmonicLightingMap()
 {
-    BBSphericalHarmonicLighting::bakeLightingMap();
+    BBSphericalHarmonicLighting::computeLightingData(m_pSphericalHarmonicLightingFactory->getCurrentItemIndex());
     emit updateFileList();
 }
 
-void BBGlobalSettingsGroupManager::initRenderingAlgorithmEnumFactory()
+void BBGlobalSettingsGroupManager::initRenderingAlgorithmFactory()
 {
     QStringList items;
     items.append("Forward Rendering");
     items.append("Deferred Rendering");
-    m_pRenderingAlgorithmEnumFactory = new BBEnumFactory("Rendering Algorithm", items,
-                                                         items[m_nCurrentRenderingAlgorithmIndex],
-                                                         this, 1, 1);
-    QObject::connect(m_pRenderingAlgorithmEnumFactory, SIGNAL(currentItemChanged(int)),
+    m_pRenderingAlgorithmFactory = new BBEnumFactory("Rendering Algorithm", items, items[m_nCurrentRenderingAlgorithmIndex], this, 1, 1);
+    QObject::connect(m_pRenderingAlgorithmFactory, SIGNAL(currentItemChanged(int)),
                      this, SLOT(changeCurrentRenderingAlgorithm(int)));
-    addFactory(m_pRenderingAlgorithmEnumFactory);
+    addFactory(m_pRenderingAlgorithmFactory);
+}
+
+void BBGlobalSettingsGroupManager::initRayTracingFactory()
+{
+    m_pTriggerRayTracing = new QCheckBox(this);
+    QObject::connect(m_pTriggerRayTracing, SIGNAL(clicked(bool)), this, SLOT(switchRayTracing(bool)));
+    addFactory("Ray Tracing", m_pTriggerRayTracing);
+}
+
+void BBGlobalSettingsGroupManager::initSphericalHarmonicLightingFactory()
+{
+    QStringList sphericalHarmonicLightingAlgorithmName = {"The Gritty Details",
+                                                          "Irradiance Environment Maps"};
+    m_pSphericalHarmonicLightingFactory = new BBEnumAndButtonFactory("Spherical Harmonic Lighting",
+                                                                     sphericalHarmonicLightingAlgorithmName,
+                                                                     "Bake", "Irradiance Environment Maps", this, 1, 1);
+    QObject::connect(m_pSphericalHarmonicLightingFactory, SIGNAL(buttonClicked()), this, SLOT(bakeSphericalHarmonicLightingMap()));
+    addFactory(m_pSphericalHarmonicLightingFactory);
 }
