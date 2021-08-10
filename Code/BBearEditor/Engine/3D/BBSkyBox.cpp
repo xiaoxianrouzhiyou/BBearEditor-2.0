@@ -21,6 +21,8 @@ BBSkyBox::~BBSkyBox()
 
 void BBSkyBox::init(const QString &path)
 {
+    m_SkyBoxFilePath = path;
+
     m_pVBO = new BBVertexBufferObject(24);
 
     m_pVBO->setPosition(0, -0.5f, -0.5f, -0.5f);

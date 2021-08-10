@@ -16,9 +16,11 @@ BBGlobalSettingsGroupManager::BBGlobalSettingsGroupManager(BBScene *pScene, QWid
     m_pRenderingAlgorithmEnumFactory = nullptr;
     initRenderingAlgorithmEnumFactory();
 
+
     m_pTriggerRayTracing = new QCheckBox(this);
     QObject::connect(m_pTriggerRayTracing, SIGNAL(clicked(bool)), this, SLOT(switchRayTracing(bool)));
     addFactory("Ray Tracing", m_pTriggerRayTracing);
+
 
     QStringList sphericalHarmonicLightingAlgorithmName = {"The Gritty Details",
                                                           "Irradiance Environment Maps"};
@@ -58,6 +60,7 @@ void BBGlobalSettingsGroupManager::switchRayTracing(bool bEnable)
 void BBGlobalSettingsGroupManager::bakeSphericalHarmonicLightingMap()
 {
     BBSphericalHarmonicLighting::bakeLightingMap();
+    emit updateFileList();
 }
 
 void BBGlobalSettingsGroupManager::initRenderingAlgorithmEnumFactory()

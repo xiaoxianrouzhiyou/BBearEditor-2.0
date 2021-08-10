@@ -17,6 +17,9 @@ private slots:
     void switchRayTracing(bool bEnable);
     void bakeSphericalHarmonicLightingMap();
 
+signals:
+    void updateFileList();
+
 private:
     void initRenderingAlgorithmEnumFactory();
 

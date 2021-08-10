@@ -33,8 +33,11 @@ public slots:
     void updateCoordinateSystem();
     void updateTransform(BBGameObject *pGameObject, char transformModeKey);
 
+    void updateFileList();
+
 signals:
     void coordinateSystemUpdated();
+    void fileListUpdated();
 
 private:
     void setWidgetStyle();

@@ -192,7 +192,9 @@ void BBMainWindow::setConnect()
                      m_pUi->propertyManager, SLOT(showMaterialProperty(QString)));
     QObject::connect(m_pUi->dockProject, SIGNAL(removeMaterialPreview()),
                      m_pUi->previewOpenGLWidget, SLOT(removeMaterialPreview()));
-
+    // after baking, show new items in the file list
+    QObject::connect(m_pUi->propertyManager, SIGNAL(fileListUpdated()),
+                     m_pUi->dockProject, SLOT(updateAll()));
 
 //    //属性栏根按钮切换
 //    QObject::connect(ui->buttonRootInspector, SIGNAL(clicked()), this, SLOT(switchInspectorRootButton()));

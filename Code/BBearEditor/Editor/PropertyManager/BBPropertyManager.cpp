@@ -151,6 +151,11 @@ void BBPropertyManager::updateTransform(BBGameObject *pGameObject, char transfor
     }
 }
 
+void BBPropertyManager::updateFileList()
+{
+    emit fileListUpdated();
+}
+
 void BBPropertyManager::setWidgetStyle()
 {
     setStyleSheet("QToolButton {border: none; border-radius: 2px; color: #d6dfeb; background: transparent; font: 9pt \"Arial\"; font-weight: bold;}"
@@ -206,7 +211,10 @@ void BBPropertyManager::addTransformGroupManager(BBGameObject *pGameObject)
 
 void BBPropertyManager::addGlobalSettingsGroupManager(BBScene *pScene)
 {
-    layout()->addWidget(new BBGlobalSettingsGroupManager(pScene, this));
+    BBGlobalSettingsGroupManager *pGlobalSettingsGroupManager = new BBGlobalSettingsGroupManager(pScene, this);
+    layout()->addWidget(pGlobalSettingsGroupManager);
+
+    QObject::connect(pGlobalSettingsGroupManager, SIGNAL(updateFileList()), this, SLOT(updateFileList()));
 }
 
 void BBPropertyManager::addMaterialGroupManager(const QString &filePath)

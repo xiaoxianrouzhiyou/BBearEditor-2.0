@@ -46,6 +46,7 @@ public:
 
     inline BBRenderQueue* getRenderQueue() { return m_pRenderQueue; }
     inline BBCamera* getCamera() { return m_pCamera; }
+    inline BBSkyBox* getSkyBox() { return m_pSkyBox; }
     inline BBTransformCoordinateSystem* getTransformCoordinateSystem() { return m_pTransformCoordinateSystem; }
     inline BBTiledFullScreenQuad* getTiledFullScreenQuad() { return m_pTiledFullScreenQuad; }
     inline QList<BBGameObject*> getModels() { return m_Models; }

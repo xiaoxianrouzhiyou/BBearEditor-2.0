@@ -1,6 +1,9 @@
 #ifndef BBUTILS_H
 #define BBUTILS_H
 
+
+#define PI 3.1415926
+
 #define BB_SAFE_DELETE(p) do{ delete p; p = NULL; } while(0)
 #define BB_SAFE_DELETE_ARRAY(p) do{ delete []p; p = NULL; } while(0)
 #define BB_PROCESS_ERROR(p) if(!p) break
