@@ -22,7 +22,7 @@ BBCoordinateComponent2D::BBCoordinateComponent2D(int x, int y)
 void BBCoordinateComponent2D::init()
 {
     m_pCurrentMaterial = BBRendererManager::createCoordinateUIMaterial();
-    m_pCurrentMaterial->setVector4(LOCATION_SCREEN_PARAMETERS, 800.0f, 600.0, 0.0f, 0.0f);
+    m_pCurrentMaterial->setVector4(LOCATION_CAMERA_PARAMETERS, 800.0f, 600.0, 0.0f, 0.0f);
     BBRenderableObject::init();
 }
 

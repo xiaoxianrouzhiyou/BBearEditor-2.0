@@ -123,7 +123,8 @@ SOURCES += \
     Engine/3D/BBNormalIndicator.cpp \
     Editor/Debugger/BBConsoleDockWidget.cpp \
     Editor/PropertyManager/GroupManager/BBGlobalSettingsGroupManager.cpp \
-    Engine/Lighting/BBSphericalHarmonicLighting.cpp
+    Engine/Lighting/BBSphericalHarmonicLighting.cpp \
+    Engine/Lighting/BBGlobalIllumination.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -226,7 +227,8 @@ HEADERS += \
     Engine/3D/BBNormalIndicator.h \
     Editor/Debugger/BBConsoleDockWidget.h \
     Editor/PropertyManager/GroupManager/BBGlobalSettingsGroupManager.h \
-    Engine/Lighting/BBSphericalHarmonicLighting.h
+    Engine/Lighting/BBSphericalHarmonicLighting.h \
+    Engine/Lighting/BBGlobalIllumination.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

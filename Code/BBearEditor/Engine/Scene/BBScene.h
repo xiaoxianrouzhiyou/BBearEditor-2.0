@@ -39,10 +39,10 @@ public:
 
     void render();
     void setRenderingFunc(const BBRenderingFunc &renderingFunc) { m_RenderingFunc = renderingFunc; }
-    void defaultRender();
-    void deferredRender();
-    void rayTracingRender();
-    void globalIlluminationRender();
+    void defaultRendering();
+    void deferredRendering();
+    void rayTracingRendering();
+    void globalIlluminationRendering();
 
     void resize(float width, float height);
 
@@ -50,6 +50,7 @@ public:
     inline BBCamera* getCamera() { return m_pCamera; }
     inline BBSkyBox* getSkyBox() { return m_pSkyBox; }
     inline BBTransformCoordinateSystem* getTransformCoordinateSystem() { return m_pTransformCoordinateSystem; }
+    inline BBFullScreenQuad* getFullScreenQuad() { return m_pFullScreenQuad; }
     inline BBTiledFullScreenQuad* getTiledFullScreenQuad() { return m_pTiledFullScreenQuad; }
     inline QList<BBGameObject*> getModels() { return m_Models; }
     inline QList<BBGameObject*> getLights() { return m_Lights; }
@@ -57,8 +58,8 @@ public:
     inline BBNormalIndicator* getNormalIndicator() { return m_pNormalIndicator; }
 
     /* FBO */
-    GLuint getColorFBO(int nIndex);
-    GLuint getDepthFBO(int nIndex);
+    GLuint getColorFBO(int nFBOIndex, int nAttachmentIndex = 0);
+    GLuint getDepthFBO(int nFBOIndex);
 
     void setSkyBox(const QString &path);
     void enableSkyBox(bool bEnable);
@@ -106,8 +107,6 @@ private:
     void writeShadowMap(int nIndex);
 
     BBFrameBufferObject *m_pFBO[3];
-    static QString m_ColorBufferName;
-    static QString m_DepthBufferName;
 
 private:
     BBRenderingFunc m_RenderingFunc;

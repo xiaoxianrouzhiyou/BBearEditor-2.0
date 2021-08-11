@@ -19,6 +19,8 @@ BBMainWindow::BBMainWindow(QWidget *parent)
     setGameObjectDockWidget();
     setPreview();
     setConnect();
+
+    m_pUi->buttonRootHierarchy->click();
 }
 
 BBMainWindow::~BBMainWindow()

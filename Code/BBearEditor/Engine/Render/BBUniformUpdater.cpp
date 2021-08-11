@@ -64,7 +64,7 @@ void BBUniformUpdater::updateCanvas(GLint location, void *pCanvas, void *pProper
     glUniform4fv(location, 1, ((BBCanvas*)pCanvas)->getUniformInfo());
 }
 
-void BBUniformUpdater::updateScreenParameters(GLint location, void *pCamera, void *pPropertyValue)
+void BBUniformUpdater::updateCameraParameters(GLint location, void *pCamera, void *pPropertyValue)
 {
     glUniform4fv(location, 1, ((BBCamera*)pCamera)->getCameraParameters());
 }

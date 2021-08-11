@@ -37,7 +37,7 @@
 #define LOCATION_LIGHT_PROJECTIONMATRIX "BBLightProjectionMatrix"
 #define LOCATION_LIGHT_VIEWMATRIX "BBLightViewMatrix"
 #define LOCATION_LIGHT_SETTINGS(x) "BBLightSettings"#x
-#define LOCATION_SCREEN_PARAMETERS "BBScreenParameters"
+#define LOCATION_CAMERA_PARAMETERS "BBCameraParameters"
 #define LOCATION_TIME "BBTime"
 #define LOCATION_CAMERA_COLOR_TEXTURE "BBCameraColorTexture"
 #define LOCATION_CAMERA_DEPTH_TEXTURE "BBCameraDepthTexture"
@@ -49,6 +49,10 @@
 #define LOCATION_COLOR_PREFIX_CHAR_COUNT 8
 #define LOCATION_TILINGANDOFFSET_PREFIX "BBTO_"
 #define LOCATION_TILINGANDOFFSET_PREFIX_CHAR_COUNT 5
+
+#define FBO_COLOR_BUFFER_NAME(x) "BBFBOColor"#x
+#define FBO_DEPTH_BUFFER_NAME "BBFBODepth"
+
 
 class BBBaseRenderComponent : protected QOpenGLExtraFunctions
 {

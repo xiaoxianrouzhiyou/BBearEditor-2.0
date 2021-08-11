@@ -29,8 +29,8 @@ BBCamera::BBCamera(QVector3D position, QVector3D viewCenter, QVector3D up)
 
     m_CameraParameters[0] = 0.0f;
     m_CameraParameters[1] = 0.0f;
-    m_CameraParameters[2] = 0.0f;
-    m_CameraParameters[3] = 0.0f;
+    m_CameraParameters[2] = m_fNearPlane;
+    m_CameraParameters[3] = m_fFarPlane;
 }
 
 BBCamera::~BBCamera()

@@ -26,12 +26,9 @@
 #include "3D/BBNormalIndicator.h"
 
 
-QString BBScene::m_ColorBufferName = "color";
-QString BBScene::m_DepthBufferName = "depth";
-
 BBScene::BBScene()
 {
-    m_RenderingFunc = &BBScene::defaultRender;
+    m_RenderingFunc = &BBScene::defaultRendering;
     m_pRenderQueue = nullptr;
     m_fUpdateRate = (float) BB_CONSTANT_UPDATE_RATE / 1000;
     for (int i = 0; i < 3; i++)
@@ -102,7 +99,7 @@ void BBScene::render()
     (this->*m_RenderingFunc)();
 }
 
-void BBScene::defaultRender()
+void BBScene::defaultRendering()
 {
     // 3D camera mode
     m_pCamera->switchTo3D();
@@ -151,7 +148,7 @@ void BBScene::defaultRender()
 //    glEnd();
 }
 
-void BBScene::deferredRender()
+void BBScene::deferredRendering()
 {
     // 3D camera mode
     m_pCamera->switchTo3D();
@@ -173,13 +170,13 @@ void BBScene::deferredRender()
         m_pFBO[i]->unbind();
     }
 
-    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(0), m_pFBO[0]->getBuffer(m_ColorBufferName));
-    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(1), m_pFBO[1]->getBuffer(m_ColorBufferName));
-    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(2), m_pFBO[2]->getBuffer(m_ColorBufferName));
+    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(0), m_pFBO[0]->getBuffer(FBO_COLOR_BUFFER_NAME(0)));
+    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(1), m_pFBO[1]->getBuffer(FBO_COLOR_BUFFER_NAME(0)));
+    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(2), m_pFBO[2]->getBuffer(FBO_COLOR_BUFFER_NAME(0)));
     m_pTiledFullScreenQuad->render(m_pCamera);
 }
 
-void BBScene::rayTracingRender()
+void BBScene::rayTracingRendering()
 {
     // 3D camera mode
     m_pCamera->switchTo3D();
@@ -201,15 +198,23 @@ void BBScene::rayTracingRender()
         m_pFBO[i]->unbind();
     }
 
-    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(0), m_pFBO[0]->getBuffer(m_ColorBufferName));
-    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(1), m_pFBO[1]->getBuffer(m_ColorBufferName));
-    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(2), m_pFBO[2]->getBuffer(m_ColorBufferName));
+    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(0), m_pFBO[0]->getBuffer(FBO_COLOR_BUFFER_NAME(0)));
+    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(1), m_pFBO[1]->getBuffer(FBO_COLOR_BUFFER_NAME(0)));
+    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(2), m_pFBO[2]->getBuffer(FBO_COLOR_BUFFER_NAME(0)));
     m_pTiledFullScreenQuad->render(m_pCamera);
 }
 
-void BBScene::globalIlluminationRender()
+void BBScene::globalIlluminationRendering()
 {
-    m_pFullScreenQuad->setTexture(LOCATION_TEXTURE(0), m_pFBO[0]->getBuffer(m_DepthBufferName));
+    m_pFBO[2]->bind();
+    // 3D camera mode
+    m_pCamera->switchTo3D();
+    // refresh camera position and direction, update pos and ..., Convenient for subsequent use
+    m_pCamera->update(m_fUpdateRate);
+    // BBGameObject
+    m_pRenderQueue->render();
+    m_pFBO[2]->unbind();
+
     m_pFullScreenQuad->render(m_pCamera);
 }
 
@@ -225,8 +230,10 @@ void BBScene::resize(float width, float height)
         if (!m_pFBO[i])
             BB_SAFE_DELETE(m_pFBO[i]);
         m_pFBO[i] = new BBFrameBufferObject;
-        m_pFBO[i]->attachColorBuffer(m_ColorBufferName, GL_COLOR_ATTACHMENT0, width, height, GL_RGBA32F);
-        m_pFBO[i]->attachDepthBuffer(m_DepthBufferName, width, height);
+        m_pFBO[i]->attachColorBuffer(FBO_COLOR_BUFFER_NAME(0), GL_COLOR_ATTACHMENT0, width, height, GL_RGBA32F);
+        m_pFBO[i]->attachColorBuffer(FBO_COLOR_BUFFER_NAME(1), GL_COLOR_ATTACHMENT1, width, height, GL_RGBA32F);
+        m_pFBO[i]->attachColorBuffer(FBO_COLOR_BUFFER_NAME(2), GL_COLOR_ATTACHMENT2, width, height, GL_RGBA32F);
+        m_pFBO[i]->attachDepthBuffer(FBO_DEPTH_BUFFER_NAME, width, height);
         m_pFBO[i]->finish();
     }
 
@@ -238,14 +245,14 @@ void BBScene::resize(float width, float height)
     m_pRayTracker->onWindowResize(width, height);
 }
 
-GLuint BBScene::getColorFBO(int nIndex)
+GLuint BBScene::getColorFBO(int nFBOIndex, int nAttachmentIndex)
 {
-    return m_pFBO[nIndex]->getBuffer(m_ColorBufferName);
+    return m_pFBO[nFBOIndex]->getBuffer(FBO_COLOR_BUFFER_NAME() + QString::number(nAttachmentIndex));
 }
 
-GLuint BBScene::getDepthFBO(int nIndex)
+GLuint BBScene::getDepthFBO(int nFBOIndex)
 {
-    return m_pFBO[nIndex]->getBuffer(m_DepthBufferName);
+    return m_pFBO[nFBOIndex]->getBuffer(FBO_DEPTH_BUFFER_NAME);
 }
 
 void BBScene::setSkyBox(const QString &path)

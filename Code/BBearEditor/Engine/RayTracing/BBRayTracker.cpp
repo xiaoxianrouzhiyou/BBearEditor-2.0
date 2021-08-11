@@ -31,7 +31,7 @@ void BBRayTracker::open()
     // Stop refresh per frame
     BBSceneManager::getEditViewOpenGLWidget()->stopRenderThread();
 
-    m_pScene->setRenderingFunc(&BBScene::rayTracingRender);
+    m_pScene->setRenderingFunc(&BBScene::rayTracingRendering);
 
     // open thread
     m_pRenderThread = new QThread(this);
@@ -42,7 +42,7 @@ void BBRayTracker::open()
 void BBRayTracker::close()
 {
     BBSceneManager::getEditViewOpenGLWidget()->startRenderThread();
-    m_pScene->setRenderingFunc(&BBScene::defaultRender);
+    m_pScene->setRenderingFunc(&BBScene::defaultRendering);
 
     m_pRenderThread->quit();
     m_pRenderThread->wait();

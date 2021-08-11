@@ -4,5 +4,5 @@ uniform sampler2D BBShadowMap;
 
 void main(void)
 {
-    gl_FragColor = texture2D(BBShadowMap, V_Texcoord);
+    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
 }

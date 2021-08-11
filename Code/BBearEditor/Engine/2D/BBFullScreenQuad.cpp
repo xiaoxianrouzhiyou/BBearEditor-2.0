@@ -91,7 +91,7 @@ void BBFullScreenQuad::render(BBCamera *pCamera)
 
 void BBFullScreenQuad::defaultRender(BBCamera *pCamera)
 {
-    qDebug() << "1";
+    BBRenderableObject::render(pCamera);
 }
 
 void BBFullScreenQuad::cullLightRender(BBCamera *pCamera)
