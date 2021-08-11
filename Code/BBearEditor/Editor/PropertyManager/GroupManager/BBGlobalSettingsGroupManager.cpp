@@ -72,10 +72,10 @@ void BBGlobalSettingsGroupManager::initRayTracingFactory()
 void BBGlobalSettingsGroupManager::initSphericalHarmonicLightingFactory()
 {
     QStringList sphericalHarmonicLightingAlgorithmName = {"The Gritty Details",
-                                                          "Irradiance Environment Maps"};
+                                                          "Zonal Harmonics"};
     m_pSphericalHarmonicLightingFactory = new BBEnumAndButtonFactory("Spherical Harmonic Lighting",
                                                                      sphericalHarmonicLightingAlgorithmName,
-                                                                     "Bake", "Irradiance Environment Maps", this, 1, 1);
+                                                                     "Bake", "Zonal Harmonics", this, 1, 1);
     QObject::connect(m_pSphericalHarmonicLightingFactory, SIGNAL(buttonClicked()), this, SLOT(bakeSphericalHarmonicLightingMap()));
     addFactory(m_pSphericalHarmonicLightingFactory);
 }
