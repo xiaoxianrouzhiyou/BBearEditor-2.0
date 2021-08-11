@@ -10,5 +10,6 @@ uniform mat4 BBModelMatrix;
 void main()
 {
     V_normal = normalize(mat3(transpose(inverse(BBViewMatrix * BBModelMatrix))) * BBNormal.xyz);
+    V_normal.y = -V_normal.y;
     gl_Position = BBProjectionMatrix * BBViewMatrix * BBModelMatrix * BBPosition;
 }
