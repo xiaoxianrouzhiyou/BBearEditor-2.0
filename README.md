@@ -9,3 +9,6 @@ I referred to some code, learning resources, UI designs, and art resources. I'm 
 I really look forward to making friends with related interests, and we will share experience and learn together!
 
 ![8MCV01XW3BO6 60@1PB@4PB](https://user-images.githubusercontent.com/31690363/126805996-f83a3fab-08e2-4d91-bba5-e67df45a7e9a.png)
+
+SH_lighting
+![image](https://user-images.githubusercontent.com/31690363/128983508-344a9bbb-99dc-4ebf-af64-c9daea820d98.png)
