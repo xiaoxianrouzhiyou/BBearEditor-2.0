@@ -20,6 +20,7 @@ class BBSpriteObject2D;
 class BBSelectionRegion;
 class BBRay;
 class BBTransformCoordinateSystem;
+class BBFullScreenQuad;
 class BBTiledFullScreenQuad;
 class BBRenderQueue;
 class BBRayTracker;
@@ -41,6 +42,7 @@ public:
     void defaultRender();
     void deferredRender();
     void rayTracingRender();
+    void globalIlluminationRender();
 
     void resize(float width, float height);
 
@@ -100,7 +102,7 @@ public:
 private:
     void bindFBO();
     void unbindFBO();
-    void writeFBO(int nIndex);
+    void writeViewSpaceFBO(int nIndex);
     void writeShadowMap(int nIndex);
 
     BBFrameBufferObject *m_pFBO[3];
@@ -117,6 +119,7 @@ private:
     BBSkyBox *m_pSkyBox;
     BBHorizontalPlane *m_pHorizontalPlane;
     BBTransformCoordinateSystem *m_pTransformCoordinateSystem;
+    BBFullScreenQuad *m_pFullScreenQuad;
     BBTiledFullScreenQuad *m_pTiledFullScreenQuad;
 
     QList<BBGameObject*> m_Models;

@@ -239,6 +239,18 @@ void BBSceneManager::enableDeferredRendering(bool bEnable)
     }
 }
 
+void BBSceneManager::enableGlobalIllumination(bool bEnable)
+{
+    if (bEnable)
+    {
+        m_pScene->setRenderingFunc(&BBScene::globalIlluminationRender);
+    }
+    else
+    {
+        m_pScene->setRenderingFunc(&BBScene::defaultRender);
+    }
+}
+
 void BBSceneManager::addSpriteObject2DForCanvas(BBCanvas *pCanvas, BBSpriteObject2D *pSpriteObject2D)
 {
     QTreeWidgetItem *pCanvasItem = getSceneTreeItem(pCanvas);

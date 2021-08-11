@@ -43,6 +43,7 @@ public:
     static void removeScene();
 
     static void enableDeferredRendering(bool bEnable);
+    static void enableGlobalIllumination(bool bEnable);
 
     static void addSpriteObject2DForCanvas(BBCanvas *pCanvas, BBSpriteObject2D *pSpriteObject2D);
 

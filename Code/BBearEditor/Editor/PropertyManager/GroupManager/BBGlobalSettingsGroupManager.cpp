@@ -5,6 +5,7 @@
 #include "Render/BBDrawCall.h"
 #include <QCheckBox>
 #include "Lighting/BBSphericalHarmonicLighting.h"
+#include "Scene/BBSceneManager.h"
 
 
 int BBGlobalSettingsGroupManager::m_nCurrentRenderingAlgorithmIndex = 0;
@@ -16,6 +17,7 @@ BBGlobalSettingsGroupManager::BBGlobalSettingsGroupManager(BBScene *pScene, QWid
     initRenderingAlgorithmFactory();
     initRayTracingFactory();
     initSphericalHarmonicLightingFactory();
+    initGlobalIlluminationFactory();
 }
 
 BBGlobalSettingsGroupManager::~BBGlobalSettingsGroupManager()
@@ -23,6 +25,7 @@ BBGlobalSettingsGroupManager::~BBGlobalSettingsGroupManager()
     BB_SAFE_DELETE(m_pRenderingAlgorithmFactory);
     BB_SAFE_DELETE(m_pTriggerRayTracing);
     BB_SAFE_DELETE(m_pSphericalHarmonicLightingFactory);
+    BB_SAFE_DELETE(m_pGlobalIlluminationFactory);
 }
 
 void BBGlobalSettingsGroupManager::changeCurrentRenderingAlgorithm(int nIndex)
@@ -51,6 +54,11 @@ void BBGlobalSettingsGroupManager::bakeSphericalHarmonicLightingMap()
     emit updateFileList();
 }
 
+void BBGlobalSettingsGroupManager::switchGlobalIllumination(bool bEnable)
+{
+    BBSceneManager::enableGlobalIllumination(bEnable);
+}
+
 void BBGlobalSettingsGroupManager::initRenderingAlgorithmFactory()
 {
     QStringList items;
@@ -73,9 +81,20 @@ void BBGlobalSettingsGroupManager::initSphericalHarmonicLightingFactory()
 {
     QStringList sphericalHarmonicLightingAlgorithmName = {"The Gritty Details",
                                                           "Zonal Harmonics"};
-    m_pSphericalHarmonicLightingFactory = new BBEnumAndButtonFactory("Spherical Harmonic Lighting",
-                                                                     sphericalHarmonicLightingAlgorithmName,
+    m_pSphericalHarmonicLightingFactory = new BBEnumExpansionFactory("Spherical Harmonic Lighting", sphericalHarmonicLightingAlgorithmName,
                                                                      "Bake", "Zonal Harmonics", this, 1, 1);
+    m_pSphericalHarmonicLightingFactory->enableTrigger(false);
     QObject::connect(m_pSphericalHarmonicLightingFactory, SIGNAL(buttonClicked()), this, SLOT(bakeSphericalHarmonicLightingMap()));
     addFactory(m_pSphericalHarmonicLightingFactory);
+}
+
+void BBGlobalSettingsGroupManager::initGlobalIlluminationFactory()
+{
+    QStringList globalIlluminationAlgorithmName = {"SSAO",
+                                                   "SSAO + SSDO"};
+    m_pGlobalIlluminationFactory = new BBEnumExpansionFactory("Global Illumination", globalIlluminationAlgorithmName,
+                                                              "", "SSAO + SSDO", this, 1, 1);
+    m_pGlobalIlluminationFactory->enableButton(false);
+    QObject::connect(m_pGlobalIlluminationFactory, SIGNAL(triggerClicked(bool)), this, SLOT(switchGlobalIllumination(bool)));
+    addFactory(m_pGlobalIlluminationFactory);
 }

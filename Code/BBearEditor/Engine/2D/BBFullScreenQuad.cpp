@@ -28,6 +28,8 @@ BBFullScreenQuad::BBFullScreenQuad(float fScale, float fOffsetX, float fOffsetY,
     m_fOffsetY = fOffsetY;
     m_nFrustumIndexX = nFrustumIndexX;
     m_nFrustumIndexY = nFrustumIndexY;
+
+    m_RenderFunc = &BBFullScreenQuad::defaultRender;
 }
 
 void BBFullScreenQuad::init()
@@ -75,6 +77,25 @@ void BBFullScreenQuad::init(BBMaterial *pMaterial)
 
 void BBFullScreenQuad::render(BBCamera *pCamera)
 {
+    (this->*m_RenderFunc)(pCamera);
+}
+
+//void BBFullScreenQuad::setAABB(float fWidth, float fHeight)
+//{
+//    m_AABB = QRectF(m_pVBO->getPosition(2).x() * fWidth / 2.0f,
+//                    m_pVBO->getPosition(2).y() * fHeight / 2.0f,
+//                    (m_pVBO->getPosition(1).x() - m_pVBO->getPosition(0).x()) * fWidth / 2.0f,
+//                    (m_pVBO->getPosition(2).y() - m_pVBO->getPosition(0).y()) * fHeight / 2.0f);
+//}
+
+
+void BBFullScreenQuad::defaultRender(BBCamera *pCamera)
+{
+    qDebug() << "1";
+}
+
+void BBFullScreenQuad::cullLightRender(BBCamera *pCamera)
+{
     QList<BBGameObject*> lights = BBSceneManager::getScene()->getLights();
     QList<BBGameObject*> culledLights;
     for (int i = 0; i < lights.count(); i++)
@@ -99,14 +120,6 @@ void BBFullScreenQuad::render(BBCamera *pCamera)
     m_pDrawCalls->onePassRendering(pCamera, culledLights);
 }
 
-//void BBFullScreenQuad::setAABB(float fWidth, float fHeight)
-//{
-//    m_AABB = QRectF(m_pVBO->getPosition(2).x() * fWidth / 2.0f,
-//                    m_pVBO->getPosition(2).y() * fHeight / 2.0f,
-//                    (m_pVBO->getPosition(1).x() - m_pVBO->getPosition(0).x()) * fWidth / 2.0f,
-//                    (m_pVBO->getPosition(2).y() - m_pVBO->getPosition(0).y()) * fHeight / 2.0f);
-//}
-
 
 /**
  * @brief BBTiledFullScreenQuad::BBTiledFullScreenQuad
@@ -119,6 +132,11 @@ BBTiledFullScreenQuad::BBTiledFullScreenQuad()
     m_pFullScreenQuad[1] = new BBFullScreenQuad(0.5f, 0.5f, -0.5f, 1, 1);
     m_pFullScreenQuad[2] = new BBFullScreenQuad(0.5f, -0.5f, 0.5f, 0, 0);
     m_pFullScreenQuad[3] = new BBFullScreenQuad(0.5f, 0.5f, 0.5f, 1, 0);
+
+    m_pFullScreenQuad[0]->setRenderFunc(&BBFullScreenQuad::cullLightRender);
+    m_pFullScreenQuad[1]->setRenderFunc(&BBFullScreenQuad::cullLightRender);
+    m_pFullScreenQuad[2]->setRenderFunc(&BBFullScreenQuad::cullLightRender);
+    m_pFullScreenQuad[3]->setRenderFunc(&BBFullScreenQuad::cullLightRender);
 }
 
 BBTiledFullScreenQuad::~BBTiledFullScreenQuad()

@@ -19,6 +19,7 @@ class BBRenderableObject;
 class QSlider;
 class QGridLayout;
 class QVBoxLayout;
+class QCheckBox;
 
 
 /**
@@ -140,22 +141,32 @@ private:
 };
 
 
-class BBEnumAndButtonFactory : public BBEnumFactory
+/**
+ * @brief The BBEnumExpansionFactory class              BBEnumFactory and button ...
+ */
+class BBEnumExpansionFactory : public BBEnumFactory
 {
     Q_OBJECT
 
 public:
-    BBEnumAndButtonFactory(const QString &name, const QStringList &comboBoxItems, const QString &buttonText,
+    BBEnumExpansionFactory(const QString &name, const QStringList &comboBoxItems, const QString &buttonText,
                            const QString &currentText = "", QWidget *pParent = 0, int labelStretch = 0, int comboBoxStretch = 1);
-    ~BBEnumAndButtonFactory();
+
+    ~BBEnumExpansionFactory();
+
+    void enableTrigger(bool bEnable);
+    void enableButton(bool bEnable);
 
 private slots:
     void clickButton();
+    void clickTrigger(bool bClicked);
 
 signals:
     void buttonClicked();
+    void triggerClicked(bool bClicked);
 
 private:
+    QCheckBox *m_pTrigger;
     QPushButton *m_pButton;
 };
 

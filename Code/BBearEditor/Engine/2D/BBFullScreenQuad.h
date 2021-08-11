@@ -5,6 +5,9 @@
 #include "Base/BBRenderableObject.h"
 
 class BBLight;
+class BBFullScreenQuad;
+
+typedef void (BBFullScreenQuad::*BBRenderFunc)(BBCamera *pCamera);
 
 class BBFullScreenQuad : public BBRenderableObject
 {
@@ -18,7 +21,14 @@ public:
 
 //    void setAABB(float fWidth, float fHeight);
 
+public:
+    void setRenderFunc(const BBRenderFunc &func) { m_RenderFunc = func; }
+    void defaultRender(BBCamera *pCamera);
+    void cullLightRender(BBCamera *pCamera);
+
 private:
+    BBRenderFunc m_RenderFunc;
+
     float m_fScale;
     float m_fOffsetX;
     float m_fOffsetY;

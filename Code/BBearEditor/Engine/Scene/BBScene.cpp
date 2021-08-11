@@ -83,6 +83,7 @@ void BBScene::init()
     m_pHorizontalPlane = new BBHorizontalPlane();
     m_pSelectionRegion = new BBSelectionRegion();
     m_pTransformCoordinateSystem = new BBTransformCoordinateSystem();
+    m_pFullScreenQuad = new BBFullScreenQuad();
     m_pTiledFullScreenQuad = new BBTiledFullScreenQuad();
     m_pRayTracker = new BBRayTracker(this);
     m_pNormalIndicator = new BBNormalIndicator();
@@ -92,6 +93,7 @@ void BBScene::init()
     m_pSkyBox->init(QString(BB_PATH_RESOURCE) + "skyboxs/3/");
     m_pHorizontalPlane->init();
     m_pTransformCoordinateSystem->init();
+    m_pFullScreenQuad->init();
     m_pTiledFullScreenQuad->init();
 }
 
@@ -107,7 +109,7 @@ void BBScene::defaultRender()
     // refresh camera position and direction, update pos and ..., Convenient for subsequent use
     m_pCamera->update(m_fUpdateRate);
 
-    writeFBO(0);
+    writeViewSpaceFBO(0);
     writeShadowMap(1);
 
     m_pSkyBox->render(m_pCamera);
@@ -203,6 +205,12 @@ void BBScene::rayTracingRender()
     m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(1), m_pFBO[1]->getBuffer(m_ColorBufferName));
     m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(2), m_pFBO[2]->getBuffer(m_ColorBufferName));
     m_pTiledFullScreenQuad->render(m_pCamera);
+}
+
+void BBScene::globalIlluminationRender()
+{
+    m_pFullScreenQuad->setTexture(LOCATION_TEXTURE(0), m_pFBO[0]->getBuffer(m_DepthBufferName));
+    m_pFullScreenQuad->render(m_pCamera);
 }
 
 void BBScene::resize(float width, float height)
@@ -551,7 +559,7 @@ void BBScene::unbindFBO()
 //    }
 }
 
-void BBScene::writeFBO(int nIndex)
+void BBScene::writeViewSpaceFBO(int nIndex)
 {
     BBDrawCall::switchRenderingSettings(12);
     m_pFBO[nIndex]->bind();
