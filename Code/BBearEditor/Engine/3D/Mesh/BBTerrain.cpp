@@ -19,6 +19,7 @@ BBTerrain::BBTerrain(float px, float py, float pz,
     : BBMesh(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
     m_fHeight = 30;
+    m_eDrawPrimitiveType = GL_TRIANGLES;
 }
 
 void BBTerrain::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
@@ -114,14 +115,4 @@ QVector3D BBTerrain::getNormal(const QImage &image, int x, int z)
 //            mVertexNormals.append(getNormalByMap(image, xPos, zPos));
 //        }
 //    }
-//}
-
-//float Terrain::getHeightByMap(QImage image, int x, int z)
-//{
-
-//}
-
-//QVector4D Terrain::getNormalByMap(QImage image, int x, int z)
-//{
-
 //}

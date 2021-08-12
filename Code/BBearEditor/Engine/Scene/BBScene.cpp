@@ -147,11 +147,11 @@ void BBScene::defaultRendering()
 
 void BBScene::globalIlluminationRendering()
 {
-    m_pFBO[2]->bind();
-    // 3D camera mode
     m_pCamera->switchTo3D();
-    // refresh camera position and direction, update pos and ..., Convenient for subsequent use
     m_pCamera->update(m_fUpdateRate);
+
+    m_pFBO[2]->bind();
+    m_pSkyBox->render(m_pCamera);
     // BBGameObject
     m_pRenderQueue->render();
     m_pFBO[2]->unbind();
@@ -174,6 +174,7 @@ void BBScene::resize(float width, float height)
         m_pFBO[i]->attachColorBuffer(FBO_COLOR_BUFFER_NAME(0), GL_COLOR_ATTACHMENT0, width, height, GL_RGBA32F);
         m_pFBO[i]->attachColorBuffer(FBO_COLOR_BUFFER_NAME(1), GL_COLOR_ATTACHMENT1, width, height, GL_RGBA32F);
         m_pFBO[i]->attachColorBuffer(FBO_COLOR_BUFFER_NAME(2), GL_COLOR_ATTACHMENT2, width, height, GL_RGBA32F);
+        m_pFBO[i]->attachColorBuffer(FBO_COLOR_BUFFER_NAME(3), GL_COLOR_ATTACHMENT3, width, height, GL_RGBA32F);
         m_pFBO[i]->attachDepthBuffer(FBO_DEPTH_BUFFER_NAME, width, height);
         m_pFBO[i]->finish();
     }

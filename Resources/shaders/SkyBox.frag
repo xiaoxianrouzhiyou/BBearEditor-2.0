@@ -1,8 +1,13 @@
-varying vec4 V_local_pos;
+#version 430 core
+#extension GL_NV_shadow_samplers_cube : enable
+
+in vec4 v2f_local_pos;
+
+layout (location = 0) out vec4 FragColor;
 
 uniform samplerCube BBSkyBox;
 
 void main(void)
 {
-    gl_FragColor = textureCube(BBSkyBox, V_local_pos.xyz);
+    FragColor = textureCube(BBSkyBox, v2f_local_pos.xyz);
 }

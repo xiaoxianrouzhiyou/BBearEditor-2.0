@@ -36,6 +36,12 @@ void BBGlobalIllumination::setRenderedObjectPass(BBScene *pScene)
     pMaterial->init("GI_SSAO+SSDO_RenderedObject",
                     BB_PATH_RESOURCE_SHADER(GI_SSAO+SSDO_RenderedObject.vert), BB_PATH_RESOURCE_SHADER(GI_SSAO+SSDO_RenderedObject.frag));
 
+    // test
+    float *pLightPosition = new float[4] {1.0f, 1.0f, 0.0f, 0.0f};
+    float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};
+    pMaterial->setVector4(LOCATION_LIGHT_POSITION, pLightPosition);
+    pMaterial->setVector4(LOCATION_LIGHT_COLOR, pLightColor);
+
     QList<BBGameObject*> objects = pScene->getModels();
     for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
     {
@@ -50,10 +56,11 @@ void BBGlobalIllumination::setScreenQuadPass(BBScene *pScene)
     BBMaterial *pMaterial = new BBMaterial();
     pMaterial->init("GI_SSAO+SSDO_ScreenQuad",
                     BB_PATH_RESOURCE_SHADER(GI_SSAO+SSDO_ScreenQuad.vert), BB_PATH_RESOURCE_SHADER(GI_SSAO+SSDO_ScreenQuad.frag));
+
     pFullScreenQuad->setCurrentMaterial(pMaterial);
-    pFullScreenQuad->setTexture("AlbedoTex", pScene->getColorFBO(2, 0));
-    pFullScreenQuad->setTexture("NormalTex", pScene->getColorFBO(2, 1));
-    pFullScreenQuad->setTexture("PositionTex", pScene->getColorFBO(2, 2));
+    pFullScreenQuad->setTexture("AlbedoTex", pScene->getColorFBO(2, 1));
+    pFullScreenQuad->setTexture("NormalTex", pScene->getColorFBO(2, 2));
+    pFullScreenQuad->setTexture("PositionTex", pScene->getColorFBO(2, 3));
     BBTexture texture;
     pFullScreenQuad->setTexture("NoiseTex", texture.createTexture2D(BBSSAOGlobalIllumination::generateNoise(), 4, 4, GL_RGBA32F));
     pFullScreenQuad->setArrayVector4("Samples[0]", BBSSAOGlobalIllumination::generateKernel(), 64);
