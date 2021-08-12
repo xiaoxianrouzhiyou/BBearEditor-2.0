@@ -146,7 +146,8 @@ void BBUniformUpdater::updateVector4(GLint location, void *pCamera, void *pPrope
 
 void BBUniformUpdater::updateArrayVector4(GLint location, void *pCamera, void *pPropertyValue)
 {
-
+    BBArrayVector4MaterialProperty *pProperty = (BBArrayVector4MaterialProperty*)pPropertyValue;
+    glUniform4fv(location, pProperty->getArrayCount(), pProperty->getPropertyValue());
 }
 
 void BBUniformUpdater::updateSampler2D(GLint location, void *pCamera, void *pPropertyValue)

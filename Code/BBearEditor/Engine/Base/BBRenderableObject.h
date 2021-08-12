@@ -38,6 +38,7 @@ public:
 
     void setMatrix4(const std::string &uniformName, const float *pMatrix4) override;
     void setVector4(const std::string &uniformName, float x, float y, float z, float w) override;
+    void setArrayVector4(const std::string &uniformName, const float *pArrayVector4, int nArrayCount);
     void setTexture(const std::string &uniformName, GLuint textureName) override;
 
     void openLight() override;

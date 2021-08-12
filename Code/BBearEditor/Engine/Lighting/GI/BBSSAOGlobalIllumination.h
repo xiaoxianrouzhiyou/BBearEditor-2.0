@@ -8,8 +8,8 @@
 class BBSSAOGlobalIllumination
 {
 public:
-    static std::vector<QVector3D> generateKernel();
-    static float* generateNoise();
+    static float *generateKernel();
+    static float *generateNoise();
 };
 
 #endif // BBSSAOGLOBALILLUMINATION_H

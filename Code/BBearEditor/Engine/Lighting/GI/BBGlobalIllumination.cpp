@@ -56,4 +56,5 @@ void BBGlobalIllumination::setScreenQuadPass(BBScene *pScene)
     pFullScreenQuad->setTexture("PositionTex", pScene->getColorFBO(2, 2));
     BBTexture texture;
     pFullScreenQuad->setTexture("NoiseTex", texture.createTexture2D(BBSSAOGlobalIllumination::generateNoise(), 4, 4, GL_RGBA32F));
+    pFullScreenQuad->setArrayVector4("Samples[0]", BBSSAOGlobalIllumination::generateKernel(), 64);
 }

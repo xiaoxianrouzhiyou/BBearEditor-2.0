@@ -188,6 +188,18 @@ void BBMaterial::setVector4(const std::string &uniformName, const float *pVector
     }
 }
 
+void BBMaterial::setArrayVector4(const std::string &uniformName, const float *pArrayVector4, int nArrayCount)
+{
+    if (m_pBaseRenderPass != nullptr)
+    {
+        m_pBaseRenderPass->setArrayVector4(uniformName, pArrayVector4, nArrayCount);
+    }
+    if (m_pAdditiveRenderPass != nullptr)
+    {
+        m_pAdditiveRenderPass->setArrayVector4(uniformName, pArrayVector4, nArrayCount);
+    }
+}
+
 void BBMaterial::setSampler2D(const std::string &uniformName, GLuint textureName, const QString &resourcePath)
 {
     if (m_pBaseRenderPass != nullptr)

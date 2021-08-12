@@ -194,6 +194,15 @@ void BBRenderPass::setVector4(const std::string &uniformName, const float *pVect
     }
 }
 
+void BBRenderPass::setArrayVector4(const std::string &uniformName, const float *pArrayVector4, int nArrayCount)
+{
+    auto it = m_Properties.find(uniformName);
+    if (it != m_Properties.end())
+    {
+        ((BBArrayVector4MaterialProperty*)it.value())->setPropertyValue(pArrayVector4);
+    }
+}
+
 void BBRenderPass::setSampler2D(const std::string &uniformName, GLuint textureName, const QString &resourcePath)
 {
     auto it = m_Properties.find(uniformName);
