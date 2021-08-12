@@ -25,7 +25,7 @@ BBTerrain::BBTerrain(float px, float py, float pz,
 void BBTerrain::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
 {
     BBMesh::init(path, pOutBoundingBox);
-    m_pCurrentMaterial->getBaseRenderPass()->setPolygonMode(GL_FRONT, GL_LINE);
+//    m_pCurrentMaterial->getBaseRenderPass()->setPolygonMode(GL_FRONT, GL_LINE);
 }
 
 void BBTerrain::load(const QString &path, QList<QVector4D> &outPositions)
