@@ -39,13 +39,12 @@ public:
 
 public:
     static void switchRenderingSettings(int nIndex);
-    void onePassRendering(BBCamera *pCamera);
-    void onePassRendering(BBCamera *pCamera, QList<BBGameObject*> lights);
-    void forwardRendering(BBCamera *pCamera);
-    void deferredRendering(BBCamera *pCamera);
-    void uiRendering(BBCanvas *pCanvas);
-    void fboRendering(BBCamera *pCamera);
-    void shadowMapRendering(BBCamera *pCamera);
+    void renderOnePass(BBCamera *pCamera);
+    void renderOnePass(BBCamera *pCamera, QList<BBGameObject*> lights);
+    void renderForwardPass(BBCamera *pCamera);
+    void renderUIPass(BBCanvas *pCanvas);
+    void renderViewSpaceFBOPass(BBCamera *pCamera);
+    void renderLightSpaceFBOPass(BBCamera *pCamera);
 
 private:
     void updateOrderInOpaqueRenderQueue();

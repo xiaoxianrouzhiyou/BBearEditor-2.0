@@ -124,7 +124,8 @@ SOURCES += \
     Editor/Debugger/BBConsoleDockWidget.cpp \
     Editor/PropertyManager/GroupManager/BBGlobalSettingsGroupManager.cpp \
     Engine/Lighting/BBSphericalHarmonicLighting.cpp \
-    Engine/Lighting/BBGlobalIllumination.cpp
+    Engine/Lighting/GI/BBGlobalIllumination.cpp \
+    Engine/Lighting/GI/BBSSAOGlobalIllumination.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -228,7 +229,9 @@ HEADERS += \
     Editor/Debugger/BBConsoleDockWidget.h \
     Editor/PropertyManager/GroupManager/BBGlobalSettingsGroupManager.h \
     Engine/Lighting/BBSphericalHarmonicLighting.h \
-    Engine/Lighting/BBGlobalIllumination.h
+    Engine/Lighting/GI/BBGlobalIllumination.h \
+    Engine/Lighting/GI/BBSSAOGlobalIllumination.h \
+    Engine/Math/BBMath.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

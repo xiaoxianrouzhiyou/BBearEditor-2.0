@@ -8,13 +8,10 @@
 #include "Scene/BBSceneManager.h"
 
 
-int BBGlobalSettingsGroupManager::m_nCurrentRenderingAlgorithmIndex = 0;
-
 BBGlobalSettingsGroupManager::BBGlobalSettingsGroupManager(BBScene *pScene, QWidget *pParent)
     : BBGroupManager("Global Settings", BB_PATH_RESOURCE_ICON(earth.png), pParent)
 {
     m_pScene = pScene;
-    initRenderingAlgorithmFactory();
     initRayTracingFactory();
     initSphericalHarmonicLightingFactory();
     initGlobalIlluminationFactory();
@@ -22,30 +19,14 @@ BBGlobalSettingsGroupManager::BBGlobalSettingsGroupManager(BBScene *pScene, QWid
 
 BBGlobalSettingsGroupManager::~BBGlobalSettingsGroupManager()
 {
-    BB_SAFE_DELETE(m_pRenderingAlgorithmFactory);
     BB_SAFE_DELETE(m_pTriggerRayTracing);
     BB_SAFE_DELETE(m_pSphericalHarmonicLightingFactory);
     BB_SAFE_DELETE(m_pGlobalIlluminationFactory);
 }
 
-void BBGlobalSettingsGroupManager::changeCurrentRenderingAlgorithm(int nIndex)
-{
-    // 0 Forward Rendering
-    // 1 Deferred Rendering
-    BBDrawCall::switchRenderingSettings(nIndex);
-    m_nCurrentRenderingAlgorithmIndex = nIndex;
-}
-
 void BBGlobalSettingsGroupManager::switchRayTracing(bool bEnable)
 {
-    if (bEnable)
-    {
-        m_pScene->getRayTracker()->open();
-    }
-    else
-    {
-        m_pScene->getRayTracker()->close();
-    }
+
 }
 
 void BBGlobalSettingsGroupManager::bakeSphericalHarmonicLightingMap()
@@ -56,18 +37,7 @@ void BBGlobalSettingsGroupManager::bakeSphericalHarmonicLightingMap()
 
 void BBGlobalSettingsGroupManager::switchGlobalIllumination(bool bEnable)
 {
-    BBSceneManager::enableGlobalIllumination(bEnable);
-}
-
-void BBGlobalSettingsGroupManager::initRenderingAlgorithmFactory()
-{
-    QStringList items;
-    items.append("Forward Rendering");
-    items.append("Deferred Rendering");
-    m_pRenderingAlgorithmFactory = new BBEnumFactory("Rendering Algorithm", items, items[m_nCurrentRenderingAlgorithmIndex], this, 1, 1);
-    QObject::connect(m_pRenderingAlgorithmFactory, SIGNAL(currentItemChanged(int)),
-                     this, SLOT(changeCurrentRenderingAlgorithm(int)));
-    addFactory(m_pRenderingAlgorithmFactory);
+    BBSceneManager::enableDeferredRendering(0, bEnable);
 }
 
 void BBGlobalSettingsGroupManager::initRayTracingFactory()

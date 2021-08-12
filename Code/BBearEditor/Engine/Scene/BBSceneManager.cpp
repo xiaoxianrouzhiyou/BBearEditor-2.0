@@ -8,7 +8,7 @@
 #include "SceneManager/BBHierarchyTreeWidget.h"
 #include "2D/BBCanvas.h"
 #include "2D/BBSpriteObject2D.h"
-#include "Lighting/BBGlobalIllumination.h"
+#include "Lighting/GI/BBGlobalIllumination.h"
 
 
 QMap<QTreeWidgetItem*, BBGameObject*> BBSceneManager::m_ObjectMap;
@@ -223,32 +223,16 @@ void BBSceneManager::removeScene()
     m_CurrentSceneFilePath.clear();
 }
 
-void BBSceneManager::enableDeferredRendering(bool bEnable)
+void BBSceneManager::enableDeferredRendering(int nAlgorithmIndex, bool bEnable)
 {
-    if (bEnable)
+    // 0 : GI
+    switch (nAlgorithmIndex)
     {
-        m_pScene->setRenderingFunc(&BBScene::deferredRendering);
-    }
-    else
-    {
-        QList<BBGameObject*> models = m_pScene->getModels();
-        for (int i = 0; i < models.count(); i++)
-        {
-            models[i]->restoreMaterial();
-        }
-        m_pScene->setRenderingFunc(&BBScene::defaultRendering);
-    }
-}
-
-void BBSceneManager::enableGlobalIllumination(bool bEnable)
-{
-    if (bEnable)
-    {
-        BBGlobalIllumination::open();
-    }
-    else
-    {
-        BBGlobalIllumination::close();
+    case 0:
+        BBGlobalIllumination::enable(bEnable);
+        break;
+    default:
+        break;
     }
 }
 

@@ -14,7 +14,7 @@
 /**
  * @brief BBDrawCall::BBDrawCall
  */
-BBDrawFunc BBDrawCall::m_DrawFunc = &BBDrawCall::forwardRendering;
+BBDrawFunc BBDrawCall::m_DrawFunc = &BBDrawCall::renderForwardPass;
 
 BBDrawCall::BBDrawCall()
     : BBBaseRenderComponent()
@@ -105,34 +105,26 @@ void BBDrawCall::switchRenderingSettings(int nIndex)
 {
     switch (nIndex) {
     case 0:
-        m_DrawFunc = &BBDrawCall::forwardRendering;
-        BBSceneManager::enableDeferredRendering(false);
+        m_DrawFunc = &BBDrawCall::renderForwardPass;
         break;
     case 1:
-        m_DrawFunc = &BBDrawCall::deferredRendering;
-        BBSceneManager::enableDeferredRendering(true);
+        m_DrawFunc = &BBDrawCall::renderViewSpaceFBOPass;
         break;
-    case 11:
-        m_DrawFunc = &BBDrawCall::forwardRendering;
-        break;
-    case 12:
-        m_DrawFunc = &BBDrawCall::fboRendering;
-        break;
-    case 13:
-        m_DrawFunc = &BBDrawCall::shadowMapRendering;
+    case 2:
+        m_DrawFunc = &BBDrawCall::renderLightSpaceFBOPass;
         break;
     default:
         break;
     }
 }
 
-void BBDrawCall::onePassRendering(BBCamera *pCamera)
+void BBDrawCall::renderOnePass(BBCamera *pCamera)
 {
     QList<BBGameObject*> lights = collectLights();
-    onePassRendering(pCamera, lights);
+    renderOnePass(pCamera, lights);
 }
 
-void BBDrawCall::onePassRendering(BBCamera *pCamera, QList<BBGameObject*> lights)
+void BBDrawCall::renderOnePass(BBCamera *pCamera, QList<BBGameObject*> lights)
 {
     m_pVBO->bind();
     BBRenderPass *pBaseRenderPass = m_pMaterial->getBaseRenderPass();
@@ -156,7 +148,7 @@ void BBDrawCall::onePassRendering(BBCamera *pCamera, QList<BBGameObject*> lights
     m_pVBO->unbind();
 }
 
-void BBDrawCall::forwardRendering(BBCamera *pCamera)
+void BBDrawCall::renderForwardPass(BBCamera *pCamera)
 {
     if (m_bVisible)
     {
@@ -216,25 +208,7 @@ void BBDrawCall::forwardRendering(BBCamera *pCamera)
     }
 }
 
-void BBDrawCall::deferredRendering(BBCamera *pCamera)
-{
-    m_pVBO->bind();
-    m_pMaterial->getBaseRenderPass()->bind(pCamera);
-    if (m_pEBO == nullptr)
-    {
-        m_pVBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
-    }
-    else
-    {
-        m_pEBO->bind();
-        m_pEBO->draw(m_eDrawPrimitiveType, m_nIndexCount, m_nDrawStartIndex);
-        m_pEBO->unbind();
-    }
-    m_pMaterial->getBaseRenderPass()->unbind();
-    m_pVBO->unbind();
-}
-
-void BBDrawCall::uiRendering(BBCanvas *pCanvas)
+void BBDrawCall::renderUIPass(BBCanvas *pCanvas)
 {
     m_pVBO->bind();
     BBRenderPass *pRenderPass = m_pMaterial->getBaseRenderPass();
@@ -255,13 +229,13 @@ void BBDrawCall::uiRendering(BBCanvas *pCanvas)
     m_pVBO->unbind();
 }
 
-void BBDrawCall::fboRendering(BBCamera *pCamera)
+void BBDrawCall::renderViewSpaceFBOPass(BBCamera *pCamera)
 {
     BB_PROCESS_ERROR_RETURN(m_pMaterial->isWriteFBO());
-    forwardRendering(pCamera);
+    renderForwardPass(pCamera);
 }
 
-void BBDrawCall::shadowMapRendering(BBCamera *pCamera)
+void BBDrawCall::renderLightSpaceFBOPass(BBCamera *pCamera)
 {
     QList<BBGameObject*> lights = collectLights();
     BB_PROCESS_ERROR_RETURN(lights.count() > 0);

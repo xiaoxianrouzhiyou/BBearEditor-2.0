@@ -37,6 +37,6 @@ void BBRenderableObject2D::render(BBCanvas *pCanvas)
 {
     if (m_bActive && m_bVisible)
     {
-        m_pDrawCalls->uiRendering(pCanvas);
+        m_pDrawCalls->renderUIPass(pCanvas);
     }
 }

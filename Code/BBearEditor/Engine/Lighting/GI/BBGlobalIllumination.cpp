@@ -6,25 +6,26 @@
 #include "Render/BBTexture.h"
 
 
-void BBGlobalIllumination::open()
+void BBGlobalIllumination::enable(bool bEnable)
 {
     BBScene *pScene = BBSceneManager::getScene();
-    pScene->setRenderingFunc(&BBScene::globalIlluminationRendering);
-
-    setRenderedObjectPass(pScene);
-    setScreenQuadPass(pScene);
-}
-
-void BBGlobalIllumination::close()
-{
-    BBScene *pScene = BBSceneManager::getScene();
-    pScene->setRenderingFunc(&BBScene::defaultRendering);
-    // objects go back original materials
-    QList<BBGameObject*> objects = pScene->getModels();
-    for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
+    if (bEnable)
     {
-        BBGameObject *pObject = *itr;
-        pObject->restoreMaterial();
+        pScene->setRenderingFunc(&BBScene::globalIlluminationRendering);
+
+        setRenderedObjectPass(pScene);
+        setScreenQuadPass(pScene);
+    }
+    else
+    {
+        pScene->setRenderingFunc(&BBScene::defaultRendering);
+        // objects go back original materials
+        QList<BBGameObject*> objects = pScene->getModels();
+        for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
+        {
+            BBGameObject *pObject = *itr;
+            pObject->restoreMaterial();
+        }
     }
 }
 
@@ -49,5 +50,7 @@ void BBGlobalIllumination::setScreenQuadPass(BBScene *pScene)
     pMaterial->init("GI_SSAO+SSDO_ScreenQuad",
                     BB_PATH_RESOURCE_SHADER(GI_SSAO+SSDO_ScreenQuad.vert), BB_PATH_RESOURCE_SHADER(GI_SSAO+SSDO_ScreenQuad.frag));
     pFullScreenQuad->setCurrentMaterial(pMaterial);
-    pFullScreenQuad->setTexture(LOCATION_TEXTURE(0), pScene->getColorFBO(2, 1));
+    pFullScreenQuad->setTexture("AlbedoTex", pScene->getColorFBO(2, 0));
+    pFullScreenQuad->setTexture("NormalTex", pScene->getColorFBO(2, 1));
+    pFullScreenQuad->setTexture("PositionTex", pScene->getColorFBO(2, 2));
 }

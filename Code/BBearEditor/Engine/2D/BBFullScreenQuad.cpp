@@ -117,7 +117,7 @@ void BBFullScreenQuad::cullLightRender(BBCamera *pCamera)
         }
     }
 
-    m_pDrawCalls->onePassRendering(pCamera, culledLights);
+    m_pDrawCalls->renderOnePass(pCamera, culledLights);
 }
 
 

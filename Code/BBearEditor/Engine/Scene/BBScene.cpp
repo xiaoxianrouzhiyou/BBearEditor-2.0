@@ -41,7 +41,6 @@ BBScene::BBScene()
     m_pSelectionRegion = nullptr;
     m_pTransformCoordinateSystem = nullptr;
     m_pTiledFullScreenQuad = nullptr;
-    m_pRayTracker = nullptr;
     m_pNormalIndicator = nullptr;
 }
 
@@ -58,7 +57,6 @@ BBScene::~BBScene()
     BB_SAFE_DELETE(m_pSelectionRegion);
     BB_SAFE_DELETE(m_pTransformCoordinateSystem);
     BB_SAFE_DELETE(m_pTiledFullScreenQuad);
-    BB_SAFE_DELETE(m_pRayTracker);
     BB_SAFE_DELETE(m_pNormalIndicator);
     QList<BBGameObject*> objects = m_Models + m_Lights;
     QList<BBGameObject*>::Iterator itr;
@@ -82,7 +80,6 @@ void BBScene::init()
     m_pTransformCoordinateSystem = new BBTransformCoordinateSystem();
     m_pFullScreenQuad = new BBFullScreenQuad();
     m_pTiledFullScreenQuad = new BBTiledFullScreenQuad();
-    m_pRayTracker = new BBRayTracker(this);
     m_pNormalIndicator = new BBNormalIndicator();
 
     m_pCamera->setViewportSize(800.0f, 600.0f);
@@ -148,62 +145,6 @@ void BBScene::defaultRendering()
 //    glEnd();
 }
 
-void BBScene::deferredRendering()
-{
-    // 3D camera mode
-    m_pCamera->switchTo3D();
-    // refresh camera position and direction, update pos and ..., Convenient for subsequent use
-    m_pCamera->update(m_fUpdateRate);
-
-    for (int i = 0; i < 3; i++)
-    {
-        m_pFBO[i]->bind();
-
-        QList<BBGameObject*> objects = m_Models;
-        for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
-        {
-            BBGameObject *pObject = *itr;
-            pObject->setCurrentMaterial(BBRendererManager::getDeferredRenderingMaterial(i));
-            pObject->render(m_pCamera);
-        }
-
-        m_pFBO[i]->unbind();
-    }
-
-    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(0), m_pFBO[0]->getBuffer(FBO_COLOR_BUFFER_NAME(0)));
-    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(1), m_pFBO[1]->getBuffer(FBO_COLOR_BUFFER_NAME(0)));
-    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(2), m_pFBO[2]->getBuffer(FBO_COLOR_BUFFER_NAME(0)));
-    m_pTiledFullScreenQuad->render(m_pCamera);
-}
-
-void BBScene::rayTracingRendering()
-{
-    // 3D camera mode
-    m_pCamera->switchTo3D();
-    // refresh camera position and direction, update pos and ..., Convenient for subsequent use
-    m_pCamera->update(m_fUpdateRate);
-
-    for (int i = 0; i < 3; i++)
-    {
-        m_pFBO[i]->bind();
-
-        QList<BBGameObject*> objects = m_Models;
-        for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
-        {
-            BBGameObject *pObject = *itr;
-            pObject->setCurrentMaterial(BBRendererManager::getDeferredRenderingMaterial(i));
-            pObject->render(m_pCamera);
-        }
-
-        m_pFBO[i]->unbind();
-    }
-
-    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(0), m_pFBO[0]->getBuffer(FBO_COLOR_BUFFER_NAME(0)));
-    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(1), m_pFBO[1]->getBuffer(FBO_COLOR_BUFFER_NAME(0)));
-    m_pTiledFullScreenQuad->setTexture(LOCATION_TEXTURE(2), m_pFBO[2]->getBuffer(FBO_COLOR_BUFFER_NAME(0)));
-    m_pTiledFullScreenQuad->render(m_pCamera);
-}
-
 void BBScene::globalIlluminationRendering()
 {
     m_pFBO[2]->bind();
@@ -241,8 +182,6 @@ void BBScene::resize(float width, float height)
     {
         ((BBCanvas*)(*itr))->resize(width, height);
     }
-
-    m_pRayTracker->onWindowResize(width, height);
 }
 
 GLuint BBScene::getColorFBO(int nFBOIndex, int nAttachmentIndex)
@@ -568,7 +507,7 @@ void BBScene::unbindFBO()
 
 void BBScene::writeViewSpaceFBO(int nIndex)
 {
-    BBDrawCall::switchRenderingSettings(12);
+    BBDrawCall::switchRenderingSettings(1);
     m_pFBO[nIndex]->bind();
 
     m_pSkyBox->render(m_pCamera);
@@ -576,12 +515,12 @@ void BBScene::writeViewSpaceFBO(int nIndex)
     m_pRenderQueue->render();
 
     m_pFBO[nIndex]->unbind();
-    BBDrawCall::switchRenderingSettings(11);
+    BBDrawCall::switchRenderingSettings(0);
 }
 
 void BBScene::writeShadowMap(int nIndex)
 {
-    BBDrawCall::switchRenderingSettings(13);
+    BBDrawCall::switchRenderingSettings(2);
     m_pFBO[nIndex]->bind();
     // BBGameObject
     for (QList<BBGameObject*>::Iterator it = m_Models.begin(); it != m_Models.end(); it++)
@@ -590,7 +529,7 @@ void BBScene::writeShadowMap(int nIndex)
     }
 
     m_pFBO[nIndex]->unbind();
-    BBDrawCall::switchRenderingSettings(11);
+    BBDrawCall::switchRenderingSettings(0);
 }
 
 //void Scene::renderShadowMap()

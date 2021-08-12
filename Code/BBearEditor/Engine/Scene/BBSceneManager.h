@@ -42,8 +42,7 @@ public:
     static void saveScene(const QString &filePath = m_CurrentSceneFilePath);
     static void removeScene();
 
-    static void enableDeferredRendering(bool bEnable);
-    static void enableGlobalIllumination(bool bEnable);
+    static void enableDeferredRendering(int nAlgorithmIndex, bool bEnable);
 
     static void addSpriteObject2DForCanvas(BBCanvas *pCanvas, BBSpriteObject2D *pSpriteObject2D);
 

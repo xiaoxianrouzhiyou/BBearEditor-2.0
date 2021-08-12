@@ -1,10 +1,12 @@
-attribute vec4 BBPosition;
-attribute vec4 BBTexcoord;
+#version 430 core
 
-varying vec4 V_texcoord;
+in vec4 BBPosition;
+in vec4 BBTexcoord;
+
+out vec2 v2f_texcoord;
 
 void main()
 {
-    V_texcoord = BBTexcoord;
+    v2f_texcoord = BBTexcoord.xy;
     gl_Position = BBPosition;
 }

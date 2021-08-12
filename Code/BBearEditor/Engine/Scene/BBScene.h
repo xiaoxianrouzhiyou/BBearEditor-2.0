@@ -23,7 +23,6 @@ class BBTransformCoordinateSystem;
 class BBFullScreenQuad;
 class BBTiledFullScreenQuad;
 class BBRenderQueue;
-class BBRayTracker;
 class BBNormalIndicator;
 class BBScene;
 
@@ -40,8 +39,6 @@ public:
     void render();
     void setRenderingFunc(const BBRenderingFunc &renderingFunc) { m_RenderingFunc = renderingFunc; }
     void defaultRendering();
-    void deferredRendering();
-    void rayTracingRendering();
     void globalIlluminationRendering();
 
     void resize(float width, float height);
@@ -54,7 +51,6 @@ public:
     inline BBTiledFullScreenQuad* getTiledFullScreenQuad() { return m_pTiledFullScreenQuad; }
     inline QList<BBGameObject*> getModels() { return m_Models; }
     inline QList<BBGameObject*> getLights() { return m_Lights; }
-    inline BBRayTracker* getRayTracker() { return m_pRayTracker; }
     inline BBNormalIndicator* getNormalIndicator() { return m_pNormalIndicator; }
 
     /* FBO */
@@ -126,8 +122,6 @@ private:
     QList<BBGameObject*> m_Canvases;
 
     BBSelectionRegion *m_pSelectionRegion;
-
-    BBRayTracker *m_pRayTracker;
 
     BBNormalIndicator *m_pNormalIndicator;
 };

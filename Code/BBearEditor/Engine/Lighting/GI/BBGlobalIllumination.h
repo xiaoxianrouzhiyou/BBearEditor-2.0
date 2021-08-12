@@ -7,8 +7,7 @@ class BBScene;
 class BBGlobalIllumination
 {
 public:
-    static void open();
-    static void close();
+    static void enable(bool bEnable);
 
 private:
     static void setRenderedObjectPass(BBScene *pScene);
