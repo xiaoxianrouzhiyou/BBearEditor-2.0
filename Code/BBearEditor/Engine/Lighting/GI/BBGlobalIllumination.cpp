@@ -4,6 +4,7 @@
 #include "2D/BBFullScreenQuad.h"
 #include "Render/BBMaterial.h"
 #include "Render/BBTexture.h"
+#include "BBSSAOGlobalIllumination.h"
 
 
 void BBGlobalIllumination::enable(bool bEnable)
@@ -53,4 +54,6 @@ void BBGlobalIllumination::setScreenQuadPass(BBScene *pScene)
     pFullScreenQuad->setTexture("AlbedoTex", pScene->getColorFBO(2, 0));
     pFullScreenQuad->setTexture("NormalTex", pScene->getColorFBO(2, 1));
     pFullScreenQuad->setTexture("PositionTex", pScene->getColorFBO(2, 2));
+    BBTexture texture;
+    pFullScreenQuad->setTexture("NoiseTex", texture.createTexture2D(BBSSAOGlobalIllumination::generateNoise(), 4, 4, GL_RGBA32F));
 }

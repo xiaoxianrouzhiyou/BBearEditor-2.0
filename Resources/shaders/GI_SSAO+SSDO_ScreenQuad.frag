@@ -28,5 +28,5 @@ void main(void)
     vec3 N = texture(NormalTex, v2f_texcoord).xyz;
     vec3 random_vec = texture(NoiseTex, noise_scale * v2f_texcoord).xyz;
 
-    FragColor = vec4(pos, 1.0);
+    FragColor = vec4(random_vec, 1.0);
 }

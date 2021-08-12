@@ -1,6 +1,7 @@
 #include "BBSSAOGlobalIllumination.h"
 #include <QImage>
 #include "Math/BBMath.h"
+#include <QDebug>
 
 
 std::vector<QVector3D> BBSSAOGlobalIllumination::generateKernel()
@@ -22,21 +23,18 @@ std::vector<QVector3D> BBSSAOGlobalIllumination::generateKernel()
     return ssaoKernel;
 }
 
-QImage BBSSAOGlobalIllumination::generateNoise()
+float* BBSSAOGlobalIllumination::generateNoise()
 {
     std::uniform_real_distribution<float> randomFloats(0.0f, 1.0f);
     std::default_random_engine generator;
-    QImage noiseTex(4, 4, QImage::Format_RGB32);
-    for (unsigned int i = 0; i < 4; i++)
+    float *pPixelData = new float[16 * 4];
+    for (unsigned int i = 0; i < 16; i++)
     {
-        for (unsigned int j = 0; j < 4; j++)
-        {
-            // rotate around z-axis (in tangent space)
-            QVector3D noise(randomFloats(generator) * 2.0f - 1.0f, randomFloats(generator) * 2.0f - 1.0f, 0.0f);
-            QColor color;
-            color.setRgbF(noise.x(), noise.y(), noise.z());
-            noiseTex.setPixelColor(i, j, color);
-        }
+        // rotate around z-axis (in tangent space)
+        pPixelData[i * 4] = randomFloats(generator) * 2.0f - 1.0f;
+        pPixelData[i * 4 + 1] = randomFloats(generator) * 2.0f - 1.0f;
+        pPixelData[i * 4 + 2] = 0.0f;
+        pPixelData[i * 4 + 3] = 1.0f;
     }
-    return noiseTex;
+    return pPixelData;
 }

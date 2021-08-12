@@ -35,6 +35,27 @@ GLuint BBTexture::createTexture2D(unsigned char *pPixelData, int nWidth, int nHe
     return texture;
 }
 
+GLuint BBTexture::createTexture2D(float *pPixelData, int nWidth, int nHeight, GLenum eType)
+{
+    GLuint texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);// GL_CLAMP
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    // from CPU to GPU
+    // 3: GUP
+    // 6: = 0
+    // 7: CPU
+    glTexImage2D(GL_TEXTURE_2D, 0, eType, nWidth, nHeight, 0, GL_RGB, GL_FLOAT, pPixelData);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    return texture;
+}
+
 GLuint BBTexture::createTexture2D(QImage image, GLenum eType)
 {
     return createTexture2D(image.bits(), image.width(), image.height(), eType);

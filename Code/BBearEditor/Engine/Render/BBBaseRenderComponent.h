@@ -6,6 +6,7 @@
 
 #include <GL/glu.h>
 #include <QOpenGLExtraFunctions>
+#include <QOpenGLFunctions_4_5_Core>
 #include <QVector2D>
 #include <QVector3D>
 #include <QVector4D>
@@ -54,7 +55,7 @@
 #define FBO_DEPTH_BUFFER_NAME "BBFBODepth"
 
 
-class BBBaseRenderComponent : protected QOpenGLExtraFunctions
+class BBBaseRenderComponent : protected QOpenGLFunctions_4_5_Core
 {
 public:
     BBBaseRenderComponent();
