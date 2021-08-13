@@ -8,16 +8,15 @@
 
 void BBSSAOGlobalIllumination::open(BBScene *pScene)
 {
-    setRenderedObjectPass(pScene);
+    setGBufferPass(pScene);
     setSSAOPass(pScene);
     setSSAOBlurPass(pScene);
 }
 
-void BBSSAOGlobalIllumination::setRenderedObjectPass(BBScene *pScene)
+void BBSSAOGlobalIllumination::setGBufferPass(BBScene *pScene)
 {
     BBMaterial *pMaterial = new BBMaterial();
-    pMaterial->init("GI_SSAO_RenderedObject",
-                    BB_PATH_RESOURCE_SHADER(GI_SSAO_RenderedObject.vert), BB_PATH_RESOURCE_SHADER(GI_SSAO_RenderedObject.frag));
+    pMaterial->init("GI_SSAO_GBuffer", BB_PATH_RESOURCE_SHADER(GI_SSAO_GBuffer.vert), BB_PATH_RESOURCE_SHADER(GI_SSAO_GBuffer.frag));
 
     // test
     float *pLightPosition = new float[4] {1.0f, 1.0f, 0.0f, 0.0f};

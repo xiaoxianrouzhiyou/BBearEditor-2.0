@@ -8,7 +8,7 @@
 
 void BBSSDOGlobalIllumination::open(BBScene *pScene)
 {
-    BBSSAOGlobalIllumination::setRenderedObjectPass(pScene);
+    BBSSAOGlobalIllumination::setGBufferPass(pScene);
     setSSDOPass(pScene);
     setSSDOBlurPass(pScene);
 }
