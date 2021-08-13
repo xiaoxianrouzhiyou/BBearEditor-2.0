@@ -39,7 +39,7 @@ public:
     void render();
     void setRenderingFunc(const BBRenderingFunc &renderingFunc) { m_RenderingFunc = renderingFunc; }
     void defaultRendering();
-    void globalIlluminationRendering();
+    void deferredRendering();
 
     void resize(float width, float height);
 

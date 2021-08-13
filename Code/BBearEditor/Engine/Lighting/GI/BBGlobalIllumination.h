@@ -7,10 +7,7 @@ class BBScene;
 class BBGlobalIllumination
 {
 public:
-    static void enable(bool bEnable);
-
-private:
-    static void useSSAOAlgorithm(BBScene *pScene);
+    static void enable(int nSubAlgorithmIndex, bool bEnable);
 };
 
 #endif // BBGLOBALILLUMINATION_H

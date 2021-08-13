@@ -1,18 +1,28 @@
 #include "BBGlobalIllumination.h"
 #include "Scene/BBSceneManager.h"
 #include "BBSSAOGlobalIllumination.h"
+#include "BBSSDOGlobalIllumination.h"
 #include "Scene/BBScene.h"
 #include "Base/BBGameObject.h"
 
 
-void BBGlobalIllumination::enable(bool bEnable)
+void BBGlobalIllumination::enable(int nSubAlgorithmIndex, bool bEnable)
 {
     BBScene *pScene = BBSceneManager::getScene();
     if (bEnable)
     {
-        pScene->setRenderingFunc(&BBScene::globalIlluminationRendering);
+        pScene->setRenderingFunc(&BBScene::deferredRendering);
 
-        useSSAOAlgorithm(pScene);
+        switch (nSubAlgorithmIndex) {
+        case 0:
+            BBSSAOGlobalIllumination::open(pScene);
+            break;
+        case 1:
+            BBSSDOGlobalIllumination::open(pScene);
+            break;
+        default:
+            break;
+        }
     }
     else
     {
@@ -25,9 +35,4 @@ void BBGlobalIllumination::enable(bool bEnable)
             pObject->restoreMaterial();
         }
     }
-}
-
-void BBGlobalIllumination::useSSAOAlgorithm(BBScene *pScene)
-{
-    BBSSAOGlobalIllumination::open(pScene);
 }

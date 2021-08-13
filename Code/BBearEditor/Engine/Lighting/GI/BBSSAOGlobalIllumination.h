@@ -12,7 +12,6 @@ class BBSSAOGlobalIllumination
 public:
     static void open(BBScene *pScene);
 
-private:
     static void setRenderedObjectPass(BBScene *pScene);
     static void setSSAOPass(BBScene *pScene);
     static void setSSAOBlurPass(BBScene *pScene);

@@ -4,9 +4,9 @@ in vec2 v2f_texcoord;
 in vec3 v2f_normal;
 in vec3 v2f_view_space_pos;
 
-layout (location = 1) out vec4 Albedo;
-layout (location = 2) out vec4 Normal;
-layout (location = 3) out vec4 Position;
+layout (location = 0) out vec4 Albedo;
+layout (location = 1) out vec4 Normal;
+layout (location = 2) out vec4 Position;
 
 uniform vec4 BBCameraParameters;
 uniform sampler2D ObjectDiffuseTexture;

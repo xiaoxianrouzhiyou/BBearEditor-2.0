@@ -223,13 +223,13 @@ void BBSceneManager::removeScene()
     m_CurrentSceneFilePath.clear();
 }
 
-void BBSceneManager::enableDeferredRendering(int nAlgorithmIndex, bool bEnable)
+void BBSceneManager::enableDeferredRendering(int nAlgorithmIndex, int nSubAlgorithmIndex, bool bEnable)
 {
     // 0 : GI
     switch (nAlgorithmIndex)
     {
     case 0:
-        BBGlobalIllumination::enable(bEnable);
+        BBGlobalIllumination::enable(nSubAlgorithmIndex, bEnable);
         break;
     default:
         break;

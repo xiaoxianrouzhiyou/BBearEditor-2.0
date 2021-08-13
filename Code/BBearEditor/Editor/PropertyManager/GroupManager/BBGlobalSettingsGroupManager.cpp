@@ -37,7 +37,12 @@ void BBGlobalSettingsGroupManager::bakeSphericalHarmonicLightingMap()
 
 void BBGlobalSettingsGroupManager::switchGlobalIllumination(bool bEnable)
 {
-    BBSceneManager::enableDeferredRendering(0, bEnable);
+    // parameter 1
+    // 0 : GI
+    // parameter 2
+    // 0 : SSAO
+    // 1 : SSDO
+    BBSceneManager::enableDeferredRendering(0, m_pGlobalIlluminationFactory->getCurrentItemIndex(), bEnable);
 }
 
 void BBGlobalSettingsGroupManager::initRayTracingFactory()
@@ -61,9 +66,9 @@ void BBGlobalSettingsGroupManager::initSphericalHarmonicLightingFactory()
 void BBGlobalSettingsGroupManager::initGlobalIlluminationFactory()
 {
     QStringList globalIlluminationAlgorithmName = {"SSAO",
-                                                   "SSAO + SSDO"};
+                                                   "SSDO"};
     m_pGlobalIlluminationFactory = new BBEnumExpansionFactory("Global Illumination", globalIlluminationAlgorithmName,
-                                                              "", "SSAO + SSDO", this, 1, 1);
+                                                              "", "SSDO", this, 1, 1);
     m_pGlobalIlluminationFactory->enableButton(false);
     QObject::connect(m_pGlobalIlluminationFactory, SIGNAL(triggerClicked(bool)), this, SLOT(switchGlobalIllumination(bool)));
     addFactory(m_pGlobalIlluminationFactory);

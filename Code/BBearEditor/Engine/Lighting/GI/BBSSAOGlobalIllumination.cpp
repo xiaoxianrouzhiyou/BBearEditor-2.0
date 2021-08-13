@@ -4,7 +4,6 @@
 #include "Render/BBMaterial.h"
 #include "Render/BBTexture.h"
 #include "Math/BBMath.h"
-#include <QDebug>
 
 
 void BBSSAOGlobalIllumination::open(BBScene *pScene)
@@ -40,8 +39,8 @@ void BBSSAOGlobalIllumination::setSSAOPass(BBScene *pScene)
     BBMaterial *pMaterial = new BBMaterial();
     pMaterial->init("GI_SSAO", BB_PATH_RESOURCE_SHADER(GI_SSAO.vert), BB_PATH_RESOURCE_SHADER(GI_SSAO.frag));
 
-    pMaterial->setSampler2D("NormalTex", pScene->getColorFBO(0, 2));
-    pMaterial->setSampler2D("PositionTex", pScene->getColorFBO(0, 3));
+    pMaterial->setSampler2D("NormalTex", pScene->getColorFBO(0, 1));
+    pMaterial->setSampler2D("PositionTex", pScene->getColorFBO(0, 2));
     BBTexture texture;
     pMaterial->setSampler2D("NoiseTex", texture.createTexture2D(generateNoise(), 4, 4, GL_RGBA32F));
     pMaterial->setArrayVector4("Samples[0]", generateKernel(), 64);
@@ -56,7 +55,7 @@ void BBSSAOGlobalIllumination::setSSAOBlurPass(BBScene *pScene)
     pMaterial->init("GI_SSAO_Blur", BB_PATH_RESOURCE_SHADER(GI_SSAO.vert), BB_PATH_RESOURCE_SHADER(GI_SSAO_Blur.frag));
 
     pMaterial->setSampler2D("SSAOTex", pScene->getColorFBO(1, 0));
-    pMaterial->setSampler2D("AlbedoTex", pScene->getColorFBO(0, 1));
+    pMaterial->setSampler2D("AlbedoTex", pScene->getColorFBO(0, 0));
 
     pFullScreenQuad->setCurrentMaterial(pMaterial);
 }
