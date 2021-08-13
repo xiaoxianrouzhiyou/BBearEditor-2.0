@@ -2,11 +2,10 @@
 
 in vec2 v2f_texcoord;
 
-layout (location = 0) out vec4 FragColor;
+layout (location = 0) out float FragColor;
 
 uniform vec4 BBCameraParameters;
 uniform mat4 BBProjectionMatrix;
-uniform sampler2D AlbedoTex;
 uniform sampler2D NormalTex;
 uniform sampler2D PositionTex;
 uniform sampler2D NoiseTex;
@@ -49,8 +48,5 @@ void main(void)
     }
     occlusion = 1.0 - (occlusion / kernel_size);
 
-    vec3 albedo = texture(AlbedoTex, v2f_texcoord).xyz;
-    FragColor = vec4(albedo * occlusion, 1.0);
-
-	// Color_ = vec4(Albedo * Ambient + texture(u_SSDOTexture, v2f_TexCoords).rgb * 2,1);
+    FragColor = occlusion;
 }

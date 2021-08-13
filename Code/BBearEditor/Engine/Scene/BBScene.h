@@ -47,7 +47,7 @@ public:
     inline BBCamera* getCamera() { return m_pCamera; }
     inline BBSkyBox* getSkyBox() { return m_pSkyBox; }
     inline BBTransformCoordinateSystem* getTransformCoordinateSystem() { return m_pTransformCoordinateSystem; }
-    inline BBFullScreenQuad* getFullScreenQuad() { return m_pFullScreenQuad; }
+    inline BBFullScreenQuad* getFullScreenQuad(int nIndex) { return m_pFullScreenQuad[nIndex]; }
     inline BBTiledFullScreenQuad* getTiledFullScreenQuad() { return m_pTiledFullScreenQuad; }
     inline QList<BBGameObject*> getModels() { return m_Models; }
     inline QList<BBGameObject*> getLights() { return m_Lights; }
@@ -114,7 +114,7 @@ private:
     BBSkyBox *m_pSkyBox;
     BBHorizontalPlane *m_pHorizontalPlane;
     BBTransformCoordinateSystem *m_pTransformCoordinateSystem;
-    BBFullScreenQuad *m_pFullScreenQuad;
+    BBFullScreenQuad *m_pFullScreenQuad[3];
     BBTiledFullScreenQuad *m_pTiledFullScreenQuad;
 
     QList<BBGameObject*> m_Models;

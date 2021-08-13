@@ -34,6 +34,7 @@ BBScene::BBScene()
     for (int i = 0; i < 3; i++)
     {
         m_pFBO[i] = nullptr;
+        m_pFullScreenQuad[i] = nullptr;
     }
     m_pCamera = nullptr;
     m_pSkyBox = nullptr;
@@ -49,6 +50,7 @@ BBScene::~BBScene()
     for (int i = 0; i < 3; i++)
     {
         BB_SAFE_DELETE(m_pFBO[i]);
+        BB_SAFE_DELETE(m_pFullScreenQuad[i]);
     }
     BB_SAFE_DELETE(m_pCamera);
     BB_SAFE_DELETE(m_pRenderQueue);
@@ -78,7 +80,6 @@ void BBScene::init()
     m_pHorizontalPlane = new BBHorizontalPlane();
     m_pSelectionRegion = new BBSelectionRegion();
     m_pTransformCoordinateSystem = new BBTransformCoordinateSystem();
-    m_pFullScreenQuad = new BBFullScreenQuad();
     m_pTiledFullScreenQuad = new BBTiledFullScreenQuad();
     m_pNormalIndicator = new BBNormalIndicator();
 
@@ -87,8 +88,13 @@ void BBScene::init()
     m_pSkyBox->init(QString(BB_PATH_RESOURCE) + "skyboxs/3/");
     m_pHorizontalPlane->init();
     m_pTransformCoordinateSystem->init();
-    m_pFullScreenQuad->init();
+
     m_pTiledFullScreenQuad->init();
+    for (int i = 0; i < 3; i++)
+    {
+        m_pFullScreenQuad[i] = new BBFullScreenQuad();
+        m_pFullScreenQuad[i]->init();
+    }
 }
 
 void BBScene::render()
@@ -150,13 +156,18 @@ void BBScene::globalIlluminationRendering()
     m_pCamera->switchTo3D();
     m_pCamera->update(m_fUpdateRate);
 
-    m_pFBO[2]->bind();
+    m_pFBO[0]->bind();
     m_pSkyBox->render(m_pCamera);
     // BBGameObject
     m_pRenderQueue->render();
-    m_pFBO[2]->unbind();
+    m_pFBO[0]->unbind();
 
-    m_pFullScreenQuad->render(m_pCamera);
+    // Post processing
+    m_pFBO[1]->bind();
+    m_pFullScreenQuad[0]->render(m_pCamera);
+    m_pFBO[1]->unbind();
+
+    m_pFullScreenQuad[1]->render(m_pCamera);
 }
 
 void BBScene::resize(float width, float height)

@@ -5,11 +5,20 @@
 #include <vector>
 #include <QVector3D>
 
+class BBScene;
+
 class BBSSAOGlobalIllumination
 {
 public:
-    static float *generateKernel();
-    static float *generateNoise();
+    static void open(BBScene *pScene);
+
+private:
+    static void setRenderedObjectPass(BBScene *pScene);
+    static void setSSAOPass(BBScene *pScene);
+    static void setSSAOBlurPass(BBScene *pScene);
+
+    static float* generateKernel();
+    static float* generateNoise();
 };
 
 #endif // BBSSAOGLOBALILLUMINATION_H

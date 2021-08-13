@@ -10,8 +10,7 @@ public:
     static void enable(bool bEnable);
 
 private:
-    static void setRenderedObjectPass(BBScene *pScene);
-    static void setScreenQuadPass(BBScene *pScene);
+    static void useSSAOAlgorithm(BBScene *pScene);
 };
 
 #endif // BBGLOBALILLUMINATION_H
