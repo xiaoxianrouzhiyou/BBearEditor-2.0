@@ -1,3 +1,5 @@
 ﻿Code/build-BBearEditor-Desktop_Qt_5_9_2_MinGW_32bit-Debug
 src/build-BBearEditor-Desktop_Qt_5_9_2_MinGW_32bit-Release
 Tools/Spine2BBear/build-Spine2BBear-Desktop_Qt_5_9_2_MinGW_32bit-Debug
+Code/BBearEditor/Engine/Python/Lib
+Code/BBearEditor/Engine/Python/__pycache__

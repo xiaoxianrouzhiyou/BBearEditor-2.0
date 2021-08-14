@@ -102,6 +102,12 @@ unsigned char* BBUtils::decodeBMP(unsigned char *pBmpFileData, int &nWidth, int 
     return nullptr;
 }
 
+QString BBUtils::getPathRelativeToExecutionDirectory(const QString &absolutePath)
+{
+    QDir dir(QDir::currentPath());
+    return dir.relativeFilePath(absolutePath);
+}
+
 unsigned int BBUtils::getBlendFunc(int nIndex)
 {
     unsigned int func = GL_ZERO;
