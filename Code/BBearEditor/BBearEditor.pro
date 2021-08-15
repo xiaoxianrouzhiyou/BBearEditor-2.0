@@ -127,7 +127,8 @@ SOURCES += \
     Engine/Lighting/GI/BBGlobalIllumination.cpp \
     Engine/Lighting/GI/BBSSAOGlobalIllumination.cpp \
     Engine/Lighting/GI/BBSSDOGlobalIllumination.cpp \
-    Engine/RayTracing/BBScreenSpaceRayTracker.cpp
+    Engine/RayTracing/BBScreenSpaceRayTracker.cpp \
+    Editor/PropertyManager/GroupManager/BBRenderManager.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -235,7 +236,8 @@ HEADERS += \
     Engine/Lighting/GI/BBSSAOGlobalIllumination.h \
     Engine/Math/BBMath.h \
     Engine/Lighting/GI/BBSSDOGlobalIllumination.h \
-    Engine/RayTracing/BBScreenSpaceRayTracker.h
+    Engine/RayTracing/BBScreenSpaceRayTracker.h \
+    Editor/PropertyManager/GroupManager/BBRenderManager.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

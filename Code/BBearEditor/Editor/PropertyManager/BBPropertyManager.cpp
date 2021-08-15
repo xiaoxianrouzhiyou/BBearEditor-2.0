@@ -5,6 +5,7 @@
 #include "GroupManager/BBMaterialPropertyGroupManager.h"
 #include "GroupManager/BBLightManager.h"
 #include "GroupManager/BBGlobalSettingsGroupManager.h"
+#include "GroupManager/BBRenderManager.h"
 #include "BBPropertyFactory.h"
 #include "Base/BBGameObject.h"
 #include "Lighting/GameObject/BBDirectionalLight.h"

@@ -129,5 +129,5 @@ void main(void)
     
     // shadow
     // final_color = final_color * vec4(vec3(1.0 - calculateShadow()), 1.0);
-    gl_FragColor = final_color;
+    gl_FragColor = final_color * V_Color;
 }

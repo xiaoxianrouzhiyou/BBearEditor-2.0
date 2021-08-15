@@ -35,6 +35,15 @@ QVector3D BBVertexBufferObject::getPosition(int index)
     return QVector3D(m_pVertexes[index].m_fPosition[0], m_pVertexes[index].m_fPosition[1], m_pVertexes[index].m_fPosition[2]);
 }
 
+void BBVertexBufferObject::setColor(float r, float g, float b, float a)
+{
+    for (int i = 0; i < m_nVertexCount; i++)
+    {
+        setColor(i, r, g, b, a);
+    }
+    submitData();
+}
+
 void BBVertexBufferObject::setColor(int index, float r, float g, float b, float a)
 {
     m_pVertexes[index].m_fColor[0] = r;

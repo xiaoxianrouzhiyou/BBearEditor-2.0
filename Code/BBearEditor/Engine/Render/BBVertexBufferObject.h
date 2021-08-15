@@ -25,6 +25,7 @@ public:
     void setPosition(int index, const QVector4D &position);
     QVector3D getPosition(int index);
 
+    void setColor(float r, float g, float b, float a = 1.0f);
     void setColor(int index, float r, float g, float b, float a = 1.0f);
     void setColor(int index, const QVector3D &rgb);
     void setColor(int index, const QVector4D &rgba);

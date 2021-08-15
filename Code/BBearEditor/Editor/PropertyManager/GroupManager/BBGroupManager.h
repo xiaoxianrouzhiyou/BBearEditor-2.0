@@ -13,9 +13,7 @@ class BBGameObject;
 class BBVector3DFactory;
 class BBScene;
 class BBEnumFactory;
-class BBRenderableObject;
 class QCheckBox;
-class BBDragAcceptedFactory;
 
 
 // Manage a group of property
@@ -82,23 +80,5 @@ private:
     BBReferenceSystem m_eReferenceSystem;
 };
 
-
-class BBRenderManager : public BBGroupManager
-{
-    Q_OBJECT
-
-public:
-    BBRenderManager(BBRenderableObject *pObject, QWidget *pParent = 0);
-    ~BBRenderManager();
-
-private slots:
-    void changeMaterial(const QString &filePath);
-    void popupResourceDialog();
-    void triggerNormalIndicator(bool bEnable);
-
-private:
-    BBRenderableObject *m_pRenderableObject;
-    BBDragAcceptedFactory *m_pMaterialFactory;
-};
 
 #endif // BBGROUPMANAGER_H
