@@ -108,6 +108,7 @@ protected:
     QVector3D m_Scale;
     QVector3D m_LocalScale;
     QMatrix4x4 m_ModelMatrix;
+    QMatrix4x4 m_ViewModelMatrix_IT;
 
     // screen space
     int m_nWidth;

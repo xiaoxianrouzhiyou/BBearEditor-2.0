@@ -29,6 +29,7 @@
 #define LOCATION_VIEWMATRIX_I "BBViewMatrix_I"
 #define LOCATION_MODELMATRIX "BBModelMatrix"
 #define LOCATION_MODELMATRIX_IT "BBModelMatrix_IT"
+#define LOCATION_VIEWMODELMATRIX_IT "BBViewModelMatrix_IT"
 #define LOCATION_CAMERA_POSITION "BBCameraPosition"
 #define LOCATION_CANVAS "BBCanvas"
 #define LOCATION_TEXTURE(x) "BBTexture"#x

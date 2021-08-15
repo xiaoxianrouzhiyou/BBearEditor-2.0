@@ -458,4 +458,6 @@ void BBGameObject::setModelMatrix(float px, float py, float pz,
     m_ModelMatrix.translate(px, py, pz);
     m_ModelMatrix.rotate(r);
     m_ModelMatrix.scale(sx, sy, sz);
+
+    m_ViewModelMatrix_IT = (BBSceneManager::getCamera()->getViewMatrix() * m_ModelMatrix).inverted().transposed();
 }

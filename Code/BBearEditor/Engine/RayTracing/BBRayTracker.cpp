@@ -11,8 +11,6 @@ void BBRayTracker::enable(int nAlgorithmIndex, bool bEnable)
     BBScene *pScene = BBSceneManager::getScene();
     if (bEnable)
     {
-        pScene->setRenderingFunc(&BBScene::deferredRendering);
-
         switch (nAlgorithmIndex) {
         case 0:
             BBScreenSpaceRayTracker::open(pScene);

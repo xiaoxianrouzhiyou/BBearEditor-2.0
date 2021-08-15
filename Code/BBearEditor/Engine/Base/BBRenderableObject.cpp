@@ -9,6 +9,7 @@
 #include "Render/BBUniformUpdater.h"
 #include "Render/BBRenderPass.h"
 #include "Render/BBRenderQueue.h"
+#include "Scene/BBSceneManager.h"
 
 
 /**
@@ -131,7 +132,7 @@ void BBRenderableObject::setCurrentMaterial(BBMaterial *pMaterial)
 {
     m_pCurrentMaterial = pMaterial;
     m_pCurrentMaterial->setMatrix4(LOCATION_MODELMATRIX, m_ModelMatrix.data());
-    m_pCurrentMaterial->setMatrix4(LOCATION_MODELMATRIX_IT, m_ModelMatrix.inverted().transposed().data());
+    m_pCurrentMaterial->setMatrix4(LOCATION_VIEWMODELMATRIX_IT, m_ViewModelMatrix_IT.data());
     m_pDrawCalls->setMaterial(m_pCurrentMaterial);
 }
 

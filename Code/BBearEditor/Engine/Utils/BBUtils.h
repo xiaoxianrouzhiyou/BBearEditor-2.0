@@ -26,6 +26,7 @@
 #define BB_PATH_RESOURCE_SHADER(x) "../../../BBearEditor/resources/shaders/"#x
 #define BB_PATH_RESOURCE_ICON(x) "../../../BBearEditor/resources/icons/"#x
 #define BB_PATH_RESOURCE_PICTURE(x) "../../../BBearEditor/resources/pictures/"#x
+#define BB_PATH_RESOURCE_TEXTURE(x) "../../../BBearEditor/resources/textures/"#x
 #define BB_PATH_RESOURCE_MATERIAL "../../../BBearEditor/resources/materials/"
 #define BB_PATH_TERRAIN "terrain"
 
