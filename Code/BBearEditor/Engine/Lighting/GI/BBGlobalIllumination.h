@@ -7,7 +7,7 @@ class BBScene;
 class BBGlobalIllumination
 {
 public:
-    static void enable(int nSubAlgorithmIndex, bool bEnable);
+    static void enable(int nAlgorithmIndex, bool bEnable);
 };
 
 #endif // BBGLOBALILLUMINATION_H

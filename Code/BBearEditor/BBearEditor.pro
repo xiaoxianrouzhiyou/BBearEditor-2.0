@@ -126,7 +126,8 @@ SOURCES += \
     Engine/Lighting/BBSphericalHarmonicLighting.cpp \
     Engine/Lighting/GI/BBGlobalIllumination.cpp \
     Engine/Lighting/GI/BBSSAOGlobalIllumination.cpp \
-    Engine/Lighting/GI/BBSSDOGlobalIllumination.cpp
+    Engine/Lighting/GI/BBSSDOGlobalIllumination.cpp \
+    Engine/RayTracing/BBScreenSpaceRayTracker.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -233,7 +234,8 @@ HEADERS += \
     Engine/Lighting/GI/BBGlobalIllumination.h \
     Engine/Lighting/GI/BBSSAOGlobalIllumination.h \
     Engine/Math/BBMath.h \
-    Engine/Lighting/GI/BBSSDOGlobalIllumination.h
+    Engine/Lighting/GI/BBSSDOGlobalIllumination.h \
+    Engine/RayTracing/BBScreenSpaceRayTracker.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

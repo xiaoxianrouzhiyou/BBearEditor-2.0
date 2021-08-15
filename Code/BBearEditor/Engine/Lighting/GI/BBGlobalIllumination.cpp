@@ -6,14 +6,14 @@
 #include "Base/BBGameObject.h"
 
 
-void BBGlobalIllumination::enable(int nSubAlgorithmIndex, bool bEnable)
+void BBGlobalIllumination::enable(int nAlgorithmIndex, bool bEnable)
 {
     BBScene *pScene = BBSceneManager::getScene();
     if (bEnable)
     {
-        pScene->setRenderingFunc(&BBScene::deferredRendering);
+        pScene->setRenderingFunc(&BBScene::deferredRenderingAndPostProcessing);
 
-        switch (nSubAlgorithmIndex) {
+        switch (nAlgorithmIndex) {
         case 0:
             BBSSAOGlobalIllumination::open(pScene);
             break;

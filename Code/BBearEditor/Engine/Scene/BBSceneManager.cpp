@@ -9,6 +9,7 @@
 #include "2D/BBCanvas.h"
 #include "2D/BBSpriteObject2D.h"
 #include "Lighting/GI/BBGlobalIllumination.h"
+#include "RayTracing/BBRayTracker.h"
 
 
 QMap<QTreeWidgetItem*, BBGameObject*> BBSceneManager::m_ObjectMap;
@@ -225,10 +226,13 @@ void BBSceneManager::removeScene()
 
 void BBSceneManager::enableDeferredRendering(int nAlgorithmIndex, int nSubAlgorithmIndex, bool bEnable)
 {
-    // 0 : GI
+    // 1 : GI
     switch (nAlgorithmIndex)
     {
     case 0:
+        BBRayTracker::enable(nSubAlgorithmIndex, bEnable);
+        break;
+    case 1:
         BBGlobalIllumination::enable(nSubAlgorithmIndex, bEnable);
         break;
     default:

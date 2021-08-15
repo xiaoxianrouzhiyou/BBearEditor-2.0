@@ -19,14 +19,18 @@ BBGlobalSettingsGroupManager::BBGlobalSettingsGroupManager(BBScene *pScene, QWid
 
 BBGlobalSettingsGroupManager::~BBGlobalSettingsGroupManager()
 {
-    BB_SAFE_DELETE(m_pTriggerRayTracing);
+    BB_SAFE_DELETE(m_pRayTracingFactory);
     BB_SAFE_DELETE(m_pSphericalHarmonicLightingFactory);
     BB_SAFE_DELETE(m_pGlobalIlluminationFactory);
 }
 
 void BBGlobalSettingsGroupManager::switchRayTracing(bool bEnable)
 {
-
+    // parameter 1
+    // 0 : Ray Tracing
+    // parameter 2
+    // 0 : Efficient GPU Screen-Space Ray Tracing
+    BBSceneManager::enableDeferredRendering(0, m_pRayTracingFactory->getCurrentItemIndex(), bEnable);
 }
 
 void BBGlobalSettingsGroupManager::bakeSphericalHarmonicLightingMap()
@@ -38,18 +42,21 @@ void BBGlobalSettingsGroupManager::bakeSphericalHarmonicLightingMap()
 void BBGlobalSettingsGroupManager::switchGlobalIllumination(bool bEnable)
 {
     // parameter 1
-    // 0 : GI
+    // 1 : GI
     // parameter 2
     // 0 : SSAO
     // 1 : SSDO
-    BBSceneManager::enableDeferredRendering(0, m_pGlobalIlluminationFactory->getCurrentItemIndex(), bEnable);
+    BBSceneManager::enableDeferredRendering(1, m_pGlobalIlluminationFactory->getCurrentItemIndex(), bEnable);
 }
 
 void BBGlobalSettingsGroupManager::initRayTracingFactory()
 {
-    m_pTriggerRayTracing = new QCheckBox(this);
-    QObject::connect(m_pTriggerRayTracing, SIGNAL(clicked(bool)), this, SLOT(switchRayTracing(bool)));
-    addFactory("Ray Tracing", m_pTriggerRayTracing);
+    QStringList rayTracingAlgorithmName = {"Efficient GPU Screen-Space"};
+    m_pRayTracingFactory = new BBEnumExpansionFactory("Ray Tracing", rayTracingAlgorithmName,
+                                                      "", "Efficient GPU Screen-Space", this, 1, 1);
+    m_pRayTracingFactory->enableButton(false);
+    QObject::connect(m_pRayTracingFactory, SIGNAL(triggerClicked(bool)), this, SLOT(switchRayTracing(bool)));
+    addFactory(m_pRayTracingFactory);
 }
 
 void BBGlobalSettingsGroupManager::initSphericalHarmonicLightingFactory()

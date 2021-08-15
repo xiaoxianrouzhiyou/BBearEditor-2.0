@@ -2,19 +2,10 @@
 #define BBRAYTRACKER_H
 
 
-#include <QColor>
-#include <QImage>
-
-class BBScene;
-class QThread;
-
-class BBRayTracker : public QObject
+class BBRayTracker
 {
-//    Q_OBJECT
-
-//public:
-//    BBRayTracker(BBScene *pScene);
-//    virtual ~BBRayTracker();
+public:
+    static void enable(int nAlgorithmIndex, bool bEnable);
 
 //    void open();
 //    void close();

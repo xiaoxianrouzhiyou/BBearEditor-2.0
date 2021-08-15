@@ -162,6 +162,20 @@ void BBScene::deferredRendering()
     m_pRenderQueue->render();
     m_pFBO[0]->unbind();
 
+    m_pFullScreenQuad[0]->render(m_pCamera);
+}
+
+void BBScene::deferredRenderingAndPostProcessing()
+{
+    m_pCamera->switchTo3D();
+    m_pCamera->update(m_fUpdateRate);
+
+    m_pFBO[0]->bind();
+    m_pSkyBox->render(m_pCamera);
+    // BBGameObject
+    m_pRenderQueue->render();
+    m_pFBO[0]->unbind();
+
     // Post processing
     m_pFBO[1]->bind();
     m_pFullScreenQuad[0]->render(m_pCamera);

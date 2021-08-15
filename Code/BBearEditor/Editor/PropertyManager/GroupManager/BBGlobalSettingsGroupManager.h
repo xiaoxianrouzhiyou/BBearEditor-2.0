@@ -29,7 +29,7 @@ private:
 
     BBScene *m_pScene;
     BBEnumFactory *m_pRenderingAlgorithmFactory;
-    QCheckBox *m_pTriggerRayTracing;
+    BBEnumExpansionFactory *m_pRayTracingFactory;
     BBEnumExpansionFactory *m_pSphericalHarmonicLightingFactory;
     BBEnumExpansionFactory *m_pGlobalIlluminationFactory;
 };
