@@ -12,7 +12,7 @@ In addition, I referred to some code, learning resources, UI designs, and art re
 ## Installation
 * QT 5.7.2
 * OpenGL
-* I use python 3.7.9 32bit. Please copy .../Python/Python37-32/Lib into Code\BBearEditor\Engine\Python!
+* I use python 3.7.9 32bit. Please copy .../Python/Python37-32/Lib into Code/BBearEditor/Engine/Python!
 ## Contacts and Links
 I really look forward to making friends with related interests, and we will share experience and learn together!
 * E-Mail: 184346971@qq.com
