@@ -1,7 +1,8 @@
 #version 430 core
 
-out vec3 v2f_world_space_pos;
-out vec2 v2f_texcoord;
+in vec4 v2f_world_space_pos;
+in vec2 v2f_texcoord;
+in vec4 v2f_normal;
 
 layout (location = 0) out vec4 FragColor;
 
@@ -13,7 +14,7 @@ uniform mat4 BBProjectionMatrix;
 uniform mat4 BBViewMatrix;
 uniform sampler2D DiffuseTex;
 
-float RayLength = 10000;
+float RayLength = 1000;
 float stride = 1.0;
 
 float linearizeDepth(float depth)
@@ -154,8 +155,9 @@ Result computeRayMarching(Ray ray)
 
 void main(void)
 {
-    vec3 origin_point = v2f_world_space_pos;
+    vec3 origin_point = v2f_world_space_pos.xyz;
     vec3 view_dir = normalize(BBCameraPosition.xyz - origin_point);
+    // vec3 normal = normalize(v2f_normal.xyz);
     vec3 normal = vec3(0.0, 1.0, 0.0);
     vec3 reflect_dir = normalize(reflect(-view_dir, normal));
 
@@ -167,16 +169,15 @@ void main(void)
     if (result.is_hit)
     {
         // Reflected color
-        FragColor = vec4(texture(BBCameraColorTexture, result.uv / BBCameraParameters.xy).xyz, 1.0);
+        FragColor = texture(BBCameraColorTexture, result.uv / BBCameraParameters.xy);
     }
     else
     {
         // original color
-        vec4 screen_space_pos = BBProjectionMatrix * BBViewMatrix * vec4(origin_point, 1.0);
+        vec4 screen_space_pos = BBProjectionMatrix * BBViewMatrix * v2f_world_space_pos;
         screen_space_pos.xy /= screen_space_pos.w;
         // -1~1 -> 0~1
         screen_space_pos.xy = screen_space_pos.xy * 0.5 + 0.5;
-        FragColor = vec4(texture(BBCameraColorTexture, screen_space_pos.xy).xyz, 1.0);
-        // FragColor = vec4(texture(DiffuseTex, v2f_texcoord).xyz, 1.0);
+        FragColor = texture(BBCameraColorTexture, screen_space_pos.xy);
     }
 }
