@@ -2,7 +2,7 @@
 #include "Scene/BBScene.h"
 #include "2D/BBFullScreenQuad.h"
 #include "Render/BBMaterial.h"
-#include "Render/BBTexture.h"
+#include "Render/Texture/BBTexture.h"
 #include "Math/BBMath.h"
 
 

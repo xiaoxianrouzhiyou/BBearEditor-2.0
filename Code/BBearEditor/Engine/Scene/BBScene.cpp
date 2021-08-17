@@ -20,8 +20,9 @@
 #include "Scene/BBRendererManager.h"
 #include "2D/BBCanvas.h"
 #include "2D/BBSpriteObject2D.h"
+#include "ParticleSystem/BBParticleSystem.h"
 #include "RayTracing/BBRayTracker.h"
-#include "Render/BBTexture.h"
+#include "Render/Texture/BBTexture.h"
 #include "Render/BBRenderQueue.h"
 #include "3D/BBNormalIndicator.h"
 
@@ -128,6 +129,11 @@ void BBScene::defaultRendering()
     for (QList<BBGameObject*>::Iterator itr = m_Canvases.begin(); itr != m_Canvases.end(); itr++)
     {
         ((BBCanvas*)(*itr))->render();
+    }
+
+    for (QList<BBGameObject*>::Iterator itr = m_ParticleSystems.begin(); itr != m_ParticleSystems.end(); itr++)
+    {
+        ((BBParticleSystem*)(*itr))->render(m_pCamera);
     }
 
     m_pTransformCoordinateSystem->render(m_pCamera);
@@ -356,6 +362,21 @@ BBSpriteObject2D* BBScene::createSpriteObject2D(BBCanvas *pCanvas, int x, int y,
     return pSpriteObject2D;
 }
 
+BBParticleSystem* BBScene::createParticleSystem(int x, int y, bool bSelect)
+{
+    BBRay ray = m_pCamera->createRayFromScreen(x, y);
+    // ground y=0
+    QVector3D hit = ray.computeIntersectWithXOZPlane(0);
+
+    BBParticleSystem *pParticleSystem = new BBParticleSystem(hit);
+    pParticleSystem->setBaseAttributes(BB_CLASSNAME_PARTICLE, BB_CLASSNAME_PARTICLE, "particle white");
+    pParticleSystem->init();
+
+    m_ParticleSystems.append(pParticleSystem);
+
+    return pParticleSystem;
+}
+
 bool BBScene::hitCanvas(int x, int y, BBCanvas *&pOutCanvas)
 {
     m_pCamera->switchCoordinate(x, y);
@@ -442,6 +463,11 @@ void BBScene::deleteGameObject(BBGameObject *pGameObject)
     {
         m_Canvases.removeOne(pGameObject);
     }
+    else if (pGameObject->getClassName() == BB_CLASSNAME_PARTICLE)
+    {
+        m_ParticleSystems.removeOne(pGameObject);
+    }
+
 //    else if (object->getClassName() == TerrainClassName)
 //    {
 //        models.removeOne(object);

@@ -59,7 +59,7 @@
 class BBBaseRenderComponent : protected QOpenGLFunctions_4_5_Core
 {
 public:
-    BBBaseRenderComponent();
+    BBBaseRenderComponent() { initializeOpenGLFunctions(); }
 };
 
 #endif // BBBASERENDERCOMPONENT_H

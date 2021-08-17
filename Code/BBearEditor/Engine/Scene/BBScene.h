@@ -17,6 +17,7 @@ class BBModel;
 class BBLight;
 class BBCanvas;
 class BBSpriteObject2D;
+class BBParticleSystem;
 class BBSelectionRegion;
 class BBRay;
 class BBTransformCoordinateSystem;
@@ -81,6 +82,8 @@ public:
 
     BBSpriteObject2D* createSpriteObject2D(BBCanvas *pCanvas, int x, int y, bool bSelect = true);
 
+    BBParticleSystem* createParticleSystem(int x, int y, bool bSelect = true);
+
     bool hitCanvas(int x, int y, BBCanvas *&pOutCanvas);
     BBGameObject* pickObject(const QList<BBGameObject*> &alternativeObjects, const BBRay &ray, bool bSelect = true);
     BBGameObject* pickObjectInAllObjects(const BBRay &ray, bool bSelect = true);
@@ -121,6 +124,7 @@ private:
     QList<BBGameObject*> m_Models;
     QList<BBGameObject*> m_Lights;
     QList<BBGameObject*> m_Canvases;
+    QList<BBGameObject*> m_ParticleSystems;
 
     BBSelectionRegion *m_pSelectionRegion;
 

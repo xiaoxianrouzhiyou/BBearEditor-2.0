@@ -5,7 +5,7 @@
 #include "Render/BBMaterial.h"
 #include "Render/BBPreviewOpenGLWidget.h"
 #include "Render/BBRenderPass.h"
-#include "Render/BBTexture.h"
+#include "Render/Texture/BBTexture.h"
 
 
 BBPreviewOpenGLWidget* BBRendererManager::m_pPreviewOpenGLWidget = nullptr;

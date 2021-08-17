@@ -2,7 +2,7 @@
 #define BBTEXTURE_H
 
 
-#include "BBBaseRenderComponent.h"
+#include "../BBBaseRenderComponent.h"
 
 class BBTexture : public BBBaseRenderComponent
 {

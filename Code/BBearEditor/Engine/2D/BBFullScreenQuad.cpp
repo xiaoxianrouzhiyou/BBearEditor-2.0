@@ -3,7 +3,7 @@
 #include "Render/BBMaterial.h"
 #include "Render/BBDrawCall.h"
 #include "Render/BBRenderPass.h"
-#include "Render/BBTexture.h"
+#include "Render/Texture/BBTexture.h"
 #include "Scene/BBScene.h"
 #include "Scene/BBSceneManager.h"
 #include "Lighting/GameObject/BBLight.h"

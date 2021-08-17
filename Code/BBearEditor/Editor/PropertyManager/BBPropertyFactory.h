@@ -122,7 +122,7 @@ class BBEnumFactory : public QWidget
 
 public:
     BBEnumFactory(const QString &name, const QStringList &comboBoxItems,
-                  const QString &currentText = "", QWidget *pParent = 0, int labelStretch = 0, int comboBoxStretch = 1);
+                  const QString &currentText = "", QWidget *pParent = 0, int labelStretch = 1, int comboBoxStretch = 3);
     ~BBEnumFactory();
 
     int getCurrentItemIndex();

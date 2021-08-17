@@ -14,6 +14,7 @@
 #include "Lighting/GameObject/BBLight.h"
 #include "2D/BBCanvas.h"
 #include "2D/BBSpriteObject2D.h"
+#include "ParticleSystem/BBParticleSystem.h"
 #include "FileSystem/BBFileSystemDataManager.h"
 #include "Scene/BBRendererManager.h"
 
@@ -325,6 +326,10 @@ void BBEditViewOpenGLWidget::dragEnterEvent(QDragEnterEvent *event)
         {
             openThreadToCreatePreviewModel(m_DragType, event->pos().x(), event->pos().y());
         }
+        else if (m_DragType == BB_CLASSNAME_PARTICLE)
+        {
+            m_pPreviewObject = m_pScene->createParticleSystem(event->pos().x(), event->pos().y());
+        }
         else
         {
             // Create a temporary object to show drag effect
@@ -370,7 +375,8 @@ void BBEditViewOpenGLWidget::dragMoveEvent(QDragMoveEvent *event)
     event->accept();
     if (m_pPreviewObject)
     {
-        if (m_pPreviewObject->getClassName() == BB_CLASSNAME_MODEL)
+        if (m_pPreviewObject->getClassName() == BB_CLASSNAME_MODEL
+                || m_pPreviewObject->getClassName() == BB_CLASSNAME_PARTICLE)
         {
             BBRay ray = m_pScene->getCamera()->createRayFromScreen(event->pos().x(), event->pos().y());
             m_pPreviewObject->setPosition(ray.computeIntersectWithXOZPlane(0));

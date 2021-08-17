@@ -47,6 +47,8 @@ void BBRenderPass::bind(void *ptr)
     BBGlobalRenderState::updateLineWidth(m_RenderState.m_fLineWidth);
     BBGlobalRenderState::updateCullState(m_RenderState.m_bCull);
     BBGlobalRenderState::updateCullFace(m_RenderState.m_CullFace);
+    BBGlobalRenderState::updatePointSpriteState(m_RenderState.m_bEnablePointSprite);
+    BBGlobalRenderState::updateProgramPointSizeState(m_RenderState.m_bEnableProgramPointSize);
 
     m_pShader->activeAttributes();
 
@@ -165,6 +167,16 @@ void BBRenderPass::setCullState(bool bEnable)
 void BBRenderPass::setCullFace(int face)
 {
     m_RenderState.m_CullFace = face;
+}
+
+void BBRenderPass::setPointSpriteState(bool bEnable)
+{
+    m_RenderState.m_bEnablePointSprite = bEnable;
+}
+
+void BBRenderPass::setProgramPointSizeState(bool bEnable)
+{
+    m_RenderState.m_bEnableProgramPointSize = bEnable;
 }
 
 void BBRenderPass::setFloat(const std::string &uniformName, const float fValue)

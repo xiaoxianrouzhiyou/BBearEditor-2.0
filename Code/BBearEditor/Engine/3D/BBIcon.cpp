@@ -3,7 +3,7 @@
 #include "Render/BBVertexBufferObject.h"
 #include "Render/BBMaterial.h"
 #include "Render/BBRenderPass.h"
-#include "Render/BBTexture.h"
+#include "Render/Texture/BBTexture.h"
 #include "Render/BBDrawCall.h"
 
 

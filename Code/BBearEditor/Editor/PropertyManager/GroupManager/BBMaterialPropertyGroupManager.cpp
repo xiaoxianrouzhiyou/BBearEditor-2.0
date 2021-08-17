@@ -1,6 +1,6 @@
 #include "BBMaterialPropertyGroupManager.h"
 #include "Utils/BBUtils.h"
-#include "Render/BBTexture.h"
+#include "Render/Texture/BBTexture.h"
 #include "Render/BBPreviewOpenGLWidget.h"
 #include "Scene/BBRendererManager.h"
 #include "Render/BBMaterial.h"

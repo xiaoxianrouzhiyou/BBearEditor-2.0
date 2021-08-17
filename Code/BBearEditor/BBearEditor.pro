@@ -73,7 +73,6 @@ SOURCES += \
     Engine/Render/BBMaterial.cpp \
     Engine/Render/BBBufferObject.cpp \
     Engine/Render/BBAttribute.cpp \
-    Engine/Render/BBBaseRenderComponent.cpp \
     Engine/Render/BBLinkedList.cpp \
     Engine/Render/BBShader.cpp \
     Engine/Render/BBUniformUpdater.cpp \
@@ -82,7 +81,7 @@ SOURCES += \
     Engine/Render/BBRenderPass.cpp \
     Engine/Lighting/GameObject/BBLight.cpp \
     Engine/Render/BBFrameBufferObject.cpp \
-    Engine/Render/BBTexture.cpp \
+    Engine/Render/Texture/BBTexture.cpp \
     Engine/Lighting/GameObject/BBDirectionalLight.cpp \
     Engine/Lighting/GameObject/BBPointLight.cpp \
     Engine/Lighting/GameObject/BBSpotLight.cpp \
@@ -128,7 +127,10 @@ SOURCES += \
     Engine/Lighting/GI/BBSSAOGlobalIllumination.cpp \
     Engine/Lighting/GI/BBSSDOGlobalIllumination.cpp \
     Engine/RayTracing/BBScreenSpaceRayTracker.cpp \
-    Editor/PropertyManager/GroupManager/BBRenderManager.cpp
+    Editor/PropertyManager/GroupManager/BBRenderManager.cpp \
+    Engine/Render/Texture/BBProcedureTexture.cpp \
+    Engine/ParticleSystem/BBParticleSystem.cpp \
+    Engine/ParticleSystem/BBParticle.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -190,7 +192,7 @@ HEADERS += \
     Engine/Render/BBRenderPass.h \
     Engine/Lighting/GameObject/BBLight.h \
     Engine/Render/BBFrameBufferObject.h \
-    Engine/Render/BBTexture.h \
+    Engine/Render/Texture/BBTexture.h \
     Engine/Lighting/GameObject/BBDirectionalLight.h \
     Engine/Lighting/GameObject/BBPointLight.h \
     Engine/Lighting/GameObject/BBSpotLight.h \
@@ -237,7 +239,10 @@ HEADERS += \
     Engine/Math/BBMath.h \
     Engine/Lighting/GI/BBSSDOGlobalIllumination.h \
     Engine/RayTracing/BBScreenSpaceRayTracker.h \
-    Editor/PropertyManager/GroupManager/BBRenderManager.h
+    Editor/PropertyManager/GroupManager/BBRenderManager.h \
+    Engine/Render/Texture/BBProcedureTexture.h \
+    Engine/ParticleSystem/BBParticleSystem.h \
+    Engine/ParticleSystem/BBParticle.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

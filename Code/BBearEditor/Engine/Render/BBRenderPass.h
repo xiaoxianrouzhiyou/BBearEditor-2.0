@@ -42,6 +42,8 @@ public:
     void setLineWidth(float fWidth);
     void setCullState(bool bEnable);
     void setCullFace(int face);
+    void setPointSpriteState(bool bEnable);
+    void setProgramPointSizeState(bool bEnable);
 
     bool getBlendState() { return m_RenderState.m_bBlend; }
     unsigned int getSRCBlendFunc() { return m_RenderState.m_SRCBlendFunc; }

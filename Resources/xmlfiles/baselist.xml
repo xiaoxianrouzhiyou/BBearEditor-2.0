@@ -13,5 +13,6 @@
     <model icon="../../resources/icons/scene white.png" file="Terrain" name="Terrain"> </model>
     <model icon="../../resources/icons/camera2.png" file="xxx" name="Camera"> </model>
     <model icon="../../resources/icons/trigger2.png" file="xxx" name="Trigger"> </model>
+    <model icon="../../resources/icons/particle white.png" file="Particle" name="Particle"> </model>
 
 </root>

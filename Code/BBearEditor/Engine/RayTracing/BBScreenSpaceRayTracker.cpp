@@ -3,7 +3,7 @@
 #include "Scene/BBScene.h"
 #include "Base/BBGameObject.h"
 #include "2D/BBFullScreenQuad.h"
-#include "Render/BBTexture.h"
+#include "Render/Texture/BBTexture.h"
 
 
 void BBScreenSpaceRayTracker::open(BBScene *pScene)

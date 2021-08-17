@@ -21,7 +21,10 @@ struct BBRenderState
     bool m_bWriteStencil;
     bool m_bUseStencil;
     bool m_bCull;
+    // Draw points as point sprites
     bool m_bEnablePointSprite;
+    // Use the program to set the size of the point sprite
+    bool m_bEnableProgramPointSize;
     int m_CullFace;
     unsigned int m_AlphaTestFunc;
     float m_fAlphaTestValue;
@@ -53,6 +56,8 @@ public:
     static void updateLineWidth(float fWidth);
     static void updateCullState(bool bEnable);
     static void updateCullFace(int face);
+    static void updatePointSpriteState(bool bEnable);
+    static void updateProgramPointSizeState(bool bEnable);
 
     static void clearStencil(int value);
 

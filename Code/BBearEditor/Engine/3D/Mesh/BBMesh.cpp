@@ -6,7 +6,7 @@
 #include "Render/BBVertexBufferObject.h"
 #include "Render/BBRenderPass.h"
 #include "Render/BBDrawCall.h"
-#include "Render/BBTexture.h"
+#include "Render/Texture/BBTexture.h"
 
 
 BBMesh::BBMesh()
