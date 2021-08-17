@@ -35,9 +35,7 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
                                               positions);
     pOutBoundingBox->init();
 
-    m_pCurrentMaterial->initMultiPass("standard",
-                                      BB_PATH_RESOURCE_SHADER(standard.vert),
-                                      BB_PATH_RESOURCE_SHADER(standard.frag));
+    m_pCurrentMaterial->initMultiPass("standard", BB_PATH_RESOURCE_SHADER(standard.vert), BB_PATH_RESOURCE_SHADER(standard.frag));
     m_pCurrentMaterial->getAdditiveRenderPass()->setBlendState(true);
 
     // default

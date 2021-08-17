@@ -13,6 +13,8 @@ uniform vec4 BBCameraPosition;
 uniform mat4 BBProjectionMatrix;
 uniform mat4 BBViewMatrix;
 uniform sampler2D DiffuseTex;
+uniform sampler2D DistortTex;
+uniform float Distort;
 
 float RayLength = 1000;
 float stride = 1.0;
@@ -61,7 +63,7 @@ bool query(vec2 z, vec2 uv)
     depth = -linearizeDepth(depth);
     // Before marching, it is before the depth value of the depth map
     // but after marching, it is in the back of depth value, indicating intersection
-    return z.y < depth && z.x > depth;
+    return z.y < depth;
 }
 
 Result computeRayMarching(Ray ray)
@@ -168,8 +170,11 @@ void main(void)
 
     if (result.is_hit)
     {
+        vec2 uv = result.uv / BBCameraParameters.xy;
+        vec4 distort_color = texture2D(DistortTex, v2f_texcoord.xy);
+        uv = mix(uv, distort_color.xy, Distort);
         // Reflected color
-        FragColor = texture(BBCameraColorTexture, result.uv / BBCameraParameters.xy);
+        FragColor = texture(BBCameraColorTexture, uv);
     }
     else
     {
