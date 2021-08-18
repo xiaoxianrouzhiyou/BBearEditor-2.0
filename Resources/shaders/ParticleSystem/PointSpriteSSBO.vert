@@ -31,7 +31,7 @@ void main()
     // point sprite needs to face us
     vec4 sprite_pos_view_space = BBViewMatrix * BBModelMatrix * sprite_pos;
     v2f_texcoord = vec2(((gl_VertexID - 1) & 2) >> 1, (gl_VertexID & 2) >> 1);
-    float sprite_size = 0.1;
+    float sprite_size = 0.015;
     // Use one point coordinate to calculate four vertex coordinates
     vec3 offset = vec3((v2f_texcoord * 2.0 - 1.0) * sprite_size, 0.0);
     vec4 fixed_pos = vec4(sprite_pos_view_space.xyz + offset, 1.0);

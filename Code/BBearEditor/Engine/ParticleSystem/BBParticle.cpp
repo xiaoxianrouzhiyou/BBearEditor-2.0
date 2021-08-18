@@ -5,12 +5,14 @@
 #include "Render/Texture/BBProcedureTexture.h"
 #include "Render/BBRenderPass.h"
 #include "Render/BBDrawCall.h"
+#include "Math/BBMath.h"
 
 
 BBParticle::BBParticle(const QVector3D &position)
     : BBRenderableObject(position, QVector3D(0, 0, 0), QVector3D(1, 1, 1))
 {
     m_pSSBO = nullptr;
+    m_nVertexCount = 1 << 15;
 }
 
 void BBParticle::init()
@@ -22,6 +24,7 @@ void BBParticle::init()
     m_pCurrentMaterial->getBaseRenderPass()->setZTestState(false);
     m_pCurrentMaterial->getBaseRenderPass()->setPointSpriteState(true);
     m_pCurrentMaterial->getBaseRenderPass()->setProgramPointSizeState(true);
+    m_pCurrentMaterial->getBaseRenderPass()->setCullState(false);
 }
 
 void BBParticle::render(BBCamera *pCamera)
@@ -73,20 +76,29 @@ void BBParticle::update0()
 
 void BBParticle::create1()
 {
-    m_pSSBO = new BBShaderStorageBufferObject(1);
-    m_pSSBO->setPosition(0, 0.0f, 0.0f, 0.0f);
-    m_pSSBO->setColor(0, 0.1f, 0.4f, 0.6f);
+    m_pSSBO = new BBShaderStorageBufferObject(m_nVertexCount);
+    m_nIndexCount = 6 * m_nVertexCount;
+    m_pIndexes = new unsigned short[m_nIndexCount];
+    unsigned short *pCurrent = m_pIndexes;
+    for (int i = 0; i < m_nVertexCount; i++)
+    {
+        m_pSSBO->setPosition(i, sfrandom(), sfrandom(), sfrandom());
+        m_pSSBO->setColor(i, 0.1f, 0.4f, 0.6f);
+
+        unsigned short index(i << 2);
+
+        *(pCurrent++) = index;
+        *(pCurrent++) = index + 1;
+        *(pCurrent++) = index + 2;
+
+        *(pCurrent++) = index;
+        *(pCurrent++) = index + 2;
+        *(pCurrent++) = index + 3;
+    }
+
     m_pCurrentMaterial->init("PointSpriteSSBO",
                              BB_PATH_RESOURCE_SHADER(ParticleSystem/PointSpriteSSBO.vert),
                              BB_PATH_RESOURCE_SHADER(ParticleSystem/PointSpriteSSBO.frag));
-
-    m_nIndexCount = 6;
-    unsigned short indexes[] = {0, 1, 2, 0, 2, 3};
-    m_pIndexes = new unsigned short[m_nIndexCount];
-    for (int i = 0; i < m_nIndexCount; i++)
-    {
-        m_pIndexes[i] = indexes[i];
-    }
 
     BBRenderableObject::init();
 

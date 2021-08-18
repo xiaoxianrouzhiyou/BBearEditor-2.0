@@ -126,6 +126,7 @@ SOURCES += \
     Engine/Lighting/GI/BBGlobalIllumination.cpp \
     Engine/Lighting/GI/BBSSAOGlobalIllumination.cpp \
     Engine/Lighting/GI/BBSSDOGlobalIllumination.cpp \
+    Engine/Math/BBMath.cpp \
     Engine/RayTracing/BBScreenSpaceRayTracker.cpp \
     Editor/PropertyManager/GroupManager/BBRenderManager.cpp \
     Engine/Render/Texture/BBProcedureTexture.cpp \
