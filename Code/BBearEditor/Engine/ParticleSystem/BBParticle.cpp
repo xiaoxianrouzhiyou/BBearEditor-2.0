@@ -73,15 +73,9 @@ void BBParticle::update0()
 
 void BBParticle::create1()
 {
-    m_pSSBO = new BBShaderStorageBufferObject(4);
+    m_pSSBO = new BBShaderStorageBufferObject(1);
     m_pSSBO->setPosition(0, 0.0f, 0.0f, 0.0f);
-    m_pSSBO->setPosition(1, 1.0f, 0.0f, 0.0f);
-    m_pSSBO->setPosition(2, 0.0f, 1.0f, 0.0f);
-    m_pSSBO->setPosition(3, 0.0f, 0.0f, 1.0f);
     m_pSSBO->setColor(0, 0.1f, 0.4f, 0.6f);
-    m_pSSBO->setColor(1, 0.1f, 0.4f, 0.6f);
-    m_pSSBO->setColor(2, 0.1f, 0.4f, 0.6f);
-    m_pSSBO->setColor(3, 0.1f, 0.4f, 0.6f);
     m_pCurrentMaterial->init("PointSpriteSSBO",
                              BB_PATH_RESOURCE_SHADER(ParticleSystem/PointSpriteSSBO.vert),
                              BB_PATH_RESOURCE_SHADER(ParticleSystem/PointSpriteSSBO.frag));
