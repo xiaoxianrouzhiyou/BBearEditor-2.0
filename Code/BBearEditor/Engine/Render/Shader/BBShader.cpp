@@ -1,7 +1,7 @@
 #include "BBShader.h"
-#include "BBAttribute.h"
-#include "BBUniformUpdater.h"
-#include "BufferObject/BBVertexBufferObject.h"
+#include "../BBAttribute.h"
+#include "../BBUniformUpdater.h"
+#include "../BufferObject/BBVertexBufferObject.h"
 
 
 QMap<std::string, BBShader*> BBShader::m_CachedShaders;
@@ -67,32 +67,6 @@ void BBShader::init(const QString &vShaderPath, const QString &fShaderPath)
 
     BB_SAFE_DELETE(vCode);
     BB_SAFE_DELETE(fCode);
-}
-
-void BBShader::init(const QString &computeShaderPath)
-{
-    const char *code = nullptr;
-    do
-    {
-        int nFileSize;
-        code = BBUtils::loadFileContent(computeShaderPath.toStdString().c_str(), nFileSize);
-        BB_PROCESS_ERROR(code);
-
-        GLuint shader = compileShader(GL_COMPUTE_SHADER, code);
-        BB_PROCESS_ERROR(shader);
-
-        m_Program = createProgram(shader);
-        glDeleteShader(shader);
-
-        if (m_Program != 0)
-        {
-            // generate attribute chain
-            initAttributes();
-            initUniforms();
-        }
-    } while(0);
-
-    BB_SAFE_DELETE(code);
 }
 
 void BBShader::activeAttributes()
@@ -386,26 +360,6 @@ GLuint BBShader::createProgram(GLuint vShader, GLuint fShader)
         GLsizei logLength = 0;
         glGetProgramInfoLog(program, 1024, &logLength, szLog);
         qDebug() << "create GPU program fail, log:" << szLog;
-        glDeleteProgram(program);
-        program = 0;
-    }
-    return program;
-}
-
-GLuint BBShader::createProgram(GLuint computeShader)
-{
-    GLuint program = glCreateProgram();
-    glAttachShader(program, computeShader);
-    glLinkProgram(program);
-    glDetachShader(program, computeShader);
-    GLint nResult;
-    glGetProgramiv(program, GL_LINK_STATUS, &nResult);
-    if (nResult == GL_FALSE)
-    {
-        char szLog[1024] = {0};
-        GLsizei logLength = 0;
-        glGetProgramInfoLog(program, 1024, &logLength, szLog);
-        qDebug() << "create compute program fail, log:" << szLog;
         glDeleteProgram(program);
         program = 0;
     }

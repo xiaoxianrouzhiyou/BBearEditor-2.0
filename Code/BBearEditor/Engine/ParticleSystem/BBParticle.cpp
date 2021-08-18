@@ -6,14 +6,14 @@
 #include "Render/BBRenderPass.h"
 #include "Render/BBDrawCall.h"
 #include "Math/BBMath.h"
-#include "Render/BBShader.h"
+#include "Render/Shader/BBComputeShader.h"
 
 
 BBParticle::BBParticle(const QVector3D &position)
     : BBRenderableObject(position, QVector3D(0, 0, 0), QVector3D(1, 1, 1))
 {
     m_pSSBO = nullptr;
-    m_nVertexCount = 1 << 15;
+    m_nVertexCount = 1 << 20;
     m_pUpdateCShader = nullptr;
 }
 
@@ -39,6 +39,7 @@ void BBParticle::render(BBCamera *pCamera)
 {
     update1();
     m_pDrawCalls->renderOnePassSSBO(pCamera);
+    m_pUpdateCShader->unbind();
 }
 
 void BBParticle::create0()
@@ -118,12 +119,16 @@ void BBParticle::create1()
     pDrawCall->setEBO(m_pEBO, GL_TRIANGLES, m_nIndexCount, 0);
     appendDrawCall(pDrawCall);
 
+    m_pSSBO->submitData();
+
     // compute shader of update
-    m_pUpdateCShader = new BBShader();
+    m_pUpdateCShader = new BBComputeShader();
     m_pUpdateCShader->init(BB_PATH_RESOURCE_SHADER(ParticleSystem/UpdateParticles.shader));
 }
 
 void BBParticle::update1()
 {
-    m_pSSBO->submitData();
+    m_pSSBO->bind();
+    // Corresponding to "layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;" in the compute shader
+    m_pUpdateCShader->bind(m_nVertexCount / 256, 1, 1);
 }

@@ -1,7 +1,7 @@
 #include "BBRenderPass.h"
 #include "BBMaterialProperty.h"
 #include "BBCamera.h"
-#include "BBShader.h"
+#include "Shader/BBShader.h"
 #include "BBUniformUpdater.h"
 
 

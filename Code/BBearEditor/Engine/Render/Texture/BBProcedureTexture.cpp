@@ -37,7 +37,7 @@ GLuint BBProcedureTexture::create0(int nSize)
 
 GLuint BBProcedureTexture::create3D0(int nWidth, int nHeight, int nDepth)
 {
-    char *pData = new char[nWidth * nHeight * nDepth];
+    char *pData = new char[nWidth * nHeight * nDepth * 4];
     char *pCurrent = pData;
     for (int a = 0; a < nWidth; a++)
     {

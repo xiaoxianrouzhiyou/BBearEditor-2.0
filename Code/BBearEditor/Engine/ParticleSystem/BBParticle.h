@@ -5,7 +5,7 @@
 #include "Base/BBRenderableObject.h"
 
 class BBShaderStorageBufferObject;
-class BBShader;
+class BBComputeShader;
 
 class BBParticle : public BBRenderableObject
 {
@@ -25,7 +25,7 @@ private:
 
 private:
     BBShaderStorageBufferObject *m_pSSBO;
-    BBShader *m_pUpdateCShader;
+    BBComputeShader *m_pUpdateCShader;
 };
 
 #endif // BBPARTICLE_H

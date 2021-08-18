@@ -2,8 +2,8 @@
 #define BBSHADER_H
 
 
-#include "BBBaseRenderComponent.h"
-#include "BBMaterialProperty.h"
+#include "../BBBaseRenderComponent.h"
+#include "../BBMaterialProperty.h"
 
 class BBAttribute;
 class BBUniformUpdater;
@@ -16,8 +16,6 @@ public:
 
     static BBShader* loadShader(const char *name, const QString &vShaderPath, const QString &fShaderPath);
     void init(const QString &vShaderPath, const QString &fShaderPath);
-
-    void init(const QString &computeShaderPath);
 
     inline void setShaderName(const char *name) { strcpy(m_ShaderName, name); }
     inline void setVShaderPath(const QString &path) { m_VShaderPath = path; }
@@ -32,7 +30,7 @@ public:
     inline BBUniformUpdater* getUniforms() { return m_pUniforms; }
     inline bool isWriteFBO() { return m_bWriteFBO; }
 
-private:
+protected:
     void initAttributes();
     void initUniforms();
     BBUniformUpdater* initUniformFloat(GLint location, const char *pUniformName);
@@ -45,7 +43,6 @@ private:
 
     GLuint compileShader(GLenum shaderType, const char *shaderCode);
     GLuint createProgram(GLuint vShader, GLuint fShader);
-    GLuint createProgram(GLuint computeShader);
 
     static QMap<std::string, BBShader*> m_CachedShaders;
     GLuint m_Program;
