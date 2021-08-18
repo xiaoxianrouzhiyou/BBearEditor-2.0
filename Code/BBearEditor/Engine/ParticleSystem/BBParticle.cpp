@@ -6,6 +6,7 @@
 #include "Render/BBRenderPass.h"
 #include "Render/BBDrawCall.h"
 #include "Math/BBMath.h"
+#include "Render/BBShader.h"
 
 
 BBParticle::BBParticle(const QVector3D &position)
@@ -13,6 +14,13 @@ BBParticle::BBParticle(const QVector3D &position)
 {
     m_pSSBO = nullptr;
     m_nVertexCount = 1 << 15;
+    m_pUpdateCShader = nullptr;
+}
+
+BBParticle::~BBParticle()
+{
+    BB_SAFE_DELETE(m_pSSBO);
+    BB_SAFE_DELETE(m_pUpdateCShader);
 }
 
 void BBParticle::init()
@@ -44,7 +52,7 @@ void BBParticle::create0()
     m_pCurrentMaterial->init("Particles0", BB_PATH_RESOURCE_SHADER(ParticleSystem/Particles0.vert), BB_PATH_RESOURCE_SHADER(ParticleSystem/Particles0.frag));
 
     BBProcedureTexture texture;
-    m_pCurrentMaterial->getBaseRenderPass()->setSampler2D(LOCATION_TEXTURE(0), texture.create(128));
+    m_pCurrentMaterial->getBaseRenderPass()->setSampler2D(LOCATION_TEXTURE(0), texture.create0(128));
 
     BBRenderableObject::init();
 
@@ -84,6 +92,8 @@ void BBParticle::create1()
     {
         m_pSSBO->setPosition(i, sfrandom(), sfrandom(), sfrandom());
         m_pSSBO->setColor(i, 0.1f, 0.4f, 0.6f);
+        // used as the speed of update
+        m_pSSBO->setNormal(i, 0.0f, 0.0f, 0.0f);
 
         unsigned short index(i << 2);
 
@@ -107,6 +117,10 @@ void BBParticle::create1()
     pDrawCall->setSSBO(m_pSSBO);
     pDrawCall->setEBO(m_pEBO, GL_TRIANGLES, m_nIndexCount, 0);
     appendDrawCall(pDrawCall);
+
+    // compute shader of update
+    m_pUpdateCShader = new BBShader();
+    m_pUpdateCShader->init(BB_PATH_RESOURCE_SHADER(ParticleSystem/UpdateParticles.shader));
 }
 
 void BBParticle::update1()
