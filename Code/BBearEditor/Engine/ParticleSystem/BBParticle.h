@@ -14,8 +14,10 @@ public:
 
 private:
     void create0();
-
     void update0();
+
+    void create1();
+    void update1();
 };
 
 #endif // BBPARTICLE_H

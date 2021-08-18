@@ -41,6 +41,7 @@ public:
     static void switchRenderingSettings(int nIndex);
     void renderOnePass(BBCamera *pCamera);
     void renderOnePass(BBCamera *pCamera, QList<BBGameObject*> lights);
+    void renderOnePassSSBO(BBCamera *pCamera);
     void renderForwardPass(BBCamera *pCamera);
     void renderUIPass(BBCanvas *pCanvas);
     void renderViewSpaceFBOPass(BBCamera *pCamera);

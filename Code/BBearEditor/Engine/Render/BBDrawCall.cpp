@@ -148,6 +148,18 @@ void BBDrawCall::renderOnePass(BBCamera *pCamera, QList<BBGameObject*> lights)
     m_pVBO->unbind();
 }
 
+void BBDrawCall::renderOnePassSSBO(BBCamera *pCamera)
+{
+    BBRenderPass *pBaseRenderPass = m_pMaterial->getBaseRenderPass();
+    pBaseRenderPass->bind(pCamera);
+
+    m_pEBO->bind();
+    m_pEBO->draw(m_eDrawPrimitiveType, m_nIndexCount, m_nDrawStartIndex);
+    m_pEBO->unbind();
+
+    pBaseRenderPass->unbind();
+}
+
 void BBDrawCall::renderForwardPass(BBCamera *pCamera)
 {
     if (m_bVisible)

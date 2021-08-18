@@ -14,7 +14,7 @@ BBParticle::BBParticle(const QVector3D &position)
 
 void BBParticle::init()
 {
-    create0();
+    create1();
 
     m_pCurrentMaterial->getBaseRenderPass()->setBlendState(true);
     m_pCurrentMaterial->getBaseRenderPass()->setBlendFunc(GL_SRC_ALPHA, GL_ONE);
@@ -23,18 +23,13 @@ void BBParticle::init()
     m_pCurrentMaterial->getBaseRenderPass()->setProgramPointSizeState(true);
 
     BBRenderableObject::init();
-
-    BBDrawCall *pDrawCall = new BBDrawCall;
-    pDrawCall->setMaterial(m_pCurrentMaterial);
-    pDrawCall->setVBO(m_pVBO, GL_POINTS, 0, m_pVBO->getVertexCount());
-    appendDrawCall(pDrawCall);
 }
 
 void BBParticle::render(BBCamera *pCamera)
 {
-    update0();
+    update1();
     m_pVBO->submitData();
-    BBRenderableObject::render(pCamera);
+    m_pDrawCalls->renderOnePassSSBO(pCamera);
 }
 
 void BBParticle::create0()
@@ -49,6 +44,11 @@ void BBParticle::create0()
 
     BBProcedureTexture texture;
     m_pCurrentMaterial->getBaseRenderPass()->setSampler2D(LOCATION_TEXTURE(0), texture.create(128));
+
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pCurrentMaterial);
+    pDrawCall->setVBO(m_pVBO, GL_POINTS, 0, m_pVBO->getVertexCount());
+    appendDrawCall(pDrawCall);
 }
 
 void BBParticle::update0()
@@ -67,4 +67,32 @@ void BBParticle::update0()
             r -= 1.0f;
         m_pVBO->setColor(i, r, 0.4f, 0.6f);
     }
+}
+
+void BBParticle::create1()
+{
+    m_pVBO = new BBVertexBufferObject(1);
+    m_pVBO->setPosition(0, 0.0f, 0.0f, 0.0f);
+    m_pVBO->setColor(0, 0.1f, 0.4f, 0.6f);
+    m_pCurrentMaterial->init("PointSpriteSSBO",
+                             BB_PATH_RESOURCE_SHADER(ParticleSystem/PointSpriteSSBO.vert),
+                             BB_PATH_RESOURCE_SHADER(ParticleSystem/PointSpriteSSBO.frag));
+
+    m_nIndexCount = 6;
+    unsigned short indexes[] = {0, 1, 2, 0, 2, 3};
+    m_pIndexes = new unsigned short[m_nIndexCount];
+    for (int i = 0; i < m_nIndexCount; i++)
+    {
+        m_pIndexes[i] = indexes[i];
+    }
+
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pCurrentMaterial);
+    pDrawCall->setEBO(m_pEBO, GL_TRIANGLES, m_nIndexCount, 0);
+    appendDrawCall(pDrawCall);
+}
+
+void BBParticle::update1()
+{
+
 }

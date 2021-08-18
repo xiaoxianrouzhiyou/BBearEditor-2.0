@@ -16,6 +16,9 @@ public:
 
     static BBShader* loadShader(const char *name, const QString &vShaderPath, const QString &fShaderPath);
     void init(const QString &vShaderPath, const QString &fShaderPath);
+
+    void init(const QString &computeShaderPath);
+
     inline void setShaderName(const char *name) { strcpy(m_ShaderName, name); }
     inline void setVShaderPath(const QString &path) { m_VShaderPath = path; }
     inline void setFShaderPath(const QString &path) { m_FShaderPath = path; }
@@ -42,6 +45,7 @@ private:
 
     GLuint compileShader(GLenum shaderType, const char *shaderCode);
     GLuint createProgram(GLuint vShader, GLuint fShader);
+    GLuint createProgram(GLuint computeShader);
 
     static QMap<std::string, BBShader*> m_CachedShaders;
     GLuint m_Program;

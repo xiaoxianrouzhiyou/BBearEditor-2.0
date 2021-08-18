@@ -38,14 +38,16 @@ BBShader* BBShader::loadShader(const char *name, const QString &vShaderPath, con
 
 void BBShader::init(const QString &vShaderPath, const QString &fShaderPath)
 {
-    const char *vCode = NULL;
-    const char *fCode = NULL;
+    const char *vCode = nullptr;
+    const char *fCode = nullptr;
     do
     {
         int nFileSize;
         // path.toLatin1().data(); will cause Chinese garbled
         vCode = BBUtils::loadFileContent(vShaderPath.toStdString().c_str(), nFileSize);
+        BB_PROCESS_ERROR(vCode);
         fCode = BBUtils::loadFileContent(fShaderPath.toStdString().c_str(), nFileSize);
+        BB_PROCESS_ERROR(fCode);
 
         GLuint vShader = compileShader(GL_VERTEX_SHADER, vCode);
         BB_PROCESS_ERROR(vShader);
@@ -65,6 +67,32 @@ void BBShader::init(const QString &vShaderPath, const QString &fShaderPath)
 
     BB_SAFE_DELETE(vCode);
     BB_SAFE_DELETE(fCode);
+}
+
+void BBShader::init(const QString &computeShaderPath)
+{
+    const char *code = nullptr;
+    do
+    {
+        int nFileSize;
+        code = BBUtils::loadFileContent(computeShaderPath.toStdString().c_str(), nFileSize);
+        BB_PROCESS_ERROR(code);
+
+        GLuint shader = compileShader(GL_COMPUTE_SHADER, code);
+        BB_PROCESS_ERROR(shader);
+
+        m_Program = createProgram(shader);
+        glDeleteShader(shader);
+
+        if (m_Program != 0)
+        {
+            // generate attribute chain
+            initAttributes();
+            initUniforms();
+        }
+    } while(0);
+
+    BB_SAFE_DELETE(code);
 }
 
 void BBShader::activeAttributes()
@@ -357,7 +385,27 @@ GLuint BBShader::createProgram(GLuint vShader, GLuint fShader)
         char szLog[1024] = {0};
         GLsizei logLength = 0;
         glGetProgramInfoLog(program, 1024, &logLength, szLog);
-        qDebug() << "createProgram fail, log:" << szLog;
+        qDebug() << "create GPU program fail, log:" << szLog;
+        glDeleteProgram(program);
+        program = 0;
+    }
+    return program;
+}
+
+GLuint BBShader::createProgram(GLuint computeShader)
+{
+    GLuint program = glCreateProgram();
+    glAttachShader(program, computeShader);
+    glLinkProgram(program);
+    glDetachShader(program, computeShader);
+    GLint nResult;
+    glGetProgramiv(program, GL_LINK_STATUS, &nResult);
+    if (nResult == GL_FALSE)
+    {
+        char szLog[1024] = {0};
+        GLsizei logLength = 0;
+        glGetProgramInfoLog(program, 1024, &logLength, szLog);
+        qDebug() << "create compute program fail, log:" << szLog;
         glDeleteProgram(program);
         program = 0;
     }
