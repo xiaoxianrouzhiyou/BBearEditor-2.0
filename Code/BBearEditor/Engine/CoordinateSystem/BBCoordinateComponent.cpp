@@ -1,9 +1,9 @@
 #include "BBCoordinateComponent.h"
 #include "Render/BBMaterial.h"
-#include "Render/BBVertexBufferObject.h"
+#include "Render/BufferObject/BBVertexBufferObject.h"
 #include "Render/BBRenderPass.h"
 #include "Render/BBDrawCall.h"
-#include "Render/BBElementBufferObject.h"
+#include "Render/BufferObject/BBElementBufferObject.h"
 
 
 /**

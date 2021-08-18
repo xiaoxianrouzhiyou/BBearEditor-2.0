@@ -7,7 +7,7 @@
 #include "../BBPropertyFactory.h"
 #include "FileSystem/BBFileSystemDataManager.h"
 #include "3D/BBNormalIndicator.h"
-#include "Render/BBVertexBufferObject.h"
+#include "Render/BufferObject/BBVertexBufferObject.h"
 
 
 BBRenderManager::BBRenderManager(BBRenderableObject *pObject, QWidget *pParent)

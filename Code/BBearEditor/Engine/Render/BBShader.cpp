@@ -1,7 +1,7 @@
 #include "BBShader.h"
 #include "BBAttribute.h"
 #include "BBUniformUpdater.h"
-#include "BBVertexBufferObject.h"
+#include "BufferObject/BBVertexBufferObject.h"
 
 
 QMap<std::string, BBShader*> BBShader::m_CachedShaders;

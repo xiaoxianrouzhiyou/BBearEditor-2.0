@@ -67,11 +67,11 @@ SOURCES += \
     Engine/Serializer/BBHierarchyTreeWidgetItem.pb.cc \
     Engine/Serializer/BBVector.pb.cc \
     Engine/Serializer/BBScene.pb.cc \
-    Engine/Render/BBVertexBufferObject.cpp \
-    Engine/Render/BBElementBufferObject.cpp \
+    Engine/Render/BufferObject/BBVertexBufferObject.cpp \
+    Engine/Render/BufferObject/BBElementBufferObject.cpp \
     Engine/Render/BBRenderState.cpp \
     Engine/Render/BBMaterial.cpp \
-    Engine/Render/BBBufferObject.cpp \
+    Engine/Render/BufferObject/BBBufferObject.cpp \
     Engine/Render/BBAttribute.cpp \
     Engine/Render/BBLinkedList.cpp \
     Engine/Render/BBShader.cpp \
@@ -80,7 +80,7 @@ SOURCES += \
     Engine/Render/BBMaterialProperty.cpp \
     Engine/Render/BBRenderPass.cpp \
     Engine/Lighting/GameObject/BBLight.cpp \
-    Engine/Render/BBFrameBufferObject.cpp \
+    Engine/Render/BufferObject/BBFrameBufferObject.cpp \
     Engine/Render/Texture/BBTexture.cpp \
     Engine/Lighting/GameObject/BBDirectionalLight.cpp \
     Engine/Lighting/GameObject/BBPointLight.cpp \
@@ -177,11 +177,11 @@ HEADERS += \
     Engine/Serializer/BBHierarchyTreeWidgetItem.pb.h \
     Engine/Serializer/BBVector.pb.h \
     Engine/Serializer/BBScene.pb.h \
-    Engine/Render/BBVertexBufferObject.h \
-    Engine/Render/BBElementBufferObject.h \
+    Engine/Render/BufferObject/BBVertexBufferObject.h \
+    Engine/Render/BufferObject/BBElementBufferObject.h \
     Engine/Render/BBRenderState.h \
     Engine/Render/BBMaterial.h \
-    Engine/Render/BBBufferObject.h \
+    Engine/Render/BufferObject/BBBufferObject.h \
     Engine/Render/BBAttribute.h \
     Engine/Render/BBBaseRenderComponent.h \
     Engine/Render/BBLinkedList.h \
@@ -191,7 +191,7 @@ HEADERS += \
     Engine/Render/BBMaterialProperty.h \
     Engine/Render/BBRenderPass.h \
     Engine/Lighting/GameObject/BBLight.h \
-    Engine/Render/BBFrameBufferObject.h \
+    Engine/Render/BufferObject/BBFrameBufferObject.h \
     Engine/Render/Texture/BBTexture.h \
     Engine/Lighting/GameObject/BBDirectionalLight.h \
     Engine/Lighting/GameObject/BBPointLight.h \

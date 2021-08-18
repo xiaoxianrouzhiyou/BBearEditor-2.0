@@ -2,7 +2,7 @@
 #define BBBUFFEROBJECT_H
 
 
-#include "BBBaseRenderComponent.h"
+#include "../BBBaseRenderComponent.h"
 
 class BBBufferObject : public BBBaseRenderComponent
 {

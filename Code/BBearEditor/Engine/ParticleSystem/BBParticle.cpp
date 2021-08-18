@@ -1,5 +1,5 @@
 #include "BBParticle.h"
-#include "Render/BBVertexBufferObject.h"
+#include "Render/BufferObject/BBVertexBufferObject.h"
 #include "Render/BBMaterial.h"
 #include "Render/Texture/BBProcedureTexture.h"
 #include "Render/BBRenderPass.h"

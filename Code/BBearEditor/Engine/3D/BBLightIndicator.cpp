@@ -3,7 +3,7 @@
 #include "Render/BBRenderPass.h"
 #include "Render/BBDrawCall.h"
 #include "Render/BBCamera.h"
-#include "Render/BBVertexBufferObject.h"
+#include "Render/BufferObject/BBVertexBufferObject.h"
 
 
 /**
@@ -23,9 +23,7 @@ BBLightIndicator::BBLightIndicator(const QVector3D &position, const QVector3D &r
 
 void BBLightIndicator::init()
 {
-    m_pCurrentMaterial->init("base",
-                             BB_PATH_RESOURCE_SHADER(base.vert),
-                             BB_PATH_RESOURCE_SHADER(base.frag));
+    m_pCurrentMaterial->init("base", BB_PATH_RESOURCE_SHADER(base.vert), BB_PATH_RESOURCE_SHADER(base.frag));
 
     BBRenderableObject::init();
 }

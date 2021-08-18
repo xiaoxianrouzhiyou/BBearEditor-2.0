@@ -1,5 +1,5 @@
 #include "BBFullScreenQuad.h"
-#include "Render/BBVertexBufferObject.h"
+#include "Render/BufferObject/BBVertexBufferObject.h"
 #include "Render/BBMaterial.h"
 #include "Render/BBDrawCall.h"
 #include "Render/BBRenderPass.h"

@@ -1,6 +1,6 @@
 #include "BBHorizontalPlane.h"
-#include "Render/BBVertexBufferObject.h"
-#include "Render/BBElementBufferObject.h"
+#include "Render/BufferObject/BBVertexBufferObject.h"
+#include "Render/BufferObject/BBElementBufferObject.h"
 #include "Render/BBRenderPass.h"
 #include "Render/BBMaterial.h"
 #include "Utils/BBUtils.h"

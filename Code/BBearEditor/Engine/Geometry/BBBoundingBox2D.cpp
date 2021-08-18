@@ -1,5 +1,5 @@
 #include "BBBoundingBox2D.h"
-#include "Render/BBVertexBufferObject.h"
+#include "Render/BufferObject/BBVertexBufferObject.h"
 #include "Render/BBDrawCall.h"
 
 

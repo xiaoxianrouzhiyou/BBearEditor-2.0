@@ -3,7 +3,7 @@
 #include "Utils/BBUtils.h"
 #include "Geometry/BBBoundingBox.h"
 #include <cfloat>
-#include "Render/BBVertexBufferObject.h"
+#include "Render/BufferObject/BBVertexBufferObject.h"
 #include "Render/BBRenderPass.h"
 #include "Render/BBDrawCall.h"
 #include "Render/Texture/BBTexture.h"

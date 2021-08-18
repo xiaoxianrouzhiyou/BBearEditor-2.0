@@ -1,6 +1,6 @@
 #include "BBStaticMesh.h"
 #include "Utils/BBUtils.h"
-#include "Render/BBVertexBufferObject.h"
+#include "Render/BufferObject/BBVertexBufferObject.h"
 #include <sstream>
 #include "Geometry/BBBoundingBox.h"
 

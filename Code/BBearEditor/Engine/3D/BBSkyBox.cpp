@@ -1,5 +1,5 @@
 #include "BBSkyBox.h"
-#include "Render/BBVertexBufferObject.h"
+#include "Render/BufferObject/BBVertexBufferObject.h"
 #include "Render/BBCamera.h"
 #include "Render/BBMaterial.h"
 #include "Render/BBRenderPass.h"
