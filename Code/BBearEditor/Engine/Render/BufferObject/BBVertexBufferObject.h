@@ -17,6 +17,7 @@ struct BBVertex
 class BBVertexBufferObject : public BBBufferObject
 {
 public:
+    BBVertexBufferObject();
     BBVertexBufferObject(int nVertexCount);
     ~BBVertexBufferObject();
 
@@ -52,7 +53,7 @@ public:
     void submitData();
     void draw(GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount);
 
-private:
+protected:
     void setSize(int nVertexCount, GLenum hint = GL_STATIC_DRAW);
     void _computeTangent(int nVertexIndex,
                          const QVector3D &pos0, const QVector3D &pos1, const QVector3D &pos2,

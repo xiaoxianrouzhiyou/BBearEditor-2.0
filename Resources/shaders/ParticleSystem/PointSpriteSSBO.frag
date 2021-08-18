@@ -1,8 +1,8 @@
 #version 430
 
-varying vec4 V_color;
+varying vec4 v2f_color;
 
 void main(void)
 {
-    gl_FragColor = V_color;
+    gl_FragColor = v2f_color;
 }

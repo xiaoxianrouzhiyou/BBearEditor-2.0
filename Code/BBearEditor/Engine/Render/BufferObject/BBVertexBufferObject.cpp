@@ -1,6 +1,12 @@
 #include "BBVertexBufferObject.h"
 
 
+BBVertexBufferObject::BBVertexBufferObject()
+    : BBBufferObject()
+{
+    // without setSize
+}
+
 BBVertexBufferObject::BBVertexBufferObject(int nVertexCount)
     : BBBufferObject()
 {
@@ -189,7 +195,7 @@ QVector3D BBVertexBufferObject::getBiTangent(int index)
 
 void BBVertexBufferObject::submitData()
 {
-    updateData(GL_ARRAY_BUFFER, sizeof(BBVertex) * m_nVertexCount, m_pVertexes);
+    updateData(m_BufferType, sizeof(BBVertex) * m_nVertexCount, m_pVertexes);
 }
 
 void BBVertexBufferObject::draw(GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount)
@@ -202,7 +208,7 @@ void BBVertexBufferObject::setSize(int nVertexCount, GLenum hint)
     m_nVertexCount = nVertexCount;
     m_pVertexes = new BBVertex[m_nVertexCount];
     memset(m_pVertexes, 0, sizeof(BBVertex) * m_nVertexCount);
-    m_Name = createBufferObject(GL_ARRAY_BUFFER, sizeof(BBVertex) * m_nVertexCount, hint, NULL);
+    m_Name = createBufferObject(m_BufferType, sizeof(BBVertex) * m_nVertexCount, hint, NULL);
 }
 
 void BBVertexBufferObject::_computeTangent(int nVertexIndex,

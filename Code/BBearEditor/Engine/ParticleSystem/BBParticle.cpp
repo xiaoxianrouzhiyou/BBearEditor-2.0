@@ -1,5 +1,6 @@
 #include "BBParticle.h"
 #include "Render/BufferObject/BBVertexBufferObject.h"
+#include "Render/BufferObject/BBShaderStorageBufferObject.h"
 #include "Render/BBMaterial.h"
 #include "Render/Texture/BBProcedureTexture.h"
 #include "Render/BBRenderPass.h"
@@ -9,7 +10,7 @@
 BBParticle::BBParticle(const QVector3D &position)
     : BBRenderableObject(position, QVector3D(0, 0, 0), QVector3D(1, 1, 1))
 {
-
+    m_pSSBO = nullptr;
 }
 
 void BBParticle::init()
@@ -21,14 +22,11 @@ void BBParticle::init()
     m_pCurrentMaterial->getBaseRenderPass()->setZTestState(false);
     m_pCurrentMaterial->getBaseRenderPass()->setPointSpriteState(true);
     m_pCurrentMaterial->getBaseRenderPass()->setProgramPointSizeState(true);
-
-    BBRenderableObject::init();
 }
 
 void BBParticle::render(BBCamera *pCamera)
 {
     update1();
-    m_pVBO->submitData();
     m_pDrawCalls->renderOnePassSSBO(pCamera);
 }
 
@@ -45,8 +43,11 @@ void BBParticle::create0()
     BBProcedureTexture texture;
     m_pCurrentMaterial->getBaseRenderPass()->setSampler2D(LOCATION_TEXTURE(0), texture.create(128));
 
+    BBRenderableObject::init();
+
     BBDrawCall *pDrawCall = new BBDrawCall;
     pDrawCall->setMaterial(m_pCurrentMaterial);
+    pDrawCall->setSSBO(m_pSSBO);
     pDrawCall->setVBO(m_pVBO, GL_POINTS, 0, m_pVBO->getVertexCount());
     appendDrawCall(pDrawCall);
 }
@@ -67,13 +68,20 @@ void BBParticle::update0()
             r -= 1.0f;
         m_pVBO->setColor(i, r, 0.4f, 0.6f);
     }
+    m_pVBO->submitData();
 }
 
 void BBParticle::create1()
 {
-    m_pVBO = new BBVertexBufferObject(1);
-    m_pVBO->setPosition(0, 0.0f, 0.0f, 0.0f);
-    m_pVBO->setColor(0, 0.1f, 0.4f, 0.6f);
+    m_pSSBO = new BBShaderStorageBufferObject(4);
+    m_pSSBO->setPosition(0, 0.0f, 0.0f, 0.0f);
+    m_pSSBO->setPosition(1, 1.0f, 0.0f, 0.0f);
+    m_pSSBO->setPosition(2, 0.0f, 1.0f, 0.0f);
+    m_pSSBO->setPosition(3, 0.0f, 0.0f, 1.0f);
+    m_pSSBO->setColor(0, 0.1f, 0.4f, 0.6f);
+    m_pSSBO->setColor(1, 0.1f, 0.4f, 0.6f);
+    m_pSSBO->setColor(2, 0.1f, 0.4f, 0.6f);
+    m_pSSBO->setColor(3, 0.1f, 0.4f, 0.6f);
     m_pCurrentMaterial->init("PointSpriteSSBO",
                              BB_PATH_RESOURCE_SHADER(ParticleSystem/PointSpriteSSBO.vert),
                              BB_PATH_RESOURCE_SHADER(ParticleSystem/PointSpriteSSBO.frag));
@@ -86,13 +94,16 @@ void BBParticle::create1()
         m_pIndexes[i] = indexes[i];
     }
 
+    BBRenderableObject::init();
+
     BBDrawCall *pDrawCall = new BBDrawCall;
     pDrawCall->setMaterial(m_pCurrentMaterial);
+    pDrawCall->setSSBO(m_pSSBO);
     pDrawCall->setEBO(m_pEBO, GL_TRIANGLES, m_nIndexCount, 0);
     appendDrawCall(pDrawCall);
 }
 
 void BBParticle::update1()
 {
-
+    m_pSSBO->submitData();
 }

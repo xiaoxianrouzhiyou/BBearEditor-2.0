@@ -1,5 +1,6 @@
 #include "BBDrawCall.h"
 #include "BufferObject/BBVertexBufferObject.h"
+#include "BufferObject/BBShaderStorageBufferObject.h"
 #include "BufferObject/BBElementBufferObject.h"
 #include "BBCamera.h"
 #include "BBRenderPass.h"
@@ -25,8 +26,8 @@ BBDrawCall::BBDrawCall()
     m_nDrawStartIndex = 0;
 
     m_pVBO = nullptr;
+    m_pSSBO = nullptr;
     m_nDrawCount = 3;
-
     m_pEBO = nullptr;
     m_nIndexCount = 0;
 
@@ -72,6 +73,14 @@ void BBDrawCall::updateMaterialBlendState(bool bEnable)
 void BBDrawCall::setVBO(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount)
 {
     m_pVBO = pVBO;
+    m_eDrawPrimitiveType = eDrawPrimitiveType;
+    m_nDrawStartIndex = nDrawStartIndex;
+    m_nDrawCount = nDrawCount;
+}
+
+void BBDrawCall::setSSBO(BBShaderStorageBufferObject *pSSBO, GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount)
+{
+    m_pSSBO = pSSBO;
     m_eDrawPrimitiveType = eDrawPrimitiveType;
     m_nDrawStartIndex = nDrawStartIndex;
     m_nDrawCount = nDrawCount;
@@ -150,6 +159,7 @@ void BBDrawCall::renderOnePass(BBCamera *pCamera, QList<BBGameObject*> lights)
 
 void BBDrawCall::renderOnePassSSBO(BBCamera *pCamera)
 {
+    m_pSSBO->bind();
     BBRenderPass *pBaseRenderPass = m_pMaterial->getBaseRenderPass();
     pBaseRenderPass->bind(pCamera);
 
@@ -158,6 +168,7 @@ void BBDrawCall::renderOnePassSSBO(BBCamera *pCamera)
     m_pEBO->unbind();
 
     pBaseRenderPass->unbind();
+    m_pSSBO->unbind();
 }
 
 void BBDrawCall::renderForwardPass(BBCamera *pCamera)

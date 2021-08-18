@@ -4,6 +4,8 @@
 
 #include "Base/BBRenderableObject.h"
 
+class BBShaderStorageBufferObject;
+
 class BBParticle : public BBRenderableObject
 {
 public:
@@ -18,6 +20,9 @@ private:
 
     void create1();
     void update1();
+
+private:
+    BBShaderStorageBufferObject *m_pSSBO;
 };
 
 #endif // BBPARTICLE_H

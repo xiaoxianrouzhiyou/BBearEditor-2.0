@@ -65,7 +65,9 @@ void BBRenderableObject::init()
         m_pEBO->submitData(m_pIndexes, m_nIndexCount);
     }
     closeLight();
-    m_pVBO->submitData();
+
+    if (m_pVBO)
+        m_pVBO->submitData();
 }
 
 void BBRenderableObject::render(BBCamera *pCamera)

@@ -130,7 +130,8 @@ SOURCES += \
     Editor/PropertyManager/GroupManager/BBRenderManager.cpp \
     Engine/Render/Texture/BBProcedureTexture.cpp \
     Engine/ParticleSystem/BBParticleSystem.cpp \
-    Engine/ParticleSystem/BBParticle.cpp
+    Engine/ParticleSystem/BBParticle.cpp \
+    Engine/Render/BufferObject/BBShaderStorageBufferObject.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -242,7 +243,8 @@ HEADERS += \
     Editor/PropertyManager/GroupManager/BBRenderManager.h \
     Engine/Render/Texture/BBProcedureTexture.h \
     Engine/ParticleSystem/BBParticleSystem.h \
-    Engine/ParticleSystem/BBParticle.h
+    Engine/ParticleSystem/BBParticle.h \
+    Engine/Render/BufferObject/BBShaderStorageBufferObject.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
