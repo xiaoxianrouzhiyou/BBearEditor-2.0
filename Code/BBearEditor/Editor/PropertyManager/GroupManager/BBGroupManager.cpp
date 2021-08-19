@@ -9,7 +9,7 @@
 #include "../BBPropertyFactory.h"
 #include <QTreeWidgetItem>
 #include "Scene/BBSceneManager.h"
-#include "Render/Shader/BBShader.h"
+#include "Shader/BBShader.h"
 #include "Base/BBRenderableObject.h"
 #include "3D/Mesh/BBMesh.h"
 

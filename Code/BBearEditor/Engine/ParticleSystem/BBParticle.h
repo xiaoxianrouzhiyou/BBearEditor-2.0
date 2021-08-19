@@ -18,10 +18,10 @@ public:
 
 private:
     void create0();
-    void update0();
+    void update0(BBCamera *pCamera);
 
     void create1();
-    void update1();
+    void update1(BBCamera *pCamera);
 
 private:
     BBShaderStorageBufferObject *m_pSSBO;

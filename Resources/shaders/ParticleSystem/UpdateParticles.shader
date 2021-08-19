@@ -39,8 +39,8 @@ void main()
     // An effective three-dimensional index of the location of the current execution unit in the global workgroup
     // linear
     uint particle_id = gl_GlobalInvocationID.x;
-    // 2 ^ 20
-    if (particle_id > 1048576)
+    // 2 ^ 16
+    if (particle_id > 65536)
         return;
     vec3 pos = bundle.vertexes[particle_id].BBPosition.xyz;
     vec3 v = bundle.vertexes[particle_id].BBNormal.xyz;

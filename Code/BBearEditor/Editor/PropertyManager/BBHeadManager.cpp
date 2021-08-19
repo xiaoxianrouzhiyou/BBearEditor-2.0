@@ -8,7 +8,7 @@
 #include "BBPropertyFactory.h"
 #include "Scene/BBRendererManager.h"
 #include "Render/BBMaterial.h"
-#include "Render/Shader/BBShader.h"
+#include "Shader/BBShader.h"
 #include <QFileInfo>
 
 

@@ -1,6 +1,7 @@
 #include "BBComputeShader.h"
 
 BBComputeShader::BBComputeShader()
+    : BBShader()
 {
 
 }

@@ -74,7 +74,7 @@ SOURCES += \
     Engine/Render/BufferObject/BBBufferObject.cpp \
     Engine/Render/BBAttribute.cpp \
     Engine/Render/BBLinkedList.cpp \
-    Engine/Render/Shader/BBShader.cpp \
+    Engine/Shader/BBShader.cpp \
     Engine/Render/BBUniformUpdater.cpp \
     Engine/Render/BBDrawCall.cpp \
     Engine/Render/BBMaterialProperty.cpp \
@@ -133,7 +133,8 @@ SOURCES += \
     Engine/ParticleSystem/BBParticleSystem.cpp \
     Engine/ParticleSystem/BBParticle.cpp \
     Engine/Render/BufferObject/BBShaderStorageBufferObject.cpp \
-    Engine/Render/Shader/BBComputeShader.cpp
+    Engine/Shader/BBComputeShader.cpp \
+    Engine/Shader/BBBaseShader.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -188,7 +189,7 @@ HEADERS += \
     Engine/Render/BBAttribute.h \
     Engine/Render/BBBaseRenderComponent.h \
     Engine/Render/BBLinkedList.h \
-    Engine/Render/Shader/BBShader.h \
+    Engine/Shader/BBShader.h \
     Engine/Render/BBUniformUpdater.h \
     Engine/Render/BBDrawCall.h \
     Engine/Render/BBMaterialProperty.h \
@@ -247,7 +248,8 @@ HEADERS += \
     Engine/ParticleSystem/BBParticleSystem.h \
     Engine/ParticleSystem/BBParticle.h \
     Engine/Render/BufferObject/BBShaderStorageBufferObject.h \
-    Engine/Render/Shader/BBComputeShader.h
+    Engine/Shader/BBComputeShader.h \
+    Engine/Shader/BBBaseShader.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

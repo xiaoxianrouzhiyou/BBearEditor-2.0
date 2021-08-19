@@ -1,75 +1,17 @@
-#include "BBShader.h"
-#include "../BBAttribute.h"
-#include "../BBUniformUpdater.h"
-#include "../BufferObject/BBVertexBufferObject.h"
+#include "BBBaseShader.h"
+#include "Render/BBAttribute.h"
+#include "Render/BBUniformUpdater.h"
+#include "Render/BufferObject/BBVertexBufferObject.h"
 
 
-QMap<std::string, BBShader*> BBShader::m_CachedShaders;
-
-BBShader::BBShader()
-    : BBBaseRenderComponent()
+BBBaseShader::BBBaseShader()
 {
-    m_pAttributes = NULL;
-    m_pUniforms = NULL;
+    m_pAttributes = nullptr;
+    m_pUniforms = nullptr;
     m_Program = 0;
-    m_bWriteFBO = true;
 }
 
-BBShader::~BBShader()
-{
-
-}
-
-BBShader* BBShader::loadShader(const char *name, const QString &vShaderPath, const QString &fShaderPath)
-{
-    auto it = m_CachedShaders.find(name);
-    if (it != m_CachedShaders.end())
-    {
-        return it.value();
-    }
-    BBShader *pShader = new BBShader();
-    pShader->init(vShaderPath, fShaderPath);
-    pShader->setShaderName(name);
-    pShader->setVShaderPath(vShaderPath);
-    pShader->setFShaderPath(fShaderPath);
-    m_CachedShaders.insert(name, pShader);
-    return pShader;
-}
-
-void BBShader::init(const QString &vShaderPath, const QString &fShaderPath)
-{
-    const char *vCode = nullptr;
-    const char *fCode = nullptr;
-    do
-    {
-        int nFileSize;
-        // path.toLatin1().data(); will cause Chinese garbled
-        vCode = BBUtils::loadFileContent(vShaderPath.toStdString().c_str(), nFileSize);
-        BB_PROCESS_ERROR(vCode);
-        fCode = BBUtils::loadFileContent(fShaderPath.toStdString().c_str(), nFileSize);
-        BB_PROCESS_ERROR(fCode);
-
-        GLuint vShader = compileShader(GL_VERTEX_SHADER, vCode);
-        BB_PROCESS_ERROR(vShader);
-        GLuint fShader = compileShader(GL_FRAGMENT_SHADER, fCode);
-        BB_PROCESS_ERROR(fShader);
-        m_Program = createProgram(vShader, fShader);
-        glDeleteShader(vShader);
-        glDeleteShader(fShader);
-
-        if (m_Program != 0)
-        {
-            // generate attribute chain
-            initAttributes();
-            initUniforms();
-        }
-    } while(0);
-
-    BB_SAFE_DELETE(vCode);
-    BB_SAFE_DELETE(fCode);
-}
-
-void BBShader::activeAttributes()
+void BBBaseShader::activeAttributes()
 {
     if (m_pAttributes != nullptr)
     {
@@ -77,7 +19,7 @@ void BBShader::activeAttributes()
     }
 }
 
-void BBShader::initAttributes()
+void BBBaseShader::initAttributes()
 {
     GLint count = 0;
     glGetProgramiv(m_Program, GL_ACTIVE_ATTRIBUTES, &count);
@@ -135,7 +77,7 @@ void BBShader::initAttributes()
     }
 }
 
-void BBShader::initUniforms()
+void BBBaseShader::initUniforms()
 {
     GLint count = 0;
     glGetProgramiv(m_Program, GL_ACTIVE_UNIFORMS, &count);
@@ -182,14 +124,14 @@ void BBShader::initUniforms()
     }
 }
 
-BBUniformUpdater* BBShader::initUniformFloat(GLint location, const char *pUniformName)
+BBUniformUpdater* BBBaseShader::initUniformFloat(GLint location, const char *pUniformName)
 {
     BBFloatMaterialProperty *pProperty = new BBFloatMaterialProperty(pUniformName);
     m_Properties.insert(pUniformName, pProperty);
     return new BBUniformUpdater(location, &BBUniformUpdater::updateFloat, pProperty);
 }
 
-BBUniformUpdater* BBShader::initUniformMatrix4(GLint location, const char *pUniformName)
+BBUniformUpdater* BBBaseShader::initUniformMatrix4(GLint location, const char *pUniformName)
 {
     BBUpdateUniformFunc updateUniformFunc = &BBUniformUpdater::updateMatrix4;
     BBMatrix4MaterialProperty *pProperty = nullptr;
@@ -232,7 +174,7 @@ BBUniformUpdater* BBShader::initUniformMatrix4(GLint location, const char *pUnif
     return new BBUniformUpdater(location, updateUniformFunc, pProperty);
 }
 
-BBUniformUpdater* BBShader::initUniformVector4(GLint location, const char *pUniformName)
+BBUniformUpdater* BBBaseShader::initUniformVector4(GLint location, const char *pUniformName)
 {
     BBUpdateUniformFunc updateUniformFunc = &BBUniformUpdater::updateVector4;
     BBVector4MaterialProperty *pProperty = nullptr;
@@ -260,7 +202,7 @@ BBUniformUpdater* BBShader::initUniformVector4(GLint location, const char *pUnif
     return new BBUniformUpdater(location, updateUniformFunc, pProperty);
 }
 
-BBUniformUpdater* BBShader::initUniformArrayVector4(GLint location, const char *pUniformName, int nArrayCount)
+BBUniformUpdater* BBBaseShader::initUniformArrayVector4(GLint location, const char *pUniformName, int nArrayCount)
 {
     BBUpdateUniformFunc updateUniformFunc = &BBUniformUpdater::updateArrayVector4;
     BBArrayVector4MaterialProperty *pProperty = nullptr;
@@ -276,7 +218,7 @@ BBUniformUpdater* BBShader::initUniformArrayVector4(GLint location, const char *
     return new BBUniformUpdater(location, updateUniformFunc, pProperty);
 }
 
-BBUniformUpdater* BBShader::initUniformSampler2D(GLint location, const char *pUniformName, int &nSlotIndex)
+BBUniformUpdater* BBBaseShader::initUniformSampler2D(GLint location, const char *pUniformName, int &nSlotIndex)
 {
     BBUpdateUniformFunc updateUniformFunc = &BBUniformUpdater::updateSampler2D;
     BBSampler2DMaterialProperty *pProperty = nullptr;
@@ -304,7 +246,7 @@ BBUniformUpdater* BBShader::initUniformSampler2D(GLint location, const char *pUn
     return new BBUniformUpdater(location, updateUniformFunc, pProperty);
 }
 
-BBUniformUpdater* BBShader::initUniformSamplerCube(GLint location, const char *pUniformName, int &nSlotIndex)
+BBUniformUpdater* BBBaseShader::initUniformSamplerCube(GLint location, const char *pUniformName, int &nSlotIndex)
 {
     BBSamplerCubeMaterialProperty *pProperty = new BBSamplerCubeMaterialProperty(pUniformName, nSlotIndex);
     m_Properties.insert(pUniformName, pProperty);
@@ -313,7 +255,7 @@ BBUniformUpdater* BBShader::initUniformSamplerCube(GLint location, const char *p
     return new BBUniformUpdater(location, &BBUniformUpdater::updateSamplerCube, pProperty);
 }
 
-void BBShader::appendUniformUpdater(BBUniformUpdater *pUniformUpdater)
+void BBBaseShader::appendUniformUpdater(BBUniformUpdater *pUniformUpdater)
 {
     if (m_pUniforms == nullptr)
     {
@@ -325,7 +267,7 @@ void BBShader::appendUniformUpdater(BBUniformUpdater *pUniformUpdater)
     }
 }
 
-GLuint BBShader::compileShader(GLenum shaderType, const char *shaderCode)
+GLuint BBBaseShader::compileShader(GLenum shaderType, const char *shaderCode)
 {
     GLuint shader = glCreateShader(shaderType);
     glShaderSource(shader, 1, &shaderCode, nullptr);
@@ -342,26 +284,4 @@ GLuint BBShader::compileShader(GLenum shaderType, const char *shaderCode)
         shader = 0;
     }
     return shader;
-}
-
-GLuint BBShader::createProgram(GLuint vShader, GLuint fShader)
-{
-    GLuint program = glCreateProgram();
-    glAttachShader(program, vShader);
-    glAttachShader(program, fShader);
-    glLinkProgram(program);
-    glDetachShader(program, vShader);
-    glDetachShader(program, fShader);
-    GLint nResult;
-    glGetProgramiv(program, GL_LINK_STATUS, &nResult);
-    if (nResult == GL_FALSE)
-    {
-        char szLog[1024] = {0};
-        GLsizei logLength = 0;
-        glGetProgramInfoLog(program, 1024, &logLength, szLog);
-        qDebug() << "create GPU program fail, log:" << szLog;
-        glDeleteProgram(program);
-        program = 0;
-    }
-    return program;
 }
