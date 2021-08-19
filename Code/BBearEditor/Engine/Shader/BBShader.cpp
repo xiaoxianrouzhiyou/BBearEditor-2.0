@@ -68,6 +68,15 @@ GLuint BBShader::createProgram(GLuint vShader, GLuint fShader)
     GLuint program = glCreateProgram();
     glAttachShader(program, vShader);
     glAttachShader(program, fShader);
+
+
+    // what the gpu needs to extract
+    const char *pAttribs[] = {"gl_Position"};
+    // Parameter 2 is the number of data to be extracted
+    // Parameter 4 indicates that we extract all data into a VBO or ...
+    glTransformFeedbackVaryings(program, 1, pAttribs, GL_INTERLEAVED_ATTRIBS);
+
+
     glLinkProgram(program);
     glDetachShader(program, vShader);
     glDetachShader(program, fShader);

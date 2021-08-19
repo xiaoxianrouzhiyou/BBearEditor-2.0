@@ -1,12 +1,14 @@
 #include "BBParticle.h"
 #include "Render/BufferObject/BBVertexBufferObject.h"
 #include "Render/BufferObject/BBShaderStorageBufferObject.h"
+#include "Render/BufferObject/BBTranslateFeedbackObject.h"
 #include "Render/BBMaterial.h"
 #include "Render/Texture/BBProcedureTexture.h"
 #include "Render/BBRenderPass.h"
 #include "Render/BBDrawCall.h"
 #include "Math/BBMath.h"
 #include "Shader/BBComputeShader.h"
+#include "Scene/BBSceneManager.h"
 
 
 BBParticle::BBParticle(const QVector3D &position)
@@ -15,17 +17,19 @@ BBParticle::BBParticle(const QVector3D &position)
     m_pSSBO = nullptr;
     m_nVertexCount = 1 << 16;
     m_pUpdateCShader = nullptr;
+    m_pTFO = nullptr;
 }
 
 BBParticle::~BBParticle()
 {
     BB_SAFE_DELETE(m_pSSBO);
     BB_SAFE_DELETE(m_pUpdateCShader);
+    BB_SAFE_DELETE(m_pTFO);
 }
 
 void BBParticle::init()
 {
-    create1();
+    create2();
 
     m_pCurrentMaterial->getBaseRenderPass()->setBlendState(true);
     m_pCurrentMaterial->getBaseRenderPass()->setBlendFunc(GL_SRC_ALPHA, GL_ONE);
@@ -37,7 +41,7 @@ void BBParticle::init()
 
 void BBParticle::render(BBCamera *pCamera)
 {
-    update1(pCamera);
+    update2(pCamera);
 }
 
 void BBParticle::create0()
@@ -79,6 +83,8 @@ void BBParticle::update0(BBCamera *pCamera)
         m_pVBO->setColor(i, r, 0.4f, 0.6f);
     }
     m_pVBO->submitData();
+
+    BBRenderableObject::render(pCamera);
 }
 
 void BBParticle::create1()
@@ -105,9 +111,7 @@ void BBParticle::create1()
         *(pCurrent++) = index + 3;
     }
 
-    m_pCurrentMaterial->init("PointSpriteSSBO",
-                             BB_PATH_RESOURCE_SHADER(ParticleSystem/PointSpriteSSBO.vert),
-                             BB_PATH_RESOURCE_SHADER(ParticleSystem/PointSpriteSSBO.frag));
+    m_pCurrentMaterial->init("PointSpriteSSBO", BB_PATH_RESOURCE_SHADER(ParticleSystem/Particles1.vert), BB_PATH_RESOURCE_SHADER(ParticleSystem/Particles1.frag));
 
     BBRenderableObject::init();
 
@@ -121,7 +125,7 @@ void BBParticle::create1()
 
     // compute shader of update
     m_pUpdateCShader = new BBComputeShader();
-    m_pUpdateCShader->init(BB_PATH_RESOURCE_SHADER(ParticleSystem/UpdateParticles.shader));
+    m_pUpdateCShader->init(BB_PATH_RESOURCE_SHADER(ParticleSystem/UpdateParticles1.shader));
 }
 
 void BBParticle::update1(BBCamera *pCamera)
@@ -131,4 +135,39 @@ void BBParticle::update1(BBCamera *pCamera)
     m_pUpdateCShader->bind(m_nVertexCount / 256, 1, 1);
 
     m_pDrawCalls->renderOnePassSSBO(pCamera);
+}
+
+void BBParticle::create2()
+{
+    m_pVBO = new BBVertexBufferObject(3);
+    m_pVBO->setPosition(0, 0.0f, 0.0f, 0.0f);
+    m_pVBO->setPosition(1, 1.0f, 0.0f, 0.0f);
+    m_pVBO->setPosition(2, 0.0f, 1.0f, 0.0f);
+
+    // Parameter 3 corresponds to VBO DrawPrimitiveType
+    m_pTFO = new BBTranslateFeedbackObject(m_pVBO->getVertexCount(), GL_STATIC_DRAW, GL_TRIANGLES);
+
+    m_pCurrentMaterial->init("Particles2-0", BB_PATH_RESOURCE_SHADER(ParticleSystem/Particles2-0.vert), BB_PATH_RESOURCE_SHADER(ParticleSystem/Particles2-0.frag));
+
+    BBRenderableObject::init();
+
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pCurrentMaterial);
+    pDrawCall->setVBO(m_pVBO, GL_TRIANGLES, 0, m_pVBO->getVertexCount());
+    appendDrawCall(pDrawCall);
+
+    m_pTFO->bind();
+    m_pVBO->bind();
+    m_pCurrentMaterial->getBaseRenderPass()->bind(BBSceneManager::getCamera());
+    m_pVBO->draw(GL_TRIANGLES, 0, m_pVBO->getVertexCount());
+    m_pVBO->unbind();
+    m_pTFO->unbind();
+    m_pCurrentMaterial->getBaseRenderPass()->unbind();
+
+    m_pTFO->debug();
+}
+
+void BBParticle::update2(BBCamera *pCamera)
+{
+    BBRenderableObject::render(pCamera);
 }

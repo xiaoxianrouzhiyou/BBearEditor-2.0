@@ -5,6 +5,7 @@
 #include "Base/BBRenderableObject.h"
 
 class BBShaderStorageBufferObject;
+class BBTranslateFeedbackObject;
 class BBComputeShader;
 
 class BBParticle : public BBRenderableObject
@@ -23,9 +24,13 @@ private:
     void create1();
     void update1(BBCamera *pCamera);
 
+    void create2();
+    void update2(BBCamera *pCamera);
+
 private:
     BBShaderStorageBufferObject *m_pSSBO;
     BBComputeShader *m_pUpdateCShader;
+    BBTranslateFeedbackObject *m_pTFO;
 };
 
 #endif // BBPARTICLE_H

@@ -31,7 +31,7 @@ vec3 computeV(vec3 pos)
         gain *= 0.5;
     }
     // return v;
-    return vec3(1);
+    return vec3(0.05);
 }
 
 void main()

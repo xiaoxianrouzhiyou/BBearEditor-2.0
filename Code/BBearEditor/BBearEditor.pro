@@ -134,7 +134,8 @@ SOURCES += \
     Engine/ParticleSystem/BBParticle.cpp \
     Engine/Render/BufferObject/BBShaderStorageBufferObject.cpp \
     Engine/Shader/BBComputeShader.cpp \
-    Engine/Shader/BBBaseShader.cpp
+    Engine/Shader/BBBaseShader.cpp \
+    Engine/Render/BufferObject/BBTranslateFeedbackObject.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -249,7 +250,8 @@ HEADERS += \
     Engine/ParticleSystem/BBParticle.h \
     Engine/Render/BufferObject/BBShaderStorageBufferObject.h \
     Engine/Shader/BBComputeShader.h \
-    Engine/Shader/BBBaseShader.h
+    Engine/Shader/BBBaseShader.h \
+    Engine/Render/BufferObject/BBTranslateFeedbackObject.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
