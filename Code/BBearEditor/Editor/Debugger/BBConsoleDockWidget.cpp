@@ -3,7 +3,7 @@
 #include <QMimeData>
 #include <QFileInfo>
 #include "FileSystem/BBFileSystemDataManager.h"
-#include "Python/BBPythonLoader.h"
+#include "Python/BBPythonVM.h"
 
 
 BBConsoleDockWidget::BBConsoleDockWidget(QWidget *pParent)

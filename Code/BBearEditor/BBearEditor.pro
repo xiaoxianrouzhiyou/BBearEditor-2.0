@@ -113,7 +113,6 @@ SOURCES += \
     Editor/Tools/FBX2BBear/BBFBX2BBear.cpp \
     Editor/Tools/FBX2BBear/BBFBXSkeletonGPU.cpp \
     Engine/RayTracing/BBRayTracker.cpp \
-    Engine/Python/BBPythonLoader.cpp \
     Editor/Dialog/BBResourceDialog.cpp \
     Engine/Render/BBRenderQueue.cpp \
     Editor/PropertyManager/GroupManager/BBMaterialPropertyGroupManager.cpp \
@@ -135,7 +134,9 @@ SOURCES += \
     Engine/Render/BufferObject/BBShaderStorageBufferObject.cpp \
     Engine/Shader/BBComputeShader.cpp \
     Engine/Shader/BBBaseShader.cpp \
-    Engine/Render/BufferObject/BBTranslateFeedbackObject.cpp
+    Engine/Render/BufferObject/BBTranslateFeedbackObject.cpp \
+    Engine/Python/BBPythonVM.cpp \
+    Engine/Python/BBPythonModule.c
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -229,7 +230,6 @@ HEADERS += \
     Editor/Tools/FBX2BBear/BBFBX2BBear.h \
     Editor/Tools/FBX2BBear/BBFBXSkeletonGPU.h \
     Engine/RayTracing/BBRayTracker.h \
-    Engine/Python/BBPythonLoader.h \
     Editor/Dialog/BBResourceDialog.h \
     Engine/Render/BBRenderQueue.h \
     Editor/PropertyManager/GroupManager/BBMaterialPropertyGroupManager.h \
@@ -251,7 +251,8 @@ HEADERS += \
     Engine/Render/BufferObject/BBShaderStorageBufferObject.h \
     Engine/Shader/BBComputeShader.h \
     Engine/Shader/BBBaseShader.h \
-    Engine/Render/BufferObject/BBTranslateFeedbackObject.h
+    Engine/Render/BufferObject/BBTranslateFeedbackObject.h \
+    Engine/Python/BBPythonVM.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

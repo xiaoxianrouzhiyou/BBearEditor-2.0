@@ -1,5 +1,5 @@
-#ifndef BBPYTHONLOADER_H
-#define BBPYTHONLOADER_H
+#ifndef BBPYTHONVM_H
+#define BBPYTHONVM_H
 
 
 #include <Python.h>
@@ -14,4 +14,4 @@ private:
     static PyObject *m_pModule;
 };
 
-#endif // BBPYTHONLOADER_H
+#endif // BBPYTHONVM_H
