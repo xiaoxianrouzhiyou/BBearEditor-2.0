@@ -21,14 +21,15 @@ void BBTranslateFeedbackObject::bind()
 void BBTranslateFeedbackObject::unbind()
 {
     glEndTransformFeedback();
-//    glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, 0);
+    glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, 0);
 }
 
 void BBTranslateFeedbackObject::debug()
 {
     BBBufferObject::bind();
     // extract from gpu
-    BBVertex *pVertexes = (BBVertex*)glMapBuffer(m_BufferType, GL_READ_BUFFER);
+    BBVertex *pVertexes = new BBVertex[m_nVertexCount];
+    glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 0, sizeof(BBVertex) * m_nVertexCount, pVertexes);
     if (pVertexes)
     {
         for (int i = 0; i < m_nVertexCount; i++)
