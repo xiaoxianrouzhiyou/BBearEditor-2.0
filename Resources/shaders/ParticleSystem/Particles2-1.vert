@@ -1,3 +1,5 @@
+#version 430
+
 attribute vec4 BBPosition;
 
 uniform mat4 BBProjectionMatrix;
