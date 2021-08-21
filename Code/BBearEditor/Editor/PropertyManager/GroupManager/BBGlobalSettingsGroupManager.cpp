@@ -12,6 +12,7 @@ BBGlobalSettingsGroupManager::BBGlobalSettingsGroupManager(BBScene *pScene, QWid
     : BBGroupManager("Global Settings", BB_PATH_RESOURCE_ICON(earth.png), pParent)
 {
     m_pScene = pScene;
+    initSkyBoxFactory();
     initRayTracingFactory();
     initSphericalHarmonicLightingFactory();
     initGlobalIlluminationFactory();
@@ -19,9 +20,15 @@ BBGlobalSettingsGroupManager::BBGlobalSettingsGroupManager(BBScene *pScene, QWid
 
 BBGlobalSettingsGroupManager::~BBGlobalSettingsGroupManager()
 {
+    BB_SAFE_DELETE(m_pSkyBoxFactory);
     BB_SAFE_DELETE(m_pRayTracingFactory);
     BB_SAFE_DELETE(m_pSphericalHarmonicLightingFactory);
     BB_SAFE_DELETE(m_pGlobalIlluminationFactory);
+}
+
+void BBGlobalSettingsGroupManager::switchSkyBoxAlgorithm(int nAlgorithmIndex)
+{
+    m_pScene->changeSkyBoxAlgorithm(nAlgorithmIndex);
 }
 
 void BBGlobalSettingsGroupManager::switchRayTracing(bool bEnable)
@@ -49,11 +56,19 @@ void BBGlobalSettingsGroupManager::switchGlobalIllumination(bool bEnable)
     BBSceneManager::enableDeferredRendering(1, m_pGlobalIlluminationFactory->getCurrentItemIndex(), bEnable);
 }
 
+void BBGlobalSettingsGroupManager::initSkyBoxFactory()
+{
+    QStringList skyBoxAlgorithmName = {"Common",
+                                       "Octahedral Mapping"};
+    m_pSkyBoxFactory = new BBEnumFactory("SkyBox", skyBoxAlgorithmName, "", this, 1, 1);
+    QObject::connect(m_pSkyBoxFactory, SIGNAL(currentItemChanged(int)), this, SLOT(switchSkyBoxAlgorithm(int)));
+    addFactory(m_pSkyBoxFactory);
+}
+
 void BBGlobalSettingsGroupManager::initRayTracingFactory()
 {
     QStringList rayTracingAlgorithmName = {"Efficient GPU Screen-Space"};
-    m_pRayTracingFactory = new BBEnumExpansionFactory("Ray Tracing", rayTracingAlgorithmName,
-                                                      "", "Efficient GPU Screen-Space", this, 1, 1);
+    m_pRayTracingFactory = new BBEnumExpansionFactory("Ray Tracing", rayTracingAlgorithmName, "", "Efficient GPU Screen-Space", this, 1, 1);
     m_pRayTracingFactory->enableButton(false);
     QObject::connect(m_pRayTracingFactory, SIGNAL(triggerClicked(bool)), this, SLOT(switchRayTracing(bool)));
     addFactory(m_pRayTracingFactory);

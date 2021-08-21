@@ -12,7 +12,9 @@ public:
 
     void init(const QString &path) override;
     void render(BBCamera *pCamera) override;
-    void change(const QString &path);
+
+    void changeResource(const QString &path);
+    void changeAlgorithm(int nIndex);
 
     QString getSkyBoxFilePath() { return m_SkyBoxFilePath; }
 

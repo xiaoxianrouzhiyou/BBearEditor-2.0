@@ -228,7 +228,12 @@ GLuint BBScene::getDepthFBO(int nFBOIndex)
 
 void BBScene::setSkyBox(const QString &path)
 {
-    m_pSkyBox->change(path);
+    m_pSkyBox->changeResource(path);
+}
+
+void BBScene::changeSkyBoxAlgorithm(int nAlgorithmIndex)
+{
+    m_pSkyBox->changeAlgorithm(nAlgorithmIndex);
 }
 
 void BBScene::enableSkyBox(bool bEnable)

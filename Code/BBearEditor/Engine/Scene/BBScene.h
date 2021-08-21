@@ -60,6 +60,7 @@ public:
     GLuint getDepthFBO(int nFBOIndex);
 
     void setSkyBox(const QString &path);
+    void changeSkyBoxAlgorithm(int nAlgorithmIndex);
     void enableSkyBox(bool bEnable);
 
     void enableHorizontalPlane(bool bEnable);

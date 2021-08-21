@@ -55,9 +55,7 @@ void BBSkyBox::init(const QString &path)
     m_pVBO->setPosition(22, -0.5f, -0.5f, -0.5f);
     m_pVBO->setPosition(23, 0.5f, -0.5f, -0.5f);
 
-    m_pCurrentMaterial->init("SkyBox",
-                             BB_PATH_RESOURCE_SHADER(SkyBox.vert),
-                             BB_PATH_RESOURCE_SHADER(SkyBox.frag));
+    m_pCurrentMaterial->init("SkyBox", BB_PATH_RESOURCE_SHADER(SkyBox/SkyBox.vert), BB_PATH_RESOURCE_SHADER(SkyBox/SkyBox.frag));
 
     QString paths[6] = {path + "right", path + "left", path + "bottom", path + "top", path + "back", path + "front"};
     BBTexture texture;
@@ -80,7 +78,12 @@ void BBSkyBox::render(BBCamera *pCamera)
     BBRenderableObject::render(modelMatrix, pCamera);
 }
 
-void BBSkyBox::change(const QString &path)
+void BBSkyBox::changeResource(const QString &path)
+{
+
+}
+
+void BBSkyBox::changeAlgorithm(int nIndex)
 {
 
 }
