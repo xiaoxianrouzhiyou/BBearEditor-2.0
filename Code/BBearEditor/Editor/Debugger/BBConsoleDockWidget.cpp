@@ -53,5 +53,5 @@ void BBConsoleDockWidget::dragLeaveEvent(QDragLeaveEvent *event)
 
 void BBConsoleDockWidget::dropEvent(QDropEvent *event)
 {
-    BBPythonLoader::runScript(m_CurrentDragFilePath);
+    BBPythonVM::runScript(m_CurrentDragFilePath);
 }

@@ -5,10 +5,15 @@
 #include <Python.h>
 #include <QString>
 
-class BBPythonLoader
+class BBPythonVM
 {
 public:
     static void runScript(const QString &path);
+
+private:
+    static bool loadMainModule();
+    static bool loadDictionary();
+    static bool loadClass();
 
 private:
     static PyObject *m_pModule;
