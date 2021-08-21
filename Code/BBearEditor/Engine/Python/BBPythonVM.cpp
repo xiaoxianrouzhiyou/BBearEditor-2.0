@@ -1,5 +1,6 @@
 #include "BBPythonVM.h"
 #include "Utils/BBUtils.h"
+#include <iostream>
 
 
 PyObject* BBPythonVM::m_pModule = nullptr;
@@ -18,13 +19,17 @@ void BBPythonVM::runScript(const QString &path)
         PyObject *pObj = Py_BuildValue("s", path.toStdString().c_str());
         FILE *pFile = _Py_fopen_obj(pObj, "r+");
         BB_PROCESS_ERROR(pFile);
+
+        BB_PROCESS_ERROR(emitValues());
         PyRun_SimpleFile(pFile, path.toStdString().c_str());
 
         loadMainModule();
         BB_PROCESS_ERROR(m_pModule);
+        BB_PROCESS_ERROR(emitFunc());
 
-        BB_PROCESS_ERROR(loadDictionary());
-        BB_PROCESS_ERROR(loadClass());
+//        BB_PROCESS_ERROR(loadDictionary());
+//        BB_PROCESS_ERROR(loadClass());
+//        BB_PROCESS_ERROR(loadFunc());
 
         bResult = true;
     } while(0);
@@ -97,4 +102,69 @@ bool BBPythonVM::loadClass()
     Py_XDECREF(pObj);
     Py_XDECREF(pPyClass);
     return true;
+}
+
+bool BBPythonVM::loadFunc()
+{
+    PyObject *pFunc0 = PyObject_GetAttrString(m_pModule, "main");
+    if (pFunc0 && PyCallable_Check(pFunc0))
+    {
+        // func obj + params
+        PyObject_CallObject(pFunc0, 0);
+    }
+
+    PyObject *pFunc1 = PyObject_GetAttrString(m_pModule, "func1");
+    if (pFunc1 && PyCallable_Check(pFunc1))
+    {
+        // param list, count = 1
+        PyObject *pArgs = PyTuple_New(1);
+        PyObject *pList = PyList_New(0);
+        for (int i = 0; i < 5; i++)
+        {
+            PyList_Append(pList, PyLong_FromLong(i + 100));
+        }
+        PyTuple_SetItem(pArgs, 0, pList);
+        PyObject *pRet = PyObject_CallObject(pFunc1, pArgs);
+        if (pRet)
+        {
+            int nSize = PyList_Size(pRet);
+            for (int i = 0; i < nSize; i++)
+            {
+                PyObject *pVar = PyList_GetItem(pRet, i);
+                if (!pVar)
+                    continue;
+                qDebug() << PyLong_AsLong(pVar);
+            }
+            Py_XDECREF(pRet);
+        }
+
+        // pList has been passed into pArgs
+        Py_XDECREF(pArgs);
+    }
+
+    Py_XDECREF(pFunc0);
+    Py_XDECREF(pFunc1);
+    return true;
+}
+
+bool BBPythonVM::emitValues()
+{
+    PyRun_SimpleString("Bear = 100");
+    return true;
+}
+
+bool BBPythonVM::emitFunc()
+{
+    PyMethodDef cfuncs[] = {
+        {"cfunc", cfunc, METH_VARARGS, 0},
+        {NULL}
+    };
+    PyModule_AddFunctions(m_pModule, cfuncs);
+    return true;
+}
+
+PyObject* BBPythonVM::cfunc(PyObject *pSelf, PyObject *pArgs)
+{
+    std::cout << "cfunc" << endl;
+//    Py_RETURN_TRUE;
 }

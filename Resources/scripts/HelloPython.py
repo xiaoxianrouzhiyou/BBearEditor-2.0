@@ -12,8 +12,17 @@ class BBPythonBase:
         print("func0")
         return 1234
 
+def main():
+    print("main func")
+
+def func1(list):
+    print("list:", list)
+    return [0, 1, 2]
+
 config = {
     "width" : 1920,
     "height" : 1080,
     "title" : "C++ call Python"
 }
+
+print("C++ to Python Bear =", Bear)
