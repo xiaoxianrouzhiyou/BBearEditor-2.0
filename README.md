@@ -9,10 +9,33 @@ Although this 2.0 version of the project has indeed undergone a reconstruction, 
 
 The problems I have listed are problems that can be easily corrected and realized through simple techniques, but they take a lot of time. As I said before, this project is just a learning-oriented project. Its purpose is considered to organize and accumulate knowledge, not to provide users with comfortable use. So when these problems did not hinder my study and research, I did not have enough time to correct them for the time being.
 In addition, I referred to some code, learning resources, UI designs, and art resources. I'm pretty thankful!
-## Installation
+## Environment
+* Windows 10. Although I built version 1.0 in Mac, version 2.0 is built on Windows. I do not consider Mac compatibility for the time being.
 * QT 5.7.2
-* OpenGL
-* I use python 3.7.9 32bit. Please copy .../Python/Python37-32/Lib into Code/BBearEditor/Engine/Python!
+* Qt Creator 4.11.1
+* MinGW 5.3.0 32bit for C++
+* OpenGL. The higher the version, the more effects you can use.
+* Python 3.7.9 32bit. Please copy .../Python/Python37-32/Lib into Code/BBearEditor/Engine/Python!
+## Feature
+* Encapsulation of rendering system
+* Editor: create models, move objects, asset management, adjust parameters ...
+* 2D & 3D
+* Reproduce some classic algorithms: GI, Spherical Harmonic Lighting, Ray Tracing, ...
+* Common shader: water, cartoon fire, heat distort, normal map, PBR, translucent transmission ...
+* Particle System: SSBO & compute shader
+* Python virtual machine
+* Serialization and Deserialization: scene & material
+## TODO
+Due to limited time, the functions I listed above may not be as cool as the words seem. Basically, for each effect, I select an article to read and reproduce. Of course, I still have many plans. I have a lot of knowledge I want to learn, and I will continue to improve my project!
+- [ ] Improve PBR
+- [ ] Soft shadow
+- [ ] FBX animation system
+- [ ] TFO particle system
+- [ ] Continuous reproduction of papers
+- [ ] Extension of Python
+- [ ] Font
+- [ ] LOD
+- [ ] Improve storage of scene & material 
 ## Contacts and Links
 I really look forward to making friends with related interests, and we will share experience and learn together!
 * E-Mail: 184346971@qq.com
