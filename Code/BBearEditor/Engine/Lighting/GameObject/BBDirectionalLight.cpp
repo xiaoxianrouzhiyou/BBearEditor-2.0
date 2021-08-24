@@ -1,6 +1,8 @@
 #include "BBDirectionalLight.h"
 #include "3D/BBLightIndicator.h"
 #include "3D/BBIcon.h"
+#include "Render/BBCamera.h"
+#include "Scene/BBScene.h"
 
 
 BBDirectionalLight::BBDirectionalLight(BBScene *pScene)
@@ -34,6 +36,24 @@ void BBDirectionalLight::setRotation(const QVector3D &rotation, bool bUpdateLoca
 {
     BBLight::setRotation(rotation, bUpdateLocalTransform);
     setHomogeneousPosition();
+}
+
+BBCamera* BBDirectionalLight::getLightSpaceCamera(int nLightPosX, int nLightPosZ)
+{
+    BBCamera *pLightSpaceCamera = new BBCamera();
+    m_ViewMatrix.setToIdentity();
+    m_ViewMatrix.lookAt(QVector3D(nLightPosX, 5, nLightPosZ), QVector3D(nLightPosX, 0, nLightPosZ), QVector3D(0, 0, -1));
+    m_ViewMatrix.rotate(-m_Rotation.z(), 0, 0, 1);
+    m_ViewMatrix.rotate(-m_Rotation.x(), 1, 0, 0);
+    m_ViewMatrix.rotate(-m_Rotation.y(), 0, 1, 0);
+    m_ProjectionMatrix.setToIdentity();
+    BBCamera *pMainCamera = m_pScene->getCamera();
+    int nViewportWidth = pMainCamera->getViewportWidth();
+    int nViewportHeight = pMainCamera->getViewportHeight();
+    m_ProjectionMatrix.ortho(-10, 10, -10, 10, -10, 10);
+    pLightSpaceCamera->setViewMatrix(m_ViewMatrix);
+    pLightSpaceCamera->setProjectionMatrix(m_ProjectionMatrix);
+    return pLightSpaceCamera;
 }
 
 bool BBDirectionalLight::cull(BBCamera *pCamera, const QRectF &displayBox)

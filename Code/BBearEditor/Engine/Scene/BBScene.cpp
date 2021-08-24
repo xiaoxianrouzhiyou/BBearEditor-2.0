@@ -589,19 +589,3 @@ void BBScene::writeShadowMap(int nIndex)
     BBDrawCall::switchRenderingSettings(0);
 }
 
-//void Scene::renderShadowMap()
-//{
-
-
-//        if ((directionLights[0]->getQuaternion() * QVector3D(0, -1, 0)).y() < -0.01)
-//        {
-//            //从下射到上方的光 不要阴影
-//            for (QList<GameObject*>::Iterator itr = models.begin(); itr != models.end(); itr++)
-//            {
-//                Model *model = (Model*)(*itr);
-//                model->renderBuffer(lightView, lightProjection, lightPos);
-//            }
-//        }
-//    }
-//}
-

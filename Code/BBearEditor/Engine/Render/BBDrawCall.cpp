@@ -7,6 +7,7 @@
 #include "Scene/BBSceneManager.h"
 #include "Scene/BBScene.h"
 #include "Lighting/GameObject/BBLight.h"
+#include "Lighting/GameObject/BBDirectionalLight.h"
 #include "Render/BufferObject/BBFrameBufferObject.h"
 #include "Base/BBRenderableObject.h"
 #include "Render/BBRenderQueue.h"
@@ -269,22 +270,11 @@ void BBDrawCall::renderLightSpaceFBOPass(BBCamera *pCamera)
     pBaseRenderPass->setCullFace(GL_FRONT);
 
     // Only directional light is considered for the time
-    BBLight *pLight = (BBLight*)lights[0];
+    BBDirectionalLight *pLight = (BBDirectionalLight*)lights[0];
     pLight->setRenderPass(pBaseRenderPass);
-    BBCamera *pLightPosCamera = new BBCamera();
-    QMatrix4x4 lightViewMatrix;
-    lightViewMatrix.lookAt(QVector3D(0, 5, 0), QVector3D(0, 0, 0), QVector3D(0, 0, -1));
-    lightViewMatrix.rotate(-pLight->getRotation().z(), 0, 0, 1);
-    lightViewMatrix.rotate(-pLight->getRotation().x(), 1, 0, 0);
-    lightViewMatrix.rotate(-pLight->getRotation().y(), 0, 1, 0);
-    QMatrix4x4 lightProjectionMatrix;
-    lightProjectionMatrix.ortho(-5, 5, -5, 5, -5, 5);
-    pLightPosCamera->setViewMatrix(lightViewMatrix);
-    pLightPosCamera->setProjectionMatrix(lightProjectionMatrix);
-    pLight->setViewMatrix(lightViewMatrix);
-    pLight->setProjectionMatrix(lightProjectionMatrix);
 
-    pBaseRenderPass->bind(pLightPosCamera);
+    BBCamera *pLightSpaceCamera = pLight->getLightSpaceCamera();
+    pBaseRenderPass->bind(pLightSpaceCamera);
     if (m_pEBO == nullptr)
     {
         m_pVBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
@@ -299,7 +289,7 @@ void BBDrawCall::renderLightSpaceFBOPass(BBCamera *pCamera)
     pBaseRenderPass->setCullState(false);
     pBaseRenderPass->setCullFace(GL_BACK);
     pBaseRenderPass->unbind();
-    BB_SAFE_DELETE(pLightPosCamera);
+    BB_SAFE_DELETE(pLightSpaceCamera);
     m_pVBO->unbind();
 }
 

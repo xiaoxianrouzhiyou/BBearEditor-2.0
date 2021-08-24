@@ -43,6 +43,8 @@ public:
 
     void setRenderPass(BBRenderPass *pRenderPass);
 
+    virtual BBCamera* getLightSpaceCamera(int nLightPosX = 0, int nLightPosZ = 0);
+
     void setAmbientColor(float r, float g, float b, float a = 1.0f);
     void setDiffuseColor(float r, float g, float b, float a = 1.0f);
     void setSpecularColor(float r, float g, float b, float a = 1.0f);

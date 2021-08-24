@@ -70,7 +70,7 @@ float calculateShadow()
         }
     }
     shadow /= 9.0;
-    // shadow = (current_depth - 0.004) > texture2D(BBShadowMap, pos.xy).r ? 1.0 : 0.0;
+    shadow = (current_depth - 0.004) > texture2D(BBShadowMap, pos.xy).r ? 1.0 : 0.0;
     return shadow;
 }
 
@@ -128,6 +128,6 @@ void main(void)
     }
     
     // shadow
-    // final_color = final_color * vec4(vec3(1.0 - calculateShadow()), 1.0);
+    final_color = final_color * vec4(vec3(1.0 - calculateShadow()), 1.0);
     gl_FragColor = final_color * V_Color;
 }

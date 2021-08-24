@@ -110,6 +110,11 @@ void BBLight::setRenderPass(BBRenderPass *pRenderPass)
     pRenderPass->setVector4(LOCATION_LIGHT_SETTINGS(2), m_Setting2);
 }
 
+BBCamera* BBLight::getLightSpaceCamera(int nLightPosX, int nLightPosZ)
+{
+    // todo 透视投影
+}
+
 void BBLight::setAmbientColor(float r, float g, float b, float a)
 {
     m_Ambient[0] = r;
