@@ -19,6 +19,7 @@ private slots:
     void switchRayTracing(bool bEnable);
     void bakeSphericalHarmonicLightingMap();
     void switchGlobalIllumination(bool bEnable);
+    void switchShadow(bool bEnable);
 
 signals:
     void updateFileList();
@@ -28,12 +29,14 @@ private:
     void initRayTracingFactory();
     void initSphericalHarmonicLightingFactory();
     void initGlobalIlluminationFactory();
+    void initShadowFactory();
 
     BBScene *m_pScene;
     BBEnumFactory *m_pSkyBoxFactory;
     BBEnumExpansionFactory *m_pRayTracingFactory;
     BBEnumExpansionFactory *m_pSphericalHarmonicLightingFactory;
     BBEnumExpansionFactory *m_pGlobalIlluminationFactory;
+    BBEnumExpansionFactory *m_pShadowFactory;
 };
 
 #endif // BBGLOBALSETTINGSGROUPMANAGER_H

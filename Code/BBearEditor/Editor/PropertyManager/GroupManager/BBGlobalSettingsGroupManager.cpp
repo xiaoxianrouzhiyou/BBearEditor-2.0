@@ -16,6 +16,7 @@ BBGlobalSettingsGroupManager::BBGlobalSettingsGroupManager(BBScene *pScene, QWid
     initRayTracingFactory();
     initSphericalHarmonicLightingFactory();
     initGlobalIlluminationFactory();
+    initShadowFactory();
 }
 
 BBGlobalSettingsGroupManager::~BBGlobalSettingsGroupManager()
@@ -24,6 +25,7 @@ BBGlobalSettingsGroupManager::~BBGlobalSettingsGroupManager()
     BB_SAFE_DELETE(m_pRayTracingFactory);
     BB_SAFE_DELETE(m_pSphericalHarmonicLightingFactory);
     BB_SAFE_DELETE(m_pGlobalIlluminationFactory);
+    BB_SAFE_DELETE(m_pShadowFactory);
 }
 
 void BBGlobalSettingsGroupManager::switchSkyBoxAlgorithm(int nAlgorithmIndex)
@@ -54,6 +56,11 @@ void BBGlobalSettingsGroupManager::switchGlobalIllumination(bool bEnable)
     // 0 : SSAO
     // 1 : SSDO
     BBSceneManager::enableDeferredRendering(1, m_pGlobalIlluminationFactory->getCurrentItemIndex(), bEnable);
+}
+
+void BBGlobalSettingsGroupManager::switchShadow(bool bEnable)
+{
+    BBSceneManager::enableDeferredRendering(2, m_pShadowFactory->getCurrentItemIndex(), bEnable);
 }
 
 void BBGlobalSettingsGroupManager::initSkyBoxFactory()
@@ -94,4 +101,13 @@ void BBGlobalSettingsGroupManager::initGlobalIlluminationFactory()
     m_pGlobalIlluminationFactory->enableButton(false);
     QObject::connect(m_pGlobalIlluminationFactory, SIGNAL(triggerClicked(bool)), this, SLOT(switchGlobalIllumination(bool)));
     addFactory(m_pGlobalIlluminationFactory);
+}
+
+void BBGlobalSettingsGroupManager::initShadowFactory()
+{
+    QStringList shadowAlgorithmName = {"VSM"};
+    m_pShadowFactory = new BBEnumExpansionFactory("Shadow", shadowAlgorithmName, "", "", this, 1, 1);
+    m_pShadowFactory->enableButton(false);
+    QObject::connect(m_pShadowFactory, SIGNAL(triggerClicked(bool)), this, SLOT(switchShadow(bool)));
+    addFactory(m_pShadowFactory);
 }

@@ -10,6 +10,7 @@
 #include "2D/BBSpriteObject2D.h"
 #include "Lighting/GI/BBGlobalIllumination.h"
 #include "RayTracing/BBRayTracker.h"
+#include "Shadow/BBShadow.h"
 
 
 QMap<QTreeWidgetItem*, BBGameObject*> BBSceneManager::m_ObjectMap;
@@ -235,6 +236,8 @@ void BBSceneManager::enableDeferredRendering(int nAlgorithmIndex, int nSubAlgori
     case 1:
         BBGlobalIllumination::enable(nSubAlgorithmIndex, bEnable);
         break;
+    case 2:
+        BBShadow::enable(nSubAlgorithmIndex, bEnable);
     default:
         break;
     }

@@ -136,7 +136,8 @@ SOURCES += \
     Engine/Shader/BBBaseShader.cpp \
     Engine/Render/BufferObject/BBTranslateFeedbackObject.cpp \
     Engine/Python/BBPythonVM.cpp \
-    Engine/Python/BBPythonModule.c
+    Engine/Python/BBPythonModule.c \
+    Engine/Shadow/BBShadow.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -252,7 +253,8 @@ HEADERS += \
     Engine/Shader/BBComputeShader.h \
     Engine/Shader/BBBaseShader.h \
     Engine/Render/BufferObject/BBTranslateFeedbackObject.h \
-    Engine/Python/BBPythonVM.h
+    Engine/Python/BBPythonVM.h \
+    Engine/Shadow/BBShadow.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
