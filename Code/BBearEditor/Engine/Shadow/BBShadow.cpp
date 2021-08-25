@@ -10,6 +10,8 @@ void BBShadow::enable(int nAlgorithmIndex, bool bEnable)
     if (bEnable)
     {
         pScene->setRenderingFunc(&BBScene::deferredRenderingAndPostProcessing);
+
+        open(pScene);
     }
     else
     {
@@ -22,4 +24,9 @@ void BBShadow::enable(int nAlgorithmIndex, bool bEnable)
             pObject->restoreMaterial();
         }
     }
+}
+
+void BBShadow::open(BBScene *pScene)
+{
+
 }

@@ -162,6 +162,8 @@ void BBScene::deferredRendering()
     m_pCamera->switchTo3D();
     m_pCamera->update(m_fUpdateRate);
 
+    writeShadowMap(2);
+
     m_pFBO[0]->bind();
     m_pSkyBox->render(m_pCamera);
     // BBGameObject
@@ -175,6 +177,8 @@ void BBScene::deferredRenderingAndPostProcessing()
 {
     m_pCamera->switchTo3D();
     m_pCamera->update(m_fUpdateRate);
+
+    writeShadowMap(2);
 
     m_pFBO[0]->bind();
     m_pSkyBox->render(m_pCamera);
