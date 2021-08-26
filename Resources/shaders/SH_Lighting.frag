@@ -20,7 +20,8 @@ void main(void)
         float x2 = x * x;
         float y2 = y * y;
         float z2 = z * z;
-
+        
+        // Spherical Harmonic
         float basis[9];
         basis[0] = 1.0 / 2.0 * sqrt(1.0 / PI);
         basis[1] = 2.0 / 3.0 * sqrt(3.0 / (4.0 * PI)) * z;
