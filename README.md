@@ -27,8 +27,8 @@ In addition, I referred to some code, learning resources, UI designs, and art re
 * Serialization and Deserialization: scene & material
 ## TODO
 Due to limited time, the functions I listed above may not be as cool as the words seem. Basically, for each effect, I select an article to read and reproduce. Of course, I still have many plans. I have a lot of knowledge I want to learn, and I will continue to improve my project!
+- [ ] Soft shadow : I am reproducing "Variance Shadow Maps" recently.
 - [ ] Improve PBR
-- [ ] Soft shadow
 - [ ] FBX animation system
 - [ ] TFO particle system
 - [ ] Continuous reproduction of papers
