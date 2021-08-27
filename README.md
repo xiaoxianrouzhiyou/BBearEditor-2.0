@@ -1,7 +1,7 @@
 # BigBear Editor 2.0 - 3D Learning-Oriented Engine
 BigBear Editor is a free 3D learning-oriented engine project built by me, Bear X (Chinese). Originally, I started to build in 2018 during my master's degree of computer science. It was intended as a project in which I can organize my knowledge of C++ and OpenGL. After that, I suspended this project because of my busy work and taking exams. About three months ago, I passed the exam successfully, and I started working on this project again. I discovered how terrible the project I wrote before. So I studied some related knowledge and resources, including rendering, engine architecture, etc., and reconstructed this project. So I named it 2.0. Whenever I learn a piece of knowledge, I will reproduce it in this project. I believe that this is a good way to learn, accumulate and consolidate knowledge! In addition, this project has implemented some basic functions. When I need to reproduce a new technology, I can use many implemented or integrated functions, which greatly improves my learning efficiency! Compared to learning complex engines, such as the source code of Unreal Engine 4, (that's too complicated). It is a better choice to continously build our own micro-engine during the learning process. Anyway, I want to share my source code with other friends or developers who might be going down the same path as mine and need a reference or just something to look up.
 ## Disclaimer
-Although this 2.0 version of the project has indeed undergone a reconstruction, due to time constraints, the code is still somewhat **ugly**.
+Although this version 2.0 of the project has indeed undergone a reconstruction, due to time constraints, the code is still somewhat **ugly**.
 * Some buttons or menu items on the interface are just interfaces, and I do not implement their functions.
 * Some operations do not be considered with various situations, nor does it do various troubleshooting work for possible misoperations.
 * Some memory was not released properly.
@@ -40,6 +40,8 @@ Due to limited time, the functions I listed above may not be as cool as the word
 I really look forward to making friends with related interests, and we will share experience and learn together!
 * E-Mail: 184346971@qq.com
 ## Display
+PBR
+![`B)OC_281{{(7(K FV5CJN6](https://user-images.githubusercontent.com/31690363/131146674-08715915-90ef-4b62-aead-2cd973261e00.png)
 SH_lighting
 ![image](https://user-images.githubusercontent.com/31690363/128983508-344a9bbb-99dc-4ebf-af64-c9daea820d98.png)
 ![V%BRYKJB E9I0JK(YGZ7ZMM](https://user-images.githubusercontent.com/31690363/130344475-acf28e7e-d0a0-4c86-860f-ce25d081b559.png)
