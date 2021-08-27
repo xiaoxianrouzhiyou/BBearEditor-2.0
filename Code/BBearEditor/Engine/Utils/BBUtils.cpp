@@ -102,6 +102,11 @@ unsigned char* BBUtils::decodeBMP(unsigned char *pBmpFileData, int &nWidth, int 
     return nullptr;
 }
 
+QString BBUtils::getBaseName(const QString &name)
+{
+    return name.mid(0, name.lastIndexOf('.'));
+}
+
 QString BBUtils::getPathRelativeToExecutionDirectory(const QString &absolutePath)
 {
     QDir dir(QDir::currentPath());

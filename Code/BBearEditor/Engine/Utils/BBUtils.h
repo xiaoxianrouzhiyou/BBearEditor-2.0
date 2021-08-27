@@ -179,6 +179,8 @@ public:
     static bool saveToFile(const char *pFilePath, void *pBuffer, int nSize);
     static unsigned char* decodeBMP(unsigned char *pBmpFileData, int &nWidth, int &nHeight);
 
+    static QString getBaseName(const QString &name);
+
     static QString getPathRelativeToExecutionDirectory(const QString &absolutePath);
 
     static unsigned int getBlendFunc(int nIndex);

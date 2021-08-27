@@ -10,6 +10,7 @@
 #include "Render/BBMaterial.h"
 #include "Shader/BBShader.h"
 #include <QFileInfo>
+#include <QDir>
 
 
 /**
@@ -207,8 +208,10 @@ void BBMaterialManager::setShaderEnumFactory(QWidget *pParent)
     QString vShaderPath = m_pMaterial->getShader()->getVShaderPath();
     QString fShaderPath = m_pMaterial->getShader()->getFShaderPath();
 
-    QString currentVName = QFileInfo(vShaderPath).baseName();
-    QString currentFName = QFileInfo(fShaderPath).baseName();
+    QString currentVName = vShaderPath.mid(QString(BB_PATH_RESOURCE_SHADER()).length());
+    currentVName = BBUtils::getBaseName(currentVName);
+    QString currentFName = fShaderPath.mid(QString(BB_PATH_RESOURCE_SHADER()).length());
+    currentFName = BBUtils::getBaseName(currentFName);
 
     m_pVShaderEnumFactory = new BBEnumFactory("V Shader", BBRendererManager::loadVShaderList(), currentVName, pParent);
     m_pFShaderEnumFactory = new BBEnumFactory("F Shader", BBRendererManager::loadFShaderList(), currentFName, pParent);

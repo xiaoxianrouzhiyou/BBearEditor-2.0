@@ -239,7 +239,18 @@ QStringList BBRendererManager::loadShaderList(const QString &filter)
         QFileInfo info = iter.fileInfo();
         if (info.isFile())
         {
-            nameList.append(info.baseName());
+            // relative to BB_PATH_RESOURCE_SHADER
+            QString name = QDir(BB_PATH_RESOURCE_SHADER()).relativeFilePath(info.absolutePath());
+            if (name.length() == 1)
+            {
+                // in the shader dir root
+                name = info.baseName();
+            }
+            else
+            {
+                name = name + "/" + info.baseName();
+            }
+            nameList.append(name);
         }
     }
     return nameList;
