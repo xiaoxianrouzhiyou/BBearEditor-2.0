@@ -1,7 +1,12 @@
-attribute vec4 BBPosition;
-attribute vec4 BBTexcoord;
+#version 330 core
 
-varying vec4 V_Texcoord;
+in vec4 BBPosition;
+in vec4 BBTexcoord;
+in vec4 BBNormal;
+
+out vec2 v2f_texcoords;
+out vec3 v2f_world_pos;
+out vec3 v2f_normal;
 
 uniform mat4 BBProjectionMatrix;
 uniform mat4 BBViewMatrix;
@@ -9,6 +14,10 @@ uniform mat4 BBModelMatrix;
 
 void main()
 {
-    V_Texcoord = BBTexcoord;
-    gl_Position = BBProjectionMatrix * BBViewMatrix * BBModelMatrix * BBPosition;
+    vec4 world_pos = BBModelMatrix * BBPosition;
+    gl_Position = BBProjectionMatrix * BBViewMatrix * world_pos;
+
+    v2f_texcoords = BBTexcoord.xy;
+    v2f_world_pos = world_pos.xyz;
+    v2f_normal = mat3(BBModelMatrix) * BBNormal.xyz;
 }
