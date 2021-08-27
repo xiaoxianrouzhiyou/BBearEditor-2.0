@@ -47,9 +47,6 @@ BBCamera* BBDirectionalLight::getLightSpaceCamera(int nLightPosX, int nLightPosZ
     m_ViewMatrix.rotate(-m_Rotation.x(), 1, 0, 0);
     m_ViewMatrix.rotate(-m_Rotation.y(), 0, 1, 0);
     m_ProjectionMatrix.setToIdentity();
-    BBCamera *pMainCamera = m_pScene->getCamera();
-    int nViewportWidth = pMainCamera->getViewportWidth();
-    int nViewportHeight = pMainCamera->getViewportHeight();
     m_ProjectionMatrix.ortho(-10, 10, -10, 10, -10, 10);
     pLightSpaceCamera->setViewMatrix(m_ViewMatrix);
     pLightSpaceCamera->setProjectionMatrix(m_ProjectionMatrix);
