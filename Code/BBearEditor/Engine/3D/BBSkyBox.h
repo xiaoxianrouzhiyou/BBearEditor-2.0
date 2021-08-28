@@ -13,6 +13,8 @@ public:
     void init(const QString &path) override;
     void render(BBCamera *pCamera) override;
 
+    void writeCubeMap(BBCamera *pCamera, int nSideIndex);
+
     void changeResource(const QString &path);
     void changeAlgorithm(int nIndex);
 
@@ -21,8 +23,12 @@ public:
 private:
     void initFrom6Map();
     void initFromHDREnvironmentMap();
+    void initEnvironmentMapMaterial();
 
     QString m_SkyBoxFilePath;
+    BBMaterial *m_pEnvironmentMapMaterial;
+    QMatrix4x4 m_EnvironmentMapProjectionMatrix;
+    QMatrix4x4 m_EnvironmentMapViewMatrix[6];
 };
 
 

@@ -58,7 +58,7 @@ public:
     /* FBO */
     GLuint getColorFBO(int nFBOIndex, int nAttachmentIndex = 0);
     GLuint getDepthFBO(int nFBOIndex);
-
+    /* SkyBox */
     void setSkyBox(const QString &path);
     void changeSkyBoxAlgorithm(int nAlgorithmIndex);
     void enableSkyBox(bool bEnable);
@@ -104,9 +104,11 @@ public:
 private:
     void bindFBO();
     void unbindFBO();
+    void writeSkyBoxCubeMap();
     void writeViewSpaceFBO(int nIndex);
     void writeShadowMap(int nIndex);
 
+    BBFrameBufferObject *m_pFixedSizeFBO[6];
     BBFrameBufferObject *m_pFBO[3];
 
 private:
