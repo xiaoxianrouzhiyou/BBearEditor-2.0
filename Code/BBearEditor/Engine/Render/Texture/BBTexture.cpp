@@ -1,4 +1,7 @@
 #include "BBTexture.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 
 BBTexture::BBTexture()
     : BBBaseRenderComponent()
@@ -95,6 +98,34 @@ GLuint BBTexture::createTexture2DFromBMP(const char *path)
 
     BB_SAFE_DELETE(pBmpFileContent);
     return texture;
+}
+
+GLuint BBTexture::createHDRTexture2D(const char *pFilePath)
+{
+    stbi_set_flip_vertically_on_load(true);
+    int nWidth;
+    int nHeight;
+    int nrComponents;
+    float *pData = stbi_loadf(pFilePath, &nWidth, &nHeight, &nrComponents, 0);
+    GLuint hdrTexture = 0;
+    if (pData)
+    {
+        glGenTextures(1, &hdrTexture);
+        glBindTexture(GL_TEXTURE_2D, hdrTexture);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, nWidth, nHeight, 0, GL_RGB, GL_FLOAT, pData);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        stbi_image_free(pData);
+    }
+    else
+    {
+        qDebug() << "Failed to load HDR image.";
+    }
+    return hdrTexture;
 }
 
 GLuint BBTexture::createTextureCube(const QString paths[], GLenum eType)

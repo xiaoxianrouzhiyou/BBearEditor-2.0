@@ -1,0 +1,41 @@
+[Header]
+ICOfile = "Brooklyn_Bridge_Planks_Thumb.jpg"
+PREVIEWfile = "Brooklyn_Bridge_Planks_preview.jpg"
+Name = "Brooklyn Bridge Planks"
+Author = "Blochi"
+Location = "New York"
+Comment = "Outdoors, urban, city, wooden planks, in the shade"
+GEOlat = 40.70764901065827
+GEOlong = -73.99988293647766
+Link = "http://www.hdrlabs.com/sibl/archive.html"
+Date = "2007:07:25"
+Time = "14:32:00"
+Height = 1.6
+North = 0.12
+
+[Background]
+BGfile = "Brooklyn_Bridge_Planks_tmap.jpg"
+BGmap = 1
+BGu = 0.000000
+BGv = 0.000000
+BGheight = 4000
+
+[Enviroment]
+EVfile = "Brooklyn_Bridge_Planks_Env.hdr"
+EVmap = 1
+EVu = 0.000000
+EVv = 0.000000
+EVheight = 256
+EVmulti = 1.000000
+EVgamma = 1.500000
+
+[Reflection]
+REFfile = "Brooklyn_Bridge_Planks_2k.hdr"
+REFmap = 1
+REFu = 0.000000
+REFv = 0.000000
+REFheight = 1024
+REFmulti = 1.000000
+REFgamma = 1.500000
+
+

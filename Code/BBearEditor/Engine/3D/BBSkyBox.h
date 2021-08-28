@@ -19,6 +19,9 @@ public:
     QString getSkyBoxFilePath() { return m_SkyBoxFilePath; }
 
 private:
+    void initFrom6Map();
+    void initFromHDREnvironmentMap();
+
     QString m_SkyBoxFilePath;
 };
 

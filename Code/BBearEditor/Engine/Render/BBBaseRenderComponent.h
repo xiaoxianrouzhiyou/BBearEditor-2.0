@@ -45,6 +45,7 @@
 #define LOCATION_CAMERA_DEPTH_TEXTURE "BBCameraDepthTexture"
 #define LOCATION_SHADOWMAP "BBShadowMap"
 #define LOCATION_SKYBOX_MAP "BBSkyBox"
+#define LOCATION_SKYBOX_EQUIRECTANGULAR_MAP "BBSkyBoxEquirectangularMap"
 #define LOCATION_SPHERICAL_HARMONIC_LIGHTING "BBSphericalHarmonicLightingCoefficients[0]"
 
 #define LOCATION_COLOR_PREFIX "BBColor_"

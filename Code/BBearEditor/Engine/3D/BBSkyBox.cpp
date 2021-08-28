@@ -55,15 +55,10 @@ void BBSkyBox::init(const QString &path)
     m_pVBO->setPosition(22, -0.5f, -0.5f, -0.5f);
     m_pVBO->setPosition(23, 0.5f, -0.5f, -0.5f);
 
-    m_pCurrentMaterial->init("SkyBox", BB_PATH_RESOURCE_SHADER(SkyBox/SkyBox.vert), BB_PATH_RESOURCE_SHADER(SkyBox/SkyBox.frag));
-
-    QString paths[6] = {path + "right", path + "left", path + "bottom", path + "top", path + "back", path + "front"};
-    BBTexture texture;
-    m_pCurrentMaterial->setSamplerCube(LOCATION_SKYBOX_MAP, texture.createTextureCube(paths), paths);
-    m_pCurrentMaterial->setZTestState(false);
+//    initFrom6Map();
+    initFromHDREnvironmentMap();
 
     BBRenderableObject::init();
-
     BBDrawCall *pDrawCall = new BBDrawCall;
     pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO, GL_TRIANGLE_STRIP, 0, 24);
@@ -86,4 +81,28 @@ void BBSkyBox::changeResource(const QString &path)
 void BBSkyBox::changeAlgorithm(int nIndex)
 {
 
+}
+
+void BBSkyBox::initFrom6Map()
+{
+    m_pCurrentMaterial->init("SkyBox", BB_PATH_RESOURCE_SHADER(SkyBox/SkyBox_Common.vert), BB_PATH_RESOURCE_SHADER(SkyBox/SkyBox_Common.frag));
+
+    QString paths[6] = {m_SkyBoxFilePath + "right",
+                        m_SkyBoxFilePath + "left",
+                        m_SkyBoxFilePath + "bottom",
+                        m_SkyBoxFilePath + "top",
+                        m_SkyBoxFilePath + "back",
+                        m_SkyBoxFilePath + "front"};
+    BBTexture texture;
+    m_pCurrentMaterial->setSamplerCube(LOCATION_SKYBOX_MAP, texture.createTextureCube(paths), paths);
+    m_pCurrentMaterial->setZTestState(false);
+}
+
+void BBSkyBox::initFromHDREnvironmentMap()
+{
+    m_pCurrentMaterial->init("SkyBox", BB_PATH_RESOURCE_SHADER(SkyBox/SkyBox_Equirectangular.vert), BB_PATH_RESOURCE_SHADER(SkyBox/SkyBox_Equirectangular.frag));
+
+    GLuint hdrTexture = BBTexture().createHDRTexture2D(BB_PATH_RESOURCE_TEXTURE(HDR/Brooklyn_Bridge_Planks/Brooklyn_Bridge_Planks_2k.hdr));
+    m_pCurrentMaterial->setSampler2D(LOCATION_SKYBOX_EQUIRECTANGULAR_MAP, hdrTexture);
+    m_pCurrentMaterial->setZTestState(false);
 }
