@@ -1,4 +1,5 @@
-#version 330 core
+#version 430 core
+#extension GL_NV_shadow_samplers_cube : enable
 
 out vec4 FragColor;
 
@@ -12,6 +13,8 @@ uniform vec4 BBLightColor;
 uniform vec4 BBLightSettings0;
 uniform vec4 BBLightSettings1;
 uniform vec4 BBLightSettings2;
+// IBL
+uniform samplerCube BBIrradianceMap;
 
 uniform vec4  BBColor_Albedo;
 uniform float Metallic;
@@ -62,6 +65,16 @@ float getLambertSpotLightIntensity(vec3 normal, float radius, float distance, fl
 vec3 calculateFresnelSchlick(float cos_theta, vec3 F0)
 {
     return F0 + (1.0 - F0) * pow(1.0 - cos_theta, 5.0);
+} 
+
+// Earlier we used the micro-surface halfway vector, influenced by the roughness of the surface, as input to the Fresnel equation.
+// As we currently don't take roughness into account, the surface's reflective ratio will always end up relatively high.
+// Indirect light follows the same properties of direct light so we expect rougher surfaces to reflect less strongly on the surface edges.
+// Because of this, the indirect Fresnel reflection strength looks off on rough non-metal surfaces
+// We can alleviate the issue by injecting a roughness term in the Fresnel-Schlick equation as described by Sébastien Lagarde
+vec3 calculateFresnelSchlickRoughness(float cos_theta, vec3 F0, float roughness)
+{
+    return F0 + (max(vec3(1.0 - roughness), F0) - F0) * pow(1.0 - cos_theta, 5.0);
 }  
 
 float calculateDistributionGGX(vec3 N, vec3 H, float roughness)
@@ -104,6 +117,7 @@ void main(void)
 {
     vec3 N = normalize(v2f_normal); 
     vec3 V = normalize(BBCameraPosition.xyz - v2f_world_pos);
+    vec3 R = reflect(-V, N);
 
     // Lambert radiance
     vec3 L = vec3(1.0);
@@ -171,8 +185,17 @@ void main(void)
     // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
     vec3 Lo = (kD * BBColor_Albedo.rgb / PI + specular) * radiance * NdotL;
 
-    // ambient lighting
-    vec3 ambient = vec3(0.03) * BBColor_Albedo.rgb * AO;
+    // IBL ambient lighting
+    // As the ambient light comes from all directions within the hemisphere oriented around the normal N,
+    // there's no single halfway vector to determine the Fresnel response.
+    // To still simulate Fresnel, we calculate the Fresnel from the angle between the normal and view vector.
+    kS = calculateFresnelSchlickRoughness(max(dot(N, V), 0.0), F0, Roughness);
+    kD = 1.0 - kS;
+    kD *= 1.0 - Metallic;	  
+    vec3 irradiance = textureCube(BBIrradianceMap, N).rgb;
+    vec3 diffuse = irradiance * BBColor_Albedo.rgb;
+    vec3 ambient = kD * diffuse * AO;
+
     vec3 final_color = ambient + Lo;
 
     // Lo as a result may grow rapidly (more than 1), but the value is truncated due to the default LDR input.
