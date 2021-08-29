@@ -81,7 +81,12 @@ void BBBaseShader::initUniforms()
 {
     GLint count = 0;
     glGetProgramiv(m_Program, GL_ACTIVE_UNIFORMS, &count);
-    int nSlotIndex = 3; // Reserved for FBO
+    // Reserved for FBO
+    // 0 : View Space Color FBO
+    // 1 : View Space Depth FBO
+    // 2 : Shadow Map
+    // 3 : Irradiance Map
+    int nSlotIndex = 4;
     for (int i = 0; i < count; i++)
     {
         GLsizei length = 0;
@@ -248,11 +253,20 @@ BBUniformUpdater* BBBaseShader::initUniformSampler2D(GLint location, const char 
 
 BBUniformUpdater* BBBaseShader::initUniformSamplerCube(GLint location, const char *pUniformName, int &nSlotIndex)
 {
-    BBSamplerCubeMaterialProperty *pProperty = new BBSamplerCubeMaterialProperty(pUniformName, nSlotIndex);
-    m_Properties.insert(pUniformName, pProperty);
-    nSlotIndex++;
+    BBUpdateUniformFunc updateUniformFunc = &BBUniformUpdater::updateSamplerCube;
+    BBSamplerCubeMaterialProperty *pProperty = nullptr;
+    if (strcmp(pUniformName, LOCATION_IRRADIANCE_MAP) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updateIrradianceMap;
+    }
+    else
+    {
+        pProperty = new BBSamplerCubeMaterialProperty(pUniformName, nSlotIndex);
+        m_Properties.insert(pUniformName, pProperty);
+        nSlotIndex++;
+    }
 
-    return new BBUniformUpdater(location, &BBUniformUpdater::updateSamplerCube, pProperty);
+    return new BBUniformUpdater(location, updateUniformFunc, pProperty);
 }
 
 void BBBaseShader::appendUniformUpdater(BBUniformUpdater *pUniformUpdater)

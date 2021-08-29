@@ -98,12 +98,6 @@ void BBScene::init()
         m_pFullScreenQuad[i] = new BBFullScreenQuad();
         m_pFullScreenQuad[i]->init();
     }
-
-    // init environment FBO
-    m_pFixedSizeFBO = new BBFrameBufferObject();
-    m_pFixedSizeFBO->attachColorBuffer(FBO_COLOR_BUFFER_NAME(0), GL_COLOR_ATTACHMENT0, BBSkyBox::m_nEnvironmentMapSize, BBSkyBox::m_nEnvironmentMapSize, GL_RGBA32F);
-    m_pFixedSizeFBO->attachDepthBuffer(FBO_DEPTH_BUFFER_NAME, BBSkyBox::m_nEnvironmentMapSize, BBSkyBox::m_nEnvironmentMapSize);
-    m_pFixedSizeFBO->finish();
 }
 
 void BBScene::render()
@@ -577,8 +571,28 @@ void BBScene::unbindFBO()
 
 void BBScene::writeSkyBoxCubeMap()
 {
+    // init environment FBO
+    if (m_pFixedSizeFBO)
+        BB_SAFE_DELETE(m_pFixedSizeFBO);
+    m_pFixedSizeFBO = new BBFrameBufferObject();
+    m_pFixedSizeFBO->attachColorBuffer(FBO_COLOR_BUFFER_NAME(0), GL_COLOR_ATTACHMENT0, BBSkyBox::m_nEnvironmentMapSize, BBSkyBox::m_nEnvironmentMapSize, GL_RGBA32F);
+    m_pFixedSizeFBO->attachDepthBuffer(FBO_DEPTH_BUFFER_NAME, BBSkyBox::m_nEnvironmentMapSize, BBSkyBox::m_nEnvironmentMapSize);
+    m_pFixedSizeFBO->finish();
+
     m_pFixedSizeFBO->bind();
-    m_pSkyBox->writeCubeMap(m_pCamera);
+    m_pSkyBox->writeEnvironmentMap(m_pCamera);
+    m_pFixedSizeFBO->unbind();
+
+    // In order to generate the irradiance map, we need to convolute the ambient light
+    if (m_pFixedSizeFBO)
+        BB_SAFE_DELETE(m_pFixedSizeFBO);
+    m_pFixedSizeFBO = new BBFrameBufferObject();
+    m_pFixedSizeFBO->attachColorBuffer(FBO_COLOR_BUFFER_NAME(0), GL_COLOR_ATTACHMENT0, BBSkyBox::m_nIrradianceMapSize, BBSkyBox::m_nIrradianceMapSize, GL_RGBA32F);
+    m_pFixedSizeFBO->attachDepthBuffer(FBO_DEPTH_BUFFER_NAME, BBSkyBox::m_nIrradianceMapSize, BBSkyBox::m_nIrradianceMapSize);
+    m_pFixedSizeFBO->finish();
+
+    m_pFixedSizeFBO->bind();
+    m_pSkyBox->writeIrradianceMap(m_pCamera);
     m_pFixedSizeFBO->unbind();
 }
 

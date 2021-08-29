@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include "Scene/BBSceneManager.h"
 #include "Scene/BBScene.h"
+#include "3D/BBSkyBox.h"
 #include "Lighting/GameObject/BBLight.h"
 #include "Lighting/BBSphericalHarmonicLighting.h"
 
@@ -124,6 +125,13 @@ void BBUniformUpdater::updateSphericalHarmonicLightingCoefficients(GLint locatio
     {
         glUniform4fv(location, nCount, BBSphericalHarmonicLighting::getCoefficientL());
     }
+}
+
+void BBUniformUpdater::updateIrradianceMap(GLint location, void *pCamera, void *pPropertyValue)
+{
+    glActiveTexture(GL_TEXTURE0 + 3);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, BBSceneManager::getScene()->getSkyBox()->getIrradianceMap());
+    glUniform1i(location, 3);
 }
 
 void BBUniformUpdater::updateFloat(GLint location, void *pCamera, void *pPropertyValue)

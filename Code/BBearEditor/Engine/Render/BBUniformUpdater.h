@@ -38,6 +38,7 @@ public:
     void updateLightProjectionMatrix(GLint location, void *pCamera, void *pPropertyValue);
     void updateLightViewMatrix(GLint location, void *pCamera, void *pPropertyValue);
     void updateSphericalHarmonicLightingCoefficients(GLint location, void *pCamera, void *pPropertyValue);
+    void updateIrradianceMap(GLint location, void *pCamera, void *pPropertyValue);
 
     void updateFloat(GLint location, void *pCamera, void *pPropertyValue);
     void updateMatrix4(GLint location, void *pCamera, void *pPropertyValue);
