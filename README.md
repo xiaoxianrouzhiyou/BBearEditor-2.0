@@ -17,7 +17,7 @@ In addition, I referred to some code, learning resources, UI designs, and art re
 * OpenGL. The higher the version, the more effects you can use.
 * Python 3.7.9 32bit. Please copy .../Python/Python37-32/Lib into Code/BBearEditor/Engine/Python!
 ## Feature
-* Encapsulation of rendering system
+* Encapsulation of rendering system, Forward rendering & Deferred rendering
 * Editor: create models, move objects, asset management, adjust parameters ...
 * 2D & 3D
 * Reproduce some classic algorithms: GI, Spherical Harmonic Lighting, Ray Tracing, ...
