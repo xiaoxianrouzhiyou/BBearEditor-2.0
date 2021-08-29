@@ -12,18 +12,22 @@ int BBSkyBox::m_nEnvironmentMapSize = 512;
 // Since the irradiance map averages all the surrounding radiation values, it loses most of the high-frequency details,
 // so we can store it at a lower resolution (32x32) and let OpenGL's linear filtering complete most of the work.
 int BBSkyBox::m_nIrradianceMapSize = 32;
+int BBSkyBox::m_nBaseMipmapSize = 128;
+int BBSkyBox::m_nMaxMipLevels = 5;
 
 BBSkyBox::BBSkyBox()
     : BBRenderableObject()
 {
     m_pEnvironmentMapMaterial = nullptr;
     m_pIrradianceMapMaterial = nullptr;
+    m_pPrefilterMapMaterial = nullptr;
 }
 
 BBSkyBox::~BBSkyBox()
 {
     BB_SAFE_DELETE(m_pEnvironmentMapMaterial);
     BB_SAFE_DELETE(m_pIrradianceMapMaterial);
+    BB_SAFE_DELETE(m_pPrefilterMapMaterial);
 }
 
 void BBSkyBox::init(const QString &path)
@@ -108,6 +112,21 @@ void BBSkyBox::writeIrradianceMap(BBCamera *pCamera)
     restoreMaterial();
 }
 
+void BBSkyBox::writePrefilterMapMipmap(BBCamera *pCamera, int nMipLevel)
+{
+    setCurrentMaterial(m_pPrefilterMapMaterial);
+
+    m_pPrefilterMapMaterial->setFloat("Roughness", (float)nMipLevel / (float)(m_nMaxMipLevels - 1));
+    for (int i = 0; i < 6; i++)
+    {
+        m_pPrefilterMapMaterial->setMatrix4("ViewMatrix", m_IBLCubeMapViewMatrix[i].data());
+        BBTexture().startWritingTextureCubeMipmap(m_PrefilterMapMipmap, i, nMipLevel);
+        BBRenderableObject::render(pCamera);
+    }
+
+    restoreMaterial();
+}
+
 void BBSkyBox::changeResource(const QString &path)
 {
 
@@ -120,7 +139,7 @@ void BBSkyBox::changeAlgorithm(int nIndex)
 
 void BBSkyBox::initFrom6Map()
 {
-    m_pCurrentMaterial->init("SkyBox", BB_PATH_RESOURCE_SHADER(SkyBox/Common.vert), BB_PATH_RESOURCE_SHADER(SkyBox/Common.frag));
+    m_pCurrentMaterial->init("SkyBox_Common", BB_PATH_RESOURCE_SHADER(SkyBox/Common.vert), BB_PATH_RESOURCE_SHADER(SkyBox/Common.frag));
 
     QString paths[6] = {m_SkyBoxFilePath + "right",
                         m_SkyBoxFilePath + "left",
@@ -135,16 +154,16 @@ void BBSkyBox::initFrom6Map()
 
 void BBSkyBox::initFromHDREnvironmentMap()
 {
-    m_pCurrentMaterial->init("SkyBox", BB_PATH_RESOURCE_SHADER(SkyBox/Equirectangular.vert), BB_PATH_RESOURCE_SHADER(SkyBox/Equirectangular.frag));
+    m_pCurrentMaterial->init("SkyBox_Equirectangular", BB_PATH_RESOURCE_SHADER(SkyBox/Equirectangular.vert), BB_PATH_RESOURCE_SHADER(SkyBox/Equirectangular.frag));
 
-    GLuint hdrTexture = BBTexture().createHDRTexture2D(BB_PATH_RESOURCE_TEXTURE(HDR/Walk_Of_Fame/Mans_Outside_2k.hdr));
+    GLuint hdrTexture = BBTexture().createHDRTexture2D(BB_PATH_RESOURCE_TEXTURE(HDR/newport_loft.hdr));
     m_pCurrentMaterial->setSampler2D(LOCATION_SKYBOX_EQUIRECTANGULAR_MAP, hdrTexture);
     m_pCurrentMaterial->setZTestState(false);
 }
 
 void BBSkyBox::initFromEnvironmentCubeMap()
 {
-    m_pCurrentMaterial->init("SkyBox", BB_PATH_RESOURCE_SHADER(SkyBox/Common.vert), BB_PATH_RESOURCE_SHADER(SkyBox/Common.frag));
+    m_pCurrentMaterial->init("SkyBox_Common", BB_PATH_RESOURCE_SHADER(SkyBox/Common.vert), BB_PATH_RESOURCE_SHADER(SkyBox/Common.frag));
 
     m_pCurrentMaterial->setSamplerCube(LOCATION_SKYBOX_MAP, m_EnvironmentMap);
     m_pCurrentMaterial->setZTestState(false);
@@ -157,6 +176,7 @@ void BBSkyBox::initIBLSettings()
 {
     m_EnvironmentMap = BBTexture().allocateTextureCube(m_nEnvironmentMapSize, m_nEnvironmentMapSize, GL_RGB16F);
     m_IrradianceMap = BBTexture().allocateTextureCube(m_nIrradianceMapSize, m_nIrradianceMapSize, GL_RGB16F);
+    m_PrefilterMapMipmap = BBTexture().allocateTextureCubeMipmap(m_nBaseMipmapSize, m_nBaseMipmapSize, GL_RGB16F);
 
     m_IBLCubeMapProjectionMatrix.perspective(90.0f, 1.0f, 0.1f, 10.0f);
     m_IBLCubeMapViewMatrix[0].lookAt(QVector3D(0, 0, 0), QVector3D(1, 0, 0), QVector3D(0, 1, 0));
@@ -172,7 +192,7 @@ void BBSkyBox::initIBLSettings()
                                     BB_PATH_RESOURCE_SHADER(SkyBox/Equirectangular2Cubemap.frag));
     m_pEnvironmentMapMaterial->setZFunc(GL_LEQUAL);
     m_pEnvironmentMapMaterial->setMatrix4("ProjectionMatrix", m_IBLCubeMapProjectionMatrix.data());
-    GLuint hdrTexture = BBTexture().createHDRTexture2D(BB_PATH_RESOURCE_TEXTURE(HDR/Walk_Of_Fame/Mans_Outside_2k.hdr));
+    GLuint hdrTexture = BBTexture().createHDRTexture2D(BB_PATH_RESOURCE_TEXTURE(HDR/newport_loft.hdr));
     m_pEnvironmentMapMaterial->setSampler2D(LOCATION_SKYBOX_EQUIRECTANGULAR_MAP, hdrTexture);
 
     m_pIrradianceMapMaterial = new BBMaterial();
@@ -182,4 +202,12 @@ void BBSkyBox::initIBLSettings()
     m_pIrradianceMapMaterial->setZFunc(GL_LEQUAL);
     m_pIrradianceMapMaterial->setMatrix4("ProjectionMatrix", m_IBLCubeMapProjectionMatrix.data());
     m_pIrradianceMapMaterial->setSamplerCube("EnvironmentMap", m_EnvironmentMap);
+
+    m_pPrefilterMapMaterial = new BBMaterial();
+    m_pPrefilterMapMaterial->init("SkyBox_PrefilterMap",
+                                  BB_PATH_RESOURCE_SHADER(SkyBox/Cubemap.vert),
+                                  BB_PATH_RESOURCE_SHADER(SkyBox/PrefilterMap.frag));
+    m_pPrefilterMapMaterial->setZFunc(GL_LEQUAL);
+    m_pPrefilterMapMaterial->setMatrix4("ProjectionMatrix", m_IBLCubeMapProjectionMatrix.data());
+    m_pPrefilterMapMaterial->setSamplerCube("EnvironmentMap", m_EnvironmentMap);
 }

@@ -576,7 +576,6 @@ void BBScene::writeSkyBoxCubeMap()
         BB_SAFE_DELETE(m_pFixedSizeFBO);
     m_pFixedSizeFBO = new BBFrameBufferObject();
     m_pFixedSizeFBO->attachColorBuffer(FBO_COLOR_BUFFER_NAME(0), GL_COLOR_ATTACHMENT0, BBSkyBox::m_nEnvironmentMapSize, BBSkyBox::m_nEnvironmentMapSize, GL_RGBA32F);
-    m_pFixedSizeFBO->attachDepthBuffer(FBO_DEPTH_BUFFER_NAME, BBSkyBox::m_nEnvironmentMapSize, BBSkyBox::m_nEnvironmentMapSize);
     m_pFixedSizeFBO->finish();
 
     m_pFixedSizeFBO->bind();
@@ -588,12 +587,27 @@ void BBScene::writeSkyBoxCubeMap()
         BB_SAFE_DELETE(m_pFixedSizeFBO);
     m_pFixedSizeFBO = new BBFrameBufferObject();
     m_pFixedSizeFBO->attachColorBuffer(FBO_COLOR_BUFFER_NAME(0), GL_COLOR_ATTACHMENT0, BBSkyBox::m_nIrradianceMapSize, BBSkyBox::m_nIrradianceMapSize, GL_RGBA32F);
-    m_pFixedSizeFBO->attachDepthBuffer(FBO_DEPTH_BUFFER_NAME, BBSkyBox::m_nIrradianceMapSize, BBSkyBox::m_nIrradianceMapSize);
     m_pFixedSizeFBO->finish();
 
     m_pFixedSizeFBO->bind();
     m_pSkyBox->writeIrradianceMap(m_pCamera);
     m_pFixedSizeFBO->unbind();
+
+    for (int nMipLevel = 0; nMipLevel < BBSkyBox::m_nMaxMipLevels; nMipLevel++)
+    {
+        // resize framebuffer according to mip-level size.
+        int nMipWidth = BBSkyBox::m_nBaseMipmapSize * std::pow(0.5, nMipLevel);
+        int nMipHeight = BBSkyBox::m_nBaseMipmapSize * std::pow(0.5, nMipLevel);
+        if (m_pFixedSizeFBO)
+            BB_SAFE_DELETE(m_pFixedSizeFBO);
+        m_pFixedSizeFBO = new BBFrameBufferObject();
+        m_pFixedSizeFBO->attachColorBuffer(FBO_COLOR_BUFFER_NAME(0), GL_COLOR_ATTACHMENT0, BBSkyBox::m_nIrradianceMapSize, BBSkyBox::m_nIrradianceMapSize, GL_RGBA32F);
+        m_pFixedSizeFBO->finish();
+
+        m_pFixedSizeFBO->bind();
+        m_pSkyBox->writePrefilterMapMipmap(m_pCamera, nMipLevel);
+        m_pFixedSizeFBO->unbind();
+    }
 }
 
 void BBScene::writeViewSpaceFBO(int nIndex)

@@ -15,6 +15,7 @@ public:
 
     void writeEnvironmentMap(BBCamera *pCamera);
     void writeIrradianceMap(BBCamera *pCamera);
+    void writePrefilterMapMipmap(BBCamera *pCamera, int nMipLevel);
 
     void changeResource(const QString &path);
     void changeAlgorithm(int nIndex);
@@ -25,6 +26,8 @@ public:
 public:
     static int m_nEnvironmentMapSize;
     static int m_nIrradianceMapSize;
+    static int m_nBaseMipmapSize;
+    static int m_nMaxMipLevels;
 
 private:
     void initFrom6Map();
@@ -34,10 +37,15 @@ private:
     void initIBLSettings();
 
     QString m_SkyBoxFilePath;
+
     GLuint m_EnvironmentMap;
     GLuint m_IrradianceMap;
+    GLuint m_PrefilterMapMipmap;
+
     BBMaterial *m_pEnvironmentMapMaterial;
     BBMaterial *m_pIrradianceMapMaterial;
+    BBMaterial *m_pPrefilterMapMaterial;
+
     QMatrix4x4 m_IBLCubeMapProjectionMatrix;
     QMatrix4x4 m_IBLCubeMapViewMatrix[6];
 };

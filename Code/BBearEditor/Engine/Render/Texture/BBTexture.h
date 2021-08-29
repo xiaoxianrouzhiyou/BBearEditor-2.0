@@ -19,8 +19,11 @@ public:
 
     GLuint createTextureCube(const QString paths[], GLenum eType = GL_RGBA);
 
-    GLuint allocateTextureCube(int nWidth, int nHeight, GLenum eType = GL_RGBA);
+    GLuint allocateTextureCube(int nWidth, int nHeight, GLenum eType = GL_RGB16F);
     void startWritingTextureCube(GLuint texture, int nSideIndex);
+
+    GLuint allocateTextureCubeMipmap(int nWidth, int nHeight, GLenum eType = GL_RGB16F);
+    void startWritingTextureCubeMipmap(GLuint texture, int nSideIndex, int nMipLevel);
 };
 
 #endif // BBTEXTURE_H
