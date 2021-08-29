@@ -8,6 +8,8 @@
 #include "Utils/BBUtils.h"
 
 
+int BBSkyBox::m_nEnvironmentMapSize = 512;
+
 BBSkyBox::BBSkyBox()
     : BBRenderableObject()
 {
@@ -22,6 +24,7 @@ BBSkyBox::~BBSkyBox()
 void BBSkyBox::init(const QString &path)
 {
     m_SkyBoxFilePath = path;
+    initEnvironmentMapSettings();
 
     m_pVBO = new BBVertexBufferObject(24);
 
@@ -56,15 +59,14 @@ void BBSkyBox::init(const QString &path)
     m_pVBO->setPosition(23, 0.5f, -0.5f, -0.5f);
 
 //    initFrom6Map();
-    initFromHDREnvironmentMap();
+//    initFromHDREnvironmentMap();
+    initFromEnvironmentCubeMap();
 
     BBRenderableObject::init();
     BBDrawCall *pDrawCall = new BBDrawCall;
     pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO, GL_TRIANGLE_STRIP, 0, 24);
     appendDrawCall(pDrawCall);
-
-    initEnvironmentMapMaterial();
 }
 
 void BBSkyBox::render(BBCamera *pCamera)
@@ -75,12 +77,16 @@ void BBSkyBox::render(BBCamera *pCamera)
     BBRenderableObject::render(modelMatrix, pCamera);
 }
 
-void BBSkyBox::writeCubeMap(BBCamera *pCamera, int nSideIndex)
+void BBSkyBox::writeCubeMap(BBCamera *pCamera)
 {
     // Switch to a specific material and render the 6 faces of the sky box into FBO respectively
     setCurrentMaterial(m_pEnvironmentMapMaterial);
-    m_pEnvironmentMapMaterial->setMatrix4("ViewMatrix", m_EnvironmentMapViewMatrix[nSideIndex].data());
-    BBRenderableObject::render(pCamera);
+    for (int i = 0; i < 6; i++)
+    {
+        m_pEnvironmentMapMaterial->setMatrix4("ViewMatrix", m_EnvironmentMapViewMatrix[i].data());
+        BBTexture().startWritingTextureCube(m_EnvironmentMap, i);
+        BBRenderableObject::render(pCamera);
+    }
     // Restore default material
     restoreMaterial();
 }
@@ -119,18 +125,26 @@ void BBSkyBox::initFromHDREnvironmentMap()
     m_pCurrentMaterial->setZTestState(false);
 }
 
+void BBSkyBox::initFromEnvironmentCubeMap()
+{
+    m_pCurrentMaterial->init("SkyBox", BB_PATH_RESOURCE_SHADER(SkyBox/SkyBox_Common.vert), BB_PATH_RESOURCE_SHADER(SkyBox/SkyBox_Common.frag));
+
+    m_pCurrentMaterial->setSamplerCube(LOCATION_SKYBOX_MAP, m_EnvironmentMap);
+    m_pCurrentMaterial->setZTestState(false);
+}
+
 /**
  * @brief BBSkyBox::initEnvironmentMapMaterial              init the material that is used for making lighting map
  */
-void BBSkyBox::initEnvironmentMapMaterial()
+void BBSkyBox::initEnvironmentMapSettings()
 {
     m_EnvironmentMapProjectionMatrix.perspective(90.0f, 1.0f, 0.1f, 10.0f);
     m_EnvironmentMapViewMatrix[0].lookAt(QVector3D(0, 0, 0), QVector3D(1, 0, 0), QVector3D(0, 1, 0));
     m_EnvironmentMapViewMatrix[1].lookAt(QVector3D(0, 0, 0), QVector3D(-1, 0, 0), QVector3D(0, 1, 0));
     m_EnvironmentMapViewMatrix[2].lookAt(QVector3D(0, 0, 0), QVector3D(0, -1, 0), QVector3D(0, 0, -1));
     m_EnvironmentMapViewMatrix[3].lookAt(QVector3D(0, 0, 0), QVector3D(0, 1, 0), QVector3D(0, 0, 1));
-    m_EnvironmentMapViewMatrix[4].lookAt(QVector3D(0, 0, 0), QVector3D(0, 0, 1), QVector3D(0, 1, 0));
-    m_EnvironmentMapViewMatrix[5].lookAt(QVector3D(0, 0, 0), QVector3D(0, 0, -1), QVector3D(0, 1, 0));
+    m_EnvironmentMapViewMatrix[4].lookAt(QVector3D(0, 0, 0), QVector3D(0, 0, -1), QVector3D(0, 1, 0));
+    m_EnvironmentMapViewMatrix[5].lookAt(QVector3D(0, 0, 0), QVector3D(0, 0, 1), QVector3D(0, 1, 0));
 
     m_pEnvironmentMapMaterial = new BBMaterial();
     m_pEnvironmentMapMaterial->init("SkyBox_MakeCubeMapFBO",
@@ -141,4 +155,6 @@ void BBSkyBox::initEnvironmentMapMaterial()
     m_pEnvironmentMapMaterial->setMatrix4("ProjectionMatrix", m_EnvironmentMapProjectionMatrix.data());
     GLuint hdrTexture = BBTexture().createHDRTexture2D(BB_PATH_RESOURCE_TEXTURE(HDR/Walk_Of_Fame/Mans_Outside_2k.hdr));
     m_pEnvironmentMapMaterial->setSampler2D(LOCATION_SKYBOX_EQUIRECTANGULAR_MAP, hdrTexture);
+
+    m_EnvironmentMap = BBTexture().allocateTextureCube(BBSkyBox::m_nEnvironmentMapSize, BBSkyBox::m_nEnvironmentMapSize, GL_RGB16F);
 }

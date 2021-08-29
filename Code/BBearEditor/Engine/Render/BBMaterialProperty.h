@@ -147,6 +147,7 @@ public:
 
     BBMaterialProperty* clone() override;
 
+    void setTextureName(GLuint textureName);
     void setTextureName(GLuint textureName, const QString resourcePath[6]);
     inline GLuint getTextureName() const { return m_TextureName; }
     inline int getSlotIndex() { return m_nSlotIndex; }

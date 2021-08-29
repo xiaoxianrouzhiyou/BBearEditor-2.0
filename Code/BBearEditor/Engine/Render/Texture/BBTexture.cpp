@@ -154,3 +154,43 @@ GLuint BBTexture::createTextureCube(const QString paths[], GLenum eType)
 
     return texture;
 }
+
+/**
+ * @brief BBTexture::allocateTextureCube                    Allocate memory for cube map
+ * @param nWidth
+ * @param nHeight
+ * @param eType
+ * @return
+ */
+GLuint BBTexture::allocateTextureCube(int nWidth, int nHeight, GLenum eType)
+{
+    GLuint texture = 0;
+
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
+
+    for (int i = 0; i < 6; i++)
+    {
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, eType, nWidth, nHeight, 0, GL_RGB, GL_FLOAT, nullptr);
+    }
+
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
+    return texture;
+}
+
+/**
+ * @brief BBTexture::startWritingTextureCube                start writing mode, write into the memory that is allocated by BBTexture::allocateTextureCube
+ * @param texture
+ */
+void BBTexture::startWritingTextureCube(GLuint texture, int nSideIndex)
+{
+    // Subsequent rendering code
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + nSideIndex, texture, 0);
+}

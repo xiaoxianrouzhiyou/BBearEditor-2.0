@@ -108,7 +108,7 @@ private:
     void writeViewSpaceFBO(int nIndex);
     void writeShadowMap(int nIndex);
 
-    BBFrameBufferObject *m_pFixedSizeFBO[6];
+    BBFrameBufferObject *m_pFixedSizeFBO;
     BBFrameBufferObject *m_pFBO[3];
 
 private:

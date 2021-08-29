@@ -18,6 +18,9 @@ public:
     GLuint createHDRTexture2D(const char *pFilePath);
 
     GLuint createTextureCube(const QString paths[], GLenum eType = GL_RGBA);
+
+    GLuint allocateTextureCube(int nWidth, int nHeight, GLenum eType = GL_RGBA);
+    void startWritingTextureCube(GLuint texture, int nSideIndex);
 };
 
 #endif // BBTEXTURE_H

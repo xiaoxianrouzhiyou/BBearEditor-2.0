@@ -46,6 +46,7 @@ public:
     void setVector4(const std::string &uniformName, const float *pVector4);
     void setArrayVector4(const std::string &uniformName, const float *pArrayVector4, int nArrayCount);
     void setSampler2D(const std::string &uniformName, GLuint textureName, const QString &resourcePath = "");
+    void setSamplerCube(const std::string &uniformName, GLuint textureName);
     void setSamplerCube(const std::string &uniformName, GLuint textureName, const QString resourcePaths[]);
 
     BBMaterial* clone();

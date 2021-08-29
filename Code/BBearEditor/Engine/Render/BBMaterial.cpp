@@ -212,6 +212,18 @@ void BBMaterial::setSampler2D(const std::string &uniformName, GLuint textureName
     }
 }
 
+void BBMaterial::setSamplerCube(const std::string &uniformName, GLuint textureName)
+{
+    if (m_pBaseRenderPass != nullptr)
+    {
+        m_pBaseRenderPass->setSamplerCube(uniformName, textureName);
+    }
+    if (m_pAdditiveRenderPass != nullptr)
+    {
+        m_pAdditiveRenderPass->setSamplerCube(uniformName, textureName);
+    }
+}
+
 void BBMaterial::setSamplerCube(const std::string &uniformName, GLuint textureName, const QString resourcePaths[])
 {
     if (m_pBaseRenderPass != nullptr)

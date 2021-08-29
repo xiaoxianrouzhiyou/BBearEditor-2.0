@@ -44,10 +44,7 @@ BBScene::BBScene()
     m_pTransformCoordinateSystem = nullptr;
     m_pTiledFullScreenQuad = nullptr;
     m_pNormalIndicator = nullptr;
-    for (int i = 0; i < 6; i++)
-    {
-        m_pFixedSizeFBO[i] = nullptr;
-    }
+    m_pFixedSizeFBO = nullptr;
 }
 
 BBScene::~BBScene()
@@ -65,10 +62,7 @@ BBScene::~BBScene()
     BB_SAFE_DELETE(m_pTransformCoordinateSystem);
     BB_SAFE_DELETE(m_pTiledFullScreenQuad);
     BB_SAFE_DELETE(m_pNormalIndicator);
-    for (int i = 0; i < 6; i++)
-    {
-        BB_SAFE_DELETE(m_pFixedSizeFBO[i]);
-    }
+    BB_SAFE_DELETE(m_pFixedSizeFBO);
     QList<BBGameObject*> objects = m_Models + m_Lights;
     QList<BBGameObject*>::Iterator itr;
     for (itr = objects.begin(); itr != objects.end(); itr++)
@@ -106,13 +100,10 @@ void BBScene::init()
     }
 
     // init environment FBO
-    for (int i = 0; i < 6; i++)
-    {
-        m_pFixedSizeFBO[i] = new BBFrameBufferObject();
-        m_pFixedSizeFBO[i]->attachColorBuffer(FBO_COLOR_BUFFER_NAME(0), GL_COLOR_ATTACHMENT0, 512, 512, GL_RGBA32F);
-        m_pFixedSizeFBO[i]->attachDepthBuffer(FBO_DEPTH_BUFFER_NAME, 512, 512);
-        m_pFixedSizeFBO[i]->finish();
-    }
+    m_pFixedSizeFBO = new BBFrameBufferObject();
+    m_pFixedSizeFBO->attachColorBuffer(FBO_COLOR_BUFFER_NAME(0), GL_COLOR_ATTACHMENT0, BBSkyBox::m_nEnvironmentMapSize, BBSkyBox::m_nEnvironmentMapSize, GL_RGBA32F);
+    m_pFixedSizeFBO->attachDepthBuffer(FBO_DEPTH_BUFFER_NAME, BBSkyBox::m_nEnvironmentMapSize, BBSkyBox::m_nEnvironmentMapSize);
+    m_pFixedSizeFBO->finish();
 }
 
 void BBScene::render()
@@ -156,11 +147,11 @@ void BBScene::defaultRendering()
     m_pTransformCoordinateSystem->render(m_pCamera);
 
     // test
-    BBMaterial *pMaterial = new BBMaterial();
-    pMaterial->init("texture", BB_PATH_RESOURCE_SHADER(texture.vert), BB_PATH_RESOURCE_SHADER(texture.frag));
-    pMaterial->setSampler2D(LOCATION_TEXTURE(0), m_pFixedSizeFBO[2]->getBuffer(FBO_COLOR_BUFFER_NAME(0)));
-    m_pFullScreenQuad[0]->setCurrentMaterial(pMaterial);
-    m_pFullScreenQuad[0]->render(m_pCamera);
+//    BBMaterial *pMaterial = new BBMaterial();
+//    pMaterial->init("texture", BB_PATH_RESOURCE_SHADER(texture.vert), BB_PATH_RESOURCE_SHADER(texture.frag));
+//    pMaterial->setSampler2D(LOCATION_TEXTURE(0), m_pFixedSizeFBO->getBuffer(FBO_COLOR_BUFFER_NAME(0)));
+//    m_pFullScreenQuad[0]->setCurrentMaterial(pMaterial);
+//    m_pFullScreenQuad[0]->render(m_pCamera);
 
     // 2D camera mode
     m_pCamera->switchTo2D();
@@ -503,15 +494,6 @@ void BBScene::deleteGameObject(BBGameObject *pGameObject)
     {
         m_ParticleSystems.removeOne(pGameObject);
     }
-
-//    else if (object->getClassName() == TerrainClassName)
-//    {
-//        models.removeOne(object);
-//    }
-//    else if (object->getClassName() == AudioClassName)
-//    {
-//        audios.removeOne(object);
-//    }
 //    transformCoordinate->setSelectedObject(nullptr);
 }
 
@@ -595,12 +577,9 @@ void BBScene::unbindFBO()
 
 void BBScene::writeSkyBoxCubeMap()
 {
-    for (int i = 0; i < 6; i++)
-    {
-        m_pFixedSizeFBO[i]->bind();
-        m_pSkyBox->writeCubeMap(m_pCamera, i);
-        m_pFixedSizeFBO[i]->unbind();
-    }
+    m_pFixedSizeFBO->bind();
+    m_pSkyBox->writeCubeMap(m_pCamera);
+    m_pFixedSizeFBO->unbind();
 }
 
 void BBScene::writeViewSpaceFBO(int nIndex)

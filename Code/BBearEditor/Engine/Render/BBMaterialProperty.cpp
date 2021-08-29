@@ -179,6 +179,11 @@ BBMaterialProperty* BBSamplerCubeMaterialProperty::clone()
     return pRet;
 }
 
+void BBSamplerCubeMaterialProperty::setTextureName(GLuint textureName)
+{
+    m_TextureName = textureName;
+}
+
 void BBSamplerCubeMaterialProperty::setTextureName(GLuint textureName, const QString resourcePath[])
 {
     m_TextureName = textureName;
