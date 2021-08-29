@@ -125,12 +125,12 @@ void BBSkyBox::initFromHDREnvironmentMap()
 void BBSkyBox::initEnvironmentMapMaterial()
 {
     m_EnvironmentMapProjectionMatrix.perspective(90.0f, 1.0f, 0.1f, 10.0f);
-    m_EnvironmentMapViewMatrix[0].lookAt(QVector3D(0, 0, 0), QVector3D(1, 0, 0), QVector3D(0, -1, 0));
-    m_EnvironmentMapViewMatrix[1].lookAt(QVector3D(0, 0, 0), QVector3D(-1, 0, 0), QVector3D(0, -1, 0));
-    m_EnvironmentMapViewMatrix[2].lookAt(QVector3D(0, 0, 0), QVector3D(0, 1, 0), QVector3D(0, 0, 1));
-    m_EnvironmentMapViewMatrix[3].lookAt(QVector3D(0, 0, 0), QVector3D(0, -1, 0), QVector3D(0, 0, -1));
-    m_EnvironmentMapViewMatrix[4].lookAt(QVector3D(0, 0, 0), QVector3D(0, 0, 1), QVector3D(0, -1, 0));
-    m_EnvironmentMapViewMatrix[5].lookAt(QVector3D(0, 0, 0), QVector3D(0, 0, -1), QVector3D(0, -1, 0));
+    m_EnvironmentMapViewMatrix[0].lookAt(QVector3D(0, 0, 0), QVector3D(1, 0, 0), QVector3D(0, 1, 0));
+    m_EnvironmentMapViewMatrix[1].lookAt(QVector3D(0, 0, 0), QVector3D(-1, 0, 0), QVector3D(0, 1, 0));
+    m_EnvironmentMapViewMatrix[2].lookAt(QVector3D(0, 0, 0), QVector3D(0, -1, 0), QVector3D(0, 0, -1));
+    m_EnvironmentMapViewMatrix[3].lookAt(QVector3D(0, 0, 0), QVector3D(0, 1, 0), QVector3D(0, 0, 1));
+    m_EnvironmentMapViewMatrix[4].lookAt(QVector3D(0, 0, 0), QVector3D(0, 0, 1), QVector3D(0, 1, 0));
+    m_EnvironmentMapViewMatrix[5].lookAt(QVector3D(0, 0, 0), QVector3D(0, 0, -1), QVector3D(0, 1, 0));
 
     m_pEnvironmentMapMaterial = new BBMaterial();
     m_pEnvironmentMapMaterial->init("SkyBox_MakeCubeMapFBO",

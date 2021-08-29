@@ -8,6 +8,9 @@ BBFrameBufferObject::BBFrameBufferObject()
 
 void BBFrameBufferObject::attachColorBuffer(const QString &bufferName, GLenum attachment, int nWidth, int nHeight, GLenum format)
 {
+    m_nWidth = nWidth;
+    m_nHeight = nHeight;
+
     glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferObject);
     GLuint colorBuffer;
     glGenTextures(1, &colorBuffer);
@@ -70,6 +73,8 @@ void BBFrameBufferObject::bind()
     // all the things rendered afterwards will be drawn to this FBO
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // don't forget to configure the viewport to the capture dimensions
+    glViewport(0, 0, m_nWidth, m_nHeight);
 }
 
 void BBFrameBufferObject::unbind()

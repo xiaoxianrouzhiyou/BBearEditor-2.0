@@ -28,6 +28,8 @@ private:
     QMap<QString, GLuint> m_Buffers;
     /* buffer in which FBO need to render */
     QList<GLenum> m_DrawBuffers;
+    int m_nWidth;
+    int m_nHeight;
 };
 
 #endif // BBFRAMEBUFFEROBJECT_H

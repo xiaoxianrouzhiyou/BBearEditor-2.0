@@ -158,7 +158,7 @@ void BBScene::defaultRendering()
     // test
     BBMaterial *pMaterial = new BBMaterial();
     pMaterial->init("texture", BB_PATH_RESOURCE_SHADER(texture.vert), BB_PATH_RESOURCE_SHADER(texture.frag));
-    pMaterial->setSampler2D(LOCATION_TEXTURE(0), m_pFixedSizeFBO[4]->getBuffer(FBO_COLOR_BUFFER_NAME(0)));
+    pMaterial->setSampler2D(LOCATION_TEXTURE(0), m_pFixedSizeFBO[2]->getBuffer(FBO_COLOR_BUFFER_NAME(0)));
     m_pFullScreenQuad[0]->setCurrentMaterial(pMaterial);
     m_pFullScreenQuad[0]->render(m_pCamera);
 
