@@ -601,7 +601,7 @@ void BBScene::writeSkyBoxCubeMap()
         if (m_pFixedSizeFBO)
             BB_SAFE_DELETE(m_pFixedSizeFBO);
         m_pFixedSizeFBO = new BBFrameBufferObject();
-        m_pFixedSizeFBO->attachColorBuffer(FBO_COLOR_BUFFER_NAME(0), GL_COLOR_ATTACHMENT0, BBSkyBox::m_nIrradianceMapSize, BBSkyBox::m_nIrradianceMapSize, GL_RGBA32F);
+        m_pFixedSizeFBO->attachColorBuffer(FBO_COLOR_BUFFER_NAME(0), GL_COLOR_ATTACHMENT0, nMipWidth, nMipHeight, GL_RGBA32F);
         m_pFixedSizeFBO->finish();
 
         m_pFixedSizeFBO->bind();

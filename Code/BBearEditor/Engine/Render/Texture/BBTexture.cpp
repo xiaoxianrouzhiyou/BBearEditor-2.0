@@ -187,7 +187,7 @@ void BBTexture::startWritingTexture2D(GLuint texture)
  * @param eType
  * @return
  */
-GLuint BBTexture::allocateTextureCube(int nWidth, int nHeight, GLint internalFormat, GLenum format)
+GLuint BBTexture::allocateTextureCube(int nWidth, int nHeight, GLint internalFormat, GLenum format, GLint minFilter)
 {
     GLuint texture = 0;
 
@@ -200,7 +200,7 @@ GLuint BBTexture::allocateTextureCube(int nWidth, int nHeight, GLint internalFor
     }
 
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, minFilter);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
@@ -218,6 +218,12 @@ void BBTexture::startWritingTextureCube(GLuint texture, int nSideIndex)
 {
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + nSideIndex, texture, 0);
     // Subsequent rendering code
+}
+
+void BBTexture::endWritingTextureCube(GLuint texture)
+{
+    glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
+    glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 }
 
 GLuint BBTexture::allocateTextureCubeMipmap(int nWidth, int nHeight, GLint internalFormat, GLenum format)

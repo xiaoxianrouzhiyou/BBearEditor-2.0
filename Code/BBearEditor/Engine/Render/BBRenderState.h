@@ -37,6 +37,7 @@ struct BBRenderState
     unsigned int m_DrawFace;
     unsigned int m_PolygonMode;
     float m_fLineWidth;
+    bool m_bCubeMapSeamless;
 };
 
 class BBGlobalRenderState

@@ -100,6 +100,8 @@ void BBSkyBox::writeEnvironmentMap(BBCamera *pCamera)
         BBTexture().startWritingTextureCube(m_EnvironmentMap, i);
         BBRenderableObject::render(pCamera);
     }
+    // After setting the texture of the cube map, let OpenGL generate mipmap
+    BBTexture().endWritingTextureCube(m_EnvironmentMap);
     // Restore default material
     restoreMaterial();
 }
@@ -186,7 +188,8 @@ void BBSkyBox::initFromEnvironmentCubeMap()
  */
 void BBSkyBox::initIBLSettings()
 {
-    m_EnvironmentMap = BBTexture().allocateTextureCube(m_nEnvironmentMapSize, m_nEnvironmentMapSize, GL_RGB16F, GL_RGB);
+    // We need to sample mipmap and turn on trilinear filtering on the environment map
+    m_EnvironmentMap = BBTexture().allocateTextureCube(m_nEnvironmentMapSize, m_nEnvironmentMapSize, GL_RGB16F, GL_RGB, GL_LINEAR_MIPMAP_LINEAR);
     m_IrradianceMap = BBTexture().allocateTextureCube(m_nIrradianceMapSize, m_nIrradianceMapSize, GL_RGB16F, GL_RGB);
     m_PrefilterMapMipmap = BBTexture().allocateTextureCubeMipmap(m_nBaseMipmapSize, m_nBaseMipmapSize, GL_RGB16F, GL_RGB);
     m_BRDFLUTTexture = BBTexture().allocateTexture2D(m_nBRDFLUTTextureSize, m_nBRDFLUTTextureSize, GL_RG16F, GL_RG);

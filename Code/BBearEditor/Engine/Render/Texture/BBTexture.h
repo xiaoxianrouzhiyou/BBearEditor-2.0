@@ -23,8 +23,9 @@ public:
     GLuint allocateTexture2D(int nWidth, int nHeight, GLint internalFormat = GL_RG16F, GLenum format = GL_RG);
     void startWritingTexture2D(GLuint texture);
 
-    GLuint allocateTextureCube(int nWidth, int nHeight, GLint internalFormat = GL_RGB16F, GLenum format = GL_RGB);
+    GLuint allocateTextureCube(int nWidth, int nHeight, GLint internalFormat = GL_RGB16F, GLenum format = GL_RGB, GLint minFilter = GL_LINEAR);
     void startWritingTextureCube(GLuint texture, int nSideIndex);
+    void endWritingTextureCube(GLuint texture);
 
     GLuint allocateTextureCubeMipmap(int nWidth, int nHeight, GLint internalFormat = GL_RGB16F, GLenum format = GL_RGB);
     void startWritingTextureCubeMipmap(GLuint texture, int nSideIndex, int nMipLevel);

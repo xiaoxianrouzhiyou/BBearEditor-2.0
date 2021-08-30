@@ -31,6 +31,11 @@ do { \
     bEnable? glEnable(GL_PROGRAM_POINT_SIZE) : glDisable(GL_PROGRAM_POINT_SIZE); \
 } while(0)
 
+#define SetCubeMapSeamlessState(bEnable) \
+do { \
+    bEnable? glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS) : glDisable(GL_TEXTURE_CUBE_MAP_SEAMLESS); \
+} while(0)
+
 
 /**
  * @brief BBRenderState::BBRenderState
@@ -62,6 +67,7 @@ BBRenderState::BBRenderState()
     m_DrawFace = GL_FRONT;
     m_PolygonMode = GL_FILL;
     m_fLineWidth = 1.0f;
+    m_bCubeMapSeamless = true;
 }
 
 void BBRenderState::operator =(const BBRenderState &rs)
@@ -95,6 +101,8 @@ void BBGlobalRenderState::init()
     SetProgramPointSizeState(m_RenderState.m_bEnableProgramPointSize);
     SetCullState(m_RenderState.m_bCull);
     glCullFace(m_RenderState.m_CullFace);
+    // Correct filtering of cube map
+    SetCubeMapSeamlessState(m_RenderState.m_bCubeMapSeamless);
 }
 
 void BBGlobalRenderState::updateBlendState(bool bEnable)
