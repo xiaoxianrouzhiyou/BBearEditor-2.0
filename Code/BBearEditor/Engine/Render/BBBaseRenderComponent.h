@@ -46,7 +46,9 @@
 #define LOCATION_SHADOWMAP "BBShadowMap"
 #define LOCATION_SKYBOX_MAP "BBSkyBox"
 #define LOCATION_IRRADIANCE_MAP "BBIrradianceMap"
+#define LOCATION_PREFILTER_MAP_MIPMAP "BBPrefilterMapMipmap"
 #define LOCATION_SKYBOX_EQUIRECTANGULAR_MAP "BBSkyBoxEquirectangularMap"
+#define LOCATION_BRDF_LUT_TEXTURE "BBBRDFLUTTexture"
 #define LOCATION_SPHERICAL_HARMONIC_LIGHTING "BBSphericalHarmonicLightingCoefficients[0]"
 
 #define LOCATION_COLOR_PREFIX "BBColor_"

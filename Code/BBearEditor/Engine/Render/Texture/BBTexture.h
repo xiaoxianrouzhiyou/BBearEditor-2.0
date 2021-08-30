@@ -19,10 +19,14 @@ public:
 
     GLuint createTextureCube(const QString paths[], GLenum eType = GL_RGBA);
 
-    GLuint allocateTextureCube(int nWidth, int nHeight, GLenum eType = GL_RGB16F);
+public:
+    GLuint allocateTexture2D(int nWidth, int nHeight, GLint internalFormat = GL_RG16F, GLenum format = GL_RG);
+    void startWritingTexture2D(GLuint texture);
+
+    GLuint allocateTextureCube(int nWidth, int nHeight, GLint internalFormat = GL_RGB16F, GLenum format = GL_RGB);
     void startWritingTextureCube(GLuint texture, int nSideIndex);
 
-    GLuint allocateTextureCubeMipmap(int nWidth, int nHeight, GLenum eType = GL_RGB16F);
+    GLuint allocateTextureCubeMipmap(int nWidth, int nHeight, GLint internalFormat = GL_RGB16F, GLenum format = GL_RGB);
     void startWritingTextureCubeMipmap(GLuint texture, int nSideIndex, int nMipLevel);
 };
 

@@ -86,7 +86,9 @@ void BBBaseShader::initUniforms()
     // 1 : View Space Depth FBO
     // 2 : Shadow Map
     // 3 : Irradiance Map
-    int nSlotIndex = 4;
+    // 4 : Prefilter Map Mipmap
+    // 5 : BRDF LUT Texture
+    int nSlotIndex = 6;
     for (int i = 0; i < count; i++)
     {
         GLsizei length = 0;
@@ -241,6 +243,10 @@ BBUniformUpdater* BBBaseShader::initUniformSampler2D(GLint location, const char 
     {
         updateUniformFunc = &BBUniformUpdater::updateShadowMap;
     }
+    else if (strcmp(pUniformName, LOCATION_BRDF_LUT_TEXTURE) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updateBRDFLUTTexture;
+    }
     else
     {
         pProperty = new BBSampler2DMaterialProperty(pUniformName, nSlotIndex);
@@ -258,6 +264,10 @@ BBUniformUpdater* BBBaseShader::initUniformSamplerCube(GLint location, const cha
     if (strcmp(pUniformName, LOCATION_IRRADIANCE_MAP) == 0)
     {
         updateUniformFunc = &BBUniformUpdater::updateIrradianceMap;
+    }
+    if (strcmp(pUniformName, LOCATION_PREFILTER_MAP_MIPMAP) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updatePrefilterMapMipmap;
     }
     else
     {

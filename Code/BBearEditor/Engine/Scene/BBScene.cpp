@@ -143,7 +143,7 @@ void BBScene::defaultRendering()
     // test
 //    BBMaterial *pMaterial = new BBMaterial();
 //    pMaterial->init("texture", BB_PATH_RESOURCE_SHADER(texture.vert), BB_PATH_RESOURCE_SHADER(texture.frag));
-//    pMaterial->setSampler2D(LOCATION_TEXTURE(0), m_pFixedSizeFBO->getBuffer(FBO_COLOR_BUFFER_NAME(0)));
+//    pMaterial->setSampler2D(LOCATION_TEXTURE(0), m_pSkyBox->getBRDFLUTTexture());
 //    m_pFullScreenQuad[0]->setCurrentMaterial(pMaterial);
 //    m_pFullScreenQuad[0]->render(m_pCamera);
 
@@ -608,6 +608,16 @@ void BBScene::writeSkyBoxCubeMap()
         m_pSkyBox->writePrefilterMapMipmap(m_pCamera, nMipLevel);
         m_pFixedSizeFBO->unbind();
     }
+
+    if (m_pFixedSizeFBO)
+        BB_SAFE_DELETE(m_pFixedSizeFBO);
+    m_pFixedSizeFBO = new BBFrameBufferObject();
+    m_pFixedSizeFBO->attachColorBuffer(FBO_COLOR_BUFFER_NAME(0), GL_COLOR_ATTACHMENT0, BBSkyBox::m_nBRDFLUTTextureSize, BBSkyBox::m_nBRDFLUTTextureSize, GL_RGBA32F);
+    m_pFixedSizeFBO->finish();
+
+    m_pFixedSizeFBO->bind();
+    m_pSkyBox->writeBRDFLUTTexture(m_pCamera, m_pFullScreenQuad[0]);
+    m_pFixedSizeFBO->unbind();
 }
 
 void BBScene::writeViewSpaceFBO(int nIndex)

@@ -6,6 +6,7 @@
 #include "Render/Texture/BBTexture.h"
 #include "Render/BBDrawCall.h"
 #include "Utils/BBUtils.h"
+#include "2D/BBFullScreenQuad.h"
 
 
 int BBSkyBox::m_nEnvironmentMapSize = 512;
@@ -14,6 +15,7 @@ int BBSkyBox::m_nEnvironmentMapSize = 512;
 int BBSkyBox::m_nIrradianceMapSize = 32;
 int BBSkyBox::m_nBaseMipmapSize = 128;
 int BBSkyBox::m_nMaxMipLevels = 5;
+int BBSkyBox::m_nBRDFLUTTextureSize = 512;
 
 BBSkyBox::BBSkyBox()
     : BBRenderableObject()
@@ -21,6 +23,7 @@ BBSkyBox::BBSkyBox()
     m_pEnvironmentMapMaterial = nullptr;
     m_pIrradianceMapMaterial = nullptr;
     m_pPrefilterMapMaterial = nullptr;
+    m_pBRDFLUTTextureMaterial = nullptr;
 }
 
 BBSkyBox::~BBSkyBox()
@@ -28,6 +31,7 @@ BBSkyBox::~BBSkyBox()
     BB_SAFE_DELETE(m_pEnvironmentMapMaterial);
     BB_SAFE_DELETE(m_pIrradianceMapMaterial);
     BB_SAFE_DELETE(m_pPrefilterMapMaterial);
+    BB_SAFE_DELETE(m_pBRDFLUTTextureMaterial);
 }
 
 void BBSkyBox::init(const QString &path)
@@ -127,6 +131,14 @@ void BBSkyBox::writePrefilterMapMipmap(BBCamera *pCamera, int nMipLevel)
     restoreMaterial();
 }
 
+void BBSkyBox::writeBRDFLUTTexture(BBCamera *pCamera, BBFullScreenQuad *pFullScreenQuad)
+{
+    pFullScreenQuad->setCurrentMaterial(m_pBRDFLUTTextureMaterial);
+    BBTexture().startWritingTexture2D(m_BRDFLUTTexture);
+    pFullScreenQuad->render(pCamera);
+    pFullScreenQuad->restoreMaterial();
+}
+
 void BBSkyBox::changeResource(const QString &path)
 {
 
@@ -174,9 +186,10 @@ void BBSkyBox::initFromEnvironmentCubeMap()
  */
 void BBSkyBox::initIBLSettings()
 {
-    m_EnvironmentMap = BBTexture().allocateTextureCube(m_nEnvironmentMapSize, m_nEnvironmentMapSize, GL_RGB16F);
-    m_IrradianceMap = BBTexture().allocateTextureCube(m_nIrradianceMapSize, m_nIrradianceMapSize, GL_RGB16F);
-    m_PrefilterMapMipmap = BBTexture().allocateTextureCubeMipmap(m_nBaseMipmapSize, m_nBaseMipmapSize, GL_RGB16F);
+    m_EnvironmentMap = BBTexture().allocateTextureCube(m_nEnvironmentMapSize, m_nEnvironmentMapSize, GL_RGB16F, GL_RGB);
+    m_IrradianceMap = BBTexture().allocateTextureCube(m_nIrradianceMapSize, m_nIrradianceMapSize, GL_RGB16F, GL_RGB);
+    m_PrefilterMapMipmap = BBTexture().allocateTextureCubeMipmap(m_nBaseMipmapSize, m_nBaseMipmapSize, GL_RGB16F, GL_RGB);
+    m_BRDFLUTTexture = BBTexture().allocateTexture2D(m_nBRDFLUTTextureSize, m_nBRDFLUTTextureSize, GL_RG16F, GL_RG);
 
     m_IBLCubeMapProjectionMatrix.perspective(90.0f, 1.0f, 0.1f, 10.0f);
     m_IBLCubeMapViewMatrix[0].lookAt(QVector3D(0, 0, 0), QVector3D(1, 0, 0), QVector3D(0, 1, 0));
@@ -187,27 +200,24 @@ void BBSkyBox::initIBLSettings()
     m_IBLCubeMapViewMatrix[5].lookAt(QVector3D(0, 0, 0), QVector3D(0, 0, 1), QVector3D(0, 1, 0));
 
     m_pEnvironmentMapMaterial = new BBMaterial();
-    m_pEnvironmentMapMaterial->init("SkyBox_Equirectangular_To_Cubemap",
-                                    BB_PATH_RESOURCE_SHADER(SkyBox/Cubemap.vert),
-                                    BB_PATH_RESOURCE_SHADER(SkyBox/Equirectangular2Cubemap.frag));
+    m_pEnvironmentMapMaterial->init("SkyBox_Equirectangular_To_Cubemap", BB_PATH_RESOURCE_SHADER(SkyBox/Cubemap.vert), BB_PATH_RESOURCE_SHADER(SkyBox/Equirectangular2Cubemap.frag));
     m_pEnvironmentMapMaterial->setZFunc(GL_LEQUAL);
     m_pEnvironmentMapMaterial->setMatrix4("ProjectionMatrix", m_IBLCubeMapProjectionMatrix.data());
     GLuint hdrTexture = BBTexture().createHDRTexture2D(BB_PATH_RESOURCE_TEXTURE(HDR/newport_loft.hdr));
     m_pEnvironmentMapMaterial->setSampler2D(LOCATION_SKYBOX_EQUIRECTANGULAR_MAP, hdrTexture);
 
     m_pIrradianceMapMaterial = new BBMaterial();
-    m_pIrradianceMapMaterial->init("SkyBox_Irradiance_Convolution",
-                                   BB_PATH_RESOURCE_SHADER(SkyBox/Cubemap.vert),
-                                   BB_PATH_RESOURCE_SHADER(SkyBox/Irradiance_Convolution.frag));
+    m_pIrradianceMapMaterial->init("SkyBox_Irradiance_Convolution", BB_PATH_RESOURCE_SHADER(SkyBox/Cubemap.vert), BB_PATH_RESOURCE_SHADER(SkyBox/Irradiance_Convolution.frag));
     m_pIrradianceMapMaterial->setZFunc(GL_LEQUAL);
     m_pIrradianceMapMaterial->setMatrix4("ProjectionMatrix", m_IBLCubeMapProjectionMatrix.data());
     m_pIrradianceMapMaterial->setSamplerCube("EnvironmentMap", m_EnvironmentMap);
 
     m_pPrefilterMapMaterial = new BBMaterial();
-    m_pPrefilterMapMaterial->init("SkyBox_PrefilterMap",
-                                  BB_PATH_RESOURCE_SHADER(SkyBox/Cubemap.vert),
-                                  BB_PATH_RESOURCE_SHADER(SkyBox/PrefilterMap.frag));
+    m_pPrefilterMapMaterial->init("SkyBox_PrefilterMap", BB_PATH_RESOURCE_SHADER(SkyBox/Cubemap.vert), BB_PATH_RESOURCE_SHADER(SkyBox/PrefilterMap.frag));
     m_pPrefilterMapMaterial->setZFunc(GL_LEQUAL);
     m_pPrefilterMapMaterial->setMatrix4("ProjectionMatrix", m_IBLCubeMapProjectionMatrix.data());
     m_pPrefilterMapMaterial->setSamplerCube("EnvironmentMap", m_EnvironmentMap);
+
+    m_pBRDFLUTTextureMaterial = new BBMaterial();
+    m_pBRDFLUTTextureMaterial->init("BRDFLUT", BB_PATH_RESOURCE_SHADER(SkyBox/BRDFLUT.vert), BB_PATH_RESOURCE_SHADER(SkyBox/BRDFLUT.frag));
 }

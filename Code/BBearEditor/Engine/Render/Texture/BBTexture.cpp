@@ -155,6 +155,31 @@ GLuint BBTexture::createTextureCube(const QString paths[], GLenum eType)
     return texture;
 }
 
+GLuint BBTexture::allocateTexture2D(int nWidth, int nHeight, GLint internalFormat, GLenum format)
+{
+    GLuint texture = 0;
+
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, nWidth, nHeight, 0, format, GL_FLOAT, nullptr);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    return texture;
+}
+
+void BBTexture::startWritingTexture2D(GLuint texture)
+{
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+    // Subsequent rendering code
+}
+
 /**
  * @brief BBTexture::allocateTextureCube                    Allocate memory for cube map
  * @param nWidth
@@ -162,7 +187,7 @@ GLuint BBTexture::createTextureCube(const QString paths[], GLenum eType)
  * @param eType
  * @return
  */
-GLuint BBTexture::allocateTextureCube(int nWidth, int nHeight, GLenum eType)
+GLuint BBTexture::allocateTextureCube(int nWidth, int nHeight, GLint internalFormat, GLenum format)
 {
     GLuint texture = 0;
 
@@ -171,7 +196,7 @@ GLuint BBTexture::allocateTextureCube(int nWidth, int nHeight, GLenum eType)
 
     for (int i = 0; i < 6; i++)
     {
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, eType, nWidth, nHeight, 0, GL_RGB, GL_FLOAT, nullptr);
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, internalFormat, nWidth, nHeight, 0, format, GL_FLOAT, nullptr);
     }
 
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -195,7 +220,7 @@ void BBTexture::startWritingTextureCube(GLuint texture, int nSideIndex)
     // Subsequent rendering code
 }
 
-GLuint BBTexture::allocateTextureCubeMipmap(int nWidth, int nHeight, GLenum eType)
+GLuint BBTexture::allocateTextureCubeMipmap(int nWidth, int nHeight, GLint internalFormat, GLenum format)
 {
     GLuint texture = 0;
 
@@ -204,7 +229,7 @@ GLuint BBTexture::allocateTextureCubeMipmap(int nWidth, int nHeight, GLenum eTyp
 
     for (int i = 0; i < 6; i++)
     {
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, eType, nWidth, nHeight, 0, GL_RGB, GL_FLOAT, nullptr);
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, internalFormat, nWidth, nHeight, 0, format, GL_FLOAT, nullptr);
     }
 
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

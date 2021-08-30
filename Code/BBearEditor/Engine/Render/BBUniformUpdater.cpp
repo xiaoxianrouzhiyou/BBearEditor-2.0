@@ -134,6 +134,20 @@ void BBUniformUpdater::updateIrradianceMap(GLint location, void *pCamera, void *
     glUniform1i(location, 3);
 }
 
+void BBUniformUpdater::updatePrefilterMapMipmap(GLint location, void *pCamera, void *pPropertyValue)
+{
+    glActiveTexture(GL_TEXTURE0 + 4);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, BBSceneManager::getScene()->getSkyBox()->getPrefilterMapMipmap());
+    glUniform1i(location, 4);
+}
+
+void BBUniformUpdater::updateBRDFLUTTexture(GLint location, void *pCamera, void *pPropertyValue)
+{
+    glActiveTexture(GL_TEXTURE0 + 5);
+    glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getSkyBox()->getBRDFLUTTexture());
+    glUniform1i(location, 5);
+}
+
 void BBUniformUpdater::updateFloat(GLint location, void *pCamera, void *pPropertyValue)
 {
     BBFloatMaterialProperty *pProperty = (BBFloatMaterialProperty*)pPropertyValue;
