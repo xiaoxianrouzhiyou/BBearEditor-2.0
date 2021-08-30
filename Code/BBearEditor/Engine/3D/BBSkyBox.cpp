@@ -206,7 +206,7 @@ void BBSkyBox::initIBLSettings()
     m_pEnvironmentMapMaterial->init("SkyBox_Equirectangular_To_Cubemap", BB_PATH_RESOURCE_SHADER(SkyBox/Cubemap.vert), BB_PATH_RESOURCE_SHADER(SkyBox/Equirectangular2Cubemap.frag));
     m_pEnvironmentMapMaterial->setZFunc(GL_LEQUAL);
     m_pEnvironmentMapMaterial->setMatrix4("ProjectionMatrix", m_IBLCubeMapProjectionMatrix.data());
-    GLuint hdrTexture = BBTexture().createHDRTexture2D(BB_PATH_RESOURCE_TEXTURE(HDR/newport_loft.hdr));
+    GLuint hdrTexture = BBTexture().createHDRTexture2D(BB_PATH_RESOURCE_TEXTURE(HDR/Walk_Of_Fame/Mans_Outside_2k.hdr));
     m_pEnvironmentMapMaterial->setSampler2D(LOCATION_SKYBOX_EQUIRECTANGULAR_MAP, hdrTexture);
 
     m_pIrradianceMapMaterial = new BBMaterial();

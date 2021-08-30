@@ -15,14 +15,35 @@ uniform vec4 BBLightSettings1;
 uniform vec4 BBLightSettings2;
 // IBL
 uniform samplerCube BBIrradianceMap;
+uniform samplerCube BBPrefilterMapMipmap;
+uniform sampler2D BBBRDFLUTTexture;
 
-uniform vec4  BBColor_Albedo;
-uniform float Metallic;
-uniform float Roughness;
-uniform float AO;
+uniform sampler2D Albedo_Map;
+uniform sampler2D Normal_Map;
+uniform sampler2D Metallic_Map;
+uniform sampler2D Roughness_Map;
+uniform sampler2D AO_Map;
 
 const float PI = 3.14159265359;
+const float MAX_REFLECTION_LOD = 4.0;
 
+
+vec3 getNormalFromMap()
+{
+    vec3 normal = texture(Normal_Map, v2f_texcoords).xyz * 2.0 - 1.0;
+
+    vec3 Q1 = dFdx(v2f_world_pos);
+    vec3 Q2 = dFdy(v2f_world_pos);
+    vec2 st1 = dFdx(v2f_texcoords);
+    vec2 st2 = dFdy(v2f_texcoords);
+
+    vec3 N = normalize(v2f_normal);
+    vec3 T = normalize(Q1 * st2.t - Q2 * st1.t);
+    vec3 B = -normalize(cross(N, T));
+    mat3 TBN = mat3(T, B, N);
+
+    return normalize(TBN * normal);
+}
 
 float getLambertPointLightIntensity(vec3 normal, float radius, float distance, float attenuation, vec3 L)
 {
@@ -65,7 +86,7 @@ float getLambertSpotLightIntensity(vec3 normal, float radius, float distance, fl
 vec3 calculateFresnelSchlick(float cos_theta, vec3 F0)
 {
     return F0 + (1.0 - F0) * pow(1.0 - cos_theta, 5.0);
-} 
+}  
 
 // Earlier we used the micro-surface halfway vector, influenced by the roughness of the surface, as input to the Fresnel equation.
 // As we currently don't take roughness into account, the surface's reflective ratio will always end up relatively high.
@@ -75,7 +96,7 @@ vec3 calculateFresnelSchlick(float cos_theta, vec3 F0)
 vec3 calculateFresnelSchlickRoughness(float cos_theta, vec3 F0, float roughness)
 {
     return F0 + (max(vec3(1.0 - roughness), F0) - F0) * pow(1.0 - cos_theta, 5.0);
-}  
+}
 
 float calculateDistributionGGX(vec3 N, vec3 H, float roughness)
 {
@@ -115,7 +136,12 @@ float calculateGeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)
 
 void main(void)
 {
-    vec3 N = normalize(v2f_normal); 
+    vec3 albedo = pow(texture(Albedo_Map, v2f_texcoords).rgb, vec3(2.2));
+    float metallic = texture(Metallic_Map, v2f_texcoords).r;
+    float roughness = texture(Roughness_Map, v2f_texcoords).r;
+    float ao = texture(AO_Map, v2f_texcoords).r;
+
+    vec3 N = getNormalFromMap();
     vec3 V = normalize(BBCameraPosition.xyz - v2f_world_pos);
     vec3 R = reflect(-V, N);
 
@@ -159,10 +185,10 @@ void main(void)
     // calculate reflectance at normal incidence
     // if dia-electric (like plastic) use F0 of 0.04 and if it's a metal, use the albedo color as F0 (metallic workflow)
     vec3 F0 = vec3(0.04f); 
-    F0 = mix(F0, BBColor_Albedo.rgb, Metallic);
+    F0 = mix(F0, albedo, metallic);
     vec3 F = calculateFresnelSchlick(clamp(dot(H, V), 0.0, 1.0), F0);
-    float NDF = calculateDistributionGGX(N, H, Roughness);   
-    float G = calculateGeometrySmith(N, V, L, Roughness);      
+    float NDF = calculateDistributionGGX(N, H, roughness);   
+    float G = calculateGeometrySmith(N, V, L, roughness);      
     
     vec3 numerator = NDF * G * F;
     float denominator = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0);
@@ -176,25 +202,35 @@ void main(void)
     vec3 kD = vec3(1.0) - kS;
     // multiply kD by the inverse metalness such that only non-metals have diffuse lighting,
     // or a linear blend if partly metal (pure metals have no diffuse light).
-    kD *= 1.0 - Metallic;
+    kD *= 1.0 - metallic;
 
     // scale light by NdotL
     float NdotL = max(dot(N, L), 0.0);  
 
     // outgoing radiance Lo
     // note that we already multiplied the BRDF by the Fresnel (kS) so we won't multiply by kS again
-    vec3 Lo = (kD * BBColor_Albedo.rgb / PI + specular) * radiance * NdotL;
+    vec3 Lo = (kD * albedo / PI + specular) * radiance * NdotL;
 
     // IBL ambient lighting
     // As the ambient light comes from all directions within the hemisphere oriented around the normal N,
     // there's no single halfway vector to determine the Fresnel response.
     // To still simulate Fresnel, we calculate the Fresnel from the angle between the normal and view vector.
-    kS = calculateFresnelSchlickRoughness(max(dot(N, V), 0.0), F0, Roughness);
+    F = calculateFresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);
+    
+    kS = F; 
     kD = 1.0 - kS;
-    kD *= 1.0 - Metallic;	  
+    kD *= 1.0 - metallic;	  
     vec3 irradiance = textureCube(BBIrradianceMap, N).rgb;
-    vec3 diffuse = irradiance * BBColor_Albedo.rgb;
-    vec3 ambient = kD * diffuse * AO;
+    vec3 diffuse = irradiance * albedo;
+
+    // indirect specular
+    // sample both the pre-filter map and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
+    vec3 prefiltered_color = textureLod(BBPrefilterMapMipmap, R, roughness * MAX_REFLECTION_LOD).rgb;    
+    vec2 brdf = texture(BBBRDFLUTTexture, vec2(max(dot(N, V), 0.0), roughness)).rg;
+    specular = prefiltered_color * (F * brdf.x + brdf.y);
+
+    // The specular is not multiplied by kS because the Fresnel has been multiplied
+    vec3 ambient = (kD * diffuse + specular) * ao;
 
     vec3 final_color = ambient + Lo;
 
