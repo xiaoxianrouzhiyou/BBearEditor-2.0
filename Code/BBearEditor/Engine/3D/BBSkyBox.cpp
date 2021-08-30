@@ -219,5 +219,5 @@ void BBSkyBox::initIBLSettings()
     m_pPrefilterMapMaterial->setSamplerCube("EnvironmentMap", m_EnvironmentMap);
 
     m_pBRDFLUTTextureMaterial = new BBMaterial();
-    m_pBRDFLUTTextureMaterial->init("BRDFLUT", BB_PATH_RESOURCE_SHADER(SkyBox/BRDFLUT.vert), BB_PATH_RESOURCE_SHADER(SkyBox/BRDFLUT.frag));
+    m_pBRDFLUTTextureMaterial->init("BRDFLUT", BB_PATH_RESOURCE_SHADER(PBR/BRDFLUT.vert), BB_PATH_RESOURCE_SHADER(PBR/BRDFLUT.frag));
 }

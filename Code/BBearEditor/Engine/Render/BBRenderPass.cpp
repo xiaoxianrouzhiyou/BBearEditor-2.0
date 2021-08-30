@@ -260,7 +260,10 @@ void BBRenderPass::getEditableProperties(QList<std::string> &outNames, QList<BBM
                 && strcmp(uniformName.data(), LOCATION_VIEWMATRIX) != 0
                 && strcmp(uniformName.data(), LOCATION_PROJECTIONMATRIX) != 0
                 && strcmp(uniformName.data(), LOCATION_LIGHT_POSITION) != 0
-                && strcmp(uniformName.data(), LOCATION_LIGHT_COLOR) != 0)
+                && strcmp(uniformName.data(), LOCATION_LIGHT_COLOR) != 0
+                && strcmp(uniformName.data(), LOCATION_IRRADIANCE_MAP) != 0
+                && strcmp(uniformName.data(), LOCATION_PREFILTER_MAP_MIPMAP) != 0
+                && strcmp(uniformName.data(), LOCATION_BRDF_LUT_TEXTURE) != 0)
         {
             outNames.append(uniformName);
             BBMaterialProperty* pMaterialProperty = it.value();
