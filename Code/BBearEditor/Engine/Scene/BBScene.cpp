@@ -189,17 +189,18 @@ void BBScene::deferredRenderingAndPostProcessing()
 
     writeShadowMap(2);
 
+    // GBuffer pass
     m_pFBO[0]->bind();
     m_pSkyBox->render(m_pCamera);
-    // BBGameObject
     m_pRenderQueue->render();
     m_pFBO[0]->unbind();
 
-    // Post processing
+    // common pass
     m_pFBO[1]->bind();
     m_pFullScreenQuad[0]->render(m_pCamera);
     m_pFBO[1]->unbind();
 
+    // Post processing
     m_pFullScreenQuad[1]->render(m_pCamera);
 }
 

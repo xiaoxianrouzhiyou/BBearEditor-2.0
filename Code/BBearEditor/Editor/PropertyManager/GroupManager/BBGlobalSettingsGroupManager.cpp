@@ -55,6 +55,7 @@ void BBGlobalSettingsGroupManager::switchGlobalIllumination(bool bEnable)
     // parameter 2
     // 0 : SSAO
     // 1 : SSDO
+    // 2 : FLC
     BBSceneManager::enableDeferredRendering(1, m_pGlobalIlluminationFactory->getCurrentItemIndex(), bEnable);
 }
 
@@ -95,9 +96,9 @@ void BBGlobalSettingsGroupManager::initSphericalHarmonicLightingFactory()
 void BBGlobalSettingsGroupManager::initGlobalIlluminationFactory()
 {
     QStringList globalIlluminationAlgorithmName = {"SSAO",
-                                                   "SSDO"};
-    m_pGlobalIlluminationFactory = new BBEnumExpansionFactory("Global Illumination", globalIlluminationAlgorithmName,
-                                                              "", "SSDO", this, 1, 1);
+                                                   "SSDO",
+                                                   "FLC"};
+    m_pGlobalIlluminationFactory = new BBEnumExpansionFactory("Global Illumination", globalIlluminationAlgorithmName, "", "FLC", this, 1, 1);
     m_pGlobalIlluminationFactory->enableButton(false);
     QObject::connect(m_pGlobalIlluminationFactory, SIGNAL(triggerClicked(bool)), this, SLOT(switchGlobalIllumination(bool)));
     addFactory(m_pGlobalIlluminationFactory);

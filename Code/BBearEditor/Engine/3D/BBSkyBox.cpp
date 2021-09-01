@@ -71,9 +71,9 @@ void BBSkyBox::init(const QString &path)
     m_pVBO->setPosition(22, -0.5f, -0.5f, -0.5f);
     m_pVBO->setPosition(23, 0.5f, -0.5f, -0.5f);
 
-//    initFrom6Map();
+    initFrom6Map();
 //    initFromHDREnvironmentMap();
-    initFromEnvironmentCubeMap();
+//    initFromEnvironmentCubeMap();
 
     BBRenderableObject::init();
     BBDrawCall *pDrawCall = new BBDrawCall;

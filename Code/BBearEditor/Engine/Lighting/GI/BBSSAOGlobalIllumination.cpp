@@ -1,4 +1,5 @@
 #include "BBSSAOGlobalIllumination.h"
+#include "BBGlobalIllumination.h"
 #include "Scene/BBScene.h"
 #include "2D/BBFullScreenQuad.h"
 #include "Render/BBMaterial.h"
@@ -8,40 +9,20 @@
 
 void BBSSAOGlobalIllumination::open(BBScene *pScene)
 {
-    setGBufferPass(pScene);
+    BBGlobalIllumination::setGBufferPass(pScene);
     setSSAOPass(pScene);
     setSSAOBlurPass(pScene);
-}
-
-void BBSSAOGlobalIllumination::setGBufferPass(BBScene *pScene)
-{
-    BBMaterial *pMaterial = new BBMaterial();
-    pMaterial->init("GI_SSAO_GBuffer", BB_PATH_RESOURCE_SHADER(GI/SSAO_GBuffer.vert), BB_PATH_RESOURCE_SHADER(GI/SSAO_GBuffer.frag));
-
-    // test
-    float *pLightPosition = new float[4] {1.0f, 1.0f, 0.0f, 0.0f};
-    float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};
-    pMaterial->setVector4(LOCATION_LIGHT_POSITION, pLightPosition);
-    pMaterial->setVector4(LOCATION_LIGHT_COLOR, pLightColor);
-
-    QList<BBGameObject*> objects = pScene->getModels();
-    for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
-    {
-        BBGameObject *pObject = *itr;
-        pObject->setCurrentMaterial(pMaterial);
-    }
 }
 
 void BBSSAOGlobalIllumination::setSSAOPass(BBScene *pScene)
 {
     BBFullScreenQuad *pFullScreenQuad = pScene->getFullScreenQuad(0);
     BBMaterial *pMaterial = new BBMaterial();
-    pMaterial->init("GI_SSAO", BB_PATH_RESOURCE_SHADER(GI/SSAO.vert), BB_PATH_RESOURCE_SHADER(GI/SSAO.frag));
+    pMaterial->init("GI_SSAO", BB_PATH_RESOURCE_SHADER(GI/FullScreenQuad.vert), BB_PATH_RESOURCE_SHADER(GI/SSAO.frag));
 
     pMaterial->setSampler2D("NormalTex", pScene->getColorFBO(0, 1));
     pMaterial->setSampler2D("PositionTex", pScene->getColorFBO(0, 2));
-    BBTexture texture;
-    pMaterial->setSampler2D("NoiseTex", texture.createTexture2D(generateNoise(), 4, 4, GL_RGBA32F));
+    pMaterial->setSampler2D("NoiseTex", BBTexture().createTexture2D(generateNoise(), 4, 4, GL_RGBA32F));
     pMaterial->setArrayVector4("Samples[0]", generateKernel(), 64);
 
     pFullScreenQuad->setCurrentMaterial(pMaterial);
@@ -51,7 +32,7 @@ void BBSSAOGlobalIllumination::setSSAOBlurPass(BBScene *pScene)
 {
     BBFullScreenQuad *pFullScreenQuad = pScene->getFullScreenQuad(1);
     BBMaterial *pMaterial = new BBMaterial();
-    pMaterial->init("GI_SSAO_Blur", BB_PATH_RESOURCE_SHADER(GI/SSAO.vert), BB_PATH_RESOURCE_SHADER(GI/SSAO_Blur.frag));
+    pMaterial->init("GI_SSAO_Blur", BB_PATH_RESOURCE_SHADER(GI/FullScreenQuad.vert), BB_PATH_RESOURCE_SHADER(GI/SSAO_Blur.frag));
 
     pMaterial->setSampler2D("SSAOTex", pScene->getColorFBO(1, 0));
     pMaterial->setSampler2D("AlbedoTex", pScene->getColorFBO(0, 0));

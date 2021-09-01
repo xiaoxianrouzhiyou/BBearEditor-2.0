@@ -1,4 +1,5 @@
 #include "BBSSDOGlobalIllumination.h"
+#include "BBGlobalIllumination.h"
 #include "BBSSAOGlobalIllumination.h"
 #include "Scene/BBScene.h"
 #include "2D/BBFullScreenQuad.h"
@@ -8,7 +9,7 @@
 
 void BBSSDOGlobalIllumination::open(BBScene *pScene)
 {
-    BBSSAOGlobalIllumination::setGBufferPass(pScene);
+    BBGlobalIllumination::setGBufferPass(pScene);
     setSSDOPass(pScene);
     setSSDOBlurPass(pScene);
 }
@@ -17,7 +18,7 @@ void BBSSDOGlobalIllumination::setSSDOPass(BBScene *pScene)
 {
     BBFullScreenQuad *pFullScreenQuad = pScene->getFullScreenQuad(0);
     BBMaterial *pMaterial = new BBMaterial();
-    pMaterial->init("GI_SSDO", BB_PATH_RESOURCE_SHADER(GI/SSAO.vert), BB_PATH_RESOURCE_SHADER(GI/SSDO.frag));
+    pMaterial->init("GI_SSDO", BB_PATH_RESOURCE_SHADER(GI/FullScreenQuad.vert), BB_PATH_RESOURCE_SHADER(GI/SSDO.frag));
 
     pMaterial->setSampler2D("LightTex", pScene->getColorFBO(0, 0));
     pMaterial->setSampler2D("NormalTex", pScene->getColorFBO(0, 1));
@@ -33,7 +34,7 @@ void BBSSDOGlobalIllumination::setSSDOBlurPass(BBScene *pScene)
 {
     BBFullScreenQuad *pFullScreenQuad = pScene->getFullScreenQuad(1);
     BBMaterial *pMaterial = new BBMaterial();
-    pMaterial->init("GI_SSDO_Blur", BB_PATH_RESOURCE_SHADER(GI/SSAO.vert), BB_PATH_RESOURCE_SHADER(GI/SSDO_Blur.frag));
+    pMaterial->init("GI_SSDO_Blur", BB_PATH_RESOURCE_SHADER(GI/FullScreenQuad.vert), BB_PATH_RESOURCE_SHADER(GI/SSDO_Blur.frag));
 
     pMaterial->setSampler2D("SSAOTex", pScene->getColorFBO(1, 0));
     pMaterial->setSampler2D("SSDOTex", pScene->getColorFBO(1, 1));
