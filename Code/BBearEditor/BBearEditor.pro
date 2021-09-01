@@ -56,7 +56,6 @@ SOURCES += \
     Engine/Base/BBRenderableObject.cpp \
     Engine/Geometry/BBBoundingBox.cpp \
     Engine/Geometry/BBRay.cpp \
-    Engine/Render/BBGLBuffers.cpp \
     Engine/Render/BBCamera.cpp \
     Engine/Scene/BBScene.cpp \
     Engine/Allocator/tlsf/tlsf.c \
@@ -171,7 +170,6 @@ HEADERS += \
     Engine/Base/BBRenderableObject.h \
     Engine/Geometry/BBBoundingBox.h \
     Engine/Geometry/BBRay.h \
-    Engine/Render/BBGLBuffers.h \
     Engine/Render/BBCamera.h \
     Engine/Scene/BBScene.h \
     Engine/Allocator/tlsf/tlsf.h \

@@ -8,6 +8,8 @@
 #include "FileSystem/BBFileSystemDataManager.h"
 #include "3D/BBNormalIndicator.h"
 #include "Render/BufferObject/BBVertexBufferObject.h"
+#include "Render/BBMaterial.h"
+#include "Render/BBRenderPass.h"
 
 
 BBRenderManager::BBRenderManager(BBRenderableObject *pObject, QWidget *pParent)
@@ -30,6 +32,10 @@ BBRenderManager::BBRenderManager(BBRenderableObject *pObject, QWidget *pParent)
     QCheckBox *pNormalIndicatorTrigger = new QCheckBox(this);
     addFactory("Normal Indicator", pNormalIndicatorTrigger, 1, Qt::AlignRight);
     QObject::connect(pNormalIndicatorTrigger, SIGNAL(clicked(bool)), this, SLOT(triggerNormalIndicator(bool)));
+
+    QCheckBox *pLinePolygonModeTrigger = new QCheckBox(this);
+    addFactory("Line PolygonMode", pLinePolygonModeTrigger, 1, Qt::AlignRight);
+    QObject::connect(pLinePolygonModeTrigger, SIGNAL(clicked(bool)), this, SLOT(triggerLinePolygonMode(bool)));
 }
 
 BBRenderManager::~BBRenderManager()
@@ -71,3 +77,14 @@ void BBRenderManager::triggerNormalIndicator(bool bEnable)
     }
 }
 
+void BBRenderManager::triggerLinePolygonMode(bool bEnable)
+{
+    if (bEnable)
+    {
+        m_pRenderableObject->getMaterial()->getBaseRenderPass()->setPolygonMode(GL_LINE);
+    }
+    else
+    {
+        m_pRenderableObject->getMaterial()->getBaseRenderPass()->setPolygonMode(GL_FILL);
+    }
+}

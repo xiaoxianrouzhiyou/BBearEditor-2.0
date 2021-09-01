@@ -38,6 +38,7 @@ public:
     void setZMask(bool bEnable);
     void setStencilMask(bool bEnable);
     void setUseStencil(bool bEnable);
+    void setPolygonMode(unsigned int mode);
     void setPolygonMode(unsigned int face, unsigned int mode);
     void setLineWidth(float fWidth);
     void setCullState(bool bEnable);

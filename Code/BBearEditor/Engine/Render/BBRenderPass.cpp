@@ -148,6 +148,11 @@ void BBRenderPass::setUseStencil(bool bEnable)
     m_RenderState.m_bUseStencil = bEnable;
 }
 
+void BBRenderPass::setPolygonMode(unsigned int mode)
+{
+    m_RenderState.m_PolygonMode = mode;
+}
+
 void BBRenderPass::setPolygonMode(unsigned int face, unsigned int mode)
 {
     m_RenderState.m_DrawFace = face;

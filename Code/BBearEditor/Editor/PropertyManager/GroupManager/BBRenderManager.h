@@ -21,6 +21,7 @@ private slots:
     void changeMaterial(const QString &filePath);
     void popupResourceDialog();
     void triggerNormalIndicator(bool bEnable);
+    void triggerLinePolygonMode(bool bEnable);
 
 private:
     BBRenderableObject *m_pRenderableObject;
