@@ -28,6 +28,8 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
 {
     QList<QVector4D> positions;
     load(path, positions);
+    m_pVBO->computeTangent(m_pIndexes, m_nIndexCount);
+
     // create bounding box
     pOutBoundingBox = new BBAABBBoundingBox3D(m_Position.x(), m_Position.y(), m_Position.z(),
                                               m_Rotation.x(), m_Rotation.y(), m_Rotation.z(),
@@ -37,7 +39,6 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
 
     m_pCurrentMaterial->initMultiPass("standard", BB_PATH_RESOURCE_SHADER(standard.vert), BB_PATH_RESOURCE_SHADER(standard.frag));
     m_pCurrentMaterial->getAdditiveRenderPass()->setBlendState(true);
-
     // default
     float *pLightPosition = new float[4] {1.0f, 1.0f, 0.0f, 0.0f};
     float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};
@@ -45,9 +46,6 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
     m_pCurrentMaterial->setVector4(LOCATION_LIGHT_COLOR, pLightColor);
     BBTexture texture;
     m_pCurrentMaterial->setSampler2D(LOCATION_TEXTURE(0), texture.createTexture2D());
-
-    m_pVBO->computeTangent(m_pIndexes, m_nIndexCount);
-
     BBRenderableObject::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;

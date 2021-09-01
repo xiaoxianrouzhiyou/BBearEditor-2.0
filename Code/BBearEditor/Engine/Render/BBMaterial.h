@@ -21,8 +21,8 @@ public:
     BBMaterial();
     ~BBMaterial();
 
-    void init(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath);
-    void initMultiPass(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath);
+    void init(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath, const QString &gShaderPath = "");
+    void initMultiPass(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath, const QString &gShaderPath = "");
     void bindDrawCallInstance(BBDrawCall *pDrawCall) { m_pDrawCallInstance = pDrawCall; }
 
 public:

@@ -68,6 +68,11 @@ void BBVertexBufferObject::setColor(int index, const QVector4D &rgba)
     setColor(index, rgba.x(), rgba.y(), rgba.z(), rgba.w());
 }
 
+QVector4D BBVertexBufferObject::getColor(int index)
+{
+    return QVector4D(m_pVertexes[index].m_fColor[0], m_pVertexes[index].m_fColor[1], m_pVertexes[index].m_fColor[2], m_pVertexes[index].m_fColor[3]);
+}
+
 void BBVertexBufferObject::setTexcoord(int index, float u, float v)
 {
     m_pVertexes[index].m_fTexcoord[0] = u;

@@ -121,8 +121,6 @@ void BBParticle::create1()
     pDrawCall->setEBO(m_pEBO, GL_TRIANGLES, m_nIndexCount, 0);
     appendDrawCall(pDrawCall);
 
-    m_pSSBO->submitData();
-
     // compute shader of update
     m_pUpdateCShader = new BBComputeShader();
     m_pUpdateCShader->init(BB_PATH_RESOURCE_SHADER(ParticleSystem/UpdateParticles1.shader));

@@ -7,6 +7,7 @@
 class BBShaderStorageBufferObject : public BBVertexBufferObject
 {
 public:
+    BBShaderStorageBufferObject(BBVertexBufferObject *pVBO);
     BBShaderStorageBufferObject(int nVertexCount);
     ~BBShaderStorageBufferObject();
 

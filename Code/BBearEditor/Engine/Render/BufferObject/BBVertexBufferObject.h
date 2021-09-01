@@ -30,6 +30,7 @@ public:
     void setColor(int index, float r, float g, float b, float a = 1.0f);
     void setColor(int index, const QVector3D &rgb);
     void setColor(int index, const QVector4D &rgba);
+    QVector4D getColor(int index);
 
     void setTexcoord(int index, float u, float v);
     void setTexcoord(int index, const QVector2D &uv);

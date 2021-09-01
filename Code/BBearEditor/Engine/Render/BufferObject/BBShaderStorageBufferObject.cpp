@@ -1,5 +1,21 @@
 #include "BBShaderStorageBufferObject.h"
 
+
+BBShaderStorageBufferObject::BBShaderStorageBufferObject(BBVertexBufferObject *pVBO)
+    : BBShaderStorageBufferObject(pVBO->getVertexCount())
+{
+    // copy the content of VBO
+    for (int i = 0; i < m_nVertexCount; i++)
+    {
+        setPosition(i, pVBO->getPosition(i));
+        setColor(i, pVBO->getColor(i));
+        setTexcoord(i, pVBO->getTexcoord(i));
+        setNormal(i, pVBO->getNormal(i));
+        setTangent(i, pVBO->getTangent(i));
+        setBiTangent(i, pVBO->getBiTangent(i));
+    }
+}
+
 BBShaderStorageBufferObject::BBShaderStorageBufferObject(int nVertexCount)
     : BBVertexBufferObject()
 {

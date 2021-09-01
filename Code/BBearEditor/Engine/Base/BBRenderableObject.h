@@ -9,6 +9,7 @@ class BBDrawCall;
 class BBMaterial;
 class BBCamera;
 class BBVertexBufferObject;
+class BBShaderStorageBufferObject;
 class BBElementBufferObject;
 
 class BBRenderableObject : public BBGameObject
@@ -56,6 +57,7 @@ protected:
     BBMaterial *m_pCurrentMaterial;
     BBMaterial *m_pDefaultMaterial;
     BBVertexBufferObject *m_pVBO;
+    BBShaderStorageBufferObject *m_pSSBO;
     BBElementBufferObject *m_pEBO;
     unsigned short *m_pIndexes;
     int m_nIndexCount;

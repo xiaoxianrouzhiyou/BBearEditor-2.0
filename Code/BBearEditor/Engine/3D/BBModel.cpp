@@ -30,7 +30,7 @@ BBModel::BBModel(float px, float py, float pz,
     setClassName(BB_CLASSNAME_MODEL);
     if (eType == BBMeshType::OBJ)
     {
-        m_pMesh = new BBOBJMesh(px, py, pz, rx, ry, rz, sx, sy, sz);
+        m_pMesh = new BBStaticMesh(px, py, pz, rx, ry, rz, sx, sy, sz);
     }
     else if (eType == BBMeshType::TERRAIN)
     {

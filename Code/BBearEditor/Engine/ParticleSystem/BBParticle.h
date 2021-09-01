@@ -28,7 +28,6 @@ private:
     void update2(BBCamera *pCamera);
 
 private:
-    BBShaderStorageBufferObject *m_pSSBO;
     BBComputeShader *m_pUpdateCShader;
     BBTranslateFeedbackObject *m_pTFO;
 };

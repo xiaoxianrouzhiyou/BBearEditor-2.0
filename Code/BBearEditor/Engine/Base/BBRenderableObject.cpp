@@ -4,6 +4,7 @@
 #include "Utils/BBUtils.h"
 #include "Render/BBCamera.h"
 #include "Render/BufferObject/BBVertexBufferObject.h"
+#include "Render/BufferObject/BBShaderStorageBufferObject.h"
 #include "Render/BufferObject/BBElementBufferObject.h"
 #include "Render/BBUniformUpdater.h"
 #include "Render/BBRenderPass.h"
@@ -67,6 +68,9 @@ void BBRenderableObject::init()
 
     if (m_pVBO)
         m_pVBO->submitData();
+
+    if (m_pSSBO)
+        m_pSSBO->submitData();
 }
 
 void BBRenderableObject::render(BBCamera *pCamera)
@@ -196,6 +200,7 @@ void BBRenderableObject::sharedInit()
     m_pDefaultMaterial = new BBMaterial();
     m_pCurrentMaterial = m_pDefaultMaterial;
     m_pVBO = nullptr;
+    m_pSSBO = nullptr;
     m_pEBO = nullptr;
     m_pIndexes = nullptr;
     m_nIndexCount = 0;

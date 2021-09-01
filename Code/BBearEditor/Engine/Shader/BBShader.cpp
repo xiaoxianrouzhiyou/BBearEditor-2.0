@@ -14,7 +14,7 @@ BBShader::~BBShader()
 
 }
 
-BBShader* BBShader::loadShader(const char *name, const QString &vShaderPath, const QString &fShaderPath)
+BBShader* BBShader::loadShader(const char *name, const QString &vShaderPath, const QString &fShaderPath, const QString &gShaderPath)
 {
     auto it = m_CachedShaders.find(name);
     if (it != m_CachedShaders.end())
@@ -22,7 +22,7 @@ BBShader* BBShader::loadShader(const char *name, const QString &vShaderPath, con
         return it.value();
     }
     BBShader *pShader = new BBShader();
-    pShader->init(vShaderPath, fShaderPath);
+    pShader->init(vShaderPath, fShaderPath, gShaderPath);
     pShader->setShaderName(name);
     pShader->setVShaderPath(vShaderPath);
     pShader->setFShaderPath(fShaderPath);
@@ -30,10 +30,11 @@ BBShader* BBShader::loadShader(const char *name, const QString &vShaderPath, con
     return pShader;
 }
 
-void BBShader::init(const QString &vShaderPath, const QString &fShaderPath)
+void BBShader::init(const QString &vShaderPath, const QString &fShaderPath, const QString &gShaderPath)
 {
     const char *vCode = nullptr;
     const char *fCode = nullptr;
+    const char *gCode = nullptr;
     do
     {
         int nFileSize;
@@ -47,9 +48,23 @@ void BBShader::init(const QString &vShaderPath, const QString &fShaderPath)
         BB_PROCESS_ERROR(vShader);
         GLuint fShader = compileShader(GL_FRAGMENT_SHADER, fCode);
         BB_PROCESS_ERROR(fShader);
-        m_Program = createProgram(vShader, fShader);
+
+        GLuint gShader = 0;
+        if (!gShaderPath.isEmpty())
+        {
+            gCode = BBUtils::loadFileContent(gShaderPath.toStdString().c_str(), nFileSize);
+            BB_PROCESS_ERROR(gCode);
+            gShader = compileShader(GL_GEOMETRY_SHADER, gCode);
+            BB_PROCESS_ERROR(gShader);
+        }
+
+        m_Program = createProgram(vShader, fShader, gShader);
         glDeleteShader(vShader);
         glDeleteShader(fShader);
+        if (!gShaderPath.isEmpty())
+        {
+            glDeleteShader(gShader);
+        }
 
         if (m_Program != 0)
         {
@@ -63,11 +78,15 @@ void BBShader::init(const QString &vShaderPath, const QString &fShaderPath)
     BB_SAFE_DELETE(fCode);
 }
 
-GLuint BBShader::createProgram(GLuint vShader, GLuint fShader)
+GLuint BBShader::createProgram(GLuint vShader, GLuint fShader, GLuint gShader)
 {
     GLuint program = glCreateProgram();
     glAttachShader(program, vShader);
     glAttachShader(program, fShader);
+    if (gShader > 0)
+    {
+        glAttachShader(program, gShader);
+    }
 
 
     // what the gpu needs to extract
@@ -80,6 +99,11 @@ GLuint BBShader::createProgram(GLuint vShader, GLuint fShader)
     glLinkProgram(program);
     glDetachShader(program, vShader);
     glDetachShader(program, fShader);
+    if (gShader > 0)
+    {
+        glDetachShader(program, gShader);
+    }
+
     GLint nResult;
     glGetProgramiv(program, GL_LINK_STATUS, &nResult);
     if (nResult == GL_FALSE)

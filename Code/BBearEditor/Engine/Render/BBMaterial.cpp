@@ -18,17 +18,17 @@ BBMaterial::~BBMaterial()
     BB_SAFE_DELETE(m_pAdditiveRenderPass);
 }
 
-void BBMaterial::init(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath)
+void BBMaterial::init(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath, const QString &gShaderPath)
 {
     m_pBaseRenderPass = new BBRenderPass();
-    m_pBaseRenderPass->setShader(BBShader::loadShader(shaderName, vShaderPath, fShaderPath));
+    m_pBaseRenderPass->setShader(BBShader::loadShader(shaderName, vShaderPath, fShaderPath, gShaderPath));
 }
 
-void BBMaterial::initMultiPass(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath)
+void BBMaterial::initMultiPass(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath, const QString &gShaderPath)
 {
-    init(shaderName, vShaderPath, fShaderPath);
+    init(shaderName, vShaderPath, fShaderPath, gShaderPath);
     m_pAdditiveRenderPass = new BBRenderPass();
-    m_pAdditiveRenderPass->setShader(BBShader::loadShader(shaderName, vShaderPath, fShaderPath));
+    m_pAdditiveRenderPass->setShader(BBShader::loadShader(shaderName, vShaderPath, fShaderPath, gShaderPath));
 }
 
 void BBMaterial::setBlendState(bool bEnable)
