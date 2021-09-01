@@ -16,7 +16,7 @@ In addition, I referred to some code, learning resources, UI designs, and art re
 * MinGW 5.3.0 32bit for C++
 * OpenGL. The higher the version, the more effects you can use.
 * Python 3.7.9 32bit. Please copy .../Python/Python37-32/Lib into Code/BBearEditor/Engine/Python!
-## Feature
+## Features
 * Encapsulation of rendering system, Forward rendering & Deferred rendering
 * Editor: create models, move objects, asset management, adjust parameters ...
 * 2D & 3D
@@ -28,7 +28,7 @@ In addition, I referred to some code, learning resources, UI designs, and art re
 ## TODO
 Due to limited time, the functions I listed above may not be as cool as the words seem. Basically, for each effect, I select an article to read and reproduce. Of course, I still have many plans. I have a lot of knowledge I want to learn, and I will continue to improve my project!
 - [ ] Soft shadow : I am reproducing "Variance Shadow Maps" recently.
-- [ ] Improve PBR
+- [x] Improve PBR
 - [ ] FBX animation system
 - [ ] TFO particle system
 - [ ] Continuous reproduction of papers
@@ -39,7 +39,7 @@ Due to limited time, the functions I listed above may not be as cool as the word
 ## Contacts and Links
 I really look forward to making friends with related interests, and we will share experience and learn together!
 * E-Mail: 184346971@qq.com
-## Display
+## Screen Shot
 PBR
 
 ![`B)OC_281{{(7(K FV5CJN6](https://user-images.githubusercontent.com/31690363/131146674-08715915-90ef-4b62-aead-2cd973261e00.png)
