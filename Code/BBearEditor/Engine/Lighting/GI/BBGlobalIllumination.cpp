@@ -13,7 +13,7 @@ void BBGlobalIllumination::enable(int nAlgorithmIndex, bool bEnable)
     BBScene *pScene = BBSceneManager::getScene();
     if (bEnable)
     {
-        pScene->setRenderingFunc(&BBScene::deferredRenderingAndPostProcessing);
+        pScene->setRenderingFunc(&BBScene::deferredRendering1_2);
 
         switch (nAlgorithmIndex) {
         case 0:

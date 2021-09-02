@@ -9,6 +9,7 @@ class BBFLCGlobalIllumination
 public:
     static void open(BBScene *pScene);
     static void setTriangleCutPass(BBScene *pScene);
+    static void setIndirectShadingPass(BBScene *pScene);
     static void setFullScreenQuadPass(BBScene *pScene);
 };
 

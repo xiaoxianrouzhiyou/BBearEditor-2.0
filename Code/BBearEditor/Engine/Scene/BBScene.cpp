@@ -166,7 +166,7 @@ void BBScene::defaultRendering()
 //    glEnd();
 }
 
-void BBScene::deferredRendering()
+void BBScene::deferredRendering1_1()
 {
     m_pCamera->switchTo3D();
     m_pCamera->update(m_fUpdateRate);
@@ -182,7 +182,7 @@ void BBScene::deferredRendering()
     m_pFullScreenQuad[0]->render(m_pCamera);
 }
 
-void BBScene::deferredRenderingAndPostProcessing()
+void BBScene::deferredRendering1_2()
 {
     m_pCamera->switchTo3D();
     m_pCamera->update(m_fUpdateRate);

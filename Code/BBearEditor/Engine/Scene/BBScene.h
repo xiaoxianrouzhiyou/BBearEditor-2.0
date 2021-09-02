@@ -40,8 +40,9 @@ public:
     void render();
     void setRenderingFunc(const BBRenderingFunc &renderingFunc) { m_RenderingFunc = renderingFunc; }
     void defaultRendering();
-    void deferredRendering();
-    void deferredRenderingAndPostProcessing();
+    // the rendering times Objects_ScreenQuad
+    void deferredRendering1_1();
+    void deferredRendering1_2();
 
     void resize(float width, float height);
 

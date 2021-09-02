@@ -11,7 +11,7 @@ void BBShadow::enable(int nAlgorithmIndex, bool bEnable)
     BBScene *pScene = BBSceneManager::getScene();
     if (bEnable)
     {
-        pScene->setRenderingFunc(&BBScene::deferredRendering);
+        pScene->setRenderingFunc(&BBScene::deferredRendering1_1);
 
         open(pScene);
     }
