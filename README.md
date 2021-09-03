@@ -49,6 +49,3 @@ PBR
 SH_lighting
 ![image](https://user-images.githubusercontent.com/31690363/128983508-344a9bbb-99dc-4ebf-af64-c9daea820d98.png)
 ![V%BRYKJB E9I0JK(YGZ7ZMM](https://user-images.githubusercontent.com/31690363/130344475-acf28e7e-d0a0-4c86-860f-ce25d081b559.png)
-
-## Stargazers over time
-[![Stargazers over time](https://starchart.cc/xiaoxianrouzhiyou/BBearEditor-2.0.svg)](https://starchart.cc/xiaoxianrouzhiyou/BBearEditor-2.0)
