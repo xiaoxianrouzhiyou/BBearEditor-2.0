@@ -4,12 +4,14 @@
 BBVertexBufferObject::BBVertexBufferObject()
     : BBBufferObject()
 {
+    m_pVertexes = nullptr;
     // without setSize
 }
 
 BBVertexBufferObject::BBVertexBufferObject(int nVertexCount)
     : BBBufferObject()
 {
+    m_pVertexes = nullptr;
     setSize(nVertexCount);
 }
 

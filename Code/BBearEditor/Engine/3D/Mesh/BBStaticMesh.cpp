@@ -26,37 +26,37 @@ BBStaticMesh::BBStaticMesh(float px, float py, float pz,
 
 void BBStaticMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
 {
-    BBMesh::init(path, pOutBoundingBox);
+//    BBMesh::init(path, pOutBoundingBox);
     // SSBO version
-//    QList<QVector4D> positions;
-//    load(path, positions);
-//    m_pVBO->computeTangent(m_pIndexes, m_nIndexCount);
+    QList<QVector4D> positions;
+    load(path, positions);
+    m_pVBO->computeTangent(m_pIndexes, m_nIndexCount);
 
-//    // create bounding box
-//    pOutBoundingBox = new BBAABBBoundingBox3D(m_Position.x(), m_Position.y(), m_Position.z(),
-//                                              m_Rotation.x(), m_Rotation.y(), m_Rotation.z(),
-//                                              m_Scale.x(), m_Scale.y(), m_Scale.z(),
-//                                              positions);
-//    pOutBoundingBox->init();
+    // create bounding box
+    pOutBoundingBox = new BBAABBBoundingBox3D(m_Position.x(), m_Position.y(), m_Position.z(),
+                                              m_Rotation.x(), m_Rotation.y(), m_Rotation.z(),
+                                              m_Scale.x(), m_Scale.y(), m_Scale.z(),
+                                              positions);
+    pOutBoundingBox->init();
 
-//    // VBO -> SSBO
-//    m_pSSBO = new BBShaderStorageBufferObject(m_pVBO);
+    // VBO -> SSBO
+    m_pSSBO = new BBShaderStorageBufferObject(m_pVBO);
 
-//    m_pCurrentMaterial->initMultiPass("Diffuse_SSBO", BB_PATH_RESOURCE_SHADER(Diffuse_SSBO.vert), BB_PATH_RESOURCE_SHADER(Diffuse_SSBO.frag));
-//    m_pCurrentMaterial->getAdditiveRenderPass()->setBlendState(true);
-//    // default
-//    float *pLightPosition = new float[4] {1.0f, 1.0f, 0.0f, 0.0f};
-//    float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};
-//    m_pCurrentMaterial->setVector4(LOCATION_LIGHT_POSITION, pLightPosition);
-//    m_pCurrentMaterial->setVector4(LOCATION_LIGHT_COLOR, pLightColor);
-//    m_pCurrentMaterial->setSampler2D(LOCATION_TEXTURE(0), BBTexture().createTexture2D());
-//    BBRenderableObject::init();
+    m_pCurrentMaterial->initMultiPass("Diffuse_SSBO", BB_PATH_RESOURCE_SHADER(Diffuse_SSBO.vert), BB_PATH_RESOURCE_SHADER(Diffuse_SSBO.frag));
+    m_pCurrentMaterial->getAdditiveRenderPass()->setBlendState(true);
+    // default
+    float *pLightPosition = new float[4] {1.0f, 1.0f, 0.0f, 0.0f};
+    float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};
+    m_pCurrentMaterial->setVector4(LOCATION_LIGHT_POSITION, pLightPosition);
+    m_pCurrentMaterial->setVector4(LOCATION_LIGHT_COLOR, pLightColor);
+    m_pCurrentMaterial->setSampler2D(LOCATION_TEXTURE(0), BBTexture().createTexture2D());
+    BBRenderableObject::init();
 
-//    BBDrawCall *pDrawCall = new BBDrawCall;
-//    pDrawCall->setMaterial(m_pCurrentMaterial);
-//    pDrawCall->setVBO(m_pSSBO);
-//    pDrawCall->setEBO(m_pEBO, m_eDrawPrimitiveType, m_nIndexCount, 0);
-//    appendDrawCall(pDrawCall);
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pCurrentMaterial);
+    pDrawCall->setVBO(m_pSSBO);
+    pDrawCall->setEBO(m_pEBO, m_eDrawPrimitiveType, m_nIndexCount, 0);
+    appendDrawCall(pDrawCall);
 }
 
 void BBStaticMesh::load(const QString &path, QList<QVector4D> &outPositions)

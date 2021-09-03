@@ -13,7 +13,7 @@ in G2F
     G2FTriangle triangle;
 } g2f;
 
-layout (location = 0) out vec4 FragColor;
+out vec4 FragColor;
 
 struct TriangleCut
 {
@@ -21,7 +21,7 @@ struct TriangleCut
 	vec4 normal_and_level;
 	vec4 color_and_area;
 };
-layout (std430, binding = 0) buffer Triangles
+layout (std430, binding = 1) buffer Triangles
 {
 	TriangleCut triangles[];
 };

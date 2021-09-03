@@ -14,6 +14,7 @@ class BBDrawCall;
 class BBRenderableObject;
 class BBRenderQueue;
 class BBShaderStorageBufferObject;
+class BBAtomicCounterBufferObject;
 
 typedef void (BBDrawCall::*BBDrawFunc)(BBCamera *pCamera);
 typedef void (BBDrawCall::*BBUpdateOrderInRenderQueueFunc)();
@@ -27,6 +28,8 @@ public:
     void updateMaterialBlendState(bool bEnable);
     void setVBO(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType = GL_TRIANGLES, int nDrawStartIndex = 0, int nDrawCount = 3);
     void setSSBO(BBShaderStorageBufferObject *pSSBO, GLenum eDrawPrimitiveType = GL_TRIANGLES, int nDrawStartIndex = 0, int nDrawCount = 3);
+    void setACBO(BBAtomicCounterBufferObject *pACBO) { m_pACBO = pACBO; }
+    void removeACBO() { m_pACBO = nullptr; }
     void setEBO(BBElementBufferObject *pEBO, GLenum eDrawPrimitiveType, int nIndexCount, int nDrawStartIndex);
     void setVisibility(bool bVisible) { m_bVisible = bVisible; }
 
@@ -64,6 +67,7 @@ private:
 
     BBVertexBufferObject *m_pVBO;
     BBShaderStorageBufferObject *m_pSSBO;
+    BBAtomicCounterBufferObject *m_pACBO;
     int m_nDrawCount;
     BBElementBufferObject *m_pEBO;
     int m_nIndexCount;

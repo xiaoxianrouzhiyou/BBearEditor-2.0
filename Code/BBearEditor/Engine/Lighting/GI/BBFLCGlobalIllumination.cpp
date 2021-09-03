@@ -4,10 +4,23 @@
 #include "2D/BBFullScreenQuad.h"
 #include "Render/BBMaterial.h"
 #include "Render/BBRenderPass.h"
+#include "3D/BBModel.h"
+#include "Render/BufferObject/BBShaderStorageBufferObject.h"
+#include "Render/BufferObject/BBAtomicCounterBufferObject.h"
 
+
+int BBFLCGlobalIllumination::m_SNum = 5;
+BBShaderStorageBufferObject* BBFLCGlobalIllumination::m_pTriangleCutSSBOSet = nullptr;
+int BBFLCGlobalIllumination::m_nSSBOCount = 0;
+BBAtomicCounterBufferObject* BBFLCGlobalIllumination::m_pTriangleIdACBO = nullptr;
 
 void BBFLCGlobalIllumination::open(BBScene *pScene)
 {
+    clear(pScene);
+
+    // used for the id of triangle cut
+    m_pTriangleIdACBO = new BBAtomicCounterBufferObject();
+
 //    BBGlobalIllumination::setGBufferPass(pScene);
     // Divide triangles evenly
     setTriangleCutPass(pScene);
@@ -30,10 +43,30 @@ void BBFLCGlobalIllumination::setTriangleCutPass(BBScene *pScene)
     pMaterial->setVector4(LOCATION_LIGHT_COLOR, pLightColor);
 
     QList<BBGameObject*> objects = pScene->getModels();
-    for (QList<BBGameObject*>::Iterator itr = objects.begin(); itr != objects.end(); itr++)
+    m_nSSBOCount = objects.count();
+    m_pTriangleCutSSBOSet = new BBShaderStorageBufferObject[m_nSSBOCount];
+
+    for (int i = 0; i < m_nSSBOCount; i++)
     {
-        BBGameObject *pObject = *itr;
-        pObject->setCurrentMaterial(pMaterial);
+        BBModel *pModel = (BBModel*)objects[i];
+        pModel->setCurrentMaterial(pMaterial);
+
+        BBMesh *pMesh = pModel->getMesh();
+
+        pMesh->appendACBO(m_pTriangleIdACBO);
+
+        // Send SSBO to write the result of triangle cut
+        // "1" is consistent with the "binding" in shader
+        // struct TriangleCut
+        // {
+        //     vec4 center;
+        //     vec4 normal_and_level;
+        //     vec4 color_and_area;
+        // };
+        // 3x4 float
+        m_pTriangleCutSSBOSet[i].createBufferObject<float>(1, 300000 * m_SNum * 12, GL_STATIC_DRAW, nullptr);
+        m_pTriangleCutSSBOSet[i].submitData();
+        pMesh->appendSSBO(&m_pTriangleCutSSBOSet[i]);
     }
 }
 
@@ -41,11 +74,15 @@ void BBFLCGlobalIllumination::setIndirectShadingPass(BBScene *pScene)
 {
     BBFullScreenQuad *pFullScreenQuad = pScene->getFullScreenQuad(0);
     BBMaterial *pMaterial = new BBMaterial();
-    pMaterial->init("GI_FLC", BB_PATH_RESOURCE_SHADER(GI/FullScreenQuad.vert), BB_PATH_RESOURCE_SHADER(GI/FLC.frag));
+    pMaterial->init("GI_FLC_IndirectShading", BB_PATH_RESOURCE_SHADER(GI/FullScreenQuad.vert), BB_PATH_RESOURCE_SHADER(GI/IndirectShading.frag));
 
     pMaterial->setSampler2D("AlbedoTex", pScene->getColorFBO(0, 0));
 
     pFullScreenQuad->setCurrentMaterial(pMaterial);
+
+    // Only one model is considered for the time being
+    pFullScreenQuad->appendACBO(m_pTriangleIdACBO);
+    pFullScreenQuad->appendSSBO(&m_pTriangleCutSSBOSet[0]);
 }
 
 void BBFLCGlobalIllumination::setFullScreenQuadPass(BBScene *pScene)
@@ -57,4 +94,26 @@ void BBFLCGlobalIllumination::setFullScreenQuadPass(BBScene *pScene)
     pMaterial->setSampler2D("AlbedoTex", pScene->getColorFBO(1, 0));
 
     pFullScreenQuad->setCurrentMaterial(pMaterial);
+}
+
+void BBFLCGlobalIllumination::clear(BBScene *pScene)
+{
+    // remove TriangleCutSSBO that is setted last time
+    QList<BBGameObject*> objects = pScene->getModels();
+    int nCount = objects.count();
+    for (int i = 0; i < nCount; i++)
+    {
+        BBModel *pModel = (BBModel*)objects[i];
+        BBMesh *pMesh = pModel->getMesh();
+
+        pMesh->removeACBO();
+        pMesh->removeSSBO(&m_pTriangleCutSSBOSet[i]);
+    }
+
+    BBFullScreenQuad *pFullScreenQuad = pScene->getFullScreenQuad(0);
+    pFullScreenQuad->removeACBO();
+    // pFullScreenQuad->removeSSBO(&m_pTriangleCutSSBOSet[0]);
+
+    BB_SAFE_DELETE_ARRAY(m_pTriangleCutSSBOSet);
+    BB_SAFE_DELETE(m_pTriangleIdACBO);
 }

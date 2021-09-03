@@ -2,13 +2,14 @@
 #include "BufferObject/BBVertexBufferObject.h"
 #include "BufferObject/BBShaderStorageBufferObject.h"
 #include "BufferObject/BBElementBufferObject.h"
+#include "BufferObject/BBFrameBufferObject.h"
+#include "BufferObject/BBAtomicCounterBufferObject.h"
 #include "BBCamera.h"
 #include "BBRenderPass.h"
 #include "Scene/BBSceneManager.h"
 #include "Scene/BBScene.h"
 #include "Lighting/GameObject/BBLight.h"
 #include "Lighting/GameObject/BBDirectionalLight.h"
-#include "Render/BufferObject/BBFrameBufferObject.h"
 #include "Base/BBRenderableObject.h"
 #include "Render/BBRenderQueue.h"
 
@@ -28,6 +29,7 @@ BBDrawCall::BBDrawCall()
 
     m_pVBO = nullptr;
     m_pSSBO = nullptr;
+    m_pACBO = nullptr;
     m_nDrawCount = 3;
     m_pEBO = nullptr;
     m_nIndexCount = 0;
@@ -179,6 +181,8 @@ void BBDrawCall::renderForwardPass(BBCamera *pCamera)
         QList<BBGameObject*> lights = collectLights();
 
         m_pVBO->bind();
+        if (m_pACBO)
+            m_pACBO->bind();
 
         // base
         if (lights.count() > 0)
@@ -223,6 +227,8 @@ void BBDrawCall::renderForwardPass(BBCamera *pCamera)
             pAdditiveRenderPass->unbind();
         }
 
+        if (m_pACBO)
+            m_pACBO->unbind();
         m_pVBO->unbind();
     }
 

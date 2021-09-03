@@ -1,6 +1,13 @@
 #include "BBShaderStorageBufferObject.h"
 
 
+BBShaderStorageBufferObject::BBShaderStorageBufferObject()
+    : BBVertexBufferObject(), BBLinkedList()
+{
+    m_Location = 0;
+    m_BufferType = GL_SHADER_STORAGE_BUFFER;
+}
+
 BBShaderStorageBufferObject::BBShaderStorageBufferObject(BBVertexBufferObject *pVBO)
     : BBShaderStorageBufferObject(pVBO->getVertexCount())
 {
@@ -19,6 +26,7 @@ BBShaderStorageBufferObject::BBShaderStorageBufferObject(BBVertexBufferObject *p
 BBShaderStorageBufferObject::BBShaderStorageBufferObject(int nVertexCount)
     : BBVertexBufferObject()
 {
+    m_Location = 0;
     m_BufferType = GL_SHADER_STORAGE_BUFFER;
     setSize(nVertexCount);
 }
@@ -31,7 +39,17 @@ BBShaderStorageBufferObject::~BBShaderStorageBufferObject()
 void BBShaderStorageBufferObject::bind()
 {
     // Parameter 2 corresponds to the binding tag in the shader
-    glBindBufferBase(m_BufferType, 0, m_Name);
+    glBindBufferBase(m_BufferType, m_Location, m_Name);
+
+    if (m_pNext != nullptr)
+    {
+        next<BBShaderStorageBufferObject>()->bind();
+    }
+}
+
+void BBShaderStorageBufferObject::bind(int location)
+{
+    glBindBufferBase(m_BufferType, location, m_Name);
 }
 
 void BBShaderStorageBufferObject::unbind()

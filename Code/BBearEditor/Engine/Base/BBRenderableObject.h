@@ -10,6 +10,7 @@ class BBMaterial;
 class BBCamera;
 class BBVertexBufferObject;
 class BBShaderStorageBufferObject;
+class BBAtomicCounterBufferObject;
 class BBElementBufferObject;
 
 class BBRenderableObject : public BBGameObject
@@ -45,6 +46,12 @@ public:
     void openLight() override;
     void closeLight() override;
 
+    void appendSSBO(BBShaderStorageBufferObject *pSSBO);
+    void removeSSBO(BBShaderStorageBufferObject *pSSBO);
+
+    void appendACBO(BBAtomicCounterBufferObject *pACBO);
+    void removeACBO();
+
     inline BBMaterial* getMaterial() { return m_pCurrentMaterial; }
     inline BBVertexBufferObject* getVBO() { return m_pVBO; }
     inline BBElementBufferObject* getEBO() { return m_pEBO; }
@@ -58,6 +65,7 @@ protected:
     BBMaterial *m_pDefaultMaterial;
     BBVertexBufferObject *m_pVBO;
     BBShaderStorageBufferObject *m_pSSBO;
+    BBAtomicCounterBufferObject *m_pACBO;
     BBElementBufferObject *m_pEBO;
     unsigned short *m_pIndexes;
     int m_nIndexCount;

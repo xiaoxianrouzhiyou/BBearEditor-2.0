@@ -51,6 +51,8 @@ BBRenderableObject::BBRenderableObject(int x, int y, int nWidth, int nHeight)
 BBRenderableObject::~BBRenderableObject()
 {
     BB_SAFE_DELETE(m_pVBO);
+    BB_SAFE_DELETE(m_pSSBO);
+    BB_SAFE_DELETE(m_pACBO);
     BB_SAFE_DELETE(m_pEBO);
     BB_SAFE_DELETE_ARRAY(m_pIndexes);
 }
@@ -180,6 +182,48 @@ void BBRenderableObject::closeLight()
     m_pCurrentMaterial->setVector4(LOCATION_LIGHT_SETTINGS(1), 0.0f, 0.0f, 0.0f, 0.0f);
 }
 
+void BBRenderableObject::appendSSBO(BBShaderStorageBufferObject *pSSBO)
+{
+    if (m_pSSBO == nullptr)
+    {
+        m_pSSBO = pSSBO;
+    }
+    else
+    {
+        m_pSSBO->pushBack(pSSBO);
+    }
+}
+
+void BBRenderableObject::removeSSBO(BBShaderStorageBufferObject *pSSBO)
+{
+    // Head is an ssbo with vertex information and cannot be removed, so start with the second node
+    if (m_pSSBO && pSSBO)
+    {
+        m_pSSBO->remove(pSSBO);
+    }
+}
+
+void BBRenderableObject::appendACBO(BBAtomicCounterBufferObject *pACBO)
+{
+    // set ACBO for drawcall
+    BBDrawCall *pDrawCall = m_pDrawCalls;
+    while (pDrawCall != nullptr)
+    {
+        pDrawCall->setACBO(pACBO);
+        pDrawCall = pDrawCall->next<BBDrawCall>();
+    }
+}
+
+void BBRenderableObject::removeACBO()
+{
+    BBDrawCall *pDrawCall = m_pDrawCalls;
+    while (pDrawCall != nullptr)
+    {
+        pDrawCall->removeACBO();
+        pDrawCall = pDrawCall->next<BBDrawCall>();
+    }
+}
+
 void BBRenderableObject::appendDrawCall(BBDrawCall *pDrawCall)
 {
     if (m_pDrawCalls == nullptr)
@@ -201,6 +245,7 @@ void BBRenderableObject::sharedInit()
     m_pCurrentMaterial = m_pDefaultMaterial;
     m_pVBO = nullptr;
     m_pSSBO = nullptr;
+    m_pACBO = nullptr;
     m_pEBO = nullptr;
     m_pIndexes = nullptr;
     m_nIndexCount = 0;

@@ -29,5 +29,5 @@ void main()
 {
     v2f.color = bundle.vertexes[gl_VertexID].BBColor;
     v2f.normal = mat3(transpose(inverse(BBModelMatrix))) * bundle.vertexes[gl_VertexID].BBNormal.xyz;
-    gl_Position = BBProjectionMatrix * BBViewMatrix * BBModelMatrix * bundle.vertexes[gl_VertexID].BBPosition;;
+    gl_Position = BBProjectionMatrix * BBViewMatrix * BBModelMatrix * bundle.vertexes[gl_VertexID].BBPosition;
 }
