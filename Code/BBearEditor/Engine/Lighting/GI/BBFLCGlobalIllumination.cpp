@@ -53,6 +53,8 @@ void BBFLCGlobalIllumination::setTriangleCutPass(BBScene *pScene)
     float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};
     pMaterial->setVector4(LOCATION_LIGHT_POSITION, pLightPosition);
     pMaterial->setVector4(LOCATION_LIGHT_COLOR, pLightColor);
+    pMaterial->setFloatArray("Sp[0]", m_Sp, 64);
+    pMaterial->setFloatArray("Noise[0]", m_Noise, 64);
 
     QList<BBGameObject*> objects = pScene->getModels();
     m_nSSBOCount = objects.count();
@@ -89,6 +91,7 @@ void BBFLCGlobalIllumination::setIndirectShadingPass(BBScene *pScene)
     BBMaterial *pMaterial = new BBMaterial();
     pMaterial->init("GI_FLC_IndirectShading", BB_PATH_RESOURCE_SHADER(GI/FullScreenQuad.vert), BB_PATH_RESOURCE_SHADER(GI/IndirectShading.frag));
 
+    pMaterial->setFloatArray("S[0]", m_S, 64);
     pMaterial->setSampler2D("AlbedoTex", pScene->getColorFBO(0, 0));
     pMaterial->setSampler2D("NormalTex", pScene->getColorFBO(0, 1));
     pMaterial->setSampler2D("PositionTex", pScene->getColorFBO(0, 2));

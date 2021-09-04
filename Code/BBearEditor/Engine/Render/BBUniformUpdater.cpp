@@ -154,6 +154,12 @@ void BBUniformUpdater::updateFloat(GLint location, void *pCamera, void *pPropert
     glUniform1f(location, pProperty->getPropertyValue());
 }
 
+void BBUniformUpdater::updateFloatArray(GLint location, void *pCamera, void *pPropertyValue)
+{
+    BBFloatArrayMaterialProperty *pProperty = (BBFloatArrayMaterialProperty*)pPropertyValue;
+    glUniform1fv(location, pProperty->getArrayCount(), pProperty->getPropertyValue());
+}
+
 void BBUniformUpdater::updateMatrix4(GLint location, void *pCamera, void *pPropertyValue)
 {
     BBMatrix4MaterialProperty *pProperty = (BBMatrix4MaterialProperty*)pPropertyValue;
@@ -166,9 +172,9 @@ void BBUniformUpdater::updateVector4(GLint location, void *pCamera, void *pPrope
     glUniform4fv(location, 1, pProperty->getPropertyValue());
 }
 
-void BBUniformUpdater::updateArrayVector4(GLint location, void *pCamera, void *pPropertyValue)
+void BBUniformUpdater::updateVector4Array(GLint location, void *pCamera, void *pPropertyValue)
 {
-    BBArrayVector4MaterialProperty *pProperty = (BBArrayVector4MaterialProperty*)pPropertyValue;
+    BBVector4ArrayMaterialProperty *pProperty = (BBVector4ArrayMaterialProperty*)pPropertyValue;
     glUniform4fv(location, pProperty->getArrayCount(), pProperty->getPropertyValue());
 }
 

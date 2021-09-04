@@ -43,9 +43,10 @@ public:
     void updateBRDFLUTTexture(GLint location, void *pCamera, void *pPropertyValue);
 
     void updateFloat(GLint location, void *pCamera, void *pPropertyValue);
+    void updateFloatArray(GLint location, void *pCamera, void *pPropertyValue);
     void updateMatrix4(GLint location, void *pCamera, void *pPropertyValue);
     void updateVector4(GLint location, void *pCamera, void *pPropertyValue);
-    void updateArrayVector4(GLint location, void *pCamera, void *pPropertyValue);
+    void updateVector4Array(GLint location, void *pCamera, void *pPropertyValue);
     void updateSampler2D(GLint location, void *pCamera, void *pPropertyValue);
     void updateSamplerCube(GLint location, void *pCamera, void *pPropertyValue);
 

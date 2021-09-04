@@ -193,6 +193,15 @@ void BBRenderPass::setFloat(const std::string &uniformName, const float fValue)
     }
 }
 
+void BBRenderPass::setFloatArray(const std::string &uniformName, const float *pFloatArray, int nArrayCount)
+{
+    auto it = m_Properties.find(uniformName);
+    if (it != m_Properties.end())
+    {
+        ((BBFloatArrayMaterialProperty*)it.value())->setPropertyValue(pFloatArray);
+    }
+}
+
 void BBRenderPass::setMatrix4(const std::string &uniformName, const float *pMatrix4)
 {
     auto it = m_Properties.find(uniformName);
@@ -211,12 +220,12 @@ void BBRenderPass::setVector4(const std::string &uniformName, const float *pVect
     }
 }
 
-void BBRenderPass::setArrayVector4(const std::string &uniformName, const float *pArrayVector4, int nArrayCount)
+void BBRenderPass::setVector4Array(const std::string &uniformName, const float *pVector4Array, int nArrayCount)
 {
     auto it = m_Properties.find(uniformName);
     if (it != m_Properties.end())
     {
-        ((BBArrayVector4MaterialProperty*)it.value())->setPropertyValue(pArrayVector4);
+        ((BBVector4ArrayMaterialProperty*)it.value())->setPropertyValue(pVector4Array);
     }
 }
 

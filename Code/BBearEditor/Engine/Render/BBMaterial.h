@@ -41,10 +41,11 @@ public:
 
 public:
     void setFloat(const std::string &uniformName, const float fValue);
+    void setFloatArray(const std::string &uniformName, const float *pFloatArray, int nArrayCount);
     void setMatrix4(const std::string &uniformName, const float *pMatrix4);
     void setVector4(const std::string &uniformName, float x, float y, float z, float w);
     void setVector4(const std::string &uniformName, const float *pVector4);
-    void setArrayVector4(const std::string &uniformName, const float *pArrayVector4, int nArrayCount);
+    void setVector4Array(const std::string &uniformName, const float *pVector4Array, int nArrayCount);
     void setSampler2D(const std::string &uniformName, GLuint textureName, const QString &resourcePath = "");
     void setSamplerCube(const std::string &uniformName, GLuint textureName);
     void setSamplerCube(const std::string &uniformName, GLuint textureName, const QString resourcePaths[]);

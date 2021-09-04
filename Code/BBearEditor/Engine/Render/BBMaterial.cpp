@@ -158,6 +158,18 @@ void BBMaterial::setFloat(const std::string &uniformName, const float fValue)
     }
 }
 
+void BBMaterial::setFloatArray(const std::string &uniformName, const float *pFloatArray, int nArrayCount)
+{
+    if (m_pBaseRenderPass != nullptr)
+    {
+        m_pBaseRenderPass->setFloatArray(uniformName, pFloatArray, nArrayCount);
+    }
+    if (m_pAdditiveRenderPass != nullptr)
+    {
+        m_pAdditiveRenderPass->setFloatArray(uniformName, pFloatArray, nArrayCount);
+    }
+}
+
 void BBMaterial::setMatrix4(const std::string &uniformName, const float *pMatrix4)
 {
     if (m_pBaseRenderPass != nullptr)
@@ -188,15 +200,15 @@ void BBMaterial::setVector4(const std::string &uniformName, const float *pVector
     }
 }
 
-void BBMaterial::setArrayVector4(const std::string &uniformName, const float *pArrayVector4, int nArrayCount)
+void BBMaterial::setVector4Array(const std::string &uniformName, const float *pVector4Array, int nArrayCount)
 {
     if (m_pBaseRenderPass != nullptr)
     {
-        m_pBaseRenderPass->setArrayVector4(uniformName, pArrayVector4, nArrayCount);
+        m_pBaseRenderPass->setVector4Array(uniformName, pVector4Array, nArrayCount);
     }
     if (m_pAdditiveRenderPass != nullptr)
     {
-        m_pAdditiveRenderPass->setArrayVector4(uniformName, pArrayVector4, nArrayCount);
+        m_pAdditiveRenderPass->setVector4Array(uniformName, pVector4Array, nArrayCount);
     }
 }
 

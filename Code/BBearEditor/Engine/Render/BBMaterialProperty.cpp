@@ -43,6 +43,31 @@ BBMaterialProperty* BBFloatMaterialProperty::clone()
 
 
 /**
+ * @brief BBFloatArrayMaterialProperty::BBFloatArrayMaterialProperty
+ * @param name
+ * @param nArrayCount
+ */
+BBFloatArrayMaterialProperty::BBFloatArrayMaterialProperty(const char *name, int nArrayCount)
+    : BBMaterialProperty(FloatArray, name)
+{
+    m_pPropertyValue = nullptr;
+    m_nArrayCount = nArrayCount;
+}
+
+BBFloatArrayMaterialProperty::~BBFloatArrayMaterialProperty()
+{
+    BB_SAFE_DELETE(m_pPropertyValue);
+}
+
+BBMaterialProperty* BBFloatArrayMaterialProperty::clone()
+{
+    BBFloatArrayMaterialProperty *pRet = new BBFloatArrayMaterialProperty(m_Name, m_nArrayCount);
+    pRet->setPropertyValue(m_pPropertyValue);
+    return pRet;
+}
+
+
+/**
  * @brief BBMatrix4MaterialProperty::BBMatrix4MaterialProperty
  */
 BBMatrix4MaterialProperty::BBMatrix4MaterialProperty(const char *name)
@@ -102,24 +127,25 @@ BBMaterialProperty* BBVector4MaterialProperty::clone()
 
 
 /**
- * @brief BBArrayVector4MaterialProperty::BBArrayVector4MaterialProperty
+ * @brief BBVector4ArrayMaterialProperty::BBVector4ArrayMaterialProperty
  * @param name
+ * @param nArrayCount
  */
-BBArrayVector4MaterialProperty::BBArrayVector4MaterialProperty(const char *name, int nArrayCount)
-    : BBMaterialProperty(ArrayVector4, name)
+BBVector4ArrayMaterialProperty::BBVector4ArrayMaterialProperty(const char *name, int nArrayCount)
+    : BBMaterialProperty(Vector4Array, name)
 {
     m_pPropertyValue = nullptr;
     m_nArrayCount = nArrayCount;
 }
 
-BBArrayVector4MaterialProperty::~BBArrayVector4MaterialProperty()
+BBVector4ArrayMaterialProperty::~BBVector4ArrayMaterialProperty()
 {
     BB_SAFE_DELETE(m_pPropertyValue);
 }
 
-BBMaterialProperty* BBArrayVector4MaterialProperty::clone()
+BBMaterialProperty* BBVector4ArrayMaterialProperty::clone()
 {
-    BBArrayVector4MaterialProperty *pRet = new BBArrayVector4MaterialProperty(m_Name, m_nArrayCount);
+    BBVector4ArrayMaterialProperty *pRet = new BBVector4ArrayMaterialProperty(m_Name, m_nArrayCount);
     pRet->setPropertyValue(m_pPropertyValue);
     return pRet;
 }

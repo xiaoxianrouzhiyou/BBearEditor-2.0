@@ -23,7 +23,7 @@ void BBSSAOGlobalIllumination::setSSAOPass(BBScene *pScene)
     pMaterial->setSampler2D("NormalTex", pScene->getColorFBO(0, 1));
     pMaterial->setSampler2D("PositionTex", pScene->getColorFBO(0, 2));
     pMaterial->setSampler2D("NoiseTex", BBTexture().createTexture2D(generateNoise(), 4, 4, GL_RGBA32F));
-    pMaterial->setArrayVector4("Samples[0]", generateKernel(), 64);
+    pMaterial->setVector4Array("Samples[0]", generateKernel(), 64);
 
     pFullScreenQuad->setCurrentMaterial(pMaterial);
 }

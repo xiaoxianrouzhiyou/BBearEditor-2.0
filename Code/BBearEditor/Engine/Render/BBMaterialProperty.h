@@ -13,9 +13,10 @@ enum BBMaterialUniformPropertyType
     LightProjectionMatrix,
     LightViewMatrix,
     Float,
+    FloatArray,
     Matrix4,
     Vector4,
-    ArrayVector4,
+    Vector4Array,
     Sampler2D,
     SamplerCube,
     Count
@@ -64,6 +65,24 @@ private:
 };
 
 
+class BBFloatArrayMaterialProperty : public BBMaterialProperty
+{
+public:
+    BBFloatArrayMaterialProperty(const char *name, int nArrayCount);
+    ~BBFloatArrayMaterialProperty();
+
+    BBMaterialProperty* clone() override;
+
+    inline void setPropertyValue(const float *pPropertyValue) { m_pPropertyValue = pPropertyValue; }
+    inline const float* getPropertyValue() { return m_pPropertyValue; }
+    inline int getArrayCount() { return m_nArrayCount; }
+
+private:
+    const float *m_pPropertyValue;
+    int m_nArrayCount;
+};
+
+
 class BBMatrix4MaterialProperty : public BBMaterialProperty
 {
 public:
@@ -100,11 +119,11 @@ private:
 };
 
 
-class BBArrayVector4MaterialProperty : public BBMaterialProperty
+class BBVector4ArrayMaterialProperty : public BBMaterialProperty
 {
 public:
-    BBArrayVector4MaterialProperty(const char *name, int nArrayCount);
-    ~BBArrayVector4MaterialProperty();
+    BBVector4ArrayMaterialProperty(const char *name, int nArrayCount);
+    ~BBVector4ArrayMaterialProperty();
 
     BBMaterialProperty* clone() override;
 

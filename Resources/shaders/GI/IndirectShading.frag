@@ -58,6 +58,7 @@ float getSumSF(int level, float d)
 void main(void)
 {
 	int VPL_num = int(atomicCounter(TriangleID));
+	VPL_num = 500;
     // GBuffer
 	vec3 color = texture(AlbedoTex, v2f_texcoord).xyz;
 	vec3 normal = texture(NormalTex, v2f_texcoord).xyz;

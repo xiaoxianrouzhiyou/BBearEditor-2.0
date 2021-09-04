@@ -172,7 +172,7 @@ void BBRenderableObject::setVector4(const std::string &uniformName, float x, flo
 
 void BBRenderableObject::setArrayVector4(const std::string &uniformName, const float *pArrayVector4, int nArrayCount)
 {
-    m_pCurrentMaterial->setArrayVector4(uniformName, pArrayVector4, nArrayCount);
+    m_pCurrentMaterial->setVector4Array(uniformName, pArrayVector4, nArrayCount);
 }
 
 void BBRenderableObject::setTexture(const std::string &uniformName, GLuint textureName)

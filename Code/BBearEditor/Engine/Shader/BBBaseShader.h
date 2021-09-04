@@ -31,9 +31,10 @@ protected:
     void initAttributes();
     void initUniforms();
     BBUniformUpdater* initUniformFloat(GLint location, const char *pUniformName);
+    BBUniformUpdater* initUniformFloatArray(GLint location, const char *pUniformName, int nArrayCount);
     BBUniformUpdater* initUniformMatrix4(GLint location, const char *pUniformName);
     BBUniformUpdater* initUniformVector4(GLint location, const char *pUniformName);
-    BBUniformUpdater* initUniformArrayVector4(GLint location, const char *pUniformName, int nArrayCount);
+    BBUniformUpdater* initUniformVector4Array(GLint location, const char *pUniformName, int nArrayCount);
     BBUniformUpdater* initUniformSampler2D(GLint location, const char *pUniformName, int &nSlotIndex);
     BBUniformUpdater* initUniformSamplerCube(GLint location, const char *pUniformName, int &nSlotIndex);
     void appendUniformUpdater(BBUniformUpdater *pUniformUpdater);

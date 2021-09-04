@@ -108,7 +108,14 @@ void BBBaseShader::initUniforms()
 
         if (type == GL_FLOAT)
         {
-            pUniformUpdater = initUniformFloat(location, uniformName);
+            if (size == 1)
+            {
+                pUniformUpdater = initUniformFloat(location, uniformName);
+            }
+            else
+            {
+                pUniformUpdater = initUniformFloatArray(location, uniformName, size);
+            }
         }
         else if (type == GL_FLOAT_MAT4)
         {
@@ -122,7 +129,7 @@ void BBBaseShader::initUniforms()
             }
             else
             {
-                pUniformUpdater = initUniformArrayVector4(location, uniformName, size);
+                pUniformUpdater = initUniformVector4Array(location, uniformName, size);
             }
         }
         else if (type == GL_SAMPLER_2D)
@@ -143,6 +150,13 @@ BBUniformUpdater* BBBaseShader::initUniformFloat(GLint location, const char *pUn
     BBFloatMaterialProperty *pProperty = new BBFloatMaterialProperty(pUniformName);
     m_Properties.insert(pUniformName, pProperty);
     return new BBUniformUpdater(location, &BBUniformUpdater::updateFloat, pProperty);
+}
+
+BBUniformUpdater* BBBaseShader::initUniformFloatArray(GLint location, const char *pUniformName, int nArrayCount)
+{
+    BBFloatArrayMaterialProperty *pProperty = new BBFloatArrayMaterialProperty(pUniformName, nArrayCount);
+    m_Properties.insert(pUniformName, pProperty);
+    return new BBUniformUpdater(location, &BBUniformUpdater::updateFloatArray, pProperty);
 }
 
 BBUniformUpdater* BBBaseShader::initUniformMatrix4(GLint location, const char *pUniformName)
@@ -216,17 +230,17 @@ BBUniformUpdater* BBBaseShader::initUniformVector4(GLint location, const char *p
     return new BBUniformUpdater(location, updateUniformFunc, pProperty);
 }
 
-BBUniformUpdater* BBBaseShader::initUniformArrayVector4(GLint location, const char *pUniformName, int nArrayCount)
+BBUniformUpdater* BBBaseShader::initUniformVector4Array(GLint location, const char *pUniformName, int nArrayCount)
 {
-    BBUpdateUniformFunc updateUniformFunc = &BBUniformUpdater::updateArrayVector4;
-    BBArrayVector4MaterialProperty *pProperty = nullptr;
+    BBUpdateUniformFunc updateUniformFunc = &BBUniformUpdater::updateVector4Array;
+    BBVector4ArrayMaterialProperty *pProperty = nullptr;
     if (strcmp(pUniformName, LOCATION_SPHERICAL_HARMONIC_LIGHTING) == 0)
     {
         updateUniformFunc = &BBUniformUpdater::updateSphericalHarmonicLightingCoefficients;
     }
     else
     {
-        pProperty = new BBArrayVector4MaterialProperty(pUniformName, nArrayCount);
+        pProperty = new BBVector4ArrayMaterialProperty(pUniformName, nArrayCount);
         m_Properties.insert(pUniformName, pProperty);
     }
     return new BBUniformUpdater(location, updateUniformFunc, pProperty);
