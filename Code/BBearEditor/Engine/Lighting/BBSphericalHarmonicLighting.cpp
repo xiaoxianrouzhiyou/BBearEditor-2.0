@@ -4,6 +4,7 @@
 #include "Scene/BBSceneManager.h"
 #include "Scene/BBScene.h"
 #include "3D/BBSkyBox.h"
+#include "Math/BBMath.h"
 
 
 int BBSphericalHarmonicLighting::m_nDegree = 9;

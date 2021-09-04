@@ -7,15 +7,28 @@
 #include "3D/BBModel.h"
 #include "Render/BufferObject/BBShaderStorageBufferObject.h"
 #include "Render/BufferObject/BBAtomicCounterBufferObject.h"
+#include "Math/BBMath.h"
 
 
+float* BBFLCGlobalIllumination::m_S = nullptr;
+float* BBFLCGlobalIllumination::m_Sp = nullptr;
+float* BBFLCGlobalIllumination::m_Noise = nullptr;
+int BBFLCGlobalIllumination::m_nNoiseCount = 64;
 int BBFLCGlobalIllumination::m_SNum = 5;
 BBShaderStorageBufferObject* BBFLCGlobalIllumination::m_pTriangleCutSSBOSet = nullptr;
 int BBFLCGlobalIllumination::m_nSSBOCount = 0;
 BBAtomicCounterBufferObject* BBFLCGlobalIllumination::m_pTriangleIdACBO = nullptr;
 
+
 void BBFLCGlobalIllumination::open(BBScene *pScene)
 {
+    if (!m_S)
+    {
+        m_S = generateS();
+        m_Sp = generateSp(m_S);
+        m_Noise = generateNoise();
+    }
+
     clear(pScene);
 
     // used for the id of triangle cut
@@ -108,4 +121,56 @@ void BBFLCGlobalIllumination::clear(BBScene *pScene)
 
     BB_SAFE_DELETE_ARRAY(m_pTriangleCutSSBOSet);
     BB_SAFE_DELETE(m_pTriangleIdACBO);
+}
+
+float* BBFLCGlobalIllumination::generateS()
+{
+    // Scene radius
+    static float R = 1;
+    // The average number of virtual point lights near the current fragment
+    // This can not be calculated directly, the author estimated the value
+    static float D = 0.2 * R;
+    // Value between 64-1024 (the larger it is, the smaller the triangle is)
+    static float N = 64;
+    // It is a number greater than 1
+    static float u = 1.2;
+
+    float *pS = new float[m_SNum];
+    pS[0] = 4 * PI * D * D / N;
+    float ui = u;
+    for (int i = 1; i < m_SNum; i++)
+    {
+        pS[i] = pS[0] * ui;
+        ui *= u;
+    }
+
+    return pS;
+}
+
+float* BBFLCGlobalIllumination::generateSp(float *pS)
+{
+    float *pSp = new float[m_SNum];
+    pSp[0] = pS[0];
+    for (int i = 1; i < m_SNum; i++)
+    {
+        float sum = 0;
+        for (int j = 0; j < i; j++)
+        {
+            sum += 1.0 / pS[j];
+        }
+        pSp[i] = 1.0 / sum;
+    }
+    return pSp;
+}
+
+float* BBFLCGlobalIllumination::generateNoise()
+{
+    std::uniform_real_distribution<GLfloat> randomFloats(0.0, 1.0);
+    std::default_random_engine generator;
+    float *pNoise = new float[m_nNoiseCount];
+    for (int i = 0; i < m_nNoiseCount; i++)
+    {
+        pNoise[i] = randomFloats(generator);
+    }
+    return pNoise;
 }

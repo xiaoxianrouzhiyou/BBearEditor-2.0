@@ -4,6 +4,8 @@
 #define BBMATH_H
 
 
+#define PI 3.14159265359
+
 float lerp(float a, float b, float f);
 float frandom();
 float sfrandom();
