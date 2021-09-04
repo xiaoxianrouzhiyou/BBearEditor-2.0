@@ -24,4 +24,5 @@ void main(void)
 {
 	int VPL_num = int(atomicCounter(TriangleID));
     FragColor = vec4(VPL_num, 0.0, 0.0, 1.0);
+	FragColor = texture(AlbedoTex, v2f_texcoord);
 }

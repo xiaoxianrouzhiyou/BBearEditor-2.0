@@ -208,10 +208,22 @@ void BBRenderableObject::appendSSBO(BBShaderStorageBufferObject *pSSBO)
 
 void BBRenderableObject::removeSSBO(BBShaderStorageBufferObject *pSSBO)
 {
-    // Head is an ssbo with vertex information and cannot be removed, so start with the second node
-    if (m_pSSBO && pSSBO)
+    BB_PROCESS_ERROR_RETURN(m_pSSBO);
+    BB_PROCESS_ERROR_RETURN(pSSBO);
+    if (m_pSSBO->isEnd())
     {
-        m_pSSBO->remove(pSSBO);
+        m_pSSBO = nullptr;
+    }
+    else
+    {
+        if (m_pSSBO == pSSBO)
+        {
+            m_pSSBO = m_pSSBO->removeSelf<BBShaderStorageBufferObject>();
+        }
+        else
+        {
+            m_pSSBO->remove(pSSBO);
+        }
     }
 }
 

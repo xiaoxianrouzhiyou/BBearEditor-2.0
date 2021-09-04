@@ -101,7 +101,7 @@ void BBFLCGlobalIllumination::clear(BBScene *pScene)
 
     BBFullScreenQuad *pFullScreenQuad = pScene->getFullScreenQuad(0);
     pFullScreenQuad->removeACBO();
-    // pFullScreenQuad->removeSSBO(&m_pTriangleCutSSBOSet[0]);
+    pFullScreenQuad->removeSSBO(&m_pTriangleCutSSBOSet[0]);
 
     BB_SAFE_DELETE_ARRAY(m_pTriangleCutSSBOSet);
     BB_SAFE_DELETE(m_pTriangleIdACBO);
