@@ -28,6 +28,8 @@ public:
     void removeFromRenderQueue(BBRenderQueue *pQueue) override;
 
     void setCurrentMaterial(BBMaterial *pMaterial) override;
+    void setCurrentMaterial(int nExtraMaterialIndex) override;
+    void setExtraMaterial(int nMaterialIndex, BBMaterial *pMaterial) override;
     void restoreMaterial() override;
 
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;

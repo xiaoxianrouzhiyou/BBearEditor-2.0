@@ -349,13 +349,19 @@ void BBGameObject::removeFromRenderQueue(BBRenderQueue *pQueue)
     Q_UNUSED(pQueue);
 }
 
-void BBGameObject::setCurrentMaterial(int nIndex)
-{
-    Q_UNUSED(nIndex);
-}
-
 void BBGameObject::setCurrentMaterial(BBMaterial *pMaterial)
 {
+    Q_UNUSED(pMaterial);
+}
+
+void BBGameObject::setCurrentMaterial(int nExtraMaterialIndex)
+{
+    Q_UNUSED(nExtraMaterialIndex);
+}
+
+void BBGameObject::setExtraMaterial(int nMaterialIndex, BBMaterial *pMaterial)
+{
+    Q_UNUSED(nMaterialIndex);
     Q_UNUSED(pMaterial);
 }
 

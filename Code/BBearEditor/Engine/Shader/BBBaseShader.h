@@ -8,6 +8,14 @@
 class BBAttribute;
 class BBUniformUpdater;
 
+
+enum BBVertexBufferType
+{
+    VBO,
+    SSBO
+};
+
+
 class BBBaseShader : public BBBaseRenderComponent
 {
 public:
@@ -15,6 +23,7 @@ public:
 
     inline GLuint getProgram() const { return m_Program; }
     void activeAttributes();
+    inline BBVertexBufferType getVertexBufferType() { return m_eVertexBufferType; }
     inline BBUniformUpdater* getUniforms() { return m_pUniforms; }
     inline bool isWriteFBO() { return m_bWriteFBO; }
 
@@ -33,6 +42,8 @@ protected:
 
     GLuint m_Program;
     BBAttribute *m_pAttributes;
+    // Used to determine whether to bind VBO or SSBO when rendering in drawcall
+    BBVertexBufferType m_eVertexBufferType;
     BBUniformUpdater *m_pUniforms;
     QMap<std::string, BBMaterialProperty*> m_Properties;
 

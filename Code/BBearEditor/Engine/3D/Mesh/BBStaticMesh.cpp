@@ -54,7 +54,8 @@ void BBStaticMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
 
     BBDrawCall *pDrawCall = new BBDrawCall;
     pDrawCall->setMaterial(m_pCurrentMaterial);
-    pDrawCall->setVBO(m_pSSBO);
+    pDrawCall->setVBO(m_pVBO);
+    pDrawCall->setSSBO(m_pSSBO);
     pDrawCall->setEBO(m_pEBO, m_eDrawPrimitiveType, m_nIndexCount, 0);
     appendDrawCall(pDrawCall);
 }

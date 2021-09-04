@@ -12,6 +12,7 @@
 #include "Lighting/GameObject/BBDirectionalLight.h"
 #include "Base/BBRenderableObject.h"
 #include "Render/BBRenderQueue.h"
+#include "Shader/BBShader.h"
 
 
 /**
@@ -37,6 +38,8 @@ BBDrawCall::BBDrawCall()
     m_bVisible = true;
 
     m_UpdateOrderInRenderQueueFunc = &BBDrawCall::updateOrderInOpaqueRenderQueue;
+    m_BindFunc = &BBDrawCall::bindVBO;
+    m_UnbindFunc = &BBDrawCall::unbindVBO;
 }
 
 void BBDrawCall::setMaterial(BBMaterial *pMaterial)
@@ -57,6 +60,19 @@ void BBDrawCall::setMaterial(BBMaterial *pMaterial)
 
     m_pMaterial = pMaterial;
     m_pMaterial->bindDrawCallInstance(this);
+
+    // The bind function is determined according to whether VBO or ssbo is used in the shader
+    BBVertexBufferType eType = m_pMaterial->getShader()->getVertexBufferType();
+    if (eType == BBVertexBufferType::VBO)
+    {
+        m_BindFunc = &BBDrawCall::bindVBO;
+        m_UnbindFunc = &BBDrawCall::unbindVBO;
+    }
+    else if (eType == BBVertexBufferType::SSBO)
+    {
+        m_BindFunc = &BBDrawCall::bindSSBO;
+        m_UnbindFunc = &BBDrawCall::unbindSSBO;
+    }
 }
 
 void BBDrawCall::updateMaterialBlendState(bool bEnable)
@@ -180,9 +196,7 @@ void BBDrawCall::renderForwardPass(BBCamera *pCamera)
     {
         QList<BBGameObject*> lights = collectLights();
 
-        m_pVBO->bind();
-        if (m_pACBO)
-            m_pACBO->bind();
+        bindBufferObject();
 
         // base
         if (lights.count() > 0)
@@ -227,9 +241,7 @@ void BBDrawCall::renderForwardPass(BBCamera *pCamera)
             pAdditiveRenderPass->unbind();
         }
 
-        if (m_pACBO)
-            m_pACBO->unbind();
-        m_pVBO->unbind();
+        unbindBufferObject();
     }
 
     if (m_pNext != nullptr)
@@ -309,6 +321,40 @@ void BBDrawCall::updateOrderInTransparentRenderQueue()
 {
     BBRenderQueue *pRenderQueue = BBSceneManager::getRenderQueue();
     pRenderQueue->updateTransparentDrawCallOrder(this);
+}
+
+void BBDrawCall::bindBufferObject()
+{
+    (this->*m_BindFunc)();
+    if (m_pACBO)
+        m_pACBO->bind();
+}
+
+void BBDrawCall::unbindBufferObject()
+{
+    if (m_pACBO)
+        m_pACBO->unbind();
+    (this->*m_UnbindFunc)();
+}
+
+void BBDrawCall::bindVBO()
+{
+    m_pVBO->bind();
+}
+
+void BBDrawCall::unbindVBO()
+{
+    m_pVBO->unbind();
+}
+
+void BBDrawCall::bindSSBO()
+{
+    m_pSSBO->bind();
+}
+
+void BBDrawCall::unbindSSBO()
+{
+    m_pSSBO->unbind();
 }
 
 QList<BBGameObject*> BBDrawCall::collectLights()

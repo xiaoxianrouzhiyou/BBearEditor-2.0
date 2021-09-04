@@ -204,6 +204,35 @@ void BBScene::deferredRendering1_2()
     m_pFullScreenQuad[1]->render(m_pCamera);
 }
 
+void BBScene::deferredRendering2_1()
+{
+    m_pCamera->switchTo3D();
+    m_pCamera->update(m_fUpdateRate);
+
+    writeShadowMap(2);
+
+    m_pFBO[0]->bind();
+    m_pSkyBox->render(m_pCamera);
+    // switch material
+    for (QList<BBGameObject*>::Iterator itr = m_Models.begin(); itr != m_Models.end(); itr++)
+    {
+        ((BBModel*)(*itr))->setCurrentMaterial(0);
+    }
+    m_pRenderQueue->render();
+    m_pFBO[0]->unbind();
+
+    m_pFBO[1]->bind();
+    // switch material
+    for (QList<BBGameObject*>::Iterator itr = m_Models.begin(); itr != m_Models.end(); itr++)
+    {
+        ((BBModel*)(*itr))->setCurrentMaterial(1);
+    }
+    m_pRenderQueue->render();
+    m_pFBO[1]->unbind();
+
+    m_pFullScreenQuad[0]->render(m_pCamera);
+}
+
 void BBScene::resize(float width, float height)
 {
     // 3D camera, resize

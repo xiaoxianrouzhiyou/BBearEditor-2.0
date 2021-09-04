@@ -4,6 +4,7 @@
 #include "BBGameObject.h"
 #include <QtOpenGL>
 
+#define EXTRA_MATERIAL_COUNT 3
 
 class BBDrawCall;
 class BBMaterial;
@@ -36,6 +37,8 @@ public:
                         float sx, float sy, float sz) override;
     void setVisibility(bool bVisible) override;
     void setCurrentMaterial(BBMaterial *pMaterial) override;
+    void setCurrentMaterial(int nExtraMaterialIndex) override;
+    void setExtraMaterial(int nMaterialIndex, BBMaterial *pMaterial) override;
     void restoreMaterial() override;
 
     void setMatrix4(const std::string &uniformName, const float *pMatrix4) override;
@@ -63,6 +66,7 @@ protected:
     BBDrawCall *m_pDrawCalls;
     BBMaterial *m_pCurrentMaterial;
     BBMaterial *m_pDefaultMaterial;
+    BBMaterial *m_pExtraMaterial[EXTRA_MATERIAL_COUNT];
     BBVertexBufferObject *m_pVBO;
     BBShaderStorageBufferObject *m_pSSBO;
     BBAtomicCounterBufferObject *m_pACBO;

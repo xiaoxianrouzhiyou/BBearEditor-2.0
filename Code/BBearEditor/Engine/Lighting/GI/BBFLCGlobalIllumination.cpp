@@ -21,11 +21,10 @@ void BBFLCGlobalIllumination::open(BBScene *pScene)
     // used for the id of triangle cut
     m_pTriangleIdACBO = new BBAtomicCounterBufferObject();
 
-//    BBGlobalIllumination::setGBufferPass(pScene);
+    BBGlobalIllumination::setGBufferPassByUsingExtraMaterial(pScene);
     // Divide triangles evenly
     setTriangleCutPass(pScene);
     setIndirectShadingPass(pScene);
-    setFullScreenQuadPass(pScene);
 }
 
 void BBFLCGlobalIllumination::setTriangleCutPass(BBScene *pScene)
@@ -49,7 +48,8 @@ void BBFLCGlobalIllumination::setTriangleCutPass(BBScene *pScene)
     for (int i = 0; i < m_nSSBOCount; i++)
     {
         BBModel *pModel = (BBModel*)objects[i];
-        pModel->setCurrentMaterial(pMaterial);
+        // 0 is used by GBuffer
+        pModel->setExtraMaterial(1, pMaterial);
 
         BBMesh *pMesh = pModel->getMesh();
 
@@ -83,17 +83,6 @@ void BBFLCGlobalIllumination::setIndirectShadingPass(BBScene *pScene)
     // Only one model is considered for the time being
     pFullScreenQuad->appendACBO(m_pTriangleIdACBO);
     pFullScreenQuad->appendSSBO(&m_pTriangleCutSSBOSet[0]);
-}
-
-void BBFLCGlobalIllumination::setFullScreenQuadPass(BBScene *pScene)
-{
-    BBFullScreenQuad *pFullScreenQuad = pScene->getFullScreenQuad(1);
-    BBMaterial *pMaterial = new BBMaterial();
-    pMaterial->init("GI_FLC", BB_PATH_RESOURCE_SHADER(GI/FullScreenQuad.vert), BB_PATH_RESOURCE_SHADER(GI/FLC.frag));
-
-    pMaterial->setSampler2D("AlbedoTex", pScene->getColorFBO(1, 0));
-
-    pFullScreenQuad->setCurrentMaterial(pMaterial);
 }
 
 void BBFLCGlobalIllumination::clear(BBScene *pScene)

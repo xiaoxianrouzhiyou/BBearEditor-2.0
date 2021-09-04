@@ -143,6 +143,18 @@ void BBRenderableObject::setCurrentMaterial(BBMaterial *pMaterial)
     m_pDrawCalls->setMaterial(m_pCurrentMaterial);
 }
 
+void BBRenderableObject::setCurrentMaterial(int nExtraMaterialIndex)
+{
+    BBMaterial *pMaterial = m_pExtraMaterial[nExtraMaterialIndex];
+    BB_PROCESS_ERROR_RETURN(pMaterial);
+    setCurrentMaterial(pMaterial);
+}
+
+void BBRenderableObject::setExtraMaterial(int nMaterialIndex, BBMaterial *pMaterial)
+{
+    m_pExtraMaterial[nMaterialIndex] = pMaterial;
+}
+
 void BBRenderableObject::restoreMaterial()
 {
     setCurrentMaterial(m_pDefaultMaterial);
@@ -243,6 +255,10 @@ void BBRenderableObject::sharedInit()
     m_bVisible = true;
     m_pDefaultMaterial = new BBMaterial();
     m_pCurrentMaterial = m_pDefaultMaterial;
+    for (int i = 0; i < EXTRA_MATERIAL_COUNT; i++)
+    {
+        m_pExtraMaterial[i] = nullptr;
+    }
     m_pVBO = nullptr;
     m_pSSBO = nullptr;
     m_pACBO = nullptr;

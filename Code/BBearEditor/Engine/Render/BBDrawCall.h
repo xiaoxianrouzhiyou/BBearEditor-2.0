@@ -18,6 +18,8 @@ class BBAtomicCounterBufferObject;
 
 typedef void (BBDrawCall::*BBDrawFunc)(BBCamera *pCamera);
 typedef void (BBDrawCall::*BBUpdateOrderInRenderQueueFunc)();
+typedef void (BBDrawCall::*BBBindFunc)();
+typedef void (BBDrawCall::*BBUnbindFunc)();
 
 class BBDrawCall : public BBBaseRenderComponent, public BBLinkedList
 {
@@ -55,6 +57,19 @@ private:
     void updateOrderInOpaqueRenderQueue();
     void updateOrderInTransparentRenderQueue();
     BBUpdateOrderInRenderQueueFunc m_UpdateOrderInRenderQueueFunc;
+
+private:
+    void bindBufferObject();
+    void unbindBufferObject();
+
+    void bindVBO();
+    void unbindVBO();
+
+    void bindSSBO();
+    void unbindSSBO();
+
+    BBBindFunc m_BindFunc;
+    BBUnbindFunc m_UnbindFunc;
 
 private:
     QList<BBGameObject*> collectLights();

@@ -7,6 +7,7 @@
 BBBaseShader::BBBaseShader()
 {
     m_pAttributes = nullptr;
+    m_eVertexBufferType = VBO;
     m_pUniforms = nullptr;
     m_Program = 0;
 }
@@ -23,6 +24,7 @@ void BBBaseShader::initAttributes()
 {
     GLint count = 0;
     glGetProgramiv(m_Program, GL_ACTIVE_ATTRIBUTES, &count);
+
     for (int i = 0; i < count; i++)
     {
         GLsizei length = 0;
@@ -62,6 +64,11 @@ void BBBaseShader::initAttributes()
         else if (strcmp(attribName, LOCATION_BITANGENT) == 0)
         {
             nDataOffset = sizeof(float) * 20;
+        }
+        else
+        {
+            // If the attribname of VBO is not satisfied, ssbo is used
+            m_eVertexBufferType = SSBO;
         }
 
         BBAttribute *pAttribute = new BBAttribute(location, nComponentCount, nBasicDataType,

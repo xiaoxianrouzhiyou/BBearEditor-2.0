@@ -85,6 +85,16 @@ void BBModel::setCurrentMaterial(BBMaterial *pMaterial)
     m_pMesh->setCurrentMaterial(pMaterial);
 }
 
+void BBModel::setCurrentMaterial(int nExtraMaterialIndex)
+{
+    m_pMesh->setCurrentMaterial(nExtraMaterialIndex);
+}
+
+void BBModel::setExtraMaterial(int nMaterialIndex, BBMaterial *pMaterial)
+{
+    m_pMesh->setExtraMaterial(nMaterialIndex, pMaterial);
+}
+
 void BBModel::restoreMaterial()
 {
     m_pMesh->restoreMaterial();

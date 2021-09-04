@@ -70,8 +70,9 @@ public:
     virtual void insertInRenderQueue(BBRenderQueue *pQueue);
     virtual void removeFromRenderQueue(BBRenderQueue *pQueue);
 
-    virtual void setCurrentMaterial(int nIndex);
     virtual void setCurrentMaterial(BBMaterial *pMaterial);
+    virtual void setCurrentMaterial(int nExtraMaterialIndex);
+    virtual void setExtraMaterial(int nMaterialIndex, BBMaterial *pMaterial);
     virtual void restoreMaterial();
 
     virtual void setMatrix4(const std::string &uniformName, const float *pMatrix4);

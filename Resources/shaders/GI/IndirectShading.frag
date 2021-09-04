@@ -17,6 +17,7 @@ layout (std430, binding = 1) buffer Triangles
 
 layout (binding = 0, offset = 0) uniform atomic_uint TriangleID;
 
+uniform float S[64];
 uniform sampler2D AlbedoTex;
 
 void main(void)
