@@ -31,6 +31,7 @@ BBDrawCall::BBDrawCall()
     m_pVBO = nullptr;
     m_pSSBO = nullptr;
     m_pACBO = nullptr;
+    m_bClearACBO = true;
     m_nDrawCount = 3;
     m_pEBO = nullptr;
     m_nIndexCount = 0;
@@ -103,6 +104,17 @@ void BBDrawCall::setSSBO(BBShaderStorageBufferObject *pSSBO, GLenum eDrawPrimiti
     m_eDrawPrimitiveType = eDrawPrimitiveType;
     m_nDrawStartIndex = nDrawStartIndex;
     m_nDrawCount = nDrawCount;
+}
+
+/**
+ * @brief BBDrawCall::setACBO
+ * @param pACBO
+ * @param bClear                            Whether reset data on every refresh
+ */
+void BBDrawCall::setACBO(BBAtomicCounterBufferObject *pACBO, bool bClear)
+{
+    m_pACBO = pACBO;
+    m_bClearACBO = bClear;
 }
 
 void BBDrawCall::setEBO(BBElementBufferObject *pEBO, GLenum eDrawPrimitiveType, int nIndexCount, int nDrawStartIndex)
@@ -327,13 +339,21 @@ void BBDrawCall::bindBufferObject()
 {
     (this->*m_BindFunc)();
     if (m_pACBO)
+    {
         m_pACBO->bind();
+        if (m_bClearACBO)
+        {
+            m_pACBO->clear();
+        }
+    }
 }
 
 void BBDrawCall::unbindBufferObject()
 {
     if (m_pACBO)
+    {
         m_pACBO->unbind();
+    }
     (this->*m_UnbindFunc)();
 }
 

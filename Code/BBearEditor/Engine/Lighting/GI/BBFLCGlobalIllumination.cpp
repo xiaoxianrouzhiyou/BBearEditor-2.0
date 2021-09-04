@@ -53,7 +53,7 @@ void BBFLCGlobalIllumination::setTriangleCutPass(BBScene *pScene)
 
         BBMesh *pMesh = pModel->getMesh();
 
-        pMesh->appendACBO(m_pTriangleIdACBO);
+        pMesh->appendACBO(m_pTriangleIdACBO, true);
 
         // Send SSBO to write the result of triangle cut
         // "1" is consistent with the "binding" in shader
@@ -77,11 +77,14 @@ void BBFLCGlobalIllumination::setIndirectShadingPass(BBScene *pScene)
     pMaterial->init("GI_FLC_IndirectShading", BB_PATH_RESOURCE_SHADER(GI/FullScreenQuad.vert), BB_PATH_RESOURCE_SHADER(GI/IndirectShading.frag));
 
     pMaterial->setSampler2D("AlbedoTex", pScene->getColorFBO(0, 0));
+    pMaterial->setSampler2D("NormalTex", pScene->getColorFBO(0, 1));
+    pMaterial->setSampler2D("PositionTex", pScene->getColorFBO(0, 2));
 
     pFullScreenQuad->setCurrentMaterial(pMaterial);
 
     // Only one model is considered for the time being
-    pFullScreenQuad->appendACBO(m_pTriangleIdACBO);
+    // do not clear ACBO, use data calculated in the TriangleCutPass
+    pFullScreenQuad->appendACBO(m_pTriangleIdACBO, false);
     pFullScreenQuad->appendSSBO(&m_pTriangleCutSSBOSet[0]);
 }
 

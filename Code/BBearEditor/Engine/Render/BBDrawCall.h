@@ -30,7 +30,7 @@ public:
     void updateMaterialBlendState(bool bEnable);
     void setVBO(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType = GL_TRIANGLES, int nDrawStartIndex = 0, int nDrawCount = 3);
     void setSSBO(BBShaderStorageBufferObject *pSSBO, GLenum eDrawPrimitiveType = GL_TRIANGLES, int nDrawStartIndex = 0, int nDrawCount = 3);
-    void setACBO(BBAtomicCounterBufferObject *pACBO) { m_pACBO = pACBO; }
+    void setACBO(BBAtomicCounterBufferObject *pACBO, bool bClear);
     void removeACBO() { m_pACBO = nullptr; }
     void setEBO(BBElementBufferObject *pEBO, GLenum eDrawPrimitiveType, int nIndexCount, int nDrawStartIndex);
     void setVisibility(bool bVisible) { m_bVisible = bVisible; }
@@ -82,6 +82,7 @@ private:
 
     BBVertexBufferObject *m_pVBO;
     BBShaderStorageBufferObject *m_pSSBO;
+    bool m_bClearACBO;
     BBAtomicCounterBufferObject *m_pACBO;
     int m_nDrawCount;
     BBElementBufferObject *m_pEBO;

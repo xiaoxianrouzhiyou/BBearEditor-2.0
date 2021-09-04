@@ -227,13 +227,13 @@ void BBRenderableObject::removeSSBO(BBShaderStorageBufferObject *pSSBO)
     }
 }
 
-void BBRenderableObject::appendACBO(BBAtomicCounterBufferObject *pACBO)
+void BBRenderableObject::appendACBO(BBAtomicCounterBufferObject *pACBO, bool bClear)
 {
     // set ACBO for drawcall
     BBDrawCall *pDrawCall = m_pDrawCalls;
     while (pDrawCall != nullptr)
     {
-        pDrawCall->setACBO(pACBO);
+        pDrawCall->setACBO(pACBO, bClear);
         pDrawCall = pDrawCall->next<BBDrawCall>();
     }
 }

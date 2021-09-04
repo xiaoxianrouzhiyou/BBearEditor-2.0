@@ -52,7 +52,7 @@ public:
     void appendSSBO(BBShaderStorageBufferObject *pSSBO);
     void removeSSBO(BBShaderStorageBufferObject *pSSBO);
 
-    void appendACBO(BBAtomicCounterBufferObject *pACBO);
+    void appendACBO(BBAtomicCounterBufferObject *pACBO, bool bClear);
     void removeACBO();
 
     inline BBMaterial* getMaterial() { return m_pCurrentMaterial; }
