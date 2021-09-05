@@ -21,7 +21,7 @@ struct TriangleCut
 	vec4 normal_and_level;
 	vec4 color_and_area;
 };
-layout (std430, binding = 1) buffer Triangles
+layout (std140, binding = 1) buffer Triangles
 {
 	TriangleCut triangles[];
 };

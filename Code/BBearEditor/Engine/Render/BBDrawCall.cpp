@@ -41,6 +41,7 @@ BBDrawCall::BBDrawCall()
     m_UpdateOrderInRenderQueueFunc = &BBDrawCall::updateOrderInOpaqueRenderQueue;
     m_BindFunc = &BBDrawCall::bindVBO;
     m_UnbindFunc = &BBDrawCall::unbindVBO;
+    m_DrawBufferObjectFunc = &BBDrawCall::drawVBO;
 }
 
 void BBDrawCall::setMaterial(BBMaterial *pMaterial)
@@ -68,11 +69,13 @@ void BBDrawCall::setMaterial(BBMaterial *pMaterial)
     {
         m_BindFunc = &BBDrawCall::bindVBO;
         m_UnbindFunc = &BBDrawCall::unbindVBO;
+        m_DrawBufferObjectFunc = &BBDrawCall::drawVBO;
     }
     else if (eType == BBVertexBufferType::SSBO)
     {
         m_BindFunc = &BBDrawCall::bindSSBO;
         m_UnbindFunc = &BBDrawCall::unbindSSBO;
+        m_DrawBufferObjectFunc = &BBDrawCall::drawSSBO;
     }
 }
 
@@ -220,7 +223,7 @@ void BBDrawCall::renderForwardPass(BBCamera *pCamera)
         m_pMaterial->getBaseRenderPass()->bind(pCamera);
         if (m_pEBO == nullptr)
         {
-            m_pVBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
+            drawBufferObject(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
         }
         else
         {
@@ -241,7 +244,7 @@ void BBDrawCall::renderForwardPass(BBCamera *pCamera)
                 pAdditiveRenderPass->bind(pCamera);
                 if (m_pEBO == nullptr)
                 {
-                    m_pVBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
+                    drawBufferObject(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
                 }
                 else
                 {
@@ -375,6 +378,21 @@ void BBDrawCall::bindSSBO()
 void BBDrawCall::unbindSSBO()
 {
     m_pSSBO->unbind();
+}
+
+void BBDrawCall::drawBufferObject(GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount)
+{
+    (this->*m_DrawBufferObjectFunc)(eDrawPrimitiveType, nDrawStartIndex, nDrawCount);
+}
+
+void BBDrawCall::drawVBO(GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount)
+{
+    m_pVBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
+}
+
+void BBDrawCall::drawSSBO(GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount)
+{
+    m_pSSBO->draw(m_eDrawPrimitiveType, m_nDrawStartIndex, m_nDrawCount);
 }
 
 QList<BBGameObject*> BBDrawCall::collectLights()

@@ -89,7 +89,7 @@ void BBFLCGlobalIllumination::setIndirectShadingPass(BBScene *pScene)
 {
     BBFullScreenQuad *pFullScreenQuad = pScene->getFullScreenQuad(0);
     BBMaterial *pMaterial = new BBMaterial();
-    pMaterial->init("GI_FLC_IndirectShading", BB_PATH_RESOURCE_SHADER(GI/FullScreenQuad.vert), BB_PATH_RESOURCE_SHADER(GI/IndirectShading.frag));
+    pMaterial->init("GI_FLC_IndirectShading", BB_PATH_RESOURCE_SHADER(GI/FullScreenQuad_SSBO.vert), BB_PATH_RESOURCE_SHADER(GI/IndirectShading.frag));
 
     pMaterial->setFloatArray("S[0]", m_S, 64);
     pMaterial->setSampler2D("AlbedoTex", pScene->getColorFBO(0, 0));

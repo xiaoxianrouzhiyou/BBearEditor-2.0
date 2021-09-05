@@ -1,5 +1,6 @@
 #include "BBFullScreenQuad.h"
 #include "Render/BufferObject/BBVertexBufferObject.h"
+#include "Render/BufferObject/BBShaderStorageBufferObject.h"
 #include "Render/BBMaterial.h"
 #include "Render/BBDrawCall.h"
 #include "Render/BBRenderPass.h"
@@ -65,6 +66,9 @@ void BBFullScreenQuad::init(BBMaterial *pMaterial)
     m_pVBO->setTexcoord(2, (m_pVBO->getPosition(2).x() + 1.0f) / 2.0f, (m_pVBO->getPosition(2).y() + 1.0f) / 2.0f);
     m_pVBO->setTexcoord(3, (m_pVBO->getPosition(3).x() + 1.0f) / 2.0f, (m_pVBO->getPosition(3).y() + 1.0f) / 2.0f);
 
+    // VBO -> SSBO
+    m_pSSBO = new BBShaderStorageBufferObject(m_pVBO);
+
     closeLight();
 
     BBRenderableObject::init();
@@ -72,6 +76,7 @@ void BBFullScreenQuad::init(BBMaterial *pMaterial)
     BBDrawCall *pDrawCall = new BBDrawCall;
     pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO, GL_TRIANGLE_STRIP, 0, 4);
+    pDrawCall->setSSBO(m_pSSBO, GL_TRIANGLE_STRIP, 0, 4);
     appendDrawCall(pDrawCall);
 }
 

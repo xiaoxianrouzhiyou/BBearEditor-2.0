@@ -20,6 +20,7 @@ typedef void (BBDrawCall::*BBDrawFunc)(BBCamera *pCamera);
 typedef void (BBDrawCall::*BBUpdateOrderInRenderQueueFunc)();
 typedef void (BBDrawCall::*BBBindFunc)();
 typedef void (BBDrawCall::*BBUnbindFunc)();
+typedef void (BBDrawCall::*BBDrawBufferObjectFunc)(GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount);
 
 class BBDrawCall : public BBBaseRenderComponent, public BBLinkedList
 {
@@ -68,8 +69,13 @@ private:
     void bindSSBO();
     void unbindSSBO();
 
+    void drawBufferObject(GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount);
+    void drawVBO(GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount);
+    void drawSSBO(GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount);
+
     BBBindFunc m_BindFunc;
     BBUnbindFunc m_UnbindFunc;
+    BBDrawBufferObjectFunc m_DrawBufferObjectFunc;
 
 private:
     QList<BBGameObject*> collectLights();

@@ -10,7 +10,7 @@ struct TriangleCut
 	vec4 normal_and_level;
 	vec4 color_and_area;
 };
-layout (std430, binding = 1) buffer Triangles
+layout (std140, binding = 1) buffer Triangles
 {
 	TriangleCut triangles[];
 };
@@ -80,4 +80,5 @@ void main(void)
 	}
 
 	FragColor = vec4(indirect_light, 1.0);
+	FragColor = vec4(triangles[0].color_and_area.xyz, 1.0);
 }
