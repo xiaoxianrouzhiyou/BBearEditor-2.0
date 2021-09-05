@@ -21,6 +21,7 @@ uniform float S[64];
 uniform sampler2D AlbedoTex;
 uniform sampler2D NormalTex;
 uniform sampler2D PositionTex;
+uniform sampler2D TriangleCutPassDebugTex;
 
 const float PI = 3.1415926;
 
@@ -58,7 +59,7 @@ float getSumSF(int level, float d)
 void main(void)
 {
 	int VPL_num = int(atomicCounter(TriangleID));
-	VPL_num = 500;
+	VPL_num = 5000;
     // GBuffer
 	vec3 color = texture(AlbedoTex, v2f_texcoord).xyz;
 	vec3 normal = texture(NormalTex, v2f_texcoord).xyz;
@@ -70,15 +71,16 @@ void main(void)
 		vec3 VPL_position = triangles[i].center.xyz;
 		vec3 VPL_normal = normalize(triangles[i].normal_and_level.xyz);
 		// L * P / PI
-		vec3 VPL_radiance = triangles[i].color_and_area.xyz * color / PI;
+		vec3 VPL_radiance = triangles[i].color_and_area.xyz * color * 1.5 / PI;
 		vec3 w = position - VPL_position;
 		float d2 = dot(w, w);
 		int level = int(triangles[i].normal_and_level.w);
 		float d = sqrt(d2);
 		// SumSF * H
-		indirect_light += getSumSF(level, d) * VPL_radiance * max(dot(normal, w), 0.0) * max(dot(VPL_normal, -w), 0.0) / d2;
+		// indirect_light += getSumSF(level, d) * VPL_radiance * max(dot(VPL_normal, w), 0.0) * max(dot(normal, -w), 0.0) / d2;
+		indirect_light += getSumSF(1, d) * VPL_radiance * max(dot(VPL_normal, w), 0.0) * max(dot(normal, -w), 0.0) / d2;
 	}
 
 	FragColor = vec4(indirect_light, 1.0);
-	FragColor = vec4(triangles[0].color_and_area.xyz, 1.0);
+	// FragColor = texture(TriangleCutPassDebugTex, v2f_texcoord);
 }

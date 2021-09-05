@@ -95,6 +95,8 @@ void BBFLCGlobalIllumination::setIndirectShadingPass(BBScene *pScene)
     pMaterial->setSampler2D("AlbedoTex", pScene->getColorFBO(0, 0));
     pMaterial->setSampler2D("NormalTex", pScene->getColorFBO(0, 1));
     pMaterial->setSampler2D("PositionTex", pScene->getColorFBO(0, 2));
+    // Used to debug trianglecutpass
+    pMaterial->setSampler2D("TriangleCutPassDebugTex", pScene->getColorFBO(1, 0));
 
     pFullScreenQuad->setCurrentMaterial(pMaterial);
 

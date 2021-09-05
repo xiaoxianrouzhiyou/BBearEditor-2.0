@@ -59,7 +59,7 @@ int getMaxEdge(vec3 edge[3])
         return 2;
 }
 
-void splitTriangle(vec3 triangle[3], out vec3 sub_triangle0[3], out vec3 sub_triangle1[3])
+void splitTriangle(vec3 triangle[3], inout vec3 sub_triangle0[3], inout vec3 sub_triangle1[3])
 {
     vec3 V[3];
 	V[0] = triangle[1] - triangle[0];
@@ -156,7 +156,8 @@ void emitTriangle(vec3 triangle[3], float area, float level, int index)
     for (int i = 0; i < 3; i++)
     {
         g2f.triangle = g2f_triangle;
-        gl_Position = BBProjectionMatrix * BBViewMatrix * BBModelMatrix * vec4(triangle[i], 1.0);
+        // gl_Position = BBProjectionMatrix * BBViewMatrix * BBModelMatrix * vec4(triangle[i], 1.0);
+        gl_Position = vec4(g2f_triangle.positions[i], 1);
         EmitVertex();
     }
 }
