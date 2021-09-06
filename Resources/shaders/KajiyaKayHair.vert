@@ -1,12 +1,13 @@
-attribute vec4 BBPosition;
-attribute vec4 BBTexcoord;
-attribute vec4 BBTangent;
-attribute vec4 BBBiTangent;
+#version 330 core
 
-varying vec4 V_texcoord;
-varying vec4 V_world_space_tangent;
-varying vec4 V_world_space_bitangent;
-varying vec4 V_view_dir;
+in vec4 BBPosition;
+in vec4 BBTexcoord;
+in vec4 BBNormal;
+
+out vec2 v2f_texcoords;
+out vec3 v2f_world_pos;
+out vec3 v2f_normal;
+out vec3 v2f_view_dir;
 
 uniform mat4 BBProjectionMatrix;
 uniform mat4 BBViewMatrix;
@@ -15,11 +16,11 @@ uniform vec4 BBCameraPosition;
 
 void main()
 {
-    V_texcoord = BBTexcoord;
-    V_world_space_tangent = BBModelMatrix * BBTangent;
-    V_world_space_bitangent = BBModelMatrix * BBBiTangent;
-    vec4 world_space_pos = BBModelMatrix * BBPosition;
-    V_view_dir.xyz = BBCameraPosition.xyz - world_space_pos.xyz;
-    V_view_dir.a = 1.0;
-    gl_Position = BBProjectionMatrix * BBViewMatrix * world_space_pos;
+    vec4 world_pos = BBModelMatrix * BBPosition;
+    gl_Position = BBProjectionMatrix * BBViewMatrix * world_pos;
+
+    v2f_texcoords = BBTexcoord.xy;
+    v2f_world_pos = world_pos.xyz;
+    v2f_normal = mat3(BBModelMatrix) * BBNormal.xyz;
+    v2f_view_dir = BBCameraPosition.xyz - v2f_world_pos;
 }
