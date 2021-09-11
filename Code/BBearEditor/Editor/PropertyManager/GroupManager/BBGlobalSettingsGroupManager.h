@@ -21,6 +21,8 @@ private slots:
     void switchGlobalIllumination(bool bEnable);
     void switchShadow(bool bEnable);
 
+    void switchVolumetricCloud(bool bEnable);
+
 signals:
     void updateFileList();
 
@@ -30,6 +32,8 @@ private:
     void initSphericalHarmonicLightingFactory();
     void initGlobalIlluminationFactory();
     void initShadowFactory();
+
+    void initVolumetricCloudFactory();
 
     BBScene *m_pScene;
     BBEnumFactory *m_pSkyBoxFactory;

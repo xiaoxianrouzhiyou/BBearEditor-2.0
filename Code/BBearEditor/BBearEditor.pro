@@ -138,7 +138,8 @@ SOURCES += \
     Engine/Python/BBPythonModule.c \
     Engine/Shadow/BBShadow.cpp \
     Engine/Lighting/GI/BBFLCGlobalIllumination.cpp \
-    Engine/Render/BufferObject/BBAtomicCounterBufferObject.cpp
+    Engine/Render/BufferObject/BBAtomicCounterBufferObject.cpp \
+    Engine/Volumetric/BBVolumetricCloud.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -256,7 +257,8 @@ HEADERS += \
     Engine/Python/BBPythonVM.h \
     Engine/Shadow/BBShadow.h \
     Engine/Lighting/GI/BBFLCGlobalIllumination.h \
-    Engine/Render/BufferObject/BBAtomicCounterBufferObject.h
+    Engine/Render/BufferObject/BBAtomicCounterBufferObject.h \
+    Engine/Volumetric/BBVolumetricCloud.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

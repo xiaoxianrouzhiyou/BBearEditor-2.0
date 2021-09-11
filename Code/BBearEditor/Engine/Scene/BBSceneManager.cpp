@@ -11,6 +11,7 @@
 #include "Lighting/GI/BBGlobalIllumination.h"
 #include "RayTracing/BBRayTracker.h"
 #include "Shadow/BBShadow.h"
+#include "Volumetric/BBVolumetricCloud.h"
 
 
 QMap<QTreeWidgetItem*, BBGameObject*> BBSceneManager::m_ObjectMap;
@@ -238,6 +239,10 @@ void BBSceneManager::enableDeferredRendering(int nAlgorithmIndex, int nSubAlgori
         break;
     case 2:
         BBShadow::enable(nSubAlgorithmIndex, bEnable);
+        break;
+    case 3:
+        BBVolumetricCloud::enable(nSubAlgorithmIndex, bEnable);
+        break;
     default:
         break;
     }

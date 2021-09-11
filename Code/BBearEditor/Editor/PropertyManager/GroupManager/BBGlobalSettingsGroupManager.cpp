@@ -12,11 +12,16 @@ BBGlobalSettingsGroupManager::BBGlobalSettingsGroupManager(BBScene *pScene, QWid
     : BBGroupManager("Global Settings", BB_PATH_RESOURCE_ICON(earth.png), pParent)
 {
     m_pScene = pScene;
+
     initSkyBoxFactory();
     initRayTracingFactory();
     initSphericalHarmonicLightingFactory();
     initGlobalIlluminationFactory();
     initShadowFactory();
+
+    addMargin(10);
+
+    initVolumetricCloudFactory();
 }
 
 BBGlobalSettingsGroupManager::~BBGlobalSettingsGroupManager()
@@ -62,6 +67,11 @@ void BBGlobalSettingsGroupManager::switchGlobalIllumination(bool bEnable)
 void BBGlobalSettingsGroupManager::switchShadow(bool bEnable)
 {
     BBSceneManager::enableDeferredRendering(2, m_pShadowFactory->getCurrentItemIndex(), bEnable);
+}
+
+void BBGlobalSettingsGroupManager::switchVolumetricCloud(bool bEnable)
+{
+    BBSceneManager::enableDeferredRendering(3, 0, bEnable);
 }
 
 void BBGlobalSettingsGroupManager::initSkyBoxFactory()
@@ -111,4 +121,11 @@ void BBGlobalSettingsGroupManager::initShadowFactory()
     m_pShadowFactory->enableButton(false);
     QObject::connect(m_pShadowFactory, SIGNAL(triggerClicked(bool)), this, SLOT(switchShadow(bool)));
     addFactory(m_pShadowFactory);
+}
+
+void BBGlobalSettingsGroupManager::initVolumetricCloudFactory()
+{
+    QCheckBox *pTriggerVolumetricCloud = new QCheckBox(this);
+    QObject::connect(pTriggerVolumetricCloud, SIGNAL(clicked(bool)), this, SLOT(switchVolumetricCloud(bool)));
+    addFactory("Volumetric Cloud", pTriggerVolumetricCloud);
 }
