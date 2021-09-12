@@ -18,6 +18,7 @@ enum BBMaterialUniformPropertyType
     Vector4,
     Vector4Array,
     Sampler2D,
+    Sampler3D,
     SamplerCube,
     Count
 };
@@ -152,6 +153,26 @@ public:
 
 private:
     // 智能指针 to do
+    GLuint m_TextureName;
+    int m_nSlotIndex;
+    QString m_ResourcePath;
+};
+
+
+class BBSampler3DMaterialProperty : public BBMaterialProperty
+{
+public:
+    BBSampler3DMaterialProperty(const char *name, int nSlotIndex);
+    ~BBSampler3DMaterialProperty();
+
+    BBMaterialProperty* clone() override;
+
+    void setTextureName(GLuint textureName, const QString &resourcePath = "");
+    inline GLuint getTextureName() const { return m_TextureName; }
+    inline int getSlotIndex() { return m_nSlotIndex; }
+    inline QString getResourcePath() { return m_ResourcePath; }
+
+private:
     GLuint m_TextureName;
     int m_nSlotIndex;
     QString m_ResourcePath;

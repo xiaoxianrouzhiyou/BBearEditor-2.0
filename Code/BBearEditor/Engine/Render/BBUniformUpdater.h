@@ -48,6 +48,7 @@ public:
     void updateVector4(GLint location, void *pCamera, void *pPropertyValue);
     void updateVector4Array(GLint location, void *pCamera, void *pPropertyValue);
     void updateSampler2D(GLint location, void *pCamera, void *pPropertyValue);
+    void updateSampler3D(GLint location, void *pCamera, void *pPropertyValue);
     void updateSamplerCube(GLint location, void *pCamera, void *pPropertyValue);
 
 private:

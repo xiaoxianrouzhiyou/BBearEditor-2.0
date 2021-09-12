@@ -154,6 +154,7 @@ BBMaterialProperty* BBVector4ArrayMaterialProperty::clone()
 /**
  * @brief BBSampler2DMaterialProperty::BBSampler2DMaterialProperty
  * @param name
+ * @param nSlotIndex
  */
 BBSampler2DMaterialProperty::BBSampler2DMaterialProperty(const char *name, int nSlotIndex)
     : BBMaterialProperty(Sampler2D, name)
@@ -175,6 +176,37 @@ BBMaterialProperty* BBSampler2DMaterialProperty::clone()
 }
 
 void BBSampler2DMaterialProperty::setTextureName(GLuint textureName, const QString &resourcePath)
+{
+    m_TextureName = textureName;
+    m_ResourcePath = resourcePath;
+}
+
+
+/**
+ * @brief BBSampler3DMaterialProperty::BBSampler3DMaterialProperty
+ * @param name
+ * @param nSlotIndex
+ */
+BBSampler3DMaterialProperty::BBSampler3DMaterialProperty(const char *name, int nSlotIndex)
+    : BBMaterialProperty(Sampler3D, name)
+{
+    m_TextureName = 0;
+    m_nSlotIndex = nSlotIndex;
+}
+
+BBSampler3DMaterialProperty::~BBSampler3DMaterialProperty()
+{
+
+}
+
+BBMaterialProperty* BBSampler3DMaterialProperty::clone()
+{
+    BBSampler3DMaterialProperty *pRet = new BBSampler3DMaterialProperty(m_Name, m_nSlotIndex);
+    pRet->setTextureName(m_TextureName, m_ResourcePath);
+    return pRet;
+}
+
+void BBSampler3DMaterialProperty::setTextureName(GLuint textureName, const QString &resourcePath)
 {
     m_TextureName = textureName;
     m_ResourcePath = resourcePath;

@@ -4,6 +4,7 @@
 #include "Base/BBGameObject.h"
 #include "2D/BBFullScreenQuad.h"
 #include "Render/BBMaterial.h"
+#include "Render/Texture/BBProcedureTexture.h"
 
 
 void BBVolumetricCloud::enable(int nAlgorithmIndex, bool bEnable)
@@ -56,6 +57,7 @@ void BBVolumetricCloud::setScreenQuadPass(BBScene *pScene)
     pMaterial->setSampler2D("AlbedoTex", pScene->getColorFBO(0, 0));
     pMaterial->setSampler2D("NormalTex", pScene->getColorFBO(0, 1));
     pMaterial->setSampler2D("PositionTex", pScene->getColorFBO(0, 2));
+    pMaterial->setSampler3D("NoiseTex", BBProcedureTexture().create3D0(32, 32, 32));
 
     pFullScreenQuad->setCurrentMaterial(pMaterial);
 }

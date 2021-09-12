@@ -36,6 +36,7 @@ protected:
     BBUniformUpdater* initUniformVector4(GLint location, const char *pUniformName);
     BBUniformUpdater* initUniformVector4Array(GLint location, const char *pUniformName, int nArrayCount);
     BBUniformUpdater* initUniformSampler2D(GLint location, const char *pUniformName, int &nSlotIndex);
+    BBUniformUpdater* initUniformSampler3D(GLint location, const char *pUniformName, int &nSlotIndex);
     BBUniformUpdater* initUniformSamplerCube(GLint location, const char *pUniformName, int &nSlotIndex);
     void appendUniformUpdater(BBUniformUpdater *pUniformUpdater);
 

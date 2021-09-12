@@ -187,6 +187,15 @@ void BBUniformUpdater::updateSampler2D(GLint location, void *pCamera, void *pPro
     glUniform1i(location, nSlotIndex);
 }
 
+void BBUniformUpdater::updateSampler3D(GLint location, void *pCamera, void *pPropertyValue)
+{
+    BBSampler3DMaterialProperty *pProperty = (BBSampler3DMaterialProperty*)pPropertyValue;
+    int nSlotIndex = pProperty->getSlotIndex();
+    glActiveTexture(GL_TEXTURE0 + nSlotIndex);
+    glBindTexture(GL_TEXTURE_3D, pProperty->getTextureName());
+    glUniform1i(location, nSlotIndex);
+}
+
 void BBUniformUpdater::updateSamplerCube(GLint location, void *pCamera, void *pPropertyValue)
 {
     BBSamplerCubeMaterialProperty *pProperty = (BBSamplerCubeMaterialProperty*)pPropertyValue;

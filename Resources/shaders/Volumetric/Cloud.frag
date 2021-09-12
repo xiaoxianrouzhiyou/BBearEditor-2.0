@@ -9,13 +9,14 @@ out vec4 FragColor;
 uniform sampler2D AlbedoTex;
 uniform sampler2D NormalTex;
 uniform sampler2D PositionTex;
+uniform sampler3D NoiseTex;
 
 uniform vec4 BBCameraPosition;
 uniform sampler2D BBCameraDepthTexture;
 
 const vec3 BoundingBoxMin = vec3(-2, -2, -2);
 const vec3 BoundingBoxMax = vec3(2, 2, 2);
-const int Loop = 512;
+const int Loop = 256;
 
 
 // compute the world pos of per pixel
@@ -54,6 +55,12 @@ vec2 rayToContainer(vec3 box_min, vec3 box_max, vec3 ray_origin_pos, vec3 inv_ra
     return vec2(camera_to_container, travel_distance);
 }
 
+float sampleDensity(vec3 ray_pos) 
+{
+    vec3 uvw = ray_pos;
+    return texture(NoiseTex, uvw).r;
+}
+
 float rayMarching(vec3 enter, vec3 dir, float distance_limit)
 {
     vec3 ray_pos = enter;
@@ -66,7 +73,7 @@ float rayMarching(vec3 enter, vec3 dir, float distance_limit)
         if (displacement < distance_limit)
         {
             ray_pos = enter + dir * displacement;
-            sum_density += 0.01;
+            sum_density += pow(sampleDensity(ray_pos), 5.0);
         }
         displacement += step;
     }
@@ -97,7 +104,7 @@ void main(void)
     // the intersection with the cloud container
     vec3 enter = ray_pos + V * camera_to_container;
     float density = rayMarching(enter, V, distance_limit);
-    final_color *= density * vec3(1.0, 0.0, 0.0);
+    final_color *= density;
 
     final_color += albedo;
 

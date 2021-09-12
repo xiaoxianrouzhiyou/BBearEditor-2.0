@@ -57,6 +57,7 @@ public:
     void setVector4(const std::string &uniformName, const float *pVector4);
     void setVector4Array(const std::string &uniformName, const float *pVector4Array, int nArrayCount);
     void setSampler2D(const std::string &uniformName, GLuint textureName, const QString &resourcePath = "");
+    void setSampler3D(const std::string &uniformName, GLuint textureName, const QString &resourcePath = "");
     void setSamplerCube(const std::string &uniformName, GLuint textureName);
     void setSamplerCube(const std::string &uniformName, GLuint textureName, const QString resourcePaths[]);
 

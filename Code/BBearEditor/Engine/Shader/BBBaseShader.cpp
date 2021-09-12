@@ -136,6 +136,10 @@ void BBBaseShader::initUniforms()
         {
             pUniformUpdater = initUniformSampler2D(location, uniformName, nSlotIndex);
         }
+        else if (type == GL_SAMPLER_3D)
+        {
+            pUniformUpdater = initUniformSampler3D(location, uniformName, nSlotIndex);
+        }
         else if (type == GL_SAMPLER_CUBE)
         {
             pUniformUpdater = initUniformSamplerCube(location, uniformName, nSlotIndex);
@@ -274,6 +278,16 @@ BBUniformUpdater* BBBaseShader::initUniformSampler2D(GLint location, const char 
         m_Properties.insert(pUniformName, pProperty);
         nSlotIndex++;
     }
+
+    return new BBUniformUpdater(location, updateUniformFunc, pProperty);
+}
+
+BBUniformUpdater* BBBaseShader::initUniformSampler3D(GLint location, const char *pUniformName, int &nSlotIndex)
+{
+    BBUpdateUniformFunc updateUniformFunc = &BBUniformUpdater::updateSampler3D;
+    BBSampler3DMaterialProperty *pProperty = new BBSampler3DMaterialProperty(pUniformName, nSlotIndex);
+    m_Properties.insert(pUniformName, pProperty);
+    nSlotIndex++;
 
     return new BBUniformUpdater(location, updateUniformFunc, pProperty);
 }
