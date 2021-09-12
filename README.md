@@ -30,6 +30,7 @@ Due to limited time, the functions I listed above may not be as cool as the word
 - [ ] Support multiple materials in a scene
 - [ ] Soft shadow : "Variance Shadow Maps"
 - [ ] Cartoon rendering
+- [ ] Volume rendering
 - [ ] Physics simulation
 - [x] Improve PBR
 - [ ] FBX animation system
