@@ -9,6 +9,7 @@ out vec4 FragColor;
 uniform sampler2D AlbedoTex;
 uniform sampler2D NormalTex;
 uniform sampler2D PositionTex;
+uniform sampler2D WeatherTex;
 uniform sampler3D NoiseTex;
 
 uniform vec4 BBCameraPosition;
@@ -16,8 +17,9 @@ uniform sampler2D BBCameraDepthTexture;
 uniform vec4 BBLightColor;
 uniform vec4 BBLightPosition;
 
-const vec3 BoundingBoxMin = vec3(-2, -2, -2);
-const vec3 BoundingBoxMax = vec3(2, 2, 2);
+
+const vec3 BoundingBoxMin = vec3(-8, 0, -8);
+const vec3 BoundingBoxMax = vec3(8, 4, 8);
 const int RayMarchingNum = 256;
 const int TransmitNum = 8;
 const vec3 Color0 = vec3(0.94, 0.97, 1.0);
@@ -26,6 +28,9 @@ const float ColorOffset0 = 0.6;
 const float ColorOffset1 = 1.0;
 const float DarknessThreshold = 0.05; 
 const vec4 PhaseParams = vec4(0.72, 1.0, 0.5, 1.58);
+
+vec3 g_box_size;
+vec3 g_box_center;
 
 
 // compute the world pos of per pixel
@@ -67,10 +72,21 @@ vec2 rayToContainer(vec3 box_min, vec3 box_max, vec3 ray_origin_pos, vec3 inv_ra
     return vec2(camera_to_container, travel_distance);
 }
 
+float remap(float origin_val, float origin_min, float origin_max, float new_min, float new_max)
+{
+    return new_min + (origin_val - origin_min) / (origin_max - origin_min) * (new_max - new_min);
+}
+
 float sampleDensity(vec3 ray_pos) 
 {
-    vec3 uvw = ray_pos;
-    return texture(NoiseTex, uvw).r;
+    vec2 uv = (ray_pos.xz - g_box_center.xz + g_box_size.xz * 0.5f) / max(g_box_size.x, g_box_size.z);
+    // Upper narrow and lower wide
+    float weather_val = texture(WeatherTex, uv).r;
+    float h_percent = (ray_pos.y - BoundingBoxMin.y) / g_box_size.y;
+    // As the height rises, the gradient gradually flattens from 1
+    float h_gradient = clamp(remap(h_percent, 0.0, weather_val, 1.0, 0.0), 0.0, 1.0);
+
+    return h_gradient;
 }
 
 vec3 transmit(vec3 ray_pos, vec3 L, float displacement)
@@ -118,6 +134,10 @@ vec4 rayMarching(vec3 enter, vec3 V, float distance_limit, vec3 L)
     // The edges of the cloud appear black
     float cos_angle = dot(V, L);
     vec3 phase_val = vec3(phase(cos_angle));
+
+    // Cloud shape
+    g_box_size = BoundingBoxMax - BoundingBoxMin;
+    g_box_center = (BoundingBoxMax + BoundingBoxMin) * 0.5;
 
     for (int i = 0; i < RayMarchingNum; i++)
     {
