@@ -13,10 +13,19 @@ uniform sampler3D NoiseTex;
 
 uniform vec4 BBCameraPosition;
 uniform sampler2D BBCameraDepthTexture;
+uniform vec4 BBLightColor;
+uniform vec4 BBLightPosition;
 
 const vec3 BoundingBoxMin = vec3(-2, -2, -2);
 const vec3 BoundingBoxMax = vec3(2, 2, 2);
-const int Loop = 256;
+const int RayMarchingNum = 256;
+const int TransmitNum = 8;
+const vec3 Color0 = vec3(0.94, 0.97, 1.0);
+const vec3 Color1 = vec3(0.94, 0.97, 1.0);
+const float ColorOffset0 = 0.6;
+const float ColorOffset1 = 1.0;
+const float DarknessThreshold = 0.05; 
+const vec4 PhaseParams = vec4(0.72, 1.0, 0.5, 1.58);
 
 
 // compute the world pos of per pixel
@@ -35,6 +44,9 @@ vec3 computePixelWorldPos(vec2 uv, float depth)
 // http://jcgt.org/published/0007/03/04/
 // ray_origin_pos : camera pos
 // inv_ray_dir : inverse ray direction
+// case 1: 0 <= enter <= leave
+// case 2: enter < 0 < leave
+// case 3: enter > leave
 vec2 rayToContainer(vec3 box_min, vec3 box_max, vec3 ray_origin_pos, vec3 inv_ray_dir)
 {
     vec3 t0 = (box_min - ray_origin_pos) * inv_ray_dir;
@@ -61,24 +73,75 @@ float sampleDensity(vec3 ray_pos)
     return texture(NoiseTex, uvw).r;
 }
 
-float rayMarching(vec3 enter, vec3 dir, float distance_limit)
+vec3 transmit(vec3 ray_pos, vec3 L, float displacement)
+{
+    float travel_distance = rayToContainer(BoundingBoxMin, BoundingBoxMax, ray_pos, vec3(1.0) / L).y;
+    float step = travel_distance / TransmitNum;
+    float sum_density = 0.0;
+
+    for (int i = 0; i < TransmitNum; i++)
+    {
+        ray_pos += L * step;
+        sum_density += max(0, sampleDensity(ray_pos));
+    }
+    float transmittance = exp(-sum_density * step);
+
+    // color level : light color / color0 / color1
+    vec3 cloud_color = mix(Color0, BBLightColor.rgb, clamp(transmittance * ColorOffset0, 0.0, 1.0));
+    cloud_color = mix(Color1, cloud_color, clamp(pow(transmittance * ColorOffset1, 1), 0.0, 1.0));
+    return DarknessThreshold + transmittance * (1 - DarknessThreshold) * cloud_color;
+}
+
+// HG phase function
+float hg(float a, float g) 
+{
+    float g2 = g * g;
+    return (1 - g2) / (4 * 3.1415 * pow(1 + g2 - 2 * g * (a), 1.5));
+}
+
+float phase(float a) 
+{
+    float blend = 0.5;
+    float hg_blend = hg(a, PhaseParams.x) * (1 - blend) + hg(a, -PhaseParams.y) * blend;
+    return PhaseParams.z + hg_blend * PhaseParams.w;
+}
+
+vec4 rayMarching(vec3 enter, vec3 V, float distance_limit, vec3 L)
 {
     vec3 ray_pos = enter;
-    float sum_density = 0.0;
+    vec3 light_energy = vec3(0.0);
+    float sum_density = 1.0;
+    // The distance that ray travels
     float displacement = 0.0;
     float step = 0.1;
+    // The scattering towards the light is stronger
+    // The edges of the cloud appear black
+    float cos_angle = dot(V, L);
+    vec3 phase_val = vec3(phase(cos_angle));
 
-    for (int i = 0; i < Loop; i++)
+    for (int i = 0; i < RayMarchingNum; i++)
     {
         if (displacement < distance_limit)
         {
-            ray_pos = enter + dir * displacement;
-            sum_density += pow(sampleDensity(ray_pos), 5.0);
+            ray_pos = enter + V * displacement;
+            float density = sampleDensity(ray_pos);
+            if (density > 0.0)
+            {
+                vec3 transmittance = transmit(ray_pos, L, displacement);
+                light_energy += density * step * sum_density * transmittance * phase_val;
+                // Beer-Lambert Law
+                // The transmission intensity decreases exponentially with the increase of the propagation distance in the medium
+                sum_density *= exp(-density * step);
+                if (sum_density < 0.01)
+                {
+                    break;
+                }
+            }
         }
         displacement += step;
     }
 
-    return sum_density;
+    return vec4(light_energy, sum_density);
 }
 
 
@@ -92,6 +155,7 @@ void main(void)
     vec3 ray_pos = BBCameraPosition.xyz;
     vec3 camera_to_object = pixel_world_pos - ray_pos;
     vec3 V = normalize(camera_to_object);
+    vec3 L = normalize(BBLightPosition.xyz);
 
     // Compute ray to the container surrounding the cloud
     // Raymarching is started at the intersection with the cloud container
@@ -101,13 +165,14 @@ void main(void)
     float travel_distance = ray_to_container_result.y;
     // When distance_limit < 0, we do not need to compute
     float distance_limit = min(camera_to_object_distance - camera_to_container, travel_distance);
-    // the intersection with the cloud container
+    // The intersection with the cloud container
     vec3 enter = ray_pos + V * camera_to_container;
-    float density = rayMarching(enter, V, distance_limit);
-    final_color *= density;
+    vec4 ray_marching_result = rayMarching(enter, V, distance_limit, L);
+
+    final_color *= ray_marching_result.rgb;
 
     final_color += albedo;
 
-    FragColor = vec4(final_color, 1.0);
+    FragColor = vec4(final_color, ray_marching_result.a);
 }
 

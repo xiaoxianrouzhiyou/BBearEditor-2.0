@@ -54,6 +54,8 @@ void BBVolumetricCloud::setScreenQuadPass(BBScene *pScene)
     BBMaterial *pMaterial = new BBMaterial();
     pMaterial->init("VolumetricCloud_ScreenQuad", BB_PATH_RESOURCE_SHADER(Volumetric/Cloud.vert), BB_PATH_RESOURCE_SHADER(Volumetric/Cloud.frag));
 
+    pMaterial->setBlendState(true);
+
     pMaterial->setSampler2D("AlbedoTex", pScene->getColorFBO(0, 0));
     pMaterial->setSampler2D("NormalTex", pScene->getColorFBO(0, 1));
     pMaterial->setSampler2D("PositionTex", pScene->getColorFBO(0, 2));
