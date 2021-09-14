@@ -96,7 +96,11 @@ void BBUniformUpdater::updateDepthFBO(GLint location, void *pCamera, void *pProp
 void BBUniformUpdater::updateShadowMap(GLint location, void *pCamera, void *pPropertyValue)
 {
     glActiveTexture(GL_TEXTURE0 + 2);
-    glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getDepthFBO(1));
+    // Traditionally, the depth is written in the depth buffer
+    // glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getDepthFBO(1));
+    // The depth and the square of the depth are recorded in the color buffer
+    // VSM Shadow algorithm need to use the square of the depth
+    glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getColorFBO(1));
     glUniform1i(location, 2);
 }
 

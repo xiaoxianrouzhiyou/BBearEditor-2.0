@@ -667,13 +667,26 @@ void BBScene::writeShadowMap(int nIndex)
 {
     BBDrawCall::switchRenderingSettings(2);
     m_pFBO[nIndex]->bind();
+
+    // Using the shader, we can get a 2-channel shadow map in the color buffer storing the depth and the square of the depth respectively
+    BBMaterial *pMaterial = new BBMaterial();
+    pMaterial->init("VSM_ShadowMap", BB_PATH_RESOURCE_SHADER(Shadow/VSM_ShadowMap.vert), BB_PATH_RESOURCE_SHADER(Shadow/VSM_ShadowMap.frag));
+
     // BBGameObject
     for (QList<BBGameObject*>::Iterator it = m_Models.begin(); it != m_Models.end(); it++)
     {
-        ((BBModel*)(*it))->renderToShadowMap(m_pCamera);
+        BBModel *pModel = (BBModel*)(*it);
+        pModel->setCurrentMaterial(pMaterial->clone());
+        pModel->renderToShadowMap(m_pCamera);
     }
 
     m_pFBO[nIndex]->unbind();
     BBDrawCall::switchRenderingSettings(0);
+
+    for (QList<BBGameObject*>::Iterator it = m_Models.begin(); it != m_Models.end(); it++)
+    {
+        BBModel *pModel = (BBModel*)(*it);
+        pModel->restoreMaterial();
+    }
 }
 

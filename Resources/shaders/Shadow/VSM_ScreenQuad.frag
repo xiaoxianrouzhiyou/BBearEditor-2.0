@@ -53,11 +53,7 @@ void main(void)
     {
         for (int x = -1; x <= 1; x++)
         {
-            float d = texture(BBShadowMap, light_space_pos.xy + texel_size * vec2(x, y)).r;
-            // d = linearizeDepth(d);
-            // d^2
-            float d2 = d * d;
-            E += vec2(d, d2);
+            E += texture(BBShadowMap, light_space_pos.xy + texel_size * vec2(x, y)).rg;
         }
     }
     E /= 9.0f;
