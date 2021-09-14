@@ -39,6 +39,7 @@ public:
     void setCurrentMaterial(BBMaterial *pMaterial) override;
     void setCurrentMaterial(int nExtraMaterialIndex) override;
     void setExtraMaterial(int nMaterialIndex, BBMaterial *pMaterial) override;
+    void rollbackMaterial() override;
     void restoreMaterial() override;
 
     void setMatrix4(const std::string &uniformName, const float *pMatrix4) override;
@@ -65,6 +66,7 @@ protected:
     bool m_bInRenderQueue;
     BBDrawCall *m_pDrawCalls;
     BBMaterial *m_pCurrentMaterial;
+    BBMaterial *m_pLastMaterial;
     BBMaterial *m_pDefaultMaterial;
     BBMaterial *m_pExtraMaterial[EXTRA_MATERIAL_COUNT];
     BBVertexBufferObject *m_pVBO;

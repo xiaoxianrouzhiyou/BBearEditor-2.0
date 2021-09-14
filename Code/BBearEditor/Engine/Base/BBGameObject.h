@@ -73,6 +73,7 @@ public:
     virtual void setCurrentMaterial(BBMaterial *pMaterial);
     virtual void setCurrentMaterial(int nExtraMaterialIndex);
     virtual void setExtraMaterial(int nMaterialIndex, BBMaterial *pMaterial);
+    virtual void rollbackMaterial();
     virtual void restoreMaterial();
 
     virtual void setMatrix4(const std::string &uniformName, const float *pMatrix4);

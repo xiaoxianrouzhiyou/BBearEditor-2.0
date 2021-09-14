@@ -30,6 +30,7 @@ public:
     void setCurrentMaterial(BBMaterial *pMaterial) override;
     void setCurrentMaterial(int nExtraMaterialIndex) override;
     void setExtraMaterial(int nMaterialIndex, BBMaterial *pMaterial) override;
+    void rollbackMaterial() override;
     void restoreMaterial() override;
 
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;

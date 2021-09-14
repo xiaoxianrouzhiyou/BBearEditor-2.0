@@ -58,6 +58,12 @@ void BBStaticMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
 //    pDrawCall->setSSBO(m_pSSBO);
 //    pDrawCall->setEBO(m_pEBO, m_eDrawPrimitiveType, m_nIndexCount, 0);
 //    appendDrawCall(pDrawCall);
+
+
+    // Using the shader, we can get a 2-channel shadow map in the color buffer storing the depth and the square of the depth respectively
+    BBMaterial *pMaterial = new BBMaterial();
+    pMaterial->init("VSM_ShadowMap", BB_PATH_RESOURCE_SHADER(Shadow/VSM_ShadowMap.vert), BB_PATH_RESOURCE_SHADER(Shadow/VSM_ShadowMap.frag));
+    setExtraMaterial(FBO_INDEX_SHADOWMAP, pMaterial);
 }
 
 void BBStaticMesh::load(const QString &path, QList<QVector4D> &outPositions)

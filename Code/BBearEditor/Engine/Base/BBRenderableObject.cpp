@@ -137,6 +137,7 @@ void BBRenderableObject::setVisibility(bool bVisible)
 
 void BBRenderableObject::setCurrentMaterial(BBMaterial *pMaterial)
 {
+    m_pLastMaterial = m_pCurrentMaterial;
     m_pCurrentMaterial = pMaterial;
     m_pCurrentMaterial->setMatrix4(LOCATION_MODELMATRIX, m_ModelMatrix.data());
     m_pCurrentMaterial->setMatrix4(LOCATION_VIEWMODELMATRIX_IT, m_ViewModelMatrix_IT.data());
@@ -152,11 +153,20 @@ void BBRenderableObject::setCurrentMaterial(int nExtraMaterialIndex)
 
 void BBRenderableObject::setExtraMaterial(int nMaterialIndex, BBMaterial *pMaterial)
 {
+    // 0 is used by GBuffer
+    // 2 is used by shadow map
     m_pExtraMaterial[nMaterialIndex] = pMaterial;
+}
+
+void BBRenderableObject::rollbackMaterial()
+{
+    setCurrentMaterial(m_pLastMaterial);
+    m_pLastMaterial = m_pDefaultMaterial;
 }
 
 void BBRenderableObject::restoreMaterial()
 {
+    m_pLastMaterial = m_pCurrentMaterial;
     setCurrentMaterial(m_pDefaultMaterial);
 }
 
@@ -267,6 +277,7 @@ void BBRenderableObject::sharedInit()
     m_bVisible = true;
     m_pDefaultMaterial = new BBMaterial();
     m_pCurrentMaterial = m_pDefaultMaterial;
+    m_pLastMaterial = m_pDefaultMaterial;
     for (int i = 0; i < EXTRA_MATERIAL_COUNT; i++)
     {
         m_pExtraMaterial[i] = nullptr;

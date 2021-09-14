@@ -95,6 +95,11 @@ void BBModel::setExtraMaterial(int nMaterialIndex, BBMaterial *pMaterial)
     m_pMesh->setExtraMaterial(nMaterialIndex, pMaterial);
 }
 
+void BBModel::rollbackMaterial()
+{
+    m_pMesh->rollbackMaterial();
+}
+
 void BBModel::restoreMaterial()
 {
     m_pMesh->restoreMaterial();

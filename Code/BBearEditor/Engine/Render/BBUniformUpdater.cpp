@@ -100,7 +100,7 @@ void BBUniformUpdater::updateShadowMap(GLint location, void *pCamera, void *pPro
     // glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getDepthFBO(1));
     // The depth and the square of the depth are recorded in the color buffer
     // VSM Shadow algorithm need to use the square of the depth
-    glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getColorFBO(1));
+    glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getColorFBO(FBO_INDEX_SHADOWMAP));
     glUniform1i(location, 2);
 }
 

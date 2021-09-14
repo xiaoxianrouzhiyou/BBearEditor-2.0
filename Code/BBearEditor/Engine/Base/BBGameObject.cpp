@@ -365,6 +365,11 @@ void BBGameObject::setExtraMaterial(int nMaterialIndex, BBMaterial *pMaterial)
     Q_UNUSED(pMaterial);
 }
 
+void BBGameObject::rollbackMaterial()
+{
+
+}
+
 void BBGameObject::restoreMaterial()
 {
 
