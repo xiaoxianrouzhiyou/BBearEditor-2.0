@@ -9,7 +9,12 @@ uniform vec4 BBLightSettings2;
 uniform vec4 BBLightPosition;
 uniform vec4 BBLightColor;
 uniform vec4 BBCameraPosition;
+uniform vec4 BBCameraParameters;
 uniform sampler2D BBShadowMap;
+
+float Near = BBCameraParameters.z;
+float LightSize = 0.1;
+
 
 float getLambertPointLightIntensity(vec3 normal, float radius, float distance, float attenuation, vec3 L)
 {
@@ -48,29 +53,88 @@ float getLambertSpotLightIntensity(vec3 normal, float radius, float distance, fl
 }
 
 // shadow
+// nvidia 2008 PCSS_DirectionalLight_Integration
+float getSearchWidth(float uv_light_size, float receiver_distance)
+{
+	return uv_light_size * (receiver_distance - Near) / BBCameraPosition.z;
+}
+
+float findBlockerDistance_DirectionalLight(vec3 shadow_coords, float uv_light_size)
+{
+	int blocker_count = 0;
+	float d_blocker = 0;
+	float search_size = getSearchWidth(uv_light_size, shadow_coords.z);
+
+    for (int y = -2; y <= 2; y++)
+    {
+        for (int x = -2; x <= 2; x++)
+        {
+            float z = texture2D(BBShadowMap, shadow_coords.xy + vec2(x, y) * search_size).r;
+            if (z < (shadow_coords.z - 0.0004))
+            {
+                blocker_count++;
+                d_blocker += z;
+            }
+        }
+    }
+	if (blocker_count > 0)
+		return d_blocker / blocker_count;
+	else
+		return -1;
+}
+
 float calculateShadow()
 {
-    vec3 pos = V_world_pos_light_space.xyz / V_world_pos_light_space.w;
+    vec3 shadow_coords = V_world_pos_light_space.xyz / V_world_pos_light_space.w;
     // -1~1 -> 0~1
-    pos = pos * 0.5 + vec3(0.5);
+    shadow_coords = shadow_coords * 0.5 + vec3(0.5);
     // For the current fragment, get the corresponding depth from the depth map in the light viewport
     // float depth_shadow_map = texture2D(BBShadowMap, uv).r;
     // actual depth value of current fragment
-    float current_depth = pos.z;
+    float current_depth = shadow_coords.z;
     current_depth = clamp(current_depth, 0.0, 1.0);
-    // PCF
-    vec2 texel_size = 1.0 / textureSize(BBShadowMap, 0);
+
     float shadow = 0.0;
-    for (int y = -1; y <= 1; y++)
+    
+    // PCF
+    // {
+    //     vec2 texel_size = 1.0 / textureSize(BBShadowMap, 0);
+    //     for (int y = -1; y <= 1; y++)
+    //     {
+    //         for (int x = -1; x <= 1; x++)
+    //         {
+    //             float depth_shadow_map = texture2D(BBShadowMap, shadow_coords.xy + texel_size * vec2(x, y)).r;
+    //             shadow += (current_depth - 0.004) > depth_shadow_map ? 1.0 : 0.0;
+    //         }
+    //     }
+    //     shadow /= 9.0;
+    // }
+    
+    // PCSS
     {
-        for (int x = -1; x <= 1; x++)
+        // blocker search
+        float d_blocker = findBlockerDistance_DirectionalLight(shadow_coords, LightSize);
+        if (d_blocker == -1)
+            shadow = 0.0;		
+
+        // penumbra estimation
+        float w_penumbra = (shadow_coords.z - d_blocker) / d_blocker;
+
+        // PCF
+        float search_size = w_penumbra * LightSize * Near / shadow_coords.z;
+        for (int y = -1; y <= 1; y++)
         {
-            float depth_shadow_map = texture2D(BBShadowMap, pos.xy + texel_size * vec2(x, y)).r;
-            shadow += (current_depth - 0.004) > depth_shadow_map ? 1.0 : 0.0;
+            for (int x = -1; x <= 1; x++)
+            {
+                float depth_shadow_map = texture2D(BBShadowMap, shadow_coords.xy + search_size * vec2(x, y)).r;
+                shadow += (current_depth - 0.004) > depth_shadow_map ? 1.0 : 0.0;
+            }
         }
+        shadow /= 9.0;
     }
-    shadow /= 9.0;
-    shadow = (current_depth - 0.004) > texture2D(BBShadowMap, pos.xy).r ? 1.0 : 0.0;
+
+    // shadow = (current_depth - 0.004) > texture2D(BBShadowMap, pos.xy).r ? 1.0 : 0.0;
+
     return shadow;
 }
 

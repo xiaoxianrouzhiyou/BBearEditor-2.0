@@ -11,8 +11,6 @@ varying vec4 V_world_pos_light_space;
 uniform mat4 BBProjectionMatrix;
 uniform mat4 BBViewMatrix;
 uniform mat4 BBModelMatrix;
-uniform vec4 BBLightPosition;
-uniform vec4 BBLightColor;
 
 uniform mat4 BBLightProjectionMatrix;
 uniform mat4 BBLightViewMatrix;
