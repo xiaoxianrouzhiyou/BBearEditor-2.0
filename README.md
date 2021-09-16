@@ -18,20 +18,22 @@ In addition, I referred to some code, learning resources, UI designs, and art re
 * Python 3.7.9 32bit. Please copy .../Python/Python37-32/Lib into Code/BBearEditor/Engine/Python!
 ## Features
 * Encapsulation of rendering system, Forward rendering & Deferred rendering
-* Editor: create models, move objects, asset management, adjust parameters ...
+* Editor: create models, coordinate system and transform objects, asset management, adjust parameters ...
 * 2D & 3D
-* Reproduce some classic algorithms: GI, Spherical Harmonic Lighting, Ray Tracing, ...
-* Common shader: water, cartoon fire, heat distort, normal map, PBR, translucent transmission ...
+* Reproduce some classic algorithms: GI, Spherical Harmonic Lighting, Ray Tracing, Shadow...  
+SSAO, SSDO, PCF, PCSS, VSM, Efficient GPU Screen-Space Ray Tracing ...
+* Common shader: water, cartoon fire, heat distort, normal map, PBR, translucency, KajiyaKay hair ...
 * Particle System: SSBO & compute shader
 * Python virtual machine
 * Serialization and Deserialization: scene & material
 ## TODO
 Due to limited time, the functions I listed above may not be as cool as the words seem. Basically, for each effect, I select an article to read and reproduce. Of course, I still have many plans. I have a lot of knowledge I want to learn, and I will continue to improve my project!
 - [ ] Support multiple materials in a scene
-- [ ] Soft shadow : "Variance Shadow Maps"
+- [ ] Photon Mapping
 - [ ] Cartoon rendering
 - [ ] Volume rendering
 - [ ] Physics simulation
+- [ ] Improve VSM
 - [x] Improve PBR
 - [ ] FBX animation system
 - [ ] TFO particle system
@@ -44,12 +46,11 @@ Due to limited time, the functions I listed above may not be as cool as the word
 I really look forward to making friends with related interests, and we will share experience and learn together!
 * E-Mail: 184346971@qq.com
 ## Screen Shot
-PBR
-
-![`B)OC_281{{(7(K FV5CJN6](https://user-images.githubusercontent.com/31690363/131146674-08715915-90ef-4b62-aead-2cd973261e00.png)
-![CD}KPOUNK9D2(S_{TIFNTE3](https://user-images.githubusercontent.com/31690363/131149330-4a244459-9d51-4af8-8a71-f83309ad4f43.png)
+* PBR Material  
 ![JBT58EORSICKGY$~J14YK)L](https://user-images.githubusercontent.com/31690363/131350577-20c40653-8f73-4351-a082-0c459e8a5923.png)
-
-SH_lighting
-![image](https://user-images.githubusercontent.com/31690363/128983508-344a9bbb-99dc-4ebf-af64-c9daea820d98.png)
+* VSM  
+![image](https://user-images.githubusercontent.com/31690363/133650927-56a3da4f-412c-4879-9657-6432c703eb13.png)
+* SH_lighting  
+![Y(T@48LWH9 2TGQ %GZ3(SE](https://user-images.githubusercontent.com/31690363/133653521-1fb1ec66-cfa4-43c7-9b75-a7674adc0bb2.png)
+* Main interface  
 ![V%BRYKJB E9I0JK(YGZ7ZMM](https://user-images.githubusercontent.com/31690363/130344475-acf28e7e-d0a0-4c86-860f-ce25d081b559.png)
