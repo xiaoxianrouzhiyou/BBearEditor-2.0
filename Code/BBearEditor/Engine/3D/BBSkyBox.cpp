@@ -101,7 +101,7 @@ void BBSkyBox::writeEnvironmentMap(BBCamera *pCamera)
         BBRenderableObject::render(pCamera);
     }
     // After setting the texture of the cube map, let OpenGL generate mipmap
-    BBTexture().endWritingTextureCube(m_EnvironmentMap);
+    BBTexture().generateTextureCubeMipmap(m_EnvironmentMap);
     // Restore default material
     restoreMaterial();
 }

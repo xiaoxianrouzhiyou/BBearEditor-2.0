@@ -69,7 +69,7 @@ float findBlockerDistance_DirectionalLight(vec3 shadow_coords, float uv_light_si
     {
         for (int x = -2; x <= 2; x++)
         {
-            float z = texture2D(BBShadowMap, shadow_coords.xy + vec2(x, y) * search_size).r;
+            float z = texture(BBShadowMap, shadow_coords.xy + vec2(x, y) * search_size).r;
             if (z < (shadow_coords.z - 0.0004))
             {
                 blocker_count++;

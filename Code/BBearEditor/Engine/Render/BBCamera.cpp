@@ -113,6 +113,11 @@ void BBCamera::update(float fDeltaTime)
                               m_pModelView[3], m_pModelView[7], m_pModelView[11], m_pModelView[15]);
 }
 
+void BBCamera::resetViewportSize()
+{
+    glViewport(m_pViewport[0], m_pViewport[1], m_pViewport[2], m_pViewport[3]);
+}
+
 void BBCamera::setViewportSize(int nWidth, int nHeight)
 {
     m_nViewportWidth = nWidth;

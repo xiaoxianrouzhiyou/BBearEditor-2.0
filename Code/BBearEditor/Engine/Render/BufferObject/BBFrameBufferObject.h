@@ -17,6 +17,7 @@ public:
     void finish();
 
     void bind();
+    void bind(int nWidth, int nHeight);
     void unbind();
 
     GLuint getBuffer(const QString &bufferName);

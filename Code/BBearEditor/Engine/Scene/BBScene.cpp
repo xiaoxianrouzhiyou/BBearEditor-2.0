@@ -45,6 +45,8 @@ BBScene::BBScene()
     m_pTiledFullScreenQuad = nullptr;
     m_pNormalIndicator = nullptr;
     m_pFixedSizeFBO = nullptr;
+    m_ShadowMap = 0;
+    m_pShadowMapFBO = nullptr;
 }
 
 BBScene::~BBScene()
@@ -70,6 +72,8 @@ BBScene::~BBScene()
         BBGameObject *pObject = *itr;
         deleteGameObject(pObject);
     }
+    glDeleteTextures(1, &m_ShadowMap);
+    BB_SAFE_DELETE(m_pShadowMapFBO);
 }
 
 void BBScene::init()
@@ -113,7 +117,7 @@ void BBScene::defaultRendering()
     m_pCamera->update(m_fUpdateRate);
 
     writeViewSpaceFBO(0);
-    writeShadowMap(FBO_INDEX_SHADOWMAP);
+    writeShadowMap();
 
     m_pSkyBox->render(m_pCamera);
     m_pHorizontalPlane->render(m_pCamera);
@@ -171,7 +175,7 @@ void BBScene::deferredRendering1_1()
     m_pCamera->switchTo3D();
     m_pCamera->update(m_fUpdateRate);
 
-    writeShadowMap(FBO_INDEX_SHADOWMAP);
+    writeShadowMap();
 
     m_pFBO[0]->bind();
     m_pSkyBox->render(m_pCamera);
@@ -187,7 +191,7 @@ void BBScene::deferredRendering1_2()
     m_pCamera->switchTo3D();
     m_pCamera->update(m_fUpdateRate);
 
-    writeShadowMap(FBO_INDEX_SHADOWMAP);
+    writeShadowMap();
 
     // GBuffer pass
     m_pFBO[0]->bind();
@@ -209,7 +213,7 @@ void BBScene::deferredRendering2_1()
     m_pCamera->switchTo3D();
     m_pCamera->update(m_fUpdateRate);
 
-    writeShadowMap(FBO_INDEX_SHADOWMAP);
+    writeShadowMap();
 
     m_pFBO[0]->bind();
     m_pSkyBox->render(m_pCamera);
@@ -260,6 +264,19 @@ void BBScene::resize(float width, float height)
 
     // used for computing lighting
     writeSkyBoxCubeMap();
+
+    if (m_pShadowMapFBO)
+        BB_SAFE_DELETE(m_pShadowMapFBO);
+    m_pShadowMapFBO = new BBFrameBufferObject();
+    m_pShadowMapFBO->attachColorBuffer(FBO_COLOR_BUFFER_NAME(0), GL_COLOR_ATTACHMENT0, width, height, GL_RGBA32F);
+    m_pShadowMapFBO->finish();
+
+    if (m_ShadowMap > 0)
+    {
+        glDeleteTextures(1, &m_ShadowMap);
+    }
+    // use mipmap
+    m_ShadowMap = BBTexture().allocateTexture2D(width, height, GL_RG16F, GL_RG, GL_LINEAR_MIPMAP_LINEAR);
 }
 
 GLuint BBScene::getColorFBO(int nFBOIndex, int nAttachmentIndex)
@@ -663,26 +680,29 @@ void BBScene::writeViewSpaceFBO(int nIndex)
     BBDrawCall::switchRenderingSettings(0);
 }
 
-void BBScene::writeShadowMap(int nIndex)
+void BBScene::writeShadowMap()
 {
     BBDrawCall::switchRenderingSettings(2);
-    m_pFBO[nIndex]->bind();
 
-    // BBGameObject
+    m_pShadowMapFBO->bind();
+
+    BBTexture().startWritingTexture2D(m_ShadowMap);
     for (QList<BBGameObject*>::Iterator it = m_Models.begin(); it != m_Models.end(); it++)
     {
         BBModel *pModel = (BBModel*)(*it);
-        pModel->setCurrentMaterial(FBO_INDEX_SHADOWMAP);
+        pModel->setCurrentMaterial(INDEX_SHADOWMAP);
         pModel->renderToShadowMap(m_pCamera);
     }
 
-    m_pFBO[nIndex]->unbind();
-    BBDrawCall::switchRenderingSettings(0);
+    m_pShadowMapFBO->unbind();
+
+    BBTexture().generateTexture2DMipmap(m_ShadowMap);
 
     for (QList<BBGameObject*>::Iterator it = m_Models.begin(); it != m_Models.end(); it++)
     {
         BBModel *pModel = (BBModel*)(*it);
         pModel->rollbackMaterial();
     }
+    BBDrawCall::switchRenderingSettings(0);
 }
 

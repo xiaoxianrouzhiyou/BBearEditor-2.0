@@ -77,6 +77,23 @@ void BBFrameBufferObject::bind()
     glViewport(0, 0, m_nWidth, m_nHeight);
 }
 
+void BBFrameBufferObject::bind(int nWidth, int nHeight)
+{
+    // save the previous render target
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_PreFrameBufferObject);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferObject);
+    // all the things rendered afterwards will be drawn to this FBO
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    m_nWidth = nWidth;
+    m_nHeight = nHeight;
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_COLOR_ATTACHMENT0, m_nWidth, m_nHeight);
+
+    // don't forget to configure the viewport to the capture dimensions
+    glViewport(0, 0, m_nWidth, m_nHeight);
+}
+
 void BBFrameBufferObject::unbind()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_PreFrameBufferObject);

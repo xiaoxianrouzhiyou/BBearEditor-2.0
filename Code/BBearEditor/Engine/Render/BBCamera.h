@@ -17,6 +17,7 @@ public:
 
     void resetMove();
     void update(float fDeltaTime);
+    void resetViewportSize();
     void setViewportSize(int nWidth, int nHeight);
     void switchTo3D();
     void switchTo2D();

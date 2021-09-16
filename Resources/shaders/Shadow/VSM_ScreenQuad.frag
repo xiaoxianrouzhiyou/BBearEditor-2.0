@@ -2,6 +2,8 @@
 
 in vec2 v2f_texcoord;
 
+out vec4 FragColor;
+
 uniform sampler2D AlbedoAndMetallicTex;
 uniform sampler2D NormalAndDoubleRoughnessTex;
 uniform sampler2D PositionTex;
@@ -32,12 +34,12 @@ void main(void)
 
     if ((abs(normal.x) < 0.0001f) && (abs(normal.y) < 0.0001f) && (abs(normal.z) < 0.0001f))
     {
-        gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+        FragColor = vec4(0.0, 0.0, 0.0, 1.0);
     }
 
     normal = normalize(normal);
     vec4 light_space_pos = BBLightProjectionMatrix * BBLightViewMatrix * world_space_pos;
-    light_space_pos /= 10.0;
+    light_space_pos.xyz /= 10;
     // 0~1
     light_space_pos.xyz = light_space_pos.xyz * vec3(0.5f) + vec3(0.5f);
     float current_depth = light_space_pos.z;
@@ -74,5 +76,5 @@ void main(void)
     }
     float final_color = max(dot(view_space_light_dir, normal), 0.0) * shadow;
 
-    gl_FragColor = vec4(final_color, final_color, final_color, 1.0);
+    FragColor = vec4(textureLod(BBShadowMap, v2f_texcoord, 3).rg, 0.0, 1.0);
 }

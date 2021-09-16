@@ -155,7 +155,7 @@ GLuint BBTexture::createTextureCube(const QString paths[], GLenum eType)
     return texture;
 }
 
-GLuint BBTexture::allocateTexture2D(int nWidth, int nHeight, GLint internalFormat, GLenum format)
+GLuint BBTexture::allocateTexture2D(int nWidth, int nHeight, GLint internalFormat, GLenum format, GLint minFilter)
 {
     GLuint texture = 0;
 
@@ -165,7 +165,7 @@ GLuint BBTexture::allocateTexture2D(int nWidth, int nHeight, GLint internalForma
     glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, nWidth, nHeight, 0, format, GL_FLOAT, nullptr);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
@@ -177,6 +177,42 @@ GLuint BBTexture::allocateTexture2D(int nWidth, int nHeight, GLint internalForma
 void BBTexture::startWritingTexture2D(GLuint texture)
 {
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+    // Subsequent rendering code
+}
+
+void BBTexture::generateTexture2DMipmap(GLuint texture)
+{
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+GLuint BBTexture::allocateTexture2DMipmap(int nWidth, int nHeight, GLint internalFormat, GLenum format)
+{
+    GLuint texture = 0;
+
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    gluBuild2DMipmaps(GL_TEXTURE_2D, internalFormat, nWidth, nHeight, format, GL_FLOAT, nullptr);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // Enable trilinear filtering
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    // To ensure that enough memory is allocated for Mipmap
+//    glGenerateMipmap(GL_TEXTURE_2D);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    return texture;
+}
+
+void BBTexture::startWritingTexture2DMipmap(GLuint texture, int nMipLevel)
+{
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, nMipLevel);
     // Subsequent rendering code
 }
 
@@ -220,10 +256,11 @@ void BBTexture::startWritingTextureCube(GLuint texture, int nSideIndex)
     // Subsequent rendering code
 }
 
-void BBTexture::endWritingTextureCube(GLuint texture)
+void BBTexture::generateTextureCubeMipmap(GLuint texture)
 {
     glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
     glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
 GLuint BBTexture::allocateTextureCubeMipmap(int nWidth, int nHeight, GLint internalFormat, GLenum format)

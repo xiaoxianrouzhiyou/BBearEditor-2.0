@@ -56,10 +56,12 @@ public:
     inline QList<BBGameObject*> getModels() { return m_Models; }
     inline QList<BBGameObject*> getLights() { return m_Lights; }
     inline BBNormalIndicator* getNormalIndicator() { return m_pNormalIndicator; }
+    inline GLuint getShadowMapMipmap() { return m_ShadowMap; }
 
     /* FBO */
     GLuint getColorFBO(int nFBOIndex, int nAttachmentIndex = 0);
     GLuint getDepthFBO(int nFBOIndex);
+
     /* SkyBox */
     void setSkyBox(const QString &path);
     void changeSkyBoxAlgorithm(int nAlgorithmIndex);
@@ -108,10 +110,13 @@ private:
     void unbindFBO();
     void writeSkyBoxCubeMap();
     void writeViewSpaceFBO(int nIndex);
-    void writeShadowMap(int nIndex);
+    void writeShadowMap();
 
     BBFrameBufferObject *m_pFixedSizeFBO;
     BBFrameBufferObject *m_pFBO[3];
+
+    GLuint m_ShadowMap;
+    BBFrameBufferObject *m_pShadowMapFBO;
 
 private:
     BBRenderingFunc m_RenderingFunc;

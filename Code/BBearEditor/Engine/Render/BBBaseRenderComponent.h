@@ -58,7 +58,7 @@
 
 #define FBO_COLOR_BUFFER_NAME(x) "BBFBOColor"#x
 #define FBO_DEPTH_BUFFER_NAME "BBFBODepth"
-#define FBO_INDEX_SHADOWMAP 2
+#define INDEX_SHADOWMAP 2
 
 
 class BBBaseRenderComponent : protected QOpenGLFunctions_4_5_Core
