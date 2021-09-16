@@ -28,7 +28,7 @@ float linearizeDepth(float depth)
 
 void main(void)
 {
-    vec4 albedo = texture(AlbedoAndMetallicTex, v2f_texcoord);
+    vec3 albedo = texture(AlbedoAndMetallicTex, v2f_texcoord).rgb;
     vec3 normal = texture(NormalAndDoubleRoughnessTex, v2f_texcoord).xyz;
     vec4 world_space_pos = texture(PositionTex, v2f_texcoord);
 
@@ -39,42 +39,32 @@ void main(void)
 
     normal = normalize(normal);
     vec4 light_space_pos = BBLightProjectionMatrix * BBLightViewMatrix * world_space_pos;
-    light_space_pos.xyz /= 10;
+    // light_space_pos.xyz /= 10.0;
     // 0~1
     light_space_pos.xyz = light_space_pos.xyz * vec3(0.5f) + vec3(0.5f);
     float current_depth = light_space_pos.z;
 
     // the position of directional light is dir
-    vec3 view_space_light_dir = -normalize(vec3(BBViewMatrix * BBLightPosition));
+    vec3 view_space_light_dir = normalize(vec3(BBViewMatrix * BBLightPosition));
 
-    // compute mean, E, by filtering
-    vec2 texel_size = 1.0 / textureSize(BBShadowMap, 0);
-
-    vec2 E = vec2(0.0f);
-    for (int y = -1; y <= 1; y++)
-    {
-        for (int x = -1; x <= 1; x++)
-        {
-            E += texture(BBShadowMap, light_space_pos.xy + texel_size * vec2(x, y)).rg;
-        }
-    }
-    E /= 9.0f;
+    // get mean, E, by mipmap
+    vec2 E = textureLod(BBShadowMap, light_space_pos.xy, 2).rg;
     // E(d)
     float Ed = E.x;
     // E(d^2)
     float Ed2 = E.y;
     float variance = Ed2 - Ed * Ed;
 
-    float shadow = 0.0f;
-    if (current_depth - 0.00001 <= Ed)
+    float visibility = 0.0f;
+    if (current_depth - 0.0001 < Ed)
     {
-        shadow = 1.0f;
+        visibility = 1.0f;
     }
     else
     {
-        shadow = variance / (variance + pow(current_depth - Ed, 2.0f));
+        visibility = variance / (variance + pow(current_depth - Ed, 2.0f));
     }
-    float final_color = max(dot(view_space_light_dir, normal), 0.0) * shadow;
+    float final_color = max(dot(view_space_light_dir, normal), 0.0) * visibility;
 
-    FragColor = vec4(textureLod(BBShadowMap, v2f_texcoord, 3).rg, 0.0, 1.0);
+    FragColor = vec4(albedo * final_color, 1.0);
 }

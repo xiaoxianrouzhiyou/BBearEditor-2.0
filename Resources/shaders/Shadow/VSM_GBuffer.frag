@@ -10,7 +10,7 @@ layout (location = 2) out vec4 Position;
 
 void main(void)
 {
-    vec3 albedo = vec3(0.0f, 1.0f, 0.0f); // diffuse color
+    vec3 albedo = vec3(1.0f, 1.0f, 1.0f); // diffuse color
 	AlbedoAndMetallic = vec4(albedo, 0.0f);
 	vec3 normal = normalize(v2f_normal);
 	float roughness = 0.2f;

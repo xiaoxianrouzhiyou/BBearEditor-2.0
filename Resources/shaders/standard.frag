@@ -133,7 +133,7 @@ float calculateShadow()
         shadow /= 9.0;
     }
 
-    // shadow = (current_depth - 0.004) > texture2D(BBShadowMap, pos.xy).r ? 1.0 : 0.0;
+    // shadow = (current_depth - 0.004) > texture2D(BBShadowMap, shadow_coords.xy).r ? 1.0 : 0.0;
 
     return shadow;
 }

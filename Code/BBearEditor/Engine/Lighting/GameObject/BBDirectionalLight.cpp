@@ -38,16 +38,17 @@ void BBDirectionalLight::setRotation(const QVector3D &rotation, bool bUpdateLoca
     setHomogeneousPosition();
 }
 
-BBCamera* BBDirectionalLight::getLightSpaceCamera(int nLightPosX, int nLightPosZ)
+BBCamera* BBDirectionalLight::getLightSpaceCamera(int nLightPosX, int nLightPosY, int nLightPosZ)
 {
     BBCamera *pLightSpaceCamera = new BBCamera();
     m_ViewMatrix.setToIdentity();
-    m_ViewMatrix.lookAt(QVector3D(nLightPosX, 5, nLightPosZ), QVector3D(nLightPosX, 0, nLightPosZ), QVector3D(0, 0, -1));
+    m_ViewMatrix.lookAt(QVector3D(nLightPosX, 0.1, nLightPosZ), QVector3D(nLightPosX, 0, nLightPosZ), QVector3D(0, 0, -1));
     m_ViewMatrix.rotate(-m_Rotation.z(), 0, 0, 1);
     m_ViewMatrix.rotate(-m_Rotation.x(), 1, 0, 0);
     m_ViewMatrix.rotate(-m_Rotation.y(), 0, 1, 0);
     m_ProjectionMatrix.setToIdentity();
     m_ProjectionMatrix.ortho(-10, 10, -10, 10, -10, 10);
+//    m_ProjectionMatrix.perspective(50.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
     pLightSpaceCamera->setViewMatrix(m_ViewMatrix);
     pLightSpaceCamera->setProjectionMatrix(m_ProjectionMatrix);
     return pLightSpaceCamera;

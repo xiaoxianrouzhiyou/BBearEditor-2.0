@@ -14,7 +14,7 @@ public:
     void setRotation(int nAngle, const QVector3D &axis, bool bUpdateLocalTransform = true) override;
     void setRotation(const QVector3D &rotation, bool bUpdateLocalTransform = true) override;
 
-    BBCamera* getLightSpaceCamera(int nLightPosX = 0, int nLightPosZ = 0) override;
+    BBCamera* getLightSpaceCamera(int nLightPosX = 0, int nLightPosY = 10, int nLightPosZ = 0) override;
 
     bool cull(BBCamera *pCamera, const QRectF &displayBox) override;
     bool cull(BBCamera *pCamera, int nFrustumIndexX, int nFrustumIndexY) override;
