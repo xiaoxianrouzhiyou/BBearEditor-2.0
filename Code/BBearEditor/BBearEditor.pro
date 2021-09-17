@@ -73,17 +73,17 @@ SOURCES += \
     Engine/Render/BufferObject/BBBufferObject.cpp \
     Engine/Render/BBAttribute.cpp \
     Engine/Render/BBLinkedList.cpp \
-    Engine/Shader/BBShader.cpp \
+    Engine/Render/Shader/BBShader.cpp \
     Engine/Render/BBUniformUpdater.cpp \
     Engine/Render/BBDrawCall.cpp \
     Engine/Render/BBMaterialProperty.cpp \
     Engine/Render/BBRenderPass.cpp \
-    Engine/Lighting/GameObject/BBLight.cpp \
+    Engine/Render/Lighting/GameObject/BBLight.cpp \
     Engine/Render/BufferObject/BBFrameBufferObject.cpp \
     Engine/Render/Texture/BBTexture.cpp \
-    Engine/Lighting/GameObject/BBDirectionalLight.cpp \
-    Engine/Lighting/GameObject/BBPointLight.cpp \
-    Engine/Lighting/GameObject/BBSpotLight.cpp \
+    Engine/Render/Lighting/GameObject/BBDirectionalLight.cpp \
+    Engine/Render/Lighting/GameObject/BBPointLight.cpp \
+    Engine/Render/Lighting/GameObject/BBSpotLight.cpp \
     Engine/3D/BBIcon.cpp \
     Engine/CoordinateSystem/BBCoordinateSystem.cpp \
     Engine/3D/BBHorizontalPlane.cpp \
@@ -111,7 +111,7 @@ SOURCES += \
     Engine/Font/BBDynamicFont.cpp \
     Editor/Tools/FBX2BBear/BBFBX2BBear.cpp \
     Editor/Tools/FBX2BBear/BBFBXSkeletonGPU.cpp \
-    Engine/RayTracing/BBRayTracker.cpp \
+    Engine/Render/RayTracing/BBRayTracker.cpp \
     Editor/Dialog/BBResourceDialog.cpp \
     Engine/Render/BBRenderQueue.cpp \
     Editor/PropertyManager/GroupManager/BBMaterialPropertyGroupManager.cpp \
@@ -120,26 +120,26 @@ SOURCES += \
     Engine/3D/BBNormalIndicator.cpp \
     Editor/Debugger/BBConsoleDockWidget.cpp \
     Editor/PropertyManager/GroupManager/BBGlobalSettingsGroupManager.cpp \
-    Engine/Lighting/BBSphericalHarmonicLighting.cpp \
-    Engine/Lighting/GI/BBGlobalIllumination.cpp \
-    Engine/Lighting/GI/BBSSAOGlobalIllumination.cpp \
-    Engine/Lighting/GI/BBSSDOGlobalIllumination.cpp \
+    Engine/Render/Lighting/BBSphericalHarmonicLighting.cpp \
+    Engine/Render/Lighting/GI/BBGlobalIllumination.cpp \
+    Engine/Render/Lighting/GI/BBSSAOGlobalIllumination.cpp \
+    Engine/Render/Lighting/GI/BBSSDOGlobalIllumination.cpp \
     Engine/Math/BBMath.cpp \
-    Engine/RayTracing/BBScreenSpaceRayTracker.cpp \
+    Engine/Render/RayTracing/BBScreenSpaceRayTracker.cpp \
     Editor/PropertyManager/GroupManager/BBRenderManager.cpp \
     Engine/Render/Texture/BBProcedureTexture.cpp \
     Engine/ParticleSystem/BBParticleSystem.cpp \
     Engine/ParticleSystem/BBParticle.cpp \
     Engine/Render/BufferObject/BBShaderStorageBufferObject.cpp \
-    Engine/Shader/BBComputeShader.cpp \
-    Engine/Shader/BBBaseShader.cpp \
+    Engine/Render/Shader/BBComputeShader.cpp \
+    Engine/Render/Shader/BBBaseShader.cpp \
     Engine/Render/BufferObject/BBTranslateFeedbackObject.cpp \
     Engine/Python/BBPythonVM.cpp \
     Engine/Python/BBPythonModule.c \
-    Engine/Shadow/BBShadow.cpp \
-    Engine/Lighting/GI/BBFLCGlobalIllumination.cpp \
+    Engine/Render/Shadow/BBShadow.cpp \
+    Engine/Render/Lighting/GI/BBFLCGlobalIllumination.cpp \
     Engine/Render/BufferObject/BBAtomicCounterBufferObject.cpp \
-    Engine/Volumetric/BBVolumetricCloud.cpp
+    Engine/Render/Volumetric/BBVolumetricCloud.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -193,17 +193,17 @@ HEADERS += \
     Engine/Render/BBAttribute.h \
     Engine/Render/BBBaseRenderComponent.h \
     Engine/Render/BBLinkedList.h \
-    Engine/Shader/BBShader.h \
+    Engine/Render/Shader/BBShader.h \
     Engine/Render/BBUniformUpdater.h \
     Engine/Render/BBDrawCall.h \
     Engine/Render/BBMaterialProperty.h \
     Engine/Render/BBRenderPass.h \
-    Engine/Lighting/GameObject/BBLight.h \
+    Engine/Render/Lighting/GameObject/BBLight.h \
     Engine/Render/BufferObject/BBFrameBufferObject.h \
     Engine/Render/Texture/BBTexture.h \
-    Engine/Lighting/GameObject/BBDirectionalLight.h \
-    Engine/Lighting/GameObject/BBPointLight.h \
-    Engine/Lighting/GameObject/BBSpotLight.h \
+    Engine/Render/Lighting/GameObject/BBDirectionalLight.h \
+    Engine/Render/Lighting/GameObject/BBPointLight.h \
+    Engine/Render/Lighting/GameObject/BBSpotLight.h \
     Engine/3D/BBIcon.h \
     Engine/CoordinateSystem/BBCoordinateSystem.h \
     Engine/3D/BBHorizontalPlane.h \
@@ -231,7 +231,7 @@ HEADERS += \
     Engine/Font/BBDynamicFont.h \
     Editor/Tools/FBX2BBear/BBFBX2BBear.h \
     Editor/Tools/FBX2BBear/BBFBXSkeletonGPU.h \
-    Engine/RayTracing/BBRayTracker.h \
+    Engine/Render/RayTracing/BBRayTracker.h \
     Editor/Dialog/BBResourceDialog.h \
     Engine/Render/BBRenderQueue.h \
     Editor/PropertyManager/GroupManager/BBMaterialPropertyGroupManager.h \
@@ -240,25 +240,25 @@ HEADERS += \
     Engine/3D/BBNormalIndicator.h \
     Editor/Debugger/BBConsoleDockWidget.h \
     Editor/PropertyManager/GroupManager/BBGlobalSettingsGroupManager.h \
-    Engine/Lighting/BBSphericalHarmonicLighting.h \
-    Engine/Lighting/GI/BBGlobalIllumination.h \
-    Engine/Lighting/GI/BBSSAOGlobalIllumination.h \
+    Engine/Render/Lighting/BBSphericalHarmonicLighting.h \
+    Engine/Render/Lighting/GI/BBGlobalIllumination.h \
+    Engine/Render/Lighting/GI/BBSSAOGlobalIllumination.h \
     Engine/Math/BBMath.h \
-    Engine/Lighting/GI/BBSSDOGlobalIllumination.h \
-    Engine/RayTracing/BBScreenSpaceRayTracker.h \
+    Engine/Render/Lighting/GI/BBSSDOGlobalIllumination.h \
+    Engine/Render/RayTracing/BBScreenSpaceRayTracker.h \
     Editor/PropertyManager/GroupManager/BBRenderManager.h \
     Engine/Render/Texture/BBProcedureTexture.h \
     Engine/ParticleSystem/BBParticleSystem.h \
     Engine/ParticleSystem/BBParticle.h \
     Engine/Render/BufferObject/BBShaderStorageBufferObject.h \
-    Engine/Shader/BBComputeShader.h \
-    Engine/Shader/BBBaseShader.h \
+    Engine/Render/Shader/BBComputeShader.h \
+    Engine/Render/Shader/BBBaseShader.h \
     Engine/Render/BufferObject/BBTranslateFeedbackObject.h \
     Engine/Python/BBPythonVM.h \
-    Engine/Shadow/BBShadow.h \
-    Engine/Lighting/GI/BBFLCGlobalIllumination.h \
+    Engine/Render/Shadow/BBShadow.h \
+    Engine/Render/Lighting/GI/BBFLCGlobalIllumination.h \
     Engine/Render/BufferObject/BBAtomicCounterBufferObject.h \
-    Engine/Volumetric/BBVolumetricCloud.h
+    Engine/Render/Volumetric/BBVolumetricCloud.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
@@ -272,6 +272,7 @@ INCLUDEPATH += \
     ../BBearEditor/Editor \
     ../BBearEditor/Editor/Common \
     ../BBearEditor/Engine \
+    ../BBearEditor/Engine/Render \
     ../../External \
     ../../External/Eigen \
     ../../External/rapidxml \
