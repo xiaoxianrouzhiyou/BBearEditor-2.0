@@ -40,6 +40,7 @@ public:
 
     void setActivity(bool bActive) override;
     void setVisibility(bool bVisible) override;
+    void setBoundingBoxVisibility(bool bVisible);
 
     bool hit(const BBRay &ray, float &fDistance) override;
     bool belongToSelectionRegion(const BBFrustum &frustum) override;

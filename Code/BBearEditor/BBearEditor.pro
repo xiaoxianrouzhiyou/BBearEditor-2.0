@@ -140,7 +140,8 @@ SOURCES += \
     Engine/Render/Lighting/GI/BBFLCGlobalIllumination.cpp \
     Engine/Render/BufferObject/BBAtomicCounterBufferObject.cpp \
     Engine/Render/Volumetric/BBVolumetricCloud.cpp \
-    Editor/Render/BBOfflineOpenGLWidget.cpp
+    Editor/Render/BBOfflineOpenGLWidget.cpp \
+    Engine/OfflineRenderer/BBOfflineRenderer.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -260,7 +261,8 @@ HEADERS += \
     Engine/Render/Lighting/GI/BBFLCGlobalIllumination.h \
     Engine/Render/BufferObject/BBAtomicCounterBufferObject.h \
     Engine/Render/Volumetric/BBVolumetricCloud.h \
-    Editor/Render/BBOfflineOpenGLWidget.h
+    Editor/Render/BBOfflineOpenGLWidget.h \
+    Engine/OfflineRenderer/BBOfflineRenderer.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

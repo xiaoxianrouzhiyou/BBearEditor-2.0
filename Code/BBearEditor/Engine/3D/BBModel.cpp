@@ -149,6 +149,11 @@ void BBModel::setVisibility(bool bVisible)
     m_pBoundingBox->setVisibility(bVisible);
 }
 
+void BBModel::setBoundingBoxVisibility(bool bVisible)
+{
+    m_pBoundingBox->setVisibility(bVisible);
+}
+
 bool BBModel::hit(const BBRay &ray, float &fDistance)
 {
     // use bounding box for rough collision detection at first
