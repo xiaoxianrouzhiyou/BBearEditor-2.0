@@ -4,6 +4,7 @@
 #include "Geometry/BBBoundingBox.h"
 #include <cfloat>
 #include "Render/BufferObject/BBVertexBufferObject.h"
+#include "Render/BufferObject/BBElementBufferObject.h"
 #include "Render/BBRenderPass.h"
 #include "Render/BBDrawCall.h"
 #include "Render/Texture/BBTexture.h"
@@ -22,6 +23,9 @@ BBMesh::BBMesh(float px, float py, float pz,
 {
     setClassName(BB_CLASSNAME_MESH);
     m_eDrawPrimitiveType = GL_QUADS;
+    m_pEBO2 = nullptr;
+    m_pIndexes2 = nullptr;
+    m_nIndexCount2 = 0;
 }
 
 void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
@@ -51,8 +55,20 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
     BBDrawCall *pDrawCall = new BBDrawCall;
     pDrawCall->setMaterial(m_pCurrentMaterial);
     pDrawCall->setVBO(m_pVBO);
-    pDrawCall->setEBO(m_pEBO, m_eDrawPrimitiveType, m_nIndexCount, 0);
+    pDrawCall->setEBO(m_pEBO, GL_TRIANGLES, m_nIndexCount, 0);
     appendDrawCall(pDrawCall);
+
+    if (m_nIndexCount2 > 0)
+    {
+        m_pEBO2 = new BBElementBufferObject(m_nIndexCount2);
+        m_pEBO2->submitData(m_pIndexes2, m_nIndexCount2);
+
+        BBDrawCall *pDrawCall2 = new BBDrawCall;
+        pDrawCall2->setMaterial(m_pCurrentMaterial);
+        pDrawCall2->setVBO(m_pVBO);
+        pDrawCall2->setEBO(m_pEBO2, GL_QUADS, m_nIndexCount2, 0);
+        appendDrawCall(pDrawCall2);
+    }
 }
 
 bool BBMesh::hit(const BBRay &ray, float &fDistance)

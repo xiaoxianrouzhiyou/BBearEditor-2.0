@@ -1038,6 +1038,9 @@ BBFileListWidget::item:selected {
      <item row="0" column="0">
       <widget class="BBEditViewOpenGLWidget" name="openGLWidget" native="true"/>
      </item>
+     <item row="0" column="1">
+      <widget class="BBOfflineOpenGLWidget" name="offlineOpenGLWidget" native="true"/>
+     </item>
     </layout>
    </widget>
   </widget>
@@ -1211,6 +1214,11 @@ BBFileListWidget::item:selected {
    <class>BBEditViewOpenGLWidget</class>
    <extends>QOpenGLWidget</extends>
    <header>Render/bbeditviewopenglwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BBOfflineOpenGLWidget</class>
+   <extends>QOpenGLWidget</extends>
+   <header>Render/BBOfflineOpenGLWidget.h</header>
   </customwidget>
   <customwidget>
    <class>BBPropertyManager</class>

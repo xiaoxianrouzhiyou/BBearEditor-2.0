@@ -30,6 +30,11 @@ protected:
     virtual void load(const QString &path, QList<QVector4D> &outPositions) = 0;
 
     GLenum m_eDrawPrimitiveType;
+
+    // Some meshes are composed of multiple primitivetypes and require multiple sets of data representation
+    BBElementBufferObject *m_pEBO2;
+    unsigned short *m_pIndexes2;
+    int m_nIndexCount2;
 };
 
 #endif // BBMESH_H

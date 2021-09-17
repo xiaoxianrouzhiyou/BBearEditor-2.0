@@ -85,7 +85,8 @@ void BBStaticMesh::load(const QString &path, QList<QVector4D> &outPositions)
     // in the file, v... refers to vertex, f... refers to drawing instructions (How to organize the vertices)
     QList<QVector4D> positions, texcoords, normals;
     std::vector<VertexDefine> vertexes;
-    std::vector<int> indexes;
+    std::vector<int> triangleIndexes;
+    std::vector<int> quadIndexes;
     std::stringstream ssFileContent(pFileContent);
     std::string temp;
     char oneLine[256];
@@ -136,6 +137,8 @@ void BBStaticMesh::load(const QString &path, QList<QVector4D> &outPositions)
             else if (oneLine[0] == 'f')
             {
                 // face, What points are made of each face
+                GLenum primitiveType = GL_QUADS;
+                std::vector<int> primitiveIndexes;
                 std::stringstream ssOneLine(oneLine);
                 ssOneLine >> temp; // f...
                 // Triangle, 3 pieces of data per line, separated by spaces
@@ -146,7 +149,7 @@ void BBStaticMesh::load(const QString &path, QList<QVector4D> &outPositions)
                     if (vertexStr.length() == 0)
                     {
                         // test
-                        m_eDrawPrimitiveType = GL_TRIANGLES;
+                        primitiveType = GL_TRIANGLES;
                         break;
                     }
                     // The index value of pos and tex of each point, separated by /
@@ -180,18 +183,46 @@ void BBStaticMesh::load(const QString &path, QList<QVector4D> &outPositions)
                         vertexes.push_back(vd);
                     }
                     // Regardless of whether it exists, record the index value of the point in the point container
-                    indexes.push_back(currentVertexIndex);
+                    primitiveIndexes.push_back(currentVertexIndex);
+                }
+                // Primitiveindexes store the vertex index of a primitive.
+                // Judge the type of primitive according to the number of vertices,
+                // and then push it to the total index table of the corresponding primitive
+                if (primitiveType == GL_TRIANGLES)
+                {
+                    triangleIndexes.push_back(primitiveIndexes[0]);
+                    triangleIndexes.push_back(primitiveIndexes[1]);
+                    triangleIndexes.push_back(primitiveIndexes[2]);
+                }
+                else if (primitiveType == GL_QUADS)
+                {
+                    quadIndexes.push_back(primitiveIndexes[0]);
+                    quadIndexes.push_back(primitiveIndexes[1]);
+                    quadIndexes.push_back(primitiveIndexes[2]);
+                    quadIndexes.push_back(primitiveIndexes[3]);
                 }
             }
         }
     }
 
-    m_nIndexCount = (int)indexes.size();
+    m_nIndexCount = (int)triangleIndexes.size();
     m_pIndexes = new unsigned short[m_nIndexCount];
     for (int i = 0; i < m_nIndexCount; i++)
     {
-        m_pIndexes[i] = indexes[i];
+        m_pIndexes[i] = triangleIndexes[i];
     }
+
+    // Some meshes are composed of multiple primitivetypes and require multiple sets of data representation
+    m_nIndexCount2 = (int)quadIndexes.size();
+    if (m_nIndexCount2 > 0)
+    {
+        m_pIndexes2 = new unsigned short[m_nIndexCount2];
+        for (int i = 0; i < m_nIndexCount2; i++)
+        {
+            m_pIndexes2[i] = quadIndexes[i];
+        }
+    }
+
     // How many unique points
     m_nVertexCount = (int)vertexes.size();
     m_pVBO = new BBVertexBufferObject(m_nVertexCount);
