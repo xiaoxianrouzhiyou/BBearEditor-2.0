@@ -20,6 +20,7 @@ private slots:
     void createProject();
     void openProject();
     void showGlobalSettingsProperty();
+    void showOfflineRendererProperty();
     void switchGameObjectPage(int nIndex);
     void useToolFBX2BBear();
 

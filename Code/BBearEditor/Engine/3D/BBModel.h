@@ -4,6 +4,7 @@
 
 #include "Base/BBGameObject.h"
 #include "Mesh/BBMesh.h"
+#include "Geometry/BBTracer.h"
 
 
 class BBMesh;
@@ -43,6 +44,7 @@ public:
     void setBoundingBoxVisibility(bool bVisible);
 
     bool hit(const BBRay &ray, float &fDistance) override;
+    bool hit(const BBRay &ray, float fMinDistance, float fMaxDistance, BBHitInfo &hitInfo);
     bool belongToSelectionRegion(const BBFrustum &frustum) override;
     void showCloseUp(QVector3D &outPosition, QVector3D &outViewCenter, float fDistFactor = 2.4) override;
 

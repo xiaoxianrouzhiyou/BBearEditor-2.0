@@ -8,6 +8,7 @@
 #include "Render/BBRenderPass.h"
 #include "Render/BBDrawCall.h"
 #include "Render/Texture/BBTexture.h"
+#include "Math/BBMath.h"
 
 
 BBMesh::BBMesh()
@@ -91,6 +92,52 @@ bool BBMesh::hit(const BBRay &ray, float &fDistance)
     }
     return bResult;
 }
+
+bool BBMesh::hit(const BBRay &ray, float fMinDistance, float fMaxDistance, BBHitInfo &hitInfo)
+{
+    QVector3D intersectionNormal;
+    QVector3D intersectionPos;
+    float fIntersectionU;
+    float fIntersectionV;
+    float fNearestIntersectionU;
+    float fNearestIntersectionV;
+    hitInfo.m_fDistance = fMaxDistance;
+    int nNearestStartIndex = -1;
+    bool bResult = false;
+
+    for (int i = 0; i < m_nIndexCount; i += 3)
+    {
+        if (ray.computeIntersectWithTriangle(m_ModelMatrix * m_pVBO->getPosition(m_pIndexes[i]),
+                                             m_ModelMatrix * m_pVBO->getPosition(m_pIndexes[i + 1]),
+                                             m_ModelMatrix * m_pVBO->getPosition(m_pIndexes[i + 2]),
+                                             intersectionNormal, intersectionPos, fIntersectionU, fIntersectionV))
+        {
+            float temp = ray.computeIntersectDistance(intersectionPos);
+            if (temp < hitInfo.m_fDistance && temp > fMinDistance)
+            {
+                // Record the information of the nearest intersection point and face
+                hitInfo.m_Position = intersectionPos;
+                hitInfo.m_Normal = intersectionNormal;
+                fNearestIntersectionU = fIntersectionU;
+                fNearestIntersectionV = fIntersectionV;
+                hitInfo.m_fDistance = temp;
+                nNearestStartIndex = i;
+                bResult = true;
+            }
+        }
+    }
+
+    if (bResult)
+    {
+        hitInfo.m_Texcoords = lerp(m_pVBO->getTexcoord(m_pIndexes[nNearestStartIndex]),
+                                   m_pVBO->getTexcoord(m_pIndexes[nNearestStartIndex + 1]),
+                                   m_pVBO->getTexcoord(m_pIndexes[nNearestStartIndex + 2]),
+                                   fNearestIntersectionU, fNearestIntersectionV);
+    }
+
+    return bResult;
+}
+
 
 //void BBMesh::draw()
 //{

@@ -141,7 +141,11 @@ SOURCES += \
     Engine/Render/BufferObject/BBAtomicCounterBufferObject.cpp \
     Engine/Render/Volumetric/BBVolumetricCloud.cpp \
     Editor/Render/BBOfflineOpenGLWidget.cpp \
-    Engine/OfflineRenderer/BBOfflineRenderer.cpp
+    Engine/OfflineRenderer/BBOfflineRenderer.cpp \
+    Engine/Geometry/BBPhotonMap.cpp \
+    Engine/Render/Lighting/GameObject/BBAreaLight.cpp \
+    Engine/Geometry/BBTracer.cpp \
+    Editor/PropertyManager/GroupManager/BBOfflineRendererManager.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -262,7 +266,11 @@ HEADERS += \
     Engine/Render/BufferObject/BBAtomicCounterBufferObject.h \
     Engine/Render/Volumetric/BBVolumetricCloud.h \
     Editor/Render/BBOfflineOpenGLWidget.h \
-    Engine/OfflineRenderer/BBOfflineRenderer.h
+    Engine/OfflineRenderer/BBOfflineRenderer.h \
+    Engine/Geometry/BBPhotonMap.h \
+    Engine/Render/Lighting/GameObject/BBAreaLight.h \
+    Engine/Geometry/BBTracer.h \
+    Editor/PropertyManager/GroupManager/BBOfflineRendererManager.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

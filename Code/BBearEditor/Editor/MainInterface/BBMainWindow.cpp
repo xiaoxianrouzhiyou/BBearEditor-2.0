@@ -44,6 +44,11 @@ void BBMainWindow::showGlobalSettingsProperty()
     m_pUi->propertyManager->showGlobalSettingsProperty(m_pUi->openGLWidget->getScene());
 }
 
+void BBMainWindow::showOfflineRendererProperty()
+{
+    m_pUi->propertyManager->showOfflineRendererProperty(m_pUi->offlineOpenGLWidget->getOfflineRenderer());
+}
+
 void BBMainWindow::switchGameObjectPage(int nIndex)
 {
     m_pUi->stackedWidget->setCurrentIndex(nIndex);
@@ -187,6 +192,8 @@ void BBMainWindow::setConnect()
     // press scene button, show global settings in the property manager
     QObject::connect(m_pUi->buttonRootHierarchy, SIGNAL(clicked()),
                      this, SLOT(showGlobalSettingsProperty()));
+    QObject::connect(m_pUi->buttonRootInspector, SIGNAL(clicked()),
+                     this, SLOT(showOfflineRendererProperty()));
     // click material file, and show
     QObject::connect(m_pUi->dockProject, SIGNAL(showMaterialPreview(QString)),
                      m_pUi->previewOpenGLWidget, SLOT(showMaterialPreview(QString)));

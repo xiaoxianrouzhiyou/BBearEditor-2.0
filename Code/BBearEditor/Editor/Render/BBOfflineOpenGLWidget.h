@@ -15,6 +15,8 @@ public:
     BBOfflineOpenGLWidget(QWidget *pParent = 0);
     ~BBOfflineOpenGLWidget();
 
+    BBOfflineRenderer* getOfflineRenderer() { return m_pOfflineRenderer; }
+
 private:
     void initializeGL() override;
     void resizeGL(int nWidth, int nHeight) override;

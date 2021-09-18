@@ -24,5 +24,5 @@ void BBOfflineOpenGLWidget::initializeGL()
 void BBOfflineOpenGLWidget::resizeGL(int nWidth, int nHeight)
 {
     BBOpenGLWidget::resizeGL(nWidth, nHeight);
-    m_pOfflineRenderer->createTestModels();
+    m_pOfflineRenderer->createTestScene();
 }

@@ -3,7 +3,7 @@
 
 
 #include "Base/BBRenderableObject.h"
-
+#include "Geometry/BBTracer.h"
 
 enum BBMeshType
 {
@@ -25,6 +25,7 @@ public:
     virtual void init(const QString &path, BBBoundingBox3D *&pOutBoundingBox);
 
     bool hit(const BBRay &ray, float &fDistance) override;
+    bool hit(const BBRay &ray, float fMinDistance, float fMaxDistance, BBHitInfo &hitInfo);
 
 protected:
     virtual void load(const QString &path, QList<QVector4D> &outPositions) = 0;

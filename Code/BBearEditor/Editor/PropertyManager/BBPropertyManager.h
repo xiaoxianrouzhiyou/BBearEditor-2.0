@@ -10,6 +10,7 @@ class BBGroupManager;
 class BBTransformGroupManager;
 class BBGameObject;
 class BBScene;
+class BBOfflineRenderer;
 class BBPreviewOpenGLWidget;
 
 
@@ -28,6 +29,7 @@ public slots:
     void showGameObjectSetProperty(BBGameObject *pCenterGameObject,
                                    const QList<BBGameObject*> &gameObjectSet);
     void showGlobalSettingsProperty(BBScene *pScene);
+    void showOfflineRendererProperty(BBOfflineRenderer *pOfflineRenderer);
     void showMaterialProperty(const QString &filePath);
 
     void updateCoordinateSystem();
@@ -48,6 +50,7 @@ private:
     BBGroupManager* addGroupManager(const QString &name, const QString &iconPath);
     void addTransformGroupManager(BBGameObject *pGameObject);
     void addGlobalSettingsGroupManager(BBScene *pScene);
+    void addOfflineRendererManager(BBOfflineRenderer *pOfflineRenderer);
     void addMaterialGroupManager(const QString &filePath);
 
     BBPreviewOpenGLWidget *m_pPreviewOpenGLWidget;

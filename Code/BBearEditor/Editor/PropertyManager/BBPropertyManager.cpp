@@ -6,6 +6,7 @@
 #include "GroupManager/BBLightManager.h"
 #include "GroupManager/BBGlobalSettingsGroupManager.h"
 #include "GroupManager/BBRenderManager.h"
+#include "GroupManager/BBOfflineRendererManager.h"
 #include "BBPropertyFactory.h"
 #include "Base/BBGameObject.h"
 #include "Lighting/GameObject/BBDirectionalLight.h"
@@ -120,6 +121,12 @@ void BBPropertyManager::showGlobalSettingsProperty(BBScene *pScene)
     addGlobalSettingsGroupManager(pScene);
 }
 
+void BBPropertyManager::showOfflineRendererProperty(BBOfflineRenderer *pOfflineRenderer)
+{
+    clear();
+    addOfflineRendererManager(pOfflineRenderer);
+}
+
 void BBPropertyManager::showMaterialProperty(const QString &filePath)
 {
     clear();
@@ -218,12 +225,17 @@ void BBPropertyManager::addGlobalSettingsGroupManager(BBScene *pScene)
     QObject::connect(pGlobalSettingsGroupManager, SIGNAL(updateFileList()), this, SLOT(updateFileList()));
 }
 
+void BBPropertyManager::addOfflineRendererManager(BBOfflineRenderer *pOfflineRenderer)
+{
+    BBOfflineRendererManager *pOfflineRendererManager = new BBOfflineRendererManager(pOfflineRenderer, this);
+    layout()->addWidget(pOfflineRendererManager);
+}
+
 void BBPropertyManager::addMaterialGroupManager(const QString &filePath)
 {
     BBMaterialManager *pMaterialManager = new BBMaterialManager(filePath, this);
     layout()->addWidget(pMaterialManager);
-    BBMaterialPropertyGroupManager *pPropertyGroupManager = new BBMaterialPropertyGroupManager(pMaterialManager->getMaterial(),
-                                                                                               m_pPreviewOpenGLWidget, this);
+    BBMaterialPropertyGroupManager *pPropertyGroupManager = new BBMaterialPropertyGroupManager(pMaterialManager->getMaterial(), m_pPreviewOpenGLWidget, this);
     layout()->addWidget(pPropertyGroupManager);
 }
 

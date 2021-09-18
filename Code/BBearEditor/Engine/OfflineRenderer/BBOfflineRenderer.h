@@ -2,6 +2,8 @@
 #define BBOFFLINERENDERER_H
 
 
+#define TestModelCount 7
+
 class BBScene;
 class BBModel;
 
@@ -11,11 +13,12 @@ public:
     BBOfflineRenderer(BBScene *pScene);
     virtual ~BBOfflineRenderer();
 
-    void createTestModels();
+    void createTestScene();
+    void generatePhotonMap();
 
 private:
     BBScene *m_pScene;
-    BBModel *m_pModels[3];
+    BBModel *m_pModels[TestModelCount];
 };
 
 #endif // BBOFFLINERENDERER_H

@@ -168,6 +168,21 @@ bool BBModel::hit(const BBRay &ray, float &fDistance)
     return false;
 }
 
+bool BBModel::hit(const BBRay &ray, float fMinDistance, float fMaxDistance, BBHitInfo &hitInfo)
+{
+    // use bounding box for rough collision detection at first
+    float fDistance;
+    if (m_pBoundingBox->hit(ray, fDistance))
+    {
+        // After hitting the bounding box, judge whether it hits the mesh
+        if (m_pMesh->hit(ray, fMinDistance, fMaxDistance, hitInfo))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool BBModel::belongToSelectionRegion(const BBFrustum &frustum)
 {
     // Eliminate objects whose the center point of the bounding box is on the outside

@@ -5,6 +5,8 @@
 #include "BBBaseRenderComponent.h"
 #include "BBRenderState.h"
 #include <QPixmap>
+#include "Geometry/BBRay.h"
+#include "Geometry/BBTracer.h"
 
 
 class BBCamera;
@@ -61,6 +63,9 @@ public:
     inline BBRenderPass* getAdditiveRenderPass() const { return m_pAdditiveRenderPass; }
     BBShader* getShader();
     bool isWriteFBO();
+
+public:
+    bool scatter(const BBRay &ray, const BBHitInfo &hitInfo, BBScatterInfo &scatterInfo);
 
 private:
     BBRenderPass *m_pBaseRenderPass;
