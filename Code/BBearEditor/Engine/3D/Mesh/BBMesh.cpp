@@ -45,7 +45,7 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
     m_pCurrentMaterial->initMultiPass("standard", BB_PATH_RESOURCE_SHADER(standard.vert), BB_PATH_RESOURCE_SHADER(standard.frag));
     m_pCurrentMaterial->getAdditiveRenderPass()->setBlendState(true);
     // default
-    float *pLightPosition = new float[4] {1.0f, 1.0f, 0.0f, 0.0f};
+    float *pLightPosition = new float[4] {0.8f, 1.0f, 0.5f, 0.0f};
     float *pLightColor = new float[4] {1.0f, 1.0f, 1.0f, 1.0f};
     m_pCurrentMaterial->setVector4(LOCATION_LIGHT_POSITION, pLightPosition);
     m_pCurrentMaterial->setVector4(LOCATION_LIGHT_COLOR, pLightColor);

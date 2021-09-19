@@ -16,5 +16,8 @@ float frandom();
 float sfrandom();
 QVector3D hemisphericalRandom(QVector3D normal);
 
+// KD Tree
+int getMedian(int start, int end);
+
 
 #endif // BBMATH_H

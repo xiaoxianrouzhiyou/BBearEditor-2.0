@@ -57,3 +57,43 @@ QVector3D hemisphericalRandom(QVector3D normal)
     } while(mode >= 1.0f || mode == 0.0f || QVector3D::dotProduct(v, normal) < 0.0f);
     return v.normalized();
 }
+
+
+// KD Tree
+/**
+ * @brief getMedian                 Find the location of the median, when you build a complete binary tree
+ *                                  The all data can be divided into two parts, one is smaller than the median and the other is larger than the median
+ * @param start
+ * @param end
+ * @return                          This position is the offset from the start
+ */
+int getMedian(int start, int end)
+{
+    int count = end - start + 1;
+    int median;
+    // Total number of nodes in the first k layer
+    int nTotalNodeNum = 1;
+    // Node number of each layer
+    int nLayerNodeNum = 2;
+    while (nTotalNodeNum < count)
+    {
+        nTotalNodeNum += nLayerNodeNum;
+        nLayerNodeNum *= 2;
+    }
+    // full binary tree
+    if (nTotalNodeNum == count)
+    {
+        return start + count / 2;
+    }
+    nLayerNodeNum /= 2;
+    if (nTotalNodeNum - nLayerNodeNum / 2 < count)
+    {
+        // On the last layer, more than half, but not full binary tree
+        return start + nTotalNodeNum / 2;
+    }
+    else
+    {
+        // On the last floor, no more than half
+        return start + nTotalNodeNum / 2 - (nTotalNodeNum - nLayerNodeNum / 2 - count);
+    }
+}

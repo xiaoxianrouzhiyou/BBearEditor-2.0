@@ -57,6 +57,8 @@ void BBOfflineRenderer::startPhotonMapping()
 {
     generatePhotonMap();
     showPhotonMap();
+    m_pPhotonMap->balance();
+//    m_pPhotonMap->debug();
 }
 
 void BBOfflineRenderer::generatePhotonMap()
@@ -79,7 +81,7 @@ void BBOfflineRenderer::generatePhotonMap()
 
 void BBOfflineRenderer::showPhotonMap()
 {
-    qDebug() << m_pPhotonMap->getBoxMin() << m_pPhotonMap->getBoxMax();
+//    qDebug() << m_pPhotonMap->getBoxMin() << m_pPhotonMap->getBoxMax();
     int nPhotonNum = m_pPhotonMap->getPhotonNum();
     QVector3D *pPositions = m_pPhotonMap->getPhotonPositions();
     BBVertexBufferObject *pVBO = new BBVertexBufferObject(nPhotonNum);
