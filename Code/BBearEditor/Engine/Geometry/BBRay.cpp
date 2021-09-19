@@ -1,16 +1,21 @@
 #include "BBRay.h"
 
-BBRay::BBRay()
+
+BBRay::BBRay(const QVector3D &origin, const QVector3D &direction)
 {
-    m_NearPoint = QVector3D(0, 0, 0);
-    m_FarPoint = QVector3D(0, 0, -1);
+    // Represented by starting point and direction
+    m_NearPoint = origin;
+    m_Direction = direction.normalized();
+    m_FarPoint = m_NearPoint + m_Direction;
 }
 
 BBRay::BBRay(const GLdouble &nearX, const GLdouble &nearY, const GLdouble &nearZ,
              const GLdouble &farX, const GLdouble &farY, const GLdouble &farZ)
 {
+    // Represented by two end points
     m_NearPoint = QVector3D(nearX, nearY, nearZ);
     m_FarPoint = QVector3D(farX, farY, farZ);
+    m_Direction = (m_FarPoint - m_NearPoint).normalized();
 }
 
 QVector3D BBRay::computeIntersectWithXOZPlane(float y) const
@@ -210,9 +215,4 @@ bool BBRay::computeIntersectWithQuarterCircle(const QVector3D &center, float fRa
         }
     }
     return false;
-}
-
-QVector3D BBRay::getDirection() const
-{
-    return (m_FarPoint - m_NearPoint).normalized();
 }

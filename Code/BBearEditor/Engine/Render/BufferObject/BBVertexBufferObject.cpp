@@ -43,6 +43,16 @@ QVector3D BBVertexBufferObject::getPosition(int index)
     return QVector3D(m_pVertexes[index].m_fPosition[0], m_pVertexes[index].m_fPosition[1], m_pVertexes[index].m_fPosition[2]);
 }
 
+QList<QVector4D> BBVertexBufferObject::getPositions()
+{
+    QList<QVector4D> vertexes;
+    for (int i = 0; i < m_nVertexCount; i++)
+    {
+        vertexes.append(QVector4D(getPosition(i), 1.0f));
+    }
+    return vertexes;
+}
+
 void BBVertexBufferObject::setColor(float r, float g, float b, float a)
 {
     for (int i = 0; i < m_nVertexCount; i++)

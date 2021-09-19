@@ -13,7 +13,7 @@ BBOpenGLWidget::BBOpenGLWidget(QWidget *parent)
     format.setSamples(16);
     setFormat(format);
 
-    m_pScene = new BBScene;
+    m_pScene = new BBScene(this);
 }
 
 BBOpenGLWidget::~BBOpenGLWidget()

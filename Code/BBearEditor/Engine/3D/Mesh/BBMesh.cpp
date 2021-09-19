@@ -72,6 +72,26 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
     }
 }
 
+void BBMesh::init(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount, BBBoundingBox3D *&pOutBoundingBox)
+{
+    m_pVBO = pVBO;
+    // create bounding box
+    pOutBoundingBox = new BBAABBBoundingBox3D(m_Position.x(), m_Position.y(), m_Position.z(),
+                                              m_Rotation.x(), m_Rotation.y(), m_Rotation.z(),
+                                              m_Scale.x(), m_Scale.y(), m_Scale.z(),
+                                              pVBO->getPositions());
+    pOutBoundingBox->init();
+
+    m_pCurrentMaterial->init("base", BB_PATH_RESOURCE_SHADER(base.vert), BB_PATH_RESOURCE_SHADER(base.frag));
+
+    BBRenderableObject::init();
+
+    BBDrawCall *pDrawCall = new BBDrawCall;
+    pDrawCall->setMaterial(m_pCurrentMaterial);
+    pDrawCall->setVBO(m_pVBO, eDrawPrimitiveType, nDrawStartIndex, nDrawCount);
+    appendDrawCall(pDrawCall);
+}
+
 bool BBMesh::hit(const BBRay &ray, float &fDistance)
 {
     QVector3D intersection;

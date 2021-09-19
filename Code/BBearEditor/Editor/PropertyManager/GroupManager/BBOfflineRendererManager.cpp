@@ -23,5 +23,5 @@ BBOfflineRendererManager::~BBOfflineRendererManager()
 
 void BBOfflineRendererManager::startPhotonMapping()
 {
-    m_pOfflineRenderer->generatePhotonMap();
+    m_pOfflineRenderer->startPhotonMapping();
 }

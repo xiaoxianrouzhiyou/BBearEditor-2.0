@@ -55,5 +55,5 @@ QVector3D hemisphericalRandom(QVector3D normal)
         v = QVector3D(sfrandom(), sfrandom(), sfrandom());
         mode = v.length();
     } while(mode >= 1.0f || mode == 0.0f || QVector3D::dotProduct(v, normal) < 0.0f);
-    return v;
+    return v.normalized();
 }

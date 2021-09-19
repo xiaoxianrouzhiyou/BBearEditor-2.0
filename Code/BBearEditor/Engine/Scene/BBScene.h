@@ -7,8 +7,9 @@
 #include <Serializer/BBGameObject.pb.h>
 #include "Render/BBBaseRenderComponent.h"
 
-
+class BBOpenGLWidget;
 class BBFrameBufferObject;
+class BBVertexBufferObject;
 class BBCamera;
 class BBSkyBox;
 class BBHorizontalPlane;
@@ -32,7 +33,7 @@ typedef void (BBScene::*BBRenderingFunc)();
 class BBScene
 {
 public:
-    BBScene();
+    BBScene(BBOpenGLWidget *pOpenGLWidget);
     virtual ~BBScene();
 
     void init();
@@ -71,17 +72,14 @@ public:
 
     BBModel* createModel(const QString &userData, int x, int y);
     BBModel* createModel(const QString &userData,
-                         const QVector3D &position = QVector3D(0, 0, 0),
-                         const QVector3D &rotation = QVector3D(0, 0, 0),
-                         const QVector3D &scale = QVector3D(1, 1, 1));
+                         const QVector3D &position = QVector3D(0, 0, 0), const QVector3D &rotation = QVector3D(0, 0, 0), const QVector3D &scale = QVector3D(1, 1, 1));
+    BBModel* createModel(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount,
+                         const QVector3D &position = QVector3D(0, 0, 0), const QVector3D &rotation = QVector3D(0, 0, 0), const QVector3D &scale = QVector3D(1, 1, 1));
     BBModel* createModel(const BBSerializer::BBGameObject &gameObject);
     BBModel* createModelForPreview(const QString &filePath, float fDistFactor = 2.0f);
 
     BBLight* createLight(const QString &fileName, int x, int y, bool bSelect = true);
-    BBLight* createLight(const QString &fileName,
-                         const QVector3D &position = QVector3D(0, 0, 0),
-                         const QVector3D &rotation = QVector3D(0, 0, 0),
-                         bool bSelect = true);
+    BBLight* createLight(const QString &fileName, const QVector3D &position = QVector3D(0, 0, 0), const QVector3D &rotation = QVector3D(0, 0, 0), bool bSelect = true);
 
     BBCanvas* createCanvas(int x, int y, bool bSelect = true);
 
@@ -102,6 +100,8 @@ public:
 
     void clear();
 
+    void update();
+
 public:
     void setFullScreenQuadTexture(const std::string &uniformName, GLuint textureName);
 
@@ -119,6 +119,8 @@ private:
     BBFrameBufferObject *m_pShadowMapFBO;
 
 private:
+    BBOpenGLWidget *m_pOpenGLWidget;
+
     BBRenderingFunc m_RenderingFunc;
     BBRenderQueue *m_pRenderQueue;
 

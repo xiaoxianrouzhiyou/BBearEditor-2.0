@@ -1,4 +1,5 @@
 #include "BBScene.h"
+#include "Render/BBOpenGLWidget.h"
 #include "Utils/BBUtils.h"
 #include "Render/BufferObject/BBFrameBufferObject.h"
 #include "Render/BBCamera.h"
@@ -27,8 +28,9 @@
 #include "3D/BBNormalIndicator.h"
 
 
-BBScene::BBScene()
+BBScene::BBScene(BBOpenGLWidget *pOpenGLWidget)
 {
+    m_pOpenGLWidget = pOpenGLWidget;
     m_RenderingFunc = &BBScene::defaultRendering;
     m_pRenderQueue = nullptr;
     m_fUpdateRate = (float) BB_CONSTANT_UPDATE_RATE / 1000;
@@ -317,8 +319,7 @@ BBModel* BBScene::createModel(const QString &userData, int x, int y)
     return createModel(userData, hit);
 }
 
-BBModel* BBScene::createModel(const QString &userData,
-                              const QVector3D &position, const QVector3D &rotation, const QVector3D &scale)
+BBModel* BBScene::createModel(const QString &userData, const QVector3D &position, const QVector3D &rotation, const QVector3D &scale)
 {
     BBModel *pModel = nullptr;
     if (userData == BB_CLASSNAME_TERRAIN)
@@ -333,6 +334,19 @@ BBModel* BBScene::createModel(const QString &userData,
         pModel->setBaseAttributes(QFileInfo(userData).baseName(), BB_CLASSNAME_MODEL, BB_CLASSNAME_MODEL);
         pModel->init(userData);
     }
+    pModel->insertInRenderQueue(m_pRenderQueue);
+    m_Models.append(pModel);
+
+    return pModel;
+}
+
+BBModel* BBScene::createModel(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount,
+                              const QVector3D &position, const QVector3D &rotation, const QVector3D &scale)
+{
+    BBModel *pModel = new BBModel(position, rotation, scale, BBMeshType::OBJ);
+    pModel->setBaseAttributes("Model", BB_CLASSNAME_MODEL, BB_CLASSNAME_MODEL);
+    pModel->init(pVBO, eDrawPrimitiveType, nDrawStartIndex, nDrawCount);
+
     pModel->insertInRenderQueue(m_pRenderQueue);
     m_Models.append(pModel);
 
@@ -593,6 +607,11 @@ void BBScene::clear()
         BBGameObject *pObject = *itr;
         deleteGameObject(pObject);
     }
+}
+
+void BBScene::update()
+{
+    m_pOpenGLWidget->update();
 }
 
 void BBScene::setFullScreenQuadTexture(const std::string &uniformName, GLuint textureName)

@@ -23,6 +23,7 @@ public:
            float sx, float sy, float sz);
 
     virtual void init(const QString &path, BBBoundingBox3D *&pOutBoundingBox);
+    void init(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount, BBBoundingBox3D *&pOutBoundingBox);
 
     bool hit(const BBRay &ray, float &fDistance) override;
     bool hit(const BBRay &ray, float fMinDistance, float fMaxDistance, BBHitInfo &hitInfo);

@@ -9,7 +9,7 @@ int BBTracer::m_nMaxTraceDepth = 5;
 void BBTracer::tracePhoton(const BBRay &ray, BBModel *pSceneModels[], int nModelCount, int depth, const QVector3D &power, BBPhotonMap *pPhotonMap)
 {
     // After tracing many times, end
-    BB_PROCESS_ERROR_RETURN(depth <= m_nMaxTraceDepth);
+    BB_PROCESS_ERROR_RETURN((depth < m_nMaxTraceDepth));
 
     // need to record the info of hit point
     BBHitInfo nearHitInfo;
@@ -22,7 +22,7 @@ void BBTracer::tracePhoton(const BBRay &ray, BBModel *pSceneModels[], int nModel
             if (hitInfo.m_fDistance < nearHitInfo.m_fDistance)
             {
                 nearHitInfo = hitInfo;
-                hitInfo.m_pModel = pSceneModels[i];
+                nearHitInfo.m_pModel = pSceneModels[i];
             }
         }
     }

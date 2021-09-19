@@ -2,22 +2,29 @@
 #include "Math/BBMath.h"
 
 
-BBAreaLight::BBAreaLight(int nMin0, int nMax0, int nMin1, int nMax1, int nFixedValue)
+BBAreaLight::BBAreaLight(float fMin0, float fMax0, float fMin1, float fMax1, float fFixedValue)
 {
-    m_nMin0 = nMin0;
-    m_nMax0 = nMax0;
-    m_nMin1 = nMin1;
-    m_nMax1 = nMax1;
-    m_nFixedValue = nFixedValue;
+    // At present, only xoz plane area light sources are considered, Face down
+    m_fMin0 = fMin0;
+    m_fMax0 = fMax0;
+    m_fMin1 = fMin1;
+    m_fMax1 = fMax1;
+    m_fFixedValue = fFixedValue;
+    m_Normal = QVector3D(0, -1, 0);
 }
 
-void BBAreaLight::generatePhoton(QVector3D &origin, QVector3D &direction, float &fPowerScale, BBHitInfo &hitInfo)
+void BBAreaLight::generatePhoton(QVector3D &origin, QVector3D &direction, float &fPowerScale, const QVector3D &normal)
 {
     // At present, only xoz plane area light sources are considered
     // Emit photons randomly from a point on the area light source
-    origin = QVector3D(m_nMin0 + rand() * (m_nMax0 - m_nMin0), m_nFixedValue, m_nMin1 + rand() * (m_nMax1 - m_nMin1));
+    origin = QVector3D(m_fMin0 + frandom() * (m_fMax0 - m_fMin0), m_fFixedValue, m_fMin1 + frandom() * (m_fMax1 - m_fMin1));
     // Randomly generated vector on hemispherical surface
-    direction = hemisphericalRandom(hitInfo.m_Normal);
+    direction = hemisphericalRandom(normal);
     // The intensity of light is related to the angle
-    fPowerScale = QVector3D::dotProduct(direction, hitInfo.m_Normal);
+    fPowerScale = QVector3D::dotProduct(direction, normal);
+}
+
+void BBAreaLight::generatePhoton(QVector3D &origin, QVector3D &direction, float &fPowerScale, const BBHitInfo &hitInfo)
+{
+    generatePhoton(origin, direction, fPowerScale, hitInfo.m_Normal);
 }

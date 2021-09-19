@@ -15,7 +15,7 @@ enum BBPlaneName
 class BBRay
 {
 public:
-    BBRay();
+    BBRay(const QVector3D &origin = QVector3D(0, 0, 0), const QVector3D &direction = QVector3D(0, 0, -1));
     BBRay(const GLdouble &nearX, const GLdouble &nearY, const GLdouble &nearZ,
           const GLdouble &farX, const GLdouble &farY, const GLdouble &farZ);
 
@@ -37,7 +37,7 @@ public:
     bool computeIntersectWithCircle(const QVector3D &center, float fRadius, const BBPlaneName &ePlaneName, QVector3D &outIntersection) const;
     bool computeIntersectWithQuarterCircle(const QVector3D &center, float fRadius, const BBPlaneName &ePlaneName, QVector3D &outIntersection, const QVector3D &quadrantFlag) const;
 
-    QVector3D getDirection() const;
+    QVector3D getDirection() const { return m_Direction; }
 
     inline QVector3D getNearPoint() { return m_NearPoint; }
     inline QVector3D getFarPoint() { return m_FarPoint; }
@@ -45,6 +45,7 @@ public:
 private:
     QVector3D m_NearPoint;
     QVector3D m_FarPoint;
+    QVector3D m_Direction;
 };
 
 

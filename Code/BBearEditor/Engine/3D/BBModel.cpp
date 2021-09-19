@@ -51,6 +51,11 @@ void BBModel::init(const QString &path)
     m_pMesh->init(path, m_pBoundingBox);
 }
 
+void BBModel::init(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount)
+{
+    m_pMesh->init(pVBO, eDrawPrimitiveType, nDrawStartIndex, nDrawCount, m_pBoundingBox);
+}
+
 void BBModel::render(BBCamera *pCamera)
 {
     if (m_bActive)

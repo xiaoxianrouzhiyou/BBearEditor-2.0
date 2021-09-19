@@ -16,10 +16,15 @@ struct BBPhoton
 class BBPhotonMap
 {
 public:
-    BBPhotonMap();
+    BBPhotonMap(int nMaxPhotonNum = 10000);
     ~BBPhotonMap();
 
     void store(const BBPhoton &photon);
+
+    QVector3D* getPhotonPositions();
+    int getPhotonNum() { return m_nPhotonNum; }
+    QVector3D getBoxMin() { return m_BoxMin; }
+    QVector3D getBoxMax() { return m_BoxMax; }
 
 private:
     int m_nPhotonNum;
