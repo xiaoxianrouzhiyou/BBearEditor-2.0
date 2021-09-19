@@ -6,7 +6,8 @@ BBPhotonMap::BBPhotonMap(int nMaxPhotonNum)
 {
     m_nMaxPhotonNum = nMaxPhotonNum;
     m_nPhotonNum = 0;
-    m_pPhoton = new BBPhoton[nMaxPhotonNum];
+    // For easy calculation, the index starts from 1
+    m_pPhoton = new BBPhoton[nMaxPhotonNum + 1];
     m_BoxMin = QVector3D(1000000.0f, 1000000.0f, 1000000.0f);
     m_BoxMax = QVector3D(-1000000.0f, -1000000.0f, -1000000.0f);
 }
@@ -27,9 +28,8 @@ BBPhotonMap BBPhotonMap::operator=(const BBPhotonMap &photonMap)
 
 void BBPhotonMap::store(const BBPhoton &photon)
 {
-    BB_PROCESS_ERROR_RETURN((m_nPhotonNum < m_nMaxPhotonNum));
-    m_pPhoton[m_nPhotonNum] = photon;
-    m_nPhotonNum++;
+    BB_PROCESS_ERROR_RETURN((m_nPhotonNum <= m_nMaxPhotonNum));
+    m_pPhoton[++m_nPhotonNum] = photon;
     m_BoxMin = QVector3D(std::min(m_BoxMin.x(), photon.m_Position.x()), std::min(m_BoxMin.y(), photon.m_Position.y()), std::min(m_BoxMin.z(), photon.m_Position.z()));
     m_BoxMax = QVector3D(std::max(m_BoxMax.x(), photon.m_Position.x()), std::max(m_BoxMax.y(), photon.m_Position.y()), std::max(m_BoxMax.z(), photon.m_Position.z()));
 }
@@ -40,15 +40,64 @@ void BBPhotonMap::balance()
     BBPhoton *pTmpPhoton = new BBPhoton[m_nPhotonNum + 1];
     for (int i = 1; i <= m_nPhotonNum; i++)
     {
-        pTmpPhoton[i] = m_pPhoton[i - 1];
+        pTmpPhoton[i] = m_pPhoton[i];
     }
     balanceSegment(pTmpPhoton, 1, 1, m_nPhotonNum);
     BB_SAFE_DELETE_ARRAY(pTmpPhoton);
 }
 
+void BBPhotonMap::getKNearestPhotons(BBNearestPhotons *pNearestPhotons, int nPhotonIndex)
+{
+//    if (nPhotonIndex >= m_nPhotonNum)
+//        return;
+
+//    BBPhoton *pCurrentPhoton = &m_pPhoton[nPhotonIndex];
+//    //           1
+//    //       2       3
+//    //    4     5 6     7
+//    //  8   9
+//    // If the index starts from 1, the index of the left subtree is 2 times
+//    // nPhotonIndex starts from 0
+//    if ((nPhotonIndex + 1) * 2 <= m_nPhotonNum)
+//    {
+//        // There are sub nodes
+//        // The distance between detection photon and the dividing axis of current photon
+//        float d = pNearestPhotons->m_DetectionPosition[pCurrentPhoton->m_Axis] - pCurrentPhoton->m_Position[pCurrentPhoton->m_Axis];
+//        if (d < 0)
+//        {
+//            // The detection point is in the left of the dividing axis, search left subtree
+//            getKNearestPhotons(pNearestPhotons, (nPhotonIndex + 1) * 2 - 1);
+//            if (d * d < pNearestPhotons->m_pDistanceSquare[0])
+//            {
+//                // search right subtree
+//                // When the distance is greater than detection scope, all nodes on the right subtree will be farther
+//                getKNearestPhotons(pNearestPhotons, (nPhotonIndex + 1) * 2);
+//            }
+//        }
+//        else
+//        {
+//            // search right subtree
+//            getKNearestPhotons(pNearestPhotons, (nPhotonIndex + 1) * 2);
+//            if (d * d < pNearestPhotons->m_pDistanceSquare[0])
+//            {
+//                // search left subtree
+//                getKNearestPhotons(pNearestPhotons, (nPhotonIndex + 1) * 2 - 1);
+//            }
+//        }
+//    }
+//    // process itself
+//    float fDistanceSquare = (pNearestPhotons->m_DetectionPosition - pCurrentPhoton->m_Position).lengthSquared();
+//    if (fDistanceSquare > pNearestPhotons->m_pDistanceSquare[0])
+//        return;
+//    if (pNearestPhotons->)
+//    {
+
+//    }
+}
+
 void BBPhotonMap::debug()
 {
-    for (int i = 0; i < m_nPhotonNum; i++)
+    for (int i = 1; i <= m_nPhotonNum; i++)
     {
         qDebug() << m_pPhoton[i].m_Position;
         qDebug() << m_pPhoton[i].m_Axis;
@@ -57,8 +106,8 @@ void BBPhotonMap::debug()
 
 QVector3D* BBPhotonMap::getPhotonPositions()
 {
-    QVector3D *pPositions = new QVector3D[m_nPhotonNum];
-    for (int i = 0; i < m_nPhotonNum; i++)
+    QVector3D *pPositions = new QVector3D[m_nPhotonNum + 1];
+    for (int i = 1; i <= m_nPhotonNum; i++)
     {
         pPositions[i] = m_pPhoton[i].m_Position;
     }
@@ -105,7 +154,7 @@ void BBPhotonMap::balanceSegment(BBPhoton pPhoton[], int index, int start, int e
 {
     if (start == end)
     {
-        m_pPhoton[index - 1] = pPhoton[start];
+        m_pPhoton[index] = pPhoton[start];
         return;
     }
 
@@ -119,13 +168,13 @@ void BBPhotonMap::balanceSegment(BBPhoton pPhoton[], int index, int start, int e
 
     // The median is calculated correctly, but the nodes on the left and right subtrees still need to be processed
     splitMedian(pPhoton, start, end, median, axis);
-    m_pPhoton[index - 1] = pPhoton[median];
-    m_pPhoton[index - 1].m_Axis = axis;
+    m_pPhoton[index] = pPhoton[median];
+    m_pPhoton[index].m_Axis = axis;
 
     if (start < median)
     {
         float tmp = m_BoxMax[axis];
-        m_BoxMax[axis] = m_pPhoton[index - 1].m_Position[axis];
+        m_BoxMax[axis] = m_pPhoton[index].m_Position[axis];
         // index * 2 : Index of left subtree root
         balanceSegment(pPhoton, index * 2, start, median - 1);
         m_BoxMax[axis] = tmp;
@@ -133,7 +182,7 @@ void BBPhotonMap::balanceSegment(BBPhoton pPhoton[], int index, int start, int e
     if (end > median)
     {
         float tmp = m_BoxMin[axis];
-        m_BoxMin[axis] = m_pPhoton[index - 1].m_Position[axis];
+        m_BoxMin[axis] = m_pPhoton[index].m_Position[axis];
         balanceSegment(pPhoton, index * 2 + 1, median + 1, end);
         m_BoxMin[axis] = tmp;
     }

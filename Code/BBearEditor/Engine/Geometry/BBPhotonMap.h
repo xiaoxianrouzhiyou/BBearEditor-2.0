@@ -15,6 +15,38 @@ struct BBPhoton
     int m_Axis;
 };
 
+struct BBNearestPhotons
+{
+    // Detection point position
+    QVector3D m_DetectionPosition;
+    // Maximum number of photons to find
+    int m_nMaxPhotonCount;
+    // Number of photons found
+    int m_nCurrentCount;
+    // Is the maximum heap full, m_nMaxPhotonCount == m_nCurrentCount
+    bool m_bFulled;
+    // Store the square of the distance in the photon maximum stack between photon and the detection point to avoid repeated calculation each time
+    // [0] store the maximum
+    float *m_pDistanceSquare;
+    // Photons found
+    BBPhoton **m_ppPhotons;
+
+    BBNearestPhotons()
+    {
+        m_nMaxPhotonCount = 0;
+        m_nCurrentCount = 0;
+        m_bFulled = false;
+        m_pDistanceSquare = nullptr;
+        m_ppPhotons = nullptr;
+    }
+
+    ~BBNearestPhotons()
+    {
+        BB_SAFE_DELETE_ARRAY(m_pDistanceSquare);
+        BB_SAFE_DELETE_ARRAY(m_ppPhotons);
+    }
+};
+
 class BBPhotonMap
 {
 public:
@@ -25,8 +57,10 @@ public:
 
     void store(const BBPhoton &photon);
     void balance();
+    void getKNearestPhotons(BBNearestPhotons *pNearestPhotons, int nPhotonIndex);
 
     void debug();
+
     QVector3D* getPhotonPositions();
     int getPhotonNum() const { return m_nPhotonNum; }
     int getMaxPhotonNum() const { return m_nMaxPhotonNum; }
