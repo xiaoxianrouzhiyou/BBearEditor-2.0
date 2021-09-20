@@ -64,9 +64,6 @@ public:
     BBShader* getShader();
     bool isWriteFBO();
 
-public:
-    bool scatter(const BBRay &ray, const BBHitInfo &hitInfo, BBScatterInfo &scatterInfo);
-
 private:
     BBRenderPass *m_pBaseRenderPass;
     BBRenderPass *m_pAdditiveRenderPass;

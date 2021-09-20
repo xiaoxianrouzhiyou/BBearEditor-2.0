@@ -3,6 +3,9 @@
 
 
 #include "Render/BBBaseRenderComponent.h"
+#include <cfloat>
+
+class BBModel;
 
 enum BBPlaneName
 {
@@ -11,6 +14,20 @@ enum BBPlaneName
     YOZ = 2
 };
 
+struct BBHitInfo
+{
+    BBHitInfo()
+    {
+        m_fDistance = FLT_MAX;
+        m_pModel = nullptr;
+    }
+
+    QVector3D m_Position;
+    QVector2D m_Texcoords;
+    QVector3D m_Normal;
+    float m_fDistance;
+    BBModel *m_pModel;
+};
 
 class BBRay
 {
@@ -18,6 +35,8 @@ public:
     BBRay(const QVector3D &origin = QVector3D(0, 0, 0), const QVector3D &direction = QVector3D(0, 0, -1));
     BBRay(const GLdouble &nearX, const GLdouble &nearY, const GLdouble &nearZ,
           const GLdouble &farX, const GLdouble &farY, const GLdouble &farZ);
+
+    void setRay(const QVector3D &origin = QVector3D(0, 0, 0), const QVector3D &direction = QVector3D(0, 0, -1));
 
     QVector3D computeIntersectWithXOZPlane(float y) const;
     QVector3D computeIntersectWithXOYPlane(float z) const;

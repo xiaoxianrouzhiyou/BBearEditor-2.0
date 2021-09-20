@@ -2,6 +2,7 @@
 #include "3D/BBModel.h"
 #include "Render/BBMaterial.h"
 #include "BBPhotonMap.h"
+#include "OfflineRenderer/BBScatterMaterial.h"
 
 
 int BBTracer::m_nMaxTraceDepth = 5;
@@ -30,12 +31,12 @@ void BBTracer::tracePhoton(const BBRay &ray, BBModel *pSceneModels[], int nModel
     if (nearHitInfo.m_pModel)
     {
         BBScatterInfo scatterInfo;
-        if (nearHitInfo.m_pModel->getMesh()->getMaterial()->scatter(ray, nearHitInfo, scatterInfo))
+        if (nearHitInfo.m_pModel->getMesh()->getScatterMaterial()->scatter(ray, nearHitInfo, scatterInfo))
         {
             // if it is specular, continue to trace photon, reflection or refraction
             if (scatterInfo.m_bSpecular)
             {
-                tracePhoton(scatterInfo.m_SpecularRay, pSceneModels, nModelCount, depth + 1, power, pPhotonMap);
+                tracePhoton(scatterInfo.m_ScatteredRay, pSceneModels, nModelCount, depth + 1, power, pPhotonMap);
             }
             else
             {
@@ -47,5 +48,33 @@ void BBTracer::tracePhoton(const BBRay &ray, BBModel *pSceneModels[], int nModel
                 pPhotonMap->store(photon);
             }
         }
+    }
+}
+
+QVector3D BBTracer::traceRay(const BBRay &ray, BBModel *pSceneModels[], int nModelCount, int depth)
+{
+    // need to record the info of hit point
+    BBHitInfo nearHitInfo;
+    // Find the nearest hit point and the corresponding model
+    for (int i = 0; i < nModelCount; i++)
+    {
+        BBHitInfo hitInfo;
+        if (pSceneModels[i]->hit(ray, 0.001f, FLT_MAX, hitInfo))
+        {
+            if (hitInfo.m_fDistance < nearHitInfo.m_fDistance)
+            {
+                nearHitInfo = hitInfo;
+                nearHitInfo.m_pModel = pSceneModels[i];
+            }
+        }
+    }
+
+    if (nearHitInfo.m_pModel)
+    {
+
+    }
+    else
+    {
+        return QVector3D(0, 0, 0);
     }
 }

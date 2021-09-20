@@ -23,6 +23,18 @@ QVector2D lerp(QVector2D a, QVector2D b, QVector2D c, float u, float v)
 
 
 /**
+ * @brief reflect
+ * @param L                     incident light
+ * @param N                     normal
+ * @return
+ */
+QVector3D reflect(QVector3D L, QVector3D N)
+{
+    return L - 2.0f * N * QVector3D::dotProduct(N, L);
+}
+
+
+/**
  * @brief frandom
  * @return                  0~1
  */
@@ -55,6 +67,19 @@ QVector3D hemisphericalRandom(QVector3D normal)
         v = QVector3D(sfrandom(), sfrandom(), sfrandom());
         mode = v.length();
     } while(mode >= 1.0f || mode == 0.0f || QVector3D::dotProduct(v, normal) < 0.0f);
+    return v.normalized();
+}
+
+
+QVector3D sphericalRandom()
+{
+    QVector3D v;
+    float mode;
+    do
+    {
+        v = QVector3D(sfrandom(), sfrandom(), sfrandom());
+        mode = v.length();
+    } while(mode >= 1.0f || mode == 0.0f);
     return v.normalized();
 }
 

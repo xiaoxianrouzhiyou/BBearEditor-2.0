@@ -208,3 +208,8 @@ void BBModel::showCloseUp(QVector3D &outPosition, QVector3D &outViewCenter, floa
     nSize = max(nSize, abs(boxHalfLength.z()));
     outPosition = outViewCenter + fDistFactor * nSize * QVector3D(1, 1, 1);
 }
+
+void BBModel::setScatterMaterial(BBScatterMaterial *pScatterMaterial)
+{
+    m_pMesh->setScatterMaterial(pScatterMaterial);
+}

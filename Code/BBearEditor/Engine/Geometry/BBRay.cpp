@@ -18,6 +18,14 @@ BBRay::BBRay(const GLdouble &nearX, const GLdouble &nearY, const GLdouble &nearZ
     m_Direction = (m_FarPoint - m_NearPoint).normalized();
 }
 
+void BBRay::setRay(const QVector3D &origin, const QVector3D &direction)
+{
+    // Represented by starting point and direction
+    m_NearPoint = origin;
+    m_Direction = direction.normalized();
+    m_FarPoint = m_NearPoint + m_Direction;
+}
+
 QVector3D BBRay::computeIntersectWithXOZPlane(float y) const
 {
     // (x-x1)/(x2-x1)=(y-y1)/(y2-y1)

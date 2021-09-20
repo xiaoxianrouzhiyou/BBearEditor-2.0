@@ -295,9 +295,3 @@ bool BBMaterial::isWriteFBO()
 {
     return getShader()->isWriteFBO();
 }
-
-bool BBMaterial::scatter(const BBRay &ray, const BBHitInfo &hitInfo, BBScatterInfo &scatterInfo)
-{
-    scatterInfo.m_bSpecular = false;
-    return true;
-}

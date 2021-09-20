@@ -14,6 +14,7 @@ class BBCamera;
 class BBCanvas;
 class BBMaterial;
 class BBRenderQueue;
+class BBScatterMaterial;
 
 class BBGameObject
 {
@@ -95,6 +96,8 @@ public:
     inline QPoint getScreenCoordinate() { return QPoint(m_Position.x(), m_Position.y()); }
     inline int getScreenX() { return m_Position.x(); }
     inline int getScreenY() { return m_Position.y(); }
+
+    virtual void setScatterMaterial(BBScatterMaterial *pScatterMaterial) {}
 
 protected:
     virtual void setModelMatrix(float px, float py, float pz,

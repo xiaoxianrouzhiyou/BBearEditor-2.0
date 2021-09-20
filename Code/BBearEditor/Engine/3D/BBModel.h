@@ -49,6 +49,8 @@ public:
     bool belongToSelectionRegion(const BBFrustum &frustum) override;
     void showCloseUp(QVector3D &outPosition, QVector3D &outViewCenter, float fDistFactor = 2.4) override;
 
+    void setScatterMaterial(BBScatterMaterial *pScatterMaterial) override;
+
 private:
     BBMesh *m_pMesh;
     BBBoundingBox3D *m_pBoundingBox;

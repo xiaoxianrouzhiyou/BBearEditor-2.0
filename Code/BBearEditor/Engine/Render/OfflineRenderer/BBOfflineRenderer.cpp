@@ -9,6 +9,7 @@
 #include "Render/BBOfflineOpenGLWidget.h"
 #include "Render/BufferObject/BBVertexBufferObject.h"
 #include "Scene/BBSceneManager.h"
+#include "OfflineRenderer/BBScatterMaterial.h"
 
 
 BBOfflineRenderer::BBOfflineRenderer(BBScene *pScene)
@@ -49,6 +50,7 @@ void BBOfflineRenderer::createTestScene()
     for (int i = 0; i < TestModelCount; i++)
     {
         m_pModels[i]->setBoundingBoxVisibility(false);
+        m_pModels[i]->setScatterMaterial(new BBLambertian(QVector3D(1, 0, 0)));
     }
     m_pScene->getCamera()->setPosition(QVector3D(0, 1, 3.5f));
 }

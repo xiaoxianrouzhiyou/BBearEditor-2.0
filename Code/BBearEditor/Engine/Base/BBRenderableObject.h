@@ -13,6 +13,7 @@ class BBVertexBufferObject;
 class BBShaderStorageBufferObject;
 class BBAtomicCounterBufferObject;
 class BBElementBufferObject;
+class BBScatterMaterial;
 
 class BBRenderableObject : public BBGameObject
 {
@@ -56,7 +57,10 @@ public:
     void appendACBO(BBAtomicCounterBufferObject *pACBO, bool bClear);
     void removeACBO();
 
+    void setScatterMaterial(BBScatterMaterial *pScatterMaterial) override;
+
     inline BBMaterial* getMaterial() { return m_pCurrentMaterial; }
+    inline BBScatterMaterial* getScatterMaterial() { return m_pScatterMaterial; }
     inline BBVertexBufferObject* getVBO() { return m_pVBO; }
     inline BBElementBufferObject* getEBO() { return m_pEBO; }
 
@@ -77,6 +81,8 @@ protected:
     int m_nIndexCount;
     int m_nVertexCount;
     QVector3D m_DefaultColor;
+
+    BBScatterMaterial *m_pScatterMaterial;
 
 private:
     void sharedInit();

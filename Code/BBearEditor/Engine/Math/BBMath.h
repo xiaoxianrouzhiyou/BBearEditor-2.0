@@ -12,9 +12,13 @@
 float lerp(float a, float b, float f);
 QVector2D lerp(QVector2D a, QVector2D b, float f);
 QVector2D lerp(QVector2D a, QVector2D b, QVector2D c, float u, float v);
+
+QVector3D reflect(QVector3D L, QVector3D N);
+
 float frandom();
 float sfrandom();
 QVector3D hemisphericalRandom(QVector3D normal);
+QVector3D sphericalRandom();
 
 // KD Tree
 int getMedian(int start, int end);

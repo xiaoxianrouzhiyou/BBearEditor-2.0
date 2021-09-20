@@ -10,6 +10,7 @@
 #include "Render/BBRenderPass.h"
 #include "Render/BBRenderQueue.h"
 #include "Scene/BBSceneManager.h"
+#include "OfflineRenderer/BBScatterMaterial.h"
 
 
 /**
@@ -55,6 +56,7 @@ BBRenderableObject::~BBRenderableObject()
     BB_SAFE_DELETE(m_pACBO);
     BB_SAFE_DELETE(m_pEBO);
     BB_SAFE_DELETE_ARRAY(m_pIndexes);
+    BB_SAFE_DELETE(m_pScatterMaterial);
 }
 
 void BBRenderableObject::init()
@@ -258,6 +260,11 @@ void BBRenderableObject::removeACBO()
     }
 }
 
+void BBRenderableObject::setScatterMaterial(BBScatterMaterial *pScatterMaterial)
+{
+    m_pScatterMaterial = pScatterMaterial;
+}
+
 void BBRenderableObject::appendDrawCall(BBDrawCall *pDrawCall)
 {
     if (m_pDrawCalls == nullptr)
@@ -290,4 +297,5 @@ void BBRenderableObject::sharedInit()
     m_nIndexCount = 0;
     m_nVertexCount = 0;
     m_DefaultColor = QVector3D(1.0f, 1.0f, 1.0f);
+    m_pScatterMaterial = nullptr;
 }
