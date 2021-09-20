@@ -159,8 +159,12 @@ bool BBRectBoundingBox3D::hit(const BBRay &ray, float &fDistance)
                                           m_pTransformedBoxVertexes[2],
                                           m_pTransformedBoxVertexes[3], intersection))
     {
-        result = true;
-        fDistance = ray.computeIntersectDistance(intersection);
+        float tmp = ray.computeIntersectDistance(intersection);
+        if (tmp >= 0.0f)
+        {
+            result = true;
+            fDistance = tmp;
+        }
     }
 
     return result;
@@ -201,8 +205,12 @@ bool BBTriangleBoundingBox3D::hit(const BBRay &ray, float &fDistance)
                                          m_pTransformedBoxVertexes[1],
                                          m_pTransformedBoxVertexes[2], intersection))
     {
-        result = true;
-        fDistance = ray.computeIntersectDistance(intersection);
+        float tmp = ray.computeIntersectDistance(intersection);
+        if (tmp >= 0.0f)
+        {
+            result = true;
+            fDistance = tmp;
+        }
     }
     return result;
 }
@@ -258,8 +266,12 @@ bool BBQuarterCircleBoundingBox3D::hit(const BBRay &ray, float &fDistance)
                                               intersection,
                                               m_QuadrantFlag))
     {
-        result = true;
-        fDistance = ray.computeIntersectDistance(intersection);
+        float tmp = ray.computeIntersectDistance(intersection);
+        if (tmp >= 0.0f)
+        {
+            result = true;
+            fDistance = tmp;
+        }
     }
     return result;
 }
@@ -405,9 +417,12 @@ bool BBBoundingBox3D::hit(const BBRay &ray, float &fDistance)
                                               m_pTransformedBoxVertexes[indexes[i + 3]], intersection))
         {
             float temp = ray.computeIntersectDistance(intersection);
-            if (temp < fDistance)
-                fDistance = temp;
-            result = true;
+            if (temp >= 0.0f)
+            {
+                if (temp < fDistance)
+                    fDistance = temp;
+                result = true;
+            }
         }
     }
     return result;

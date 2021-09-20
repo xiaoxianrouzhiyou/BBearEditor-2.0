@@ -159,7 +159,9 @@ bool BBRay::computeIntersectWithRectangle(const QVector3D &point1, const QVector
 
 float BBRay::computeIntersectDistance(const QVector3D &intersection) const
 {
-    return m_NearPoint.distanceToPoint(intersection);
+    // When it is negative, it intersects the reverse extension line of the ray
+    int sign = QVector3D::dotProduct(intersection - m_NearPoint, m_Direction) >= 0 ? 1 : -1;
+    return sign * m_NearPoint.distanceToPoint(intersection);
 }
 
 bool BBRay::computeIntersectWithCircle(const QVector3D &center, float fRadius, const BBPlaneName &ePlaneName, QVector3D &outIntersection) const

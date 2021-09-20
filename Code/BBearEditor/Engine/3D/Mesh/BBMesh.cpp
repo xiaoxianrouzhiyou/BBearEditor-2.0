@@ -105,9 +105,12 @@ bool BBMesh::hit(const BBRay &ray, float &fDistance)
                                              intersection))
         {
             float temp = ray.computeIntersectDistance(intersection);
-            if (temp < fDistance)
-                fDistance = temp;
-            bResult = true;
+            if (temp >= 0.0f)
+            {
+                if (temp < fDistance)
+                    fDistance = temp;
+                bResult = true;
+            }
         }
     }
     return bResult;
@@ -133,16 +136,19 @@ bool BBMesh::hit(const BBRay &ray, float fMinDistance, float fMaxDistance, BBHit
                                              intersectionNormal, intersectionPos, fIntersectionU, fIntersectionV))
         {
             float temp = ray.computeIntersectDistance(intersectionPos);
-            if (temp < hitInfo.m_fDistance && temp > fMinDistance)
+            if (temp >= 0.0f)
             {
-                // Record the information of the nearest intersection point and face
-                hitInfo.m_Position = intersectionPos;
-                hitInfo.m_Normal = intersectionNormal;
-                fNearestIntersectionU = fIntersectionU;
-                fNearestIntersectionV = fIntersectionV;
-                hitInfo.m_fDistance = temp;
-                nNearestStartIndex = i;
-                bResult = true;
+                if (temp < hitInfo.m_fDistance && temp > fMinDistance)
+                {
+                    // Record the information of the nearest intersection point and face
+                    hitInfo.m_Position = intersectionPos;
+                    hitInfo.m_Normal = intersectionNormal;
+                    fNearestIntersectionU = fIntersectionU;
+                    fNearestIntersectionV = fIntersectionV;
+                    hitInfo.m_fDistance = temp;
+                    nNearestStartIndex = i;
+                    bResult = true;
+                }
             }
         }
     }

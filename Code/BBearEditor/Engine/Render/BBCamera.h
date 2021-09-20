@@ -17,6 +17,7 @@ public:
 
     void resetMove();
     void update(float fDeltaTime);
+    void update(QVector3D position, QVector3D viewCenter);
     void resetViewportSize();
     void setViewportSize(int nWidth, int nHeight);
     void switchTo3D();
@@ -34,12 +35,9 @@ public:
     bool isFrustumContainPoint(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ, const QVector3D &point);
     bool isSphereContainFrustum(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ,
                                 const QVector3D &center, float fRadius);
-    bool isFrustumIntersectWithAABB(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ,
-                                    BBAABBBoundingBox3D *pAABB);
+    bool isFrustumIntersectWithAABB(int nFrustumIndexX, int nFrustumIndexY, int nFrustumIndexZ, BBAABBBoundingBox3D *pAABB);
 
-    inline void setPosition(const QVector3D &position) { m_Position = position; }
     inline QVector3D getPosition() { return m_Position; }
-    inline void setViewCenter(const QVector3D &viewCenter) { m_ViewCenter = viewCenter; }
     inline QVector3D getViewCenter() { return m_ViewCenter; }
     inline void setViewMatrix(QMatrix4x4 viewMatrix) { m_ViewMatrix = viewMatrix; }
     inline QMatrix4x4 getViewMatrix() { return m_ViewMatrix; }

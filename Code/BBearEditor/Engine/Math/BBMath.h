@@ -15,6 +15,16 @@ QVector2D lerp(QVector2D a, QVector2D b, QVector2D c, float u, float v);
 
 QVector3D reflect(QVector3D L, QVector3D N);
 
+template<class T>
+T clamp(T x, T min, T max)
+{
+    if (x > max)
+        return max;
+    if (x < min)
+        return min;
+    return x;
+}
+
 float frandom();
 float sfrandom();
 QVector3D hemisphericalRandom(QVector3D normal);
