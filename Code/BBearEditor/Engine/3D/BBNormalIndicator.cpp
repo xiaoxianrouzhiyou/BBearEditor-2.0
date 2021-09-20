@@ -30,8 +30,8 @@ void BBNormalIndicator::init(BBRenderableObject *pObject)
         objectVertexNormal.normalized();
         m_pVBO->setPosition(i * 2, objectVertexPosition);
         m_pVBO->setPosition(i * 2 + 1, objectVertexPosition + 0.1 * objectVertexNormal / pObject->getScale());
-        m_pVBO->setColor(i * 2, 0.514f, 0.686f, 0.608f);
-        m_pVBO->setColor(i * 2 + 1, 0.514f, 0.686f, 0.608f);
+        m_pVBO->setColor(i * 2, BBConstant::m_LightGreen);
+        m_pVBO->setColor(i * 2 + 1, BBConstant::m_LightGreen);
     }
 
     m_pCurrentMaterial = new BBMaterial();

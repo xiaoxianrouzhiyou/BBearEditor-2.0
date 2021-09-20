@@ -56,14 +56,14 @@ void BBOfflineRenderer::createTestScene()
 void BBOfflineRenderer::startPhotonMapping()
 {
     generatePhotonMap();
-    showPhotonMap();
     m_pPhotonMap->balance();
+    showPhotonMap();
 //    m_pPhotonMap->debug();
 }
 
 void BBOfflineRenderer::generatePhotonMap()
 {
-    int nMaxPhotonNum = 10000;
+    int nMaxPhotonNum = 50000;
     m_pAreaLight = new BBAreaLight(-0.3f, 0.3f, -0.1f, -0.1f, 2);
     m_pPhotonMap = new BBPhotonMap(nMaxPhotonNum);
     QVector3D origin;
@@ -84,11 +84,22 @@ void BBOfflineRenderer::showPhotonMap()
 //    qDebug() << m_pPhotonMap->getBoxMin() << m_pPhotonMap->getBoxMax();
     int nPhotonNum = m_pPhotonMap->getPhotonNum();
     QVector3D *pPositions = m_pPhotonMap->getPhotonPositions();
+
+    // test
+    BBNearestPhotons nearestPhotons(QVector3D(0, 0, -1), 100, 0.2f);
+    m_pPhotonMap->getKNearestPhotons(&nearestPhotons, 1);
+    m_pPhotonMap->markKNearestPhotons(&nearestPhotons);
+//    m_pPhotonMap->debug(&nearestPhotons);
+
     BBVertexBufferObject *pVBO = new BBVertexBufferObject(nPhotonNum);
     for (int i = 0; i < nPhotonNum; i++)
     {
-        pVBO->setPosition(i, pPositions[i]);
-        pVBO->setColor(i, BBConstant::m_OrangeRed);
+        // The index of m_pPhotonMap starts from 1
+        pVBO->setPosition(i, pPositions[i + 1]);
+        if (m_pPhotonMap->isMarkedKNearestPhotons(i + 1))
+            pVBO->setColor(i, BBConstant::m_OrangeRed);
+        else
+            pVBO->setColor(i, BBConstant::m_LightGreen);
     }
     BB_SAFE_DELETE_ARRAY(pPositions);
 

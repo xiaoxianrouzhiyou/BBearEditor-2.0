@@ -46,53 +46,121 @@ void BBPhotonMap::balance()
     BB_SAFE_DELETE_ARRAY(pTmpPhoton);
 }
 
-void BBPhotonMap::getKNearestPhotons(BBNearestPhotons *pNearestPhotons, int nPhotonIndex)
+void BBPhotonMap::getKNearestPhotons(BBNearestPhotons *pNearestPhotons, int nParentIndex)
 {
-//    if (nPhotonIndex >= m_nPhotonNum)
-//        return;
+    if (nParentIndex > m_nPhotonNum)
+        return;
 
-//    BBPhoton *pCurrentPhoton = &m_pPhoton[nPhotonIndex];
-//    //           1
-//    //       2       3
-//    //    4     5 6     7
-//    //  8   9
-//    // If the index starts from 1, the index of the left subtree is 2 times
-//    // nPhotonIndex starts from 0
-//    if ((nPhotonIndex + 1) * 2 <= m_nPhotonNum)
-//    {
-//        // There are sub nodes
-//        // The distance between detection photon and the dividing axis of current photon
-//        float d = pNearestPhotons->m_DetectionPosition[pCurrentPhoton->m_Axis] - pCurrentPhoton->m_Position[pCurrentPhoton->m_Axis];
-//        if (d < 0)
-//        {
-//            // The detection point is in the left of the dividing axis, search left subtree
-//            getKNearestPhotons(pNearestPhotons, (nPhotonIndex + 1) * 2 - 1);
-//            if (d * d < pNearestPhotons->m_pDistanceSquare[0])
-//            {
-//                // search right subtree
-//                // When the distance is greater than detection scope, all nodes on the right subtree will be farther
-//                getKNearestPhotons(pNearestPhotons, (nPhotonIndex + 1) * 2);
-//            }
-//        }
-//        else
-//        {
-//            // search right subtree
-//            getKNearestPhotons(pNearestPhotons, (nPhotonIndex + 1) * 2);
-//            if (d * d < pNearestPhotons->m_pDistanceSquare[0])
-//            {
-//                // search left subtree
-//                getKNearestPhotons(pNearestPhotons, (nPhotonIndex + 1) * 2 - 1);
-//            }
-//        }
-//    }
-//    // process itself
-//    float fDistanceSquare = (pNearestPhotons->m_DetectionPosition - pCurrentPhoton->m_Position).lengthSquared();
-//    if (fDistanceSquare > pNearestPhotons->m_pDistanceSquare[0])
-//        return;
-//    if (pNearestPhotons->)
-//    {
+    BBPhoton *pCurrentPhoton = &m_pPhoton[nParentIndex];
+    //           1
+    //       2       3
+    //    4     5 6     7
+    //  8   9
+    // The index starts from 1, the index of the left subtree is 2 times
+    if (nParentIndex * 2 <= m_nPhotonNum)
+    {
+        // There are sub nodes
+        // The distance between detection photon and the dividing axis of current photon
+        float d = pNearestPhotons->m_DetectionPosition[pCurrentPhoton->m_Axis] - pCurrentPhoton->m_Position[pCurrentPhoton->m_Axis];
+        if (d < 0)
+        {
+            // The detection point is in the left of the dividing axis, search left subtree
+            getKNearestPhotons(pNearestPhotons, nParentIndex * 2);
+            if (d * d < pNearestPhotons->m_pDistanceSquare[0])
+            {
+                // search right subtree
+                // When the distance is greater than detection scope, all nodes on the right subtree will be farther
+                getKNearestPhotons(pNearestPhotons, nParentIndex * 2 + 1);
+            }
+        }
+        else
+        {
+            // search right subtree
+            getKNearestPhotons(pNearestPhotons, nParentIndex * 2 + 1);
+            if (d * d < pNearestPhotons->m_pDistanceSquare[0])
+            {
+                // search left subtree
+                getKNearestPhotons(pNearestPhotons, nParentIndex * 2);
+            }
+        }
+    }
+    // process itself
+    float fDistanceSquare = (pNearestPhotons->m_DetectionPosition - pCurrentPhoton->m_Position).lengthSquared();
+    if (fDistanceSquare > pNearestPhotons->m_pDistanceSquare[0])
+        return;
 
-//    }
+    if (pNearestPhotons->m_nCurrentCount < pNearestPhotons->m_nMaxPhotonCount)
+    {
+        // When the heap is not full, qualified photons are inserted into the tail
+        pNearestPhotons->m_nCurrentCount++;
+        pNearestPhotons->m_pDistanceSquare[pNearestPhotons->m_nCurrentCount] = fDistanceSquare;
+        pNearestPhotons->m_ppPhotons[pNearestPhotons->m_nCurrentCount] = pCurrentPhoton;
+    }
+    else
+    {
+        // When the heap is full
+        if (!pNearestPhotons->m_bFulled)
+        {
+            // Just full, init maximum heap
+            // Start from the parent node of the maximum sequence number to check whether the maximum heap is met. If not, adjust it
+            // If yes, continue to check whether the previous parent node meets the requirements until node 1.
+            for (int i = pNearestPhotons->m_nCurrentCount >> 1; i >= 1; i--)
+            {
+                int nParent = i;
+                BBPhoton *pParentPhoton = pNearestPhotons->m_ppPhotons[nParent];
+                float fParentParentPhoton = pNearestPhotons->m_pDistanceSquare[nParent];
+                // Also check whether the adjusted node still meets the maximum heap property. If not, you need to traverse downward
+                while ((nParent << 1) <= pNearestPhotons->m_nCurrentCount)
+                {
+                    // If parent has child
+                    // nChild is left sub node
+                    int nChild = nParent << 1;
+                    // If the right sub node exists and is larger than the left sub node, nChild points to the right sub node
+                    if (nChild + 1 <= pNearestPhotons->m_nCurrentCount && pNearestPhotons->m_pDistanceSquare[nChild] < pNearestPhotons->m_pDistanceSquare[nChild + 1])
+                    {
+                        nChild++;
+                    }
+                    // The larger sub node is compared with the parent node. If the parent node is large, it will not be processed.
+                    if (fParentParentPhoton >= pNearestPhotons->m_pDistanceSquare[nChild])
+                    {
+                        break;
+                    }
+                    // Otherwise, the data of the larger sub node give the parent
+                    pNearestPhotons->m_ppPhotons[nParent] = pNearestPhotons->m_ppPhotons[nChild];
+                    pNearestPhotons->m_pDistanceSquare[nParent] = pNearestPhotons->m_pDistanceSquare[nChild];
+                    // Traverse downward
+                    nParent = nChild;
+                }
+                // Give remaining node data
+                pNearestPhotons->m_ppPhotons[nParent] = pParentPhoton;
+                pNearestPhotons->m_pDistanceSquare[nParent] = fParentParentPhoton;
+            }
+            // Change flag, When you insert data later, this code is no longer executed
+            pNearestPhotons->m_bFulled = true;
+        }
+        // Insert new node in the maximum heap, Original node 1 (maximum) is removed, traverse downward
+        int nParent = 1;
+        while ((nParent << 1) <= pNearestPhotons->m_nCurrentCount)
+        {
+            int nChild = nParent << 1;
+            if (nChild + 1 <= pNearestPhotons->m_nCurrentCount && pNearestPhotons->m_pDistanceSquare[nChild] < pNearestPhotons->m_pDistanceSquare[nChild + 1])
+            {
+                nChild++;
+            }
+            if (fDistanceSquare >= pNearestPhotons->m_pDistanceSquare[nChild])
+            {
+                break;
+            }
+            // Otherwise, the data of the larger sub node give the parent
+            pNearestPhotons->m_ppPhotons[nParent] = pNearestPhotons->m_ppPhotons[nChild];
+            pNearestPhotons->m_pDistanceSquare[nParent] = pNearestPhotons->m_pDistanceSquare[nChild];
+            nParent = nChild;
+        }
+        pNearestPhotons->m_ppPhotons[nParent] = pCurrentPhoton;
+        pNearestPhotons->m_pDistanceSquare[nParent] = fDistanceSquare;
+        // [0] store the maximum
+        pNearestPhotons->m_pDistanceSquare[0] = pNearestPhotons->m_pDistanceSquare[1];
+    }
 }
 
 void BBPhotonMap::debug()
@@ -102,6 +170,27 @@ void BBPhotonMap::debug()
         qDebug() << m_pPhoton[i].m_Position;
         qDebug() << m_pPhoton[i].m_Axis;
     }
+}
+
+void BBPhotonMap::debug(BBNearestPhotons *pNearestPhotons)
+{
+    for (int i = 1; i <= pNearestPhotons->m_nCurrentCount; i++)
+    {
+        qDebug() << pNearestPhotons->m_ppPhotons[i]->m_Position;
+    }
+}
+
+void BBPhotonMap::markKNearestPhotons(BBNearestPhotons *pNearestPhotons)
+{
+    for (int i = 1; i <= pNearestPhotons->m_nCurrentCount; i++)
+    {
+        pNearestPhotons->m_ppPhotons[i]->m_bKNearestPhotons = true;
+    }
+}
+
+bool BBPhotonMap::isMarkedKNearestPhotons(int nIndex)
+{
+    return m_pPhoton[nIndex].m_bKNearestPhotons;
 }
 
 QVector3D* BBPhotonMap::getPhotonPositions()

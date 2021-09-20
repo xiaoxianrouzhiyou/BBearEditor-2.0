@@ -13,6 +13,13 @@ struct BBPhoton
     // Color
     QVector3D m_Power;
     int m_Axis;
+    // for test
+    bool m_bKNearestPhotons;
+
+    BBPhoton()
+    {
+        m_bKNearestPhotons = false;
+    }
 };
 
 struct BBNearestPhotons
@@ -31,13 +38,15 @@ struct BBNearestPhotons
     // Photons found
     BBPhoton **m_ppPhotons;
 
-    BBNearestPhotons()
+    BBNearestPhotons(const QVector3D &detectionPosition, int nMaxPhotonCount, float fDetectionDistance)
     {
-        m_nMaxPhotonCount = 0;
+        m_DetectionPosition = detectionPosition;
+        m_nMaxPhotonCount = nMaxPhotonCount;
         m_nCurrentCount = 0;
         m_bFulled = false;
-        m_pDistanceSquare = nullptr;
-        m_ppPhotons = nullptr;
+        m_pDistanceSquare = new float[m_nMaxPhotonCount + 1];
+        m_ppPhotons = new BBPhoton*[m_nMaxPhotonCount + 1];
+        m_pDistanceSquare[0] = fDetectionDistance;
     }
 
     ~BBNearestPhotons()
@@ -57,9 +66,13 @@ public:
 
     void store(const BBPhoton &photon);
     void balance();
-    void getKNearestPhotons(BBNearestPhotons *pNearestPhotons, int nPhotonIndex);
+    void getKNearestPhotons(BBNearestPhotons *pNearestPhotons, int nParentIndex);
 
+    // Test func
     void debug();
+    void debug(BBNearestPhotons *pNearestPhotons);
+    void markKNearestPhotons(BBNearestPhotons *pNearestPhotons);
+    bool isMarkedKNearestPhotons(int nIndex);
 
     QVector3D* getPhotonPositions();
     int getPhotonNum() const { return m_nPhotonNum; }
