@@ -4,7 +4,6 @@
 
 #include "Base/BBGameObject.h"
 #include "Mesh/BBMesh.h"
-#include "Geometry/BBTracer.h"
 
 
 class BBMesh;

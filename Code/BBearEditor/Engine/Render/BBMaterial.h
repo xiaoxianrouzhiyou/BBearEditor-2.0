@@ -6,7 +6,6 @@
 #include "BBRenderState.h"
 #include <QPixmap>
 #include "Geometry/BBRay.h"
-#include "Geometry/BBTracer.h"
 
 
 class BBCamera;

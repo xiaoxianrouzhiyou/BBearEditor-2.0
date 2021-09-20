@@ -3,7 +3,7 @@
 
 
 #include <QVector3D>
-#include "Geometry/BBTracer.h"
+#include "Geometry/BBRay.h"
 
 class BBAreaLight
 {

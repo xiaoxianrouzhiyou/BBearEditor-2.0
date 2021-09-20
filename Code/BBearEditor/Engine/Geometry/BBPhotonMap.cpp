@@ -1,6 +1,10 @@
 #include "BBPhotonMap.h"
 #include "Math/BBMath.h"
+#include "OfflineRenderer/BBScatterMaterial.h"
+#include "3D/BBModel.h"
 
+
+int BBPhotonMap::m_nMaxTraceDepth = 5;
 
 BBPhotonMap::BBPhotonMap(int nMaxPhotonNum)
 {
@@ -163,6 +167,29 @@ void BBPhotonMap::getKNearestPhotons(BBNearestPhotons *pNearestPhotons, int nPar
     }
 }
 
+QVector3D BBPhotonMap::getIrradiance(const QVector3D &detectionPosition, const QVector3D &detectionNormal, float fDetectionDistance, int nMaxPhotonCount)
+{
+    QVector3D irradiance(0, 0, 0);
+    BBNearestPhotons nearestPhotons(detectionPosition, nMaxPhotonCount, fDetectionDistance);
+    getKNearestPhotons(&nearestPhotons, 1);
+    // ignore
+    if (nearestPhotons.m_nCurrentCount < 10)
+        return irradiance;
+    for (int i = 0; i < nearestPhotons.m_nCurrentCount; i++)
+    {
+        QVector3D dir = nearestPhotons.m_ppPhotons[i]->m_Direction;
+        if (QVector3D::dotProduct(dir, detectionNormal) < 0)
+        {
+            irradiance += nearestPhotons.m_ppPhotons[i]->m_Power;
+        }
+    }
+    // choose circle
+    irradiance /= PI * nearestPhotons.m_pDistanceSquare[0];
+    // test
+    irradiance /= 10000;
+    return irradiance;
+}
+
 void BBPhotonMap::debug()
 {
     for (int i = 1; i <= m_nPhotonNum; i++)
@@ -201,6 +228,93 @@ QVector3D* BBPhotonMap::getPhotonPositions()
         pPositions[i] = m_pPhoton[i].m_Position;
     }
     return pPositions;
+}
+
+void BBPhotonMap::tracePhoton(const BBRay &ray, BBModel *pSceneModels[], int nModelCount, int depth, const QVector3D &power, BBPhotonMap *pPhotonMap)
+{
+    // After tracing many times, end
+    BB_PROCESS_ERROR_RETURN((depth < m_nMaxTraceDepth));
+
+    // need to record the info of hit point
+    BBHitInfo nearHitInfo;
+    // Find the nearest hit point and the corresponding model
+    for (int i = 0; i < nModelCount; i++)
+    {
+        BBHitInfo hitInfo;
+        if (pSceneModels[i]->hit(ray, 0.001f, FLT_MAX, hitInfo))
+        {
+            if (hitInfo.m_fDistance < nearHitInfo.m_fDistance)
+            {
+                nearHitInfo = hitInfo;
+                nearHitInfo.m_pModel = pSceneModels[i];
+            }
+        }
+    }
+
+    if (nearHitInfo.m_pModel)
+    {
+        BBScatterInfo scatterInfo;
+        if (nearHitInfo.m_pModel->getMesh()->getScatterMaterial()->scatter(ray, nearHitInfo, scatterInfo))
+        {
+            // if it is specular, continue to trace photon, reflection or refraction
+            if (scatterInfo.m_bSpecular)
+            {
+                tracePhoton(scatterInfo.m_ScatteredRay, pSceneModels, nModelCount, depth + 1, power, pPhotonMap);
+            }
+            else
+            {
+                // It is assumed that the medium does not absorb photons
+                BBPhoton photon;
+                photon.m_Position = nearHitInfo.m_Position;
+                photon.m_Direction = ray.getDirection();
+                photon.m_Power = power;
+                pPhotonMap->store(photon);
+            }
+        }
+    }
+}
+
+QVector3D BBPhotonMap::traceRay(const BBRay &ray, BBModel *pSceneModels[], int nModelCount, int depth, BBPhotonMap *pPhotonMap)
+{
+    // need to record the info of hit point
+    BBHitInfo nearHitInfo;
+    // Find the nearest hit point and the corresponding model
+    for (int i = 0; i < nModelCount; i++)
+    {
+        BBHitInfo hitInfo;
+        if (pSceneModels[i]->hit(ray, 0.001f, FLT_MAX, hitInfo))
+        {
+            if (hitInfo.m_fDistance < nearHitInfo.m_fDistance)
+            {
+                nearHitInfo = hitInfo;
+                nearHitInfo.m_pModel = pSceneModels[i];
+            }
+        }
+    }
+
+    if (nearHitInfo.m_pModel)
+    {
+        BBScatterInfo scatterInfo;
+        if (depth < m_nMaxTraceDepth && nearHitInfo.m_pModel->getMesh()->getScatterMaterial()->scatter(ray, nearHitInfo, scatterInfo))
+        {
+            if (scatterInfo.m_bSpecular)
+            {
+                return scatterInfo.m_Attenuation * traceRay(scatterInfo.m_ScatteredRay, pSceneModels, nModelCount, depth + 1, pPhotonMap);
+            }
+            else
+            {
+                return pPhotonMap->getIrradiance(nearHitInfo.m_Position, nearHitInfo.m_Normal, 0.3f, 100);
+            }
+        }
+        else
+        {
+            return QVector3D(0, 1, 0);
+        }
+    }
+    else
+    {
+        return QVector3D(0, 0, 0);
+    }
 }
 
 /**

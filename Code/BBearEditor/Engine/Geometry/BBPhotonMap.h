@@ -4,6 +4,7 @@
 
 #include <QVector3D>
 #include "Utils/BBUtils.h"
+#include "Geometry/BBRay.h"
 
 struct BBPhoton
 {
@@ -46,7 +47,7 @@ struct BBNearestPhotons
         m_bFulled = false;
         m_pDistanceSquare = new float[m_nMaxPhotonCount + 1];
         m_ppPhotons = new BBPhoton*[m_nMaxPhotonCount + 1];
-        m_pDistanceSquare[0] = fDetectionDistance;
+        m_pDistanceSquare[0] = fDetectionDistance * fDetectionDistance;
     }
 
     ~BBNearestPhotons()
@@ -67,6 +68,7 @@ public:
     void store(const BBPhoton &photon);
     void balance();
     void getKNearestPhotons(BBNearestPhotons *pNearestPhotons, int nParentIndex);
+    QVector3D getIrradiance(const QVector3D &detectionPosition, const QVector3D &detectionNormal, float fDetectionDistance, int nMaxPhotonCount);
 
     // Test func
     void debug();
@@ -80,6 +82,13 @@ public:
     BBPhoton* getPhoton() const { return m_pPhoton; }
     QVector3D getBoxMin() const { return m_BoxMin; }
     QVector3D getBoxMax() const { return m_BoxMax; }
+
+public:
+    static void tracePhoton(const BBRay &ray, BBModel *pSceneModels[], int nModelCount, int depth, const QVector3D &power, BBPhotonMap *pPhotonMap);
+    static QVector3D traceRay(const BBRay &ray, BBModel *pSceneModels[], int nModelCount, int depth, BBPhotonMap *pPhotonMap);
+
+private:
+    static int m_nMaxTraceDepth;
 
 private:
     void splitMedian(BBPhoton pPhoton[], int start, int end, int median, int axis);

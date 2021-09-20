@@ -3,7 +3,6 @@
 #include "Scene/BBScene.h"
 #include "3D/BBModel.h"
 #include "BBCamera.h"
-#include "Geometry/BBTracer.h"
 #include "Geometry/BBPhotonMap.h"
 #include "Render/Lighting/GameObject/BBAreaLight.h"
 #include "Render/BBOfflineOpenGLWidget.h"
@@ -77,7 +76,7 @@ void BBOfflineRenderer::generatePhotonMap()
     {
         m_pAreaLight->generatePhoton(origin, direction, fPowerScale);
         BBRay ray(origin, direction);
-        BBTracer::tracePhoton(ray, m_pModels, TestModelCount, 0, power * fPowerScale, m_pPhotonMap);
+        BBPhotonMap::tracePhoton(ray, m_pModels, TestModelCount, 0, power * fPowerScale, m_pPhotonMap);
     }
 }
 

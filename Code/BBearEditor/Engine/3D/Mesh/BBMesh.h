@@ -3,7 +3,6 @@
 
 
 #include "Base/BBRenderableObject.h"
-#include "Geometry/BBTracer.h"
 
 enum BBMeshType
 {
