@@ -2,13 +2,20 @@
 #define BBAREALIGHT_H
 
 
-#include <QVector3D>
-#include "Geometry/BBRay.h"
+#include "Base/BBGameObject.h"
 
-class BBAreaLight
+class BBRectBoundingBox3D;
+
+class BBAreaLight : public BBGameObject
 {
 public:
     BBAreaLight(float fMin0, float fMax0, float fMin1, float fMax1, float fFixedValue);
+    ~BBAreaLight();
+
+    void init() override;
+    void render(BBCamera *pCamera) override;
+
+    bool hit(const BBRay &ray, float &fDistance) override;
 
     void generatePhoton(QVector3D &origin, QVector3D &direction, float &fPowerScale, const QVector3D &normal = QVector3D(0, -1, 0));
     void generatePhoton(QVector3D &origin, QVector3D &direction, float &fPowerScale, const BBHitInfo &hitInfo);
@@ -23,6 +30,7 @@ private:
     float m_fMax1;
     float m_fFixedValue;
     QVector3D m_Normal;
+    BBRectBoundingBox3D *m_pBoundingBox;
 };
 
 #endif // BBAREALIGHT_H

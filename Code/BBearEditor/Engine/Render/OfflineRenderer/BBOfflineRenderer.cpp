@@ -52,14 +52,16 @@ void BBOfflineRenderer::createTestScene()
     m_pModels[4] = m_pScene->createModel(BB_PATH_RESOURCE_MESH(plane.obj), QVector3D(0, 0, -2), QVector3D(90, 0, 0), QVector3D(1, 1, 1));
     m_pModels[5] = m_pScene->createModel(BB_PATH_RESOURCE_MESH(plane.obj), QVector3D(0, 0, 4), QVector3D(-90, 0, 0), QVector3D(1, 1, 1));
     m_pModels[6] = m_pScene->createModel(BB_PATH_RESOURCE_MESH(cube.obj), QVector3D(0.4f, 0, 0), QVector3D(0, 0, 0), QVector3D(0.5f, 1.0f, 0.5f));
-    m_pModels[7] = m_pScene->createModel(BB_PATH_RESOURCE_MESH(sphere.obj), QVector3D(-0.4f, 0.5f, 1.5f), QVector3D(0, 0, 0), QVector3D(0.25f, 0.25f, 0.25f));
+    m_pModels[7] = m_pScene->createModel(BB_PATH_RESOURCE_MESH(cube.obj), QVector3D(-0.4f, 0, 0), QVector3D(0, 0, 0), QVector3D(0.25f, 1.0f, 0.5f));
     for (int i = 0; i < TestModelCount; i++)
     {
         m_pModels[i]->setBoundingBoxVisibility(false);
-        m_pModels[i]->setScatterMaterial(new BBDielectric(0.3f));
+        m_pModels[i]->setScatterMaterial(new BBLambertian(QVector3D(1, 1, 1)));
     }
-    m_pModels[7]->setScatterMaterial(new BBMetal(BBConstant::m_OrangeRed));
-    m_pAreaLight = new BBAreaLight(-0.3f, 0.3f, 1.0f, 1.2f, 2);
+    m_pModels[6]->setScatterMaterial(new BBLambertian(QVector3D(0, 1, 0)));
+    m_pModels[7]->setScatterMaterial(new BBDielectric(0.2f));
+    m_pAreaLight = new BBAreaLight(-0.3f, 0.3f, 1.0f, 1.2f, 2.0f);
+    m_pAreaLight->init();
 
     m_pScene->getCamera()->update(QVector3D(0, 1, 3.5f), QVector3D(0, 1, 2.5f));
 
@@ -93,8 +95,15 @@ void BBOfflineRenderer::renderFrame()
     {
         for (int x = 0; x < w; x++)
         {
-            BBRay ray = pCamera->createRayFromScreen(x, y);
-            QVector3D color = BBPhotonMap::traceRay(ray, m_pModels, TestModelCount, 0, m_pPhotonMap);
+            QVector3D color(0.0f, 0.0f, 0.0f);
+            int nSampleCount = 4;
+            for (int sample = 0; sample < nSampleCount; sample++)
+            {
+                BBRay ray = pCamera->createRayFromScreen(x + sfrandom(), y + sfrandom());
+                color += BBPhotonMap::traceRay(ray, m_pModels, TestModelCount, 0, m_pPhotonMap, m_pAreaLight);
+            }
+            color /= nSampleCount;
+
             color.setX(clamp(color.x(), 0.0f, 1.0f));
             color.setY(clamp(color.y(), 0.0f, 1.0f));
             color.setZ(clamp(color.z(), 0.0f, 1.0f));

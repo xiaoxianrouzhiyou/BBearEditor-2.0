@@ -231,10 +231,10 @@ void BBCamera::lookAt(BBGameObject *pGameObject)
     pGameObject->showCloseUp(m_Position, m_ViewCenter);
 }
 
-BBRay BBCamera::createRayFromScreen(int x, int y)
+BBRay BBCamera::createRayFromScreen(float x, float y)
 {
-    int winX = x;
-    int winY = m_nViewportHeight - y;
+    float winX = x;
+    float winY = m_nViewportHeight - y;
     // Get the 3D point coordinates corresponding to the 2D point in the front clipping plane
     GLdouble nearPosX, nearPosY, nearPosZ;
     gluUnProject(winX, winY, 0.0f, m_pModelView, m_pProjection, m_pViewport, &nearPosX, &nearPosY, &nearPosZ);

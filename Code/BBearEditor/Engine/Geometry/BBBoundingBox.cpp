@@ -103,6 +103,11 @@ BBRectBoundingBox3D::BBRectBoundingBox3D(float fCenterX, float fCenterY, float f
         m_pOriginalBoxVertexes[2] = QVector3D(fCenterX - fHalfLengthX, fCenterY - fHalfLengthY, fCenterZ);
         m_pOriginalBoxVertexes[3] = QVector3D(fCenterX + fHalfLengthX, fCenterY - fHalfLengthY, fCenterZ);
     }
+
+    m_pTransformedBoxVertexes[0] = m_pOriginalBoxVertexes[0];
+    m_pTransformedBoxVertexes[1] = m_pOriginalBoxVertexes[1];
+    m_pTransformedBoxVertexes[2] = m_pOriginalBoxVertexes[2];
+    m_pTransformedBoxVertexes[3] = m_pOriginalBoxVertexes[3];
 }
 
 BBRectBoundingBox3D::~BBRectBoundingBox3D()

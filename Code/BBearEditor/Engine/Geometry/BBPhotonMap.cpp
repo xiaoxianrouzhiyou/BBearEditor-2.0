@@ -2,6 +2,7 @@
 #include "Math/BBMath.h"
 #include "OfflineRenderer/BBScatterMaterial.h"
 #include "3D/BBModel.h"
+#include "Render/Lighting/GameObject/BBAreaLight.h"
 
 
 int BBPhotonMap::m_nMaxTraceDepth = 4;
@@ -186,7 +187,7 @@ QVector3D BBPhotonMap::getIrradiance(const QVector3D &detectionPosition, const Q
     // choose circle
     irradiance /= PI * nearestPhotons.m_pDistanceSquare[0];
     // test
-    irradiance /= 100000;
+    irradiance /= 1000;
     return irradiance;
 }
 
@@ -282,8 +283,14 @@ void BBPhotonMap::tracePhoton(const BBRay &ray, BBModel *pSceneModels[], int nMo
     }
 }
 
-QVector3D BBPhotonMap::traceRay(const BBRay &ray, BBModel *pSceneModels[], int nModelCount, int depth, BBPhotonMap *pPhotonMap)
+QVector3D BBPhotonMap::traceRay(const BBRay &ray, BBModel *pSceneModels[], int nModelCount, int depth, BBPhotonMap *pPhotonMap, BBAreaLight *pAreaLight)
 {
+    float fDistance;
+    if (pAreaLight->hit(ray, fDistance))
+    {
+        return QVector3D(1, 0, 0);
+    }
+
     // need to record the info of hit point
     BBHitInfo nearHitInfo;
     // Find the nearest hit point and the corresponding model
@@ -307,16 +314,16 @@ QVector3D BBPhotonMap::traceRay(const BBRay &ray, BBModel *pSceneModels[], int n
         {
             if (scatterInfo.m_bSpecular)
             {
-                return scatterInfo.m_Attenuation * traceRay(scatterInfo.m_ScatteredRay, pSceneModels, nModelCount, depth + 1, pPhotonMap);
+                return scatterInfo.m_Attenuation * traceRay(scatterInfo.m_ScatteredRay, pSceneModels, nModelCount, depth + 1, pPhotonMap, pAreaLight);
             }
             else
             {
-                return pPhotonMap->getIrradiance(nearHitInfo.m_Position, nearHitInfo.m_Normal, 0.3f, 100);
+                return scatterInfo.m_Attenuation * pPhotonMap->getIrradiance(nearHitInfo.m_Position, nearHitInfo.m_Normal, 0.3f, 100);
             }
         }
         else
         {
-            return QVector3D(1, 1, 1);
+            return QVector3D(0, 0, 0);
         }
     }
     else

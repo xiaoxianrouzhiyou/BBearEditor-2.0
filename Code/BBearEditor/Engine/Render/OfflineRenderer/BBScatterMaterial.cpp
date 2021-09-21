@@ -32,9 +32,8 @@ BBLambertian::~BBLambertian()
 
 bool BBLambertian::scatter(const BBRay &ray, const BBHitInfo &hitInfo, BBScatterInfo &scatterInfo)
 {
-    QVector3D target = hitInfo.m_Position + hemisphericalRandom(hitInfo.m_Normal);
     scatterInfo.m_bSpecular = false;
-    scatterInfo.m_ScatteredRay.setRay(hitInfo.m_Position, target - hitInfo.m_Position);
+    scatterInfo.m_ScatteredRay.setRay(hitInfo.m_Position, hemisphericalRandom(hitInfo.m_Normal));
     scatterInfo.m_Attenuation = m_Albedo;
     return true;
 }
@@ -114,7 +113,7 @@ bool BBDielectric::scatter(const BBRay &ray, const BBHitInfo &hitInfo, BBScatter
     // When there is no refraction, it reflects
     if (refract(ray.getDirection(), outNormal, fRefractivity, refracted))
     {
-        reflectance = schlick(cosRN, fRefractivity);
+        reflectance = schlick(cosRN, m_fRefractivity);
     }
     else
     {

@@ -30,15 +30,15 @@ QVector2D lerp(const QVector2D &a, const QVector2D &b, const QVector2D &c, float
  */
 QVector3D reflect(const QVector3D &L, const QVector3D &N)
 {
-    return L - 2.0f * N * QVector3D::dotProduct(L, N);
+    return L - 2.0f * QVector3D::dotProduct(L, N) * N;
 }
 
 
 bool refract(const QVector3D &L, const QVector3D &N, float fRefractivity, QVector3D &refracted)
 {
     float dt = QVector3D::dotProduct(L, N);
-    float discrimination = 1 - fRefractivity * fRefractivity * (1 - dt * dt);
-    if (discrimination > 0)
+    float discrimination = 1.0f - fRefractivity * fRefractivity * (1.0f - dt * dt);
+    if (discrimination > 0.0f)
     {
         refracted = fRefractivity * (L - N * dt) - N * sqrtf(discrimination);
         return true;

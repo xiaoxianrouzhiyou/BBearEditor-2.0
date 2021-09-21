@@ -1,5 +1,6 @@
 #include "BBAreaLight.h"
 #include "Math/BBMath.h"
+#include "Geometry/BBBoundingBox.h"
 
 
 BBAreaLight::BBAreaLight(float fMin0, float fMax0, float fMin1, float fMax1, float fFixedValue)
@@ -11,6 +12,28 @@ BBAreaLight::BBAreaLight(float fMin0, float fMax0, float fMin1, float fMax1, flo
     m_fMax1 = fMax1;
     m_fFixedValue = fFixedValue;
     m_Normal = QVector3D(0, -1, 0);
+    m_pBoundingBox = new BBRectBoundingBox3D((m_fMax0 + m_fMin0) / 2, m_fFixedValue, (m_fMax1 + m_fMin1) / 2,
+                                             (m_fMax0 - m_fMin0) / 2, 0, (m_fMax1 - m_fMin1) / 2);
+}
+
+BBAreaLight::~BBAreaLight()
+{
+
+}
+
+void BBAreaLight::init()
+{
+    m_pBoundingBox->init();
+}
+
+void BBAreaLight::render(BBCamera *pCamera)
+{
+    m_pBoundingBox->render(pCamera);
+}
+
+bool BBAreaLight::hit(const BBRay &ray, float &fDistance)
+{
+    return m_pBoundingBox->hit(ray, fDistance);
 }
 
 void BBAreaLight::generatePhoton(QVector3D &origin, QVector3D &direction, float &fPowerScale, const QVector3D &normal)

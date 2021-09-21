@@ -27,7 +27,7 @@ public:
     void yaw(float fAngle);
     void setMoveSpeed(int dir);
     void lookAt(BBGameObject *pGameObject);
-    BBRay createRayFromScreen(int x, int y);
+    BBRay createRayFromScreen(float x, float y);
     void switchCoordinate(int &x, int &y);
     QVector3D projectPointToScreenSpace(const QVector3D &point);
     QVector4D projectPointToScreenSpace(const QVector4D &point);
