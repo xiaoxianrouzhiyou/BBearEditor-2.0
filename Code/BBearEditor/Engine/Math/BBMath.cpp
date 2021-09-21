@@ -8,13 +8,13 @@ float lerp(float a, float b, float f)
 }
 
 
-QVector2D lerp(QVector2D a, QVector2D b, float f)
+QVector2D lerp(const QVector2D &a, const QVector2D &b, float f)
 {
     return QVector2D(lerp(a.x(), b.x(), f), lerp(a.y(), b.y(), f));
 }
 
 
-QVector2D lerp(QVector2D a, QVector2D b, QVector2D c, float u, float v)
+QVector2D lerp(const QVector2D &a, const QVector2D &b, const QVector2D &c, float u, float v)
 {
     // Any point on the plane can be expressed as P = A +  u * (C – A) + v * (B - A)
     // u >= 0 v >= 0 u + v <= 1, point is within the triangle
@@ -28,9 +28,22 @@ QVector2D lerp(QVector2D a, QVector2D b, QVector2D c, float u, float v)
  * @param N                     normal
  * @return
  */
-QVector3D reflect(QVector3D L, QVector3D N)
+QVector3D reflect(const QVector3D &L, const QVector3D &N)
 {
-    return L - 2.0f * N * QVector3D::dotProduct(N, L);
+    return L - 2.0f * N * QVector3D::dotProduct(L, N);
+}
+
+
+bool refract(const QVector3D &L, const QVector3D &N, float fRefractivity, QVector3D &refracted)
+{
+    float dt = QVector3D::dotProduct(L, N);
+    float discrimination = 1 - fRefractivity * fRefractivity * (1 - dt * dt);
+    if (discrimination > 0)
+    {
+        refracted = fRefractivity * (L - N * dt) - N * sqrtf(discrimination);
+        return true;
+    }
+    return false;
 }
 
 
@@ -58,7 +71,7 @@ float sfrandom()
  * @brief hemisphericalRandom       Generate a random vector on the hemisphere corresponding to a normal
  * @return
  */
-QVector3D hemisphericalRandom(QVector3D normal)
+QVector3D hemisphericalRandom(const QVector3D &normal)
 {
     QVector3D v;
     float mode;
@@ -121,4 +134,18 @@ int getMedian(int start, int end)
         // On the last floor, no more than half
         return start + nTotalNodeNum / 2 - (nTotalNodeNum - nLayerNodeNum / 2 - count);
     }
+}
+
+
+/**
+ * @brief schlick                   Schlick Fresnel approximation
+ * @param cos
+ * @param fRefractivity
+ * @return
+ */
+float schlick(float cos, float fRefractivity)
+{
+    float f0 = (1 - fRefractivity) / (1 + fRefractivity);
+    f0 *= f0;
+    return f0 + (1 - f0) * pow((1 - cos), 5);
 }

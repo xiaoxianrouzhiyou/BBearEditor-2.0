@@ -22,8 +22,8 @@ public:
     void startPhotonMapping();
 
 private:
-    QImage renderFrame();
-    void showFrame(const QImage &image);
+    void renderFrame();
+    void showFrame();
 
     void generatePhotonMap();
     void showPhotonMap();
@@ -36,6 +36,8 @@ private:
     BBModel *m_pModels[TestModelCount];
     BBAreaLight *m_pAreaLight;
     BBPhotonMap *m_pPhotonMap;
+    QImage m_CurrentImage;
+    int m_nBlendFrameCount;
 };
 
 #endif // BBOFFLINERENDERER_H

@@ -61,6 +61,7 @@ bool BBRay::computeIntersectWithPlane(const QVector3D &point1, const QVector3D &
 bool BBRay::computeIntersectWithPlane(const QVector3D &point1, const QVector3D &point2, const QVector3D &point3, QVector3D &outNormal, QVector3D &outIntersection) const
 {
     outNormal = QVector3D::crossProduct(point1 - point2, point1 - point3);
+    outNormal.normalize();
     return computeIntersectWithPlane(point1, outNormal, outIntersection);
 }
 

@@ -4,7 +4,7 @@
 #include "3D/BBModel.h"
 
 
-int BBPhotonMap::m_nMaxTraceDepth = 5;
+int BBPhotonMap::m_nMaxTraceDepth = 4;
 
 BBPhotonMap::BBPhotonMap(int nMaxPhotonNum)
 {
@@ -186,7 +186,7 @@ QVector3D BBPhotonMap::getIrradiance(const QVector3D &detectionPosition, const Q
     // choose circle
     irradiance /= PI * nearestPhotons.m_pDistanceSquare[0];
     // test
-    irradiance /= 1000;
+    irradiance /= 100000;
     return irradiance;
 }
 
@@ -230,7 +230,7 @@ QVector3D* BBPhotonMap::getPhotonPositions()
     return pPositions;
 }
 
-void BBPhotonMap::tracePhoton(const BBRay &ray, BBModel *pSceneModels[], int nModelCount, int depth, const QVector3D &power, BBPhotonMap *pPhotonMap)
+void BBPhotonMap::tracePhoton(const BBRay &ray, BBModel *pSceneModels[], int nModelCount, int depth, const QVector3D &power, BBPhotonMap *pPhotonMap, bool bOnlyStoreCausticsPhoton)
 {
     // After tracing many times, end
     BB_PROCESS_ERROR_RETURN((depth < m_nMaxTraceDepth));
@@ -259,11 +259,19 @@ void BBPhotonMap::tracePhoton(const BBRay &ray, BBModel *pSceneModels[], int nMo
             // if it is specular, continue to trace photon, reflection or refraction
             if (scatterInfo.m_bSpecular)
             {
-                tracePhoton(scatterInfo.m_ScatteredRay, pSceneModels, nModelCount, depth + 1, power, pPhotonMap);
+                tracePhoton(scatterInfo.m_ScatteredRay, pSceneModels, nModelCount, depth + 1, power, pPhotonMap, bOnlyStoreCausticsPhoton);
             }
             else
             {
                 // It is assumed that the medium does not absorb photons
+                if (bOnlyStoreCausticsPhoton)
+                {
+                    if (depth == 0)
+                    {
+                        // If only need to store caustics photon, do not store the photons emitted directly to the diffuse surface
+                        return;
+                    }
+                }
                 BBPhoton photon;
                 photon.m_Position = nearHitInfo.m_Position;
                 photon.m_Direction = ray.getDirection();
@@ -308,7 +316,7 @@ QVector3D BBPhotonMap::traceRay(const BBRay &ray, BBModel *pSceneModels[], int n
         }
         else
         {
-            return QVector3D(0, 1, 0);
+            return QVector3D(1, 1, 1);
         }
     }
     else

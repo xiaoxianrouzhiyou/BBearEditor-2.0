@@ -27,6 +27,8 @@ BBOfflineRenderer::BBOfflineRenderer(BBScene *pScene)
     }
     m_pAreaLight = nullptr;
     m_pPhotonMap = nullptr;
+
+    m_nBlendFrameCount = 0;
 }
 
 BBOfflineRenderer::~BBOfflineRenderer()
@@ -50,12 +52,14 @@ void BBOfflineRenderer::createTestScene()
     m_pModels[4] = m_pScene->createModel(BB_PATH_RESOURCE_MESH(plane.obj), QVector3D(0, 0, -2), QVector3D(90, 0, 0), QVector3D(1, 1, 1));
     m_pModels[5] = m_pScene->createModel(BB_PATH_RESOURCE_MESH(plane.obj), QVector3D(0, 0, 4), QVector3D(-90, 0, 0), QVector3D(1, 1, 1));
     m_pModels[6] = m_pScene->createModel(BB_PATH_RESOURCE_MESH(cube.obj), QVector3D(0.4f, 0, 0), QVector3D(0, 0, 0), QVector3D(0.5f, 1.0f, 0.5f));
-    m_pModels[7] = m_pScene->createModel(BB_PATH_RESOURCE_MESH(sphere.obj), QVector3D(-0.4f, 0.5f, 1.5f), QVector3D(0, 0, 0), QVector3D(0.2f, 0.2f, 0.2f));
+    m_pModels[7] = m_pScene->createModel(BB_PATH_RESOURCE_MESH(sphere.obj), QVector3D(-0.4f, 0.5f, 1.5f), QVector3D(0, 0, 0), QVector3D(0.25f, 0.25f, 0.25f));
     for (int i = 0; i < TestModelCount; i++)
     {
         m_pModels[i]->setBoundingBoxVisibility(false);
-        m_pModels[i]->setScatterMaterial(new BBLambertian(QVector3D(1, 0, 0)));
+        m_pModels[i]->setScatterMaterial(new BBDielectric(0.3f));
     }
+    m_pModels[7]->setScatterMaterial(new BBMetal(BBConstant::m_OrangeRed));
+    m_pAreaLight = new BBAreaLight(-0.3f, 0.3f, 1.0f, 1.2f, 2);
 
     m_pScene->getCamera()->update(QVector3D(0, 1, 3.5f), QVector3D(0, 1, 2.5f));
 
@@ -70,12 +74,15 @@ void BBOfflineRenderer::startPhotonMapping()
 {
     generatePhotonMap();
     m_pPhotonMap->balance();
-    QImage image = renderFrame();
-    showFrame(image);
+//    for (int i = 0; i < 3; i++)
+    {
+        renderFrame();
+        showFrame();
+    }
 //    showPhotonMap();
 }
 
-QImage BBOfflineRenderer::renderFrame()
+void BBOfflineRenderer::renderFrame()
 {
     // Emit rays to each pixel of the screen
     BBCamera *pCamera = m_pScene->getCamera();
@@ -91,23 +98,37 @@ QImage BBOfflineRenderer::renderFrame()
             color.setX(clamp(color.x(), 0.0f, 1.0f));
             color.setY(clamp(color.y(), 0.0f, 1.0f));
             color.setZ(clamp(color.z(), 0.0f, 1.0f));
-            qDebug() << color;
+//            qDebug() << color;
+
+            // blend m_CurrentImage and image
+            // Do not blend at the first time
+            if (m_nBlendFrameCount > 0)
+            {
+                QColor currentColor = m_CurrentImage.pixelColor(x, h - y - 1);
+                QVector3D currentColorVector(currentColor.redF(), currentColor.greenF(), currentColor.blueF());
+                color = currentColorVector * m_nBlendFrameCount / (m_nBlendFrameCount + 1) + color / (m_nBlendFrameCount + 1);
+                color.setX(clamp(color.x(), 0.0f, 1.0f));
+                color.setY(clamp(color.y(), 0.0f, 1.0f));
+                color.setZ(clamp(color.z(), 0.0f, 1.0f));
+            }
+
             image.setPixelColor(x, h - y - 1, QColor::fromRgbF(color.x(), color.y(), color.z()));
         }
     }
-    return image;
+    m_CurrentImage = image;
+    m_nBlendFrameCount++;
 }
 
-void BBOfflineRenderer::showFrame(const QImage &image)
+void BBOfflineRenderer::showFrame()
 {
-    m_pMaterial->setSampler2D(LOCATION_TEXTURE(0), BBTexture().createTexture2D(image));
+    qDebug() << m_nBlendFrameCount;
+    m_pMaterial->setSampler2D(LOCATION_TEXTURE(0), BBTexture().createTexture2D(m_CurrentImage));
     m_pScene->update();
 }
 
 void BBOfflineRenderer::generatePhotonMap()
 {
     int nMaxPhotonNum = 10000;
-    m_pAreaLight = new BBAreaLight(-0.3f, 0.3f, -0.1f, -0.1f, 2);
     m_pPhotonMap = new BBPhotonMap(nMaxPhotonNum);
     QVector3D origin;
     QVector3D direction;
@@ -118,7 +139,7 @@ void BBOfflineRenderer::generatePhotonMap()
     {
         m_pAreaLight->generatePhoton(origin, direction, fPowerScale);
         BBRay ray(origin, direction);
-        BBPhotonMap::tracePhoton(ray, m_pModels, TestModelCount, 0, power * fPowerScale, m_pPhotonMap);
+        BBPhotonMap::tracePhoton(ray, m_pModels, TestModelCount, 0, power * fPowerScale, m_pPhotonMap, false);
     }
 }
 

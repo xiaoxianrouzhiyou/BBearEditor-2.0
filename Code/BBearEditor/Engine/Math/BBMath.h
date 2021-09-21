@@ -10,10 +10,11 @@
 #define PI 3.14159265359
 
 float lerp(float a, float b, float f);
-QVector2D lerp(QVector2D a, QVector2D b, float f);
-QVector2D lerp(QVector2D a, QVector2D b, QVector2D c, float u, float v);
+QVector2D lerp(const QVector2D &a, const QVector2D &b, float f);
+QVector2D lerp(const QVector2D &a, const QVector2D &b, const QVector2D &c, float u, float v);
 
-QVector3D reflect(QVector3D L, QVector3D N);
+QVector3D reflect(const QVector3D &L, const QVector3D &N);
+bool refract(const QVector3D &L, const QVector3D &N, float fRefractivity, QVector3D &refracted);
 
 template<class T>
 T clamp(T x, T min, T max)
@@ -27,11 +28,13 @@ T clamp(T x, T min, T max)
 
 float frandom();
 float sfrandom();
-QVector3D hemisphericalRandom(QVector3D normal);
+QVector3D hemisphericalRandom(const QVector3D &normal);
 QVector3D sphericalRandom();
 
 // KD Tree
 int getMedian(int start, int end);
+
+float schlick(float cos, float fRefractivity);
 
 
 #endif // BBMATH_H
