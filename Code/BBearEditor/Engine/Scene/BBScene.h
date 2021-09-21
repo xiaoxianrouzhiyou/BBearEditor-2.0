@@ -42,6 +42,7 @@ public:
     void setRenderingFunc(const BBRenderingFunc &renderingFunc) { m_RenderingFunc = renderingFunc; }
     void defaultRendering();
     // the rendering times Objects_ScreenQuad
+    void deferredRendering0_1();
     void deferredRendering1_1();
     void deferredRendering1_2();
     void deferredRendering2_1();
@@ -53,6 +54,7 @@ public:
     inline BBSkyBox* getSkyBox() { return m_pSkyBox; }
     inline BBTransformCoordinateSystem* getTransformCoordinateSystem() { return m_pTransformCoordinateSystem; }
     inline BBFullScreenQuad* getFullScreenQuad(int nIndex) { return m_pFullScreenQuad[nIndex]; }
+    inline BBFullScreenQuad* getFinalFullScreenQuad() { return m_pFinalFullScreenQuad; }
     inline BBTiledFullScreenQuad* getTiledFullScreenQuad() { return m_pTiledFullScreenQuad; }
     inline QList<BBGameObject*> getModels() { return m_Models; }
     inline QList<BBGameObject*> getLights() { return m_Lights; }
@@ -131,6 +133,7 @@ private:
     BBHorizontalPlane *m_pHorizontalPlane;
     BBTransformCoordinateSystem *m_pTransformCoordinateSystem;
     BBFullScreenQuad *m_pFullScreenQuad[3];
+    BBFullScreenQuad *m_pFinalFullScreenQuad;
     BBTiledFullScreenQuad *m_pTiledFullScreenQuad;
 
     QList<BBGameObject*> m_Models;

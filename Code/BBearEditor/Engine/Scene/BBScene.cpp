@@ -45,6 +45,7 @@ BBScene::BBScene(BBOpenGLWidget *pOpenGLWidget)
     m_pSelectionRegion = nullptr;
     m_pTransformCoordinateSystem = nullptr;
     m_pTiledFullScreenQuad = nullptr;
+    m_pFinalFullScreenQuad = nullptr;
     m_pNormalIndicator = nullptr;
     m_pFixedSizeFBO = nullptr;
     m_ShadowMap = 0;
@@ -65,6 +66,7 @@ BBScene::~BBScene()
     BB_SAFE_DELETE(m_pSelectionRegion);
     BB_SAFE_DELETE(m_pTransformCoordinateSystem);
     BB_SAFE_DELETE(m_pTiledFullScreenQuad);
+    BB_SAFE_DELETE(m_pFinalFullScreenQuad);
     BB_SAFE_DELETE(m_pNormalIndicator);
     BB_SAFE_DELETE(m_pFixedSizeFBO);
     QList<BBGameObject*> objects = m_Models + m_Lights;
@@ -90,6 +92,7 @@ void BBScene::init()
     m_pSelectionRegion = new BBSelectionRegion();
     m_pTransformCoordinateSystem = new BBTransformCoordinateSystem();
     m_pTiledFullScreenQuad = new BBTiledFullScreenQuad();
+    m_pFinalFullScreenQuad = new BBFullScreenQuad();
     m_pNormalIndicator = new BBNormalIndicator();
 
     m_pCamera->setViewportSize(800.0f, 600.0f);
@@ -99,11 +102,13 @@ void BBScene::init()
     m_pTransformCoordinateSystem->init();
 
     m_pTiledFullScreenQuad->init();
+    m_pFinalFullScreenQuad->init();
     for (int i = 0; i < 3; i++)
     {
         m_pFullScreenQuad[i] = new BBFullScreenQuad();
         m_pFullScreenQuad[i]->init();
     }
+
 }
 
 void BBScene::render()
@@ -170,6 +175,14 @@ void BBScene::defaultRendering()
 //    glTexCoord2f(0.0f, 1.0f);
 //    glVertex3f(-50, 50, 0);
 //    glEnd();
+}
+
+void BBScene::deferredRendering0_1()
+{
+    m_pCamera->switchTo3D();
+    m_pCamera->update(m_fUpdateRate);
+
+    m_pFinalFullScreenQuad->render(m_pCamera);
 }
 
 void BBScene::deferredRendering1_1()

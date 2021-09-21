@@ -9,11 +9,16 @@
 #include "Render/BufferObject/BBVertexBufferObject.h"
 #include "Scene/BBSceneManager.h"
 #include "OfflineRenderer/BBScatterMaterial.h"
+#include "Math/BBMath.h"
+#include "Render/BBMaterial.h"
+#include "Render/Texture/BBTexture.h"
+#include "2D/BBFullScreenQuad.h"
 
 
 BBOfflineRenderer::BBOfflineRenderer(BBScene *pScene)
 {
     m_pScene = pScene;
+    m_pMaterial = nullptr;
     m_nWidth = pScene->getCamera()->getViewportWidth();
     m_nHeight = pScene->getCamera()->getViewportHeight();
     for (int i = 0; i < TestModelCount; i++)
@@ -51,20 +56,57 @@ void BBOfflineRenderer::createTestScene()
         m_pModels[i]->setBoundingBoxVisibility(false);
         m_pModels[i]->setScatterMaterial(new BBLambertian(QVector3D(1, 0, 0)));
     }
-    m_pScene->getCamera()->setPosition(QVector3D(0, 1, 3.5f));
+
+    m_pScene->getCamera()->update(QVector3D(0, 1, 3.5f), QVector3D(0, 1, 2.5f));
+
+    m_pMaterial = new BBMaterial();
+    m_pMaterial->init("fullscreenquad_texture", BB_PATH_RESOURCE_SHADER(fullscreenquad_texture.vert), BB_PATH_RESOURCE_SHADER(fullscreenquad_texture.frag));
+    BBFullScreenQuad *pFullScreenQuad = m_pScene->getFinalFullScreenQuad();
+    pFullScreenQuad->setCurrentMaterial(m_pMaterial);
+    m_pScene->setRenderingFunc(&BBScene::deferredRendering0_1);
 }
 
 void BBOfflineRenderer::startPhotonMapping()
 {
     generatePhotonMap();
     m_pPhotonMap->balance();
-    showPhotonMap();
-//    m_pPhotonMap->debug();
+    QImage image = renderFrame();
+    showFrame(image);
+//    showPhotonMap();
+}
+
+QImage BBOfflineRenderer::renderFrame()
+{
+    // Emit rays to each pixel of the screen
+    BBCamera *pCamera = m_pScene->getCamera();
+    int w = pCamera->getViewportWidth();
+    int h = pCamera->getViewportHeight();
+    QImage image(w, h, QImage::Format_ARGB32);
+    for (int y = 0; y < h; y++)
+    {
+        for (int x = 0; x < w; x++)
+        {
+            BBRay ray = pCamera->createRayFromScreen(x, y);
+            QVector3D color = BBPhotonMap::traceRay(ray, m_pModels, TestModelCount, 0, m_pPhotonMap);
+            color.setX(clamp(color.x(), 0.0f, 1.0f));
+            color.setY(clamp(color.y(), 0.0f, 1.0f));
+            color.setZ(clamp(color.z(), 0.0f, 1.0f));
+            qDebug() << color;
+            image.setPixelColor(x, h - y - 1, QColor::fromRgbF(color.x(), color.y(), color.z()));
+        }
+    }
+    return image;
+}
+
+void BBOfflineRenderer::showFrame(const QImage &image)
+{
+    m_pMaterial->setSampler2D(LOCATION_TEXTURE(0), BBTexture().createTexture2D(image));
+    m_pScene->update();
 }
 
 void BBOfflineRenderer::generatePhotonMap()
 {
-    int nMaxPhotonNum = 50000;
+    int nMaxPhotonNum = 10000;
     m_pAreaLight = new BBAreaLight(-0.3f, 0.3f, -0.1f, -0.1f, 2);
     m_pPhotonMap = new BBPhotonMap(nMaxPhotonNum);
     QVector3D origin;
@@ -87,7 +129,7 @@ void BBOfflineRenderer::showPhotonMap()
     QVector3D *pPositions = m_pPhotonMap->getPhotonPositions();
 
     // test
-    BBNearestPhotons nearestPhotons(QVector3D(0, 0, -1), 100, 0.2f);
+    BBNearestPhotons nearestPhotons(QVector3D(0, 0, -1), 100, 0.6f);
     m_pPhotonMap->getKNearestPhotons(&nearestPhotons, 1);
     m_pPhotonMap->markKNearestPhotons(&nearestPhotons);
 //    m_pPhotonMap->debug(&nearestPhotons);

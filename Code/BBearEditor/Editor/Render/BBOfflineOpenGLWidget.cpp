@@ -19,10 +19,10 @@ void BBOfflineOpenGLWidget::initializeGL()
     BBOpenGLWidget::initializeGL();
     m_pScene->enableHorizontalPlane(false);
     m_pOfflineRenderer = new BBOfflineRenderer(m_pScene);
+    m_pOfflineRenderer->createTestScene();
 }
 
 void BBOfflineOpenGLWidget::resizeGL(int nWidth, int nHeight)
 {
     BBOpenGLWidget::resizeGL(nWidth, nHeight);
-    m_pOfflineRenderer->createTestScene();
 }

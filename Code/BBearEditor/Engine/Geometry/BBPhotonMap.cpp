@@ -186,7 +186,7 @@ QVector3D BBPhotonMap::getIrradiance(const QVector3D &detectionPosition, const Q
     // choose circle
     irradiance /= PI * nearestPhotons.m_pDistanceSquare[0];
     // test
-    irradiance /= 10000;
+    irradiance /= 1000;
     return irradiance;
 }
 
