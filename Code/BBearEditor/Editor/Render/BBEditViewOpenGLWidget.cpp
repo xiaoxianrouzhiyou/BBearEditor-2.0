@@ -8,7 +8,7 @@
 #include "3D/BBModel.h"
 #include <QDrag>
 #include "Geometry/BBRay.h"
-#include "CoordinateSystem/BBTransformCoordinateSystem.h"
+#include "Scene/CoordinateSystem/BBTransformCoordinateSystem.h"
 #include <QTreeWidgetItem>
 #include "Scene/BBSceneManager.h"
 #include "Lighting/GameObject/BBLight.h"

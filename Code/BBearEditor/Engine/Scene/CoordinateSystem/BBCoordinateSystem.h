@@ -2,7 +2,7 @@
 #define BBCOORDINATE_H
 
 
-#include "CoordinateSystem/BBCoordinateComponent.h"
+#include "Scene/CoordinateSystem/BBCoordinateComponent.h"
 
 
 class BBBoundingBox;

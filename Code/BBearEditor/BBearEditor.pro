@@ -85,7 +85,7 @@ SOURCES += \
     Engine/Render/Lighting/GameObject/BBPointLight.cpp \
     Engine/Render/Lighting/GameObject/BBSpotLight.cpp \
     Engine/3D/BBIcon.cpp \
-    Engine/CoordinateSystem/BBCoordinateSystem.cpp \
+    Engine/Scene/CoordinateSystem/BBCoordinateSystem.cpp \
     Engine/3D/BBHorizontalPlane.cpp \
     Engine/2D/BBSelectionRegion.cpp \
     Engine/Utils/BBUtils.cpp \
@@ -98,11 +98,11 @@ SOURCES += \
     Engine/Geometry/BBFrustum.cpp \
     Engine/2D/BBSprite2D.cpp \
     Engine/2D/BBCanvas.cpp \
-    Engine/CoordinateSystem/BBCoordinateComponent.cpp \
-    Engine/CoordinateSystem/BBCoordinateSystem2D.cpp \
+    Engine/Scene/CoordinateSystem/BBCoordinateComponent.cpp \
+    Engine/Scene/CoordinateSystem/BBCoordinateSystem2D.cpp \
     Engine/Base/BBRenderableObject2D.cpp \
-    Engine/CoordinateSystem/BBCoordinateComponent2D.cpp \
-    Engine/CoordinateSystem/BBTransformCoordinateSystem.cpp \
+    Engine/Scene/CoordinateSystem/BBCoordinateComponent2D.cpp \
+    Engine/Scene/CoordinateSystem/BBTransformCoordinateSystem.cpp \
     Engine/Geometry/BBBoundingBox2D.cpp \
     Engine/2D/BBSpriteObject2D.cpp \
     Engine/Scene/BBRendererManager.cpp \
@@ -211,7 +211,7 @@ HEADERS += \
     Engine/Render/Lighting/GameObject/BBPointLight.h \
     Engine/Render/Lighting/GameObject/BBSpotLight.h \
     Engine/3D/BBIcon.h \
-    Engine/CoordinateSystem/BBCoordinateSystem.h \
+    Engine/Scene/CoordinateSystem/BBCoordinateSystem.h \
     Engine/3D/BBHorizontalPlane.h \
     Engine/2D/BBSelectionRegion.h \
     Engine/Utils/BBUtils.h \
@@ -224,11 +224,11 @@ HEADERS += \
     Engine/Geometry/BBFrustum.h \
     Engine/2D/BBSprite2D.h \
     Engine/2D/BBCanvas.h \
-    Engine/CoordinateSystem/BBCoordinateComponent.h \
-    Engine/CoordinateSystem/BBCoordinateSystem2D.h \
+    Engine/Scene/CoordinateSystem/BBCoordinateComponent.h \
+    Engine/Scene/CoordinateSystem/BBCoordinateSystem2D.h \
     Engine/Base/BBRenderableObject2D.h \
-    Engine/CoordinateSystem/BBCoordinateComponent2D.h \
-    Engine/CoordinateSystem/BBTransformCoordinateSystem.h \
+    Engine/Scene/CoordinateSystem/BBCoordinateComponent2D.h \
+    Engine/Scene/CoordinateSystem/BBTransformCoordinateSystem.h \
     Engine/Geometry/BBBoundingBox2D.h \
     Engine/2D/BBSpriteObject2D.h \
     Engine/Scene/BBRendererManager.h \
