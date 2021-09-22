@@ -17,38 +17,64 @@ In addition, I referred to some code, learning resources, UI designs, and art re
 * OpenGL. The higher the version, the more effects you can use.
 * Python 3.7.9 32bit. Please copy .../Python/Python37-32/Lib into Code/BBearEditor/Engine/Python!
 ## Features
-Here lists the features that already exists in my engine.
-* Basic Rendering System
-  - Forward Rendering
-  - Deferred Rendering
-  - Material
+Here lists the features that already exists in my engine. (Some contents need to be improved ~ T.T)
 * Fully featured viewer and editor applications
-  - Entity create/delete/set-parent
+  - Object create/delete/set-parent
   - Scene hierarchy viewing
-  - Coordinate system and transform objects
+  - Coordinate system and object transformation
   - Movable camera
-  - Asset management
+  - GUI object/shader inspector for view/editing
   - Drag & Drop operation
-  - GUI Entity Inspector for view/editing
-* Physically-Based 3D rendering
-  - Lighting and Shadows
-    + Multiple types of lighting
-    + Soft shadow: PCF, PCSS, VSM
-    + 
-* 2D & 3D
-* Reproduce some classic algorithms: GI, Spherical Harmonic Lighting, Ray Tracing, Shadow...  
-SSAO, SSDO, Efficient GPU Screen-Space Ray Tracing ...
-* Common shader: water, cartoon fire, heat distort, normal map, PBR, translucency, KajiyaKay hair ...
-* Particle System: SSBO & compute shader
-* Python virtual machine
-* Serialization and Deserialization: scene & material
+* Rendering System
+  - Pipeline
+    + Forward Rendering
+    + Deferred Rendering
+  - 2D & 3D
+    + Sprite, Canvas, Full screen quad
+    + Mesh, Terrain, Normal indicator, Sky box
+  - Lighting & Shadows
+    + Multiple types of lighting: Directional light, Point light, Spotlight, Arealight
+    + Soft Shadow: PCF, PCSS, VSM
+    + Spherical Harmonic Lighting: Zonal Harmonics
+    + Ray Tracing: Efficient GPU Screen-Space Ray Tracing
+    + Photon Mapping
+    + GI: SSAO, SSDO, FLC
+    + Anisotropic Lighting: KajiyaKay Hair
+    + Volumetric Ray Marching
+  - PBR with IBL support
+  - Common Shader
+    + Water
+    + Heat Distort
+    + Normal Mapping
+    + Translucency
+    + Fog
+* High Performance Rendering
+  - Tiled & Clustered LightCulling
+  - Balanced K-D Tree
+  - Compute Shader
+* Math & Geometry
+  - Ray
+  - Bounding Box
+  - Frustum
+* 3D FBX Skeletal Animation (version 1.0, It hasn't been reconstructed yet ~ T.T)
+* Asset Manager
+  - Asset Import & Management
+    + Texture
+    + OBJ
+    + FBX (version 1.0)
+    + Python Script
+  - Serialization & Deserialization
+    + Scene
+    + Material
+* Memory Pool
+* Python Virtual Machine
 ## TODO
-Due to limited time, the functions I listed above may not be as cool as the words seem. Basically, for each effect, I select an article to read and reproduce. Of course, I still have many plans. I have a lot of knowledge I want to learn, and I will continue to improve my project!
+Due to limited time, the functions I listed above may not be as cool as the words seem. Of course, I still have many plans. I have a lot of knowledge I want to learn, and I will continue to improve my project!
 - [ ] Continuous reproduction of papers
 - [ ] Support multiple materials in a scene
 - [ ] Improve Photon Mapping
 - [ ] Cartoon Rendering
-- [ ] Volume Rendering
+- [ ] Improve Volume Rendering
 - [ ] Physics Simulation
 - [ ] Improve PBR
 - [ ] FBX Animation System
@@ -56,12 +82,12 @@ Due to limited time, the functions I listed above may not be as cool as the word
 - [ ] Extension of Python
 - [ ] Font Rendering
 - [ ] LOD Scene
-- [ ] Improve Storage of Scene & Material 
+- [ ] Improve Saving of Scene & Material 
 ## Contacts and Links
-I really look forward to making friends with related interests, and we will share experience and learn together!
+I really look forward to making friends with related interests, and we will share experience and learn together! I'm Big Bear ~ ♀
 * E-Mail: 184346971@qq.com
 ## Screen Shot
-* Disney PBR Material  
+* PBR Material  
 ![JBT58EORSICKGY$~J14YK)L](https://user-images.githubusercontent.com/31690363/131350577-20c40653-8f73-4351-a082-0c459e8a5923.png)
 * VSM  
 ![image](https://user-images.githubusercontent.com/31690363/133650927-56a3da4f-412c-4879-9657-6432c703eb13.png)
