@@ -160,6 +160,28 @@ void BBRendererManager::changeDSTBlendFunc(BBMaterial *pMaterial, int dst)
     serialize(material, materialPath);
 }
 
+void BBRendererManager::changeCullState(BBMaterial *pMaterial, bool bEnable)
+{
+    QString materialPath = m_CachedMaterials.key(pMaterial);
+    BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
+    BBSerializer::BBMaterial material = deserialize(materialPath);
+
+    material.set_cullstate(bEnable);
+
+    serialize(material, materialPath);
+}
+
+void BBRendererManager::changeCullFace(BBMaterial *pMaterial, int face)
+{
+    QString materialPath = m_CachedMaterials.key(pMaterial);
+    BB_PROCESS_ERROR_RETURN(!materialPath.isEmpty());
+    BBSerializer::BBMaterial material = deserialize(materialPath);
+
+    material.set_cullface(face);
+
+    serialize(material, materialPath);
+}
+
 QString BBRendererManager::getShaderFilePath(const QString &name)
 {
     QString filePath = BB_PATH_RESOURCE_SHADER() + name;
@@ -268,6 +290,9 @@ void BBRendererManager::loadMaterialContent(const QString &filePath, BBMaterial 
     // render state
     pMaterial->setBlendState(material.blendstate());
     pMaterial->setBlendFunc(BBUtils::getBlendFunc(material.srcblendfunc()), BBUtils::getBlendFunc(material.dstblendfunc()));
+
+    pMaterial->setCullState(material.cullstate());
+    pMaterial->setCullFace(material.cullface());
 
     // uniform
     int nTextureCount = material.texturename_size();

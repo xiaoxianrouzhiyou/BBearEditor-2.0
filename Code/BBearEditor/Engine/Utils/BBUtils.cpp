@@ -181,3 +181,35 @@ QString BBUtils::getBlendFuncName(unsigned int func)
     }
     return name;
 }
+
+int BBUtils::getCullFace(int nIndex)
+{
+    int face = GL_BACK;
+    switch (nIndex) {
+    case 0:
+        face = GL_FRONT;
+        break;
+    case 1:
+        face = GL_BACK;
+        break;
+    default:
+        break;
+    }
+    return face;
+}
+
+QString BBUtils::getCullFaceName(int face)
+{
+    QString name;
+    switch (face) {
+    case GL_FRONT:
+        name = "GL_FRONT";
+        break;
+    case GL_BACK:
+        name = "GL_BACK";
+        break;
+    default:
+        break;
+    }
+    return name;
+}

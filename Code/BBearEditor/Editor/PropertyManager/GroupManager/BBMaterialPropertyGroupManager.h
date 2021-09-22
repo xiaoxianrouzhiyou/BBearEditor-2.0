@@ -18,11 +18,15 @@ public:
 private:
     void addBlendStateItem();
     void addBlendFuncItem();
+    void addCullStateItem();
+    void addCullFaceItem();
 
 private slots:
     void enableBlendState(bool bEnable);
     void switchSRCBlendFunc(int nIndex);
     void switchDSTBlendFunc(int nIndex);
+    void enableCullState(bool bEnable);
+    void switchCullFace(int nIndex);
 
 private:
     void addPropertyItems();

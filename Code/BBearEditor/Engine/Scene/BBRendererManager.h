@@ -30,6 +30,8 @@ public:
     static void changeBlendState(BBMaterial *pMaterial, bool bEnable);
     static void changeSRCBlendFunc(BBMaterial *pMaterial, int src);
     static void changeDSTBlendFunc(BBMaterial *pMaterial, int dst);
+    static void changeCullState(BBMaterial *pMaterial, bool bEnable);
+    static void changeCullFace(BBMaterial *pMaterial, int face);
 
 public:
     static QString getShaderFilePath(const QString &name);

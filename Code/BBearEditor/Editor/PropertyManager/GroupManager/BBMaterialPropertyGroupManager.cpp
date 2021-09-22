@@ -19,6 +19,10 @@ BBMaterialPropertyGroupManager::BBMaterialPropertyGroupManager(BBMaterial *pMate
 
     addBlendStateItem();
     addBlendFuncItem();
+
+    addCullStateItem();
+    addCullFaceItem();
+
     addMargin(10);
     // read BBMaterialProperty
     addPropertyItems();
@@ -50,12 +54,33 @@ void BBMaterialPropertyGroupManager::addBlendFuncItem()
                          "GL_ONE_MINUS_SRC_ALPHA",
                          "GL_DST_ALPHA",
                          "GL_ONE_MINUS_DST_ALPHA"};
-    BBEnumFactory *pSRCBlendFunc = new BBEnumFactory("src", items, BBUtils::getBlendFuncName(m_pMaterial->getSRCBlendFunc()), this);
-    BBEnumFactory *pDSTBlendFunc = new BBEnumFactory("dst", items, BBUtils::getBlendFuncName(m_pMaterial->getDSTBlendFunc()), this);
+    BBEnumFactory *pSRCBlendFunc = new BBEnumFactory("SRC", items, BBUtils::getBlendFuncName(m_pMaterial->getSRCBlendFunc()), this);
+    BBEnumFactory *pDSTBlendFunc = new BBEnumFactory("DST", items, BBUtils::getBlendFuncName(m_pMaterial->getDSTBlendFunc()), this);
     QObject::connect(pSRCBlendFunc, SIGNAL(currentItemChanged(int)), this, SLOT(switchSRCBlendFunc(int)));
     QObject::connect(pDSTBlendFunc, SIGNAL(currentItemChanged(int)), this, SLOT(switchDSTBlendFunc(int)));
     QWidget *pWidget = addFactory("Blend Func", pSRCBlendFunc, pDSTBlendFunc);
     pWidget->setVisible(m_pMaterial->getBlendState());
+}
+
+void BBMaterialPropertyGroupManager::addCullStateItem()
+{
+    QCheckBox *pCullState = new QCheckBox(this);
+    addFactory("Cull State", pCullState, 1, Qt::AlignRight);
+
+    // original value
+    bool bCullState = m_pMaterial->getCullState();
+    pCullState->setChecked(bCullState);
+    QObject::connect(pCullState, SIGNAL(clicked(bool)), this, SLOT(enableCullState(bool)));
+}
+
+void BBMaterialPropertyGroupManager::addCullFaceItem()
+{
+    QStringList items = {"GL_FRONT",
+                         "GL_BACK"};
+    BBEnumFactory *pCullFace = new BBEnumFactory("Cull Face", items, BBUtils::getCullFaceName(m_pMaterial->getCullFace()), this, 1, 1);
+    QObject::connect(pCullFace, SIGNAL(currentItemChanged(int)), this, SLOT(switchCullFace(int)));
+    QWidget *pWidget = addFactory(pCullFace, "Cull Face");
+    pWidget->setVisible(m_pMaterial->getCullState());
 }
 
 void BBMaterialPropertyGroupManager::enableBlendState(bool bEnable)
@@ -84,6 +109,27 @@ void BBMaterialPropertyGroupManager::switchDSTBlendFunc(int nIndex)
     m_pMaterial->setDSTBlendFunc(BBUtils::getBlendFunc(nIndex));
     m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
     BBRendererManager::changeDSTBlendFunc(m_pMaterial, nIndex);
+}
+
+void BBMaterialPropertyGroupManager::enableCullState(bool bEnable)
+{
+    m_pMaterial->setCullState(bEnable);
+    QWidget* pWidget = findChild<QWidget*>("Cull Face");
+    if (pWidget)
+    {
+        m_pContainer->setVisible(false);
+        pWidget->setVisible(bEnable);
+        m_pContainer->setVisible(true);
+    }
+    m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
+    BBRendererManager::changeCullState(m_pMaterial, bEnable);
+}
+
+void BBMaterialPropertyGroupManager::switchCullFace(int nIndex)
+{
+    m_pMaterial->setCullFace(BBUtils::getCullFace(nIndex));
+    m_pPreviewOpenGLWidget->updateMaterialSphere(m_pMaterial);
+    BBRendererManager::changeCullFace(m_pMaterial, BBUtils::getCullFace(nIndex));
 }
 
 void BBMaterialPropertyGroupManager::addPropertyItems()

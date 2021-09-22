@@ -26,7 +26,7 @@ public:
 
     QWidget* addFactory(const QString &name, QWidget *pFactory, int nStretch = 1, const Qt::Alignment &alignment = Qt::Alignment());
     QWidget* addFactory(const QString &name, QWidget *pFactory1, QWidget *pFactory2, int nStretch = 1);
-    QWidget* addFactory(QWidget *pFactory);
+    QWidget* addFactory(QWidget *pFactory, const QString &name = "default");
     BBLineEditFactory* addFactory(const QString &name, float fValue);
 
     void addMargin(int nHeight);

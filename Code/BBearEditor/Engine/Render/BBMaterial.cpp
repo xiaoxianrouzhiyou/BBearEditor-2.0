@@ -131,6 +131,30 @@ void BBMaterial::setStencilMask(bool bEnable)
     }
 }
 
+void BBMaterial::setCullState(bool bEnable)
+{
+    if (m_pBaseRenderPass != nullptr)
+    {
+        m_pBaseRenderPass->setCullState(bEnable);
+    }
+    if (m_pAdditiveRenderPass != nullptr)
+    {
+        m_pAdditiveRenderPass->setCullState(bEnable);
+    }
+}
+
+void BBMaterial::setCullFace(int face)
+{
+    if (m_pBaseRenderPass != nullptr)
+    {
+        m_pBaseRenderPass->setCullFace(face);
+    }
+    if (m_pAdditiveRenderPass != nullptr)
+    {
+        m_pAdditiveRenderPass->setCullFace(face);
+    }
+}
+
 bool BBMaterial::getBlendState()
 {
     return m_pBaseRenderPass->getBlendState();
@@ -144,6 +168,16 @@ unsigned int BBMaterial::getSRCBlendFunc()
 unsigned int BBMaterial::getDSTBlendFunc()
 {
     return m_pBaseRenderPass->getDSTBlendFunc();
+}
+
+bool BBMaterial::getCullState()
+{
+    return m_pBaseRenderPass->getCullState();
+}
+
+int BBMaterial::getCullFace()
+{
+    return m_pBaseRenderPass->getCullFace();
 }
 
 void BBMaterial::setFloat(const std::string &uniformName, const float fValue)

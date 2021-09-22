@@ -30,9 +30,11 @@ constexpr BBMaterial::BBMaterial(
   , fshaderpath_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , cubemapname_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , cubemappaths_(nullptr)
-  , blendstate_(false)
   , srcblendfunc_(0)
-  , dstblendfunc_(0){}
+  , blendstate_(false)
+  , cullstate_(false)
+  , dstblendfunc_(0)
+  , cullface_(0){}
 struct BBMaterialDefaultTypeInternal {
   constexpr BBMaterialDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -65,6 +67,8 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_BBMaterial_2eproto::offsets[] 
   PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, blendstate_),
   PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, srcblendfunc_),
   PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, dstblendfunc_),
+  PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, cullstate_),
+  PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, cullface_),
   PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, cubemapname_),
   PROTOBUF_FIELD_OFFSET(::BBSerializer::BBMaterial, cubemappaths_),
   0,
@@ -76,14 +80,16 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_BBMaterial_2eproto::offsets[] 
   ~0u,
   ~0u,
   ~0u,
-  5,
   6,
+  5,
+  8,
   7,
+  9,
   3,
   4,
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 19, sizeof(::BBSerializer::BBMaterial)},
+  { 0, 21, sizeof(::BBSerializer::BBMaterial)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -92,7 +98,7 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_BBMaterial_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\020BBMaterial.proto\022\014BBSerializer\032\016BBVect"
-  "or.proto\032\017BBCubeMap.proto\"\207\004\n\nBBMaterial"
+  "or.proto\032\017BBCubeMap.proto\"\321\004\n\nBBMaterial"
   "\022\027\n\nshaderName\030\001 \001(\tH\000\210\001\001\022\030\n\013vShaderPath"
   "\030\002 \001(\tH\001\210\001\001\022\030\n\013fShaderPath\030\003 \001(\tH\002\210\001\001\022\023\n"
   "\013textureName\030\004 \003(\t\022\023\n\013texturePath\030\005 \003(\t\022"
@@ -100,12 +106,14 @@ const char descriptor_table_protodef_BBMaterial_2eproto[] PROTOBUF_SECTION_VARIA
   "\n\010vec4Name\030\010 \003(\t\022+\n\tvec4Value\030\t \003(\0132\030.BB"
   "Serializer.BBVector4f\022\027\n\nblendState\030\n \001("
   "\010H\003\210\001\001\022\031\n\014SRCBlendFunc\030\013 \001(\005H\004\210\001\001\022\031\n\014DST"
-  "BlendFunc\030\014 \001(\005H\005\210\001\001\022\030\n\013cubeMapName\030\r \001("
-  "\tH\006\210\001\001\0222\n\014cubeMapPaths\030\016 \001(\0132\027.BBSeriali"
-  "zer.BBCubeMapH\007\210\001\001B\r\n\013_shaderNameB\016\n\014_vS"
-  "haderPathB\016\n\014_fShaderPathB\r\n\013_blendState"
-  "B\017\n\r_SRCBlendFuncB\017\n\r_DSTBlendFuncB\016\n\014_c"
-  "ubeMapNameB\017\n\r_cubeMapPathsb\006proto3"
+  "BlendFunc\030\014 \001(\005H\005\210\001\001\022\026\n\tcullState\030\r \001(\010H"
+  "\006\210\001\001\022\025\n\010cullFace\030\016 \001(\005H\007\210\001\001\022\030\n\013cubeMapNa"
+  "me\030\017 \001(\tH\010\210\001\001\0222\n\014cubeMapPaths\030\020 \001(\0132\027.BB"
+  "Serializer.BBCubeMapH\t\210\001\001B\r\n\013_shaderName"
+  "B\016\n\014_vShaderPathB\016\n\014_fShaderPathB\r\n\013_ble"
+  "ndStateB\017\n\r_SRCBlendFuncB\017\n\r_DSTBlendFun"
+  "cB\014\n\n_cullStateB\013\n\t_cullFaceB\016\n\014_cubeMap"
+  "NameB\017\n\r_cubeMapPathsb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_BBMaterial_2eproto_deps[2] = {
   &::descriptor_table_BBCubeMap_2eproto,
@@ -113,7 +121,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_BBMaterial_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_BBMaterial_2eproto = {
-  false, false, 595, descriptor_table_protodef_BBMaterial_2eproto, "BBMaterial.proto", 
+  false, false, 669, descriptor_table_protodef_BBMaterial_2eproto, "BBMaterial.proto", 
   &descriptor_table_BBMaterial_2eproto_once, descriptor_table_BBMaterial_2eproto_deps, 2, 1,
   schemas, file_default_instances, TableStruct_BBMaterial_2eproto::offsets,
   file_level_metadata_BBMaterial_2eproto, file_level_enum_descriptors_BBMaterial_2eproto, file_level_service_descriptors_BBMaterial_2eproto,
@@ -141,13 +149,19 @@ class BBMaterial::_Internal {
     (*has_bits)[0] |= 4u;
   }
   static void set_has_blendstate(HasBits* has_bits) {
-    (*has_bits)[0] |= 32u;
-  }
-  static void set_has_srcblendfunc(HasBits* has_bits) {
     (*has_bits)[0] |= 64u;
   }
+  static void set_has_srcblendfunc(HasBits* has_bits) {
+    (*has_bits)[0] |= 32u;
+  }
   static void set_has_dstblendfunc(HasBits* has_bits) {
+    (*has_bits)[0] |= 256u;
+  }
+  static void set_has_cullstate(HasBits* has_bits) {
     (*has_bits)[0] |= 128u;
+  }
+  static void set_has_cullface(HasBits* has_bits) {
+    (*has_bits)[0] |= 512u;
   }
   static void set_has_cubemapname(HasBits* has_bits) {
     (*has_bits)[0] |= 8u;
@@ -219,9 +233,9 @@ BBMaterial::BBMaterial(const BBMaterial& from)
   } else {
     cubemappaths_ = nullptr;
   }
-  ::memcpy(&blendstate_, &from.blendstate_,
-    static_cast<size_t>(reinterpret_cast<char*>(&dstblendfunc_) -
-    reinterpret_cast<char*>(&blendstate_)) + sizeof(dstblendfunc_));
+  ::memcpy(&srcblendfunc_, &from.srcblendfunc_,
+    static_cast<size_t>(reinterpret_cast<char*>(&cullface_) -
+    reinterpret_cast<char*>(&srcblendfunc_)) + sizeof(cullface_));
   // @@protoc_insertion_point(copy_constructor:BBSerializer.BBMaterial)
 }
 
@@ -232,8 +246,8 @@ fshaderpath_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyString
 cubemapname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&cubemappaths_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&dstblendfunc_) -
-    reinterpret_cast<char*>(&cubemappaths_)) + sizeof(dstblendfunc_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&cullface_) -
+    reinterpret_cast<char*>(&cubemappaths_)) + sizeof(cullface_));
 }
 
 BBMaterial::~BBMaterial() {
@@ -295,9 +309,14 @@ void BBMaterial::Clear() {
     }
   }
   if (cached_has_bits & 0x000000e0u) {
-    ::memset(&blendstate_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&dstblendfunc_) -
-        reinterpret_cast<char*>(&blendstate_)) + sizeof(dstblendfunc_));
+    ::memset(&srcblendfunc_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&cullstate_) -
+        reinterpret_cast<char*>(&srcblendfunc_)) + sizeof(cullstate_));
+  }
+  if (cached_has_bits & 0x00000300u) {
+    ::memset(&dstblendfunc_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&cullface_) -
+        reinterpret_cast<char*>(&dstblendfunc_)) + sizeof(cullface_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
@@ -439,18 +458,34 @@ const char* BBMaterial::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string cubeMapName = 13;
+      // bool cullState = 13;
       case 13:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 106)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 104)) {
+          _Internal::set_has_cullstate(&has_bits);
+          cullstate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 cullFace = 14;
+      case 14:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 112)) {
+          _Internal::set_has_cullface(&has_bits);
+          cullface_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string cubeMapName = 15;
+      case 15:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 122)) {
           auto str = _internal_mutable_cubemapname();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "BBSerializer.BBMaterial.cubeMapName"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // .BBSerializer.BBCubeMap cubeMapPaths = 14;
-      case 14:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 114)) {
+      // .BBSerializer.BBCubeMap cubeMapPaths = 16;
+      case 16:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 130)) {
           ptr = ctx->ParseMessage(_internal_mutable_cubemappaths(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
@@ -586,22 +621,34 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(12, this->_internal_dstblendfunc(), target);
   }
 
-  // string cubeMapName = 13;
+  // bool cullState = 13;
+  if (_internal_has_cullstate()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(13, this->_internal_cullstate(), target);
+  }
+
+  // int32 cullFace = 14;
+  if (_internal_has_cullface()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(14, this->_internal_cullface(), target);
+  }
+
+  // string cubeMapName = 15;
   if (_internal_has_cubemapname()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_cubemapname().data(), static_cast<int>(this->_internal_cubemapname().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "BBSerializer.BBMaterial.cubeMapName");
     target = stream->WriteStringMaybeAliased(
-        13, this->_internal_cubemapname(), target);
+        15, this->_internal_cubemapname(), target);
   }
 
-  // .BBSerializer.BBCubeMap cubeMapPaths = 14;
+  // .BBSerializer.BBCubeMap cubeMapPaths = 16;
   if (_internal_has_cubemappaths()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
-        14, _Internal::cubemappaths(this), target, stream);
+        16, _Internal::cubemappaths(this), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -694,37 +741,51 @@ size_t BBMaterial::ByteSizeLong() const {
           this->_internal_fshaderpath());
     }
 
-    // string cubeMapName = 13;
+    // string cubeMapName = 15;
     if (cached_has_bits & 0x00000008u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
           this->_internal_cubemapname());
     }
 
-    // .BBSerializer.BBCubeMap cubeMapPaths = 14;
+    // .BBSerializer.BBCubeMap cubeMapPaths = 16;
     if (cached_has_bits & 0x00000010u) {
-      total_size += 1 +
+      total_size += 2 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
           *cubemappaths_);
     }
 
-    // bool blendState = 10;
-    if (cached_has_bits & 0x00000020u) {
-      total_size += 1 + 1;
-    }
-
     // int32 SRCBlendFunc = 11;
-    if (cached_has_bits & 0x00000040u) {
+    if (cached_has_bits & 0x00000020u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
           this->_internal_srcblendfunc());
     }
 
-    // int32 DSTBlendFunc = 12;
+    // bool blendState = 10;
+    if (cached_has_bits & 0x00000040u) {
+      total_size += 1 + 1;
+    }
+
+    // bool cullState = 13;
     if (cached_has_bits & 0x00000080u) {
+      total_size += 1 + 1;
+    }
+
+  }
+  if (cached_has_bits & 0x00000300u) {
+    // int32 DSTBlendFunc = 12;
+    if (cached_has_bits & 0x00000100u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
           this->_internal_dstblendfunc());
+    }
+
+    // int32 cullFace = 14;
+    if (cached_has_bits & 0x00000200u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+          this->_internal_cullface());
     }
 
   }
@@ -783,13 +844,22 @@ void BBMaterial::MergeFrom(const BBMaterial& from) {
       _internal_mutable_cubemappaths()->::BBSerializer::BBCubeMap::MergeFrom(from._internal_cubemappaths());
     }
     if (cached_has_bits & 0x00000020u) {
-      blendstate_ = from.blendstate_;
-    }
-    if (cached_has_bits & 0x00000040u) {
       srcblendfunc_ = from.srcblendfunc_;
     }
+    if (cached_has_bits & 0x00000040u) {
+      blendstate_ = from.blendstate_;
+    }
     if (cached_has_bits & 0x00000080u) {
+      cullstate_ = from.cullstate_;
+    }
+    _has_bits_[0] |= cached_has_bits;
+  }
+  if (cached_has_bits & 0x00000300u) {
+    if (cached_has_bits & 0x00000100u) {
       dstblendfunc_ = from.dstblendfunc_;
+    }
+    if (cached_has_bits & 0x00000200u) {
+      cullface_ = from.cullface_;
     }
     _has_bits_[0] |= cached_has_bits;
   }
@@ -828,8 +898,8 @@ void BBMaterial::InternalSwap(BBMaterial* other) {
   fshaderpath_.Swap(&other->fshaderpath_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   cubemapname_.Swap(&other->cubemapname_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(BBMaterial, dstblendfunc_)
-      + sizeof(BBMaterial::dstblendfunc_)
+      PROTOBUF_FIELD_OFFSET(BBMaterial, cullface_)
+      + sizeof(BBMaterial::cullface_)
       - PROTOBUF_FIELD_OFFSET(BBMaterial, cubemappaths_)>(
           reinterpret_cast<char*>(&cubemappaths_),
           reinterpret_cast<char*>(&other->cubemappaths_));

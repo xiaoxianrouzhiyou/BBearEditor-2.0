@@ -111,9 +111,11 @@ QWidget* BBGroupManager::addFactory(const QString &name, QWidget *pFactory1, QWi
     return pWidget;
 }
 
-QWidget* BBGroupManager::addFactory(QWidget *pFactory)
+QWidget* BBGroupManager::addFactory(QWidget *pFactory, const QString &name)
 {
     QWidget *pWidget = new QWidget(m_pContainer);
+    // set name for finding
+    pWidget->setObjectName(name);
     QHBoxLayout *pLayout = new QHBoxLayout(pWidget);
     pLayout->setMargin(0);
     pFactory->setParent(pWidget);

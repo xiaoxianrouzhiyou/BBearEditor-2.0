@@ -717,8 +717,8 @@ void BBScene::writeShadowMap()
 
     m_pShadowMapFBO->bind();
 
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+    BBGlobalRenderState::updateCullState(true);
+    BBGlobalRenderState::updateCullFace(GL_BACK);
 
     BBTexture().startWritingTexture2D(m_ShadowMap);
     for (QList<BBGameObject*>::Iterator it = m_Models.begin(); it != m_Models.end(); it++)
@@ -727,8 +727,6 @@ void BBScene::writeShadowMap()
         pModel->setCurrentMaterial(INDEX_SHADOWMAP);
         pModel->renderToShadowMap(m_pCamera);
     }
-
-    glDisable(GL_CULL_FACE);
 
     m_pShadowMapFBO->unbind();
 

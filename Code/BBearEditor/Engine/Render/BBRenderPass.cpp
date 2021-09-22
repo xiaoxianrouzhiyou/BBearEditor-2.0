@@ -45,8 +45,8 @@ void BBRenderPass::bind(void *ptr)
     BBGlobalRenderState::updateZMask(m_RenderState.m_bWriteZ);
     BBGlobalRenderState::updatePolygonMode(m_RenderState.m_DrawFace, m_RenderState.m_PolygonMode);
     BBGlobalRenderState::updateLineWidth(m_RenderState.m_fLineWidth);
-//    BBGlobalRenderState::updateCullState(m_RenderState.m_bCull);
-//    BBGlobalRenderState::updateCullFace(m_RenderState.m_CullFace);
+    BBGlobalRenderState::updateCullState(m_RenderState.m_bCull);
+    BBGlobalRenderState::updateCullFace(m_RenderState.m_CullFace);
     BBGlobalRenderState::updatePointSpriteState(m_RenderState.m_bEnablePointSprite);
     BBGlobalRenderState::updateProgramPointSizeState(m_RenderState.m_bEnableProgramPointSize);
 

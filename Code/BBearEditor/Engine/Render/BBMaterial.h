@@ -35,10 +35,14 @@ public:
     void setZFunc(unsigned int func);
     void setZMask(bool bEnable);
     void setStencilMask(bool bEnable);
+    void setCullState(bool bEnable);
+    void setCullFace(int face);
 
     bool getBlendState();
     unsigned int getSRCBlendFunc();
     unsigned int getDSTBlendFunc();
+    bool getCullState();
+    int getCullFace();
 
 public:
     void setFloat(const std::string &uniformName, const float fValue);

@@ -184,6 +184,9 @@ public:
 
     static unsigned int getBlendFunc(int nIndex);
     static QString getBlendFuncName(unsigned int func);
+
+    static int getCullFace(int nIndex);
+    static QString getCullFaceName(int face);
 };
 
 #endif // BBUTILS_H

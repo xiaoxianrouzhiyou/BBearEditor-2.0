@@ -49,6 +49,8 @@ public:
     bool getBlendState() { return m_RenderState.m_bBlend; }
     unsigned int getSRCBlendFunc() { return m_RenderState.m_SRCBlendFunc; }
     unsigned int getDSTBlendFunc() { return m_RenderState.m_DSTBlendFunc; }
+    bool getCullState() { return m_RenderState.m_bCull; }
+    int getCullFace() { return m_RenderState.m_CullFace; }
 
 public:
     void setFloat(const std::string &uniformName, const float fValue);

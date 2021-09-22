@@ -23,6 +23,9 @@ message BBMaterial
 	optional int32 SRCBlendFunc = 11;
 	optional int32 DSTBlendFunc = 12;
 
-	optional string cubeMapName = 13;
-	optional BBCubeMap cubeMapPaths = 14;
+	optional bool cullState = 13;
+	optional int32 cullFace = 14;
+
+	optional string cubeMapName = 15;
+	optional BBCubeMap cubeMapPaths = 16;
 }
