@@ -17,40 +17,58 @@ In addition, I referred to some code, learning resources, UI designs, and art re
 * OpenGL. The higher the version, the more effects you can use.
 * Python 3.7.9 32bit. Please copy .../Python/Python37-32/Lib into Code/BBearEditor/Engine/Python!
 ## Features
-* Encapsulation of rendering system, Forward rendering & Deferred rendering
-* Editor: create models, coordinate system and transform objects, asset management, adjust parameters ...
+Here lists the features that already exists in my engine.
+* Basic Rendering System
+  - Forward Rendering
+  - Deferred Rendering
+  - Material
+* Fully featured viewer and editor applications
+  - Entity create/delete/set-parent
+  - Scene hierarchy viewing
+  - Coordinate system and transform objects
+  - Movable camera
+  - Asset management
+  - Drag & Drop operation
+  - GUI Entity Inspector for view/editing
+* Physically-Based 3D rendering
+  - Lighting and Shadows
+    + Multiple types of lighting
+    + Soft shadow: PCF, PCSS, VSM
+    + 
 * 2D & 3D
 * Reproduce some classic algorithms: GI, Spherical Harmonic Lighting, Ray Tracing, Shadow...  
-SSAO, SSDO, PCF, PCSS, VSM, Efficient GPU Screen-Space Ray Tracing ...
+SSAO, SSDO, Efficient GPU Screen-Space Ray Tracing ...
 * Common shader: water, cartoon fire, heat distort, normal map, PBR, translucency, KajiyaKay hair ...
 * Particle System: SSBO & compute shader
 * Python virtual machine
 * Serialization and Deserialization: scene & material
 ## TODO
 Due to limited time, the functions I listed above may not be as cool as the words seem. Basically, for each effect, I select an article to read and reproduce. Of course, I still have many plans. I have a lot of knowledge I want to learn, and I will continue to improve my project!
-- [ ] Support multiple materials in a scene
-- [ ] Photon Mapping
-- [ ] Cartoon rendering
-- [ ] Volume rendering
-- [ ] Physics simulation
-- [ ] Improve VSM
-- [x] Improve PBR
-- [ ] FBX animation system
-- [ ] TFO particle system
 - [ ] Continuous reproduction of papers
+- [ ] Support multiple materials in a scene
+- [ ] Improve Photon Mapping
+- [ ] Cartoon Rendering
+- [ ] Volume Rendering
+- [ ] Physics Simulation
+- [ ] Improve PBR
+- [ ] FBX Animation System
+- [ ] TFO Particle System
 - [ ] Extension of Python
-- [ ] Font
-- [ ] LOD
-- [ ] Improve storage of scene & material 
+- [ ] Font Rendering
+- [ ] LOD Scene
+- [ ] Improve Storage of Scene & Material 
 ## Contacts and Links
 I really look forward to making friends with related interests, and we will share experience and learn together!
 * E-Mail: 184346971@qq.com
 ## Screen Shot
-* PBR Material  
+* Disney PBR Material  
 ![JBT58EORSICKGY$~J14YK)L](https://user-images.githubusercontent.com/31690363/131350577-20c40653-8f73-4351-a082-0c459e8a5923.png)
 * VSM  
 ![image](https://user-images.githubusercontent.com/31690363/133650927-56a3da4f-412c-4879-9657-6432c703eb13.png)
 * SH_lighting  
 ![Y(T@48LWH9 2TGQ %GZ3(SE](https://user-images.githubusercontent.com/31690363/133653521-1fb1ec66-cfa4-43c7-9b75-a7674adc0bb2.png)
+* Photon Mapping  
+A temporary progress, there are still some problems, which will be corrected later~ T.T
+![{84A H%5_SB` SBFED03BN](https://user-images.githubusercontent.com/31690363/134267061-5f81fd14-94b4-416f-91e0-a082cf47314b.png)
 * Main interface  
 ![V%BRYKJB E9I0JK(YGZ7ZMM](https://user-images.githubusercontent.com/31690363/130344475-acf28e7e-d0a0-4c86-860f-ce25d081b559.png)
