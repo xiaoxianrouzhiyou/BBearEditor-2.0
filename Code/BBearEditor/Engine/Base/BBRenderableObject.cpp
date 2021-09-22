@@ -157,6 +157,7 @@ void BBRenderableObject::setExtraMaterial(int nMaterialIndex, BBMaterial *pMater
 {
     // 0 is used by GBuffer
     // 2 is used by shadow map
+    // 3, 4, 5 are used by multi materials rendering, which is setted in the object property panel
     m_pExtraMaterial[nMaterialIndex] = pMaterial;
 }
 

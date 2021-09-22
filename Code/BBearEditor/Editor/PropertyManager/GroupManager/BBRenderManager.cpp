@@ -17,6 +17,7 @@ BBRenderManager::BBRenderManager(BBRenderableObject *pObject, QWidget *pParent)
 {
     m_pRenderableObject = pObject;
     QString materialPath = BBRendererManager::getMaterialPath(pObject->getMaterial());
+    QString materialPath2 = BBRendererManager::getMaterialPath(pObject->getExtraMaterial(EXTRA_MATERIAL_INDEX_2));;
 
     m_pAttributeColorFactory = new BBColorFactory(1.0f, 1.0f, 1.0f, 1.0f, this);
     addFactory("Attribute Color", m_pAttributeColorFactory, 1);
@@ -28,6 +29,11 @@ BBRenderManager::BBRenderManager(BBRenderableObject *pObject, QWidget *pParent)
     addFactory("Material", m_pMaterialFactory, 1);
     QObject::connect(m_pMaterialFactory, SIGNAL(iconClicked()), this, SLOT(popupResourceDialog()));
     QObject::connect(m_pMaterialFactory, SIGNAL(currentFilePathChanged(QString)), this, SLOT(changeMaterial(QString)));
+
+    m_pMaterialFactory2 = new BBDragAcceptedFactory(BB_PATH_RESOURCE_ICON(material5.png), materialPath2, this);
+    m_pMaterialFactory2->setFilter(BBFileSystemDataManager::m_MaterialSuffixs);
+    addFactory("Material2", m_pMaterialFactory2, 1);
+    QObject::connect(m_pMaterialFactory2, SIGNAL(currentFilePathChanged(QString)), this, SLOT(changeMaterial2(QString)));
 
     QCheckBox *pNormalIndicatorTrigger = new QCheckBox(this);
     addFactory("Normal Indicator", pNormalIndicatorTrigger, 1, Qt::AlignRight);
@@ -42,6 +48,7 @@ BBRenderManager::~BBRenderManager()
 {
     BB_SAFE_DELETE(m_pAttributeColorFactory);
     BB_SAFE_DELETE(m_pMaterialFactory);
+    BB_SAFE_DELETE(m_pMaterialFactory2);
 }
 
 void BBRenderManager::changeAttributeColor(float r, float g, float b, float a)
@@ -52,6 +59,11 @@ void BBRenderManager::changeAttributeColor(float r, float g, float b, float a)
 void BBRenderManager::changeMaterial(const QString &filePath)
 {
     m_pRenderableObject->setCurrentMaterial(BBRendererManager::loadMaterial(filePath));
+}
+
+void BBRenderManager::changeMaterial2(const QString &filePath)
+{
+    m_pRenderableObject->setExtraMaterial(EXTRA_MATERIAL_INDEX_2, BBRendererManager::loadMaterial(filePath));
 }
 
 void BBRenderManager::popupResourceDialog()

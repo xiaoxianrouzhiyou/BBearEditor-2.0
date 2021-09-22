@@ -92,6 +92,22 @@ void BBMesh::init(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType, int nDr
     appendDrawCall(pDrawCall);
 }
 
+void BBMesh::setExtraMaterial(int nMaterialIndex, BBMaterial *pMaterial)
+{
+    BBRenderableObject::setExtraMaterial(nMaterialIndex, pMaterial);
+    // multi pass rendering
+    if (nMaterialIndex == EXTRA_MATERIAL_INDEX_2)
+    {
+        pMaterial->setMatrix4(LOCATION_MODELMATRIX, m_ModelMatrix.data());
+
+        BBDrawCall *pDrawCall = new BBDrawCall;
+        pDrawCall->setMaterial(pMaterial);
+        pDrawCall->setVBO(m_pVBO);
+        pDrawCall->setEBO(m_pEBO, GL_TRIANGLES, m_nIndexCount, 0);
+        appendDrawCall(pDrawCall);
+    }
+}
+
 bool BBMesh::hit(const BBRay &ray, float &fDistance)
 {
     QVector3D intersection;

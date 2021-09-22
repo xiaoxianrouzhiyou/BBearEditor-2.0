@@ -4,7 +4,8 @@
 #include "BBGameObject.h"
 #include <QtOpenGL>
 
-#define EXTRA_MATERIAL_COUNT 3
+#define EXTRA_MATERIAL_COUNT 5
+#define EXTRA_MATERIAL_INDEX_2 3
 
 class BBDrawCall;
 class BBMaterial;
@@ -60,6 +61,7 @@ public:
     void setScatterMaterial(BBScatterMaterial *pScatterMaterial) override;
 
     inline BBMaterial* getMaterial() { return m_pCurrentMaterial; }
+    inline BBMaterial* getExtraMaterial(int nMaterialIndex) { return m_pExtraMaterial[nMaterialIndex]; }
     inline BBScatterMaterial* getScatterMaterial() { return m_pScatterMaterial; }
     inline BBVertexBufferObject* getVBO() { return m_pVBO; }
     inline BBElementBufferObject* getEBO() { return m_pEBO; }

@@ -19,6 +19,7 @@ public:
 private slots:
     void changeAttributeColor(float r, float g, float b, float a);
     void changeMaterial(const QString &filePath);
+    void changeMaterial2(const QString &filePath);
     void popupResourceDialog();
     void triggerNormalIndicator(bool bEnable);
     void triggerLinePolygonMode(bool bEnable);
@@ -28,6 +29,7 @@ private:
 
     BBColorFactory *m_pAttributeColorFactory;
     BBDragAcceptedFactory *m_pMaterialFactory;
+    BBDragAcceptedFactory *m_pMaterialFactory2;
 };
 
 #endif // BBRENDERMANAGER_H

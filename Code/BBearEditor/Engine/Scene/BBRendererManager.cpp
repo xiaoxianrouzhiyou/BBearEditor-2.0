@@ -6,6 +6,7 @@
 #include "Render/BBPreviewOpenGLWidget.h"
 #include "Render/BBRenderPass.h"
 #include "Render/Texture/BBTexture.h"
+#include <QUuid>
 
 
 BBPreviewOpenGLWidget* BBRendererManager::m_pPreviewOpenGLWidget = nullptr;
@@ -25,7 +26,8 @@ QStringList BBRendererManager::loadFShaderList()
 void BBRendererManager::saveDefaultMaterial(const QString &filePath)
 {
     BBSerializer::BBMaterial material;
-    material.set_shadername("diffuse");
+    QUuid id = QUuid::createUuid();
+    material.set_shadername(id.toString().toStdString().c_str());
     material.set_vshaderpath(BB_PATH_RESOURCE_SHADER(diffuse.vert));
     material.set_fshaderpath(BB_PATH_RESOURCE_SHADER(diffuse.frag));
     serialize(material, filePath);

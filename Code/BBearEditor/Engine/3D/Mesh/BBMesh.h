@@ -24,6 +24,8 @@ public:
     virtual void init(const QString &path, BBBoundingBox3D *&pOutBoundingBox);
     void init(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount, BBBoundingBox3D *&pOutBoundingBox);
 
+    void setExtraMaterial(int nMaterialIndex, BBMaterial *pMaterial) override;
+
     bool hit(const BBRay &ray, float &fDistance) override;
     bool hit(const BBRay &ray, float fMinDistance, float fMaxDistance, BBHitInfo &hitInfo);
 
