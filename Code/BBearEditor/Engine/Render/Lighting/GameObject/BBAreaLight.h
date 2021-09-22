@@ -20,6 +20,8 @@ public:
     void generatePhoton(QVector3D &origin, QVector3D &direction, float &fPowerScale, const QVector3D &normal = QVector3D(0, -1, 0));
     void generatePhoton(QVector3D &origin, QVector3D &direction, float &fPowerScale, const BBHitInfo &hitInfo);
 
+    QVector3D getColor() { return m_Color; }
+
 private:
     // Define location and size
     // For example, an area light source in an xoz plane, m_nFixedValue means y,
@@ -31,6 +33,7 @@ private:
     float m_fFixedValue;
     QVector3D m_Normal;
     BBRectBoundingBox3D *m_pBoundingBox;
+    QVector3D m_Color;
 };
 
 #endif // BBAREALIGHT_H

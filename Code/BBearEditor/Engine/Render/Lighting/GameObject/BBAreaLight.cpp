@@ -14,6 +14,7 @@ BBAreaLight::BBAreaLight(float fMin0, float fMax0, float fMin1, float fMax1, flo
     m_Normal = QVector3D(0, -1, 0);
     m_pBoundingBox = new BBRectBoundingBox3D((m_fMax0 + m_fMin0) / 2, m_fFixedValue, (m_fMax1 + m_fMin1) / 2,
                                              (m_fMax0 - m_fMin0) / 2, 0, (m_fMax1 - m_fMin1) / 2);
+    m_Color = QVector3D(1, 1, 1);
 }
 
 BBAreaLight::~BBAreaLight()

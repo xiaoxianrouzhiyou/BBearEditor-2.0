@@ -6,8 +6,6 @@
 #include "Utils/BBUtils.h"
 #include "Geometry/BBRay.h"
 
-class BBAreaLight;
-
 struct BBPhoton
 {
     QVector3D m_Position;
@@ -87,7 +85,7 @@ public:
 
 public:
     static void tracePhoton(const BBRay &ray, BBModel *pSceneModels[], int nModelCount, int depth, const QVector3D &power, BBPhotonMap *pPhotonMap, bool bOnlyStoreCausticsPhoton);
-    static QVector3D traceRay(const BBRay &ray, BBModel *pSceneModels[], int nModelCount, int depth, BBPhotonMap *pPhotonMap, BBAreaLight *pAreaLight);
+    static QVector3D traceRay(const BBRay &ray, BBModel *pSceneModels[], int nModelCount, int depth, BBPhotonMap *pPhotonMap);
 
 private:
     static int m_nMaxTraceDepth;

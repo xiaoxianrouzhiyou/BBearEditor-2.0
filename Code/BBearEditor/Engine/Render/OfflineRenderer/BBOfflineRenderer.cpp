@@ -59,7 +59,7 @@ void BBOfflineRenderer::createTestScene()
         m_pModels[i]->setScatterMaterial(new BBLambertian(QVector3D(1, 1, 1)));
     }
     m_pModels[6]->setScatterMaterial(new BBLambertian(QVector3D(0, 1, 0)));
-    m_pModels[7]->setScatterMaterial(new BBDielectric(0.2f));
+    m_pModels[7]->setScatterMaterial(new BBMetal(QVector3D(1, 0, 0)));
     m_pAreaLight = new BBAreaLight(-0.3f, 0.3f, 1.0f, 1.2f, 2.0f);
     m_pAreaLight->init();
 
@@ -81,7 +81,7 @@ void BBOfflineRenderer::startPhotonMapping()
         renderFrame();
         showFrame();
     }
-//    showPhotonMap();
+    showPhotonMap();
 }
 
 void BBOfflineRenderer::renderFrame()
@@ -100,7 +100,15 @@ void BBOfflineRenderer::renderFrame()
             for (int sample = 0; sample < nSampleCount; sample++)
             {
                 BBRay ray = pCamera->createRayFromScreen(x + sfrandom(), y + sfrandom());
-                color += BBPhotonMap::traceRay(ray, m_pModels, TestModelCount, 0, m_pPhotonMap, m_pAreaLight);
+                float d;
+                if (m_pAreaLight->hit(ray, d))
+                {
+                    color = m_pAreaLight->getColor();
+                }
+                else
+                {
+                    color += BBPhotonMap::traceRay(ray, m_pModels, TestModelCount, 0, m_pPhotonMap);
+                }
             }
             color /= nSampleCount;
 

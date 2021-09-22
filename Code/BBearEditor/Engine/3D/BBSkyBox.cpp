@@ -170,7 +170,7 @@ void BBSkyBox::initFromHDREnvironmentMap()
 {
     m_pCurrentMaterial->init("SkyBox_Equirectangular", BB_PATH_RESOURCE_SHADER(SkyBox/Equirectangular.vert), BB_PATH_RESOURCE_SHADER(SkyBox/Equirectangular.frag));
 
-    GLuint hdrTexture = BBTexture().createHDRTexture2D(BB_PATH_RESOURCE_TEXTURE(HDR/newport_loft.hdr));
+    GLuint hdrTexture = BBTexture().createHDRTexture2D(BB_PATH_RESOURCE_TEXTURE(HDR/Walk_Of_Fame/Mans_Outside_2k.hdr));
     m_pCurrentMaterial->setSampler2D(LOCATION_SKYBOX_EQUIRECTANGULAR_MAP, hdrTexture);
     m_pCurrentMaterial->setZTestState(false);
 }

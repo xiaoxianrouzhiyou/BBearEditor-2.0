@@ -283,14 +283,8 @@ void BBPhotonMap::tracePhoton(const BBRay &ray, BBModel *pSceneModels[], int nMo
     }
 }
 
-QVector3D BBPhotonMap::traceRay(const BBRay &ray, BBModel *pSceneModels[], int nModelCount, int depth, BBPhotonMap *pPhotonMap, BBAreaLight *pAreaLight)
+QVector3D BBPhotonMap::traceRay(const BBRay &ray, BBModel *pSceneModels[], int nModelCount, int depth, BBPhotonMap *pPhotonMap)
 {
-    float fDistance;
-    if (pAreaLight->hit(ray, fDistance))
-    {
-        return QVector3D(1, 0, 0);
-    }
-
     // need to record the info of hit point
     BBHitInfo nearHitInfo;
     // Find the nearest hit point and the corresponding model
@@ -314,7 +308,7 @@ QVector3D BBPhotonMap::traceRay(const BBRay &ray, BBModel *pSceneModels[], int n
         {
             if (scatterInfo.m_bSpecular)
             {
-                return scatterInfo.m_Attenuation * traceRay(scatterInfo.m_ScatteredRay, pSceneModels, nModelCount, depth + 1, pPhotonMap, pAreaLight);
+                return scatterInfo.m_Attenuation * traceRay(scatterInfo.m_ScatteredRay, pSceneModels, nModelCount, depth + 1, pPhotonMap);
             }
             else
             {
