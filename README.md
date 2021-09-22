@@ -1,5 +1,5 @@
 # BigBear Editor 2.0 - 3D Learning-Oriented Engine
-BigBear Editor is a free 3D learning-oriented engine project built by me, Bear X (Chinese). Originally, I started to build in 2018 during my master's degree of computer science. It was intended as a project in which I can organize my knowledge of C++ and OpenGL. After that, I suspended this project because of my busy work and taking exams. About three months ago, I passed the exam successfully, and I started working on this project again. I discovered how terrible the project I wrote before. So I studied some related knowledge and resources, including rendering, engine architecture, etc., and reconstructed this project. So I named it 2.0. Whenever I learn a piece of knowledge, I will reproduce it in this project. I believe that this is a good way to learn, accumulate and consolidate knowledge! In addition, this project has implemented some basic functions. When I need to reproduce a new technology, I can use many implemented or integrated functions, which greatly improves my learning efficiency! Compared to learning complex engines, such as the source code of Unreal Engine 4, (that's too complicated). It is a better choice to continously build our own micro-engine during the learning process. Anyway, I want to share my source code with other friends or developers who might be going down the same path as mine and need a reference or just something to look up.
+BigBear Editor is a free 3D learning-oriented engine project built by me, Bear X (Chinese ♀). Originally, I started to build in 2018 during my master's degree of computer science. It was intended as a project in which I can organize my knowledge of C++ and OpenGL. After that, I suspended this project because of my busy work and taking exams. About three months ago, I passed the exam successfully, and I started working on this project again. I discovered how terrible the project I wrote before. So I studied some related knowledge and resources, including rendering, engine architecture, etc., and reconstructed this project. So I named it 2.0. Whenever I learn a piece of knowledge, I will reproduce it in this project. I believe that this is a good way to learn, accumulate and consolidate knowledge! In addition, this project has implemented some basic functions. When I need to reproduce a new technology, I can use many implemented or integrated functions, which greatly improves my learning efficiency! Compared to learning complex engines, such as the source code of Unreal Engine 4, (that's too complicated). It is a better choice to continously build our own micro-engine during the learning process. Anyway, I want to share my source code with other friends or developers who might be going down the same path as mine and need a reference or just something to look up.
 ## Disclaimer
 Although this version 2.0 of the project has indeed undergone a reconstruction, due to time constraints, the code is still somewhat **ugly**.
 * Some buttons or menu items on the interface are just interfaces, and I do not implement their functions.
@@ -17,7 +17,7 @@ In addition, I referred to some code, learning resources, UI designs, and art re
 * OpenGL. The higher the version, the more effects you can use.
 * Python 3.7.9 32bit. Please copy .../Python/Python37-32/Lib into Code/BBearEditor/Engine/Python!
 ## Features
-Here lists the features that already exists in my engine. (Some contents need to be improved ~ T.T)
+Here lists the features that already exists in my engine. (Some contents need to be improved) o(╥﹏╥)o
 * Fully featured viewer and editor applications
   - Object create/delete/set-parent
   - Scene hierarchy viewing
@@ -84,7 +84,7 @@ Due to limited time, the functions I listed above may not be as cool as the word
 - [ ] LOD Scene
 - [ ] Improve Saving of Scene & Material 
 ## Contacts and Links
-I really look forward to making friends with related interests, and we will share experience and learn together! I'm Big Bear ~ ♀
+I really look forward to making friends with related interests, and we will share experience and learn together! I'm Big Bear (●￣(ｴ)￣●)
 * E-Mail: 184346971@qq.com
 ## Screen Shot
 * PBR Material  
@@ -94,7 +94,8 @@ I really look forward to making friends with related interests, and we will shar
 * SH_lighting  
 ![Y(T@48LWH9 2TGQ %GZ3(SE](https://user-images.githubusercontent.com/31690363/133653521-1fb1ec66-cfa4-43c7-9b75-a7674adc0bb2.png)
 * Photon Mapping  
-A temporary progress, there are still some problems, which will be corrected later~ T.T
+A temporary progress, there are still some problems, which will be corrected later~ T.T  
+The left figure shows the position of photons. Red photons are the nearest K photons around a point tested.
 ![{84A H%5_SB` SBFED03BN](https://user-images.githubusercontent.com/31690363/134267061-5f81fd14-94b4-416f-91e0-a082cf47314b.png)
 * Main interface  
 ![V%BRYKJB E9I0JK(YGZ7ZMM](https://user-images.githubusercontent.com/31690363/130344475-acf28e7e-d0a0-4c86-860f-ce25d081b559.png)
