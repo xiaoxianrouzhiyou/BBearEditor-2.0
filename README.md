@@ -31,7 +31,7 @@ Here lists the features that already exists in my engine. (Some contents need to
     + Deferred Rendering
   - 2D & 3D
     + Sprite, Canvas, Full screen quad
-    + Mesh, Terrain, Normal indicator, Sky box
+    + Mesh, Terrain, TBN, Sky box
   - Lighting & Shadows
     + Multiple types of lighting: Directional light, Point light, Spotlight, Arealight
     + Soft Shadow: PCF, PCSS, VSM
@@ -71,7 +71,6 @@ Here lists the features that already exists in my engine. (Some contents need to
 ## TODO
 Due to limited time, the functions I listed above may not be as cool as the words seem. Of course, I still have many plans. I have a lot of knowledge I want to learn, and I will continue to improve my project!
 - [ ] Continuous reproduction of papers
-- [ ] Support multiple materials in a scene
 - [ ] Improve Photon Mapping
 - [ ] Cartoon Rendering
 - [ ] Improve Volume Rendering
