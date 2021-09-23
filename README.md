@@ -75,7 +75,6 @@ Due to limited time, the functions I listed above may not be as cool as the word
 - [ ] Improve Photon Mapping
 - [ ] Bézier curve
 - [ ] Perlin noise
-- [ ] Cartoon Rendering
 - [ ] Improve Volume Rendering
 - [ ] Physics Simulation
 - [ ] Improve PBR
