@@ -88,11 +88,11 @@ I really look forward to making friends with related interests, and we will shar
 * E-Mail: 184346971@qq.com
 ## Screen Shot
 * PBR Material  
-![JBT58EORSICKGY$~J14YK)L](https://user-images.githubusercontent.com/31690363/131350577-20c40653-8f73-4351-a082-0c459e8a5923.png)
+![131350577-20c40653-8f73-4351-a082-0c459e8a5923_副本_副本](https://user-images.githubusercontent.com/31690363/134453521-e4701db7-79a1-4ae1-8546-c00c7b349c00.png)
 ![38FCC5FFFE520709A82F9B12BDA1662F](https://user-images.githubusercontent.com/31690363/134385568-62c18b04-5e77-48e1-8297-7c663af0c839.png)
 * Shadows  
 ![image](https://user-images.githubusercontent.com/31690363/133650927-56a3da4f-412c-4879-9657-6432c703eb13.png)
-![F41DEA5E999D66E997B043121A98094B](https://user-images.githubusercontent.com/31690363/134385270-89fba7aa-2299-4f6f-9a4b-b18cae218e0a.png)
+![134385270-89fba7aa-2299-4f6f-9a4b-b18cae218e0a_副本_副本](https://user-images.githubusercontent.com/31690363/134453742-a3d9ea43-d961-4c5c-bbbf-0b9066fb9499.png)
 * SH_lighting  
 ![Y(T@48LWH9 2TGQ %GZ3(SE](https://user-images.githubusercontent.com/31690363/133653521-1fb1ec66-cfa4-43c7-9b75-a7674adc0bb2.png)
 * Photon Mapping  
@@ -100,6 +100,6 @@ A temporary progress, there are still some problems, which will be corrected lat
 The left figure shows the position of photons. Red photons are the nearest K photons around a point tested.
 ![{84A H%5_SB` SBFED03BN](https://user-images.githubusercontent.com/31690363/134267061-5f81fd14-94b4-416f-91e0-a082cf47314b.png)
 * Particle System  
-![E979F36DA2AB1664ED0DE7A7A15965BA](https://user-images.githubusercontent.com/31690363/134385763-37b9774c-8fae-4f09-8f80-ee26a8634d41.png)
+![134385763-37b9774c-8fae-4f09-8f80-ee26a8634d41_副本](https://user-images.githubusercontent.com/31690363/134453838-3553efd0-7d4b-40a2-b1dc-a49a1d05f5de.png)
 * Main interface  
 ![V%BRYKJB E9I0JK(YGZ7ZMM](https://user-images.githubusercontent.com/31690363/130344475-acf28e7e-d0a0-4c86-860f-ce25d081b559.png)
