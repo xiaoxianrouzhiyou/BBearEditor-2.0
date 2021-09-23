@@ -1,9 +1,11 @@
 #version 330 core
 
 in vec4 BBPosition;
+in vec4 BBTexcoord;
 in vec4 BBNormal;
 
 out vec3 v2f_world_pos;
+out vec2 v2f_texcoords;
 out vec3 v2f_normal;
 
 uniform mat4 BBProjectionMatrix;
@@ -16,5 +18,6 @@ void main()
     gl_Position = BBProjectionMatrix * BBViewMatrix * world_pos;
 
     v2f_world_pos = world_pos.xyz;
+    v2f_texcoords = BBTexcoord.xy;
     v2f_normal = mat3(BBModelMatrix) * BBNormal.xyz;
 }
