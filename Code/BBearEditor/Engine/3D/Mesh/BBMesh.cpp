@@ -34,6 +34,7 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
     QList<QVector4D> positions;
     load(path, positions);
     m_pVBO->computeTangent(m_pIndexes, m_nIndexCount);
+    m_pVBO->computeSmoothNormal();
 
     // create bounding box
     pOutBoundingBox = new BBAABBBoundingBox3D(m_Position.x(), m_Position.y(), m_Position.z(),

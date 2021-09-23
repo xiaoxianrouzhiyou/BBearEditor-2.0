@@ -65,6 +65,10 @@ void BBBaseShader::initAttributes()
         {
             nDataOffset = sizeof(float) * 20;
         }
+        else if (strcmp(attribName, LOCATION_SMOOTHNORMAL) == 0)
+        {
+            nDataOffset = sizeof(float) * 24;
+        }
         else
         {
             // If the attribname of VBO is not satisfied, ssbo is used

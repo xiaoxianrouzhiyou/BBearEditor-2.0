@@ -12,6 +12,7 @@ struct BBVertex
     float m_fNormal[4];
     float m_fTangent[4];
     float m_fBiTangent[4];
+    float m_fSmoothNormal[4];
 };
 
 class BBVertexBufferObject : public BBBufferObject
@@ -49,6 +50,11 @@ public:
     void setBiTangent(int index, const QVector3D &bitangent);
     QVector3D getTangent(int index);
     QVector3D getBiTangent(int index);
+
+    void computeSmoothNormal();
+    void setSmoothNormal(int index, float x, float y, float z);
+    void setSmoothNormal(int index, const QVector3D &normal);
+    QVector3D getSmoothNormal(int index);
 
     inline int getVertexCount() { return m_nVertexCount; }
 

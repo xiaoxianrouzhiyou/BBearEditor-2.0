@@ -23,6 +23,7 @@
 #define LOCATION_NORMAL "BBNormal"
 #define LOCATION_TANGENT "BBTangent"
 #define LOCATION_BITANGENT "BBBiTangent"
+#define LOCATION_SMOOTHNORMAL "BBSmoothNormal"
 #define LOCATION_PROJECTIONMATRIX "BBProjectionMatrix"
 #define LOCATION_PROJECTIONMATRIX_I "BBProjectionMatrix_I"
 #define LOCATION_VIEWMATRIX "BBViewMatrix"

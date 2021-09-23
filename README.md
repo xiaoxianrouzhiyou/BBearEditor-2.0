@@ -18,12 +18,12 @@ In addition, I referred to some code, learning resources, UI designs, and art re
 * Python 3.7.9 32bit. Please copy .../Python/Python37-32/Lib into Code/BBearEditor/Engine/Python!
 ## Features
 Here lists the features that already exists in my engine. (Some contents need to be improved) o(╥﹏╥)o
-* Fully featured viewer and editor applications
+* Fully featured viewer and editor application
   - Object create/delete/set-parent
   - Scene hierarchy viewing
   - Coordinate system and object transformation
   - Movable camera
-  - GUI object/shader inspector for view/editing
+  - GUI object/material inspector for viewing/editing
   - Drag & Drop operation
 * Rendering System
   - Pipeline
@@ -31,7 +31,7 @@ Here lists the features that already exists in my engine. (Some contents need to
     + Deferred Rendering
   - 2D & 3D
     + Sprite, Canvas, Full screen quad
-    + Mesh, Terrain, Normal indicator, Sky box
+    + Mesh, Terrain, TBN, Sky box
   - Lighting & Shadows
     + Multiple types of lighting: Directional light, Point light, Spotlight, Arealight
     + Soft Shadow: PCF, PCSS, VSM
@@ -40,7 +40,7 @@ Here lists the features that already exists in my engine. (Some contents need to
     + Photon Mapping
     + GI: SSAO, SSDO, FLC
     + Anisotropic Lighting: KajiyaKay Hair
-    + Volumetric Ray Marching
+    + Volume rendering
   - PBR with IBL support
   - Common Shader
     + Water
@@ -71,8 +71,9 @@ Here lists the features that already exists in my engine. (Some contents need to
 ## TODO
 Due to limited time, the functions I listed above may not be as cool as the words seem. Of course, I still have many plans. I have a lot of knowledge I want to learn, and I will continue to improve my project!
 - [ ] Continuous reproduction of papers
-- [ ] Support multiple materials in a scene
 - [ ] Improve Photon Mapping
+- [ ] Bézier curve
+- [ ] Perlin noise
 - [ ] Cartoon Rendering
 - [ ] Improve Volume Rendering
 - [ ] Physics Simulation
@@ -82,20 +83,23 @@ Due to limited time, the functions I listed above may not be as cool as the word
 - [ ] Extension of Python
 - [ ] Font Rendering
 - [ ] LOD Scene
-- [ ] Improve Saving of Scene & Material 
 ## Contacts and Links
 I really look forward to making friends with related interests, and we will share experience and learn together! I'm Big Bear (●￣(ｴ)￣●)
 * E-Mail: 184346971@qq.com
 ## Screen Shot
 * PBR Material  
-![JBT58EORSICKGY$~J14YK)L](https://user-images.githubusercontent.com/31690363/131350577-20c40653-8f73-4351-a082-0c459e8a5923.png)
-* VSM  
+![131350577-20c40653-8f73-4351-a082-0c459e8a5923_副本_副本](https://user-images.githubusercontent.com/31690363/134453521-e4701db7-79a1-4ae1-8546-c00c7b349c00.png)
+![38FCC5FFFE520709A82F9B12BDA1662F](https://user-images.githubusercontent.com/31690363/134385568-62c18b04-5e77-48e1-8297-7c663af0c839.png)
+* Shadows  
 ![image](https://user-images.githubusercontent.com/31690363/133650927-56a3da4f-412c-4879-9657-6432c703eb13.png)
+![134385270-89fba7aa-2299-4f6f-9a4b-b18cae218e0a_副本_副本](https://user-images.githubusercontent.com/31690363/134453742-a3d9ea43-d961-4c5c-bbbf-0b9066fb9499.png)
 * SH_lighting  
 ![Y(T@48LWH9 2TGQ %GZ3(SE](https://user-images.githubusercontent.com/31690363/133653521-1fb1ec66-cfa4-43c7-9b75-a7674adc0bb2.png)
 * Photon Mapping  
 A temporary progress, there are still some problems, which will be corrected later~ T.T  
 The left figure shows the position of photons. Red photons are the nearest K photons around a point tested.
 ![{84A H%5_SB` SBFED03BN](https://user-images.githubusercontent.com/31690363/134267061-5f81fd14-94b4-416f-91e0-a082cf47314b.png)
+* Particle System  
+![134385763-37b9774c-8fae-4f09-8f80-ee26a8634d41_副本](https://user-images.githubusercontent.com/31690363/134453838-3553efd0-7d4b-40a2-b1dc-a49a1d05f5de.png)
 * Main interface  
 ![V%BRYKJB E9I0JK(YGZ7ZMM](https://user-images.githubusercontent.com/31690363/130344475-acf28e7e-d0a0-4c86-860f-ce25d081b559.png)

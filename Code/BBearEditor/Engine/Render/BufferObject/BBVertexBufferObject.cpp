@@ -210,6 +210,77 @@ QVector3D BBVertexBufferObject::getBiTangent(int index)
     return QVector3D(m_pVertexes[index].m_fBiTangent[0], m_pVertexes[index].m_fBiTangent[1], m_pVertexes[index].m_fBiTangent[2]);
 }
 
+void BBVertexBufferObject::computeSmoothNormal()
+{
+    BB_PROCESS_ERROR_RETURN(m_nVertexCount);
+    // QList<int> : Save the index of vertices with consistent positions
+    // QList<QList<int>> : Save all different positions
+    QList<QList<int>> indexGroups;
+    // init
+    QList<int> group0;
+    group0.append(0);
+    indexGroups.append(group0);
+    // start from 1
+    for (int i = 1; i < m_nVertexCount; i++)
+    {
+        QVector3D pos = getPosition(i);
+        int j = 0;
+        for (; j < indexGroups.size(); j++)
+        {
+            QList<int> group = indexGroups.at(j);
+            QVector3D center = getPosition(group.at(0));
+            // If it is adjacent to the vertex represented by the index 0, the index will be saved in the same group.
+            // Otherwise, continue to compare the index 0 of the next group
+            if (pos.distanceToPoint(center) < 0.001f)
+            {
+                indexGroups[j].append(i);
+                break;
+            }
+        }
+        if (j >= indexGroups.size())
+        {
+            // If no vertex close to the current vertex position is found, the current vertex position is regarded as a new group
+            QList<int> group;
+            group.append(i);
+            indexGroups.append(group);
+        }
+    }
+    // For each set of vertices, find the average of their normal
+    for (int i = 0; i < indexGroups.size(); i++)
+    {
+        QList<int> group = indexGroups.at(i);
+        QVector3D normal(0, 0, 0);
+        for (int j = 0; j < group.size(); j++)
+        {
+            normal += getNormal(group.at(j));
+        }
+        normal.normalize();
+        // set for each vertex
+        for (int j = 0; j < group.size(); j++)
+        {
+            setSmoothNormal(group.at(j), normal);
+        }
+    }
+}
+
+void BBVertexBufferObject::setSmoothNormal(int index, float x, float y, float z)
+{
+    m_pVertexes[index].m_fSmoothNormal[0] = x;
+    m_pVertexes[index].m_fSmoothNormal[1] = y;
+    m_pVertexes[index].m_fSmoothNormal[2] = z;
+    m_pVertexes[index].m_fSmoothNormal[3] = 1.0f;
+}
+
+void BBVertexBufferObject::setSmoothNormal(int index, const QVector3D &normal)
+{
+    setSmoothNormal(index, normal.x(), normal.y(), normal.z());
+}
+
+QVector3D BBVertexBufferObject::getSmoothNormal(int index)
+{
+    return QVector3D(m_pVertexes[index].m_fSmoothNormal[0], m_pVertexes[index].m_fSmoothNormal[1], m_pVertexes[index].m_fSmoothNormal[2]);
+}
+
 void BBVertexBufferObject::submitData()
 {
     updateData(m_BufferType, sizeof(BBVertex) * m_nVertexCount, m_pVertexes);
