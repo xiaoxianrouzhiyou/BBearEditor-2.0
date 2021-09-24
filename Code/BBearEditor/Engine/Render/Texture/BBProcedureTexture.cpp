@@ -68,3 +68,8 @@ GLuint BBProcedureTexture::create3D0(int nWidth, int nHeight, int nDepth)
     BB_SAFE_DELETE(pData);
     return texture;
 }
+
+GLuint BBProcedureTexture::createPerlinNoise(const QVector3D &p)
+{
+
+}
