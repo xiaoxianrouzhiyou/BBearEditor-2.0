@@ -29,7 +29,7 @@ BBParticle::~BBParticle()
 
 void BBParticle::init()
 {
-    create2();
+    create1();
 
     m_pCurrentMaterial->getBaseRenderPass()->setBlendState(true);
     m_pCurrentMaterial->getBaseRenderPass()->setBlendFunc(GL_SRC_ALPHA, GL_ONE);
@@ -41,7 +41,7 @@ void BBParticle::init()
 
 void BBParticle::render(BBCamera *pCamera)
 {
-    update2(pCamera);
+    update1(pCamera);
 }
 
 void BBParticle::create0()

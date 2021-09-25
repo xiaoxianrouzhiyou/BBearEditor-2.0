@@ -146,7 +146,8 @@ SOURCES += \
     Engine/Render/Lighting/GameObject/BBAreaLight.cpp \
     Editor/PropertyManager/GroupManager/BBOfflineRendererManager.cpp \
     Engine/Render/OfflineRenderer/BBScatterMaterial.cpp \
-    Engine/Math/BBPerlinNoise.cpp
+    Engine/Math/BBPerlinNoise.cpp \
+    Engine/Physics/SPH/BBSPHParticleSystem.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -272,7 +273,8 @@ HEADERS += \
     Engine/Render/Lighting/GameObject/BBAreaLight.h \
     Editor/PropertyManager/GroupManager/BBOfflineRendererManager.h \
     Engine/Render/OfflineRenderer/BBScatterMaterial.h \
-    Engine/Math/BBPerlinNoise.h
+    Engine/Math/BBPerlinNoise.h \
+    Engine/Physics/SPH/BBSPHParticleSystem.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
