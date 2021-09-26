@@ -4,6 +4,8 @@
 
 #include <QVector3D>
 
+#define MAX_PARTICLE 10000
+
 struct BBSPHParticle
 {
     QVector3D m_Position;
@@ -27,7 +29,13 @@ class BBSPHParticleSystem
 {
 public:
     BBSPHParticleSystem();
-    ~BBSPHParticleSystem();
+    virtual ~BBSPHParticleSystem();
+
+    void reset(unsigned int nCapacity);
+    BBSPHParticle* addParticle();
+
+    BBSPHParticle* getParticle(unsigned int nIndex);
+    int getSize() { return m_nParticleCount; }
 
 private:
     BBSPHParticle *m_pParticleBuffer;

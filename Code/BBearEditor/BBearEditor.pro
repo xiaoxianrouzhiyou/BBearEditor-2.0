@@ -147,7 +147,9 @@ SOURCES += \
     Editor/PropertyManager/GroupManager/BBOfflineRendererManager.cpp \
     Engine/Render/OfflineRenderer/BBScatterMaterial.cpp \
     Engine/Math/BBPerlinNoise.cpp \
-    Engine/Physics/SPH/BBSPHParticleSystem.cpp
+    Engine/Physics/FluidSystem/BBSPHParticleSystem.cpp \
+    Engine/Physics/FluidSystem/BBSPHGridContainer.cpp \
+    Engine/Physics/FluidSystem/BBSPHParticleNeighborTable.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -274,7 +276,9 @@ HEADERS += \
     Editor/PropertyManager/GroupManager/BBOfflineRendererManager.h \
     Engine/Render/OfflineRenderer/BBScatterMaterial.h \
     Engine/Math/BBPerlinNoise.h \
-    Engine/Physics/SPH/BBSPHParticleSystem.h
+    Engine/Physics/FluidSystem/BBSPHParticleSystem.h \
+    Engine/Physics/FluidSystem/BBSPHGridContainer.h \
+    Engine/Physics/FluidSystem/BBSPHParticleNeighborTable.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
