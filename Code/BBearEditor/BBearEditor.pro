@@ -149,7 +149,8 @@ SOURCES += \
     Engine/Math/BBPerlinNoise.cpp \
     Engine/Physics/FluidSystem/BBSPHParticleSystem.cpp \
     Engine/Physics/FluidSystem/BBSPHGridContainer.cpp \
-    Engine/Physics/FluidSystem/BBSPHParticleNeighborTable.cpp
+    Engine/Physics/FluidSystem/BBSPHParticleNeighborTable.cpp \
+    Engine/Physics/FluidSystem/BBSPHFluidSystem.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -278,7 +279,8 @@ HEADERS += \
     Engine/Math/BBPerlinNoise.h \
     Engine/Physics/FluidSystem/BBSPHParticleSystem.h \
     Engine/Physics/FluidSystem/BBSPHGridContainer.h \
-    Engine/Physics/FluidSystem/BBSPHParticleNeighborTable.h
+    Engine/Physics/FluidSystem/BBSPHParticleNeighborTable.h \
+    Engine/Physics/FluidSystem/BBSPHFluidSystem.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
