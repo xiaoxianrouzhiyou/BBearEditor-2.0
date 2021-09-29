@@ -28,7 +28,7 @@ void BBSPHParticleSystem::reset(unsigned int nCapacity)
     m_nParticleCount = 0;
 }
 
-BBSPHParticle* BBSPHParticleSystem::addParticle()
+BBSPHParticle* BBSPHParticleSystem::addParticle(float x, float y, float z)
 {
     if (m_nParticleCount >= m_nBufferCapacity)
     {
@@ -47,7 +47,7 @@ BBSPHParticle* BBSPHParticleSystem::addParticle()
     // insert new particle
     BBSPHParticle *pParticle = m_pParticleBuffer + m_nParticleCount;
     m_nParticleCount++;
-    pParticle->m_Position = QVector3D(0, 0, 0);
+    pParticle->m_Position = QVector3D(x, y, z);
     // The next of the last particle points to the header
     pParticle->m_nNextIndex = 0;
     pParticle->m_Velocity = QVector3D(0, 0, 0);

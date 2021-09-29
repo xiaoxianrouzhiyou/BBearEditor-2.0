@@ -32,7 +32,7 @@ public:
     virtual ~BBSPHParticleSystem();
 
     void reset(unsigned int nCapacity);
-    BBSPHParticle* addParticle();
+    BBSPHParticle* addParticle(float x, float y, float z);
 
     BBSPHParticle* getParticle(unsigned int nIndex);
     int getSize() { return m_nParticleCount; }

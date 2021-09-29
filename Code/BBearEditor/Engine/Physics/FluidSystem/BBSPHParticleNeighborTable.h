@@ -6,7 +6,7 @@
 
 struct BBNeighborDataBufferCode
 {
-    unsigned int m_nNeighborDataBufferSize;
+    unsigned int m_nCurrentNeighborCount;
     unsigned int m_nNeighborDataBufferOffset;
 };
 
@@ -16,9 +16,16 @@ public:
     BBSPHParticleNeighborTable();
     virtual ~BBSPHParticleNeighborTable();
 
-    void addNeighborParticle(unsigned int nNeighborIndex, float fNeighborDistance);
+    void reset(unsigned int nParticleCount);
+    void setCurrentParticle(unsigned int nParticleIndex);
+    bool addNeighborParticle(unsigned int nNeighborIndex, float fNeighborDistance);
     // current -> m_pNeighborDataBuffer; record code
     void recordCurrentNeighbor();
+    int getNeighborCount(unsigned int nCurrentParticleIndex);
+    void getNeighborInfo(unsigned int nCurrentParticleIndexInBuffer,
+                         unsigned int nNeighborParticleIndexInNeighborTable,
+                         unsigned int &nNeighborParticleIndexInBuffer,
+                         float &fNeighborParticleDistance);
 
 private:
     void extendNeighborDataBuffer(unsigned int nNeedSize);

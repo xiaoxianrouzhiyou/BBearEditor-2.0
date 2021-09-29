@@ -12,7 +12,7 @@ class BBSPHGridContainer
 public:
     BBSPHGridContainer();
 
-    void init(const QVector3D &min, const QVector3D &max, float fGridCellSize);
+    void init(const QVector3D &min, const QVector3D &max, float fUnitScale, float fGridCellSize);
     int getGridData(int nGridIndex);
     int getGridCellIndex(const QVector3D &p);
     void insertParticles(BBSPHParticleSystem *pParticleSystem);

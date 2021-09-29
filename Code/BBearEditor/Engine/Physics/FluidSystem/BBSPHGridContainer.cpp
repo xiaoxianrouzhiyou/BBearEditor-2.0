@@ -7,19 +7,19 @@ BBSPHGridContainer::BBSPHGridContainer()
 
 }
 
-void BBSPHGridContainer::init(const QVector3D &min, const QVector3D &max, float fGridCellSize)
+void BBSPHGridContainer::init(const QVector3D &min, const QVector3D &max, float fUnitScale, float fGridCellSize)
 {
     m_GridMin = min;
     m_GridMax = max;
     m_GridSize = m_GridMax - m_GridMin;
-    m_fGridCellSize = fGridCellSize;
+    m_fGridCellSize = fGridCellSize / fUnitScale;
 
-    m_GridResolution.setX(ceil(m_GridSize.x() / fGridCellSize));
-    m_GridResolution.setY(ceil(m_GridSize.y() / fGridCellSize));
-    m_GridResolution.setZ(ceil(m_GridSize.z() / fGridCellSize));
+    m_GridResolution.setX(ceil(m_GridSize.x() / m_fGridCellSize));
+    m_GridResolution.setY(ceil(m_GridSize.y() / m_fGridCellSize));
+    m_GridResolution.setZ(ceil(m_GridSize.z() / m_fGridCellSize));
 
     // Resize the grid to a multiple of the cell size
-    m_GridSize = m_GridResolution * fGridCellSize;
+    m_GridSize = m_GridResolution * m_fGridCellSize;
 
     m_GridDelta = m_GridResolution / m_GridSize;
 
