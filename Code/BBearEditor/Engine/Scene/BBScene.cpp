@@ -26,6 +26,7 @@
 #include "Render/Texture/BBTexture.h"
 #include "Render/BBRenderQueue.h"
 #include "3D/BBNormalIndicator.h"
+#include "Physics/FluidSystem/BBSPHFluidSystem.h"
 
 
 BBScene::BBScene(BBOpenGLWidget *pOpenGLWidget)
@@ -147,6 +148,14 @@ void BBScene::defaultRendering()
     for (QList<BBGameObject*>::Iterator itr = m_ParticleSystems.begin(); itr != m_ParticleSystems.end(); itr++)
     {
         ((BBParticleSystem*)(*itr))->render(m_pCamera);
+    }
+
+    for (QList<BBGameObject*>::Iterator itr = m_OtherGameObjects.begin(); itr != m_OtherGameObjects.end(); itr++)
+    {
+        if ((*itr)->getClassName() == BB_CLASSNAME_SPHFLUID)
+        {
+            ((BBSPHFluidSystem*)(*itr))->render(m_pCamera);
+        }
     }
 
     m_pTransformCoordinateSystem->render(m_pCamera);
@@ -471,6 +480,32 @@ BBParticleSystem* BBScene::createParticleSystem(int x, int y, bool bSelect)
     return pParticleSystem;
 }
 
+/**
+ * @brief BBScene::createGameObject                         There are no special requirements. It is created through this function
+ * @param x
+ * @param y
+ * @param className
+ * @param bSelect
+ * @return
+ */
+BBGameObject* BBScene::createGameObject(int x, int y, const QString &className, bool bSelect)
+{
+    BBRay ray = m_pCamera->createRayFromScreen(x, y);
+    // ground y=0
+    QVector3D hit = ray.computeIntersectWithXOZPlane(0);
+
+    if (className == BB_CLASSNAME_SPHFLUID)
+    {
+        BBSPHFluidSystem *pSPHFluidSystem = new BBSPHFluidSystem(hit);
+        pSPHFluidSystem->setBaseAttributes(BB_CLASSNAME_SPHFLUID, BB_CLASSNAME_SPHFLUID, "particle white");
+        pSPHFluidSystem->init(500, QVector3D(-10, -10, -10), QVector3D(10, 10, 10), QVector3D(-10, -10, -10), QVector3D(10, 5, 10));
+        m_OtherGameObjects.append(pSPHFluidSystem);
+        return pSPHFluidSystem;
+    }
+
+    return nullptr;
+}
+
 bool BBScene::hitCanvas(int x, int y, BBCanvas *&pOutCanvas)
 {
     m_pCamera->switchCoordinate(x, y);
@@ -560,6 +595,10 @@ void BBScene::deleteGameObject(BBGameObject *pGameObject)
     else if (pGameObject->getClassName() == BB_CLASSNAME_PARTICLE)
     {
         m_ParticleSystems.removeOne(pGameObject);
+    }
+    else if (pGameObject->getClassName() == BB_CLASSNAME_SPHFLUID)
+    {
+        m_OtherGameObjects.removeOne(pGameObject);
     }
 //    transformCoordinate->setSelectedObject(nullptr);
 }

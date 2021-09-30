@@ -2,22 +2,26 @@
 #define BBSPHFLUIDSYSTEM_H
 
 
-#include <QVector3D>
+#include "Base/BBGameObject.h"
 
 class BBSPHParticleSystem;
 class BBSPHGridContainer;
 class BBSPHParticleNeighborTable;
+class BBSPHFluidRenderer;
 
-class BBSPHFluidSystem
+class BBSPHFluidSystem : public BBGameObject
 {
 public:
-    BBSPHFluidSystem();
+    BBSPHFluidSystem(const QVector3D &position = QVector3D(0, 0, 0));
     ~BBSPHFluidSystem();
 
     void init(unsigned int nMaxParticleCount,
               const QVector3D &wallBoxMin, const QVector3D &wallBoxMax,
               const QVector3D &originalFluidBoxMin, const QVector3D &originalFluidBoxMax,
-              const QVector3D &gravity);
+              const QVector3D &gravity = QVector3D(0, -9.8f, 0));
+    void render(BBCamera *pCamera) override;
+
+    void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
 
 private:
     void computeDensityAndPressure();
@@ -51,6 +55,8 @@ private:
     QVector3D m_Size;
     QVector3D m_WallBoxMin;
     QVector3D m_WallBoxMax;
+
+    BBSPHFluidRenderer *m_pFluidRenderer;
 };
 
 #endif // BBSPHFLUIDSYSTEM_H

@@ -150,7 +150,8 @@ SOURCES += \
     Engine/Physics/FluidSystem/BBSPHParticleSystem.cpp \
     Engine/Physics/FluidSystem/BBSPHGridContainer.cpp \
     Engine/Physics/FluidSystem/BBSPHParticleNeighborTable.cpp \
-    Engine/Physics/FluidSystem/BBSPHFluidSystem.cpp
+    Engine/Physics/FluidSystem/BBSPHFluidSystem.cpp \
+    Engine/Physics/FluidSystem/BBSPHFluidRenderer.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -280,7 +281,8 @@ HEADERS += \
     Engine/Physics/FluidSystem/BBSPHParticleSystem.h \
     Engine/Physics/FluidSystem/BBSPHGridContainer.h \
     Engine/Physics/FluidSystem/BBSPHParticleNeighborTable.h \
-    Engine/Physics/FluidSystem/BBSPHFluidSystem.h
+    Engine/Physics/FluidSystem/BBSPHFluidSystem.h \
+    Engine/Physics/FluidSystem/BBSPHFluidRenderer.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

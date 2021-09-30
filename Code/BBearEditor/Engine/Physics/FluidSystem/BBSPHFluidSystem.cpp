@@ -3,9 +3,11 @@
 #include "BBSPHGridContainer.h"
 #include "BBSPHParticleNeighborTable.h"
 #include "Utils/BBUtils.h"
+#include "BBSPHFluidRenderer.h"
 
 
-BBSPHFluidSystem::BBSPHFluidSystem()
+BBSPHFluidSystem::BBSPHFluidSystem(const QVector3D &position)
+    : BBGameObject(position, QVector3D(0, 0, 0), QVector3D(1, 1, 1))
 {
     m_pParticleSystem = new BBSPHParticleSystem();
     m_pGridContainer = new BBSPHGridContainer();
@@ -25,6 +27,8 @@ BBSPHFluidSystem::BBSPHFluidSystem()
     m_fKernelPoly6 = 315.0f / (64.0f * 3.141592f * pow(m_fSmoothRadius, 9));
     m_fKernelSpiky = -45.0f / (3.141592f * pow(m_fSmoothRadius, 6));
     m_fKernelViscosity = 45.0f / (3.141592f * pow(m_fSmoothRadius, 6));
+
+    m_pFluidRenderer = new BBSPHFluidRenderer(position);
 }
 
 BBSPHFluidSystem::~BBSPHFluidSystem()
@@ -32,6 +36,7 @@ BBSPHFluidSystem::~BBSPHFluidSystem()
     BB_SAFE_DELETE(m_pParticleSystem);
     BB_SAFE_DELETE(m_pGridContainer);
     BB_SAFE_DELETE(m_pParticleNeighborTable);
+    BB_SAFE_DELETE(m_pFluidRenderer);
 }
 
 void BBSPHFluidSystem::init(unsigned int nMaxParticleCount,
@@ -46,6 +51,20 @@ void BBSPHFluidSystem::init(unsigned int nMaxParticleCount,
     m_fParticleRadius = pow(m_fParticleMass / m_fStaticDensity, 1.0f / 3.0f);
     initFluidVolume(originalFluidBoxMin, originalFluidBoxMax, m_fParticleRadius / m_fUnitScale);
     m_pGridContainer->init(wallBoxMin, wallBoxMax, m_fUnitScale, m_fSmoothRadius * 2.0f);
+
+    m_pFluidRenderer->init(m_pParticleSystem);
+}
+
+void BBSPHFluidSystem::render(BBCamera *pCamera)
+{
+    update();
+    m_pFluidRenderer->render(pCamera);
+}
+
+void BBSPHFluidSystem::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
+{
+    BBGameObject::setPosition(position, bUpdateLocalTransform);
+    m_pFluidRenderer->setPosition(position, bUpdateLocalTransform);
 }
 
 /**
@@ -233,7 +252,5 @@ void BBSPHFluidSystem::update()
         pCurrentParticle->m_Velocity = v;
         // p(t+1) = p(t) + v(t+1/2)dt
         pCurrentParticle->m_Position += v * fDeltaTime / m_fUnitScale;
-
-
     }
 }

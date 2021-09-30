@@ -72,6 +72,7 @@ public:
 
     void enableHorizontalPlane(bool bEnable);
 
+public:
     BBModel* createModel(const QString &userData, int x, int y);
     BBModel* createModel(const QString &userData,
                          const QVector3D &position = QVector3D(0, 0, 0), const QVector3D &rotation = QVector3D(0, 0, 0), const QVector3D &scale = QVector3D(1, 1, 1));
@@ -89,6 +90,9 @@ public:
 
     BBParticleSystem* createParticleSystem(int x, int y, bool bSelect = true);
 
+    BBGameObject* createGameObject(int x, int y, const QString &className, bool bSelect = true);
+
+public:
     bool hitCanvas(int x, int y, BBCanvas *&pOutCanvas);
     BBGameObject* pickObject(const QList<BBGameObject*> &alternativeObjects, const BBRay &ray, bool bSelect = true);
     BBGameObject* pickObjectInAllObjects(const BBRay &ray, bool bSelect = true);
@@ -140,6 +144,7 @@ private:
     QList<BBGameObject*> m_Lights;
     QList<BBGameObject*> m_Canvases;
     QList<BBGameObject*> m_ParticleSystems;
+    QList<BBGameObject*> m_OtherGameObjects;
 
     BBSelectionRegion *m_pSelectionRegion;
 
