@@ -1,5 +1,6 @@
 #include "BBSPHGridContainer.h"
 #include "BBSPHParticleSystem.h"
+#include "Utils/BBUtils.h"
 
 
 BBSPHGridContainer::BBSPHGridContainer()
@@ -40,12 +41,18 @@ int BBSPHGridContainer::getGridData(int nGridIndex)
 
 int BBSPHGridContainer::getGridCellIndex(const QVector3D &p)
 {
-    QVector3D grid = (p - m_GridMin) * m_GridDelta;
-    return (grid.z() * m_GridResolution.y() + grid.y()) * m_GridResolution.x() + grid.x();
+    // Rounding
+    int gx = (int)((p.x() - m_GridMin.x()) * m_GridDelta.x());
+    int gy = (int)((p.y() - m_GridMin.y()) * m_GridDelta.y());
+    int gz = (int)((p.z() - m_GridMin.z()) * m_GridDelta.z());
+    return (gz * m_GridResolution.y() + gy) * m_GridResolution.x() + gx;
 }
 
 void BBSPHGridContainer::insertParticles(BBSPHParticleSystem *pParticleSystem)
 {
+    // reset
+    std::fill(m_GridData.begin(), m_GridData.end(), -1);
+
     BBSPHParticle *pParticle = pParticleSystem->getParticle(0);
     for (unsigned int n = 0; n < pParticleSystem->getSize(); n++, pParticle++)
     {
@@ -86,35 +93,35 @@ void BBSPHGridContainer::findCells(const QVector3D &p, float radius, int *pGridC
         pGridCell[i] = -1;
     }
     // Smooth kernel min pos to which the particle belongs
-    QVector3D min = p - QVector3D(radius, radius, radius);
-    min -= m_GridMin;
-    min *= m_GridDelta;
-    if (min.x() < 0)
-        min.setX(0);
-    if (min.y() < 0)
-        min.setY(0);
-    if (min.z() < 0)
-        min.setZ(0);
+    int minX = (p.x() - radius - m_GridMin.x()) * m_GridDelta.x();
+    int minY = (p.y() - radius - m_GridMin.y()) * m_GridDelta.y();
+    int minZ = (p.z() - radius - m_GridMin.z()) * m_GridDelta.z();
+    if (minX < 0)
+        minX = 0;
+    if (minY < 0)
+        minY = 0;
+    if (minZ < 0)
+        minZ = 0;
 
-    pGridCell[0] = (min.z() * m_GridResolution.y() + min.y()) * m_GridResolution.x() + min.x();
+    pGridCell[0] = (minZ * m_GridResolution.y() + minY) * m_GridResolution.x() + minX;
     pGridCell[1] = pGridCell[0] + 1;
     pGridCell[2] = pGridCell[0] + m_GridResolution.x();
     pGridCell[3] = pGridCell[2] + 1;
-    if (min.z() + 1 < m_GridResolution.z())
+    if (minZ + 1 < m_GridResolution.z())
     {
         pGridCell[4] = pGridCell[0] + m_GridResolution.y() * m_GridResolution.x();
         pGridCell[5] = pGridCell[4] + 1;
         pGridCell[6] = pGridCell[4] + m_GridResolution.x();
         pGridCell[7] = pGridCell[6] + 1;
     }
-    if (min.x() + 1 >= m_GridResolution.x())
+    if (minX + 1 >= m_GridResolution.x())
     {
         pGridCell[1] = -1;
         pGridCell[3] = -1;
         pGridCell[5] = -1;
         pGridCell[7] = -1;
     }
-    if (min.y() + 1 >= m_GridResolution.y())
+    if (minY + 1 >= m_GridResolution.y())
     {
         pGridCell[2] = -1;
         pGridCell[3] = -1;

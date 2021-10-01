@@ -498,7 +498,7 @@ BBGameObject* BBScene::createGameObject(int x, int y, const QString &className, 
     {
         BBSPHFluidSystem *pSPHFluidSystem = new BBSPHFluidSystem(hit);
         pSPHFluidSystem->setBaseAttributes(BB_CLASSNAME_SPHFLUID, BB_CLASSNAME_SPHFLUID, "particle white");
-        pSPHFluidSystem->init(500, QVector3D(-10, -10, -10), QVector3D(10, 10, 10), QVector3D(-10, -10, -10), QVector3D(10, 5, 10));
+        pSPHFluidSystem->init(5000, QVector3D(-4, -4, -4), QVector3D(4, 4, 4), QVector3D(-4, -3, -3), QVector3D(1, 3, 3));
         m_OtherGameObjects.append(pSPHFluidSystem);
         return pSPHFluidSystem;
     }

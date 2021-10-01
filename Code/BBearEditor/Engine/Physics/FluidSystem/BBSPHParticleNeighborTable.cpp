@@ -35,7 +35,7 @@ void BBSPHParticleNeighborTable::reset(unsigned int nParticleCount)
     }
     m_nParticleCount = nParticleCount;
     memset(m_pNeighborDataBufferCode, 0, nSize * m_nParticleCapacity);
-    m_pNeighborDataBuffer = nullptr;
+    m_nNeighborDataBufferOffset = 0;
 }
 
 void BBSPHParticleNeighborTable::setCurrentParticle(unsigned int nParticleIndex)

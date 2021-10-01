@@ -27,10 +27,6 @@ void BBSPHFluidRenderer::init(BBSPHParticleSystem *pParticleSystem)
                              BB_PATH_RESOURCE_SHADER(Physics/FluidSystem/BBSPHFluidParticle.vert),
                              BB_PATH_RESOURCE_SHADER(Physics/FluidSystem/BBSPHFluidParticle.frag));
 
-    BBProcedureTexture texture;
-    m_pCurrentMaterial->getBaseRenderPass()->setSampler2D(LOCATION_TEXTURE(0), texture.create0(128));
-    m_pCurrentMaterial->getBaseRenderPass()->setBlendState(true);
-
     BBRenderableObject::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
@@ -46,6 +42,7 @@ void BBSPHFluidRenderer::render(BBCamera *pCamera)
     {
         m_pVBO->setPosition(i, m_pParticleSystem->getParticle(i)->m_Position);
     }
+    m_pVBO->submitData();
 
     BBRenderableObject::render(pCamera);
 }

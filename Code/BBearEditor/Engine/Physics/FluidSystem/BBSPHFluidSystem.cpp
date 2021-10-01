@@ -15,14 +15,14 @@ BBSPHFluidSystem::BBSPHFluidSystem(const QVector3D &position)
 
     m_fParticleRadius = 0.0f;
     m_fParticleMass = 0.0005f;
-    m_fUnitScale = 0.004f;
+    m_fUnitScale = 0.02f;
     m_fViscosity = 1.0f;
     m_fStaticDensity = 1000.0f;
     m_fSmoothRadius = 0.01f;
     m_fGasConstantK = 1.0f;
     m_fBoundingStiffness = 10000.0f;
-    m_fBoundingDamping = 256;
-    m_fSpeedLimiting = 200;
+    m_fBoundingDamping = 50;
+    m_fSpeedLimiting = 1000;
     
     m_fKernelPoly6 = 315.0f / (64.0f * 3.141592f * pow(m_fSmoothRadius, 9));
     m_fKernelSpiky = -45.0f / (3.141592f * pow(m_fSmoothRadius, 6));
@@ -57,6 +57,9 @@ void BBSPHFluidSystem::init(unsigned int nMaxParticleCount,
 
 void BBSPHFluidSystem::render(BBCamera *pCamera)
 {
+    m_pGridContainer->insertParticles(m_pParticleSystem);
+    computeDensityAndPressure();
+    computeAcceleration();
     update();
     m_pFluidRenderer->render(pCamera);
 }
@@ -83,7 +86,7 @@ void BBSPHFluidSystem::computeDensityAndPressure()
         m_pGridContainer->findCells(pCurrentParticle->m_Position, m_fSmoothRadius / m_fUnitScale, pGridCell);
         m_pParticleNeighborTable->setCurrentParticle(i);
         // According to SPH formula
-        float fDensity = 0.0f;
+        float fDensity = 0.001f;
         for (int cell = 0; cell < 8; cell++)
         {
             if (pGridCell[cell] == -1)
@@ -103,14 +106,14 @@ void BBSPHFluidSystem::computeDensityAndPressure()
                 }
                 else
                 {
-                    QVector3D ri_rj = pCurrentParticle->m_Position - pNeighborParticle->m_Position;
-                    ri_rj *= m_fUnitScale;
-                    float r2 = ri_rj.lengthSquared();
+                    QVector3D pi_pj = pCurrentParticle->m_Position - pNeighborParticle->m_Position;
+                    pi_pj *= m_fUnitScale;
+                    float r2 = pi_pj.lengthSquared();
                     if (r2 < h2)
                     {
                         fDensity += pow(h2 - r2, 3.0f);
                         // Insert pNeighborParticle into the NeighborTable of pCurrentParticle
-                        if (m_pParticleNeighborTable->addNeighborParticle(nNeighborParticleIndex, sqrtf(r2)))
+                        if (!m_pParticleNeighborTable->addNeighborParticle(nNeighborParticleIndex, sqrtf(r2)))
                         {
                             goto NEIGHBOR_FULL;
                         }
@@ -131,8 +134,6 @@ void BBSPHFluidSystem::computeDensityAndPressure()
 
 void BBSPHFluidSystem::computeAcceleration()
 {
-    // h ^ 2
-    float h2 = m_fSmoothRadius * m_fSmoothRadius;
     // Traverse all particles
     for (unsigned int i = 0; i < m_pParticleSystem->getSize(); i++)
     {
@@ -176,7 +177,7 @@ void BBSPHFluidSystem::initFluidVolume(const QVector3D &fluidBoxMin, const QVect
 
 void BBSPHFluidSystem::update()
 {
-    float fDeltaTime = BB_CONSTANT_UPDATE_RATE;
+    float fDeltaTime = BB_CONSTANT_UPDATE_RATE / 10000.0f;
     float fSpeedLimiting2 = m_fSpeedLimiting * m_fSpeedLimiting;
     // Traverse all particles
     for (unsigned int i = 0; i < m_pParticleSystem->getSize(); i++)
@@ -188,9 +189,10 @@ void BBSPHFluidSystem::update()
         if (fAcceleration2 > fSpeedLimiting2)
             acceleration *= m_fSpeedLimiting / sqrtf(fAcceleration2);
 
-        // When particle is in the edge, 1.0f is threshold
+        // When particle is in the edge
         float diff;
-        diff = 1.0f - (pCurrentParticle->m_Position.z() - m_WallBoxMin.z());
+        float threshold = 1.0f;
+        diff = threshold - (pCurrentParticle->m_Position.z() - m_WallBoxMin.z());
         diff *= m_fUnitScale;
         if (diff > 0.0f)
         {
@@ -199,7 +201,7 @@ void BBSPHFluidSystem::update()
             acceleration += coefficient * normal;
         }
 
-        diff = 1.0f - (m_WallBoxMax.z() - pCurrentParticle->m_Position.z());
+        diff = threshold - (m_WallBoxMax.z() - pCurrentParticle->m_Position.z());
         diff *= m_fUnitScale;
         if (diff > 0.0f)
         {
@@ -208,7 +210,7 @@ void BBSPHFluidSystem::update()
             acceleration += coefficient * normal;
         }
 
-        diff = 1.0f - (pCurrentParticle->m_Position.x() - m_WallBoxMin.x());
+        diff = threshold - (pCurrentParticle->m_Position.x() - m_WallBoxMin.x());
         diff *= m_fUnitScale;
         if (diff > 0.0f)
         {
@@ -217,7 +219,7 @@ void BBSPHFluidSystem::update()
             acceleration += coefficient * normal;
         }
 
-        diff = 1.0f - (m_WallBoxMax.x() - pCurrentParticle->m_Position.x());
+        diff = threshold - (m_WallBoxMax.x() - pCurrentParticle->m_Position.x());
         diff *= m_fUnitScale;
         if (diff > 0.0f)
         {
@@ -226,7 +228,7 @@ void BBSPHFluidSystem::update()
             acceleration += coefficient * normal;
         }
 
-        diff = 1.0f - (pCurrentParticle->m_Position.y() - m_WallBoxMin.y());
+        diff = threshold - (pCurrentParticle->m_Position.y() - m_WallBoxMin.y());
         diff *= m_fUnitScale;
         if (diff > 0.0f)
         {
@@ -235,7 +237,7 @@ void BBSPHFluidSystem::update()
             acceleration += coefficient * normal;
         }
 
-        diff = 1.0f - (m_WallBoxMax.y() - pCurrentParticle->m_Position.y());
+        diff = threshold - (m_WallBoxMax.y() - pCurrentParticle->m_Position.y());
         diff *= m_fUnitScale;
         if (diff > 0.0f)
         {
