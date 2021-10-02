@@ -157,7 +157,7 @@ void BBSPHFluidSystem::computeAcceleration()
             float v = m_fParticleMass * m_fKernelViscosity * m_fViscosity * h_r / (pCurrentParticle->m_fDensity * pNeighborParticle->m_fDensity);
             acceleration += v * (pNeighborParticle->m_FinalVelocity - pCurrentParticle->m_FinalVelocity);
         }
-        pCurrentParticle->m_Acceleration = acceleration;
+        pCurrentParticle->m_Acceleration = acceleration * 10000000;
     }
 }
 

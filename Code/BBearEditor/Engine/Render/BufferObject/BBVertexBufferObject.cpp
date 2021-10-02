@@ -103,6 +103,39 @@ QVector2D BBVertexBufferObject::getTexcoord(int index)
     return QVector2D(m_pVertexes[index].m_fTexcoord[0], m_pVertexes[index].m_fTexcoord[1]);
 }
 
+void BBVertexBufferObject::computeNormal(unsigned short *pVertexIndexes, int nIndexCount)
+{
+    // For the time, only triangles with EBO are considered
+    // init
+    QList<QVector3D> normals;
+    for (int i = 0; i < m_nVertexCount; i++)
+    {
+        normals.append(QVector3D(0, 0, 0));
+    }
+
+    for (int i = 0; i < nIndexCount; i += 3)
+    {
+        int nIndex0 = pVertexIndexes[i];
+        int nIndex1 = pVertexIndexes[i + 1];
+        int nIndex2 = pVertexIndexes[i + 2];
+
+        QVector3D pos0 = getPosition(nIndex0);
+        QVector3D pos1 = getPosition(nIndex1);
+        QVector3D pos2 = getPosition(nIndex2);
+
+        QVector3D normal = QVector3D::crossProduct(pos1 - pos0, pos2 - pos0);
+
+        normals[nIndex0] += normal;
+        normals[nIndex1] += normal;
+        normals[nIndex2] += normal;
+    }
+
+    for (int i = 0; i < m_nVertexCount; i++)
+    {
+        normals[i].normalize();
+    }
+}
+
 void BBVertexBufferObject::setNormal(int index, float x, float y, float z)
 {
     m_pVertexes[index].m_fNormal[0] = x;
