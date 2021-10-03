@@ -8,6 +8,7 @@ class BBSPHParticleSystem;
 class BBSPHGridContainer;
 class BBSPHParticleNeighborTable;
 class BBSPHFluidRenderer;
+class BBMarchingCubeMesh;
 
 class BBSPHFluidSystem : public BBGameObject
 {
@@ -30,6 +31,12 @@ private:
 
     void update();
 
+private:
+    void computeImplicitField(unsigned int pNum[3], const QVector3D &minPos, const QVector3D &unitWidth, float *pOutField);
+    // Density field
+    float computeColorField(const QVector3D &pos);
+
+private:
     BBSPHParticleSystem *m_pParticleSystem;
     BBSPHGridContainer *m_pGridContainer;
     BBSPHParticleNeighborTable *m_pParticleNeighborTable;
@@ -57,6 +64,11 @@ private:
     QVector3D m_WallBoxMax;
 
     BBSPHFluidRenderer *m_pFluidRenderer;
+
+    unsigned int m_pFieldSize[3];
+    BBMarchingCubeMesh *m_pMCMesh;
+    float *m_pDensityField;
+    float m_fDensityThreshold;
 };
 
 #endif // BBSPHFLUIDSYSTEM_H

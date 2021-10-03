@@ -8,7 +8,7 @@ BBSPHGridContainer::BBSPHGridContainer()
 
 }
 
-void BBSPHGridContainer::init(const QVector3D &min, const QVector3D &max, float fUnitScale, float fGridCellSize)
+void BBSPHGridContainer::init(const QVector3D &min, const QVector3D &max, float fUnitScale, float fGridCellSize, unsigned int *pFieldSize)
 {
     m_GridMin = min;
     m_GridMax = max;
@@ -25,6 +25,10 @@ void BBSPHGridContainer::init(const QVector3D &min, const QVector3D &max, float 
     m_GridDelta = m_GridResolution / m_GridSize;
 
     m_GridData.resize((int)(m_GridResolution.x() * m_GridResolution.y() * m_GridResolution.z()));
+
+    pFieldSize[0] = m_GridResolution.x() * 8;
+    pFieldSize[1] = m_GridResolution.y() * 8;
+    pFieldSize[2] = m_GridResolution.z() * 8;
 }
 
 int BBSPHGridContainer::getGridData(int nGridIndex)

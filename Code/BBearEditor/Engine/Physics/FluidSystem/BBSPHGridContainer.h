@@ -12,12 +12,14 @@ class BBSPHGridContainer
 public:
     BBSPHGridContainer();
 
-    void init(const QVector3D &min, const QVector3D &max, float fUnitScale, float fGridCellSize);
+    void init(const QVector3D &min, const QVector3D &max, float fUnitScale, float fGridCellSize, unsigned int *pFieldSize);
     int getGridData(int nGridIndex);
     int getGridCellIndex(const QVector3D &p);
     void insertParticles(BBSPHParticleSystem *pParticleSystem);
     int findCell(const QVector3D &p);
     void findCells(const QVector3D &p, float radius, int *pGridCell);
+
+    QVector3D getGridDelta() { return m_GridDelta; }
 
 private:
     // Stores particles in the grid

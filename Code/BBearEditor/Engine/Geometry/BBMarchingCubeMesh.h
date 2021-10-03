@@ -8,7 +8,7 @@
 struct BBMCScalarField
 {
     // size of x y z
-    unsigned int *m_nNum;
+    unsigned int m_nNum[3];
     // width of each grid
     QVector3D m_UnitWidth;
     // min pos

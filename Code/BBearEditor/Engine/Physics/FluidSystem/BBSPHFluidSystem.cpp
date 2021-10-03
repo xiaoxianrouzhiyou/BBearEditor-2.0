@@ -4,6 +4,7 @@
 #include "BBSPHParticleNeighborTable.h"
 #include "Utils/BBUtils.h"
 #include "BBSPHFluidRenderer.h"
+#include "Geometry/BBMarchingCubeMesh.h"
 
 
 BBSPHFluidSystem::BBSPHFluidSystem(const QVector3D &position)
@@ -29,6 +30,10 @@ BBSPHFluidSystem::BBSPHFluidSystem(const QVector3D &position)
     m_fKernelViscosity = 45.0f / (3.141592f * pow(m_fSmoothRadius, 6));
 
     m_pFluidRenderer = new BBSPHFluidRenderer(position);
+
+    m_pMCMesh = nullptr;
+    m_pDensityField = nullptr;
+    m_fDensityThreshold = 0.0005f;
 }
 
 BBSPHFluidSystem::~BBSPHFluidSystem()
@@ -37,6 +42,8 @@ BBSPHFluidSystem::~BBSPHFluidSystem()
     BB_SAFE_DELETE(m_pGridContainer);
     BB_SAFE_DELETE(m_pParticleNeighborTable);
     BB_SAFE_DELETE(m_pFluidRenderer);
+    BB_SAFE_DELETE(m_pMCMesh);
+    BB_SAFE_DELETE_ARRAY(m_pDensityField);
 }
 
 void BBSPHFluidSystem::init(unsigned int nMaxParticleCount,
@@ -50,14 +57,23 @@ void BBSPHFluidSystem::init(unsigned int nMaxParticleCount,
     m_Gravity = gravity;
     m_fParticleRadius = pow(m_fParticleMass / m_fStaticDensity, 1.0f / 3.0f);
     initFluidVolume(originalFluidBoxMin, originalFluidBoxMax, m_fParticleRadius / m_fUnitScale);
-    m_pGridContainer->init(wallBoxMin, wallBoxMax, m_fUnitScale, m_fSmoothRadius * 2.0f);
+    m_pGridContainer->init(wallBoxMin, wallBoxMax, m_fUnitScale, m_fSmoothRadius * 2.0f, m_pFieldSize);
 
     m_pFluidRenderer->init(m_pParticleSystem);
+
+
+    // Marching cubes
+    m_pMCMesh = new BBMarchingCubeMesh();
+    m_pDensityField = new float[(m_pFieldSize[0] + 1) * (m_pFieldSize[1] + 1) * (m_pFieldSize[2] + 1)];
 }
 
 void BBSPHFluidSystem::render(BBCamera *pCamera)
 {
     m_pGridContainer->insertParticles(m_pParticleSystem);
+
+    computeImplicitField(m_pFieldSize, m_WallBoxMin, 0.125f * m_pGridContainer->getGridDelta(), m_pDensityField);
+    m_pMCMesh->init(m_pDensityField, m_pFieldSize, 0.125f * m_pGridContainer->getGridDelta(), m_WallBoxMin, m_fDensityThreshold);
+
     computeDensityAndPressure();
     computeAcceleration();
     update();
@@ -255,4 +271,80 @@ void BBSPHFluidSystem::update()
         // p(t+1) = p(t) + v(t+1/2)dt
         pCurrentParticle->m_Position += v * fDeltaTime / m_fUnitScale;
     }
+}
+
+/**
+ * @brief BBSPHFluidSystem::computeImplicitField                    Calculating implicit function values from particle
+ * @param pNum                                                      Num
+ * @param minPos
+ * @param unitWidth
+ * @param pOutField                                                 Array
+ */
+void BBSPHFluidSystem::computeImplicitField(unsigned int pNum[3], const QVector3D &minPos, const QVector3D &unitWidth, float *pOutField)
+{
+    unsigned int nSlice0 = pNum[0] + 1;
+    unsigned int nSlice1 = nSlice0 * (pNum[1] + 1);
+    pOutField = new float[pNum[0] * pNum[1] * pNum[2]];
+
+    for (int k = 0; k < pNum[2]; k++)
+    {
+        for (int j = 0; j < pNum[1]; j++)
+        {
+            for (int i = 0; i < pNum[0]; i++)
+            {
+                QVector3D pos = minPos + QVector3D(i, j, k) * unitWidth;
+                pOutField[k * nSlice1 + j * nSlice0 + i] = computeColorField(pos);
+            }
+        }
+    }
+}
+
+float BBSPHFluidSystem::computeColorField(const QVector3D &pos)
+{
+    // Density field
+    float c = 0.0f;
+
+    if (pos.x() < m_WallBoxMin.x())
+        return c;
+    if (pos.x() > m_WallBoxMax.x())
+        return c;
+    if (pos.y() < m_WallBoxMin.y())
+        return c;
+    if (pos.y() > m_WallBoxMax.y())
+        return c;
+    if (pos.z() < m_WallBoxMin.z())
+        return c;
+    if (pos.z() > m_WallBoxMax.z())
+        return c;
+
+    float h = m_fSmoothRadius;
+    float h2 = h * h;
+
+    int pGridCell[8];
+    m_pGridContainer->findCells(pos, h / m_fUnitScale, pGridCell);
+    // isotropic
+    for (int cell = 0; cell < 8; cell++)
+    {
+        if (pGridCell[cell] < 0)
+        {
+            continue;
+        }
+        int nNeighborParticleIndex = m_pGridContainer->getGridData(pGridCell[cell]);
+        // Traverse the list
+        while (nNeighborParticleIndex != -1)
+        {
+            BBSPHParticle *pNeighborParticle = m_pParticleSystem->getParticle(nNeighborParticleIndex);
+
+            float r = pos.distanceToPoint(pNeighborParticle->m_Position) * m_fUnitScale;
+            float q = h2 - r * r;
+            if (q > 0)
+            {
+                c += m_fParticleMass * m_fKernelPoly6 * q * q * q;
+            }
+
+            nNeighborParticleIndex = pNeighborParticle->m_nNextIndex;
+        }
+    }
+
+    return c;
 }
