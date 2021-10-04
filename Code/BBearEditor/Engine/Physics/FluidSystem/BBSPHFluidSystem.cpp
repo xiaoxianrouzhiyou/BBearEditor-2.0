@@ -71,7 +71,7 @@ void BBSPHFluidSystem::render(BBCamera *pCamera)
 {
     m_pGridContainer->insertParticles(m_pParticleSystem);
 
-//    computeImplicitField(m_pFieldSize, m_WallBoxMin, 0.125f * m_pGridContainer->getGridDelta(), m_pDensityField);
+    computeImplicitField(m_pFieldSize, m_WallBoxMin, 0.125f * m_pGridContainer->getGridDelta(), m_pDensityField);
 //    m_pMCMesh->init(m_pDensityField, m_pFieldSize, 0.125f * m_pGridContainer->getGridDelta(), m_WallBoxMin, m_fDensityThreshold);
 
     computeDensityAndPressure();
@@ -280,7 +280,6 @@ void BBSPHFluidSystem::computeImplicitField(unsigned int pNum[3], const QVector3
 {
     unsigned int nSlice0 = pNum[0] + 1;
     unsigned int nSlice1 = nSlice0 * (pNum[1] + 1);
-    pOutField = new float[pNum[0] * pNum[1] * pNum[2]];
 
     for (int k = 0; k < pNum[2]; k++)
     {
