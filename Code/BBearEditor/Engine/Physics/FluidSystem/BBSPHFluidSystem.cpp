@@ -17,13 +17,13 @@ BBSPHFluidSystem::BBSPHFluidSystem(const QVector3D &position)
     m_fParticleRadius = 0.0f;
     m_fParticleMass = 0.0005f;
     m_fUnitScale = 0.02f;
-    m_fViscosity = 1.0f;
+    m_fViscosity = 0.2f;
     m_fStaticDensity = 1000.0f;
     m_fSmoothRadius = 0.01f;
     m_fGasConstantK = 1.0f;
     m_fBoundingStiffness = 10000.0f;
-    m_fBoundingDamping = 50;
-    m_fSpeedLimiting = 1000;
+    m_fBoundingDamping = 256;
+    m_fSpeedLimiting = 200;
     
     m_fKernelPoly6 = 315.0f / (64.0f * 3.141592f * pow(m_fSmoothRadius, 9));
     m_fKernelSpiky = -45.0f / (3.141592f * pow(m_fSmoothRadius, 6));
@@ -71,8 +71,8 @@ void BBSPHFluidSystem::render(BBCamera *pCamera)
 {
     m_pGridContainer->insertParticles(m_pParticleSystem);
 
-    computeImplicitField(m_pFieldSize, m_WallBoxMin, 0.125f * m_pGridContainer->getGridDelta(), m_pDensityField);
-    m_pMCMesh->init(m_pDensityField, m_pFieldSize, 0.125f * m_pGridContainer->getGridDelta(), m_WallBoxMin, m_fDensityThreshold);
+//    computeImplicitField(m_pFieldSize, m_WallBoxMin, 0.125f * m_pGridContainer->getGridDelta(), m_pDensityField);
+//    m_pMCMesh->init(m_pDensityField, m_pFieldSize, 0.125f * m_pGridContainer->getGridDelta(), m_WallBoxMin, m_fDensityThreshold);
 
     computeDensityAndPressure();
     computeAcceleration();
@@ -116,11 +116,7 @@ void BBSPHFluidSystem::computeDensityAndPressure()
             while (nNeighborParticleIndex != -1)
             {
                 BBSPHParticle *pNeighborParticle = m_pParticleSystem->getParticle(nNeighborParticleIndex);
-                if (pCurrentParticle == pNeighborParticle)
-                {
-                    fDensity += pow(h2, 3.0f);
-                }
-                else
+                if (pCurrentParticle != pNeighborParticle)
                 {
                     QVector3D pi_pj = pCurrentParticle->m_Position - pNeighborParticle->m_Position;
                     pi_pj *= m_fUnitScale;
@@ -144,7 +140,8 @@ void BBSPHFluidSystem::computeDensityAndPressure()
         m_pParticleNeighborTable->recordCurrentNeighbor();
         // According to SPH formula
         pCurrentParticle->m_fDensity = m_fKernelPoly6 * m_fParticleMass * fDensity;
-        pCurrentParticle->m_fPressure = (pCurrentParticle->m_fDensity - m_fStaticDensity) * m_fGasConstantK;
+        pCurrentParticle->m_fPressure = (pCurrentParticle->m_fDensity - m_fStaticDensity) * m_fBoundingStiffness;
+        pCurrentParticle->m_fDensity = 1.0f / pCurrentParticle->m_fDensity;
     }
 }
 
@@ -166,14 +163,13 @@ void BBSPHFluidSystem::computeAcceleration()
             QVector3D ri_rj = pCurrentParticle->m_Position - pNeighborParticle->m_Position;
             ri_rj *= m_fUnitScale;
             float h_r = m_fSmoothRadius - r;
-            float p = -m_fParticleMass * m_fKernelSpiky * h_r * h_r;
-            p *= (pCurrentParticle->m_fPressure + pNeighborParticle->m_fPressure) / (2.0f * pCurrentParticle->m_fDensity * pNeighborParticle->m_fDensity);
-            acceleration += p * ri_rj / r;
+            float P = -0.5f * h_r * m_fKernelSpiky * (pCurrentParticle->m_fPressure + pNeighborParticle->m_fPressure) / r;
+            float D = h_r * pCurrentParticle->m_fDensity * pNeighborParticle->m_fDensity;
+            float V = m_fKernelViscosity * m_fViscosity;
 
-            float v = m_fParticleMass * m_fKernelViscosity * m_fViscosity * h_r / (pCurrentParticle->m_fDensity * pNeighborParticle->m_fDensity);
-            acceleration += v * (pNeighborParticle->m_FinalVelocity - pCurrentParticle->m_FinalVelocity);
+            acceleration += (P * ri_rj + V * (pNeighborParticle->m_FinalVelocity - pCurrentParticle->m_FinalVelocity)) * D;
         }
-        pCurrentParticle->m_Acceleration = acceleration * 10000000;
+        pCurrentParticle->m_Acceleration = acceleration;
     }
 }
 
