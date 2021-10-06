@@ -2,7 +2,7 @@
 #define BBSPHPARTICLENEIGHBORTABLE_H
 
 
-#define MAX_NEIGHBOR_COUNT 80
+#define MAX_NEIGHBOR_COUNT 20
 
 struct BBNeighborDataBufferCode
 {

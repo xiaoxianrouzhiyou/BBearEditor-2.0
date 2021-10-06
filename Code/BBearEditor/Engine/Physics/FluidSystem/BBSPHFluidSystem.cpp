@@ -33,7 +33,7 @@ BBSPHFluidSystem::BBSPHFluidSystem(const QVector3D &position)
 
     m_pMCMesh = nullptr;
     m_pDensityField = nullptr;
-    m_fDensityThreshold = 0.0005f;
+    m_fDensityThreshold = 500.0f;
 }
 
 BBSPHFluidSystem::~BBSPHFluidSystem()
@@ -65,6 +65,7 @@ void BBSPHFluidSystem::init(unsigned int nMaxParticleCount,
     // Marching cubes
     m_pMCMesh = new BBMarchingCubeMesh();
     m_pDensityField = new float[(m_pFieldSize[0] + 1) * (m_pFieldSize[1] + 1) * (m_pFieldSize[2] + 1)];
+    m_pMCMesh->init(m_pFieldSize, 0.125f * m_pGridContainer->getGridDelta(), m_WallBoxMin, m_fDensityThreshold);
 }
 
 void BBSPHFluidSystem::render(BBCamera *pCamera)
@@ -72,7 +73,7 @@ void BBSPHFluidSystem::render(BBCamera *pCamera)
     m_pGridContainer->insertParticles(m_pParticleSystem);
 
     computeImplicitField(m_pFieldSize, m_WallBoxMin, 0.125f * m_pGridContainer->getGridDelta(), m_pDensityField);
-//    m_pMCMesh->init(m_pDensityField, m_pFieldSize, 0.125f * m_pGridContainer->getGridDelta(), m_WallBoxMin, m_fDensityThreshold);
+    m_pMCMesh->createMCMesh(m_pDensityField);
 
     computeDensityAndPressure();
     computeAcceleration();

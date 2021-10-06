@@ -327,21 +327,14 @@ BBMarchingCubeMesh::~BBMarchingCubeMesh()
     deleteSurface();
 }
 
-bool BBMarchingCubeMesh::init(float *pField, unsigned int *pNum, const QVector3D &unitWidth, const QVector3D &min, float fThreshold)
+void BBMarchingCubeMesh::init(unsigned int *pNum, const QVector3D &unitWidth, const QVector3D &min, float fThreshold)
 {
-    if (pField == nullptr)
-        return false;
-
-    // input density field
-    m_pScalarField = pField;
     m_fIsoLevel = fThreshold;
     m_Grid.m_nNum[0] = pNum[0];
     m_Grid.m_nNum[1] = pNum[1];
     m_Grid.m_nNum[2] = pNum[2];
     m_Grid.m_UnitWidth = unitWidth;
     m_Grid.m_Min = min;
-
-    generateIsoSurface();
 
     m_pCurrentMaterial->init("base", BB_PATH_RESOURCE_SHADER(base.vert), BB_PATH_RESOURCE_SHADER(base.frag));
     BBRenderableObject::init();
@@ -351,6 +344,16 @@ bool BBMarchingCubeMesh::init(float *pField, unsigned int *pNum, const QVector3D
     pDrawCall->setVBO(m_pVBO);
     pDrawCall->setEBO(m_pEBO, GL_TRIANGLES, m_nIndexCount, 0);
     appendDrawCall(pDrawCall);
+}
+
+bool BBMarchingCubeMesh::createMCMesh(float *pField)
+{
+    if (pField == nullptr)
+        return false;
+    // input density field
+    m_pScalarField = pField;
+    generateIsoSurface();
+    return true;
 }
 
 void BBMarchingCubeMesh::generateIsoSurface()
@@ -666,6 +669,11 @@ void BBMarchingCubeMesh::generateVBOAndEBO()
         nVertexID++;
         mapIt++;
     }
+
+    qDebug() << nVertexID;
+    if (nVertexID == 0)
+        return;
+
     while (vecIt != m_TriangleVector.end())
     {
         for (unsigned int i = 0; i < 3; i++)

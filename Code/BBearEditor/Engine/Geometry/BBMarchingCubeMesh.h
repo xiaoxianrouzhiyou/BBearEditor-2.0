@@ -37,7 +37,9 @@ public:
     BBMarchingCubeMesh();
     ~BBMarchingCubeMesh();
 
-    bool init(float *pField, unsigned int *pNum, const QVector3D &unitWidth, const QVector3D &min, float fThreshold);
+    void init(unsigned int *pNum, const QVector3D &unitWidth, const QVector3D &min, float fThreshold);
+
+    bool createMCMesh(float *pField);
 
 private:
     void generateIsoSurface();

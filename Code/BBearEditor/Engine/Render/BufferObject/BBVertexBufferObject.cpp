@@ -106,13 +106,6 @@ QVector2D BBVertexBufferObject::getTexcoord(int index)
 void BBVertexBufferObject::computeNormal(unsigned short *pVertexIndexes, int nIndexCount)
 {
     // For the time, only triangles with EBO are considered
-    // init
-    QList<QVector3D> normals;
-    for (int i = 0; i < m_nVertexCount; i++)
-    {
-        normals.append(QVector3D(0, 0, 0));
-    }
-
     for (int i = 0; i < nIndexCount; i += 3)
     {
         int nIndex0 = pVertexIndexes[i];
@@ -125,15 +118,35 @@ void BBVertexBufferObject::computeNormal(unsigned short *pVertexIndexes, int nIn
 
         QVector3D normal = QVector3D::crossProduct(pos1 - pos0, pos2 - pos0);
 
-        normals[nIndex0] += normal;
-        normals[nIndex1] += normal;
-        normals[nIndex2] += normal;
+        QVector3D normal0 = getNormal(nIndex0);
+        QVector3D normal1 = getNormal(nIndex0);
+        QVector3D normal2 = getNormal(nIndex0);
+
+        normal0 += normal;
+        normal1 += normal;
+        normal2 += normal;
+
+        setNormal(nIndex0, normal0);
+        setNormal(nIndex1, normal1);
+        setNormal(nIndex2, normal2);
     }
 
     for (int i = 0; i < m_nVertexCount; i++)
     {
-        normals[i].normalize();
+        normalizeNormal(i);
     }
+}
+
+void BBVertexBufferObject::normalizeNormal(int index)
+{
+    float x = m_pVertexes[index].m_fNormal[0];
+    float y = m_pVertexes[index].m_fNormal[1];
+    float z = m_pVertexes[index].m_fNormal[2];
+    float mode = x * x + y * y + z * z;
+    m_pVertexes[index].m_fNormal[0] = x / mode;
+    m_pVertexes[index].m_fNormal[1] = y / mode;
+    m_pVertexes[index].m_fNormal[2] = z / mode;
+    m_pVertexes[index].m_fNormal[3] = 1.0f;
 }
 
 void BBVertexBufferObject::setNormal(int index, float x, float y, float z)

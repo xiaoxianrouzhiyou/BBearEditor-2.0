@@ -4,7 +4,7 @@
 
 #include <QVector3D>
 
-#define MAX_PARTICLE 50000
+#define MAX_PARTICLE 500
 
 struct BBSPHParticle
 {

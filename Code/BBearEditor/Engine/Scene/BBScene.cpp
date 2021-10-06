@@ -27,6 +27,7 @@
 #include "Render/BBRenderQueue.h"
 #include "3D/BBNormalIndicator.h"
 #include "Physics/FluidSystem/BBSPHFluidSystem.h"
+#include "Physics/FluidSystem/BBSPHParticleSystem.h"
 
 
 BBScene::BBScene(BBOpenGLWidget *pOpenGLWidget)
@@ -498,7 +499,7 @@ BBGameObject* BBScene::createGameObject(int x, int y, const QString &className, 
     {
         BBSPHFluidSystem *pSPHFluidSystem = new BBSPHFluidSystem(hit);
         pSPHFluidSystem->setBaseAttributes(BB_CLASSNAME_SPHFLUID, BB_CLASSNAME_SPHFLUID, "particle white");
-        pSPHFluidSystem->init(5000, QVector3D(-4, -4, -4), QVector3D(4, 4, 4), QVector3D(-4, -3, -3), QVector3D(1, 3, 3));
+        pSPHFluidSystem->init(MAX_PARTICLE, QVector3D(-4, -4, -4), QVector3D(4, 4, 4), QVector3D(-4, -3, -3), QVector3D(1, 3, 3));
         m_OtherGameObjects.append(pSPHFluidSystem);
         return pSPHFluidSystem;
     }

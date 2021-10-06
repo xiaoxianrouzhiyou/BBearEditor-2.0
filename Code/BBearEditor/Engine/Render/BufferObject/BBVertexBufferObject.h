@@ -39,6 +39,7 @@ public:
     QVector2D getTexcoord(int index);
 
     void computeNormal(unsigned short *pVertexIndexes, int nIndexCount);
+    void normalizeNormal(int index);
     void setNormal(int index, float x, float y, float z);
     void setNormal(int index, const QVector3D &normal);
     void setNormal(int index, const QVector4D &normal);
