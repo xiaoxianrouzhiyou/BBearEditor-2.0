@@ -33,7 +33,7 @@ BBSPHFluidSystem::BBSPHFluidSystem(const QVector3D &position)
 
     m_pMCMesh = nullptr;
     m_pDensityField = nullptr;
-    m_fDensityThreshold = 500.0f;
+    m_fDensityThreshold = 0.5f;
 }
 
 BBSPHFluidSystem::~BBSPHFluidSystem()
@@ -65,14 +65,14 @@ void BBSPHFluidSystem::init(unsigned int nMaxParticleCount,
     // Marching cubes
     m_pMCMesh = new BBMarchingCubeMesh();
     m_pDensityField = new float[(m_pFieldSize[0] + 1) * (m_pFieldSize[1] + 1) * (m_pFieldSize[2] + 1)];
-    m_pMCMesh->init(m_pFieldSize, 0.125f * m_pGridContainer->getGridDelta(), m_WallBoxMin, m_fDensityThreshold);
+    m_pMCMesh->init(m_pFieldSize, 0.25f * m_pGridContainer->getGridDelta(), m_WallBoxMin, m_fDensityThreshold);
 }
 
 void BBSPHFluidSystem::render(BBCamera *pCamera)
 {
     m_pGridContainer->insertParticles(m_pParticleSystem);
 
-    computeImplicitField(m_pFieldSize, m_WallBoxMin, 0.125f * m_pGridContainer->getGridDelta(), m_pDensityField);
+    computeImplicitField(m_pFieldSize, m_WallBoxMin, 0.125f * m_pGridContainer->getGridDelta());
     m_pMCMesh->createMCMesh(m_pDensityField);
 
     computeDensityAndPressure();
@@ -277,7 +277,7 @@ void BBSPHFluidSystem::update()
  * @param unitWidth
  * @param pOutField                                                 Array
  */
-void BBSPHFluidSystem::computeImplicitField(unsigned int pNum[3], const QVector3D &minPos, const QVector3D &unitWidth, float *pOutField)
+void BBSPHFluidSystem::computeImplicitField(unsigned int pNum[3], const QVector3D &minPos, const QVector3D &unitWidth)
 {
     unsigned int nSlice0 = pNum[0] + 1;
     unsigned int nSlice1 = nSlice0 * (pNum[1] + 1);
@@ -289,7 +289,7 @@ void BBSPHFluidSystem::computeImplicitField(unsigned int pNum[3], const QVector3
             for (int i = 0; i < pNum[0]; i++)
             {
                 QVector3D pos = minPos + QVector3D(i, j, k) * unitWidth;
-                pOutField[k * nSlice1 + j * nSlice0 + i] = computeColorField(pos);
+                m_pDensityField[k * nSlice1 + j * nSlice0 + i] = computeColorField(pos);
             }
         }
     }

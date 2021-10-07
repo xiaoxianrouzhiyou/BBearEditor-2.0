@@ -329,6 +329,11 @@ BBMarchingCubeMesh::~BBMarchingCubeMesh()
 
 void BBMarchingCubeMesh::init(unsigned int *pNum, const QVector3D &unitWidth, const QVector3D &min, float fThreshold)
 {
+    if (m_bValidSurface)
+    {
+        deleteSurface();
+    }
+
     m_fIsoLevel = fThreshold;
     m_Grid.m_nNum[0] = pNum[0];
     m_Grid.m_nNum[1] = pNum[1];
@@ -358,11 +363,6 @@ bool BBMarchingCubeMesh::createMCMesh(float *pField)
 
 void BBMarchingCubeMesh::generateIsoSurface()
 {
-    if (m_bValidSurface)
-    {
-        deleteSurface();
-    }
-
     // used for computing index
     unsigned int nSlice0 = m_Grid.m_nNum[0] + 1;
     unsigned int nSlice1 = nSlice0 * (m_Grid.m_nNum[1] + 1);
@@ -670,7 +670,6 @@ void BBMarchingCubeMesh::generateVBOAndEBO()
         mapIt++;
     }
 
-    qDebug() << nVertexID;
     if (nVertexID == 0)
         return;
 
@@ -696,9 +695,9 @@ void BBMarchingCubeMesh::generateVBOAndEBO()
     m_pIndexes = new unsigned short[m_nIndexCount];
     for (int i = 0; i < m_nIndexCount; i += 3, vecIt++)
     {
-        m_pIndexes[i * 3] = (*vecIt).m_VertexID[0];
-        m_pIndexes[i * 3 + 1] = (*vecIt).m_VertexID[1];
-        m_pIndexes[i * 3 + 2] = (*vecIt).m_VertexID[2];
+        m_pIndexes[i] = (*vecIt).m_VertexID[0];
+        m_pIndexes[i + 1] = (*vecIt).m_VertexID[1];
+        m_pIndexes[i + 2] = (*vecIt).m_VertexID[2];
     }
 
     m_pVBO->computeNormal(m_pIndexes, m_nIndexCount);

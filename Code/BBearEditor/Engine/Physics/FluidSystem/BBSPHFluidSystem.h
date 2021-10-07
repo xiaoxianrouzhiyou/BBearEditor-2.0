@@ -32,7 +32,7 @@ private:
     void update();
 
 private:
-    void computeImplicitField(unsigned int pNum[3], const QVector3D &minPos, const QVector3D &unitWidth, float *pOutField);
+    void computeImplicitField(unsigned int pNum[3], const QVector3D &minPos, const QVector3D &unitWidth);
     // Density field
     float computeColorField(const QVector3D &pos);
 
