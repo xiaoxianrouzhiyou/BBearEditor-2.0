@@ -105,7 +105,7 @@ The left figure shows the position of photons. Red photons are the nearest K pho
 * SPH Fluid  
 ![fluid](https://user-images.githubusercontent.com/31690363/135880900-6845f483-917b-4d77-9267-7720caebc0ed.gif)
 * Marching Cubes  
-![fluid2](https://user-images.githubusercontent.com/31690363/136339823-fd2abc2c-ff6a-4ab3-a9bf-4d53fec9fb6d.gif)
+![fluid2](https://user-images.githubusercontent.com/31690363/136342552-8d352ded-e7fd-4d11-bbf8-f4db6fe13e16.gif)
 * Cartoon Rendering  
 Make do with it. Please forgive me for not having art resources...  
 ![B$)FZ(V$)QNN$ %`26%OXJ5](https://user-images.githubusercontent.com/31690363/134540491-b60f3772-25a2-4447-a67b-a267120256de.png)
