@@ -72,13 +72,15 @@ void BBSPHFluidSystem::render(BBCamera *pCamera)
 {
     m_pGridContainer->insertParticles(m_pParticleSystem);
 
-    computeImplicitField(m_pFieldSize, m_WallBoxMin, 0.125f * m_pGridContainer->getGridDelta());
-    m_pMCMesh->createMCMesh(m_pDensityField);
-
     computeDensityAndPressure();
     computeAcceleration();
     update();
-    m_pFluidRenderer->render(pCamera);
+
+    computeImplicitField(m_pFieldSize, m_WallBoxMin, 0.25f * m_pGridContainer->getGridDelta());
+    m_pMCMesh->createMCMesh(m_pDensityField);
+
+//    m_pFluidRenderer->render(pCamera);
+    m_pMCMesh->render(pCamera);
 }
 
 void BBSPHFluidSystem::setPosition(const QVector3D &position, bool bUpdateLocalTransform)

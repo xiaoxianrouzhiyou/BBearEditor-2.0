@@ -1,7 +1,9 @@
 #include "BBMarchingCubeMesh.h"
 #include "Render/BufferObject/BBVertexBufferObject.h"
+#include "Render/BufferObject/BBElementBufferObject.h"
 #include "Render/BBMaterial.h"
 #include "Render/BBDrawCall.h"
+#include "Render/BBRenderPass.h"
 
 /*
        6--------7     *---5----*
@@ -342,6 +344,8 @@ void BBMarchingCubeMesh::init(unsigned int *pNum, const QVector3D &unitWidth, co
     m_Grid.m_Min = min;
 
     m_pCurrentMaterial->init("base", BB_PATH_RESOURCE_SHADER(base.vert), BB_PATH_RESOURCE_SHADER(base.frag));
+    m_pCurrentMaterial->setBlendState(true);
+    m_pCurrentMaterial->getBaseRenderPass()->setPolygonMode(GL_LINE);
     BBRenderableObject::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
@@ -688,6 +692,7 @@ void BBMarchingCubeMesh::generateVBOAndEBO()
     for (unsigned int i = 0; i < nVertexID; i++, mapIt++)
     {
         m_pVBO->setPosition(i, (*mapIt).second.m_Position);
+        m_pVBO->setColor(i, 1.0f, 1.0f, 1.0f, 0.5f);
     }
 
     vecIt = m_TriangleVector.begin();
@@ -701,6 +706,14 @@ void BBMarchingCubeMesh::generateVBOAndEBO()
     }
 
     m_pVBO->computeNormal(m_pIndexes, m_nIndexCount);
+
+    m_pVBO->submitData();
+    if (m_pEBO)
+        BB_SAFE_DELETE(m_pEBO);
+    m_pEBO = new BBElementBufferObject(m_nIndexCount);
+    m_pEBO->submitData(m_pIndexes, m_nIndexCount);
+    m_pDrawCalls->setVBO(m_pVBO);
+    m_pDrawCalls->setEBO(m_pEBO, GL_TRIANGLES, m_nIndexCount, 0);
 
 
     m_EVMap.clear();

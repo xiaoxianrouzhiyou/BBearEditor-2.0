@@ -142,7 +142,7 @@ void BBVertexBufferObject::normalizeNormal(int index)
     float x = m_pVertexes[index].m_fNormal[0];
     float y = m_pVertexes[index].m_fNormal[1];
     float z = m_pVertexes[index].m_fNormal[2];
-    float mode = x * x + y * y + z * z;
+    float mode = sqrtf(x * x + y * y + z * z);
     m_pVertexes[index].m_fNormal[0] = x / mode;
     m_pVertexes[index].m_fNormal[1] = y / mode;
     m_pVertexes[index].m_fNormal[2] = z / mode;
