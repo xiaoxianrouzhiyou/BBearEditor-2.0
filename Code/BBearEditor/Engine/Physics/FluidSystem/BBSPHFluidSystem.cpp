@@ -5,6 +5,8 @@
 #include "Utils/BBUtils.h"
 #include "BBSPHFluidRenderer.h"
 #include "Geometry/BBMarchingCubeMesh.h"
+#include "Math/BBMatrix.h"
+#include "Math/BBMath.h"
 
 
 BBSPHFluidSystem::BBSPHFluidSystem(const QVector3D &position)
@@ -34,6 +36,8 @@ BBSPHFluidSystem::BBSPHFluidSystem(const QVector3D &position)
     m_pMCMesh = nullptr;
     m_pDensityField = nullptr;
     m_fDensityThreshold = 0.5f;
+
+    m_bAnisotropic = true;
 }
 
 BBSPHFluidSystem::~BBSPHFluidSystem()
@@ -75,6 +79,9 @@ void BBSPHFluidSystem::render(BBCamera *pCamera)
     computeDensityAndPressure();
     computeAcceleration();
     update();
+
+    if (m_bAnisotropic)
+        computeAnisotropicKernel();
 
     computeImplicitField(m_pFieldSize, m_WallBoxMin, 0.25f * m_pGridContainer->getGridDelta());
     m_pMCMesh->createMCMesh(m_pDensityField);
@@ -346,3 +353,196 @@ float BBSPHFluidSystem::computeColorField(const QVector3D &pos)
 
     return c;
 }
+
+void BBSPHFluidSystem::computeAnisotropicKernel()
+{
+    if (m_pParticleSystem->getSize() == 0)
+        return;
+
+    float h0 = m_fSmoothRadius;
+    float h = 2.0 * h0;
+
+    m_G.resize(m_pParticleSystem->getSize());
+
+    // Laplace smoothing coefficient
+    float lambda = 0.9f;
+    // New particle position by smoothing
+    QVector3D positions[m_pParticleSystem->getSize()];
+    for (unsigned int i = 0; i < m_pParticleSystem->getSize(); i++)
+    {
+        QVector3D pos0 = m_pParticleSystem->getParticle(i)->m_Position;
+        int pGridCell[64];
+        m_pGridContainer->findTwoCells(pos0, h / m_fUnitScale, pGridCell);
+
+        QVector3D posw(0, 0, 0);
+        float sumw = 0.0f;
+
+        for (int cell = 0; cell < 64; cell++)
+        {
+            if (pGridCell[cell] < 0)
+                continue;
+            int nNeighborParticleIndex = m_pGridContainer->getGridData(pGridCell[cell]);
+            while (nNeighborParticleIndex != -1)
+            {
+                BBSPHParticle *pNeighborParticle = m_pParticleSystem->getParticle(nNeighborParticleIndex);
+
+                QVector3D pos1 = pNeighborParticle->m_Position;
+                float r = pos0.distanceToPoint(pos1) * m_fUnitScale;
+                if (r < h)
+                {
+                    float q = 1 - r / h;
+                    float wij = q * q * q;
+                    posw += pos1 * wij;
+                    sumw += wij;
+                }
+
+                nNeighborParticleIndex = pNeighborParticle->m_nNextIndex;
+            }
+        }
+
+        positions[i] = posw / sumw;
+        positions[i] = (1 - lambda) * m_pParticleSystem->getParticle(i)->m_Position + lambda * positions[i];
+    }
+
+    m_OldPositions.resize(m_pParticleSystem->getSize());
+    for (unsigned int i = 0; i < m_pParticleSystem->getSize(); i++)
+    {
+        BBSPHParticle *pParticle = m_pParticleSystem->getParticle(i);
+        m_OldPositions[i] = pParticle->m_Position;
+        pParticle->m_Position = positions[i];
+    }
+    m_pGridContainer->insertParticles(m_pParticleSystem);
+
+    // compute covariance matrix
+    for (unsigned int i = 0; i < m_pParticleSystem->getSize(); i++)
+    {
+        QVector3D xi = positions[i];
+        QVector3D xiw(0, 0, 0);
+        float sumw = 0.0f;
+        int pGridCell[64];
+        m_pGridContainer->findTwoCells(xi, h / m_fUnitScale, pGridCell);
+        for (int cell = 0; cell < 64; cell++)
+        {
+            if (pGridCell[cell] < 0)
+                continue;
+            int nNeighborParticleIndex = m_pGridContainer->getGridData(pGridCell[cell]);
+            while (nNeighborParticleIndex != -1)
+            {
+                QVector3D xj = positions[nNeighborParticleIndex];
+                float r = xi.distanceToPoint(xj) * m_fUnitScale;
+                if (r < h)
+                {
+                    float q = 1 - r / h;
+                    float wij = q * q * q;
+                    xiw += xj * wij;
+                    sumw += wij;
+                }
+
+                nNeighborParticleIndex = m_pParticleSystem->getParticle(nNeighborParticleIndex)->m_nNextIndex;
+            }
+        }
+        xiw /= sumw;
+
+        QMatrix3x3 c;
+        c.fill(0.0f);
+        sumw = 0.0f;
+        // The number of neighbor particles
+        int n = 0;
+        for (int cell = 0; cell < 64; cell++)
+        {
+            if (pGridCell[cell] < 0)
+                continue;
+            int nNeighborParticleIndex = m_pGridContainer->getGridData(pGridCell[cell]);
+            while (nNeighborParticleIndex != -1)
+            {
+                QVector3D xj = positions[nNeighborParticleIndex];
+                float r = xi.distanceToPoint(xj) * m_fUnitScale;
+                if (r < h)
+                {
+                    float q = 1 - r / h;
+                    float wij = q * q * q;
+                    QVector3D dxj = xj - xiw;
+
+                    for (int k = 0; k < 3; k++)
+                    {
+                        c(0, k) += wij * dxj[0] * dxj[k];
+                        c(1, k) += wij * dxj[1] * dxj[k];
+                        c(2, k) += wij * dxj[2] * dxj[k];
+                    }
+                    n++;
+                    sumw += wij;
+                }
+
+                nNeighborParticleIndex = m_pParticleSystem->getParticle(nNeighborParticleIndex)->m_nNextIndex;
+            }
+        }
+        c /= sumw;
+
+        // SVD
+        float w[3], u[9], v[9];
+        for (int j = 0; j < 3; j++)
+        {
+            u[j * 3 + 0] = c(0, j);
+            u[j * 3 + 1] = c(1, j);
+            u[j * 3 + 2] = c(2, j);
+        }
+        BBMatrix::SVDdecomposition(w, u, v, 1.0e-10);
+
+        // Eigenvalue Σ
+        QVector3D eigenvalue(w[0], w[1], w[2]);
+        // C = R Σ R^T
+        // Eigenvector (rotation matrix R)
+        QMatrix3x3 R;
+        for (int j = 0; j < 3; j++)
+        {
+            for (int k = 0; k < 3; k++)
+            {
+                R(j, k) = u[k * 3 + j];
+            }
+        }
+
+        // threshold
+        int ne = 25;
+        float ks = 1400;
+        float kn = 0.5f;
+        float kr = 4.0f;
+        if (n > ne)
+        {
+            // When the maximum variance on main axis ([0]) is greater than kr times the minimum variance on the other axis
+            // The ratio between any two eigenvalues is less than kr
+            eigenvalue[1] = max(eigenvalue[1], eigenvalue[0] / kr);
+            eigenvalue[2] = max(eigenvalue[2], eigenvalue[0] / kr);
+            // The matrix norm of ksC is approximately equal to 1
+            // The matrix norm reflects the linear mapping of one vector to another, and the scale of the "length" of the vector
+            // So that the volume of particles with complete neighborhoods remains constant.
+            eigenvalue *= ks;
+        }
+        else
+        {
+            // When there are fewer particles nearby
+            // Reset to spherical to prevent poor particle deformation for almost isolated particles
+            eigenvalue = QVector3D(1, 1, 1) * kn;
+        }
+
+        // Kernel Matrix G = R Σ^-1 R^T
+        QMatrix3x3 sigma;
+        sigma(0, 0) = 1.0f / eigenvalue.x(), sigma(0, 1) = 0.0f,                  sigma(0, 2) = 0.0f;
+        sigma(1, 0) = 0.0f,                  sigma(1, 1) = 1.0f / eigenvalue.y(), sigma(1, 2) = 0.0f;
+        sigma(2, 0) = 0.0f,                  sigma(2, 1) = 0.0f,                  sigma(2, 2) = 1.0f / eigenvalue.z();
+        QMatrix3x3 G = R * sigma * R.transposed();
+
+        float limiting = -1.0e10;
+        for (int j = 0; j < 3; j++)
+        {
+            for (int k = 0; k < 3; k++)
+            {
+                if (G(k, j) > limiting)
+                    limiting = G(k, j);
+            }
+        }
+        G /= limiting;
+
+        m_G[i] = G;
+    }
+}
+

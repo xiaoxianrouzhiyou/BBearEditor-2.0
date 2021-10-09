@@ -152,7 +152,8 @@ SOURCES += \
     Engine/Physics/FluidSystem/BBSPHParticleNeighborTable.cpp \
     Engine/Physics/FluidSystem/BBSPHFluidSystem.cpp \
     Engine/Physics/FluidSystem/BBSPHFluidRenderer.cpp \
-    Engine/Geometry/BBMarchingCubeMesh.cpp
+    Engine/Geometry/BBMarchingCubeMesh.cpp \
+    Engine/Math/BBMatrix.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -284,7 +285,8 @@ HEADERS += \
     Engine/Physics/FluidSystem/BBSPHParticleNeighborTable.h \
     Engine/Physics/FluidSystem/BBSPHFluidSystem.h \
     Engine/Physics/FluidSystem/BBSPHFluidRenderer.h \
-    Engine/Geometry/BBMarchingCubeMesh.h
+    Engine/Geometry/BBMarchingCubeMesh.h \
+    Engine/Math/BBMatrix.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

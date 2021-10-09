@@ -37,6 +37,14 @@ private:
     float computeColorField(const QVector3D &pos);
 
 private:
+    // Anisotropic surface
+    void computeAnisotropicKernel();
+    std::vector<QVector3D> m_OldPositions;
+    bool m_bAnisotropic;
+    // Transform Matrixs
+    std::vector<QMatrix3x3> m_G;
+
+private:
     BBSPHParticleSystem *m_pParticleSystem;
     BBSPHGridContainer *m_pGridContainer;
     BBSPHParticleNeighborTable *m_pParticleNeighborTable;

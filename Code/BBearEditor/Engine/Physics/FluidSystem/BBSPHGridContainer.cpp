@@ -133,3 +133,37 @@ void BBSPHGridContainer::findCells(const QVector3D &p, float radius, int *pGridC
         pGridCell[7] = -1;
     }
 }
+
+void BBSPHGridContainer::findTwoCells(const QVector3D &p, float radius, int *pGridCell)
+{
+    for (int i = 0; i < 64; i++)
+    {
+        pGridCell[i] = -1;
+    }
+
+    int minX = (p.x() - radius - m_GridMin.x()) * m_GridDelta.x();
+    int minY = (p.y() - radius - m_GridMin.y()) * m_GridDelta.y();
+    int minZ = (p.z() - radius - m_GridMin.z()) * m_GridDelta.z();
+    if (minX < 0)
+        minX = 0;
+    if (minY < 0)
+        minY = 0;
+    if (minZ < 0)
+        minZ = 0;
+
+    int base = (minZ * m_GridResolution.y() + minY) * m_GridResolution.x() + minX;
+
+    for (int z = 0; z < 4; z++)
+    {
+        for (int y = 0; y < 4; y++)
+        {
+            for (int x = 0; x < 4; x++)
+            {
+                if ((minX + x >= m_GridResolution.x()) || (minY + y >= m_GridResolution.y()) || (minZ + z >= m_GridResolution.z()))
+                    pGridCell[16 * z + 4 * y + x] = -1;
+                else
+                    pGridCell[16 * z + 4 * y + x] = base + (z * m_GridResolution.y() + y) * m_GridResolution.x() + x;
+            }
+        }
+    }
+}

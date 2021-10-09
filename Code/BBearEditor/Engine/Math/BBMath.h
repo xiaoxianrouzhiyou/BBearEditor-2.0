@@ -36,5 +36,10 @@ int getMedian(int start, int end);
 
 float schlick(float cos, float fRefractivity);
 
+template<class T>
+static inline T max(const T &a, const T &b)
+{
+    return ((a > b) ? a : b);
+}
 
 #endif // BBMATH_H

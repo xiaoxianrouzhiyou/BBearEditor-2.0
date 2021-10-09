@@ -18,6 +18,7 @@ public:
     void insertParticles(BBSPHParticleSystem *pParticleSystem);
     int findCell(const QVector3D &p);
     void findCells(const QVector3D &p, float radius, int *pGridCell);
+    void findTwoCells(const QVector3D &p, float radius, int *pGridCell);
 
     QVector3D getGridDelta() { return m_GridDelta; }
 
