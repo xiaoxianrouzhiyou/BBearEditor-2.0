@@ -39,6 +39,7 @@ private:
 private:
     // Anisotropic surface
     void computeAnisotropicKernel();
+
     std::vector<QVector3D> m_OldPositions;
     bool m_bAnisotropic;
     // Transform Matrixs

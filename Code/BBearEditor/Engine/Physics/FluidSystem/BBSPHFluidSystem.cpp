@@ -88,6 +88,16 @@ void BBSPHFluidSystem::render(BBCamera *pCamera)
 
 //    m_pFluidRenderer->render(pCamera);
     m_pMCMesh->render(pCamera);
+
+    if (m_bAnisotropic)
+    {
+        // restore original position
+        for (int i = 0; i < m_OldPositions.size(); i++)
+        {
+            BBSPHParticle *pParticle = m_pParticleSystem->getParticle(i);
+            pParticle->m_Position = m_OldPositions[i];
+        }
+    }
 }
 
 void BBSPHFluidSystem::setPosition(const QVector3D &position, bool bUpdateLocalTransform)
@@ -327,7 +337,7 @@ float BBSPHFluidSystem::computeColorField(const QVector3D &pos)
 
     int pGridCell[8];
     m_pGridContainer->findCells(pos, h / m_fUnitScale, pGridCell);
-    // isotropic
+
     for (int cell = 0; cell < 8; cell++)
     {
         if (pGridCell[cell] < 0)
@@ -340,11 +350,36 @@ float BBSPHFluidSystem::computeColorField(const QVector3D &pos)
         {
             BBSPHParticle *pNeighborParticle = m_pParticleSystem->getParticle(nNeighborParticleIndex);
 
-            float r = pos.distanceToPoint(pNeighborParticle->m_Position) * m_fUnitScale;
-            float q = h2 - r * r;
-            if (q > 0)
+            if (m_bAnisotropic)
             {
-                c += m_fParticleMass * m_fKernelPoly6 * q * q * q;
+                QMatrix3x3 G = m_G[nNeighborParticleIndex];
+                QVector3D rij = pos - pNeighborParticle->m_Position;
+                // Transform to ellipse
+                for (int i = 0; i < 3; i++)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        rij[i] += G(i, j) * rij[j];
+                    }
+                }
+                float r = rij.length() * m_fUnitScale;
+                float q = h2 - r * r;
+                if (q > 0)
+                {
+                    float determinant = G(0, 0) * G(1, 1) * G(2, 2) + G(0, 1) * G(1, 2) * G(2, 0) + G(0, 2) * G(1, 0) * G(2, 1)
+                                      - G(0, 0) * G(1, 2) * G(2, 1) - G(0, 1) * G(1, 0) * G(2, 2) - G(0, 2) * G(1, 1) * G(2, 0);
+                    c += determinant * m_fParticleMass * m_fKernelPoly6 * q * q * q;
+                }
+            }
+            else
+            {
+                // isotropic
+                float r = pos.distanceToPoint(pNeighborParticle->m_Position) * m_fUnitScale;
+                float q = h2 - r * r;
+                if (q > 0)
+                {
+                    c += m_fParticleMass * m_fKernelPoly6 * q * q * q;
+                }
             }
 
             nNeighborParticleIndex = pNeighborParticle->m_nNextIndex;
