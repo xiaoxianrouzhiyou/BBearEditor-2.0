@@ -24,7 +24,7 @@ void BBMatrix::SVDdecomposition(float w[3], float u[9], float v[9], float eps)
         rv1[i] = scale * g;
         g = s = scale = 0.0;
         for (k = i; k < 3; k++)
-            scale += abs(u[k * 3 + i]);
+            scale += fabsf(u[k * 3 + i]);
         if (scale != 0.0)
         {
             for (k = i; k < 3; k++)
@@ -53,7 +53,7 @@ void BBMatrix::SVDdecomposition(float w[3], float u[9], float v[9], float eps)
         if (i + 1 <= 3 && i + 1 != 3)
         {
             for (k = l - 1; k < 3; k++)
-                scale += abs(u[i * 3 + k]);
+                scale += fabsf(u[i * 3 + k]);
             if (scale != 0.0)
             {
                 for (k = l - 1; k < 3; k++)
@@ -140,12 +140,12 @@ void BBMatrix::SVDdecomposition(float w[3], float u[9], float v[9], float eps)
             for (l = k; l >= 0; l--)
             {
                 nm = l - 1;
-                if (l == 0 || abs(rv1[l]) <= eps * anorm)
+                if (l == 0 || fabsf(rv1[l]) <= eps * anorm)
                 {
                     flag = false;
                     break;
                 }
-                if (abs(w[nm]) <= eps * anorm)
+                if (fabsf(w[nm]) <= eps * anorm)
                     break;
             }
             if (flag)
@@ -156,7 +156,7 @@ void BBMatrix::SVDdecomposition(float w[3], float u[9], float v[9], float eps)
                 {
                     f = s * rv1[i];
                     rv1[i] = c * rv1[i];
-                    if (abs(f) <= eps * anorm)
+                    if (fabsf(f) <= eps * anorm)
                         break;
                     g = w[i];
                     h = pythag(f, g);
@@ -307,7 +307,7 @@ void BBMatrix::SVDdecomposition(float w[3], float u[9], float v[9], float eps)
 
 float BBMatrix::pythag(const float a, const float b)
 {
-    float absa = abs(a), absb = abs(b);
+    float absa = fabsf(a), absb = fabsf(b);
     return (absa > absb ? absa * (float)sqrt((double)(1.0 + (absb / absa) * (absb / absa))) :
                           (absb == 0.0 ? 0.0 : absb * (float)sqrt((double)(1.0 + (absa / absb) * (absa / absb)))));
 }
