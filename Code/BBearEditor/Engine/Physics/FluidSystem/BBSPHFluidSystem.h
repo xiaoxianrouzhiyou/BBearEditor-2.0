@@ -4,6 +4,7 @@
 
 #include "Base/BBGameObject.h"
 
+class BBSPHParticle;
 class BBSPHParticleSystem;
 class BBSPHGridContainer;
 class BBSPHParticleNeighborTable;
@@ -25,11 +26,15 @@ public:
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
 
 private:
-    void computeDensityAndPressure();
-    void computeAcceleration();
     void initFluidVolume(const QVector3D &fluidBoxMin, const QVector3D &fluidBoxMax, float fSpacing);
 
-    void update();
+private:
+    void computeNeighborTable();
+    void computeDensityAndPressure();
+    void computeAcceleration();
+    void computeBoundaryForce(BBSPHParticle *pParticle);
+
+    void computePositionAndVelocity();
 
 private:
     void computeImplicitField(unsigned int pNum[3], const QVector3D &minPos, const QVector3D &unitWidth);
@@ -44,6 +49,22 @@ private:
     bool m_bAnisotropic;
     // Transform Matrixs
     std::vector<QMatrix3x3> m_G;
+
+private:
+    // Paper: Predictive-Corrective Incompressible SPH
+    void computeGradient();
+    void computeDensityErrorFactor();
+
+    void computePCISPHAcceleration();
+
+    void predictCorrection();
+    void predictPCISPHPositionAndVelocity(BBSPHParticle *pParticle);
+    float predictPCISPHDensityAndPressure(int nParticleIndex);
+    void computePCISPHCorrectivePressureForce(int nParticleIndex);
+    void computePCISPHPositionAndVelocity();
+
+    float m_fDensityErrorFactor;
+    bool m_bPredictCorrection;
 
 private:
     BBSPHParticleSystem *m_pParticleSystem;
@@ -71,6 +92,7 @@ private:
     QVector3D m_Size;
     QVector3D m_WallBoxMin;
     QVector3D m_WallBoxMax;
+    float m_fDeltaTime;
 
     BBSPHFluidRenderer *m_pFluidRenderer;
 

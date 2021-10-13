@@ -50,11 +50,6 @@ BBSPHParticle* BBSPHParticleSystem::addParticle(float x, float y, float z)
     pParticle->m_Position = QVector3D(x, y, z);
     // The next of the last particle points to the header
     pParticle->m_nNextIndex = -1;
-    pParticle->m_Velocity = QVector3D(0, 0, 0);
-    pParticle->m_FinalVelocity = QVector3D(0, 0, 0);
-    pParticle->m_fPressure = 0.0f;
-    pParticle->m_fDensity = 0.0f;
-    pParticle->m_Acceleration = QVector3D(0, 0, 0);
 
     return pParticle;
 }
