@@ -41,7 +41,7 @@ BBSPHFluidSystem::BBSPHFluidSystem(const QVector3D &position)
     m_bAnisotropic = true;
 
     m_fDensityErrorFactor = 0.0f;
-    m_bPredictCorrection = false;
+    m_bPredictCorrection = true;
 }
 
 BBSPHFluidSystem::~BBSPHFluidSystem()
@@ -108,8 +108,8 @@ void BBSPHFluidSystem::render(BBCamera *pCamera)
     computeImplicitField(m_pFieldSize, m_WallBoxMin, 0.25f * m_pGridContainer->getGridDelta());
     m_pMCMesh->createMCMesh(m_pDensityField);
 
-//    m_pFluidRenderer->render(pCamera);
-    m_pMCMesh->render(pCamera);
+    m_pFluidRenderer->render(pCamera);
+//    m_pMCMesh->render(pCamera);
 
     if (m_bAnisotropic)
     {
@@ -730,7 +730,6 @@ void BBSPHFluidSystem::computeDensityErrorFactor()
 void BBSPHFluidSystem::computePCISPHAcceleration()
 {
     float h = m_fSmoothRadius;
-    float h2 = m_fSmoothRadius * m_fSmoothRadius;
     for (int i = 0; i < m_pParticleSystem->getSize(); i++)
     {
         BBSPHParticle *pParticle = m_pParticleSystem->getParticle(i);
@@ -772,10 +771,25 @@ void BBSPHFluidSystem::predictCorrection()
             predictPCISPHPositionAndVelocity(pParticle);
         }
 
+        float fMaxPredictedDensity = 0.0f;
         for (int i = 0; i < m_pParticleSystem->getSize(); i++)
         {
-
+            float fPredictedDensity = predictPCISPHDensityAndPressure(i);
+            fMaxPredictedDensity = max(fMaxPredictedDensity, fPredictedDensity);
         }
+
+        // Less than the density error threshold, break
+        if (max(0.1f * fMaxPredictedDensity - 100.0f, 0.0f) < fAllowedMaxDensityError)
+        {
+            bEndLoop = true;
+        }
+
+        for (int i = 0; i < m_pParticleSystem->getSize(); i++)
+        {
+            computePCISPHCorrectivePressureForce(i);
+        }
+
+        nIteration++;
     }
 }
 
