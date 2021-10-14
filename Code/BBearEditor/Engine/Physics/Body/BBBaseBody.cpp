@@ -1,6 +1,7 @@
 #include "BBBaseBody.h"
 
-BBBaseBody::BBBaseBody()
+BBBaseBody::BBBaseBody(int nParticleCount, float fMass)
 {
-
+    m_nParticleCount = nParticleCount;
+    m_fParticleMass = fMass;
 }
