@@ -153,7 +153,14 @@ SOURCES += \
     Engine/Physics/FluidSystem/BBSPHFluidSystem.cpp \
     Engine/Physics/FluidSystem/BBSPHFluidRenderer.cpp \
     Engine/Geometry/BBMarchingCubeMesh.cpp \
-    Engine/Math/BBMatrix.cpp
+    Engine/Math/BBMatrix.cpp \
+    Engine/Physics/Body/BBBaseBody.cpp \
+    Engine/Physics/Body/BBClothBody.cpp \
+    Engine/Physics/ClothSystem/BBCloth.cpp \
+    Engine/Physics/Constraint/BBBaseConstraint.cpp \
+    Engine/Physics/Constraint/BBDistanceConstraint.cpp \
+    Engine/Physics/Constraint/BBBendingConstraint.cpp \
+    Engine/Physics/Constraint/BBPinConstraint.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -286,7 +293,14 @@ HEADERS += \
     Engine/Physics/FluidSystem/BBSPHFluidSystem.h \
     Engine/Physics/FluidSystem/BBSPHFluidRenderer.h \
     Engine/Geometry/BBMarchingCubeMesh.h \
-    Engine/Math/BBMatrix.h
+    Engine/Math/BBMatrix.h \
+    Engine/Physics/Body/BBBaseBody.h \
+    Engine/Physics/Body/BBClothBody.h \
+    Engine/Physics/ClothSystem/BBCloth.h \
+    Engine/Physics/Constraint/BBBaseConstraint.h \
+    Engine/Physics/Constraint/BBDistanceConstraint.h \
+    Engine/Physics/Constraint/BBBendingConstraint.h \
+    Engine/Physics/Constraint/BBPinConstraint.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \
