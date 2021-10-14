@@ -115,4 +115,5 @@ Make do with it. Please forgive me for not having art resources...
 * [lingqi/GAMES101](https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html)
 * [lingqi/GAMES202](https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html)
 * [JoeyDeVries/LearnOpenGL](https://learnopengl.com/)
-* [AngelMonica126/GraphicAlgorithm](https://github.com/AngelMonica126/GraphicAlgorithm)
+* [AngelMonica126/GraphicAlgorithm](https://github.com/AngelMonica126/GraphicAlgorithm)  
+...
