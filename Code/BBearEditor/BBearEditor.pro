@@ -160,7 +160,8 @@ SOURCES += \
     Engine/Physics/Constraint/BBBaseConstraint.cpp \
     Engine/Physics/Constraint/BBDistanceConstraint.cpp \
     Engine/Physics/Constraint/BBBendingConstraint.cpp \
-    Engine/Physics/Constraint/BBPinConstraint.cpp
+    Engine/Physics/Constraint/BBPinConstraint.cpp \
+    Engine/Physics/ClothSystem/BBClothMesh.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -300,7 +301,8 @@ HEADERS += \
     Engine/Physics/Constraint/BBBaseConstraint.h \
     Engine/Physics/Constraint/BBDistanceConstraint.h \
     Engine/Physics/Constraint/BBBendingConstraint.h \
-    Engine/Physics/Constraint/BBPinConstraint.h
+    Engine/Physics/Constraint/BBPinConstraint.h \
+    Engine/Physics/ClothSystem/BBClothMesh.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

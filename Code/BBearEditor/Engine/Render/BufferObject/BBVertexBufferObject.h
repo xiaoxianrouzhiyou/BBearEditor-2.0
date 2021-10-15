@@ -46,7 +46,7 @@ public:
     QVector3D getNormal(int index);
 
     void computeTangent(unsigned short *pVertexIndexes, int nIndexCount);
-    void setTangent(int index, float x, float y, float z);
+    void setTangent(int index, float x, float y, float z, float w = 1.0f);
     void setTangent(int index, const QVector3D &tangent);
     void setBiTangent(int index, float x, float y, float z);
     void setBiTangent(int index, const QVector3D &bitangent);

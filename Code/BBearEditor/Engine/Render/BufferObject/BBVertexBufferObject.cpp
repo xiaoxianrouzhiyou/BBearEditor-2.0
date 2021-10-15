@@ -220,12 +220,12 @@ void BBVertexBufferObject::computeTangent(unsigned short *pVertexIndexes, int nI
     }
 }
 
-void BBVertexBufferObject::setTangent(int index, float x, float y, float z)
+void BBVertexBufferObject::setTangent(int index, float x, float y, float z, float w)
 {
     m_pVertexes[index].m_fTangent[0] = x;
     m_pVertexes[index].m_fTangent[1] = y;
     m_pVertexes[index].m_fTangent[2] = z;
-    m_pVertexes[index].m_fTangent[3] = 1.0f;
+    m_pVertexes[index].m_fTangent[3] = w;
 }
 
 void BBVertexBufferObject::setTangent(int index, const QVector3D &tangent)
