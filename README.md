@@ -111,3 +111,9 @@ Make do with it. Please forgive me for not having art resources...
 ![B$)FZ(V$)QNN$ %`26%OXJ5](https://user-images.githubusercontent.com/31690363/134540491-b60f3772-25a2-4447-a67b-a267120256de.png)
 * Main interface  
 ![V%BRYKJB E9I0JK(YGZ7ZMM](https://user-images.githubusercontent.com/31690363/130344475-acf28e7e-d0a0-4c86-860f-ce25d081b559.png)
+## References
+* [lingqi/GAMES101](https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html)
+* [lingqi/GAMES202](https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html)
+* [JoeyDeVries/LearnOpenGL](https://learnopengl.com/)
+* [AngelMonica126/GraphicAlgorithm](https://github.com/AngelMonica126/GraphicAlgorithm)  
+...
