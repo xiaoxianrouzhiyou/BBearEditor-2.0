@@ -33,8 +33,9 @@ private:
     void computeDensityAndPressure();
     void computeAcceleration();
     void computeBoundaryForce(BBSPHParticle *pParticle);
-
+    void handleCollision(BBSPHParticle* pParticle);
     void computePositionAndVelocity();
+    void computePositionAndVelocityWithGravity();
 
 private:
     void computeImplicitField(unsigned int pNum[3], const QVector3D &minPos, const QVector3D &unitWidth);
@@ -53,17 +54,17 @@ private:
 private:
     // Paper: Predictive-Corrective Incompressible SPH
     void computeGradient();
-    void computeDensityErrorFactor();
+    void computePCISPHDensityErrorFactor();
 
     void computePCISPHAcceleration();
 
-    void predictCorrection();
+    void predictPCISPHCorrection();
     void predictPCISPHPositionAndVelocity(BBSPHParticle *pParticle);
     float predictPCISPHDensityAndPressure(int nParticleIndex);
     void computePCISPHCorrectivePressureForce(int nParticleIndex);
     void computePCISPHPositionAndVelocity();
 
-    float m_fDensityErrorFactor;
+    float m_fPCISPHDensityErrorFactor;
     bool m_bPredictCorrection;
 
 private:

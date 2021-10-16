@@ -40,7 +40,7 @@ BBSPHFluidSystem::BBSPHFluidSystem(const QVector3D &position)
 
     m_bAnisotropic = true;
 
-    m_fDensityErrorFactor = 0.0f;
+    m_fPCISPHDensityErrorFactor = 0.0f;
     m_bPredictCorrection = true;
 }
 
@@ -78,7 +78,7 @@ void BBSPHFluidSystem::init(unsigned int nMaxParticleCount,
 
     // PCISPH
     computeGradient();
-    computeDensityErrorFactor();
+    computePCISPHDensityErrorFactor();
 }
 
 void BBSPHFluidSystem::render(BBCamera *pCamera)
@@ -91,7 +91,7 @@ void BBSPHFluidSystem::render(BBCamera *pCamera)
         // 2. Calculate the acceleration caused by all forces except pressure (viscosity, gravity, collision)
         computePCISPHAcceleration();
         // 3. Correction loops
-        predictCorrection();
+        predictPCISPHCorrection();
         // 4. The corrected pressure is used to calculate the particle velocity and position
         computePCISPHPositionAndVelocity();
     }
@@ -352,6 +352,24 @@ void BBSPHFluidSystem::computeBoundaryForce(BBSPHParticle *pParticle)
     pParticle->m_Acceleration = acceleration;
 }
 
+void BBSPHFluidSystem::handleCollision(BBSPHParticle* pParticle)
+{
+    static float fDamping = 0.1f;
+    for (int i = 0; i < 3; i++)
+    {
+        if (pParticle->m_PredictedPosition[i] < m_WallBoxMin[i])
+        {
+            pParticle->m_PredictedPosition[i] = m_WallBoxMin[i];
+            pParticle->m_Velocity[i] *= fDamping;
+        }
+        if (pParticle->m_PredictedPosition[i] > m_WallBoxMax[i])
+        {
+            pParticle->m_PredictedPosition[i] = m_WallBoxMax[i];
+            pParticle->m_Velocity[i] *= fDamping;
+        }
+    }
+}
+
 void BBSPHFluidSystem::computePositionAndVelocity()
 {
     // Traverse all particles
@@ -365,6 +383,17 @@ void BBSPHFluidSystem::computePositionAndVelocity()
         pParticle->m_Velocity = v;
         // p(t+1) = p(t) + v(t+1/2)dt
         pParticle->m_Position += v * m_fDeltaTime / m_fUnitScale;
+    }
+}
+
+void BBSPHFluidSystem::computePositionAndVelocityWithGravity()
+{
+    for (unsigned int i = 0; i < m_pParticleSystem->getSize(); i++)
+    {
+        BBSPHParticle* pParticle = m_pParticleSystem->getParticle(i);
+        pParticle->m_Acceleration += m_Gravity;
+        pParticle->m_Velocity += pParticle->m_Acceleration * m_fDeltaTime;
+        pParticle->m_Position += pParticle->m_Velocity * m_fDeltaTime / m_fUnitScale;
     }
 }
 
@@ -694,10 +723,10 @@ void BBSPHFluidSystem::computeGradient()
 }
 
 /**
- * @brief BBSPHFluidSystem::computeDensityErrorFactor           When the number of neighbor particles is insufficient, it will lead to calculation errors
- *                                                              So when initializing the fluid, that is, when the fluid particles are filled with neighbor particles, the coefficient is calculated
+ * @brief BBSPHFluidSystem::computePCISPHDensityErrorFactor         When the number of neighbor particles is insufficient, it will lead to calculation errors
+ *                                                                  So when initializing the fluid, that is, when the fluid particles are filled with neighbor particles, the coefficient is calculated
  */
-void BBSPHFluidSystem::computeDensityErrorFactor()
+void BBSPHFluidSystem::computePCISPHDensityErrorFactor()
 {
     float h2 = m_fSmoothRadius * m_fSmoothRadius;
     int nMaxNeighborCount = 0;
@@ -718,10 +747,10 @@ void BBSPHFluidSystem::computeDensityErrorFactor()
     float factor = 2.0f * volume * volume * m_fDeltaTime * m_fDeltaTime;
     float divisor = -QVector3D::dotProduct(pMaxParticle->m_SumGradient, pMaxParticle->m_SumGradient) - pMaxParticle->m_SumGradient2;
     divisor *= factor;
-    m_fDensityErrorFactor = -1.0f / divisor;
+    m_fPCISPHDensityErrorFactor = -1.0f / divisor;
     // adjust
     factor = m_fDeltaTime / 0.0001f;
-    m_fDensityErrorFactor *= 0.05f * factor * factor;
+    m_fPCISPHDensityErrorFactor *= 0.05f * factor * factor;
 }
 
 /**
@@ -754,7 +783,7 @@ void BBSPHFluidSystem::computePCISPHAcceleration()
     }
 }
 
-void BBSPHFluidSystem::predictCorrection()
+void BBSPHFluidSystem::predictPCISPHCorrection()
 {
     static int nMinLoops = 3;
     static int nMaxLoops = 50;
@@ -763,7 +792,7 @@ void BBSPHFluidSystem::predictCorrection()
     int nIteration = 0;
     bool bEndLoop = false;
 
-    while ((nIteration < nMinLoops) || (nIteration < nMaxLoops) || !bEndLoop)
+    while ((nIteration < nMinLoops) || ((nIteration < nMaxLoops) && !bEndLoop))
     {
         for (int i = 0; i < m_pParticleSystem->getSize(); i++)
         {
@@ -771,15 +800,15 @@ void BBSPHFluidSystem::predictCorrection()
             predictPCISPHPositionAndVelocity(pParticle);
         }
 
-        float fMaxPredictedDensity = 0.0f;
+        float fMaxError = 0.0f;
         for (int i = 0; i < m_pParticleSystem->getSize(); i++)
         {
-            float fPredictedDensity = predictPCISPHDensityAndPressure(i);
-            fMaxPredictedDensity = max(fMaxPredictedDensity, fPredictedDensity);
+            float fError = predictPCISPHDensityAndPressure(i);
+            fMaxError = max(fMaxError, fError);
         }
 
         // Less than the density error threshold, break
-        if (max(0.1f * fMaxPredictedDensity - 100.0f, 0.0f) < fAllowedMaxDensityError)
+        if (fMaxError < fAllowedMaxDensityError)
         {
             bEndLoop = true;
         }
@@ -801,15 +830,15 @@ void BBSPHFluidSystem::predictPCISPHPositionAndVelocity(BBSPHParticle *pParticle
     // v' = v + t * F * V / m
     // v' = v + t * F * 1 / density
     QVector3D F = m_fParticleMass * pParticle->m_Acceleration + pParticle->m_CorrectPressureForce;
-    pParticle->m_PredictedVelocity = pParticle->m_Velocity + m_fDeltaTime * F / m_fParticleMass;
-    pParticle->m_PredictedPosition = pParticle->m_Position + m_fDeltaTime * pParticle->m_PredictedVelocity;
+    QVector3D fPredictedVelocity = pParticle->m_Velocity + m_fDeltaTime * F / m_fParticleMass;
+    pParticle->m_PredictedPosition = pParticle->m_Position + m_fDeltaTime * fPredictedVelocity;
 
     // Collision
+    handleCollision(pParticle);
 }
 
 float BBSPHFluidSystem::predictPCISPHDensityAndPressure(int nParticleIndex)
 {
-    float h = m_fSmoothRadius;
     float h2 = m_fSmoothRadius * m_fSmoothRadius;
 
     BBSPHParticle* pParticle = m_pParticleSystem->getParticle(nParticleIndex);
@@ -834,9 +863,9 @@ float BBSPHFluidSystem::predictPCISPHDensityAndPressure(int nParticleIndex)
     // Consider only positive errors
     pParticle->m_fDensityError = max(pParticle->m_fPredictedDensity - m_fStaticDensity, 0.0f);
     // Correct positive pressure
-    pParticle->m_fCorrectPressure += max(pParticle->m_fDensityError * m_fDensityErrorFactor, 0.0f);
+    pParticle->m_fCorrectPressure += max(pParticle->m_fDensityError * m_fPCISPHDensityErrorFactor, 0.0f);
 
-    return pParticle->m_fPredictedDensity;
+    return pParticle->m_fDensityError;
 }
 
 void BBSPHFluidSystem::computePCISPHCorrectivePressureForce(int nParticleIndex)

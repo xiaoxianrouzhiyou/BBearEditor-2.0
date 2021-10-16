@@ -18,7 +18,6 @@ struct BBSPHParticle
     QVector3D m_SumGradient;
     float m_SumGradient2;
     QVector3D m_PredictedPosition;
-    QVector3D m_PredictedVelocity;
     float m_fPredictedDensity;
     float m_fCorrectPressure;
     QVector3D m_CorrectPressureForce;
@@ -38,7 +37,6 @@ struct BBSPHParticle
         m_SumGradient = QVector3D(0, 0, 0);
         m_SumGradient2 = 0.0f;
         m_PredictedPosition = QVector3D(0, 0, 0);
-        m_PredictedVelocity = QVector3D(0, 0, 0);
         m_fPredictedDensity = 0.0f;
         m_fCorrectPressure = 0.0f;
         m_CorrectPressureForce = QVector3D(0, 0, 0);
