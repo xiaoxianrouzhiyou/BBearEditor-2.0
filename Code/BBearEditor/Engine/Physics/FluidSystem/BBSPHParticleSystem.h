@@ -22,6 +22,7 @@ struct BBSPHParticle
     float m_fCorrectPressure;
     QVector3D m_CorrectPressureForce;
     float m_fDensityError;
+    float m_fKernel;
 
     // Index to the next particle
     int m_nNextIndex;
@@ -41,6 +42,7 @@ struct BBSPHParticle
         m_fCorrectPressure = 0.0f;
         m_CorrectPressureForce = QVector3D(0, 0, 0);
         m_fDensityError = 0.0f;
+        m_fKernel = 0.0f;
         m_nNextIndex = -1;
     }
 };
