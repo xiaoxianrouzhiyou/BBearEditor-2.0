@@ -65,6 +65,9 @@ public:
     inline BBScatterMaterial* getScatterMaterial() { return m_pScatterMaterial; }
     inline BBVertexBufferObject* getVBO() { return m_pVBO; }
     inline BBElementBufferObject* getEBO() { return m_pEBO; }
+    inline int getVertexCount() { return m_nVertexCount; }
+    inline unsigned short* getVertexIndexes() { return m_pIndexes; }
+    inline int getIndexCount() { return m_nIndexCount; }
 
 protected:
     void appendDrawCall(BBDrawCall *pDrawCall);
