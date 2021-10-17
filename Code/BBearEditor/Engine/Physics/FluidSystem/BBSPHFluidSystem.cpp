@@ -112,8 +112,8 @@ void BBSPHFluidSystem::render(BBCamera *pCamera)
     computeImplicitField(m_pFieldSize, m_WallBoxMin, 0.25f * m_pGridContainer->getGridDelta());
     m_pMCMesh->createMCMesh(m_pDensityField);
 
-    m_pFluidRenderer->render(pCamera);
-//    m_pMCMesh->render(pCamera);
+//    m_pFluidRenderer->render(pCamera);
+    m_pMCMesh->render(pCamera);
 
     if (m_bAnisotropic)
     {
@@ -755,9 +755,6 @@ void BBSPHFluidSystem::computePCISPHDensityErrorFactor()
     float divisor = -QVector3D::dotProduct(pMaxParticle->m_SumGradient, pMaxParticle->m_SumGradient) - pMaxParticle->m_SumGradient2;
     divisor *= factor;
     m_fPCISPHDensityErrorFactor = -1.0f / divisor;
-    // adjust
-    factor = m_fDeltaTime / 0.0001f;
-    m_fPCISPHDensityErrorFactor *= 0.05f * factor * factor;
 }
 
 /**
