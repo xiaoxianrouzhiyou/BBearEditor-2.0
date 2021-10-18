@@ -10,6 +10,7 @@ class BBBaseBody
 {
 public:
     BBBaseBody(int nParticleCount, float fMass);
+    virtual ~BBBaseBody();
 
     void dampenVelocities(float fDeltaTime);
     void predictPositions(float fDeltaTime);

@@ -71,10 +71,16 @@ void BBRenderableObject::init()
     closeLight();
 
     if (m_pVBO)
+    {
         m_pVBO->submitData();
+        m_nVertexCount = m_pVBO->getVertexCount();
+    }
 
     if (m_pSSBO)
+    {
         m_pSSBO->submitData();
+        m_nVertexCount = m_pSSBO->getVertexCount();
+    }
 }
 
 void BBRenderableObject::render(BBCamera *pCamera)

@@ -334,6 +334,10 @@ void BBEditViewOpenGLWidget::dragEnterEvent(QDragEnterEvent *event)
         {
             m_pPreviewObject = m_pScene->createGameObject(event->pos().x(), event->pos().y(), BB_CLASSNAME_SPHFLUID);
         }
+        else if (m_DragType == BB_CLASSNAME_CLOTH)
+        {
+            m_pPreviewObject = m_pScene->createGameObject(event->pos().x(), event->pos().y(), BB_CLASSNAME_CLOTH);
+        }
         else
         {
             // Create a temporary object to show drag effect
@@ -381,7 +385,8 @@ void BBEditViewOpenGLWidget::dragMoveEvent(QDragMoveEvent *event)
     {
         if (m_pPreviewObject->getClassName() == BB_CLASSNAME_MODEL
                 || m_pPreviewObject->getClassName() == BB_CLASSNAME_PARTICLE
-                || m_pPreviewObject->getClassName() == BB_CLASSNAME_SPHFLUID)
+                || m_pPreviewObject->getClassName() == BB_CLASSNAME_SPHFLUID
+                || m_pPreviewObject->getClassName() == BB_CLASSNAME_CLOTH)
         {
             BBRay ray = m_pScene->getCamera()->createRayFromScreen(event->pos().x(), event->pos().y());
             m_pPreviewObject->setPosition(ray.computeIntersectWithXOZPlane(0));

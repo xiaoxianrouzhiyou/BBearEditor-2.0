@@ -28,6 +28,7 @@ void BBClothMesh::init()
             QVector3D position(j, i, 0);
             int nIndex = i * nColumn + j;
             m_pVBO->setPosition(nIndex, position);
+            m_pVBO->setColor(nIndex, BBConstant::m_LightGreen);
             m_pVBO->setTexcoord(nIndex, 1.0f / m_nWidth * j, 1.0f / m_nHeight * i);
             m_pVBO->setNormal(nIndex, 0, 0, 1);
             m_pVBO->setTangent(nIndex, -1, 0, 0, -1);

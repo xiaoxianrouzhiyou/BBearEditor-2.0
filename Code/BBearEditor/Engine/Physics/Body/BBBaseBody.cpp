@@ -1,5 +1,6 @@
 #include "BBBaseBody.h"
 #include "../Constraint/BBBaseConstraint.h"
+#include "Utils/BBUtils.h"
 
 
 BBBaseBody::BBBaseBody(int nParticleCount, float fMass)
@@ -7,6 +8,17 @@ BBBaseBody::BBBaseBody(int nParticleCount, float fMass)
     m_nParticleCount = nParticleCount;
     m_fParticleMass = fMass;
     m_fDamping = 1.0f;
+
+    m_pPositions = new QVector3D[nParticleCount];
+    m_pPredictedPositions = new QVector3D[nParticleCount];
+    m_pVelocities = new QVector3D[nParticleCount];
+}
+
+BBBaseBody::~BBBaseBody()
+{
+    BB_SAFE_DELETE_ARRAY(m_pPositions);
+    BB_SAFE_DELETE_ARRAY(m_pPredictedPositions);
+    BB_SAFE_DELETE_ARRAY(m_pVelocities);
 }
 
 void BBBaseBody::dampenVelocities(float fDeltaTime)

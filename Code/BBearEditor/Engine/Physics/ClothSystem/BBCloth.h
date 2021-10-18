@@ -11,11 +11,13 @@ class BBPBDSolver;
 class BBCloth : public BBGameObject
 {
 public:
-    BBCloth(int nWidth = 10, int nHeight = 6);
+    BBCloth(const QVector3D &position, int nWidth = 10, int nHeight = 6);
     ~BBCloth();
 
     void init() override;
     void render(BBCamera *pCamera) override;
+
+    void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
 
 private:
     int m_nWidth;

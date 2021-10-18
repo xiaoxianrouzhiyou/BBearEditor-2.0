@@ -28,6 +28,7 @@
 #include "3D/BBNormalIndicator.h"
 #include "Physics/FluidSystem/BBSPHFluidSystem.h"
 #include "Physics/FluidSystem/BBSPHParticleSystem.h"
+#include "Physics/ClothSystem/BBCloth.h"
 
 
 BBScene::BBScene(BBOpenGLWidget *pOpenGLWidget)
@@ -156,6 +157,10 @@ void BBScene::defaultRendering()
         if ((*itr)->getClassName() == BB_CLASSNAME_SPHFLUID)
         {
             ((BBSPHFluidSystem*)(*itr))->render(m_pCamera);
+        }
+        else if ((*itr)->getClassName() == BB_CLASSNAME_CLOTH)
+        {
+            ((BBCloth*)(*itr))->render(m_pCamera);
         }
     }
 
@@ -503,6 +508,14 @@ BBGameObject* BBScene::createGameObject(int x, int y, const QString &className, 
         m_OtherGameObjects.append(pSPHFluidSystem);
         return pSPHFluidSystem;
     }
+    else if (className == BB_CLASSNAME_CLOTH)
+    {
+        BBCloth *pCloth = new BBCloth(hit);
+        pCloth->setBaseAttributes(BB_CLASSNAME_CLOTH, BB_CLASSNAME_CLOTH, "plane2");
+        pCloth->init();
+        m_OtherGameObjects.append(pCloth);
+        return pCloth;
+    }
 
     return nullptr;
 }
@@ -597,10 +610,12 @@ void BBScene::deleteGameObject(BBGameObject *pGameObject)
     {
         m_ParticleSystems.removeOne(pGameObject);
     }
-    else if (pGameObject->getClassName() == BB_CLASSNAME_SPHFLUID)
+    else if (pGameObject->getClassName() == BB_CLASSNAME_SPHFLUID
+             || pGameObject->getClassName() == BB_CLASSNAME_CLOTH)
     {
         m_OtherGameObjects.removeOne(pGameObject);
     }
+
 //    transformCoordinate->setSelectedObject(nullptr);
 }
 
