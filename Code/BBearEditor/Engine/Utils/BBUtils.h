@@ -31,6 +31,7 @@
 #define BB_STYLE_IMAGE(x) "image: url(" x ");"
 
 #define BB_CONSTANT_UPDATE_RATE 16
+#define BB_CONSTANT_UPDATE_RATE_MS 0.016667
 
 #define BB_CLASSNAME_MODEL "Model"
 #define BB_CLASSNAME_MESH "Mesh"

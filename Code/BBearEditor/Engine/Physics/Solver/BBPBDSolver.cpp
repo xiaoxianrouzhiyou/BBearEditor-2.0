@@ -40,11 +40,15 @@ void BBPBDSolver::solve(float fDeltaTime)
     if (fDeltaTime <= 0.0f)
         return;
 
-    applyForce(fDeltaTime);
-    predictPositions(fDeltaTime);
-    projectConstraints();
-    updateVelocities(fDeltaTime);
-    updatePositions();
+    float dt = fDeltaTime / m_nSolverIteration;
+    for (int i = 0; i < m_nSolverIteration; i++)
+    {
+        applyForce(fDeltaTime);
+        predictPositions(fDeltaTime);
+        projectConstraints();
+        updateVelocities(fDeltaTime);
+        updatePositions();
+    }
 }
 
 void BBPBDSolver::applyForce(float fDeltaTime)

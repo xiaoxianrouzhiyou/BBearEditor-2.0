@@ -2,6 +2,7 @@
 #include "Render/BufferObject/BBVertexBufferObject.h"
 #include "Render/BBMaterial.h"
 #include "Render/BBDrawCall.h"
+#include "../Body/BBClothBody.h"
 
 
 BBClothMesh::BBClothMesh(int nWidth, int nHeight)
@@ -41,6 +42,11 @@ void BBClothMesh::init()
                 m_pIndexes[nIndexesIndex++] = nIndex + nColumn + 1;
                 m_pIndexes[nIndexesIndex++] = nIndex + nColumn;
             }
+
+            if (j == 0)
+            {
+                m_LeftVertexIndexes.push_back(nIndex);
+            }
         }
     }
 
@@ -53,4 +59,13 @@ void BBClothMesh::init()
     pDrawCall->setVBO(m_pVBO);
     pDrawCall->setEBO(m_pEBO, GL_TRIANGLES, m_nIndexCount, 0);
     appendDrawCall(pDrawCall);
+}
+
+void BBClothMesh::updatePhysicsCalculatedPositions(BBClothBody *pClothBody)
+{
+    for (int i = 0; i < m_pVBO->getVertexCount(); i++)
+    {
+        m_pVBO->setPosition(i, pClothBody->getParticlePosition(i));
+    }
+    m_pVBO->submitData();
 }

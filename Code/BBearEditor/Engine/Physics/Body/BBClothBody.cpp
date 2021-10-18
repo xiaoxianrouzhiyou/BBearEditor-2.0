@@ -2,6 +2,7 @@
 #include "../ClothSystem/BBClothMesh.h"
 #include "Render/BufferObject/BBVertexBufferObject.h"
 #include "../Constraint/BBDistanceConstraint.h"
+#include "../Constraint/BBPinConstraint.h"
 
 
 BBClothBody::BBClothBody(BBClothMesh *pMesh, float fMass, float fElasticModulus)
@@ -11,6 +12,24 @@ BBClothBody::BBClothBody(BBClothMesh *pMesh, float fMass, float fElasticModulus)
     m_fElasticModulus = fElasticModulus;
     initPositions();
     initConstraints();
+}
+
+void BBClothBody::initPinConstraints(const BBClothPinConstraintType &eType)
+{
+    if (eType == Left)
+    {
+        std::vector<int> leftVertexIndexes = m_pClothMesh->getLeftVertexIndexes();
+        for (int i = 0; i < leftVertexIndexes.size(); i++)
+        {
+            int nIndex = leftVertexIndexes[i];
+            BBPinConstraint *pConstraint = new BBPinConstraint(this, nIndex);
+            m_Constraints.push_back(pConstraint);
+        }
+    }
+    else
+    {
+
+    }
 }
 
 void BBClothBody::initPositions()

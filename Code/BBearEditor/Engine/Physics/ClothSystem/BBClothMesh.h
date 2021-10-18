@@ -13,9 +13,16 @@ public:
 
     void init() override;
 
+    void updatePhysicsCalculatedPositions(BBClothBody *pClothBody);
+
+public:
+    inline std::vector<int> getLeftVertexIndexes() { return m_LeftVertexIndexes; }
+
 private:
     int m_nWidth;
     int m_nHeight;
+
+    std::vector<int> m_LeftVertexIndexes;
 };
 
 #endif // BBCLOTHMESH_H
