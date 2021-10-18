@@ -22,13 +22,15 @@ void BBClothBody::initPinConstraints(const BBClothPinConstraintType &eType)
         for (int i = 0; i < leftVertexIndexes.size(); i++)
         {
             int nIndex = leftVertexIndexes[i];
-            BBPinConstraint *pConstraint = new BBPinConstraint(this, nIndex);
+            BBPinConstraint *pConstraint = new BBPinConstraint(this, nIndex, m_pClothMesh->getVBO()->getPosition(nIndex));
             m_Constraints.push_back(pConstraint);
         }
     }
-    else
+    else if (eType == TopLeft)
     {
-
+        int nTopLeftVertexIndex = m_pClothMesh->getTopLeftVertexIndex();
+        BBPinConstraint *pConstraint = new BBPinConstraint(this, nTopLeftVertexIndex, m_pClothMesh->getVBO()->getPosition(nTopLeftVertexIndex));
+        m_Constraints.push_back(pConstraint);
     }
 }
 

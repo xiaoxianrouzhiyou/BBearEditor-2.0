@@ -7,7 +7,7 @@
 class BBPinConstraint : public BBBaseConstraint
 {
 public:
-    BBPinConstraint(BBBaseBody *pBody, int nParticleIndex);
+    BBPinConstraint(BBBaseBody *pBody, int nParticleIndex, const QVector3D &fixedPosition);
 
     void doConstraint(float fDeltaTime) override;
 

@@ -2,10 +2,11 @@
 #include "../Body/BBBaseBody.h"
 
 
-BBPinConstraint::BBPinConstraint(BBBaseBody *pBody, int nParticleIndex)
+BBPinConstraint::BBPinConstraint(BBBaseBody *pBody, int nParticleIndex, const QVector3D &fixedPosition)
     : BBBaseConstraint(pBody)
 {
     m_nParticleIndex = nParticleIndex;
+    m_FixedPosition = fixedPosition;
 }
 
 void BBPinConstraint::doConstraint(float fDeltaTime)

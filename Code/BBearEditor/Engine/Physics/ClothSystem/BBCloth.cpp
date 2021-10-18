@@ -27,12 +27,12 @@ void BBCloth::init()
     m_pClothMesh = new BBClothMesh(m_nWidth, m_nHeight);
     m_pClothMesh->init();
 
-    m_pClothBody = new BBClothBody(m_pClothMesh, 1.0f, 0.25f);
+    m_pClothBody = new BBClothBody(m_pClothMesh, 0.5f, 0.5f);
     m_pClothBody->initPinConstraints(BBClothPinConstraintType::Left);
 
     m_pPBDSolver = new BBPBDSolver();
     m_pPBDSolver->addBody(m_pClothBody);
-    BBDirectionalForce *pWindForce = new BBDirectionalForce(10, 1, 0);
+    BBDirectionalForce *pWindForce = new BBDirectionalForce(5, 0, 0);
     m_pPBDSolver->addForce(pWindForce);
     BBDirectionalForce *pGravity = new BBDirectionalForce(0, -9.8f, 0);
     m_pPBDSolver->addForce(pGravity);

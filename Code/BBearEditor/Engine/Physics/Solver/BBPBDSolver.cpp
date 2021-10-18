@@ -8,6 +8,7 @@ BBPBDSolver::BBPBDSolver(int nSolverIteration, int nCollisionIteration)
 {
     m_nSolverIteration = nSolverIteration;
     m_nCollisionIteration = nCollisionIteration;
+    m_fStopThreshold = 0.01f;
 }
 
 BBPBDSolver::~BBPBDSolver()

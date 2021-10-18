@@ -3,45 +3,48 @@
 #include "Render/BBMaterial.h"
 #include "Render/BBDrawCall.h"
 #include "../Body/BBClothBody.h"
+#include "Render/BBRenderPass.h"
 
 
-BBClothMesh::BBClothMesh(int nWidth, int nHeight)
+BBClothMesh::BBClothMesh(float fWidth, float fHeight, float fUnitStep)
     : BBRenderableObject()
 {
-    m_nWidth = nWidth;
-    m_nHeight = nHeight;
+    m_fWidth = fWidth;
+    m_fHeight = fHeight;
+    m_fUnitStep = fUnitStep;
+    m_nColumn = ceil(m_fWidth / m_fUnitStep) + 1;
+    m_nRow = ceil(m_fHeight / m_fUnitStep) + 1;
+    m_fUnitStep = m_fWidth / m_nColumn;
 }
 
 void BBClothMesh::init()
 {
-    int nColumn = m_nWidth + 1;
-    int nRow = m_nHeight + 1;
-    m_pVBO = new BBVertexBufferObject(nColumn * nRow);
-    m_nIndexCount = m_nWidth * m_nHeight * 6;
+    m_pVBO = new BBVertexBufferObject(m_nColumn * m_nRow);
+    m_nIndexCount = (m_nColumn - 1) * (m_nRow - 1) * 6;
     m_pIndexes = new unsigned short[m_nIndexCount];
     int nIndexesIndex = 0;
 
-    for (int i = 0; i < nRow; i++)
+    for (int i = 0; i < m_nRow; i++)
     {
-        for (int j = 0; j < nColumn; j++)
+        for (int j = 0; j < m_nColumn; j++)
         {
-            QVector3D position(j, i, 0);
-            int nIndex = i * nColumn + j;
+            QVector3D position = QVector3D(j, i, 0) * m_fUnitStep;
+            int nIndex = i * m_nColumn + j;
             m_pVBO->setPosition(nIndex, position);
             m_pVBO->setColor(nIndex, BBConstant::m_LightGreen);
-            m_pVBO->setTexcoord(nIndex, 1.0f / m_nWidth * j, 1.0f / m_nHeight * i);
+            m_pVBO->setTexcoord(nIndex, 1.0f / m_fWidth * j, 1.0f / m_fHeight * i);
             m_pVBO->setNormal(nIndex, 0, 0, 1);
             m_pVBO->setTangent(nIndex, -1, 0, 0, -1);
 
-            if (i < m_nHeight && j < m_nWidth)
+            if (i < m_nRow - 1 && j < m_nColumn - 1)
             {
                 m_pIndexes[nIndexesIndex++] = nIndex;
                 m_pIndexes[nIndexesIndex++] = nIndex + 1;
-                m_pIndexes[nIndexesIndex++] = nIndex + nColumn + 1;
+                m_pIndexes[nIndexesIndex++] = nIndex + m_nColumn + 1;
 
                 m_pIndexes[nIndexesIndex++] = nIndex;
-                m_pIndexes[nIndexesIndex++] = nIndex + nColumn + 1;
-                m_pIndexes[nIndexesIndex++] = nIndex + nColumn;
+                m_pIndexes[nIndexesIndex++] = nIndex + m_nColumn + 1;
+                m_pIndexes[nIndexesIndex++] = nIndex + m_nColumn;
             }
 
             if (j == 0)
@@ -52,7 +55,8 @@ void BBClothMesh::init()
     }
 
     m_pCurrentMaterial->init("base", BB_PATH_RESOURCE_SHADER(base.vert), BB_PATH_RESOURCE_SHADER(base.frag));
-    
+    m_pCurrentMaterial->getBaseRenderPass()->setPolygonMode(GL_LINE);
+
     BBRenderableObject::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
