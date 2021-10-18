@@ -11,11 +11,17 @@ class BBBaseBody
 public:
     BBBaseBody(int nParticleCount, float fMass);
 
+    void dampenVelocities(float fDeltaTime);
+    void predictPositions(float fDeltaTime);
     void projectConstraints(float fDeltaTime);
+    void updateVelocities(float fDeltaTime, float fStopThreshold2);
+    void updatePositions();
 
     inline void setParticlePosition(int nIndex, const QVector3D &position) { m_pPositions[nIndex] = position; }
     inline void setParticlePredictedPosition(int nIndex, const QVector3D &position) { m_pPredictedPositions[nIndex] = position; }
+    inline void setParticleVelocity(int nIndex, const QVector3D &velocity) { m_pVelocities[nIndex] = velocity; }
 
+    inline int getParticleCount() { return m_nParticleCount; }
     inline float getParticleMass() { return m_fParticleMass; }
     inline QVector3D getParticlePosition(int nIndex) { return m_pPositions[nIndex]; }
     inline QVector3D getParticlePredictedPosition(int nIndex) { return m_pPredictedPositions[nIndex]; }
