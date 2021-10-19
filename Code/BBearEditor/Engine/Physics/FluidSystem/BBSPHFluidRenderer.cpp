@@ -23,9 +23,16 @@ void BBSPHFluidRenderer::init(BBSPHParticleSystem *pParticleSystem)
         m_pVBO->setPosition(i, pParticleSystem->getParticle(i)->m_Position);
         m_pVBO->setColor(i, BBConstant::m_LightGreen);
     }
+
+//    m_pCurrentMaterial->init("BBSPHFluidParticle",
+//                             BB_PATH_RESOURCE_SHADER(Physics/FluidSystem/SPHFluidParticle.vert),
+//                             BB_PATH_RESOURCE_SHADER(Physics/FluidSystem/SPHFluidParticle.frag));
+
     m_pCurrentMaterial->init("BBSPHFluidParticle",
-                             BB_PATH_RESOURCE_SHADER(Physics/FluidSystem/BBSPHFluidParticle.vert),
-                             BB_PATH_RESOURCE_SHADER(Physics/FluidSystem/BBSPHFluidParticle.frag));
+                             BB_PATH_RESOURCE_SHADER(Physics/FluidSystem/SPHFluid_SSF_VS.vert),
+                             BB_PATH_RESOURCE_SHADER(Physics/FluidSystem/SPHFluid_SSF_FS_Depth.frag),
+                             BB_PATH_RESOURCE_SHADER(Physics/FluidSystem/SPHFluid_SSF_GS.shader));
+    m_pCurrentMaterial->setFloat("ParticleRadius", 0.125f);
 
     BBRenderableObject::init();
 
