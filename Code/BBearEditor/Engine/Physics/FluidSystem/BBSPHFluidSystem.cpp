@@ -17,7 +17,7 @@ BBSPHFluidSystem::BBSPHFluidSystem(const QVector3D &position)
     m_pParticleNeighborTable = new BBSPHParticleNeighborTable();
 
     m_fParticleRadius = 0.0f;
-    m_fParticleMass = 0.0005f;
+    m_fParticleMass = 0.0003f;
     m_fUnitScale = 0.02f;
     m_fViscosity = 0.2f;
     m_fStaticDensity = 1000.0f;

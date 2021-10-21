@@ -4,7 +4,8 @@ in float g2f_view_space_particle_radius;
 in vec3 g2f_view_space_center_pos;
 in vec3 g2f_frag_pos;
 
-out float LinearDepth;
+layout (location = 0) out float Depth;
+layout (location = 1) out float Thickness;
 
 uniform mat4 BBProjectionMatrix;
 
@@ -22,5 +23,6 @@ void main()
     vec4 clip_space_pos = BBProjectionMatrix * vec4(view_space_depth, view_space_depth, view_space_depth, 1.0);
     gl_FragDepth = clip_space_pos.z / clip_space_pos.w * 0.5 + 0.5;
 
-    LinearDepth = -view_space_depth;
+    Depth = -view_space_depth;
+    Thickness = 2.0 * depth;
 }

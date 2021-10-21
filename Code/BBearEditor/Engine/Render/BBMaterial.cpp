@@ -31,6 +31,15 @@ void BBMaterial::initMultiPass(const char *shaderName, const QString &vShaderPat
     m_pAdditiveRenderPass->setShader(BBShader::loadShader(shaderName, vShaderPath, fShaderPath, gShaderPath));
 }
 
+void BBMaterial::initMultiPass(const char *shaderName1, const QString &vShaderPath1, const QString &fShaderPath1,
+                               const char *shaderName2, const QString &vShaderPath2, const QString &fShaderPath2,
+                               const QString &gShaderPath1, const QString &gShaderPath2)
+{
+    init(shaderName1, vShaderPath1, fShaderPath1, gShaderPath1);
+    m_pAdditiveRenderPass = new BBRenderPass();
+    m_pAdditiveRenderPass->setShader(BBShader::loadShader(shaderName2, vShaderPath2, fShaderPath2, gShaderPath2));
+}
+
 void BBMaterial::setBlendState(bool bEnable)
 {
     if (m_pBaseRenderPass != nullptr)

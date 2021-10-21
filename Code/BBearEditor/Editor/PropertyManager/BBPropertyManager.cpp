@@ -14,6 +14,9 @@
 #include "Lighting/GameObject/BBSpotLight.h"
 #include "BBHeadManager.h"
 #include "3D/BBModel.h"
+#include "Physics/FluidSystem/BBSPHFluidSystem.h"
+#include "GroupManager/BBFluidRendererManager.h"
+#include "Physics/FluidSystem/BBSPHFluidRenderer.h"
 
 
 BBPropertyManager::BBPropertyManager(QWidget *pParent)
@@ -69,6 +72,11 @@ void BBPropertyManager::showGameObjectProperty(BBGameObject *pGameObject)
     {
         BBModel *pModel = (BBModel*)pGameObject;
         layout()->addWidget(new BBRenderManager(pModel->getMesh(), this));
+    }
+    else if (pGameObject->getClassName() == BB_CLASSNAME_SPHFLUID)
+    {
+        BBSPHFluidSystem *pFluidSystem = (BBSPHFluidSystem*)pGameObject;
+        layout()->addWidget(new BBFluidRendererManager(pFluidSystem->getFluidRenderer(), this));
     }
     else if (pGameObject->getClassName() == BB_CLASSNAME_DIRECTIONAL_LIGHT)
     {

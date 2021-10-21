@@ -25,6 +25,9 @@ public:
 
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
 
+public:
+    inline BBSPHFluidRenderer* getFluidRenderer() { return m_pFluidRenderer; }
+
 private:
     void initFluidVolume(const QVector3D &fluidBoxMin, const QVector3D &fluidBoxMax, float fSpacing);
 

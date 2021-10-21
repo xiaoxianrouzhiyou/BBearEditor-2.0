@@ -208,9 +208,22 @@ void BBScene::deferredRendering1_1()
     writeShadowMap();
 
     m_pFBO[0]->bind();
+
     m_pSkyBox->render(m_pCamera);
     // BBGameObject
     m_pRenderQueue->render();
+    for (QList<BBGameObject*>::Iterator itr = m_OtherGameObjects.begin(); itr != m_OtherGameObjects.end(); itr++)
+    {
+        if ((*itr)->getClassName() == BB_CLASSNAME_SPHFLUID)
+        {
+            ((BBSPHFluidSystem*)(*itr))->render(m_pCamera);
+        }
+        else if ((*itr)->getClassName() == BB_CLASSNAME_CLOTH)
+        {
+            ((BBCloth*)(*itr))->render(m_pCamera);
+        }
+    }
+
     m_pFBO[0]->unbind();
 
     m_pFullScreenQuad[0]->render(m_pCamera);
@@ -225,8 +238,21 @@ void BBScene::deferredRendering1_2()
 
     // GBuffer pass
     m_pFBO[0]->bind();
+
     m_pSkyBox->render(m_pCamera);
     m_pRenderQueue->render();
+    for (QList<BBGameObject*>::Iterator itr = m_OtherGameObjects.begin(); itr != m_OtherGameObjects.end(); itr++)
+    {
+        if ((*itr)->getClassName() == BB_CLASSNAME_SPHFLUID)
+        {
+            ((BBSPHFluidSystem*)(*itr))->render(m_pCamera);
+        }
+        else if ((*itr)->getClassName() == BB_CLASSNAME_CLOTH)
+        {
+            ((BBCloth*)(*itr))->render(m_pCamera);
+        }
+    }
+
     m_pFBO[0]->unbind();
 
     // common pass
@@ -504,7 +530,7 @@ BBGameObject* BBScene::createGameObject(int x, int y, const QString &className, 
     {
         BBSPHFluidSystem *pSPHFluidSystem = new BBSPHFluidSystem(hit);
         pSPHFluidSystem->setBaseAttributes(BB_CLASSNAME_SPHFLUID, BB_CLASSNAME_SPHFLUID, "particle white");
-        pSPHFluidSystem->init(MAX_PARTICLE, QVector3D(-4, -4, -4), QVector3D(4, 4, 4), QVector3D(-4, -3, -3), QVector3D(1, 3, 3));
+        pSPHFluidSystem->init(MAX_PARTICLE, QVector3D(-2.5, -4, -2.5), QVector3D(2.5, 4, 2.5), QVector3D(-2, -3, -1), QVector3D(1, 3, 1));
         m_OtherGameObjects.append(pSPHFluidSystem);
         return pSPHFluidSystem;
     }
@@ -518,6 +544,25 @@ BBGameObject* BBScene::createGameObject(int x, int y, const QString &className, 
     }
 
     return nullptr;
+}
+
+void BBScene::restoreGameObjectsMaterial()
+{
+    // objects go back original materials
+    for (QList<BBGameObject*>::Iterator itr = m_Models.begin(); itr != m_Models.end(); itr++)
+    {
+        BBGameObject *pObject = *itr;
+        pObject->restoreMaterial();
+    }
+}
+
+void BBScene::setGameObjectsMaterial(BBMaterial *pMaterial)
+{
+    for (QList<BBGameObject*>::Iterator itr = m_Models.begin(); itr != m_Models.end(); itr++)
+    {
+        BBGameObject *pObject = *itr;
+        pObject->setCurrentMaterial(pMaterial);
+    }
 }
 
 bool BBScene::hitCanvas(int x, int y, BBCanvas *&pOutCanvas)

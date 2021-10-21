@@ -26,6 +26,7 @@ class BBFullScreenQuad;
 class BBTiledFullScreenQuad;
 class BBRenderQueue;
 class BBNormalIndicator;
+class BBMaterial;
 class BBScene;
 
 typedef void (BBScene::*BBRenderingFunc)();
@@ -91,6 +92,9 @@ public:
     BBParticleSystem* createParticleSystem(int x, int y, bool bSelect = true);
 
     BBGameObject* createGameObject(int x, int y, const QString &className, bool bSelect = true);
+
+    void restoreGameObjectsMaterial();
+    void setGameObjectsMaterial(BBMaterial *pMaterial);
 
 public:
     bool hitCanvas(int x, int y, BBCanvas *&pOutCanvas);

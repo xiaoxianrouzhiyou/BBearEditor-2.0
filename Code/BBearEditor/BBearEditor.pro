@@ -164,7 +164,8 @@ SOURCES += \
     Engine/Physics/ClothSystem/BBClothMesh.cpp \
     Engine/Physics/Solver/BBPBDSolver.cpp \
     Engine/Physics/Force/BBForce.cpp \
-    Engine/Physics/Force/BBDirectionalForce.cpp
+    Engine/Physics/Force/BBDirectionalForce.cpp \
+    Editor/PropertyManager/GroupManager/BBFluidRendererManager.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -308,7 +309,8 @@ HEADERS += \
     Engine/Physics/ClothSystem/BBClothMesh.h \
     Engine/Physics/Solver/BBPBDSolver.h \
     Engine/Physics/Force/BBForce.h \
-    Engine/Physics/Force/BBDirectionalForce.h
+    Engine/Physics/Force/BBDirectionalForce.h \
+    Editor/PropertyManager/GroupManager/BBFluidRendererManager.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

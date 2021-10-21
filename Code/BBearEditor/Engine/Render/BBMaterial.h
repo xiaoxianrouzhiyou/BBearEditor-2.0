@@ -24,6 +24,9 @@ public:
 
     void init(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath, const QString &gShaderPath = "");
     void initMultiPass(const char *shaderName, const QString &vShaderPath, const QString &fShaderPath, const QString &gShaderPath = "");
+    void initMultiPass(const char *shaderName1, const QString &vShaderPath1, const QString &fShaderPath1,
+                       const char *shaderName2, const QString &vShaderPath2, const QString &fShaderPath2,
+                       const QString &gShaderPath1 = "", const QString &gShaderPath2 = "");
     void bindDrawCallInstance(BBDrawCall *pDrawCall) { m_pDrawCallInstance = pDrawCall; }
 
 public:
