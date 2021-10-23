@@ -264,6 +264,44 @@ void BBScene::deferredRendering1_2()
     m_pFullScreenQuad[1]->render(m_pCamera);
 }
 
+void BBScene::deferredRendering1_3()
+{
+    m_pCamera->switchTo3D();
+    m_pCamera->update(m_fUpdateRate);
+
+    writeShadowMap();
+
+    // GBuffer pass
+    m_pFBO[0]->bind();
+
+    m_pSkyBox->render(m_pCamera);
+    m_pRenderQueue->render();
+    for (QList<BBGameObject*>::Iterator itr = m_OtherGameObjects.begin(); itr != m_OtherGameObjects.end(); itr++)
+    {
+        if ((*itr)->getClassName() == BB_CLASSNAME_SPHFLUID)
+        {
+            ((BBSPHFluidSystem*)(*itr))->render(m_pCamera);
+        }
+        else if ((*itr)->getClassName() == BB_CLASSNAME_CLOTH)
+        {
+            ((BBCloth*)(*itr))->render(m_pCamera);
+        }
+    }
+
+    m_pFBO[0]->unbind();
+
+    // common pass
+    m_pFBO[1]->bind();
+    m_pFullScreenQuad[0]->render(m_pCamera);
+    m_pFBO[1]->unbind();
+
+    m_pFBO[2]->bind();
+    m_pFullScreenQuad[1]->render(m_pCamera);
+    m_pFBO[2]->unbind();
+
+    m_pFullScreenQuad[2]->render(m_pCamera);
+}
+
 void BBScene::deferredRendering2_1()
 {
     m_pCamera->switchTo3D();

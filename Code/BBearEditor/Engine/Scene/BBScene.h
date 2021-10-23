@@ -46,6 +46,7 @@ public:
     void deferredRendering0_1();
     void deferredRendering1_1();
     void deferredRendering1_2();
+    void deferredRendering1_3();
     void deferredRendering2_1();
 
     void resize(float width, float height);

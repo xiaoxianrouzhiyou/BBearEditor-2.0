@@ -82,6 +82,9 @@ void BBSPHFluidRenderer::switchSSF(bool bEnable)
 
         BBFullScreenQuad *pFullScreenQuad1 = pScene->getFullScreenQuad(1);
         pFullScreenQuad1->setCurrentMaterial(m_pScreenQuadYFilterMaterial);
+
+        BBFullScreenQuad *pFullScreenQuad2 = pScene->getFullScreenQuad(2);
+        pFullScreenQuad2->setCurrentMaterial(m_pScreenQuadNormalMaterial);
     }
     else
     {
@@ -132,4 +135,11 @@ void BBSPHFluidRenderer::initSSFMaterial()
     m_pScreenQuadYFilterMaterial->setFloat("SpatialScale", 0.2f);
     m_pScreenQuadYFilterMaterial->setFloat("RangeScale", 0.2f);
     m_pScreenQuadYFilterMaterial->setVector4("BlurDir", 0.0f, 1.0f, 0.0f, 0.0f);
+
+    // Compute normals pass
+    m_pScreenQuadNormalMaterial = new BBMaterial();
+    m_pScreenQuadNormalMaterial->init("SSF_3_Screen_Normal",
+                                      BB_PATH_RESOURCE_SHADER(Physics/FluidSystem/FullScreenQuad.vert),
+                                      BB_PATH_RESOURCE_SHADER(Physics/FluidSystem/SSF_FS_3_Screen_Normal.frag));
+    m_pScreenQuadNormalMaterial->setSampler2D("DepthMap", pScene->getColorFBO(2, 0));
 }
