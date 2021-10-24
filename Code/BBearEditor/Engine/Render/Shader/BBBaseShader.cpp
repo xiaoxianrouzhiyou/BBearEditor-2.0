@@ -218,9 +218,13 @@ BBUniformUpdater* BBBaseShader::initUniformVector4(GLint location, const char *p
     {
         updateUniformFunc = &BBUniformUpdater::updateCanvas;
     }
-    else if (strcmp(pUniformName, LOCATION_CAMERA_PARAMETERS) == 0)
+    else if (strcmp(pUniformName, LOCATION_CAMERA_PARAMETERS0) == 0)
     {
-        updateUniformFunc = &BBUniformUpdater::updateCameraParameters;
+        updateUniformFunc = &BBUniformUpdater::updateCameraParameters0;
+    }
+    else if (strcmp(pUniformName, LOCATION_CAMERA_PARAMETERS1) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updateCameraParameters1;
     }
     else if (strcmp(pUniformName, LOCATION_CAMERA_POSITION) == 0)
     {

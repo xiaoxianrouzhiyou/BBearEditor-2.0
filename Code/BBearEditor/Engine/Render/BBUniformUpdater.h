@@ -30,7 +30,8 @@ public:
     void updateCameraInverseViewMatrix(GLint location, void *pCamera, void *pPropertyValue);
     void updateCameraPosition(GLint location, void *pCamera, void *pPropertyValue);
     void updateCanvas(GLint location, void *pCanvas, void *pPropertyValue);
-    void updateCameraParameters(GLint location, void *pCamera, void *pPropertyValue);
+    void updateCameraParameters0(GLint location, void *pCamera, void *pPropertyValue);
+    void updateCameraParameters1(GLint location, void *pCamera, void *pPropertyValue);
     void updateTime(GLint location, void *pUserData, void *pPropertyValue);
     void updateColorFBO(GLint location, void *pCamera, void *pPropertyValue);
     void updateDepthFBO(GLint location, void *pCamera, void *pPropertyValue);

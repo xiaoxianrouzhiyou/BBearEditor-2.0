@@ -65,9 +65,14 @@ void BBUniformUpdater::updateCanvas(GLint location, void *pCanvas, void *pProper
     glUniform4fv(location, 1, ((BBCanvas*)pCanvas)->getUniformInfo());
 }
 
-void BBUniformUpdater::updateCameraParameters(GLint location, void *pCamera, void *pPropertyValue)
+void BBUniformUpdater::updateCameraParameters0(GLint location, void *pCamera, void *pPropertyValue)
 {
-    glUniform4fv(location, 1, ((BBCamera*)pCamera)->getCameraParameters());
+    glUniform4fv(location, 1, ((BBCamera*)pCamera)->getCameraParameters0());
+}
+
+void BBUniformUpdater::updateCameraParameters1(GLint location, void *pCamera, void *pPropertyValue)
+{
+    glUniform4fv(location, 1, ((BBCamera*)pCamera)->getCameraParameters1());
 }
 
 void BBUniformUpdater::updateTime(GLint location, void *pUserData, void *pPropertyValue)

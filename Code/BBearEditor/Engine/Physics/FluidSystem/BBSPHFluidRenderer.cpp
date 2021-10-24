@@ -73,7 +73,7 @@ void BBSPHFluidRenderer::switchSSF(bool bEnable)
     BBScene *pScene = BBSceneManager::getScene();
     if (bEnable)
     {
-        pScene->setRenderingFunc(&BBScene::deferredRendering1_2);
+        pScene->setRenderingFunc(&BBScene::deferredRendering1_3);
 
         setCurrentMaterial(getExtraMaterial(m_nSSFGBufferMaterialIndex));
 

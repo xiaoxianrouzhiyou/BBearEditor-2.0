@@ -5,6 +5,7 @@ in vec2 v2f_texcoords;
 layout (location = 0) out vec4 FragColor;
 
 uniform vec4 BBCameraParameters;
+uniform vec4 BBCameraParameters1;
 
 uniform sampler2D DepthMap;
 
@@ -34,6 +35,8 @@ void main()
 {
     near = BBCameraParameters.z;
     far = BBCameraParameters.w;
+    aspect = BBCameraParameters1.y;
+    near_height = BBCameraParameters1.z;
 
     float depth = texture(DepthMap, v2f_texcoords).r;
     if (depth >= far - 1.0) 
@@ -51,11 +54,11 @@ void main()
     // Because if a single differentiation is used, the normal will suddenly change at the edge of the object, resulting in errors
     vec3 du1 = getViewSpacePos(v2f_texcoords + vec2(tex_size.x, 0.0)) - view_space_pos;
     vec3 du2 = view_space_pos - getViewSpacePos(v2f_texcoords - vec2(tex_size.x, 0.0));
-    vec3 du = du1 < du2 ? du1 : du2;
+    vec3 du = abs(du1.z) < abs(du2.z) ? du1 : du2;
 
     vec3 dv1 = getViewSpacePos(v2f_texcoords + vec2(0.0, tex_size.y)) - view_space_pos;
     vec3 dv2 = view_space_pos - getViewSpacePos(v2f_texcoords - vec2(0.0, tex_size.y));
-    vec3 dv = dv1 < dv2 ? dv1 : dv2;
+    vec3 dv = abs(dv1.z) < abs(dv2.z) ? dv1 : dv2;
 
     vec3 N = cross(du, dv);
     N = normalize(N);

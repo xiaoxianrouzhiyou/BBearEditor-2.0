@@ -149,3 +149,10 @@ float schlick(float cos, float fRefractivity)
     f0 *= f0;
     return f0 + (1 - f0) * pow((1 - cos), 5);
 }
+
+
+
+float radians(float angle)
+{
+    return angle * PI / 180.0f;
+}

@@ -203,7 +203,7 @@ BBMaterial* BBRendererManager::createCoordinateUIMaterial()
     pMaterial->init("coordinate2D", BB_PATH_RESOURCE_SHADER(coordinate2D.vert), BB_PATH_RESOURCE_SHADER(coordinate.frag));
     pMaterial->getBaseRenderPass()->setBlendState(true);
     pMaterial->getBaseRenderPass()->setZFunc(GL_ALWAYS);
-    pMaterial->setVector4(LOCATION_CAMERA_PARAMETERS, 800.0f, 600.0f, 0.0f, 0.0f);
+    pMaterial->setVector4(LOCATION_CAMERA_PARAMETERS0, 800.0f, 600.0f, 0.0f, 0.0f);
     return pMaterial;
 }
 

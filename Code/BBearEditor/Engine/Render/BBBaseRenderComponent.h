@@ -40,7 +40,8 @@
 #define LOCATION_LIGHT_PROJECTIONMATRIX "BBLightProjectionMatrix"
 #define LOCATION_LIGHT_VIEWMATRIX "BBLightViewMatrix"
 #define LOCATION_LIGHT_SETTINGS(x) "BBLightSettings"#x
-#define LOCATION_CAMERA_PARAMETERS "BBCameraParameters"
+#define LOCATION_CAMERA_PARAMETERS0 "BBCameraParameters"
+#define LOCATION_CAMERA_PARAMETERS1 "BBCameraParameters1"
 #define LOCATION_TIME "BBTime"
 #define LOCATION_CAMERA_COLOR_TEXTURE "BBCameraColorTexture"
 #define LOCATION_CAMERA_DEPTH_TEXTURE "BBCameraDepthTexture"

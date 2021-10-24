@@ -42,4 +42,6 @@ static inline T max(const T &a, const T &b)
     return ((a > b) ? a : b);
 }
 
+float radians(float angle);
+
 #endif // BBMATH_H

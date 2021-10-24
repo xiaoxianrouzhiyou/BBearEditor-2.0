@@ -56,6 +56,6 @@ void main()
 
     float viewport_width = BBCameraParameters.x;
     float viewport_height = BBCameraParameters.y;
-    vec2 blur_dir = BlurDir.xy * vec2(1.0 / viewport_width, 1.0 / viewport_height) * 4.0;
+    vec2 blur_dir = BlurDir.xy * vec2(1.0 / viewport_width, 1.0 / viewport_height) * 1.0;
     computeGaussianFilter(blur_dir, depth);
 }

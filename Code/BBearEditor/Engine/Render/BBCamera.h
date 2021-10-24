@@ -48,7 +48,8 @@ public:
     inline float getNearPlane() { return m_fNearPlane; }
     inline float getFarPlane() { return m_fFarPlane; }
     inline float getDepth() { return m_fDepth; }
-    inline float* getCameraParameters() { return m_CameraParameters; }
+    inline float* getCameraParameters0() { return m_CameraParameters0; }
+    inline float* getCameraParameters1() { return m_CameraParameters1; }
 
 private:
     void rotateView(float fAngle, float x, float y, float z);
@@ -73,13 +74,16 @@ private:
     QMatrix4x4 m_ProjectionMatrix;
     float m_fDisplacement;
 
+    float m_fVerticalAngle;
+    float m_fAspect;
     float m_fNearPlane;
     float m_fFarPlane;
     float m_fDepth;
 
     BBFrustumCluster *m_pFrustumCluster;
 
-    float m_CameraParameters[4];
+    float m_CameraParameters0[4];
+    float m_CameraParameters1[4];
 };
 
 #endif // BBCAMERA_H
