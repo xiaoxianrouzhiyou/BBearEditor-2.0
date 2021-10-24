@@ -106,9 +106,9 @@ void BBSPHFluidRenderer::initSSFMaterial()
                     BB_PATH_RESOURCE_SHADER(Physics/FluidSystem/SSF_GS_GBuffer.shader));
     pMaterial->setFloat("ParticleRadius", 0.125f);
 
-    pMaterial->setBlendState(true);
-    pMaterial->setBlendFunc(GL_ONE, GL_ONE);
-    pMaterial->setZTestState(false);
+//    pMaterial->setBlendState(true);
+//    pMaterial->setBlendFunc(GL_ONE, GL_ONE);
+//    pMaterial->setZTestState(false);
 
     setExtraMaterial(m_nSSFGBufferMaterialIndex, pMaterial);
 
@@ -119,7 +119,7 @@ void BBSPHFluidRenderer::initSSFMaterial()
                                        BB_PATH_RESOURCE_SHADER(Physics/FluidSystem/SSF_FS_2_Screen_Filter.frag));
     m_pScreenQuadXFilterMaterial->setSampler2D("DepthMap", pScene->getColorFBO(0, 0));
     m_pScreenQuadXFilterMaterial->setSampler2D("ThicknessMap", pScene->getColorFBO(0, 1));
-    m_pScreenQuadXFilterMaterial->setFloat("FilterRadius", 3.0f);
+    m_pScreenQuadXFilterMaterial->setFloat("FilterRadius", 5.0f);
     m_pScreenQuadXFilterMaterial->setFloat("SpatialScale", 0.2f);
     m_pScreenQuadXFilterMaterial->setFloat("RangeScale", 0.2f);
     m_pScreenQuadXFilterMaterial->setVector4("BlurDir", 1.0f, 0.0f, 0.0f, 0.0f);
@@ -131,7 +131,7 @@ void BBSPHFluidRenderer::initSSFMaterial()
                                        BB_PATH_RESOURCE_SHADER(Physics/FluidSystem/SSF_FS_2_Screen_Filter.frag));
     m_pScreenQuadYFilterMaterial->setSampler2D("DepthMap", pScene->getColorFBO(1, 0));
     m_pScreenQuadYFilterMaterial->setSampler2D("ThicknessMap", pScene->getColorFBO(1, 1));
-    m_pScreenQuadYFilterMaterial->setFloat("FilterRadius", 3.0f);
+    m_pScreenQuadYFilterMaterial->setFloat("FilterRadius", 5.0f);
     m_pScreenQuadYFilterMaterial->setFloat("SpatialScale", 0.2f);
     m_pScreenQuadYFilterMaterial->setFloat("RangeScale", 0.2f);
     m_pScreenQuadYFilterMaterial->setVector4("BlurDir", 0.0f, 1.0f, 0.0f, 0.0f);
