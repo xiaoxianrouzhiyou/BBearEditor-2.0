@@ -8,6 +8,7 @@
 #include "Scene/BBScene.h"
 #include "Scene/BBSceneManager.h"
 #include "2D/BBFullScreenQuad.h"
+#include "Physics/FluidSystem/BBSPHFluidSystem.h"
 
 
 BBSPHFluidRenderer::BBSPHFluidRenderer(const QVector3D &position)
@@ -28,9 +29,10 @@ BBSPHFluidRenderer::~BBSPHFluidRenderer()
     BB_SAFE_DELETE(m_pScreenQuadShadingMaterial);
 }
 
-void BBSPHFluidRenderer::init(BBSPHParticleSystem *pParticleSystem)
+void BBSPHFluidRenderer::init(BBSPHParticleSystem *pParticleSystem, BBSPHFluidSystem *pFluidSystem)
 {   
     m_pParticleSystem = pParticleSystem;
+    m_pFluidSystem = pFluidSystem;
 
     m_pVBO = new BBVertexBufferObject(pParticleSystem->getSize());
     for (int i = 0; i < m_pVBO->getVertexCount(); i++)
@@ -92,6 +94,11 @@ void BBSPHFluidRenderer::switchSSF(bool bEnable)
 
         restoreMaterial();
     }
+}
+
+void BBSPHFluidRenderer::resetFluidParticles()
+{
+    m_pFluidSystem->reset();
 }
 
 void BBSPHFluidRenderer::initSSFMaterial()

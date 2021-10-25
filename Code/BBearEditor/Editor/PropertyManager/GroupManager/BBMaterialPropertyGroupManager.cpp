@@ -58,7 +58,7 @@ void BBMaterialPropertyGroupManager::addBlendFuncItem()
     BBEnumFactory *pDSTBlendFunc = new BBEnumFactory("DST", items, BBUtils::getBlendFuncName(m_pMaterial->getDSTBlendFunc()), this);
     QObject::connect(pSRCBlendFunc, SIGNAL(currentItemChanged(int)), this, SLOT(switchSRCBlendFunc(int)));
     QObject::connect(pDSTBlendFunc, SIGNAL(currentItemChanged(int)), this, SLOT(switchDSTBlendFunc(int)));
-    QWidget *pWidget = addFactory("Blend Func", pSRCBlendFunc, pDSTBlendFunc);
+    QWidget *pWidget = addFactories("Blend Func", pSRCBlendFunc, pDSTBlendFunc);
     pWidget->setVisible(m_pMaterial->getBlendState());
 }
 

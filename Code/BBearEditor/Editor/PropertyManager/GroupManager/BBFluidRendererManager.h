@@ -16,6 +16,7 @@ public:
 
 private slots:
     void switchSSF(bool bEnable);
+    void resetFluidParticles();
 
 private:
     BBSPHFluidRenderer *m_pFluidRenderer;

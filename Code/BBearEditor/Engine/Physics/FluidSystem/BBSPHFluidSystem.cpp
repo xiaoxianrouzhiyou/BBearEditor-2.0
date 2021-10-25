@@ -62,12 +62,14 @@ void BBSPHFluidSystem::init(unsigned int nMaxParticleCount,
     m_pParticleSystem->reset(nMaxParticleCount);
     m_WallBoxMin = wallBoxMin;
     m_WallBoxMax = wallBoxMax;
+    m_OriginalFluidBoxMin = originalFluidBoxMin;
+    m_OriginalFluidBoxMax = originalFluidBoxMax;
     m_Gravity = gravity;
     m_fParticleRadius = pow(m_fParticleMass / m_fStaticDensity, 1.0f / 3.0f);
     initFluidVolume(originalFluidBoxMin, originalFluidBoxMax, m_fParticleRadius / m_fUnitScale);
     m_pGridContainer->init(wallBoxMin, wallBoxMax, m_fUnitScale, m_fSmoothRadius * 2.0f, m_pFieldSize);
 
-    m_pFluidRenderer->init(m_pParticleSystem);
+    m_pFluidRenderer->init(m_pParticleSystem, this);
 
 
     // Marching cubes
@@ -130,6 +132,24 @@ void BBSPHFluidSystem::setPosition(const QVector3D &position, bool bUpdateLocalT
 {
     BBGameObject::setPosition(position, bUpdateLocalTransform);
     m_pFluidRenderer->setPosition(position, bUpdateLocalTransform);
+}
+
+void BBSPHFluidSystem::reset()
+{
+    float fSpacing = m_fParticleRadius / m_fUnitScale;
+    int nParticleIndex = 0;
+    for (float z = m_OriginalFluidBoxMin.z(); z < m_OriginalFluidBoxMax.z(); z += fSpacing)
+    {
+        for (float y = m_OriginalFluidBoxMin.y(); y < m_OriginalFluidBoxMax.y(); y += fSpacing)
+        {
+            for (float x = m_OriginalFluidBoxMin.x(); x < m_OriginalFluidBoxMax.x(); x += fSpacing)
+            {
+                BBSPHParticle *pParticle = m_pParticleSystem->getParticle(nParticleIndex);
+                pParticle->m_Position = QVector3D(x, y, z);
+                nParticleIndex++;
+            }
+        }
+    }
 }
 
 void BBSPHFluidSystem::initFluidVolume(const QVector3D &fluidBoxMin, const QVector3D &fluidBoxMax, float fSpacing)

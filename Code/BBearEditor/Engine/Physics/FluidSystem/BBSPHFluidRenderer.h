@@ -5,6 +5,7 @@
 #include "Base/BBRenderableObject.h"
 
 class BBSPHParticleSystem;
+class BBSPHFluidSystem;
 
 class BBSPHFluidRenderer : public BBRenderableObject
 {
@@ -12,11 +13,12 @@ public:
     BBSPHFluidRenderer(const QVector3D &position = QVector3D(0, 0, 0));
     ~BBSPHFluidRenderer();
 
-    void init(BBSPHParticleSystem *pParticleSystem);
+    void init(BBSPHParticleSystem *pParticleSystem, BBSPHFluidSystem *pFluidSystem);
     void render(BBCamera *pCamera) override;
 
 public:
     void switchSSF(bool bEnable);
+    void resetFluidParticles();
 
 private:
     void initSSFMaterial();
@@ -28,6 +30,7 @@ private:
 
 private:
     BBSPHParticleSystem *m_pParticleSystem;
+    BBSPHFluidSystem *m_pFluidSystem;
     const int m_nSSFGBufferMaterialIndex;
 };
 

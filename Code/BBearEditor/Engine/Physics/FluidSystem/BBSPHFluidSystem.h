@@ -25,6 +25,8 @@ public:
 
     void setPosition(const QVector3D &position, bool bUpdateLocalTransform = true) override;
 
+    void reset();
+
 public:
     inline BBSPHFluidRenderer* getFluidRenderer() { return m_pFluidRenderer; }
 
@@ -96,6 +98,8 @@ private:
     QVector3D m_Size;
     QVector3D m_WallBoxMin;
     QVector3D m_WallBoxMax;
+    QVector3D m_OriginalFluidBoxMin;
+    QVector3D m_OriginalFluidBoxMax;
     float m_fDeltaTime;
 
     BBSPHFluidRenderer *m_pFluidRenderer;

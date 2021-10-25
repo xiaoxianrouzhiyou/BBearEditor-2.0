@@ -86,7 +86,7 @@ QWidget* BBGroupManager::addFactory(const QString &name, QWidget *pFactory, int 
     return pWidget;
 }
 
-QWidget* BBGroupManager::addFactory(const QString &name, QWidget *pFactory1, QWidget *pFactory2, int nStretch)
+QWidget* BBGroupManager::addFactories(const QString &name, QWidget *pFactory1, QWidget *pFactory2, int nStretch)
 {
     QWidget *pWidget = new QWidget(m_pContainer);
     // set name for finding
