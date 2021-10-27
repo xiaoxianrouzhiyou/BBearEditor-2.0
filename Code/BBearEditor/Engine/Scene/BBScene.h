@@ -7,6 +7,8 @@
 #include <Serializer/BBGameObject.pb.h>
 #include "Render/BBBaseRenderComponent.h"
 
+#define FULL_SCREEN_QUAD_COUNT 5
+
 class BBOpenGLWidget;
 class BBFrameBufferObject;
 class BBVertexBufferObject;
@@ -47,6 +49,7 @@ public:
     void deferredRendering1_1();
     void deferredRendering1_2();
     void deferredRendering1_3();
+    void deferredRendering1_4();
     void deferredRendering2_1();
 
     void resize(float width, float height);
@@ -124,7 +127,7 @@ private:
     void writeShadowMap();
 
     BBFrameBufferObject *m_pFixedSizeFBO;
-    BBFrameBufferObject *m_pFBO[3];
+    BBFrameBufferObject *m_pFBO[FULL_SCREEN_QUAD_COUNT];
 
     GLuint m_ShadowMap;
     BBFrameBufferObject *m_pShadowMapFBO;
@@ -141,7 +144,7 @@ private:
     BBSkyBox *m_pSkyBox;
     BBHorizontalPlane *m_pHorizontalPlane;
     BBTransformCoordinateSystem *m_pTransformCoordinateSystem;
-    BBFullScreenQuad *m_pFullScreenQuad[3];
+    BBFullScreenQuad *m_pFullScreenQuad[FULL_SCREEN_QUAD_COUNT];
     BBFullScreenQuad *m_pFinalFullScreenQuad;
     BBTiledFullScreenQuad *m_pTiledFullScreenQuad;
 

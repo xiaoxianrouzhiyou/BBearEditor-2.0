@@ -37,7 +37,7 @@ BBScene::BBScene(BBOpenGLWidget *pOpenGLWidget)
     m_RenderingFunc = &BBScene::defaultRendering;
     m_pRenderQueue = nullptr;
     m_fUpdateRate = (float) BB_CONSTANT_UPDATE_RATE / 1000;
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < FULL_SCREEN_QUAD_COUNT; i++)
     {
         m_pFBO[i] = nullptr;
         m_pFullScreenQuad[i] = nullptr;
@@ -57,7 +57,7 @@ BBScene::BBScene(BBOpenGLWidget *pOpenGLWidget)
 
 BBScene::~BBScene()
 {
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < FULL_SCREEN_QUAD_COUNT; i++)
     {
         BB_SAFE_DELETE(m_pFBO[i]);
         BB_SAFE_DELETE(m_pFullScreenQuad[i]);
@@ -106,7 +106,7 @@ void BBScene::init()
 
     m_pTiledFullScreenQuad->init();
     m_pFinalFullScreenQuad->init();
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < FULL_SCREEN_QUAD_COUNT; i++)
     {
         m_pFullScreenQuad[i] = new BBFullScreenQuad();
         m_pFullScreenQuad[i]->init();
@@ -302,6 +302,48 @@ void BBScene::deferredRendering1_3()
     m_pFullScreenQuad[2]->render(m_pCamera);
 }
 
+void BBScene::deferredRendering1_4()
+{
+    m_pCamera->switchTo3D();
+    m_pCamera->update(m_fUpdateRate);
+
+    writeShadowMap();
+
+    // GBuffer pass
+    m_pFBO[0]->bind();
+
+    m_pSkyBox->render(m_pCamera);
+    m_pRenderQueue->render();
+    for (QList<BBGameObject*>::Iterator itr = m_OtherGameObjects.begin(); itr != m_OtherGameObjects.end(); itr++)
+    {
+        if ((*itr)->getClassName() == BB_CLASSNAME_SPHFLUID)
+        {
+            ((BBSPHFluidSystem*)(*itr))->render(m_pCamera);
+        }
+        else if ((*itr)->getClassName() == BB_CLASSNAME_CLOTH)
+        {
+            ((BBCloth*)(*itr))->render(m_pCamera);
+        }
+    }
+
+    m_pFBO[0]->unbind();
+
+    // common pass
+    m_pFBO[1]->bind();
+    m_pFullScreenQuad[0]->render(m_pCamera);
+    m_pFBO[1]->unbind();
+
+    m_pFBO[2]->bind();
+    m_pFullScreenQuad[1]->render(m_pCamera);
+    m_pFBO[2]->unbind();
+
+    m_pFBO[3]->bind();
+    m_pFullScreenQuad[2]->render(m_pCamera);
+    m_pFBO[3]->unbind();
+
+    m_pFullScreenQuad[3]->render(m_pCamera);
+}
+
 void BBScene::deferredRendering2_1()
 {
     m_pCamera->switchTo3D();
@@ -338,7 +380,7 @@ void BBScene::resize(float width, float height)
 
 //    m_pTiledFullScreenQuad->setTiledAABB(width, height);
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < FULL_SCREEN_QUAD_COUNT; i++)
     {
         if (!m_pFBO[i])
             BB_SAFE_DELETE(m_pFBO[i]);
