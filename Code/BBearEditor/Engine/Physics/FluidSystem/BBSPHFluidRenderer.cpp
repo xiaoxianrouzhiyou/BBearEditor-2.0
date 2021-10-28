@@ -75,7 +75,7 @@ void BBSPHFluidRenderer::switchSSF(bool bEnable)
     BBScene *pScene = BBSceneManager::getScene();
     if (bEnable)
     {
-        pScene->setRenderingFunc(&BBScene::deferredRendering1_3);
+        pScene->setRenderingFunc(&BBScene::deferredRendering1_4);
 
         setCurrentMaterial(getExtraMaterial(m_nSSFGBufferMaterialIndex));
 
@@ -87,6 +87,9 @@ void BBSPHFluidRenderer::switchSSF(bool bEnable)
 
         BBFullScreenQuad *pFullScreenQuad2 = pScene->getFullScreenQuad(2);
         pFullScreenQuad2->setCurrentMaterial(m_pScreenQuadNormalMaterial);
+
+        BBFullScreenQuad *pFullScreenQuad3 = pScene->getFullScreenQuad(3);
+        pFullScreenQuad3->setCurrentMaterial(m_pScreenQuadShadingMaterial);
     }
     else
     {
@@ -149,4 +152,13 @@ void BBSPHFluidRenderer::initSSFMaterial()
                                       BB_PATH_RESOURCE_SHADER(Physics/FluidSystem/FullScreenQuad.vert),
                                       BB_PATH_RESOURCE_SHADER(Physics/FluidSystem/SSF_FS_3_Screen_Normal.frag));
     m_pScreenQuadNormalMaterial->setSampler2D("DepthMap", pScene->getColorFBO(2, 0));
+
+    // Shading pass
+    m_pScreenQuadShadingMaterial = new BBMaterial();
+    m_pScreenQuadShadingMaterial->init("SSF_4_Screen_Shading",
+                                       BB_PATH_RESOURCE_SHADER(Physics/FluidSystem/FullScreenQuad.vert),
+                                       BB_PATH_RESOURCE_SHADER(Physics/FluidSystem/SSF_FS_4_Screen_Shading.frag));
+    m_pScreenQuadShadingMaterial->setSampler2D("DepthMap", pScene->getColorFBO(2, 0));
+    m_pScreenQuadShadingMaterial->setSampler2D("ThicknessMap", pScene->getColorFBO(2, 1));
+    m_pScreenQuadShadingMaterial->setSampler2D("NormalMap", pScene->getColorFBO(3, 0));
 }

@@ -1,4 +1,5 @@
 #version 430 core
+#extension GL_NV_shadow_samplers_cube : enable
 
 in vec2 v2f_texcoords;
 
@@ -74,7 +75,7 @@ void main()
     vec3 fresnel = computeFresnel(WaterF0, max(dot(N, V), 0.0));
 
     // world space
-    vec3 reflected = normalize(mat3(inverse(BBViewMatrix) * reflect(-V, N)));   
+    vec3 reflected = normalize(mat3(inverse(BBViewMatrix)) * reflect(-V, N));   
     vec3 reflected_sky = textureCube(BBSkyBox, reflected).rgb;
 
     // refraction
