@@ -22,7 +22,7 @@ QVector2D lerp(const QVector2D &a, const QVector2D &b, const QVector2D &c, float
 }
 
 
-float TrilinearInterpolate(float c[2][2][2], float u, float v, float w)
+float trilinearInterpolate(float c[2][2][2], float u, float v, float w)
 {
     float sum;
     for (int i = 0; i < 2; i++)
