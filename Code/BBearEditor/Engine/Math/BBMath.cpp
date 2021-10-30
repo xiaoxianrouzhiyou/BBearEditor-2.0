@@ -22,6 +22,26 @@ QVector2D lerp(const QVector2D &a, const QVector2D &b, const QVector2D &c, float
 }
 
 
+float TrilinearInterpolate(float c[2][2][2], float u, float v, float w)
+{
+    float sum;
+    for (int i = 0; i < 2; i++)
+    {
+        for (int j = 0; j < 2; j++)
+        {
+            for (int k = 0; k < 2; k++)
+            {
+                sum += (i * u + (1 - i) * (1 - u)) *
+                       (j * v + (1 - j) * (1 - v)) *
+                       (k * w + (1 - k) * (1 - w)) * c[i][j][k];
+            }
+        }
+    }
+
+    return sum;
+}
+
+
 /**
  * @brief reflect
  * @param L                     incident light
