@@ -82,6 +82,7 @@ Due to limited time, the functions I listed above may not be as cool as the word
 - [ ] Bézier curve
 - [ ] Perlin noise
 - [ ] Improve Volume Rendering
+- [ ] More constraints for cloth
 - [ ] Physics Simulation
 - [ ] Improve PBR
 - [ ] Animation System
