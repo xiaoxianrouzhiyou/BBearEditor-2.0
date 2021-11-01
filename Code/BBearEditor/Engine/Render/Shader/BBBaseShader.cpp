@@ -280,6 +280,10 @@ BBUniformUpdater* BBBaseShader::initUniformSampler2D(GLint location, const char 
     {
         updateUniformFunc = &BBUniformUpdater::updateBRDFLUTTexture;
     }
+    else if (strcmp(pUniformName, LOCATION_SKYBOX_BACKGROUND) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updateSkyBoxBackground;
+    }
     else
     {
         pProperty = new BBSampler2DMaterialProperty(pUniformName, nSlotIndex);

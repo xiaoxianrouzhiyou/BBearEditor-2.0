@@ -47,6 +47,7 @@
 #define LOCATION_CAMERA_DEPTH_TEXTURE "BBCameraDepthTexture"
 #define LOCATION_SHADOWMAP "BBShadowMap"
 #define LOCATION_SKYBOX_MAP "BBSkyBox"
+#define LOCATION_SKYBOX_BACKGROUND "BBSkyBoxBackground"
 #define LOCATION_IRRADIANCE_MAP "BBIrradianceMap"
 #define LOCATION_PREFILTER_MAP_MIPMAP "BBPrefilterMapMipmap"
 #define LOCATION_SKYBOX_EQUIRECTANGULAR_MAP "BBSkyBoxEquirectangularMap"

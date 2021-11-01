@@ -70,6 +70,8 @@ public:
     GLuint getColorFBO(int nFBOIndex, int nAttachmentIndex = 0);
     GLuint getDepthFBO(int nFBOIndex);
 
+    GLuint getCommonSkyBoxCube2D();
+
     /* SkyBox */
     void setSkyBox(const QString &path);
     void changeSkyBoxAlgorithm(int nAlgorithmIndex);
@@ -125,12 +127,15 @@ private:
     void writeSkyBoxCubeMap();
     void writeViewSpaceFBO(int nIndex);
     void writeShadowMap();
+    void renderAndWriteCommonSkyBoxCube2D();
 
     BBFrameBufferObject *m_pFixedSizeFBO;
     BBFrameBufferObject *m_pFBO[FULL_SCREEN_QUAD_COUNT];
 
     GLuint m_ShadowMap;
     BBFrameBufferObject *m_pShadowMapFBO;
+    // Getting 2D sky box texture from view space
+    BBFrameBufferObject *m_pCommonSkyBoxCube2DFBO;
 
 private:
     BBOpenGLWidget *m_pOpenGLWidget;

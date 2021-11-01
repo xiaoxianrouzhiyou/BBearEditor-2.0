@@ -53,6 +53,7 @@ BBScene::BBScene(BBOpenGLWidget *pOpenGLWidget)
     m_pFixedSizeFBO = nullptr;
     m_ShadowMap = 0;
     m_pShadowMapFBO = nullptr;
+    m_pCommonSkyBoxCube2DFBO = nullptr;
 }
 
 BBScene::~BBScene()
@@ -81,6 +82,7 @@ BBScene::~BBScene()
     }
     glDeleteTextures(1, &m_ShadowMap);
     BB_SAFE_DELETE(m_pShadowMapFBO);
+    BB_SAFE_DELETE(m_pCommonSkyBoxCube2DFBO);
 }
 
 void BBScene::init()
@@ -129,7 +131,7 @@ void BBScene::defaultRendering()
     writeViewSpaceFBO(0);
     writeShadowMap();
 
-    m_pSkyBox->render(m_pCamera);
+    renderAndWriteCommonSkyBoxCube2D();
     m_pHorizontalPlane->render(m_pCamera);
 
     // BBGameObject
@@ -209,7 +211,7 @@ void BBScene::deferredRendering1_1()
 
     m_pFBO[0]->bind();
 
-    m_pSkyBox->render(m_pCamera);
+    renderAndWriteCommonSkyBoxCube2D();
     // BBGameObject
     m_pRenderQueue->render();
     for (QList<BBGameObject*>::Iterator itr = m_OtherGameObjects.begin(); itr != m_OtherGameObjects.end(); itr++)
@@ -239,7 +241,7 @@ void BBScene::deferredRendering1_2()
     // GBuffer pass
     m_pFBO[0]->bind();
 
-    m_pSkyBox->render(m_pCamera);
+    renderAndWriteCommonSkyBoxCube2D();
     m_pRenderQueue->render();
     for (QList<BBGameObject*>::Iterator itr = m_OtherGameObjects.begin(); itr != m_OtherGameObjects.end(); itr++)
     {
@@ -274,7 +276,7 @@ void BBScene::deferredRendering1_3()
     // GBuffer pass
     m_pFBO[0]->bind();
 
-    m_pSkyBox->render(m_pCamera);
+    renderAndWriteCommonSkyBoxCube2D();
     m_pRenderQueue->render();
     for (QList<BBGameObject*>::Iterator itr = m_OtherGameObjects.begin(); itr != m_OtherGameObjects.end(); itr++)
     {
@@ -312,7 +314,7 @@ void BBScene::deferredRendering1_4()
     // GBuffer pass
     m_pFBO[0]->bind();
 
-    m_pSkyBox->render(m_pCamera);
+    renderAndWriteCommonSkyBoxCube2D();
     m_pRenderQueue->render();
     for (QList<BBGameObject*>::Iterator itr = m_OtherGameObjects.begin(); itr != m_OtherGameObjects.end(); itr++)
     {
@@ -352,7 +354,7 @@ void BBScene::deferredRendering2_1()
     writeShadowMap();
 
     m_pFBO[0]->bind();
-    m_pSkyBox->render(m_pCamera);
+    renderAndWriteCommonSkyBoxCube2D();
     // switch material
     for (QList<BBGameObject*>::Iterator itr = m_Models.begin(); itr != m_Models.end(); itr++)
     {
@@ -407,6 +409,12 @@ void BBScene::resize(float width, float height)
     m_pShadowMapFBO->attachColorBuffer(FBO_COLOR_BUFFER_NAME(0), GL_COLOR_ATTACHMENT0, width, height, GL_RGBA32F);
     m_pShadowMapFBO->finish();
 
+    if (m_pCommonSkyBoxCube2DFBO)
+        BB_SAFE_DELETE(m_pCommonSkyBoxCube2DFBO);
+    m_pCommonSkyBoxCube2DFBO = new BBFrameBufferObject();
+    m_pCommonSkyBoxCube2DFBO->attachColorBuffer(FBO_COLOR_BUFFER_NAME(0), GL_COLOR_ATTACHMENT0, width, height, GL_RGBA32F);
+    m_pCommonSkyBoxCube2DFBO->finish();
+
     if (m_ShadowMap > 0)
     {
         glDeleteTextures(1, &m_ShadowMap);
@@ -423,6 +431,11 @@ GLuint BBScene::getColorFBO(int nFBOIndex, int nAttachmentIndex)
 GLuint BBScene::getDepthFBO(int nFBOIndex)
 {
     return m_pFBO[nFBOIndex]->getBuffer(FBO_DEPTH_BUFFER_NAME);
+}
+
+GLuint BBScene::getCommonSkyBoxCube2D()
+{
+    return m_pCommonSkyBoxCube2DFBO->getBuffer(FBO_COLOR_BUFFER_NAME(0));
 }
 
 void BBScene::setSkyBox(const QString &path)
@@ -920,3 +933,12 @@ void BBScene::writeShadowMap()
     BBDrawCall::switchRenderingSettings(0);
 }
 
+void BBScene::renderAndWriteCommonSkyBoxCube2D()
+{
+    // Write FBO
+    m_pCommonSkyBoxCube2DFBO->bind();
+    m_pSkyBox->render(m_pCamera);
+    m_pCommonSkyBoxCube2DFBO->unbind();
+    // Normally render
+    m_pSkyBox->render(m_pCamera);
+}

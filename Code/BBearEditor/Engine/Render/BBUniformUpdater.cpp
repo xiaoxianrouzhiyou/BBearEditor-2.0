@@ -164,6 +164,13 @@ void BBUniformUpdater::updateSkyBoxCube(GLint location, void *pCamera, void *pPr
     glUniform1i(location, 6);
 }
 
+void BBUniformUpdater::updateSkyBoxBackground(GLint location, void *pCamera, void *pPropertyValue)
+{
+    glActiveTexture(GL_TEXTURE7);
+    glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getCommonSkyBoxCube2D());
+    glUniform1i(location, 7);
+}
+
 void BBUniformUpdater::updateFloat(GLint location, void *pCamera, void *pPropertyValue)
 {
     BBFloatMaterialProperty *pProperty = (BBFloatMaterialProperty*)pPropertyValue;

@@ -11,7 +11,7 @@ uniform vec4 BBLightPosition;
 uniform vec4 BBLightColor;
 uniform mat4 BBViewMatrix;
 uniform samplerCube BBSkyBox;
-uniform sampler2D BBCameraColorTexture;
+uniform sampler2D BBSkyBoxBackground;
 
 uniform sampler2D DepthMap;
 uniform sampler2D ThicknessMap;
@@ -79,11 +79,13 @@ void main()
     vec3 reflected_sky = textureCube(BBSkyBox, reflected).rgb;
 
     // refraction
-    vec3 refracted = texture(BBCameraColorTexture, v2f_texcoords - N.xy * thickness / far * RefractedScale).xyz;
+    vec3 refracted = texture(BBSkyBoxBackground, v2f_texcoords - N.xy * thickness / far * RefractedScale).xyz;
 
     // transparency
     float transparency = exp(-thickness * WaterK);
     reflected = mix(WaterRefractedColor, refracted, transparency);
 
     FragColor = vec4(mix(refracted, reflected_sky, fresnel), 1.0);
+
+    // FragColor = vec4(refracted, 1.0);
 }
