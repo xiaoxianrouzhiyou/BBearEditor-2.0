@@ -93,14 +93,14 @@ void BBUniformUpdater::updateColorFBO(GLint location, void *pCamera, void *pProp
 
 void BBUniformUpdater::updateDepthFBO(GLint location, void *pCamera, void *pPropertyValue)
 {
-    glActiveTexture(GL_TEXTURE0 + 1);
+    glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getDepthFBO(0));
     glUniform1i(location, 1);
 }
 
 void BBUniformUpdater::updateShadowMap(GLint location, void *pCamera, void *pPropertyValue)
 {
-    glActiveTexture(GL_TEXTURE0 + 2);
+    glActiveTexture(GL_TEXTURE2);
     // Traditionally, the depth is written in the depth buffer
     // glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getDepthFBO(1));
     // The depth and the square of the depth are recorded in the color buffer
@@ -138,23 +138,30 @@ void BBUniformUpdater::updateSphericalHarmonicLightingCoefficients(GLint locatio
 
 void BBUniformUpdater::updateIrradianceMap(GLint location, void *pCamera, void *pPropertyValue)
 {
-    glActiveTexture(GL_TEXTURE0 + 3);
+    glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_CUBE_MAP, BBSceneManager::getScene()->getSkyBox()->getIrradianceMap());
     glUniform1i(location, 3);
 }
 
 void BBUniformUpdater::updatePrefilterMapMipmap(GLint location, void *pCamera, void *pPropertyValue)
 {
-    glActiveTexture(GL_TEXTURE0 + 4);
+    glActiveTexture(GL_TEXTURE4);
     glBindTexture(GL_TEXTURE_CUBE_MAP, BBSceneManager::getScene()->getSkyBox()->getPrefilterMapMipmap());
     glUniform1i(location, 4);
 }
 
 void BBUniformUpdater::updateBRDFLUTTexture(GLint location, void *pCamera, void *pPropertyValue)
 {
-    glActiveTexture(GL_TEXTURE0 + 5);
+    glActiveTexture(GL_TEXTURE5);
     glBindTexture(GL_TEXTURE_2D, BBSceneManager::getScene()->getSkyBox()->getBRDFLUTTexture());
     glUniform1i(location, 5);
+}
+
+void BBUniformUpdater::updateSkyBoxCube(GLint location, void *pCamera, void *pPropertyValue)
+{
+    glActiveTexture(GL_TEXTURE6);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, BBSceneManager::getScene()->getSkyBox()->getCommonSkyBoxCube());
+    glUniform1i(location, 6);
 }
 
 void BBUniformUpdater::updateFloat(GLint location, void *pCamera, void *pPropertyValue)

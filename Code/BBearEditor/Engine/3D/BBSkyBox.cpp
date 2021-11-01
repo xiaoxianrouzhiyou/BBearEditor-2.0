@@ -153,16 +153,17 @@ void BBSkyBox::changeAlgorithm(int nIndex)
 
 void BBSkyBox::initFrom6Map()
 {
-    m_pCurrentMaterial->init("SkyBox_Common", BB_PATH_RESOURCE_SHADER(SkyBox/Common.vert), BB_PATH_RESOURCE_SHADER(SkyBox/Common.frag));
-
     QString paths[6] = {m_SkyBoxFilePath + "right",
                         m_SkyBoxFilePath + "left",
                         m_SkyBoxFilePath + "bottom",
                         m_SkyBoxFilePath + "top",
                         m_SkyBoxFilePath + "back",
                         m_SkyBoxFilePath + "front"};
-    BBTexture texture;
-    m_pCurrentMaterial->setSamplerCube(LOCATION_SKYBOX_MAP, texture.createTextureCube(paths), paths);
+    m_CommonSkyBoxCube = BBTexture().createTextureCube(paths);
+
+
+    m_pCurrentMaterial->init("SkyBox_Common", BB_PATH_RESOURCE_SHADER(SkyBox/Common.vert), BB_PATH_RESOURCE_SHADER(SkyBox/Common.frag));
+
     m_pCurrentMaterial->setZTestState(false);
 }
 

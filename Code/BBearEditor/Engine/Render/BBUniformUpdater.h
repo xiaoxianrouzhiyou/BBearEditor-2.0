@@ -42,6 +42,7 @@ public:
     void updateIrradianceMap(GLint location, void *pCamera, void *pPropertyValue);
     void updatePrefilterMapMipmap(GLint location, void *pCamera, void *pPropertyValue);
     void updateBRDFLUTTexture(GLint location, void *pCamera, void *pPropertyValue);
+    void updateSkyBoxCube(GLint location, void *pCamera, void *pPropertyValue);
 
     void updateFloat(GLint location, void *pCamera, void *pPropertyValue);
     void updateFloatArray(GLint location, void *pCamera, void *pPropertyValue);

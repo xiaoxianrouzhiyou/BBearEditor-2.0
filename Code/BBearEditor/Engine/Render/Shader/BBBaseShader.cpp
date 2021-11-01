@@ -304,11 +304,15 @@ BBUniformUpdater* BBBaseShader::initUniformSamplerCube(GLint location, const cha
 {
     BBUpdateUniformFunc updateUniformFunc = &BBUniformUpdater::updateSamplerCube;
     BBSamplerCubeMaterialProperty *pProperty = nullptr;
-    if (strcmp(pUniformName, LOCATION_IRRADIANCE_MAP) == 0)
+    if (strcmp(pUniformName, LOCATION_SKYBOX_MAP) == 0)
+    {
+        updateUniformFunc = &BBUniformUpdater::updateSkyBoxCube;
+    }
+    else if (strcmp(pUniformName, LOCATION_IRRADIANCE_MAP) == 0)
     {
         updateUniformFunc = &BBUniformUpdater::updateIrradianceMap;
     }
-    if (strcmp(pUniformName, LOCATION_PREFILTER_MAP_MIPMAP) == 0)
+    else if (strcmp(pUniformName, LOCATION_PREFILTER_MAP_MIPMAP) == 0)
     {
         updateUniformFunc = &BBUniformUpdater::updatePrefilterMapMipmap;
     }

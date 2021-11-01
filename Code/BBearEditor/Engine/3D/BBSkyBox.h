@@ -24,6 +24,7 @@ public:
     void changeAlgorithm(int nIndex);
 
     QString getSkyBoxFilePath() { return m_SkyBoxFilePath; }
+    GLuint getCommonSkyBoxCube() { return m_CommonSkyBoxCube; }
     GLuint getIrradianceMap() { return m_IrradianceMap; }
     GLuint getPrefilterMapMipmap() { return m_PrefilterMapMipmap; }
     GLuint getBRDFLUTTexture() { return m_BRDFLUTTexture; }
@@ -44,6 +45,7 @@ private:
 
     QString m_SkyBoxFilePath;
 
+    GLuint m_CommonSkyBoxCube;
     GLuint m_EnvironmentMap;
     GLuint m_IrradianceMap;
     GLuint m_PrefilterMapMipmap;
