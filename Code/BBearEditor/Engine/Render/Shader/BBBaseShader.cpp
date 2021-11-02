@@ -99,7 +99,9 @@ void BBBaseShader::initUniforms()
     // 3 : Irradiance Map
     // 4 : Prefilter Map Mipmap
     // 5 : BRDF LUT Texture
-    int nSlotIndex = 6;
+    // 6 : SkyBox Cube
+    // 7 : SkyBox Background
+    int nSlotIndex = 8;
     for (int i = 0; i < count; i++)
     {
         GLsizei length = 0;

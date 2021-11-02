@@ -86,6 +86,4 @@ void main()
     reflected = mix(WaterRefractedColor, refracted, transparency);
 
     FragColor = vec4(mix(refracted, reflected_sky, fresnel), 1.0);
-
-    // FragColor = vec4(refracted, 1.0);
 }
