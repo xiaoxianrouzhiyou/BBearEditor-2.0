@@ -17,6 +17,10 @@ float BBPerlinNoise::getNoise(const QVector3D &p)
     float u = p.x() - floor(p.x());
     float v = p.y() - floor(p.y());
     float w = p.z() - floor(p.z());
+    // obvious grid features, use a hermite cubic to round off the interpolation
+    u = u * u * (3 - 2 * u);
+    v = v * v * (3 - 2 * v);
+    w = w * w * (3 - 2 * w);
     int i = floor(p.x());
     int j = floor(p.y());
     int k = floor(p.z());
