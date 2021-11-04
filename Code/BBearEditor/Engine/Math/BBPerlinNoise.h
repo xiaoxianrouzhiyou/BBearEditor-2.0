@@ -9,7 +9,8 @@ class BBPerlinNoise
 public:
     BBPerlinNoise();
 
-    float getNoise(const QVector3D &p);
+    static float getNoise(const QVector3D &p, float fScale = 1.0f);
+    static float generateTurbulence(const QVector3D &p, int nDepth = 7);
 
 private:
     static float* generateRandFloat();

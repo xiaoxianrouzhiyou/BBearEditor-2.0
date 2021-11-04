@@ -12,7 +12,7 @@ BBPerlinNoise::BBPerlinNoise()
 
 }
 
-float BBPerlinNoise::getNoise(const QVector3D &p)
+float BBPerlinNoise::getNoise(const QVector3D &p, float fScale)
 {
     float u = p.x() - floor(p.x());
     float v = p.y() - floor(p.y());
@@ -36,7 +36,21 @@ float BBPerlinNoise::getNoise(const QVector3D &p)
         }
     }
 
-    return trilinearInterpolate(c, u, v, w);
+    return trilinearInterpolate(c, u, v, w) * fScale;
+}
+
+float BBPerlinNoise::generateTurbulence(const QVector3D &p, int nDepth)
+{
+    float sum = 0.0f;
+    QVector3D tmp = p;
+    float w = 1.0f;
+    for (int i = 0; i < nDepth; i++)
+    {
+        sum += w * getNoise(tmp);
+        w *= 0.5f;
+        tmp *= 2.0f;
+    }
+    return fabs(sum);
 }
 
 float* BBPerlinNoise::generateRandFloat()

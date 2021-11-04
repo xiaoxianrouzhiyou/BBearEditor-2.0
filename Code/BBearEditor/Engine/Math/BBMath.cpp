@@ -24,6 +24,9 @@ QVector2D lerp(const QVector2D &a, const QVector2D &b, const QVector2D &c, float
 
 float trilinearInterpolate(float c[2][2][2], float u, float v, float w)
 {
+    float uu = u * u * (3 - 2 * u);
+    float vv = v * v * (3 - 2 * v);
+    float ww = w * w * (3 - 2 * w);
     float sum;
     for (int i = 0; i < 2; i++)
     {
@@ -31,9 +34,10 @@ float trilinearInterpolate(float c[2][2][2], float u, float v, float w)
         {
             for (int k = 0; k < 2; k++)
             {
-                sum += (i * u + (1 - i) * (1 - u)) *
-                       (j * v + (1 - j) * (1 - v)) *
-                       (k * w + (1 - k) * (1 - w)) * c[i][j][k];
+                QVector3D weight(u - i, v - j, w - k);
+                sum += (i * uu + (1 - i) * (1 - uu)) *
+                       (j * vv + (1 - j) * (1 - vv)) *
+                       (k * ww + (1 - k) * (1 - ww));// * QVector3D::dotProduct(c[i][j][k], weight);
             }
         }
     }
