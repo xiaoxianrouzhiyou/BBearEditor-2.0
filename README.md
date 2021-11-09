@@ -116,9 +116,11 @@ Make do with it. Please forgive me for not having art resources...
 * Main interface  
 ![V%BRYKJB E9I0JK(YGZ7ZMM](https://user-images.githubusercontent.com/31690363/130344475-acf28e7e-d0a0-4c86-860f-ce25d081b559.png)
 ## References
-* [lingqi/GAMES101](https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html)
-* [lingqi/GAMES202](https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html)
-* [JoeyDeVries/LearnOpenGL](https://learnopengl.com/)
-* [AngelMonica126/GraphicAlgorithm](https://github.com/AngelMonica126/GraphicAlgorithm)  
-* [Peter Shirley/Ray Tracing: The Next Week](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20The%20Next%20Week.pdf)  
+[1][lingqi/GAMES101](https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html)  
+[2][lingqi/GAMES202](https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html)  
+[3][JoeyDeVries/LearnOpenGL](https://learnopengl.com/)  
+[4][AngelMonica126/GraphicAlgorithm](https://github.com/AngelMonica126/GraphicAlgorithm)  
+[5][Peter Shirley/Ray Tracing in a Weekend](http://www.realtimerendering.com/raytracing/Ray%20Tracing%20in%20a%20Weekend.pdf)  
+[6][Peter Shirley/Ray Tracing: The Next Week](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20The%20Next%20Week.pdf)  
+[7][Peter Shirley/Ray Tracing: The Rest of Your Life](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20the%20Rest%20of%20Your%20Life.pdf)  
 ...
