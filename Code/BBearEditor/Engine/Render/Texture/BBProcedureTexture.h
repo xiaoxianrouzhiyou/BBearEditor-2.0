@@ -11,7 +11,7 @@ public:
 
     GLuint create0(int nSize);
     GLuint create3D0(int nWidth, int nHeight, int nDepth);
-    GLuint createPerlinNoise(const QVector3D &p);
+    GLuint createPerlinNoise(int nSize);
 };
 
 #endif // BBPROCEDURETEXTURE_H

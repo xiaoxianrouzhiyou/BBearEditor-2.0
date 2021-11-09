@@ -1,4 +1,5 @@
 #include "BBProcedureTexture.h"
+#include "Math/BBPerlinNoise.h"
 
 
 BBProcedureTexture::BBProcedureTexture()
@@ -19,7 +20,7 @@ GLuint BBProcedureTexture::create0(int nSize)
         for (int x = 0; x < nSize; x++)
         {
             int nCurrentPixelOffset = (x + y * nSize) * 4;
-            pImageData[nCurrentPixelOffset] = 255;
+            pImageData[nCurrentPixelOffset + 0] = 255;
             pImageData[nCurrentPixelOffset + 1] = 255;
             pImageData[nCurrentPixelOffset + 2] = 255;
             float fDeltaX = (float)x - fCenterX;
@@ -69,7 +70,22 @@ GLuint BBProcedureTexture::create3D0(int nWidth, int nHeight, int nDepth)
     return texture;
 }
 
-GLuint BBProcedureTexture::createPerlinNoise(const QVector3D &p)
+GLuint BBProcedureTexture::createPerlinNoise(int nSize)
 {
-
+    unsigned char *pImageData = new unsigned char[nSize * nSize * 4];
+    for (int y = 0; y < nSize; y++)
+    {
+        for (int x = 0; x < nSize; x++)
+        {
+            int nCurrentPixelOffset = (x + y * nSize) * 4;
+            float fNoise = BBPerlinNoise::getNoise(QVector3D(x, y, 0));
+            pImageData[nCurrentPixelOffset + 0] = fNoise;
+            pImageData[nCurrentPixelOffset + 1] = fNoise;
+            pImageData[nCurrentPixelOffset + 2] = fNoise;
+            pImageData[nCurrentPixelOffset + 3] = 1.0f;
+        }
+    }
+    GLuint texture = createTexture2D(pImageData, nSize, nSize, GL_RGBA);
+    BB_SAFE_DELETE_ARRAY(pImageData);
+    return texture;
 }
