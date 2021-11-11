@@ -10,7 +10,8 @@ uniform sampler2D AlbedoTex;
 uniform sampler2D NormalTex;
 uniform sampler2D PositionTex;
 uniform sampler2D WeatherTex;
-uniform sampler3D NoiseTex;
+uniform sampler2D PerlinNoiseTex2D;
+uniform sampler3D PerlinNoiseTex3D;
 
 uniform vec4 BBCameraPosition;
 uniform sampler2D BBCameraDepthTexture;

@@ -11,7 +11,7 @@ public:
 
     GLuint create0(int nSize);
     GLuint create3D0(int nWidth, int nHeight, int nDepth);
-    GLuint createPerlinNoise(int nSize);
+    GLuint createPerlinNoiseTexture2D(int nSize);
 };
 
 #endif // BBPROCEDURETEXTURE_H
