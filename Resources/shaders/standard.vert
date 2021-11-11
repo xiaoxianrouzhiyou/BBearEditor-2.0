@@ -5,6 +5,7 @@ attribute vec4 BBNormal;
 
 varying vec4 V_world_pos;
 varying vec4 V_Color;
+varying vec4 V_Texcoords;
 varying vec4 V_Normal;
 varying vec4 V_world_pos_light_space;
 
@@ -19,6 +20,7 @@ void main()
 {
     V_world_pos = BBModelMatrix * BBPosition;
     V_Color = BBColor;
+    V_Texcoords = BBTexcoord;
     V_Normal.xyz = mat3(transpose(inverse(BBModelMatrix))) * BBNormal.xyz;
     V_Normal.a = 1.0;
     V_Normal = normalize(V_Normal);

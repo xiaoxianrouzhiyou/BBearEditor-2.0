@@ -9,6 +9,7 @@
 #include "Render/BBDrawCall.h"
 #include "Render/Texture/BBTexture.h"
 #include "Math/BBMath.h"
+#include "Render/Texture/BBProcedureTexture.h"
 
 
 BBMesh::BBMesh()
@@ -52,6 +53,10 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
     m_pCurrentMaterial->setVector4(LOCATION_LIGHT_COLOR, pLightColor);
     BBTexture texture;
     m_pCurrentMaterial->setSampler2D(LOCATION_TEXTURE(0), texture.createTexture2D());
+
+    // test perlin noise
+    m_pCurrentMaterial->setSampler2D("PerlinNoiseTex2D", BBProcedureTexture().createPerlinNoiseTexture2D(128));
+
     BBRenderableObject::init();
 
     BBDrawCall *pDrawCall = new BBDrawCall;
