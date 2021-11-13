@@ -63,6 +63,7 @@ Here lists the features that already exists in my engine. (Some contents need to
   - Bounding Box
   - Frustum
   - Marching Cubes
+  - Perlin Noise
 * 3D FBX Skeletal Animation (version 1.0, It hasn't been reconstructed yet ~ T.T)
 * Asset Manager
   - Asset Import & Management
