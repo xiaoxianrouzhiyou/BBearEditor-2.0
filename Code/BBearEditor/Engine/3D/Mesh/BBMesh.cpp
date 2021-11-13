@@ -55,7 +55,7 @@ void BBMesh::init(const QString &path, BBBoundingBox3D *&pOutBoundingBox)
     m_pCurrentMaterial->setSampler2D(LOCATION_TEXTURE(0), texture.createTexture2D());
 
     // test perlin noise
-    m_pCurrentMaterial->setSampler2D("PerlinNoiseTex2D", BBProcedureTexture().createPerlinNoiseTexture2D(128));
+    m_pCurrentMaterial->setSampler2D("PerlinNoiseTex2D", BBProcedureTexture().createPerlinNoiseTexture2D(512, 0.0625f));
 
     BBRenderableObject::init();
 

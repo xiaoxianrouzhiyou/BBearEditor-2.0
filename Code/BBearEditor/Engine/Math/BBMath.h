@@ -13,7 +13,7 @@ float lerp(float a, float b, float f);
 QVector2D lerp(const QVector2D &a, const QVector2D &b, float f);
 QVector2D lerp(const QVector2D &a, const QVector2D &b, const QVector2D &c, float u, float v);
 
-float trilinearInterpolate(float c[2][2][2], float u, float v, float w);
+float trilinearInterpolate(QVector3D c[2][2][2], float u, float v, float w);
 
 QVector3D reflect(const QVector3D &L, const QVector3D &N);
 bool refract(const QVector3D &L, const QVector3D &N, float fRefractivity, QVector3D &refracted);

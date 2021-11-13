@@ -70,7 +70,7 @@ GLuint BBProcedureTexture::create3D0(int nWidth, int nHeight, int nDepth)
     return texture;
 }
 
-GLuint BBProcedureTexture::createPerlinNoiseTexture2D(int nSize)
+GLuint BBProcedureTexture::createPerlinNoiseTexture2D(int nSize, float fScale)
 {
     unsigned char *pImageData = new unsigned char[nSize * nSize * 4];
     for (int y = 0; y < nSize; y++)
@@ -78,7 +78,7 @@ GLuint BBProcedureTexture::createPerlinNoiseTexture2D(int nSize)
         for (int x = 0; x < nSize; x++)
         {
             int nCurrentPixelOffset = (x + y * nSize) * 4;
-            float fNoise = BBPerlinNoise::getNoise(QVector3D(x, y, 0));
+            float fNoise = BBPerlinNoise::getNoise(QVector3D(x, y, 0) * fScale);
             // 0~1 -> 0~255;
             fNoise *= 255.0f;
             pImageData[nCurrentPixelOffset + 0] = fNoise;
