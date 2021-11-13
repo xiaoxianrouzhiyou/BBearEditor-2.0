@@ -29,6 +29,7 @@ const float ColorOffset0 = 0.6;
 const float ColorOffset1 = 1.0;
 const float DarknessThreshold = 0.05; 
 const vec4 PhaseParams = vec4(0.72, 1.0, 0.5, 1.58);
+const vec4 NoiseWeights = vec4(-0.1, 30.0, -0.3, 1.0);
 
 vec3 g_box_size;
 vec3 g_box_center;
@@ -80,14 +81,19 @@ float remap(float origin_val, float origin_min, float origin_max, float new_min,
 
 float sampleDensity(vec3 ray_pos) 
 {
-    vec2 uv = (ray_pos.xz - g_box_center.xz + g_box_size.xz * 0.5f) / max(g_box_size.x, g_box_size.z);
+    vec3 noise_tex_uvw = ray_pos * 0.4;
+    // The disturbances in different directions are different
+    float noise_val = dot(texture(PerlinNoiseTex3D, noise_tex_uvw), normalize(NoiseWeights));
+
+    vec2 weather_tex_uv = (ray_pos.xz - g_box_center.xz + g_box_size.xz * 0.5f) / max(g_box_size.x, g_box_size.z);
     // Upper narrow and lower wide
-    float weather_val = texture(WeatherTex, uv).r;
+    float weather_val = texture(WeatherTex, weather_tex_uv).r;
+
     float h_percent = (ray_pos.y - BoundingBoxMin.y) / g_box_size.y;
     // As the height rises, the gradient gradually flattens from 1
     float h_gradient = clamp(remap(h_percent, 0.0, weather_val, 1.0, 0.0), 0.0, 1.0);
 
-    return h_gradient;
+    return noise_val * h_gradient;
 }
 
 vec3 transmit(vec3 ray_pos, vec3 L, float displacement)
