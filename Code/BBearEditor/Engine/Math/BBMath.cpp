@@ -58,7 +58,7 @@ float trilinearInterpolate(QVector3D c[2][2][2], float u, float v, float w)
             }
         }
     }
-    sum = sum * 0.5f + 0.5f;
+
     return sum;
 }
 

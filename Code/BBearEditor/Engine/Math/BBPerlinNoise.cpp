@@ -60,10 +60,16 @@ float BBPerlinNoise::getNoise(const QVector3D &p)
             }
         }
     }
-    return trilinearInterpolate(c, u, v, w);
+    return trilinearInterpolate(c, u, v, w) * 0.5f + 0.5f;
 }
 
-float BBPerlinNoise::generateTurbulence(const QVector3D &p, int nDepth)
+/**
+ * @brief BBPerlinNoise::generateTurbulence                 Used directly, turbulence gives a sort of camouflage netting appearance
+ * @param p
+ * @param nDepth
+ * @return
+ */
+float BBPerlinNoise::getTurbulenceNoise(const QVector3D &p, int nDepth)
 {
     float sum = 0.0f;
     QVector3D tmp = p;

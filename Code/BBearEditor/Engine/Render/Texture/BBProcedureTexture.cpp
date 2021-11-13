@@ -91,3 +91,26 @@ GLuint BBProcedureTexture::createPerlinNoiseTexture2D(int nSize, float fScale)
     BB_SAFE_DELETE_ARRAY(pImageData);
     return texture;
 }
+
+GLuint BBProcedureTexture::createCamouflagePerlinNoiseTexture2D(int nSize, float fScale)
+{
+    unsigned char *pImageData = new unsigned char[nSize * nSize * 4];
+    for (int y = 0; y < nSize; y++)
+    {
+        for (int x = 0; x < nSize; x++)
+        {
+            int nCurrentPixelOffset = (x + y * nSize) * 4;
+            float fNoise = BBPerlinNoise::getTurbulenceNoise(QVector3D(x, y, 0) * fScale);
+            fNoise =
+            // 0~1 -> 0~255;
+            fNoise *= 255.0f;
+            pImageData[nCurrentPixelOffset + 0] = fNoise;
+            pImageData[nCurrentPixelOffset + 1] = fNoise;
+            pImageData[nCurrentPixelOffset + 2] = fNoise;
+            pImageData[nCurrentPixelOffset + 3] = 255.0f;
+        }
+    }
+    GLuint texture = createTexture2D(pImageData, nSize, nSize, GL_RGBA);
+    BB_SAFE_DELETE_ARRAY(pImageData);
+    return texture;
+}
