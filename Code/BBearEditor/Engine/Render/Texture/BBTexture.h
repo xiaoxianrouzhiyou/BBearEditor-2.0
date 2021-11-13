@@ -17,6 +17,8 @@ public:
 
     GLuint createHDRTexture2D(const char *pFilePath);
 
+    GLuint createTexture3D(unsigned char *pData, int nWidth, int nHeight, int nDepth, GLenum eType = GL_RGB);
+
     GLuint createTextureCube(const QString paths[], GLenum eType = GL_RGBA);
 
 public:

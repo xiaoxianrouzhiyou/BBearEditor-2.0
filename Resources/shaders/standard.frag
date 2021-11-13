@@ -13,7 +13,9 @@ uniform vec4 BBCameraPosition;
 uniform vec4 BBCameraParameters;
 uniform sampler2D BBShadowMap;
 
+// test
 uniform sampler2D PerlinNoiseTex2D;
+uniform sampler3D PerlinNoiseTex3D;
 
 float Near = BBCameraParameters.z;
 float LightSize = 0.1;
@@ -200,5 +202,6 @@ void main(void)
     gl_FragColor = final_color * V_Color;
 
     // test perlin noise
-    gl_FragColor = texture2D(PerlinNoiseTex2D, V_Texcoords.xy);
+    // gl_FragColor = texture2D(PerlinNoiseTex2D, V_Texcoords.xy);
+    gl_FragColor = texture3D(PerlinNoiseTex3D, V_world_pos.xyz);
 }

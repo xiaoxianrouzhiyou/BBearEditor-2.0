@@ -38,8 +38,8 @@ GLuint BBProcedureTexture::create0(int nSize)
 
 GLuint BBProcedureTexture::create3D0(int nWidth, int nHeight, int nDepth)
 {
-    char *pData = new char[nWidth * nHeight * nDepth * 4];
-    char *pCurrent = pData;
+    unsigned char *pData = new unsigned char[nWidth * nHeight * nDepth * 4];
+    unsigned char *pCurrent = pData;
     for (int a = 0; a < nWidth; a++)
     {
         for (int b = 0; b < nHeight; b++)
@@ -54,18 +54,7 @@ GLuint BBProcedureTexture::create3D0(int nWidth, int nHeight, int nDepth)
         }
     }
 
-    GLuint texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_3D, texture);
-
-    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_REPEAT);// GL_CLAMP
-    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8_SNORM, nWidth, nHeight, nDepth, 0, GL_RGBA, GL_BYTE, pData);
-    glBindTexture(GL_TEXTURE_3D, 0);
+    GLuint texture = createTexture3D(pData, nWidth, nHeight, nDepth, GL_RGBA);
     BB_SAFE_DELETE(pData);
     return texture;
 }
@@ -87,6 +76,7 @@ GLuint BBProcedureTexture::createPerlinNoiseTexture2D(int nSize, float fScale)
             pImageData[nCurrentPixelOffset + 3] = 255.0f;
         }
     }
+
     GLuint texture = createTexture2D(pImageData, nSize, nSize, GL_RGBA);
     BB_SAFE_DELETE_ARRAY(pImageData);
     return texture;
@@ -110,7 +100,35 @@ GLuint BBProcedureTexture::createCamouflagePerlinNoiseTexture2D(int nSize, float
             pImageData[nCurrentPixelOffset + 3] = 255.0f;
         }
     }
+
     GLuint texture = createTexture2D(pImageData, nSize, nSize, GL_RGBA);
     BB_SAFE_DELETE_ARRAY(pImageData);
+    return texture;
+}
+
+GLuint BBProcedureTexture::createPerlinNoiseTexture3D(int nWidth, int nHeight, int nDepth, float fScale)
+{
+    unsigned char *pData = new unsigned char[nWidth * nHeight * nDepth * 4];
+    for (int z = 0; z < nDepth; z++)
+    {
+        for (int y = 0; y < nHeight; y++)
+        {
+            for (int x = 0; x < nWidth; x++)
+            {
+                int nCurrentPixelOffset = (x + y * nWidth + z * nWidth * nHeight) * 4;
+                float fNoise = BBPerlinNoise::getNoise(QVector3D(x, y, z) * fScale);
+
+                // 0~1 -> 0~255;
+                fNoise *= 255.0f;
+                pData[nCurrentPixelOffset + 0] = fNoise;
+                pData[nCurrentPixelOffset + 1] = fNoise;
+                pData[nCurrentPixelOffset + 2] = fNoise;
+                pData[nCurrentPixelOffset + 3] = 255.0f;
+            }
+        }
+    }
+
+    GLuint texture = createTexture3D(pData, nWidth, nHeight, nDepth, GL_RGBA);
+    BB_SAFE_DELETE(pData);
     return texture;
 }

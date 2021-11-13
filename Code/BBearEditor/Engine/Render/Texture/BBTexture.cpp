@@ -128,6 +128,24 @@ GLuint BBTexture::createHDRTexture2D(const char *pFilePath)
     return hdrTexture;
 }
 
+GLuint BBTexture::createTexture3D(unsigned char *pData, int nWidth, int nHeight, int nDepth, GLenum eType)
+{
+    GLuint texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_3D, texture);
+
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_REPEAT);// GL_CLAMP
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8_SNORM, nWidth, nHeight, nDepth, 0, eType, GL_UNSIGNED_BYTE, pData);
+    glBindTexture(GL_TEXTURE_3D, 0);
+
+    return texture;
+}
+
 GLuint BBTexture::createTextureCube(const QString paths[], GLenum eType)
 {
     GLuint texture = 0;
