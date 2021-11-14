@@ -62,6 +62,7 @@ void BBVolumetricCloud::setScreenQuadPass(BBScene *pScene)
     pMaterial->setSampler2D("WeatherTex", BBTexture().createTexture2D(BB_PATH_RESOURCE_TEXTURE(Noise/weather.png)));
     pMaterial->setSampler2D("PerlinNoiseTex2D", BBProcedureTexture().createPerlinNoiseTexture2D(32, 0.0625f));
     pMaterial->setSampler3D("PerlinNoiseTex3D", BBProcedureTexture().createPerlinNoiseTexture3D(32, 32, 32, 0.125f));
+    pMaterial->setSampler2D("DistortTex", BBTexture().createTexture2D(BB_PATH_RESOURCE_TEXTURE(Noise/dissolveTex1.jpg)));
 
     pFullScreenQuad->setCurrentMaterial(pMaterial);
 }

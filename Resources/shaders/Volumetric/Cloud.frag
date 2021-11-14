@@ -12,15 +12,16 @@ uniform sampler2D PositionTex;
 uniform sampler2D WeatherTex;
 uniform sampler2D PerlinNoiseTex2D;
 uniform sampler3D PerlinNoiseTex3D;
+uniform sampler2D DistortTex;
 
 uniform vec4 BBCameraPosition;
 uniform sampler2D BBCameraDepthTexture;
 uniform vec4 BBLightColor;
 uniform vec4 BBLightPosition;
-
+uniform vec4 BBTime;
 
 const vec3 BoundingBoxMin = vec3(-8, 0, -8);
-const vec3 BoundingBoxMax = vec3(8, 4, 8);
+const vec3 BoundingBoxMax = vec3(8, 2, 8);
 const int RayMarchingNum = 256;
 const int TransmitNum = 8;
 const vec3 Color0 = vec3(0.94, 0.97, 1.0);
@@ -30,6 +31,7 @@ const float ColorOffset1 = 1.0;
 const float DarknessThreshold = 0.05; 
 const vec4 PhaseParams = vec4(0.72, 1.0, 0.5, 1.58);
 const vec4 NoiseWeights = vec4(-0.1, 30.0, -0.3, 1.0);
+const float ContainerEdgeFadeDst = 5.0;
 
 vec3 g_box_size;
 vec3 g_box_center;
@@ -81,17 +83,32 @@ float remap(float origin_val, float origin_min, float origin_max, float new_min,
 
 float sampleDensity(vec3 ray_pos) 
 {
-    vec3 noise_tex_uvw = ray_pos * 0.4;
+    vec3 offset = vec3(0.001, 0.0002, 0.0) * BBTime.z;
+
+    vec3 noise_tex_uvw = ray_pos * 0.4 + offset;
     // The disturbances in different directions are different
     float noise_val = dot(texture(PerlinNoiseTex3D, noise_tex_uvw), normalize(NoiseWeights));
 
-    vec2 weather_tex_uv = (ray_pos.xz - g_box_center.xz + g_box_size.xz * 0.5f) / max(g_box_size.x, g_box_size.z);
+    vec2 weather_tex_uv = (ray_pos.xz - g_box_center.xz + g_box_size.xz * 0.5f) / max(g_box_size.x, g_box_size.z) + offset.xy * vec2(0.2, 0.2);
+    // uv distortion
+    vec4 distort = texture(DistortTex, v2f_texcoord);
+    weather_tex_uv = mix(weather_tex_uv, distort.xy, 0.1);
     // Upper narrow and lower wide
     float weather_val = texture(WeatherTex, weather_tex_uv).r;
 
     float h_percent = (ray_pos.y - BoundingBoxMin.y) / g_box_size.y;
     // As the height rises, the gradient gradually flattens from 1
     float h_gradient = clamp(remap(h_percent, 0.0, weather_val, 1.0, 0.0), 0.0, 1.0);
+
+    // Bottom fade
+    float bottom = remap(weather_val, 0, 1, 0.1, 0.6);
+    h_gradient *= clamp(remap(h_percent, 0.0, bottom, 0.0, 1.0), 0.0, 1.0);
+
+    // Edge fade
+    float dst_to_edge_x = min(ContainerEdgeFadeDst, min(ray_pos.x - BoundingBoxMin.x, BoundingBoxMax.x - ray_pos.x));
+    float dst_to_edge_z = min(ContainerEdgeFadeDst, min(ray_pos.z - BoundingBoxMin.z, BoundingBoxMax.z - ray_pos.z));
+    float edge_weight = min(dst_to_edge_x, dst_to_edge_z) / ContainerEdgeFadeDst;
+    h_gradient *= edge_weight;
 
     return noise_val * h_gradient;
 }
@@ -136,7 +153,7 @@ vec4 rayMarching(vec3 enter, vec3 V, float distance_limit, vec3 L)
     float sum_density = 1.0;
     // The distance that ray travels
     float displacement = 0.0;
-    float step = 0.1;
+    float step = 0.05;
     // The scattering towards the light is stronger
     // The edges of the cloud appear black
     float cos_angle = dot(V, L);
@@ -174,7 +191,6 @@ vec4 rayMarching(vec3 enter, vec3 V, float distance_limit, vec3 L)
 
 void main(void)
 {
-    vec3 final_color = vec3(1.0);
     vec3 albedo = texture(AlbedoTex, v2f_texcoord).rgb;
 
     float depth = texture(BBCameraDepthTexture, v2f_texcoord).r;
@@ -196,10 +212,6 @@ void main(void)
     vec3 enter = ray_pos + V * camera_to_container;
     vec4 ray_marching_result = rayMarching(enter, V, distance_limit, L);
 
-    final_color *= ray_marching_result.rgb;
-
-    final_color += albedo;
-
-    FragColor = vec4(final_color, ray_marching_result.a);
+    FragColor = 1 - vec4(0.06, 0.03, 0.0, ray_marching_result.a - 0.2);
 }
 
