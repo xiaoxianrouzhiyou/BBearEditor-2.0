@@ -40,7 +40,7 @@ Here lists the features that already exists in my engine. (Some contents need to
     + Photon Mapping
     + GI: SSAO, SSDO, FLC
     + Anisotropic Lighting: KajiyaKay Hair
-    + Volume rendering: Cloud
+    + Volume Rendering: Cloud
   - PBR with IBL support
   - Physics
     + Fluid: SSF
