@@ -2,11 +2,11 @@
 #define BBAREALIGHT_H
 
 
-#include "Base/BBGameObject.h"
+#include "3D/BBModel.h"
 
 class BBRectBoundingBox3D;
 
-class BBAreaLight : public BBGameObject
+class BBAreaLight : public BBModel
 {
 public:
     BBAreaLight(float fMin0, float fMax0, float fMin1, float fMax1, float fFixedValue);

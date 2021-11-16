@@ -24,6 +24,20 @@ public:
     virtual ~BBScatterMaterial();
 
     virtual bool scatter(const BBRay &ray, const BBHitInfo &hitInfo, BBScatterInfo &scatterInfo) = 0;
+    virtual QVector3D emitted(const QVector3D &position, const QVector2D &texcoords) = 0;
+};
+
+class BBAreaLightMaterial : public BBScatterMaterial
+{
+public:
+    BBAreaLightMaterial(const QVector3D &color);
+    ~BBAreaLightMaterial();
+
+    bool scatter(const BBRay &ray, const BBHitInfo &hitInfo, BBScatterInfo &scatterInfo) override;
+    QVector3D emitted(const QVector3D &position, const QVector2D &texcoords) override;
+
+private:
+    QVector3D m_Color;
 };
 
 // diffuse
@@ -34,6 +48,7 @@ public:
     ~BBLambertian();
 
     bool scatter(const BBRay &ray, const BBHitInfo &hitInfo, BBScatterInfo &scatterInfo) override;
+    QVector3D emitted(const QVector3D &position, const QVector2D &texcoords) override;
 
 private:
     QVector3D m_Albedo;
@@ -47,6 +62,7 @@ public:
     ~BBMetal();
 
     bool scatter(const BBRay &ray, const BBHitInfo &hitInfo, BBScatterInfo &scatterInfo) override;
+    QVector3D emitted(const QVector3D &position, const QVector2D &texcoords) override;
 
 private:
     QVector3D m_Albedo;
@@ -61,6 +77,7 @@ public:
     ~BBDielectric();
 
     bool scatter(const BBRay &ray, const BBHitInfo &hitInfo, BBScatterInfo &scatterInfo) override;
+    QVector3D emitted(const QVector3D &position, const QVector2D &texcoords) override;
 
 private:
     float m_fRefractivity;

@@ -304,21 +304,20 @@ QVector3D BBPhotonMap::traceRay(const BBRay &ray, BBModel *pSceneModels[], int n
     if (nearHitInfo.m_pModel)
     {
         BBScatterInfo scatterInfo;
-        if (depth < m_nMaxTraceDepth && nearHitInfo.m_pModel->getMesh()->getScatterMaterial()->scatter(ray, nearHitInfo, scatterInfo))
+        BBScatterMaterial* pMaterial = nearHitInfo.m_pModel->getMesh()->getScatterMaterial();
+        QVector3D color = pMaterial->emitted(nearHitInfo.m_Position, nearHitInfo.m_Texcoords);
+        if (depth < m_nMaxTraceDepth && pMaterial->scatter(ray, nearHitInfo, scatterInfo))
         {
             if (scatterInfo.m_bSpecular)
             {
-                return scatterInfo.m_Attenuation * traceRay(scatterInfo.m_ScatteredRay, pSceneModels, nModelCount, depth + 1, pPhotonMap);
+                color += scatterInfo.m_Attenuation * traceRay(scatterInfo.m_ScatteredRay, pSceneModels, nModelCount, depth + 1, pPhotonMap);
             }
             else
             {
-                return scatterInfo.m_Attenuation * pPhotonMap->getIrradiance(nearHitInfo.m_Position, nearHitInfo.m_Normal, 0.3f, 100);
+                color += scatterInfo.m_Attenuation * pPhotonMap->getIrradiance(nearHitInfo.m_Position, nearHitInfo.m_Normal, 0.3f, 100);
             }
         }
-        else
-        {
-            return QVector3D(0, 0, 0);
-        }
+        return color;
     }
     else
     {

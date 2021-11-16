@@ -100,15 +100,7 @@ void BBOfflineRenderer::renderFrame()
             for (int sample = 0; sample < nSampleCount; sample++)
             {
                 BBRay ray = pCamera->createRayFromScreen(x + sfrandom(), y + sfrandom());
-                float d;
-                if (m_pAreaLight->hit(ray, d))
-                {
-                    color = m_pAreaLight->getColor();
-                }
-                else
-                {
-                    color += BBPhotonMap::traceRay(ray, m_pModels, TestModelCount, 0, m_pPhotonMap);
-                }
+                color += BBPhotonMap::traceRay(ray, m_pModels, TestModelCount, 0, m_pPhotonMap);
             }
             color /= nSampleCount;
 

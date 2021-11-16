@@ -17,6 +17,31 @@ BBScatterMaterial::~BBScatterMaterial()
 
 
 /**
+ * @brief BBAreaLightMaterial::BBAreaLightMaterial
+ * @param color
+ */
+BBAreaLightMaterial::BBAreaLightMaterial(const QVector3D &color)
+{
+    m_Color = color;
+}
+
+BBAreaLightMaterial::~BBAreaLightMaterial()
+{
+
+}
+
+bool BBAreaLightMaterial::scatter(const BBRay &ray, const BBHitInfo &hitInfo, BBScatterInfo &scatterInfo)
+{
+    return false;
+}
+
+QVector3D BBAreaLightMaterial::emitted(const QVector3D &position, const QVector2D &texcoords)
+{
+    return m_Color;
+}
+
+
+/**
  * @brief BBLambertian::BBLambertian
  * @param albedo
  */
@@ -36,6 +61,11 @@ bool BBLambertian::scatter(const BBRay &ray, const BBHitInfo &hitInfo, BBScatter
     scatterInfo.m_ScatteredRay.setRay(hitInfo.m_Position, hemisphericalRandom(hitInfo.m_Normal));
     scatterInfo.m_Attenuation = m_Albedo;
     return true;
+}
+
+QVector3D BBLambertian::emitted(const QVector3D &position, const QVector2D &texcoords)
+{
+    return QVector3D(0, 0, 0);
 }
 
 
@@ -67,6 +97,11 @@ bool BBMetal::scatter(const BBRay &ray, const BBHitInfo &hitInfo, BBScatterInfo 
     scatterInfo.m_ScatteredRay.setRay(hitInfo.m_Position, scatteredRayDir);
     scatterInfo.m_Attenuation = m_Albedo;
     return true;
+}
+
+QVector3D BBMetal::emitted(const QVector3D &position, const QVector2D &texcoords)
+{
+    return QVector3D(0, 0, 0);
 }
 
 
@@ -130,4 +165,9 @@ bool BBDielectric::scatter(const BBRay &ray, const BBHitInfo &hitInfo, BBScatter
         scatterInfo.m_ScatteredRay.setRay(hitInfo.m_Position, refracted);
     }
     return true;
+}
+
+QVector3D BBDielectric::emitted(const QVector3D &position, const QVector2D &texcoords)
+{
+    return QVector3D(0, 0, 0);
 }

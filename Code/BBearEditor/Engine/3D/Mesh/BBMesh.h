@@ -8,7 +8,8 @@ enum BBMeshType
 {
     OBJ = 0x01,
     FBX = 0x02,
-    TERRAIN = 0x04
+    TERRAIN = 0x04,
+    AREALIGHT = 0x08
 };
 
 

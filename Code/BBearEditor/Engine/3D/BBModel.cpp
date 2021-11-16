@@ -1,6 +1,7 @@
 #include "BBModel.h"
 #include "Mesh/BBStaticMesh.h"
 #include "Mesh/BBTerrain.h"
+#include "Render/Lighting/GameObject/BBAreaLight.h"
 #include "Utils/BBUtils.h"
 #include "Geometry/BBBoundingBox.h"
 #include <cfloat>
@@ -28,7 +29,7 @@ BBModel::BBModel(float px, float py, float pz,
     : BBGameObject(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
     setClassName(BB_CLASSNAME_MODEL);
-    if (eType == BBMeshType::OBJ)
+    if (eType == BBMeshType::OBJ || eType == BBMeshType::AREALIGHT)
     {
         m_pMesh = new BBStaticMesh(px, py, pz, rx, ry, rz, sx, sy, sz);
     }
