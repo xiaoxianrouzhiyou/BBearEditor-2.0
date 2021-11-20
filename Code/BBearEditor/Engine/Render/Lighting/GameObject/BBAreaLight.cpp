@@ -6,7 +6,7 @@
 
 
 BBAreaLight::BBAreaLight(float fMin0, float fMax0, float fMin1, float fMax1, float fFixedValue, const QVector3D &color)
-    : BBModel(AREALIGHT)
+    : BBModel((fMax0 + fMin0) / 2, fFixedValue, (fMax1 + fMin1) / 2, 0, 0, 0, (fMax0 - fMin0) * 0.1f, 1, (fMax1 - fMin1) * 0.1f, AREALIGHT)
 {
     // At present, only xoz plane area light sources are considered, Face down
     m_fMin0 = fMin0;
@@ -25,17 +25,7 @@ BBAreaLight::~BBAreaLight()
 
 void BBAreaLight::init()
 {
-    BBVertexBufferObject *pVBO = new BBVertexBufferObject(4);
-    pVBO->setPosition(0, m_fMin0, m_fFixedValue, m_fMin1);
-    pVBO->setPosition(1, m_fMin0, m_fFixedValue, m_fMax1);
-    pVBO->setPosition(2, m_fMax0, m_fFixedValue, m_fMax1);
-    pVBO->setPosition(3, m_fMax0, m_fFixedValue, m_fMin1);
-    pVBO->setColor(0, m_Color);
-    pVBO->setColor(1, m_Color);
-    pVBO->setColor(2, m_Color);
-    pVBO->setColor(3, m_Color);
-
-    BBModel::init(pVBO, GL_QUADS, 0, 4);
+    BBModel::init(BB_PATH_RESOURCE_MESH(plane.obj));
 
     setScatterMaterial(new BBAreaLightMaterial(QVector3D(1, 1, 1)));
 }
