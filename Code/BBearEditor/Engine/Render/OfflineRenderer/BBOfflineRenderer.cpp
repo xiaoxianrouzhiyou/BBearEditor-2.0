@@ -53,15 +53,22 @@ void BBOfflineRenderer::createTestScene()
     m_pModels[5] = m_pScene->createModel(BB_PATH_RESOURCE_MESH(plane.obj), QVector3D(0, 0, 4), QVector3D(-90, 0, 0), QVector3D(1, 1, 1));
     m_pModels[6] = m_pScene->createModel(BB_PATH_RESOURCE_MESH(cube.obj), QVector3D(0.4f, 0, 0), QVector3D(0, 0, 0), QVector3D(0.5f, 1.0f, 0.5f));
     m_pModels[7] = m_pScene->createModel(BB_PATH_RESOURCE_MESH(cube.obj), QVector3D(-0.4f, 0, 0), QVector3D(0, 0, 0), QVector3D(0.25f, 1.0f, 0.5f));
-    for (int i = 0; i < TestModelCount; i++)
+
+    // Arealight is a model
+    m_pAreaLight = new BBAreaLight(-0.3f, 0.3f, 1.0f, 1.2f, 1.998f, QVector3D(1, 1, 1));
+    m_pAreaLight->init();
+    m_pScene->addModel(m_pAreaLight);
+    m_pModels[8] = m_pAreaLight;
+
+    // no need to set material for arealight
+    for (int i = 0; i < TestModelCount - 1; i++)
     {
         m_pModels[i]->setBoundingBoxVisibility(false);
         m_pModels[i]->setScatterMaterial(new BBLambertian(QVector3D(1, 1, 1)));
     }
     m_pModels[6]->setScatterMaterial(new BBLambertian(QVector3D(0, 1, 0)));
     m_pModels[7]->setScatterMaterial(new BBMetal(QVector3D(1, 0, 0)));
-    m_pAreaLight = new BBAreaLight(-0.3f, 0.3f, 1.0f, 1.2f, 2.0f);
-    m_pAreaLight->init();
+
 
     m_pScene->getCamera()->update(QVector3D(0, 1, 3.5f), QVector3D(0, 1, 2.5f));
 

@@ -37,6 +37,7 @@ BBModel::BBModel(float px, float py, float pz,
     {
         m_pMesh = new BBTerrain(px, py, pz, rx, ry, rz, sx, sy, sz);
     }
+    m_pMesh->setMeshType(eType);
     m_pBoundingBox = nullptr;
 }
 

@@ -26,6 +26,8 @@ public:
     void init(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount, BBBoundingBox3D *&pOutBoundingBox);
 
     void setExtraMaterial(int nMaterialIndex, BBMaterial *pMaterial) override;
+    void setMeshType(const BBMeshType &eMeshType) { m_eMeshType = eMeshType; }
+    BBMeshType getMeshType() { return m_eMeshType; }
 
     bool hit(const BBRay &ray, float &fDistance) override;
     bool hit(const BBRay &ray, float fMinDistance, float fMaxDistance, BBHitInfo &hitInfo);
@@ -39,6 +41,7 @@ protected:
     BBElementBufferObject *m_pEBO2;
     unsigned short *m_pIndexes2;
     int m_nIndexCount2;
+    BBMeshType m_eMeshType;
 };
 
 #endif // BBMESH_H

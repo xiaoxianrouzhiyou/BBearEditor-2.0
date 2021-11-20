@@ -529,6 +529,12 @@ BBModel* BBScene::createModelForPreview(const QString &filePath, float fDistFact
     return pModel;
 }
 
+void BBScene::addModel(BBModel *pModel)
+{
+    pModel->insertInRenderQueue(m_pRenderQueue);
+    m_Models.append(pModel);
+}
+
 BBLight* BBScene::createLight(const QString &fileName, int x, int y, bool bSelect)
 {
     BBRay ray = m_pCamera->createRayFromScreen(x, y);

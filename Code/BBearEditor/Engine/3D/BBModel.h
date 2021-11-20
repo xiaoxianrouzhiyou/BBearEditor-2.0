@@ -50,7 +50,7 @@ public:
 
     void setScatterMaterial(BBScatterMaterial *pScatterMaterial) override;
 
-private:
+protected:
     BBMesh *m_pMesh;
     BBBoundingBox3D *m_pBoundingBox;
 };

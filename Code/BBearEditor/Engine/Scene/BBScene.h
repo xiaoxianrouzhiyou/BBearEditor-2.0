@@ -87,6 +87,7 @@ public:
                          const QVector3D &position = QVector3D(0, 0, 0), const QVector3D &rotation = QVector3D(0, 0, 0), const QVector3D &scale = QVector3D(1, 1, 1));
     BBModel* createModel(const BBSerializer::BBGameObject &gameObject);
     BBModel* createModelForPreview(const QString &filePath, float fDistFactor = 2.0f);
+    void addModel(BBModel *pModel);
 
     BBLight* createLight(const QString &fileName, int x, int y, bool bSelect = true);
     BBLight* createLight(const QString &fileName, const QVector3D &position = QVector3D(0, 0, 0), const QVector3D &rotation = QVector3D(0, 0, 0), bool bSelect = true);

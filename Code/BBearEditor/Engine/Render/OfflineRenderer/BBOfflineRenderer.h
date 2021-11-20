@@ -4,7 +4,7 @@
 
 #include <QImage>
 
-#define TestModelCount 8
+#define TestModelCount 9
 
 class BBScene;
 class BBMaterial;
