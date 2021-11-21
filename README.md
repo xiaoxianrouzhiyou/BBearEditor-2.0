@@ -126,4 +126,5 @@ Make do with it. Please forgive me for not having art resources...
 [5] [Peter Shirley/Ray Tracing in a Weekend](http://www.realtimerendering.com/raytracing/Ray%20Tracing%20in%20a%20Weekend.pdf)  
 [6] [Peter Shirley/Ray Tracing: The Next Week](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20The%20Next%20Week.pdf)  
 [7] [Peter Shirley/Ray Tracing: The Rest of Your Life](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20the%20Rest%20of%20Your%20Life.pdf)  
+[8] NVIDIA/GPU Gems
 todo... (There are some that haven't been listed yet)
