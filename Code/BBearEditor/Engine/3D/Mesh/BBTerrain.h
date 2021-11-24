@@ -8,9 +8,7 @@ class BBTerrain : public BBMesh
 {
 public:
     BBTerrain();
-    BBTerrain(float px, float py, float pz,
-              float rx, float ry, float rz,
-              float sx, float sy, float sz);
+    BBTerrain(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz);
 
     void init(const QString &path, BBBoundingBox3D *&pOutBoundingBox) override;
 

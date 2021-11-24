@@ -21,7 +21,7 @@ public:
 
     inline BBMesh* getMesh() { return m_pMesh; }
 
-    void init(const QString &path) override;
+    void init(const QString &userData) override;
     void init(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount);
     void render(BBCamera *pCamera) override;
     void renderToShadowMap(BBCamera *pCamera);

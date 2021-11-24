@@ -1,6 +1,7 @@
 #include "BBModel.h"
 #include "Mesh/BBStaticMesh.h"
 #include "Mesh/BBTerrain.h"
+#include "Mesh/BBProcedureMesh.h"
 #include "Render/Lighting/GameObject/BBAreaLight.h"
 #include "Utils/BBUtils.h"
 #include "Geometry/BBBoundingBox.h"
@@ -37,6 +38,10 @@ BBModel::BBModel(float px, float py, float pz,
     {
         m_pMesh = new BBTerrain(px, py, pz, rx, ry, rz, sx, sy, sz);
     }
+    else if (eType == BBMeshType::PROCEDURE_MESH)
+    {
+        m_pMesh = new BBProcedureMesh(px, py, pz, rx, ry, rz, sx, sy, sz);
+    }
     m_pMesh->setMeshType(eType);
     m_pBoundingBox = nullptr;
 }
@@ -47,10 +52,10 @@ BBModel::~BBModel()
     BB_SAFE_DELETE(m_pBoundingBox);
 }
 
-void BBModel::init(const QString &path)
+void BBModel::init(const QString &userData)
 {
-    BBGameObject::init(path);
-    m_pMesh->init(path, m_pBoundingBox);
+    BBGameObject::init(userData);
+    m_pMesh->init(userData, m_pBoundingBox);
 }
 
 void BBModel::init(BBVertexBufferObject *pVBO, GLenum eDrawPrimitiveType, int nDrawStartIndex, int nDrawCount)

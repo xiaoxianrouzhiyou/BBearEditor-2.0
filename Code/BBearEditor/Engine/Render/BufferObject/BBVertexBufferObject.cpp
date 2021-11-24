@@ -53,6 +53,16 @@ QList<QVector4D> BBVertexBufferObject::getPositions()
     return vertexes;
 }
 
+QList<QVector3D> BBVertexBufferObject::getNonHomogeneousPositions()
+{
+    QList<QVector3D> vertexes;
+    for (int i = 0; i < m_nVertexCount; i++)
+    {
+        vertexes.append(getPosition(i));
+    }
+    return vertexes;
+}
+
 void BBVertexBufferObject::setColor(float r, float g, float b, float a)
 {
     for (int i = 0; i < m_nVertexCount; i++)

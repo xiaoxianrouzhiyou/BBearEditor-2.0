@@ -13,9 +13,7 @@ BBTerrain::BBTerrain()
 
 }
 
-BBTerrain::BBTerrain(float px, float py, float pz,
-                     float rx, float ry, float rz,
-                     float sx, float sy, float sz)
+BBTerrain::BBTerrain(float px, float py, float pz, float rx, float ry, float rz, float sx, float sy, float sz)
     : BBMesh(px, py, pz, rx, ry, rz, sx, sy, sz)
 {
     m_fHeight = 30;

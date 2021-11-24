@@ -39,6 +39,7 @@
 #define BB_CLASSNAME_PARTICLE "Particle"
 #define BB_CLASSNAME_SPHFLUID "SPHFluid"
 #define BB_CLASSNAME_CLOTH "Cloth"
+#define BB_CLASSNAME_PROCEDURE_MESH "ProcedureMesh"
 #define BB_CLASSNAME_DIRECTIONAL_LIGHT "DirectionalLight"
 #define BB_CLASSNAME_POINT_LIGHT "PointLight"
 #define BB_CLASSNAME_SPOT_LIGHT "SpotLight"

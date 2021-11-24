@@ -165,7 +165,9 @@ SOURCES += \
     Engine/Physics/Solver/BBPBDSolver.cpp \
     Engine/Physics/Force/BBForce.cpp \
     Engine/Physics/Force/BBDirectionalForce.cpp \
-    Editor/PropertyManager/GroupManager/BBFluidRendererManager.cpp
+    Editor/PropertyManager/GroupManager/BBFluidRendererManager.cpp \
+    Engine/Geometry/BBMeshSubdivision.cpp \
+    Engine/3D/Mesh/BBProcedureMesh.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -310,7 +312,9 @@ HEADERS += \
     Engine/Physics/Solver/BBPBDSolver.h \
     Engine/Physics/Force/BBForce.h \
     Engine/Physics/Force/BBDirectionalForce.h \
-    Editor/PropertyManager/GroupManager/BBFluidRendererManager.h
+    Editor/PropertyManager/GroupManager/BBFluidRendererManager.h \
+    Engine/Geometry/BBMeshSubdivision.h \
+    Engine/3D/Mesh/BBProcedureMesh.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

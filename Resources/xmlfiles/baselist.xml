@@ -16,5 +16,6 @@
     <model icon="../../resources/icons/particle white.png" file="Particle" name="Particle"> </model>
     <model icon="../../resources/icons/particle white.png" file="SPHFluid" name="SPHFluid"> </model>
     <model icon="../../resources/icons/plane2.png" file="Cloth" name="Cloth"> </model>
+    <model icon="../../resources/icons/cube2.png" file="ProcedureMesh" name="ProcedureMesh"> </model>
 
 </root>

@@ -475,6 +475,12 @@ BBModel* BBScene::createModel(const QString &userData, const QVector3D &position
         pModel->setBaseAttributes(QFileInfo(userData).baseName(), BB_CLASSNAME_TERRAIN, BB_CLASSNAME_TERRAIN);
         pModel->init(BB_PATH_RESOURCE_PICTURE(height.png));
     }
+    else if (userData == BB_CLASSNAME_PROCEDURE_MESH)
+    {
+        pModel = new BBModel(position, rotation, scale, BBMeshType::PROCEDURE_MESH);
+        pModel->setBaseAttributes(QFileInfo(userData).baseName(), BB_CLASSNAME_PROCEDURE_MESH, BB_CLASSNAME_PROCEDURE_MESH);
+        pModel->init(userData);
+    }
     else
     {
         pModel = new BBModel(position, rotation, scale, BBMeshType::OBJ);
@@ -728,7 +734,8 @@ void BBScene::lookAtGameObject(BBGameObject *pGameObject)
 
 void BBScene::deleteGameObject(BBGameObject *pGameObject)
 {
-    if (pGameObject->getClassName() == BB_CLASSNAME_MODEL)
+    if (pGameObject->getClassName() == BB_CLASSNAME_MODEL
+            || pGameObject->getClassName() == BB_CLASSNAME_PROCEDURE_MESH)
     {
         ((BBModel*)pGameObject)->removeFromRenderQueue(m_pRenderQueue);
         m_Models.removeOne(pGameObject);

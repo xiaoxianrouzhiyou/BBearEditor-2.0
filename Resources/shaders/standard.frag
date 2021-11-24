@@ -203,5 +203,5 @@ void main(void)
 
     // test perlin noise
     // gl_FragColor = texture2D(PerlinNoiseTex2D, V_Texcoords.xy);
-    gl_FragColor = texture3D(PerlinNoiseTex3D, V_world_pos.xyz);
+    // gl_FragColor = texture3D(PerlinNoiseTex3D, V_world_pos.xyz);
 }
