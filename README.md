@@ -64,6 +64,7 @@ Here lists the features that already exists in my engine. (Some contents need to
   - Frustum
   - Marching Cubes
   - Perlin Noise
+  - Mesh Subdivision: Catmull-Clark
 * 3D FBX Skeletal Animation (version 1.0, It hasn't been reconstructed yet ~ T.T)
 * Asset Manager
   - Asset Import & Management
@@ -121,33 +122,44 @@ Make do with it. Please forgive me for not having art resources...
 ## References
 * Papers  
 [1] Fernando R. Percentage-Closer Soft Shadows. 2005.  
-[2] Green R. Spherical harmonic lighting: The gritty details[C]// Game Developers Conference. 2003.  
-[3] Ravi Ramamoorthi, Pat Hanrahan. An Efficient Representation for Irradiance Environment Maps. Stanford University.  
-[4] Dachsbacher C, Stamminger M. Reflective shadow maps[C]// the 2005 symposium. 2005.  
-[5] Ritschel T, Grosch T, Seidel H P. Approximating Dynamic Global Illumination in Image Space[C]// Symposium on Interactive 3D graphics and games. MPI Informatik;MPI Informatik;MPI Informatik;, 2009.  
-[6] Laurent G, Delalandre C, de LA RIVIèRE, Grégoire, et al. Forward Light Cuts: A Scalable Approach to Real-Time Global Illumination[J]. Computer Graphics Forum, 2016, 35(4):79-88.  
-[7] Mara M. Efficient GPU Screen-Space Ray Tracing.  
-[8] Donnelly W, Lauritzen A. Variance shadow maps[C]// 2006:161-165.  
-[9] Olsson O, Assarsson U. Tiled Shading[J]. Journal of Graphics Gpu & Game Tools, 2011, 15(4):235-251.  
+[2] Donnelly W, Lauritzen A. Variance shadow maps[C]// 2006:161-165.  
+[3] Green R. Spherical harmonic lighting: The gritty details[C]// Game Developers Conference. 2003.  
+[4] Ravi Ramamoorthi, Pat Hanrahan. An Efficient Representation for Irradiance Environment Maps. Stanford University.  
+[5] Mara M. Efficient GPU Screen-Space Ray Tracing.  
+[6] Dachsbacher C, Stamminger M. Reflective shadow maps[C]// the 2005 symposium. 2005.  
+[7] Ritschel T, Grosch T, Seidel H P. Approximating Dynamic Global Illumination in Image Space[C]// Symposium on Interactive 3D graphics and games. MPI Informatik;MPI Informatik;MPI Informatik;, 2009.  
+[8] Laurent G, Delalandre C, de LA RIVIèRE, Grégoire, et al. Forward Light Cuts: A Scalable Approach to Real-Time Global Illumination[J]. Computer Graphics Forum, 2016, 35(4):79-88.  
+[9] Alexander Majercik, Cyril Crassin, Peter Shirley, and Morgan McGuire, A Ray-Box Intersection Algorithm and Efficient Dynamic Voxel Rendering, Journal of Computer Graphics Techniques (JCGT), vol. 7, no. 3, 66-81, 2018  
 [10] Colin Barré-Brisebois, Marc Bouchard. Real-Time Approximation of Light Transport in Translucent Homogenous Media, Gpu Pro 2. Vol. 2. CRC Press, 2011.  
-[11] William E. Lorensen and Harvey E. Cline. 1987. Marching cubes: A high resolution 3D surface construction algorithm. SIGGRAPH Comput. Graph. 21, 4 (August 1987), 163-169.  
+[11] Olsson O, Assarsson U. Tiled Shading[J]. Journal of Graphics Gpu & Game Tools, 2011, 15(4):235-251.  
 [12] Solenthaler B, Pajarola R. Predictive-Corrective Incompressible SPH[J]. ACM Transactions on Graphics (TOG), 2009, 28(3):187-192.  
-[13] Perlin K. An image synthesizer[J]. ACM Siggraph Computer Graphics, 1985, 19(3): 287-296.  
+[13] Matthias Müller, Heidelberger B, Hennix M, et al. Position Based Dynamics[J]. Journal of Visual Communication & Image Representation, 2007, 18(2):109-118.  
+[14] William E. Lorensen and Harvey E. Cline. 1987. Marching cubes: A high resolution 3D surface construction algorithm. SIGGRAPH Comput. Graph. 21, 4 (August 1987), 163-169.  
+[15] Perlin K. An image synthesizer[J]. ACM Siggraph Computer Graphics, 1985, 19(3): 287-296.  
+[16] E. Catmull, J. Clark.Recursively generated B-spline surfaces on arbitrary topological meshes[J]. Computer-Aided Design,1978,10(6).350-355.  
+[17] Masmano M, Ripoll I, Crespo A, et al. TLSF: a new dynamic memory allocator for real-time systems[C]// Proceedings. 16th Euromicro Conference on Real-Time Systems, 2004. ECRTS 2004. IEEE, 2004.  
+
 * Technical blog and Source code  
-[14] [JoeyDeVries/ LearnOpenGL](https://learnopengl.com/)  
-[15] [AngelMonica126/ GraphicAlgorithm](https://github.com/AngelMonica126/GraphicAlgorithm)  
-[16] ATI Research/ Hair Rendering and Shading  
-[17] [Peter Shirley/ Ray Tracing in a Weekend](http://www.realtimerendering.com/raytracing/Ray%20Tracing%20in%20a%20Weekend.pdf)  
-[18] [Peter Shirley/ Ray Tracing: The Next Week](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20The%20Next%20Week.pdf)  
-[19] [Peter Shirley/ Ray Tracing: The Rest of Your Life](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20the%20Rest%20of%20Your%20Life.pdf)  
-[20] [Dezeming Family/ PhotonMap](https://dezeming.top/wp-content/uploads/2021/04/PhotonMap.pdf)  
-[21] [0小龙虾0/ 流体模拟(SPH: Fluid Simulation)](https://blog.csdn.net/qq_39300235/category_9582963.html)  
-[22] [OGLdev/ Modern OpenGL Tutorials](https://ogldev.org/)  
+[18] [JoeyDeVries/ LearnOpenGL](https://learnopengl.com/)  
+[19] [OGLdev/ Modern OpenGL Tutorials](https://ogldev.org/)  
+[20] [AngelMonica126/ GraphicAlgorithm](https://github.com/AngelMonica126/GraphicAlgorithm)  
+[21] [Peter Shirley/ Ray Tracing in a Weekend](http://www.realtimerendering.com/raytracing/Ray%20Tracing%20in%20a%20Weekend.pdf)  
+[22] [Peter Shirley/ Ray Tracing: The Next Week](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20The%20Next%20Week.pdf)  
+[23] [Peter Shirley/ Ray Tracing: The Rest of Your Life](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20the%20Rest%20of%20Your%20Life.pdf)  
+[24] [Dezeming Family/ PhotonMap](https://dezeming.top/wp-content/uploads/2021/04/PhotonMap.pdf)  
+[25] ATI Research/ Hair Rendering and Shading  
+[26] [面向搜索引擎编程/ RayMarching实时体积云渲染入门(RayMarching Real-Time Volume Cloud Rendering)](https://zhuanlan.zhihu.com/p/248406797)  
+[27] [0小龙虾0/ 流体模拟：SPH (Fluid Simulation: SPH)](https://blog.csdn.net/qq_39300235/category_9582963.html)  
+[28] [Lee Winter/ 基于PBD算法的布料和头发的实时模拟（Unity Demo）(Real-Time Simulation of Cloth and Hair based on PBD Algorithm (Unity Demo))](https://zhuanlan.zhihu.com/p/338474692)  
+
 * General documentation and tutorials  
-[23] [lingqi/ GAMES101](https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html)  
-[24] [lingqi/ GAMES202](https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html)  
-[25] 秦春林/ 全局光照技术:从离线到实时渲染(Global illumination technology: from offline to real-time rendering)  
-[26] NVIDIA/ GPU Gems  
-[27] [孙小磊/ 计算机图形学系列笔记(Computer graphics series notes)](https://www.zhihu.com/column/c_1249465121615204352)  
-[28] NVIDIA/ Screen Space Fluid Rendering for Games  
-todo... (There are some that haven't been listed yet)
+[29] [Lingqi/ GAMES101](https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html)  
+[30] [Lingqi/ GAMES202](https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html)  
+[31] [孙小磊/ 计算机图形学系列笔记(Computer Graphics Series Notes)](https://www.zhihu.com/column/c_1249465121615204352)  
+[32] 秦春林/ 全局光照技术:从离线到实时渲染(Global Illumination Technology: From Offline to Real-Time Rendering)  
+[33] NVIDIA/ GPU Gems  
+[34] NVIDIA/ Screen Space Fluid Rendering for Games  
+[35] [长尾科技/ 最美的公式：你也能懂的麦克斯韦方程组(The Most Beautiful Formula: Maxwell's Equations You Can Understand)](https://zhuanlan.zhihu.com/p/71793554)  
+[36] [国防科学技术大学/ 大学物理-振动、波动和波动光学(University Physics - Vibration, Wave and Wave Optics)](https://www.icourse163.org/course/NUDT-50002?tid=1465143463)  
+  
+  todo... (There are some that haven't been listed yet)
