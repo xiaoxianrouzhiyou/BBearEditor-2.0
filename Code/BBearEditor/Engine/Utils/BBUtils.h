@@ -162,6 +162,7 @@ public:
     static QString BB_NAME_DEFAULT_SCENE;
     static QString BB_NAME_DEFAULT_MATERIAL;
 
+    static QVector3D m_White;
     static QVector3D m_Red;
     static QVector4D m_RedTransparency;
     static QVector3D m_Green;

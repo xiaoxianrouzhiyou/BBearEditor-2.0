@@ -68,7 +68,8 @@ void BBPropertyManager::showGameObjectProperty(BBGameObject *pGameObject)
     addTransformGroupManager(pGameObject);
 
     if (pGameObject->getClassName() == BB_CLASSNAME_MODEL
-            || pGameObject->getClassName() == BB_CLASSNAME_TERRAIN)
+            || pGameObject->getClassName() == BB_CLASSNAME_TERRAIN
+            || pGameObject->getClassName() == BB_CLASSNAME_PROCEDURE_MESH)
     {
         BBModel *pModel = (BBModel*)pGameObject;
         layout()->addWidget(new BBRenderManager(pModel->getMesh(), this));

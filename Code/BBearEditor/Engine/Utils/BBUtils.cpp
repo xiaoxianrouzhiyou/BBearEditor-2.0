@@ -19,6 +19,7 @@ QString BBConstant::BB_NAME_DEFAULT_SCENE = "new scene.bbscene";
 QString BBConstant::BB_NAME_DEFAULT_MATERIAL = "new material.bbmtl";
 
 
+QVector3D BBConstant::m_White = QVector3D(1.0f, 1.0f, 1.0f);
 QVector3D BBConstant::m_Red = QVector3D(0.937255f, 0.378431f, 0.164706f);
 QVector4D BBConstant::m_RedTransparency = QVector4D(0.937255f, 0.378431f, 0.164706f, 0.7f);
 QVector3D BBConstant::m_Green = QVector3D(0.498039f, 0.827451f, 0.25098f);
