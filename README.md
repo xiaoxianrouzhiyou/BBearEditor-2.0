@@ -119,13 +119,35 @@ Make do with it. Please forgive me for not having art resources...
 * Main interface  
 ![V%BRYKJB E9I0JK(YGZ7ZMM](https://user-images.githubusercontent.com/31690363/130344475-acf28e7e-d0a0-4c86-860f-ce25d081b559.png)
 ## References
-[1] [lingqi/GAMES101](https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html)  
-[2] [lingqi/GAMES202](https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html)  
-[3] [JoeyDeVries/LearnOpenGL](https://learnopengl.com/)  
-[4] [AngelMonica126/GraphicAlgorithm](https://github.com/AngelMonica126/GraphicAlgorithm)  
-[5] [Peter Shirley/Ray Tracing in a Weekend](http://www.realtimerendering.com/raytracing/Ray%20Tracing%20in%20a%20Weekend.pdf)  
-[6] [Peter Shirley/Ray Tracing: The Next Week](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20The%20Next%20Week.pdf)  
-[7] [Peter Shirley/Ray Tracing: The Rest of Your Life](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20the%20Rest%20of%20Your%20Life.pdf)  
-[8] NVIDIA/GPU Gems  
-[9] [计算机图形学系列笔记](https://www.zhihu.com/column/c_1249465121615204352)  
+* Papers  
+[1] Fernando R. Percentage-Closer Soft Shadows. 2005.  
+[2] Green R. Spherical harmonic lighting: The gritty details[C]// Game Developers Conference. 2003.  
+[3] Ravi Ramamoorthi, Pat Hanrahan. An Efficient Representation for Irradiance Environment Maps. Stanford University.  
+[4] Dachsbacher C, Stamminger M. Reflective shadow maps[C]// the 2005 symposium. 2005.  
+[5] Ritschel T, Grosch T, Seidel H P. Approximating Dynamic Global Illumination in Image Space[C]// Symposium on Interactive 3D graphics and games. MPI Informatik;MPI Informatik;MPI Informatik;, 2009.  
+[6] Laurent G, Delalandre C, de LA RIVIèRE, Grégoire, et al. Forward Light Cuts: A Scalable Approach to Real-Time Global Illumination[J]. Computer Graphics Forum, 2016, 35(4):79-88.  
+[7] Mara M. Efficient GPU Screen-Space Ray Tracing.  
+[8] Donnelly W, Lauritzen A. Variance shadow maps[C]// 2006:161-165.  
+[9] Olsson O, Assarsson U. Tiled Shading[J]. Journal of Graphics Gpu & Game Tools, 2011, 15(4):235-251.  
+[10] Colin Barré-Brisebois, Marc Bouchard. Real-Time Approximation of Light Transport in Translucent Homogenous Media, Gpu Pro 2. Vol. 2. CRC Press, 2011.  
+[11] William E. Lorensen and Harvey E. Cline. 1987. Marching cubes: A high resolution 3D surface construction algorithm. SIGGRAPH Comput. Graph. 21, 4 (August 1987), 163-169.  
+[12] Solenthaler B, Pajarola R. Predictive-Corrective Incompressible SPH[J]. ACM Transactions on Graphics (TOG), 2009, 28(3):187-192.  
+[13] Perlin K. An image synthesizer[J]. ACM Siggraph Computer Graphics, 1985, 19(3): 287-296.  
+* Technical blog and Source code  
+[1] [JoeyDeVries/ LearnOpenGL](https://learnopengl.com/)  
+[2] [AngelMonica126/ GraphicAlgorithm](https://github.com/AngelMonica126/GraphicAlgorithm)  
+[3] ATI Research/ Hair Rendering and Shading  
+[4] [Peter Shirley/ Ray Tracing in a Weekend](http://www.realtimerendering.com/raytracing/Ray%20Tracing%20in%20a%20Weekend.pdf)  
+[5] [Peter Shirley/ Ray Tracing: The Next Week](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20The%20Next%20Week.pdf)  
+[6] [Peter Shirley/ Ray Tracing: The Rest of Your Life](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20the%20Rest%20of%20Your%20Life.pdf)  
+[7] [Dezeming Family/ PhotonMap](https://dezeming.top/wp-content/uploads/2021/04/PhotonMap.pdf)  
+[8] [0小龙虾0/ 流体模拟(SPH: Fluid Simulation)](https://blog.csdn.net/qq_39300235/category_9582963.html)  
+[9] [OGLdev/ Modern OpenGL Tutorials](https://ogldev.org/)  
+* General documentation and tutorials  
+[1] [lingqi/ GAMES101](https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html)  
+[2] [lingqi/ GAMES202](https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html)  
+[3] 秦春林/ 全局光照技术:从离线到实时渲染(Global illumination technology: from offline to real-time rendering)  
+[4] NVIDIA/ GPU Gems  
+[5] [孙小磊/ 计算机图形学系列笔记(Computer graphics series notes)](https://www.zhihu.com/column/c_1249465121615204352)  
+[6] NVIDIA/ Screen Space Fluid Rendering for Games  
 todo... (There are some that haven't been listed yet)
