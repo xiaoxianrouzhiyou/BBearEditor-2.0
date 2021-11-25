@@ -134,20 +134,20 @@ Make do with it. Please forgive me for not having art resources...
 [12] Solenthaler B, Pajarola R. Predictive-Corrective Incompressible SPH[J]. ACM Transactions on Graphics (TOG), 2009, 28(3):187-192.  
 [13] Perlin K. An image synthesizer[J]. ACM Siggraph Computer Graphics, 1985, 19(3): 287-296.  
 * Technical blog and Source code  
-[1] [JoeyDeVries/ LearnOpenGL](https://learnopengl.com/)  
-[2] [AngelMonica126/ GraphicAlgorithm](https://github.com/AngelMonica126/GraphicAlgorithm)  
-[3] ATI Research/ Hair Rendering and Shading  
-[4] [Peter Shirley/ Ray Tracing in a Weekend](http://www.realtimerendering.com/raytracing/Ray%20Tracing%20in%20a%20Weekend.pdf)  
-[5] [Peter Shirley/ Ray Tracing: The Next Week](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20The%20Next%20Week.pdf)  
-[6] [Peter Shirley/ Ray Tracing: The Rest of Your Life](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20the%20Rest%20of%20Your%20Life.pdf)  
-[7] [Dezeming Family/ PhotonMap](https://dezeming.top/wp-content/uploads/2021/04/PhotonMap.pdf)  
-[8] [0小龙虾0/ 流体模拟(SPH: Fluid Simulation)](https://blog.csdn.net/qq_39300235/category_9582963.html)  
-[9] [OGLdev/ Modern OpenGL Tutorials](https://ogldev.org/)  
+[14] [JoeyDeVries/ LearnOpenGL](https://learnopengl.com/)  
+[15] [AngelMonica126/ GraphicAlgorithm](https://github.com/AngelMonica126/GraphicAlgorithm)  
+[16] ATI Research/ Hair Rendering and Shading  
+[17] [Peter Shirley/ Ray Tracing in a Weekend](http://www.realtimerendering.com/raytracing/Ray%20Tracing%20in%20a%20Weekend.pdf)  
+[18] [Peter Shirley/ Ray Tracing: The Next Week](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20The%20Next%20Week.pdf)  
+[19] [Peter Shirley/ Ray Tracing: The Rest of Your Life](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20the%20Rest%20of%20Your%20Life.pdf)  
+[20] [Dezeming Family/ PhotonMap](https://dezeming.top/wp-content/uploads/2021/04/PhotonMap.pdf)  
+[21] [0小龙虾0/ 流体模拟(SPH: Fluid Simulation)](https://blog.csdn.net/qq_39300235/category_9582963.html)  
+[22] [OGLdev/ Modern OpenGL Tutorials](https://ogldev.org/)  
 * General documentation and tutorials  
-[1] [lingqi/ GAMES101](https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html)  
-[2] [lingqi/ GAMES202](https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html)  
-[3] 秦春林/ 全局光照技术:从离线到实时渲染(Global illumination technology: from offline to real-time rendering)  
-[4] NVIDIA/ GPU Gems  
-[5] [孙小磊/ 计算机图形学系列笔记(Computer graphics series notes)](https://www.zhihu.com/column/c_1249465121615204352)  
-[6] NVIDIA/ Screen Space Fluid Rendering for Games  
+[23] [lingqi/ GAMES101](https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html)  
+[24] [lingqi/ GAMES202](https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html)  
+[25] 秦春林/ 全局光照技术:从离线到实时渲染(Global illumination technology: from offline to real-time rendering)  
+[26] NVIDIA/ GPU Gems  
+[27] [孙小磊/ 计算机图形学系列笔记(Computer graphics series notes)](https://www.zhihu.com/column/c_1249465121615204352)  
+[28] NVIDIA/ Screen Space Fluid Rendering for Games  
 todo... (There are some that haven't been listed yet)
