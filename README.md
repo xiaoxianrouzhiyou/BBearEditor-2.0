@@ -127,4 +127,5 @@ Make do with it. Please forgive me for not having art resources...
 [6] [Peter Shirley/Ray Tracing: The Next Week](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20The%20Next%20Week.pdf)  
 [7] [Peter Shirley/Ray Tracing: The Rest of Your Life](http://www.realtimerendering.com/raytracing/Ray%20Tracing_%20the%20Rest%20of%20Your%20Life.pdf)  
 [8] NVIDIA/GPU Gems  
+[9] [计算机图形学系列笔记](https://www.zhihu.com/column/c_1249465121615204352)  
 todo... (There are some that haven't been listed yet)
