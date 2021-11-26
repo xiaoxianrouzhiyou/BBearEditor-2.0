@@ -213,6 +213,6 @@ void BBMaterialManager::setShaderEnumFactory(QWidget *pParent)
     QString currentFName = fShaderPath.mid(QString(BB_PATH_RESOURCE_SHADER()).length());
     currentFName = BBUtils::getBaseName(currentFName);
 
-    m_pVShaderEnumFactory = new BBEnumFactory("V Shader", BBRendererManager::loadVShaderList(), currentVName, pParent);
-    m_pFShaderEnumFactory = new BBEnumFactory("F Shader", BBRendererManager::loadFShaderList(), currentFName, pParent);
+    m_pVShaderEnumFactory = new BBEnumFactory("V Shader", BBRendererManager::loadVShaderList(), currentVName, pParent, 1, 10);
+    m_pFShaderEnumFactory = new BBEnumFactory("F Shader", BBRendererManager::loadFShaderList(), currentFName, pParent, 1, 10);
 }
