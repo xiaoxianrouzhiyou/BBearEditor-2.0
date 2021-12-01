@@ -61,6 +61,7 @@ Here lists the features that already exists in my engine. (Some contents need to
 * Math & Geometry
   - Ray
   - Bounding Box
+  - Collision Detection
   - Frustum
   - Marching Cubes
   - Perlin Noise
@@ -82,10 +83,8 @@ Due to limited time, the functions I listed above may not be as cool as the word
 - [ ] Continuous reproduction of papers
 - [ ] Improve Photon Mapping
 - [ ] Bézier curve
-- [ ] Perlin noise
 - [ ] Improve Volume Rendering
 - [ ] More constraints for cloth
-- [ ] Physics Simulation
 - [ ] Improve PBR
 - [ ] Animation System
 - [ ] TFO Particle System
