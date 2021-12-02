@@ -160,5 +160,6 @@ Make do with it. Please forgive me for not having art resources...
 [34] NVIDIA/ Screen Space Fluid Rendering for Games  
 [35] [长尾科技/ 最美的公式：你也能懂的麦克斯韦方程组(The Most Beautiful Formula: Maxwell's Equations You Can Understand)](https://zhuanlan.zhihu.com/p/71793554)  
 [36] [国防科学技术大学/ 大学物理-振动、波动和波动光学(University Physics - Vibration, Wave and Wave Optics)](https://www.icourse163.org/course/NUDT-50002?tid=1465143463)  
+[37] 刘利刚/ GAMES102:几何建模与处理(GAMES102: Geometric Modeling & Processing)
   
   todo... (There are some that haven't been listed yet)
