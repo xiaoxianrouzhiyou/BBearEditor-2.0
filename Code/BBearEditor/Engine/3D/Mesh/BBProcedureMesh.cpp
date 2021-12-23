@@ -36,7 +36,7 @@ void BBProcedureMesh::init(const QString &userData, BBBoundingBox3D *&pOutBoundi
     pOutBoundingBox->init();
 
     m_pCurrentMaterial->init("base", BB_PATH_RESOURCE_SHADER(base.vert), BB_PATH_RESOURCE_SHADER(base.frag));
-    m_pCurrentMaterial->getBaseRenderPass()->setPolygonMode(GL_LINE);
+//    m_pCurrentMaterial->getBaseRenderPass()->setPolygonMode(GL_LINE);
 
     BBRenderableObject::init();
 
