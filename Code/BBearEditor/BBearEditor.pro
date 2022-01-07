@@ -167,7 +167,8 @@ SOURCES += \
     Engine/Physics/Force/BBDirectionalForce.cpp \
     Editor/PropertyManager/GroupManager/BBFluidRendererManager.cpp \
     Engine/Geometry/BBMeshSubdivision.cpp \
-    Engine/3D/Mesh/BBProcedureMesh.cpp
+    Engine/3D/Mesh/BBProcedureMesh.cpp \
+    Editor/PropertyManager/GroupManager/BBGeometricProcessingManager.cpp
 
 HEADERS += \
     Editor/FileSystem/BBFileListWidget.h \
@@ -314,7 +315,8 @@ HEADERS += \
     Engine/Physics/Force/BBDirectionalForce.h \
     Editor/PropertyManager/GroupManager/BBFluidRendererManager.h \
     Engine/Geometry/BBMeshSubdivision.h \
-    Engine/3D/Mesh/BBProcedureMesh.h
+    Engine/3D/Mesh/BBProcedureMesh.h \
+    Editor/PropertyManager/GroupManager/BBGeometricProcessingManager.h
 
 FORMS += \
     Editor/FileSystem/BBFileSystemDockWidget.ui \

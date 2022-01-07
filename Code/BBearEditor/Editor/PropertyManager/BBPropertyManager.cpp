@@ -17,6 +17,7 @@
 #include "Physics/FluidSystem/BBSPHFluidSystem.h"
 #include "GroupManager/BBFluidRendererManager.h"
 #include "Physics/FluidSystem/BBSPHFluidRenderer.h"
+#include "GroupManager/BBGeometricProcessingManager.h"
 
 
 BBPropertyManager::BBPropertyManager(QWidget *pParent)
@@ -73,6 +74,12 @@ void BBPropertyManager::showGameObjectProperty(BBGameObject *pGameObject)
     {
         BBModel *pModel = (BBModel*)pGameObject;
         layout()->addWidget(new BBRenderManager(pModel->getMesh(), this));
+
+        // Sub
+        if (pGameObject->getClassName() == BB_CLASSNAME_PROCEDURE_MESH)
+        {
+            layout()->addWidget(new BBGeometricProcessingManager(this));
+        }
     }
     else if (pGameObject->getClassName() == BB_CLASSNAME_SPHFLUID)
     {
@@ -95,6 +102,7 @@ void BBPropertyManager::showGameObjectProperty(BBGameObject *pGameObject)
         BBSpotLight *pLight = (BBSpotLight*)pGameObject;
         layout()->addWidget(new BBSpotLightManager(pLight, this));
     }
+
 //    if (gameObject->getClassName() == ModelClassName || gameObject->getClassName() == TerrainClassName)
 //    {
 //        Model *model = (Model*) gameObject;

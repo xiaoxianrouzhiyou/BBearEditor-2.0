@@ -478,7 +478,7 @@ BBModel* BBScene::createModel(const QString &userData, const QVector3D &position
     else if (userData == BB_CLASSNAME_PROCEDURE_MESH)
     {
         pModel = new BBModel(position, rotation, scale, BBMeshType::PROCEDURE_MESH);
-        pModel->setBaseAttributes(QFileInfo(userData).baseName(), BB_CLASSNAME_PROCEDURE_MESH, BB_CLASSNAME_PROCEDURE_MESH);
+        pModel->setBaseAttributes(QFileInfo(userData).baseName(), BB_CLASSNAME_PROCEDURE_MESH, BB_CLASSNAME_MODEL);
         pModel->init(userData);
     }
     else

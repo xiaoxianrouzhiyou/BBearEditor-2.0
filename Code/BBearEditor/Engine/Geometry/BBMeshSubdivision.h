@@ -16,10 +16,17 @@ class BBMeshSubdivision
 public:
     BBMeshSubdivision(const BBMeshSubdivisionMeshType &eType);
 
-    /* Catmull-Clark */
-
 private:
     int m_nMeshUnitPointNum;
 };
+
+
+// Catmull-Clark
+class BBCatmullClarkMeshSubdivision : public BBMeshSubdivision
+{
+public:
+    BBCatmullClarkMeshSubdivision(const BBMeshSubdivisionMeshType &eType = Quadrangle);
+};
+
 
 #endif // BBMESHSUBDIVISION_H
