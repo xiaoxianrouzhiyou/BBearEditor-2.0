@@ -20,7 +20,7 @@ BBProcedureMesh::BBProcedureMesh(float px, float py, float pz, float rx, float r
 
 void BBProcedureMesh::init(const QString &userData, BBBoundingBox3D *&pOutBoundingBox)
 {
-    init0();
+    init1();
 
 
     QList<QVector4D> positions;
@@ -83,5 +83,40 @@ void BBProcedureMesh::init0()
             *(pCurrent++) = nIndex + 12;
             *(pCurrent++) = nIndex + 1;
         }
+    }
+}
+
+/**
+ * @brief BBProcedureMesh::init1                        A cube consists of quadrilateral primitive
+ */
+void BBProcedureMesh::init1()
+{
+    m_pVBO = new BBVertexBufferObject(8);
+
+    m_pVBO->setPosition(0, -1, 1, 1);
+    m_pVBO->setPosition(1, -1, -1, 1);
+    m_pVBO->setPosition(2, 1, -1, 1);
+    m_pVBO->setPosition(3, 1, 1, 1);
+    m_pVBO->setPosition(4, 1, -1, -1);
+    m_pVBO->setPosition(5, 1, 1, -1);
+    m_pVBO->setPosition(6, -1, -1, -1);
+    m_pVBO->setPosition(7, -1, 1, -1);
+
+    for (int i = 0; i < 8; i++)
+    {
+        m_pVBO->setColor(i, BBConstant::m_White);
+    }
+
+    m_nIndexCount = 24;
+    unsigned short indexes[] = {0, 1, 2, 3,
+                                3, 2, 4, 5,
+                                5, 4, 6, 7,
+                                7, 0, 3, 5,
+                                7, 6, 1, 0,
+                                6, 1, 2, 4};
+    m_pIndexes = new unsigned short[m_nIndexCount];
+    for (int i = 0; i < m_nIndexCount; i++)
+    {
+        m_pIndexes[i] = indexes[i];
     }
 }

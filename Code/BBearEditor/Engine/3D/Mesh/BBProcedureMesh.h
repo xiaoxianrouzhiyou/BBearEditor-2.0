@@ -16,6 +16,7 @@ private:
     void load(const QString &userData, QList<QVector4D> &outPositions) override;
 
     void init0();
+    void init1();
 };
 
 #endif // BBPROCEDUREMESH_H
