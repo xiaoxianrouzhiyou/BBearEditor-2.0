@@ -18,6 +18,7 @@
 #include "GroupManager/BBFluidRendererManager.h"
 #include "Physics/FluidSystem/BBSPHFluidRenderer.h"
 #include "GroupManager/BBGeometricProcessingManager.h"
+#include "3D/Mesh/BBProcedureMesh.h"
 
 
 BBPropertyManager::BBPropertyManager(QWidget *pParent)
@@ -78,7 +79,7 @@ void BBPropertyManager::showGameObjectProperty(BBGameObject *pGameObject)
         // Sub
         if (pGameObject->getClassName() == BB_CLASSNAME_PROCEDURE_MESH)
         {
-            layout()->addWidget(new BBGeometricProcessingManager(this));
+            layout()->addWidget(new BBGeometricProcessingManager((BBProcedureMesh*)pModel->getMesh(), this));
         }
     }
     else if (pGameObject->getClassName() == BB_CLASSNAME_SPHFLUID)

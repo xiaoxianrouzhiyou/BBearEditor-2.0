@@ -3,6 +3,9 @@
 
 
 #include <QVector3D>
+#include <QList>
+
+class BBProcedureMesh;
 
 enum BBMeshSubdivisionMeshType
 {
@@ -16,7 +19,7 @@ class BBMeshSubdivision
 public:
     BBMeshSubdivision(const BBMeshSubdivisionMeshType &eType);
 
-private:
+protected:
     int m_nMeshUnitPointNum;
 };
 
@@ -25,7 +28,16 @@ private:
 class BBCatmullClarkMeshSubdivision : public BBMeshSubdivision
 {
 public:
-    BBCatmullClarkMeshSubdivision(const BBMeshSubdivisionMeshType &eType = Quadrangle);
+    BBCatmullClarkMeshSubdivision(BBProcedureMesh *pMesh, const BBMeshSubdivisionMeshType &eType = Quadrangle);
+
+private:
+    QList<QVector3D> getFacePoints();
+    void generateEdgeFaceList();
+
+private:
+    QList<QVector4D> m_InputPositions;
+    unsigned short *m_pInputVertexIndexes;
+    int m_nInputIndexCount;
 };
 
 

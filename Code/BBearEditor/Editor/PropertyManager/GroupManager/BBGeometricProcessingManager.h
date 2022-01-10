@@ -4,16 +4,20 @@
 
 #include "BBGroupManager.h"
 
+class BBProcedureMesh;
 class BBGeometricProcessingManager : public BBGroupManager
 {
     Q_OBJECT
 
 public:
-    BBGeometricProcessingManager(QWidget *pParent = 0);
+    BBGeometricProcessingManager(BBProcedureMesh *pMesh, QWidget *pParent = 0);
     ~BBGeometricProcessingManager();
 
 private slots:
     void triggerCatmullClarkAlgorithm(bool bEnable);
+
+private:
+    BBProcedureMesh *m_pMesh;
 };
 
 #endif // BBGEOMETRICPROCESSINGMANAGER_H
