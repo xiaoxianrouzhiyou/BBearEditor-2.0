@@ -155,12 +155,13 @@ Make do with it. Please forgive me for not having art resources...
 [29] [Lingqi/ GAMES101](https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html)  
 [30] [Lingqi/ GAMES202](https://sites.cs.ucsb.edu/~lingqi/teaching/games202.html)  
 [31] [孙小磊/ 计算机图形学系列笔记(Computer Graphics Series Notes)](https://www.zhihu.com/column/c_1249465121615204352)  
-[32] 秦春林/ 全局光照技术:从离线到实时渲染(Global Illumination Technology: From Offline to Real-Time Rendering)  
-[33] NVIDIA/ GPU Gems  
-[34] NVIDIA/ Screen Space Fluid Rendering for Games  
-[35] [长尾科技/ 最美的公式：你也能懂的麦克斯韦方程组(The Most Beautiful Formula: Maxwell's Equations You Can Understand)](https://zhuanlan.zhihu.com/p/71793554)  
-[36] [国防科学技术大学/ 大学物理-振动、波动和波动光学(University Physics - Vibration, Wave and Wave Optics)](https://www.icourse163.org/course/NUDT-50002?tid=1465143463)  
-[37] 刘利刚/ GAMES102:几何建模与处理(GAMES102: Geometric Modeling & Processing)  
-[38] 梅向明，黄敬之：微分几何（Differential Geometry）  
+[32] [东汉书院/ 战火引擎3](https://edu.battlefire.cn/book/index?name=%E6%88%98%E7%81%AB%E5%BC%95%E6%93%8E3)  
+[33] 秦春林/ 全局光照技术:从离线到实时渲染(Global Illumination Technology: From Offline to Real-Time Rendering)  
+[34] NVIDIA/ GPU Gems  
+[35] NVIDIA/ Screen Space Fluid Rendering for Games  
+[36] [长尾科技/ 最美的公式：你也能懂的麦克斯韦方程组(The Most Beautiful Formula: Maxwell's Equations You Can Understand)](https://zhuanlan.zhihu.com/p/71793554)  
+[37] [国防科学技术大学/ 大学物理-振动、波动和波动光学(University Physics - Vibration, Wave and Wave Optics)](https://www.icourse163.org/course/NUDT-50002?tid=1465143463)  
+[38] 刘利刚/ GAMES102:几何建模与处理(GAMES102: Geometric Modeling & Processing)  
+[39] 梅向明，黄敬之：微分几何（Differential Geometry）  
   
   todo... (There are some that haven't been listed yet)
