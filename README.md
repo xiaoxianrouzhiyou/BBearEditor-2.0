@@ -42,8 +42,6 @@ Here lists the features that already exists in my engine. (Some contents need to
     + Anisotropic Lighting: KajiyaKay Hair
     + Volume Rendering: Cloud
   - PBR with IBL support
-  - Physics
-    + Fluid: SSF
   - Common Shader
     + Water
     + Heat Distort
@@ -65,7 +63,6 @@ Here lists the features that already exists in my engine. (Some contents need to
   - Frustum
   - Marching Cubes
   - Perlin Noise
-  - Mesh Subdivision: Catmull-Clark
 * 3D FBX Skeletal Animation (version 1.0, It hasn't been reconstructed yet ~ T.T)
 * Asset Manager
   - Asset Import & Management
@@ -81,6 +78,7 @@ Here lists the features that already exists in my engine. (Some contents need to
 ## TODO
 Due to limited time, the functions I listed above may not be as cool as the words seem. Of course, I still have many plans. There are a lot of knowledge gaps I have to fill, and I will continue to improve my project!
 - [ ] Continuous reproduction of papers
+- [ ] Vulkan
 - [ ] Improve Photon Mapping
 - [ ] Bézier curve
 - [ ] Improve Volume Rendering
